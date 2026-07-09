@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis AI Semantic Intent"
+  short_description: "Keep AI intent semantic and governed"
+  default_prompt: "Use $praxis-ai-semantic-intent to audit Praxis AI intent routing and consult/edit boundaries."

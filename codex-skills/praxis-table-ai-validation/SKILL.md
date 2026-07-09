@@ -7,6 +7,8 @@ description: Use when Codex must inspect, change, or validate @praxisui/table AI
 
 Use this skill for table AI authoring and validation. The table assistant must operate through declared semantic contracts: component edit plans, runtime operations, capability catalogs, filter field catalogs, selected-record context, global action catalogs, resource surfaces, and AI registry ingestion. It must not route primary intent through local keyword matching.
 
+For shared AI runtime, manifest, registry, or semantic intent work, pair this skill with `praxis-ai-assistant-runtime`, `praxis-ai-authoring-manifests`, `praxis-ai-registry-ingestion`, or `praxis-ai-semantic-intent`.
+
 ## Source Audit
 
 Inspect the AI and registry surface:

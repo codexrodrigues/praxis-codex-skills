@@ -1,0 +1,57 @@
+---
+name: praxis-ai-authoring-manifests
+description: Use when creating, updating, reviewing, or validating Praxis component authoring manifests, `ComponentAuthoringManifest`, editableTargets, operations, validators, effects, handler contracts, consult/edit response modes, component edit plans, authoring context packs, AI adapters, or manifest synchronization after public component API/editor/runtime changes.
+---
+
+# Praxis AI Authoring Manifests
+
+Use this skill for executable AI authoring contracts. A manifest is not decorative documentation; it is the contract that tells backend tools how to ground, validate, compile, and reject component edits.
+
+## Canonical Model
+
+Every manifest change must preserve:
+
+`public component surface -> editable targets -> operation schema -> validators -> effects/handler contract -> affected paths -> editor/runtime round-trip -> registry ingestion`
+
+Do not expose arbitrary JSON patching when a component requires governed semantic decisions. Use component-specific operations with deterministic targets, schemas, validators, and effects.
+
+## Required Inventory
+
+Inspect the owning component:
+
+- `projects/<lib>/src/lib/ai/*authoring-manifest.ts`
+- focused manifest spec
+- AI adapter and context pack when present
+- component `public-api.ts`
+- component metadata / `ComponentDocMeta` / `configEditor`
+- visual editor and runtime specs for the edited paths
+- related docs, examples, recipes, and registry ingestion outputs when public behavior changes
+
+Also inspect `projects/praxis-core/src/lib/ai/authoring-manifest.types.ts` when changing manifest shape.
+
+## Manifest Rules
+
+- Separate `consult/answer` from `edit/componentEditPlan`; factual questions must not fabricate patches.
+- Every operation target must resolve through an editable target with explicit ambiguity policy.
+- Operation input schemas must be concrete enough for backend tooling; broad objects require a resolvable downstream schema or explicit blocker.
+- `compile-domain-patch` effects need deterministic handler contracts: reads, writes, stable identity keys, input schema, failure modes, and operational description.
+- Effects must overlap affected paths and validators must be used by pertinent operations.
+- Destructive operations require confirmation.
+- Family-level manifests need an aggregate registry entry addressable by `componentId`, not only child copies.
+- Declared-only fields may be authorable for round-trip, but docs/validators must not imply active runtime behavior.
+
+## Synchronization Triggers
+
+Review manifests when a public component change touches:
+
+- inputs, outputs, events, config paths, editor fields, defaults, capabilities, actions, surfaces
+- apply/save/reset/reopen behavior
+- runtime/editor parity
+- `ComponentDocMeta`, `configEditor`, public README, examples, recipes, playgrounds
+- AI assistant context, quick replies, diagnostics, preview, apply payload, or component edit plan
+
+If no manifest update is required after a public change, state why.
+
+## Validation
+
+Run the focused manifest spec first. Use `npm run validate:authoring-contracts` or the direct validator when the manifest is complete/public. Use `praxis-ai-registry-ingestion` when generated registry/catalog artifacts must be updated or verified.

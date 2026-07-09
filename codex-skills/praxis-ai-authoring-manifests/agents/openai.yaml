@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis AI Authoring Manifests"
+  short_description: "Guide component authoring manifests"
+  default_prompt: "Use $praxis-ai-authoring-manifests to update a Praxis component authoring manifest."

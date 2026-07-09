@@ -200,6 +200,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-settings-roundtrip-authoring`: visual editor apply/save/reset/reopen, persistence, and runtime consume validation.
 - `praxis-settings-global-config`: Global Config Editor, effective config, save/clear, and remote persistence.
 - `praxis-settings-ai-i18n-validation`: Settings Panel AI manifest, adapter, context pack, diagnostics, and i18n coverage.
+- `praxis-ai-assistant-runtime`: `@praxisui/ai` assistant shell/client/runtime state, quick replies, diagnostics, previews, and apply payloads.
+- `praxis-ai-authoring-manifests`: component authoring manifests, operations, validators, handler contracts, and edit plans.
+- `praxis-ai-registry-ingestion`: AI registry ingestion, catalog governance, generated component docs, packaged AI assets, and backend sync.
+- `praxis-ai-semantic-intent`: semantic intent routing, consult/edit boundaries, scope policy, and no keyword-based assistant routing.
 - `praxis-ui-product-design`: visual quality, responsive layout, screenshot QA, product polish, theme/accessibility.
 - `praxis-authoring-editors`: Settings Panel, config editors, apply/save/reset, editor/runtime round-trip.
 - `praxis-dynamic-fields-editorial`: control types, aliases, field discovery, `optionSource`, async select, metadata editor coverage.

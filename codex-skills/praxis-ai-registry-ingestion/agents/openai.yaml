@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis AI Registry Ingestion"
+  short_description: "Validate AI registry ingestion and catalog"
+  default_prompt: "Use $praxis-ai-registry-ingestion to validate Praxis AI registry ingestion or catalog governance."
