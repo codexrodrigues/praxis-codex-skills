@@ -54,6 +54,9 @@ projection.
 Use `praxis-rich-content-ai-security-validation` for `@praxisui/rich-content` manifests,
 capabilities, recipes, document validator, sanitization policy, component docs, and registry
 projection.
+Use `praxis-cron-builder-ai-validation` for `@praxisui/cron-builder` manifests, capabilities,
+context packs, AI adapters, component docs, schedule operation validators, preview/diagnostics, and
+registry projection.
 
 ## Required Inventory
 

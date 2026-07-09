@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Cron Builder AI Validation"
+  short_description: "Validate AI-authored CRON schedules"
+  default_prompt: "Use $praxis-cron-builder-ai-validation to validate AI-authored Praxis CRON schedules and previews."
