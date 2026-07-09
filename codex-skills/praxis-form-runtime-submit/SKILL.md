@@ -7,6 +7,8 @@ description: Use when Codex must inspect, change, or scaffold @praxisui/dynamic-
 
 Use this skill for the `@praxisui/dynamic-form` runtime and submit contract. Dynamic Form is the canonical Angular runtime for schema-driven forms and configuration editing, but backend resource semantics remain owned by `praxis-metadata-starter`. Shared form models and services often belong to `@praxisui/core`.
 
+When Dynamic Form is consumed through `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` for host template, autosave, toolbar, and metadata bridge behavior. When Dynamic Form is consumed through `@praxisui/editorial-forms` `dataCollection` blocks, use `praxis-editorial-forms-adapters-ai` for adapter binding and `praxis-editorial-forms-runtime` for snapshot/fallback semantics.
+
 ## Source Audit
 
 Inspect the real source before changing form runtime behavior:
@@ -75,3 +77,5 @@ Only `lacuna-real-de-contrato` justifies a new public contract. Prefer materiali
 - Use `praxis-form-ai-rules-validation` for AI manifests, rules, context packs, component edit plans, diagnostics, and registry validation.
 - Use `praxis-core-resource-runtime` for schema/resource discovery, option sources, capabilities, actions, and submit/read contract grounding.
 - Use `praxis-dynamic-fields-editorial` for field component metadata, option sources, async select, entity lookup, and custom field coverage.
+- Use `praxis-manual-form-runtime-bridge` when a manual-form wrapper owns the host template and persistence.
+- Use `praxis-editorial-forms-adapters-ai` when a dynamic form is rendered as an editorial `dataCollection` adapter.

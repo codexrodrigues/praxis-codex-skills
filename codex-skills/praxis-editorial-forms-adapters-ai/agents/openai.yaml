@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Editorial AI"
+  short_description: "Editorial adapters and AI"
+  default_prompt: "Use $praxis-editorial-forms-adapters-ai to review Editorial Forms adapters, dataCollection binding, AI manifest, and registry validation."

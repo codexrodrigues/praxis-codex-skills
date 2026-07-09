@@ -67,6 +67,11 @@ For `@praxisui/metadata-editor`, use `praxis-metadata-editor-renderer-coverage`,
 `praxis-metadata-editor-cascade-normalization`, `praxis-metadata-editor-consumer-bridges`, or
 `praxis-metadata-editor-ai-validation` before updating docs manifests, architecture docs, coverage
 checklists, AI registry docs, or public examples that describe metadata-editor authoring behavior.
+For `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` and
+`praxis-manual-form-ai-authoring` before updating integration guides, API references, toolbar docs,
+examples, docs manifests, or AI registry docs. For `@praxisui/editorial-forms`, use
+`praxis-editorial-forms-runtime` and `praxis-editorial-forms-adapters-ai` before updating
+architecture docs, authoring playbooks, labs, examples, docs manifests, or registry projections.
 
 ## Editorial Guidance
 
