@@ -264,6 +264,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-fields-option-sources`: optionSource, async/searchable selects, entity lookup, by-ids reload, and dependency filters.
 - `praxis-fields-editorial-discovery`: dynamic-fields editorial descriptors, catalogs, i18n, and metadata-editor/tooling discovery.
 - `praxis-fields-ai-canvas-validation`: dynamic-fields AI manifest, control profiles, catalog ingestion, recipes, and canvas validation.
+- `praxis-fields-control-profile-ai`: dynamic-fields per-control AI profiles, capability catalogs, profile validators, and registry projection.
+- `praxis-fields-inline-overlay-runtime`: inline filter controls, overlay apply/cancel/clear semantics, compact value shapes, surface tokens, and toolbar promotion boundaries.
+- `praxis-fields-text-number-time-controls`: text, phone, regional document, numeric, currency, range, date, time, period, and temporal field semantics.
+- `praxis-fields-selection-lookup-controls`: select, autocomplete, async select, entity lookup, chips, list, tree, option identity, and selection value semantics.
 - `praxis-charts-runtime-data`: `@praxisui/charts` runtime, `x-ui.chart`, `chartDocument`, ECharts adapter boundary, analytics adapters, stats execution, `queryContext`, drilldown, and cross-filter.
 - `praxis-charts-authoring-settings`: chart config editor, widget config editor, Settings Panel, apply/save/reset/reopen, governed resource/field/target catalogs, and chart editor round-trip.
 - `praxis-charts-ai-validation`: chart AI manifest, editable targets, validators, handler contracts, registry ingestion, and component edit-plan validation.
