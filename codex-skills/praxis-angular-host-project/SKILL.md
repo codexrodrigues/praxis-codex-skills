@@ -205,6 +205,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-list-authoring-settings`: list config editor, widget editor, JSON editor, Settings Panel round-trip, `ListAuthoringDocument`, and i18n chrome.
 - `praxis-list-ai-validation`: list AI manifest, capabilities, context pack, adapter, component edit plans, registry ingestion, and declared-only warnings.
 - `praxis-list-docs-evidence`: list README/json-api/docs manifest, living examples, executive evidence, landing/playground sync, and status table honesty.
+- `praxis-metadata-editor-renderer-coverage`: `FieldMetadataEditorComponent`, `DynamicEditorRendererComponent`, `EditorProperty[]` configs, inline editor coverage, visual versus JSON-only gaps, and dynamic-fields parity.
+- `praxis-metadata-editor-cascade-normalization`: cascade manager, `optionSource` dependency shapes, backend `x-ui` preservation, schema normalization, form factory, contextual validators, and remote-source editor coverage.
+- `praxis-metadata-editor-consumer-bridges`: dynamic-form, table, manual-form, and Page Builder bridges that host `FieldMetadataEditorComponent`, `DynamicEditorRendererComponent`, or `CascadeManagerTabComponent`.
+- `praxis-metadata-editor-ai-validation`: metadata-editor authoring manifest, capabilities, context packs, AI registry projection, and declared operation safety.
 - `praxis-fields-runtime-loader`: dynamic-fields loader, component registry, selector mapping, hot metadata, and runtime coverage.
 - `praxis-fields-option-sources`: optionSource, async/searchable selects, entity lookup, by-ids reload, and dependency filters.
 - `praxis-fields-editorial-discovery`: dynamic-fields editorial descriptors, catalogs, i18n, and metadata-editor/tooling discovery.

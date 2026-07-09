@@ -63,6 +63,10 @@ Use component-specific docs skills when they exist. For `@praxisui/list`, use
 `praxis-list-docs-evidence` to preserve the Active/Partial/Declared-only status matrix, living
 examples, executive evidence, and list-specific docs manifest before editing landing or playground
 content.
+For `@praxisui/metadata-editor`, use `praxis-metadata-editor-renderer-coverage`,
+`praxis-metadata-editor-cascade-normalization`, `praxis-metadata-editor-consumer-bridges`, or
+`praxis-metadata-editor-ai-validation` before updating docs manifests, architecture docs, coverage
+checklists, AI registry docs, or public examples that describe metadata-editor authoring behavior.
 
 ## Editorial Guidance
 

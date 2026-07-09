@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Metadata Bridges"
+  short_description: "Consumer bridges for metadata editing"
+  default_prompt: "Use $praxis-metadata-editor-consumer-bridges to connect consumers to the canonical metadata editor."

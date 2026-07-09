@@ -33,6 +33,11 @@ Use `praxis-angular-public-api-governance` when the registry change is caused by
 exports or public component contracts.
 Use `praxis-list-ai-validation` for `@praxisui/list` manifest/capability/context-pack changes, and
 `praxis-list-docs-evidence` when list docs or living examples feed the registry projection.
+Use `praxis-metadata-editor-ai-validation` for `@praxisui/metadata-editor`
+manifest/capability/context-pack changes. Pair it with
+`praxis-metadata-editor-renderer-coverage` or `praxis-metadata-editor-cascade-normalization` when
+registry docs derive from editor visual coverage, cascade behavior, option-source dependency
+preservation, or schema normalization.
 
 ## Required Inventory
 

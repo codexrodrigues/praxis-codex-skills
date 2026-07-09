@@ -7,6 +7,12 @@ description: Use when changing Praxis Dynamic Fields editorial descriptors, Comp
 
 Use this skill when a field must be found, explained, configured, or selected by Praxis authoring tools. Runtime rendering alone is not enough for package-owned `@praxisui/dynamic-fields` controls.
 
+When the discovery issue is downstream visual editing in `@praxisui/metadata-editor`, use
+`praxis-metadata-editor-renderer-coverage` to audit `FieldMetadataEditorComponent`,
+`DynamicEditorRendererComponent`, `EditorProperty[]` configs, and JSON-only fallback claims. When the
+same field depends on `optionSource`, cascade, remote-source, or schema-normalizer behavior, pair it
+with `praxis-metadata-editor-cascade-normalization`.
+
 ## Canonical Discovery Chain
 
 For package-owned fields, keep this chain coherent:
@@ -49,6 +55,7 @@ Inspect:
 - Use `praxis-fields-option-sources` for `optionSource`, async select, searchable select, and entity lookup behavior.
 - Use `praxis-fields-ai-canvas-validation` when the change affects AI manifests, component profiles, canvas integration, or generated registry ingestion.
 - Use `praxis-authoring-editors` when downstream metadata editor behavior must be changed.
+- Use `praxis-metadata-editor-renderer-coverage` when the downstream behavior is specifically metadata-editor visual coverage or renderer parity.
 
 ## Validation
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Metadata Cascades"
+  short_description: "Cascade and normalization contracts"
+  default_prompt: "Use $praxis-metadata-editor-cascade-normalization to implement or audit metadata cascades and schema normalization."

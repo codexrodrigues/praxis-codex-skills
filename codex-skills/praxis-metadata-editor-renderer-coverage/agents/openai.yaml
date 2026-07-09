@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Metadata Renderer"
+  short_description: "Metadata editor renderer coverage"
+  default_prompt: "Use $praxis-metadata-editor-renderer-coverage to review metadata editor renderer and field coverage."
