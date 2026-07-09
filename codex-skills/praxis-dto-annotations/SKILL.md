@@ -12,6 +12,13 @@ AI authoring, and the official Angular runtime.
 This skill is versioned from `codex-skills/praxis-dto-annotations`. If the installed copy under
 `$CODEX_HOME/skills` diverges, update this canonical source first and then sync it locally.
 
+Before changing this skill or annotating DTOs, inspect the resolved starter/source for the emitted
+contract: `@UISchema`, `FieldControlType`, `FieldDataType`, `NumericFormat`, `@Filterable`,
+`@DomainGovernance`, `AiUsagePolicy`, option-source descriptors, `CustomOpenApiResolver`,
+`/schemas/filtered`, `/schemas/domain`, and representative host DTOs/tests when available. The
+goal is to codify what the platform already publishes before adding annotation fields, local
+`extraProperties`, host renderers, or AI-facing prose.
+
 ## Required Pairing
 
 Use `praxis-java-host-project` with this skill when creating or changing a Java host resource.
@@ -91,7 +98,14 @@ focused host HTTP/schema smokes. Do not require local monorepo source to annotat
    Also check derived eligibility surfaces such as filters, options, stats, analytics, export, and
    AI catalogs so identifiers and documents are not reintroduced as mathematical measures outside
    the DTO annotations.
-6. Fill annotations deliberately:
+6. Inventory existing platform support before inventing metadata. Classify each needed improvement:
+   already supported but missing in UX, supported but poorly named/materialized, partially supported,
+   or a real contract gap. Only a real contract gap justifies changing `praxis-metadata-starter`,
+   `@UISchema`, `x-ui`, `@Filterable`, governance annotations, option-source descriptors, or public
+   examples. Do not create a second DTO-local concept when the fact already exists in OpenAPI,
+   `x-ui`, option sources, surfaces/actions, capabilities, domain catalog, stats/export metadata, or
+   config/AI materializations.
+7. Fill annotations deliberately:
    - `@ApiResource`/`resourceKey`: stable resource identity, not a local label or URL nickname.
    - `@Operation`: business summary/description for public operations when the host declares them.
    - `@Schema`: domain contract and product documentation.
@@ -102,11 +116,29 @@ focused host HTTP/schema smokes. Do not require local monorepo source to annotat
    - `@ResourceIntent`, `@UiSurface`, and `@WorkflowAction`: semantic discovery for real HTTP
      operations only, without redefining payloads outside `/schemas/filtered`.
    - Bean Validation: executable validation aligned with schema and UI metadata.
-7. Validate the emitted contract with the smallest reliable command. Prefer focused tests,
+8. Validate the emitted contract with the smallest reliable command. Prefer focused tests,
    `/schemas/filtered`, OpenAPI, and host HTTP/schema smokes over broad suites unless the blast
    radius requires more.
-8. Check derived artifacts when public metadata changed: public docs, host examples,
+9. Check derived artifacts when public metadata changed: public docs, host examples,
    `praxisui-http-examples`, `docs/ai/*`, recipes, or Angular host examples when present.
+
+## Contract Boundaries
+
+- `/schemas/filtered` is the structural source for DTO fields, `x-ui`, option metadata, governance
+  extensions, request/response schemas, and runtime UI materialization. `/schemas/catalog` documents
+  and helps discovery; `/schemas/domain` republishes semantic/domain vocabulary for AI; capabilities
+  advertise availability. Do not treat catalog/domain/capability snapshots as replacement structural
+  schemas.
+- `@Schema.description` and `@UISchema.label/helpText` do not decide user intent. They provide
+  evidence for semantic resolution, RAG, catalog discovery, and UI explanation after the platform has
+  grounded the target resource/operation/field through canonical contracts.
+- Do not add keyword-rich labels, aliases, hidden command strings, regex-oriented field names, or
+  generic examples so assistants can route intent. If AI cannot resolve a field, improve canonical
+  descriptions, resource identity, operation/surface/action metadata, domain catalog, or declared
+  tools instead of adding DTO text-routing workarounds.
+- `@UISchema.extraProperties` is only for public `x-ui` keys that already exist in the resolved
+  schema/runtime or for an explicit platform contract change. Do not use it to smuggle host-private
+  renderers, table-only shortcuts, option-source descriptors, governance facts, or AI instructions.
 
 ## Documentation Areas
 

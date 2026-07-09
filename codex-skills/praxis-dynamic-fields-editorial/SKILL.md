@@ -9,6 +9,15 @@ Use this skill for the special authoring/discovery model of `@praxisui/dynamic-f
 
 This library does not primarily follow the pattern "runtime component has its own config editor". Runtime rendering, editorial discovery, metadata tooling, and editor coverage are separate layers.
 
+Before changing this skill or a dynamic-fields feature, inspect the current source for the involved
+runtime and metadata path. For ordinary controls this means the component, `.metadata.ts`,
+`ComponentRegistryService`, `ComponentMetadataRegistry`, editorial registry, catalog/AI files, and
+selector mapping in `@praxisui/core`. For option-source controls, also inspect
+`OptionSourceMetadata`, `GenericCrudService.filterOptionSourceOptions`,
+`GenericCrudService.getOptionSourceOptionsByIds`, and the backend `x-ui.optionSource` projection.
+The goal is to encode working Praxis platform knowledge into the skill, not merely document a UI
+convention.
+
 If the task is to implement or review backend `RESOURCE_ENTITY` option sources, use
 `praxis-resource-entity-lookup-backend` first. Use this skill when that backend change affects
 Angular runtime registry, editorial descriptors, metadata-editor coverage, recipes, catalogs, or
@@ -30,15 +39,24 @@ For metadata-driven option-source cascades, keep the boundary explicit:
 - `x-ui.optionSource.dependsOn` is the canonical backend/editor dependency declaration.
 - `x-ui.optionSource.dependencyFilterMap` is the canonical explicit mapping when the dependent field name differs from the backend filter key.
 - `x-ui.optionSource.includeIds` is an explicit runtime permission. Option-source filters must send `includeIds` only when this flag is `true`; when it is `false` or absent, selected-value rehydration must use the canonical by-ids/display path instead of adding `includeIds` to filter requests.
+- `x-ui.optionSource.filterEndpoint`, `byIdsEndpoint`, `selectedReloadPolicy`, and `invalidSortPolicy` are backend runtime-contract facts. Editors and examples may display or validate them, but must not synthesize them from local host assumptions when the backend publishes them.
 - `dependencyFields` and `dependencyFilterMap` are the runtime/manual metadata consumed by select components.
 - A bridge may derive runtime metadata from `optionSource`, but it should not synthesize authoring state or reset/reload policy unless the canonical contract says so.
-- For dependent sources, editor/runtime support is incomplete until selected-value reload is proven on reopen/edit. If the selected ID is not self-contained, the runtime must use a contextual option-source by-ids path rather than assuming the filter cascade proves hydration.
+- For dependent sources, editor/runtime support is incomplete until selected-value reload is proven on reopen/edit. If the selected ID is not self-contained, the runtime must use a contextual option-source by-ids path or downgrade the claim according to `selectedReloadPolicy`; do not assume the filter cascade proves hydration.
+
+If `selectedReloadPolicy` is `required` or `supported`, verify that presentation mode, reopen/edit,
+and selected-value preload call the option-source by-ids path rather than a generic options path.
+If it is `unsupported-with-waiver`, the UI may show a degraded retained value, but the example or
+editor must mark the source as partial and point back to the backend/platform waiver.
 
 ## Canonical Boundaries
 
 - `ComponentRegistryService` owns runtime component resolution by `controlType`.
 - `ComponentMetadataRegistry` owns editorial discovery metadata.
 - `src/lib/editorial/**` owns canonical package editorial descriptors.
+- `@praxisui/core` owns `FieldControlType`, `OptionSourceMetadata`,
+  `DEFAULT_FIELD_SELECTOR_CONTROL_TYPE_MAP`, and selector registry tokens. Do not add a
+  dynamic-fields-only alias when the canonical type or selector mapping belongs in core.
 - Agentic authoring uses one family-level manifest for shared `FieldMetadata`/registry/editorial semantics plus component-level control profiles for granular per-control operation hints; do not duplicate a full manifest per runtime control when a profile can express the semantic difference.
 - Derived catalogs and inventories must stay aligned with the editorial source.
 - AI Registry component docs must remain extractable from either literal `ComponentDocMeta` metadata files or supported editorial factories such as `createWave1ComponentDocMeta(descriptor)`. If a package-owned field uses a metadata factory, verify the registry extractor still projects it before claiming catalog coverage.
@@ -97,8 +115,12 @@ Always verify:
 - runtime component still resolves for the target `controlType`
 - editorial metadata still resolves friendly name, icon, and discoverable identity
 - aliases still resolve correctly
+- selector-to-control mapping is correct in the `@praxisui/core` default selector map or in an
+  explicit host override, with defaults disabled only at the root injector when intended
 - downstream tooling can still discover the field
 - any editor/tooling coverage claim remains true
+- option-source controls honor backend `includeIds`, dependency maps, selected reload policy, and
+  invalid sort policy instead of hiding backend contract gaps in local runtime code
 - package-owned controls projected into AI registry have an applicable authoring control profile when the task touches agentic authoring semantics
 - package-owned metadata factories are visible in `tools/ai-registry/component-docs.json` after `generate:registry:ingestion`
 - governed docs such as inventory, field catalog, field selection guide, and inline runtime contract still match the real behavior

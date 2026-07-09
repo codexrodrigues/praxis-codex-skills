@@ -20,6 +20,13 @@ Treat `praxis-metadata-starter` as the canonical owner of `x-ui.optionSource`,
 Treat `praxis-api-quickstart` as a reference host that proves the starter contract through real
 controllers, services, DTOs, filters, OpenAPI, security, and HTTP examples.
 
+Before changing this skill or implementing a lookup, inspect the current source for the involved
+resource instead of relying on memory: `OptionSourceDescriptor`, `OptionSourceRuntimeContract`,
+`OptionSourcePolicy`, `EntityLookupDescriptor`, `OptionSourceRequestValidator`, provider SPI,
+quickstart service descriptors, DTO annotations, and the Angular `OptionSourceMetadata` consumers.
+The purpose of this skill is to encode real Praxis platform knowledge, not merely document a
+convention.
+
 Do not redefine `RESOURCE_ENTITY` semantics in Angular, app consumers, local aliases, or ad hoc
 DTO conventions.
 
@@ -91,6 +98,32 @@ rehydration through the canonical `/option-sources/{sourceKey}/options/by-ids` e
 mark `x-ui.optionSource.includeIds=true` unless the filter provider deliberately supports merging
 selected IDs into the first page. Keep Angular aligned so option-source filters send `includeIds`
 only when the published metadata explicitly allows it.
+
+## Runtime Contract
+
+`OptionSourceRuntimeContract` is part of the public `x-ui.optionSource` projection. Do not treat
+endpoints as incidental strings derived only in Angular.
+
+Default `OptionSourceRuntimeContract.canonical(resourcePath, sourceKey)` publishes:
+
+- `filterEndpoint`: `/{resource}/option-sources/{sourceKey}/options/filter`
+- `byIdsEndpoint`: `/{resource}/option-sources/{sourceKey}/options/by-ids`
+- `selectedReloadPolicy`: `required`
+- `invalidSortPolicy`: `reject`
+
+Use the canonical runtime contract unless the source is genuinely legacy or external. A custom
+runtime contract is acceptable only when the public endpoints still remain governed Praxis
+endpoints and tests prove the projected `filterEndpoint`, `byIdsEndpoint`,
+`selectedReloadPolicy`, and `invalidSortPolicy` in `/schemas/filtered`.
+
+Do not downgrade `selectedReloadPolicy` to `unsupported-with-waiver` to avoid implementing
+rehydration. That value is a documented exception for sources that cannot safely reload selected
+values; it requires an explicit waiver, user-facing impact, and a platform follow-up when the
+source is meant to be reusable.
+
+Keep `invalidSortPolicy=reject` for new governed sources. Allowing unsupported sort silently makes
+provider behavior ambiguous and risks leaking unvalidated public sort keys into SQL or external
+query languages.
 
 ## Classification
 
@@ -179,6 +212,9 @@ Governed metadata:
 - `detail`: route, href, or surface metadata when detail navigation is supported.
 - `display`: preset, usage, density, selected layout, result layout, rich fields and badges.
 - `filtering`: advanced filters/sort options when the backend owns operators and serialization.
+- `runtimeContract`: canonical filter/by-ids endpoints and public policies for selected reload and
+  invalid sort handling. Leave it implicit only when the canonical `resourcePath + sourceKey`
+  endpoints are correct.
 
 ## DTO Consumer Rules
 
@@ -270,6 +306,8 @@ Cover:
 - `/schemas/filtered` includes `x-ui.optionSource.type=RESOURCE_ENTITY`.
 - `resourcePath`, `entityKey`, `valuePropertyPath`, `labelPropertyPath`, dependencies and
   capabilities are present.
+- `filterEndpoint`, `byIdsEndpoint`, `selectedReloadPolicy`, and `invalidSortPolicy` are present
+  and match the intended runtime contract.
 - `POST /option-sources/{sourceKey}/options/filter` returns expected options.
 - `GET /option-sources/{sourceKey}/options/by-ids` rehydrates selected IDs in order.
 - For dependent or context-sensitive sources, `POST /option-sources/{sourceKey}/options/by-ids`

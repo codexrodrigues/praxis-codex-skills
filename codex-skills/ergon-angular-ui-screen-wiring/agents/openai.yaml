@@ -1,8 +1,7 @@
 interface:
   display_name: "Ergon Angular UI Screen Wiring"
-  short_description: "Traduz XML legado em telas Angular Praxis."
-  default_prompt: "Use $ergon-angular-ui-screen-wiring para migrar uma tela XML legada Ergon para Angular com Praxis UI, validando APIs, DTOs, filtros, options e QA visual."
+  short_description: "Migra telas Ergon para Angular usando o runtime Praxis nativo."
+  default_prompt: "Use $ergon-angular-ui-screen-wiring para migrar uma tela XML legada Ergon para Angular com Praxis UI nativo, validando APIs, DTOs, schemas, options, actions/surfaces/capabilities e QA visual."
 
 policy:
   allow_implicit_invocation: true
-

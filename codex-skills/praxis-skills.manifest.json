@@ -20,8 +20,8 @@
                                             "praxis-resource-entity-lookup-backend",
                                             "praxis-java-host-project"
                                         ],
-                       "skillMdSha256":  "5E1F1303AF879E4D24F9AA3E595D4987791128FC6B1D0EEC2FED2C545B303813",
-                       "treeSha256":  "1F06FEE09A79C3F2EF4718359D2AEF088E18C05DDE3E84C2F2618AD3A2C6D4C3"
+                       "skillMdSha256":  "9A38D55913D37D252B1ABB1A5DBA4529FD9A5D3B4DCFC2D0F3FAF75A90648683",
+                       "treeSha256":  "CA48336C16E4C671EDED1DF09B8509E64C3793E510DAAAE97C3FDA50EFE59C93"
                    },
                    {
                        "name":  "praxis-authoring-editors",
@@ -30,10 +30,11 @@
                        "status":  "active",
                        "compatibility":  "0.x",
                        "dependencies":  [
-                                            "praxis-dynamic-fields-editorial"
+                                            "praxis-dynamic-fields-editorial",
+                                            "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "60C7862DC8FEF4E8F4F499639C1C87D585694B8CC664A10EDF037CB664EC3F2F",
-                       "treeSha256":  "E4CF283A4798F5FC8E53E9C44822F8736499B5BF93B21EE885D1E4B33985A8EF"
+                       "skillMdSha256":  "428C64D13CB5264A2C7B58D6C5F327465B9E416FDF427CE52C6778F8D62D10F6",
+                       "treeSha256":  "B4F9F7FABF4C1BD03D2E6C805257016E652822C0736627346B8546619F40FB7A"
                    },
                    {
                        "name":  "praxis-component-minimums",
@@ -46,8 +47,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "0A27457A902420C373A7AA379B31F3AFBF15CAFBCE79A70C395FB51D418B1C84",
-                       "treeSha256":  "4BB9B396A742606A63402B8C4623173E88DE75F3E9CD21A9222192F1D3CF4660"
+                       "skillMdSha256":  "59A472BBAD6005638808DBC6AB593BA711D1E5CA79793DD86D43A851288E4C93",
+                       "treeSha256":  "03A85A6D79F8BD3D6E3A6F706F23F895D5916BD376F9DE1F63AC76D9879C7369"
                    },
                    {
                        "name":  "praxis-dashboard-analytics",
@@ -61,8 +62,8 @@
                                             "praxis-resource-entity-lookup-backend",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "216DCAE233E65F6BDF6BECB1E149DEB2C9CCB1DB0E600F86D38287C1913038D3",
-                       "treeSha256":  "E4971D01141CB8407A9A29B125AAB0AA715B8965C35FB4666940C83DC03BE99E"
+                       "skillMdSha256":  "C5F43A54CFDC0B9A18ADEFE916C25DDA746356634797921B1DC68E6CBDCCA33D",
+                       "treeSha256":  "D8F670818BE74DE9C241B4EDA12E2A99A84DC1427E606BF08ED50852A41B113A"
                    },
                    {
                        "name":  "praxis-dto-annotations",
@@ -76,8 +77,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "613C1A21DE812D18011011AA214A1F3B992A735F463DA3FEA94A93C87D532F03",
-                       "treeSha256":  "6C0EBFB25E5E7F485D80249B3FA9DB8AC9E5A07D1E912027CBC5991AE6CDFFFD"
+                       "skillMdSha256":  "FA35EF59E8973E18FE42CFFD56A1728663734B5371334049622DD5CA5D96F893",
+                       "treeSha256":  "AC70D22E4124D8AF5F412C487061B8F4B1CC9C099EC967FBDF1D33ADB2E5A0F1"
                    },
                    {
                        "name":  "praxis-dynamic-fields-editorial",
@@ -89,8 +90,8 @@
                                             "praxis-resource-entity-lookup-backend",
                                             "praxis-component-minimums"
                                         ],
-                       "skillMdSha256":  "F43F5EC07FCE1DA502DBA388CBB1AC7FE2B3974170DF2112BDD3EA3614860B60",
-                       "treeSha256":  "305C08EFC956131BBFCAD5CCD1244D83FEAADE086542ED0286110BDF9EFB3E79"
+                       "skillMdSha256":  "67B12A839774BD2247D993E8C1470CF0CFEE6DA2F93F3DBA97FF84B5FD23154E",
+                       "treeSha256":  "7D219BFE15C0659E84ED12C059D7753DF665FD2EE40DEAC1A0FFF70EFA96E8D2"
                    },
                    {
                        "name":  "praxis-java-host-project",
@@ -105,8 +106,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-authoring-editors"
                                         ],
-                       "skillMdSha256":  "3B29CA47280EEA7FA0D3BAF7F9B0419BB20B53C3D7E9CBC461ADEABE7160BA3F",
-                       "treeSha256":  "78F353C69CDA92FBC8E1F3EEA25A3C6CA4A2E8C26A9BDD922B444BF7C433576F"
+                       "skillMdSha256":  "7D1AD464D4412EAE4D78089760FC6D09DDC7BE859C40E2992A737F080FC6A359",
+                       "treeSha256":  "D211219BF71B1529222D3F9370434E199B086F14FBA474DE5C01D38540E2D533"
                    },
                    {
                        "name":  "praxis-resource-entity-lookup-backend",
@@ -118,8 +119,23 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-component-minimums"
                                         ],
-                       "skillMdSha256":  "E1485EA61D46BB6E85F32A6F6F194CF719EB137D88C4259C4F89C71FE2C1AEF9",
-                       "treeSha256":  "EB40E83A2644375C4E0D13DB771E66CAD859C0A4285AE027B73A5988301FB503"
+                       "skillMdSha256":  "A01DDB2F7DE3EF2AD58572D8EEE95BFCF3930A84C79EC5985A11447388787F98",
+                       "treeSha256":  "BC030409DC3E9091C90BCA350C375B7DE931E245F58E1D66ABDA7EB048698275"
+                   },
+                   {
+                       "name":  "praxis-rich-crud-screen-authoring",
+                       "sourcePath":  "codex-skills/praxis-rich-crud-screen-authoring",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-angular-host-project",
+                                            "praxis-component-minimums",
+                                            "praxis-dto-annotations",
+                                            "praxis-ui-product-design"
+                                        ],
+                       "skillMdSha256":  "190386458A8A82B39AAB1323EEF42452543FA0EB0E04450CEAE585EA6A355F99",
+                       "treeSha256":  "69CBB3A01DC376F7D122EC47BBCC8BE2841C25316CBDFF4EC5C22BA3AAED00AF"
                    },
                    {
                        "name":  "praxis-ui-product-design",
@@ -129,10 +145,12 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                             "praxis-authoring-editors",
-                                            "praxis-dynamic-fields-editorial"
+                                            "praxis-component-minimums",
+                                            "praxis-dynamic-fields-editorial",
+                                            "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "A3CD62F67B74429E8ED78DD8944BF8CAE022861E6F0CC0F343D9424837207E95",
-                       "treeSha256":  "AB6891F5B8A50CD56A7901509530F4446A74A08488BF1F888457E5585EEBAC66"
+                       "skillMdSha256":  "7529F360A550F141A377652E05D6BA8494BD923F0EC4B5D48EF4CB38BF83F8AD",
+                       "treeSha256":  "83B2F66F313810969BCCB372F90ADAD36C75EB42B74A8D8DC4EC8F1763398984"
                    }
                ]
 }

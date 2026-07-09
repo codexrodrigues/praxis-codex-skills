@@ -1,4 +1,4 @@
 interface:
   display_name: "Ergon Rule Migration Orchestration"
-  short_description: "Orchestrate progressive Ergon rule migration"
-  default_prompt: "Use $ergon-rule-migration-orchestration to validate a Parte 1 handoff and plan Parte 2 rule migration gates."
+  short_description: "Orchestrate governed Ergon rule migration"
+  default_prompt: "Use $ergon-rule-migration-orchestration to validate a Parte 1 baseline, inventory canonical Praxis decision ownership, and plan Parte 2 rule migration gates."

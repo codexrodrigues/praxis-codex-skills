@@ -19,6 +19,8 @@ export const RESOURCE_PATH = 'human-resources/funcionarios';
 
 `resourcePath` is the base resource. Do not pass `/api`, `/filter`, `/options`, `/schemas/filtered`, `/{id}`, query strings, or operation URLs as `resourcePath`. Praxis runtime services derive schema, filter, options, item, submit, capabilities, actions, and surfaces from the base resource plus metadata.
 
+Keep this derivation semantic and canonical. If a component needs a field, filter, action, surface, option source, capability, or relationship that is not available from the runtime, first audit whether it already exists in `/schemas/filtered`, catalog/domain discovery, capabilities, actions, surfaces, HATEOAS links, option-source descriptors, or remote config. Only introduce a host-local bridge when the gap is explicitly temporary and cannot yet be solved in the canonical owner.
+
 Use `queryContext` for host-provided filters, pagination, sort, contextual fan-out, and related-resource constraints. Avoid inventing local filter/search DTOs or using legacy bridge inputs for new hosts unless the existing host requires compatibility.
 
 ## Table
@@ -146,6 +148,7 @@ For row actions that open backend surfaces:
 - Prefer public Praxis services and tokens instead of ad hoc row-action HTTP calls: `ResourceDiscoveryService`, `ResourceSurfaceOpenAdapterService`, `SurfaceOpenMaterializerService`, `PraxisSurfaceHostComponent`, and `GLOBAL_SURFACE_SERVICE`.
 - Do not parse `_links`, materialize widgets, or build schema payloads by hand when the public surface services cover the flow.
 - For materialized surfaces, check `PraxisSurfaceHostComponent` outputs such as `rowClick`, `selectionChange`, and `widgetEvent` before adding host event bridges.
+- For related resources, prefer published `surface.relatedResource` plus `RelatedResourceSurfaceResolverService` or `PraxisRelatedResourceOutletComponent`. Do not duplicate the parent-child relationship in local filters unless the product intentionally overrides the canonical query context.
 
 ## Expansion Path
 

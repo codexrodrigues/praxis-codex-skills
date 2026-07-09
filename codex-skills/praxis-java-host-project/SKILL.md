@@ -9,6 +9,8 @@ description: Create or evolve Java/Spring Boot backend host projects for the Pra
 
 Use this skill to create a new Java host that composes the Praxis platform correctly instead of inventing local contracts. Treat published Praxis starters as external Maven dependencies by default; use local starter source only when it is actually present and the task is platform-development work.
 
+Before changing this skill or implementing a Java host, audit the resolved starter or local platform source for the contract being used: `@ApiResource`, `AbstractResourceController`, `AbstractReadOnlyResourceController`, `AbstractBaseResourceService`, `AbstractReadOnlyResourceService`, `ResourceMapper`, schema/catalog controllers, capabilities, actions, surfaces, export, option sources, config headers/ETag, and a representative quickstart resource when available. The goal is to codify what Praxis already knows canonically before adding host-local endpoints, DTO fields, registries, or AI/config abstractions.
+
 ## Required Classification
 
 Classify the request before editing:
@@ -45,10 +47,11 @@ For `arquitetural`, `contrato-publico`, or `transversal`, map impact before patc
    - `ResourceMapper` as the service boundary, implemented directly or adapted through a thin host-local wrapper;
    - mutable resources: response DTO, create DTO, update DTO, and filter DTO with deliberate `@Schema` and `@UISchema`;
    - read-only resources: response DTO and filter DTO only.
-8. Include `praxis-config-starter` only when the host must expose `/api/praxis/config/**` or AI authoring/config-store surfaces and can provide the required config-store datasource, migrations/tables, and host adapters. Do not include it for a metadata/filter-only service. Before adding it, confirm the target host meets the starter's release prerequisites such as compatible Spring Boot baseline, supported config database/store, Flyway/baseline strategy, AI/RAG secrets when enabled, stream/auth policy, and required host adapters.
-9. Keep starter semantics in the starters. Do not patch a new host to redefine `x-ui`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/domain`, actions, capabilities, export, config headers, ETag, or AI contracts.
-10. Create only the host-owned code needed for the domain: application bootstrap, dependency composition, security/origin policy, datasource properties, resources, tests, and documentation.
-11. Validate with the smallest reliable command. For a new host, start with `mvn -B test`; add HTTP/schema smoke tests when the task claims the runtime metadata endpoints work.
+8. Treat `AbstractCrudController`, `AbstractReadOnlyController`, `BaseCrudService`, and similar pre-resource-oriented classes as migration surfaces only. Do not use them as the default for new resources when the resolved starter exposes the resource-oriented baseline.
+9. Include `praxis-config-starter` only when the host must expose `/api/praxis/config/**` or AI authoring/config-store surfaces and can provide the required config-store datasource, migrations/tables, and host adapters. Do not include it for a metadata/filter-only service. Before adding it, confirm the target host meets the starter's release prerequisites such as compatible Spring Boot baseline, supported config database/store, Flyway/baseline strategy, AI/RAG secrets when enabled, stream/auth policy, and required host adapters.
+10. Keep starter semantics in the starters. Do not patch a new host to redefine `x-ui`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/domain`, actions, capabilities, export, config headers, ETag, or AI contracts.
+11. Create only the host-owned code needed for the domain: application bootstrap, dependency composition, security/origin policy, datasource properties, resources, tests, and documentation.
+12. Validate with the smallest reliable command. For a new host, start with `mvn -B test`; add HTTP/schema smoke tests when the task claims the runtime metadata endpoints work.
 
 ## Reference Resource Audit
 
@@ -113,9 +116,16 @@ Do not use consumer-specific fieldspec guidance for Praxis resources unless the 
 ## Canonical Boundaries
 
 - `praxis-metadata-starter` owns `x-ui`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/surfaces`, `/schemas/actions`, `/schemas/domain`, capabilities, OpenAPI enrichment, HATEOAS schema links, export contracts, governance metadata, and resource-oriented base contracts.
-- `praxis-config-starter` owns `/api/praxis/config/**`, persisted UI config, AI registry, templates, config headers, config ETag, and authoring/context contracts.
+- `praxis-config-starter` owns `/api/praxis/config/**`, persisted UI config, AI registry, templates, config headers, config ETag, authoring/context contracts, and the governed boundary for semantic-decision authoring, simulation, approval, publication, and materialization when that feature set is in scope.
 - The new host owns Spring Boot composition, dependency versions, datasource wiring, security policy, concrete domain resources, domain persistence, and downstream proof that selected starters work in a real service.
 - `praxis-api-quickstart-public` is the preferred public reference host for external users and LLMs. `praxis-api-quickstart` local/private source is useful when available for platform development and comparison. Neither is a required checkout or the canonical owner of starter semantics.
+
+## Schema And Decision Boundaries
+
+- Treat `/schemas/filtered` as the structural schema source for UI/runtime consumption. Treat `/schemas/catalog` as documentation/discovery, `/schemas/surfaces` and `/schemas/actions` as semantic discovery, `/schemas/domain` as AI-operable domain vocabulary, and resource capabilities as aggregate availability snapshots. Do not use catalogs or capabilities as a second structural schema source.
+- For AI or assistant features in a Java host, do not route primary user intent with keyword lists, regex command matching, or controller-local text heuristics. Expose canonical resources, tools, operation schemas, catalogs, surfaces, actions, capabilities, governed context, and config-starter contracts so semantic resolution can be LLM/governance-led and then grounded against those canonical candidates.
+- If a required AI/config tool or contract is missing, model the tool or contract in the canonical owner, usually `praxis-config-starter` for authoring/config decisions or `praxis-metadata-starter` for metadata discovery. Do not compensate by adding host-local AI registries, patch formats, magic request fields, or string-routing shortcuts.
+- Before adding a new host contract, inventory whether the platform already publishes the needed fact through DTO annotations, OpenAPI enrichment, `x-ui`, option sources, surfaces, actions, capabilities, domain catalog, config headers/ETag, quick replies, previews, diagnostics, or materializations. Classify the finding as already supported, poorly materialized, partial, or a real contract gap.
 
 ## Project Baseline
 

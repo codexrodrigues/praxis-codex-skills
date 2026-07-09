@@ -9,6 +9,13 @@ Use this skill to make Praxis UI work like a product-grade enterprise authoring 
 
 This is a visual/product QA layer. Use it with the functional Praxis owner skill whenever semantics, contracts, persistence, dynamic-fields discovery, or editor correctness are also in scope.
 
+Before changing this skill or judging a Praxis UI, inspect the current source for the involved
+surface instead of relying on general design memory. For authoring and AI-assisted surfaces this
+usually means the component, shell/editor layout, i18n catalogs, metadata/manifest/context pack,
+diagnostics model, focused specs, and any official example or playground that materializes the same
+workflow. The goal is to encode working Praxis product knowledge, not create a generic visual taste
+guide.
+
 ## Operating Modes
 
 Choose the mode from the user's request before taking action:
@@ -109,6 +116,31 @@ First viewport heuristics:
 - inspectors are secondary unless the task is pure property editing
 - preview/result is not weaker than helper text when runtime confidence matters
 - selected entity summary remains visible in long inspectors or detail panes
+
+## Semantic Decision UX
+
+Praxis is a platform for AI-authored semantic decisions. Product UX must therefore materialize the
+decision chain, not hide it behind decorative "AI" chrome.
+
+For assistant, authoring, governance, Domain Catalog, Page Builder, and metadata-driven experiences,
+make these human-reviewable when the contract provides them:
+
+- resolved intent, scope, and selected target
+- canonical decision or proposed materialization
+- evidence, grounding, or context source used by the decision
+- diagnostics, ambiguity, unsupported capability, or policy limitation
+- preview/result before irreversible apply/save when runtime confidence matters
+- next safe action, including clarification, review, apply, save, or rollback
+
+Do not turn semantic evidence into local explanatory cards that drift from the contract. If the
+backend/runtime publishes diagnostics, `authoringContract`, `consultativeContext`, quick replies,
+component edit plans, Domain Catalog references, or decision diagnostics, the UI should surface those
+facts with hierarchy and product language. If those facts do not exist, classify the gap before
+inventing frontend-only state.
+
+Visual polish must never make a fabricated patch, keyword-routed intent, unsupported capability, or
+JSON-only workaround look canonical. Use visual hierarchy to expose uncertainty and governance, not
+to smooth it over.
 
 ## Praxis Visual Doctrine
 

@@ -71,6 +71,15 @@ Create these under `docs/migracao/<SCREEN>/`.
 ```markdown
 # UI Implementation Plan - <SCREEN>
 
+## Native Praxis Source Audit
+
+| Runtime surface | Evidence inspected | Aderencia | Decision |
+|---|---|---|---|
+| `@praxisui/core` discovery/actions/surfaces/capabilities | `ResourceDiscoveryService`, adapters, materializer, `GlobalActionService` | ja-suportado-so-ux/ja-suportado-mal-nomeado-ou-mal-materializado/suportado-parcialmente/lacuna-real-de-contrato | use/fix metadata/platform follow-up |
+| `@praxisui/crud` | `PraxisCrudComponent`, `CrudLauncherService`, openMode/drawer/refresh behavior | ja-suportado-so-ux/ja-suportado-mal-nomeado-ou-mal-materializado/suportado-parcialmente/lacuna-real-de-contrato | use/fix metadata/platform follow-up |
+| `@praxisui/table` | schema filters, row/toolbar actions, `duplicate-draft`, `surface.open`, `queryContext` | ja-suportado-so-ux/ja-suportado-mal-nomeado-ou-mal-materializado/suportado-parcialmente/lacuna-real-de-contrato | use/fix metadata/platform follow-up |
+| `@praxisui/dynamic-form` / `@praxisui/dynamic-fields` | schema detail/create/edit forms, option-source controls, selected reload | ja-suportado-so-ux/ja-suportado-mal-nomeado-ou-mal-materializado/suportado-parcialmente/lacuna-real-de-contrato | use/fix metadata/platform follow-up |
+
 ## Classificacao Native Praxis First
 
 - Classe: `native-crud` | `native-table-detail` | `native-table-related-surfaces` | `workflow-action` | `manual-temporary-gap`
@@ -96,6 +105,10 @@ Create these under `docs/migracao/<SCREEN>/`.
 | DTO/FilterDTO revisado para Praxis | pass/fail | `<link>` |
 | Schemas request/response executados | pass/fail | `<link>` |
 | Native Praxis First classificado | pass/fail | `<native-crud/native-table-detail/native-table-related-surfaces/workflow-action/manual-temporary-gap>` |
+| Native Praxis source audit | pass/fail | `<ui-implementation-plan.md#native-praxis-source-audit>` |
+| Aderencia de plataforma | pass/fail | `sem lacuna local` ou `<platform-issues.md>` |
+| Actions/surfaces/capabilities nativos | pass/fail/n-a | `<evidence>` |
+| Option sources e selected reload | pass/fail/n-a | `<evidence>` |
 | Checker `check-angular-praxis-reference-pattern.ps1` | pass/fail/n-a | `<comando/output>` |
 | Angular implementado | pass/fail | `<link>` |
 | Build/testes frontend | pass/fail | `<link>` |

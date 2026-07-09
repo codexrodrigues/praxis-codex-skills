@@ -59,13 +59,16 @@ The controller is a read-only resource with `@ApiResource` and `@ApiGroup`:
     resourceKey = "human-resources.vw-analytics-folha-pagamento"
 )
 @ApiGroup("human-resources")
-@RestController
 public class VwAnalyticsFolhaPagamentoController
         extends AbstractQuickstartReadOnlyController<...> {
 }
 ```
 
 Use this pattern for aggregate/dashboard datasets that are projections, views, materialized views, or read-only tables.
+Some historical quickstart controllers may still include `@RestController`; do not copy that by
+reflex. In current `praxis-metadata-starter`, `@ApiResource` is the canonical resource annotation
+and already supplies controller/request-mapping semantics unless the resolved starter version or
+host-local base pattern proves otherwise.
 
 ## Operation Documentation
 

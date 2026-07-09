@@ -19,6 +19,7 @@ For each target screen/operation, validate these files or equivalent sections:
 | `write-parity-matrix.md` | Success, negative, permission, duplicate, dependency, cleanup, read-after-write cases. |
 | `parity-results.md` | Baseline comparison outcome and residual risk. |
 | `pilot-handoff.md` or final handoff | Approved delivery state, deferrals, reusable decisions. |
+| `ui-execution-gate.md` or UI handoff, when the rule is exposed by UI | Confirms the UI consumes canonical capabilities/actions/surfaces/config state and does not expose blocked/deferred/preflight behavior locally. |
 
 ## Intake Decision
 
@@ -38,3 +39,6 @@ Classify the Parte 2 intake as:
 - Do not treat object existence as HADES activation.
 - Do not treat a rule as product-only until EP/HADES/client behavior is classified.
 - Reopen Parte 1 when Parte 2 discovers a missing rule, side effect, payload, error, or parity case.
+- Do not start from table names, labels, XML names, or source snippets alone; the rule must be tied to a screen/operation, Parte 1 artifact, approved baseline route, and parity evidence.
+- Do not create a new rule API, metadata field, UI capability, or config contract until `rule-canonical-decision-inventory.md` states whether the need is already supported, partially supported, badly materialized, or a real contract gap.
+- If UI, dashboard, workflow, or external consumers expose the operation, their gate must agree with the Parte 1 baseline state before rule migration can promote or preflight behavior.

@@ -1,4 +1,4 @@
 interface:
   display_name: "Ergon Table Rule Audit"
-  short_description: "Mapeia regras de produto e cliente por tabela Ergon."
-  default_prompt: "Audite uma tabela Ergon e reporte regras de produto e cliente, ativacao e ordem de execucao."
+  short_description: "Audita regras Oracle/HADES antes de write APIs."
+  default_prompt: "Audite uma tabela Ergon antes de write API: cubra triggers, packages, HADES/C_ERGON, dependencias, side effects, ativacao, ordem e decisao de handoff."

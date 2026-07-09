@@ -30,6 +30,8 @@ Use one route safety state per operation:
 | Public key | `<public id/key>` |
 | Target object from UI | `<recordPanelEdit dataTable/db routine/etc>` |
 | Route safety state | `<WRITE_TABLE_DIRECT_CANDIDATE/WRITE_TABLE_DIRECT_SAFE/WRITE_DB_BACKED_REQUIRED/WRITE_BLOCKED/WRITE_DEFERRED>` |
+| Table-rule handoff | `<Write API safe to design/DB-backed write path required/Blocked/Deferred>` |
+| Entry gate status | `<Ready for design/Ready for implementation/Blocked/Deferred>` |
 
 ## Candidate Routes
 
@@ -53,6 +55,7 @@ Use one route safety state per operation:
 | Client EP / HADES | `<yes/no>` | `<covers/does not cover/unknown>` | `<covers/does not cover/unknown>` | `<covers/does not cover/unknown>` | `<covers/does not cover/unknown>` | `<file or SQL output>` |
 | Audit/session context | `<yes/no>` | `<covers/does not cover/unknown>` | `<covers/does not cover/unknown>` | `<covers/does not cover/unknown>` | `<covers/does not cover/unknown>` | `<file or SQL output>` |
 | Transaction/rollback | `<yes/no>` | `<safe/unsafe/unknown>` | `<safe/unsafe/unknown>` | `<safe/unsafe/unknown>` | `<safe/unsafe/unknown>` | `<file or SQL output>` |
+| Retry/idempotency | `<yes/no>` | `<safe/unsafe/unknown>` | `<safe/unsafe/unknown>` | `<safe/unsafe/unknown>` | `<safe/unsafe/unknown>` | `<file or SQL output>` |
 
 ## Decision Rule
 
@@ -65,6 +68,7 @@ Choose a route only when:
 5. Controlled fixtures can be cleaned without leaving target or side-effect rows behind.
 
 If these conditions are not met, keep the operation blocked.
+Do not choose a route just to unblock Java coding. A missing shared legacy bridge, missing session-context setup, missing HADES/client-rule audit, or unknown rollback behavior is a route blocker, not an implementation detail.
 
 Mark `WRITE_TABLE_DIRECT_SAFE` only when direct table/platform persistence is the chosen route and evidence proves:
 

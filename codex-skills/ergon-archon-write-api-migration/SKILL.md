@@ -44,6 +44,19 @@ Use this as the write API migration skill for the current Phase 4/5/6 sequence: 
 
 If the handoff does not identify write actions, target tables/routines, public key strategy, payload evidence, session context, operation status, or write blockers, stop and return to `ergon-archon-screen-discovery`. If table-rule audit summaries are missing for any target or side-effect table, return to `ergon-table-rule-audit` unless the operation is explicitly `Blocked`, `Deferred`, or `Not API`.
 
+## Phase Entry Gate
+
+Before changing Java, command DTOs, public metadata, or API behavior, create or update the write package with an explicit entry-gate decision:
+
+- Phase 1/2 discovery artifacts are closed for the operation, including component lineage, operation inventory, API contract, public key strategy, and read/write handoff.
+- Phase 3 read API is implemented or explicitly not required for this operation; read-first resources have backend tests, blocked write behavior for unsupported operations, and read smoke/parity evidence.
+- Phase 4 table-rule audit is complete for every target and known side-effect table, including HADES `HAD_CAD_SPROC`, `HAD_CAD_MULT_EPS`, `PACK_EXEC_SPROC`, `C_ERGON` routines, generated trigger/package phases, nested dependencies, session context, and cleanup risks.
+- The latest `ergon-table-rule-audit` handoff decision is recorded as `Write API safe to design`, `DB-backed write path required`, `Blocked`, or `Deferred`. Only the first two may enter Phase 5 design.
+- `praxis-dto-annotations`, `ergon-fieldspec-ui-contract`, and `praxis-java-host-project` reviews are recorded before declaring `Ready for implementation`; `praxis-resource-entity-lookup-backend` is recorded when option sources participate in payloads, duplicate drafts, related resources, or action metadata.
+- The operation has a named state: `Required Now`, `Ready for design`, `Ready for implementation`, `Implemented`, `Blocked`, `Deferred`, `Not API`, or `Not present`.
+
+If any required evidence is missing, do not design a compensating shortcut. Route the work back to the owning phase and record the exact blocker in `write-api-handoff.md` or `write-contract.md`.
+
 Payload closure is a hard Phase 4/5 input. For standard Cronos
 `recordPanelEdit + dataTable`, accept parser-valid XML plus local Cronos
 framework source as payload evidence when it proves the route, `_op`, `_p_`,
@@ -87,6 +100,8 @@ Use the standard Praxis metadata/API resource surface as the API contract, but c
 - `Documentos legais`, `Publicacoes/atos`, and `Pendencias`: model as separate related resources/workflows unless the legacy XML/runtime route proves they are part of the main command.
 
 When writes must preserve Ergon behavior, the Praxis resource method is only the HTTP/resource contract. The implementation must run same-connection `FLAG_PACK` setup/cleanup, call the chosen route (`ERG_DML_*`, screen procedure, direct table with triggers, or writable view), translate Oracle/Ergon errors, reload read DTOs through the public key, and record parity evidence.
+
+Never create a parallel write contract because the canonical Praxis action/capability model or Ergon legacy bridge is inconvenient. If Praxis lacks an action, availability, schema, option-source, or error-envelope capability needed for a safe Ergon write, classify the platform gap and keep the operation blocked or deferred until the canonical contract is extended.
 
 Classify every write-like operation against the Praxis semantic contract before exposing metadata:
 
@@ -214,7 +229,7 @@ Do not make `JdbcTemplate` the declared project standard just because the bridge
 13. Produce `write-parity-matrix.md` from [write-parity-template.md](references/write-parity-template.md). Include one row per standard operation, even when the current slice implements only create/delete.
 14. Before Java implementation, close focused write probes for the smallest operation slice: valid fixture, invalid payload, missing required fields, duplicate/collision, no permission, missing row, and cleanup/final-count behavior. Store each SQL and output under `oracle-results/`.
 15. Only implement Java write endpoints when all gates for the operation are closed or explicitly deferred for out-of-scope behavior.
-16. After implementation, run API, OpenAPI/schema, database, and parity checks. For write pilots, run API-level success and negative smokes against Oracle, record request/response JSON, read-after-write behavior, target/side-effect table counts, and final zero-count cleanup proof. Keep unsafe operations blocked with explicit HTTP behavior. Include dependency and cleanup parity when delete/update can touch association or generated side-effect tables. Record the applied `praxis-dto-annotations`, `praxis-java-host-project`, and `ergon-fieldspec-ui-contract` reviews in implementation evidence.
+16. After implementation, run API, OpenAPI/schema, database, and parity checks. For write pilots, run API-level success and negative smokes against Oracle, record request/response JSON, read-after-write behavior, target/side-effect table counts, rollback/no-partial-mutation proof for failed cases, and final zero-count cleanup proof. Keep unsafe operations blocked with explicit HTTP behavior. Include dependency and cleanup parity when delete/update can touch association or generated side-effect tables. Record the applied `praxis-dto-annotations`, `praxis-java-host-project`, and `ergon-fieldspec-ui-contract` reviews in implementation evidence.
 17. Before declaring a pilot slice closed, update the parity matrix with exact cases closed by API smoke and exact cases deferred from the pilot. Deferrals must name the operation and reason, such as delete permission requiring a two-user fixture, dependency delete requiring approved dependent-row setup, pending requiring an environment/profile that generates `*_PND`, or publication/legal requiring related-component payload capture.
 
 ## Write Gates
@@ -240,6 +255,7 @@ An operation can move to implementation only when all required gates are closed:
 - PL/SQL errors and validation messages are mapped to API errors.
 - Raw Oracle errors raised by legacy routines are still contract evidence. If probes surface `ORA-06502`, `ORA-01422`, `ORA-00001`, or similar low-level failures for business-invalid input, map them to stable API errors and add Java pre-validation where appropriate instead of leaking Oracle internals.
 - Transaction, rollback, and autonomous transaction behavior are understood.
+- The API contract states the transaction boundary, rollback expectation, self-commit/autonomous-transaction risk, cleanup route, and how partial side effects are detected and normalized.
 - Parity cases exist for success, invalid input, missing row, duplicate, delete/anulation, pending, and side effects in scope. Permission denial is executed only when a real denied user/profile fixture exists; otherwise record waiver/accepted risk without blocking the screen.
 - Controlled fixtures have a cleanup plan that respects legacy-generated dependencies; do not create database test data whose rollback/removal route is unknown.
 - For resources migrated read-first, the read resource has backend automated tests and recorded smoke/parity evidence before write endpoints are opened.
@@ -344,6 +360,9 @@ For resources already migrated read-first:
 - Initialize Oracle session context on the same physical connection used for the write.
 - Reuse the shared legacy context provider/resolvers from the read API when available. Do not inject fallback user/company properties directly into each write service.
 - Clean up/reset package context before returning pooled connections.
+- Keep write routes idempotency-aware at the API boundary. If the legacy route is not idempotent, the contract must state retry behavior and the API smoke must prove duplicate/collision handling before exposing the operation as safe for automated clients.
+
+If any write path requires a new shared legacy bridge, centralize it in the host/runtime layer. Do not encode screen-specific Oracle session handling, HADES user/company mapping, or PL/SQL error normalization separately in each controller/service.
 
 ## Dependency And Cleanup Parity
 

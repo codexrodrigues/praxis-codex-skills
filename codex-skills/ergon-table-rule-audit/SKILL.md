@@ -29,6 +29,22 @@ Follow-up` instead of recommending an Ergon-local platform workaround.
 
 Prefer Oracle metadata over documentation. Use repo source as secondary evidence and docs only as context.
 
+## Mandatory Coverage Gate
+
+Before any write API is marked ready, the table audit must explicitly cover each mandatory source or mark the migration `Blocked`/`Deferred` with the exact rerun command and missing access:
+
+- `ALL_TRIGGERS`: trigger type, event, enabled status, and complete trigger source windows for every trigger on the target table.
+- `ALL_SOURCE`: complete source windows for `PCK_<TABLE>`, `PCK_<TABLE>_PND`, generated `ERG_DML_*` procedures, trigger bodies, `PCK_EXEC_EP_CERG`, `HADES.PACK_EXEC_SPROC`, and C_ERGON targets reached from HADES syntax.
+- `ALL_DEPENDENCIES`: structural dependencies for trigger/package/generated-DML seeds and nested dependency graph when Java may reimplement behavior.
+- HADES dispatch metadata: `HADES.HAD_CAD_SPROC`, `HADES.HAD_CAD_MULT_EPS`, `EXEC`, `EXEC_MULT_EPS`, `ORDEM`, `SINTAXE`, and the active execution branch selected by `HADES.PACK_EXEC_SPROC`.
+- Customer extension routines: `C_ERGON` `POA_*`, `TPOA_*`, `EP__*`, and routines referenced by active HADES syntax.
+- Generated infrastructure evidence: `.tab` generation flags, generated DML procedures, audit/HADES triggers, publication-aware DML, pending packages, multi-company views/triggers, and `PACK_TRG_STAT`/`FLAG_PACK` usage when present.
+- Side-effect tables: every table reached by active source DML candidates must be classified as `Audited`, `Deferred`, or `Rejected as not reached`.
+
+The summary must distinguish `Produto`, `Cliente`, `Gerada`, and infrastructure/session mechanisms. It must also state execution order, active/inactive/invalid status, nested dependency risk, and Java decision for each rule: `Reimplementar em Java`, `Manter DB-backed`, `Preservar como extensibility hook`, `Somente auditoria/publicacao`, `Fora do escopo atual`, `Blocked`, or `Deferred`.
+
+Do not treat object existence, `.tab` flags, source snippets, or a dependency graph as sufficient by themselves. A write migration remains blocked while activation, source windows, side-effect tables, or nested dependencies are only partially known.
+
 ## Workflow
 
 1. Normalize the table name to uppercase. Default owner is `ERGON`; do not assume every object is in `ERGON`.
@@ -215,6 +231,14 @@ docs/migracao/<SCREEN>/oracle-results/table-rule-audit/
 ```
 
 The summary must list every side-effect table as `Audited`, `Deferred`, or `Rejected as not reached`, with evidence. Do not close Phase 2.5 with final evidence only in `tmp/`.
+
+Add a handoff decision section with:
+
+- overall status: `Write API safe to design`, `DB-backed write path required`, `Blocked`, or `Deferred`;
+- mandatory source coverage table for `ALL_TRIGGERS`, `ALL_SOURCE`, `ALL_DEPENDENCIES`, HADES dispatch, C_ERGON routines, generated infrastructure, and side-effect tables;
+- active rule count by `Produto`, `Cliente`, `Gerada`, and infrastructure/session mechanism;
+- rules that can change visible validation/error behavior, audit/history, pending/workflow, publication/legal side effects, derived/defaulted data, or fixture cleanup;
+- exact blockers and rerun commands when Oracle, HADES, source, dependency graph, or local `.tab` evidence is missing.
 
 Keep the final answer short and evidence-first:
 

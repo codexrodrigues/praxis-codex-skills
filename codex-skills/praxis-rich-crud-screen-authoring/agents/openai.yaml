@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Rich CRUD Screen Authoring"
+  short_description: "Build rich Praxis CRUD screens"
+  default_prompt: "Use $praxis-rich-crud-screen-authoring to create a rich CRUD screen from a canonical Praxis resource endpoint and metadata."
+
+policy:
+  allow_implicit_invocation: true
