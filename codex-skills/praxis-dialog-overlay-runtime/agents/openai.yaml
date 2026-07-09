@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Dialog Runtime"
+  short_description: "Dialog runtime and overlay flows"
+  default_prompt: "Use $praxis-dialog-overlay-runtime to audit Dialog service API, overlays, presets, focus, accessibility, and tag mode."

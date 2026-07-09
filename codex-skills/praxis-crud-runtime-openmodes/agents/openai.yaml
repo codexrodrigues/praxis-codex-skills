@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis CRUD Runtime"
+  short_description: "CRUD runtime and open modes"
+  default_prompt: "Use $praxis-crud-runtime-openmodes to audit CRUD runtime, launcher open modes, drawer adapter, and table/form orchestration."

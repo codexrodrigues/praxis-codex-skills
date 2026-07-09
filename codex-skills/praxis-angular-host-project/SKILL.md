@@ -213,6 +213,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-manual-form-ai-authoring`: manual-form config editor, Settings Panel, authoring manifest, AI capabilities, formRules, autosave/toolbar operations, and registry/docs validation.
 - `praxis-editorial-forms-runtime`: editorial-form journeys, snapshots, fallback, presentation, diagnostics, operational events, renderers, i18n, and labs.
 - `praxis-editorial-forms-adapters-ai`: editorial data block adapters, optional dynamic-form adapter, dataCollection binding, AI manifest, field binding, and registry validation.
+- `praxis-crud-runtime-openmodes`: CRUD runtime, `CrudLauncherService`, route/modal/drawer open modes, drawer adapter, dynamic-form dialog host, and table/form orchestration.
+- `praxis-crud-ai-authoring`: CRUD authoring document, metadata editor, widget config editor, authoring manifest, capabilities, permissions, and child-operation delegation.
+- `praxis-dialog-overlay-runtime`: Dialog service API, overlay lifecycle, tag mode, presets, focus, accessibility, sizing, positioning, and close policy.
+- `praxis-dialog-global-actions-ai`: Dialog global actions, component/template registries, global presets from config, authoring manifest, and registry validation.
 - `praxis-fields-runtime-loader`: dynamic-fields loader, component registry, selector mapping, hot metadata, and runtime coverage.
 - `praxis-fields-option-sources`: optionSource, async/searchable selects, entity lookup, by-ids reload, and dependency filters.
 - `praxis-fields-editorial-discovery`: dynamic-fields editorial descriptors, catalogs, i18n, and metadata-editor/tooling discovery.

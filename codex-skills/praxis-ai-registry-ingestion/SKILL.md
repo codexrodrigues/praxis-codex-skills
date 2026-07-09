@@ -42,6 +42,9 @@ Use `praxis-manual-form-ai-authoring` for `@praxisui/manual-form` manifest, capa
 config editor, formRules, toolbar, autosave, and metadata bridge projections. Use
 `praxis-editorial-forms-adapters-ai` for `@praxisui/editorial-forms` manifest, adapter, dataCollection,
 field binding, fallback, presentation, and registry projections.
+Use `praxis-crud-ai-authoring` for `@praxisui/crud` manifest, capabilities, context packs, metadata
+editor, and child-operation delegation. Use `praxis-dialog-global-actions-ai` for `@praxisui/dialog`
+global actions, registries, authoring manifest, and registry projections.
 
 ## Required Inventory
 
