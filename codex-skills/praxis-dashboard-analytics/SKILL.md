@@ -13,6 +13,11 @@ Use this skill to design dashboard APIs that stay native to `praxis-metadata-sta
 - `praxis-dto-annotations` for DTO, filter, `@Schema`, `@UISchema`, `@Filterable`, and governance metadata.
 - `praxis-resource-entity-lookup-backend` when chart filters use `OptionSourceRegistry`, `RESOURCE_ENTITY`, `LIGHT_LOOKUP`, or `DISTINCT_DIMENSION`.
 - `praxis-ui-product-design` when dashboard visual quality or UX is in scope.
+- `praxis-core-resource-runtime` when Angular chart/dashboard behavior depends on core analytics
+  schema contracts, stats request builders, query context, capabilities, resource discovery, or
+  metadata materialization.
+- `praxis-core-runtime-contracts` when the work touches shared core models, providers, tokens,
+  public API, logging, or i18n.
 
 Before changing this skill or implementing a dashboard, inspect the resolved starter/source for
 `StatsFieldRegistry`, `StatsFieldDescriptor`, `StatsSupportMode`, stats request/response DTOs,
