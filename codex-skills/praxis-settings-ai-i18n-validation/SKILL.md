@@ -7,6 +7,8 @@ description: Use when auditing or changing Praxis Settings Panel AI authoring ma
 
 Use this skill when Settings Panel behavior is exposed to AI authoring or internal authoring chrome changes. AI should reason over the canonical panel protocol and hosted editor contracts, not over local command strings or keyword routes.
 
+For shared assistant runtime, manifest governance, registry ingestion, or semantic intent boundaries, use `praxis-ai-assistant-runtime`, `praxis-ai-authoring-manifests`, `praxis-ai-registry-ingestion`, or `praxis-ai-semantic-intent` with this skill.
+
 ## Canonical Sources
 
 Inspect:

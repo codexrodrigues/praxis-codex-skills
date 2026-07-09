@@ -10,6 +10,7 @@ Use this skill when a task creates, expands, or corrects any configuration that 
 This covers the normal authoring path used by libs such as `@praxisui/dynamic-form`, `@praxisui/table`, `@praxisui/list`, `@praxisui/charts`, `@praxisui/page-builder`, `@praxisui/manual-form`, `@praxisui/tabs`, `@praxisui/stepper`, `@praxisui/metadata-editor`, and any editor integrated with `@praxisui/settings-panel`.
 
 For focused Settings Panel work, use the specialized family: `praxis-settings-panel-shell` for shell/protocol, `praxis-settings-roundtrip-authoring` for apply/save/reset/reopen across hosted editors, `praxis-settings-global-config` for the Global Config Editor, and `praxis-settings-ai-i18n-validation` for AI manifest and i18n coverage.
+For AI-assisted authoring work, use `praxis-ai-assistant-runtime`, `praxis-ai-authoring-manifests`, `praxis-ai-registry-ingestion`, and `praxis-ai-semantic-intent` according to whether the task touches assistant UX, executable manifests, generated registry/catalog artifacts, or semantic intent boundaries.
 
 Do not use this skill as the primary workflow for `@praxisui/dynamic-fields` discovery/editorial changes. For that case, use `praxis-dynamic-fields-editorial`.
 
