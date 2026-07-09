@@ -13,6 +13,7 @@ Pair it with:
 - `praxis-page-builder-authoring` for page config editors, shell editor, Settings Panel bridge, and visual round-trip.
 - `praxis-page-builder-ai-agentic` for agentic page composition, AI catalogs, manifests, streaming authoring, and preview/apply flows.
 - the owning child component skill, such as charts, table, form, fields, or CRUD, when a widget input/config document changes.
+- `praxis-list-runtime-data`, `praxis-list-authoring-settings`, and `praxis-list-ai-validation` when Page Builder hosts rich `praxis-list` widgets. Page Builder should host the list contract, not redefine list templating, data precedence, or declared-only runtime status.
 
 ## Canonical Boundary
 

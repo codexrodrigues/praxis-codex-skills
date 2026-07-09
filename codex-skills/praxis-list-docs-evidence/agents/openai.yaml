@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis List Docs Evidence"
+  short_description: "List docs, examples, and evidence"
+  default_prompt: "Use $praxis-list-docs-evidence to keep Praxis List docs and examples aligned with runtime evidence."
