@@ -7,6 +7,22 @@ Canonical repository for Codex skills used by the Praxis platform and Ergon/Arch
 - `praxis`: general Praxis platform skills.
 - `ergon-migration`: Ergon/Archon migration skills. These may depend on `praxis` skills, but `praxis` skills must not depend on `ergon-*` skills.
 
+## Discovery And Routing
+
+Do not assume migration roadmaps, host docs, or one orchestration skill will enumerate every `praxis-*` skill by name.
+
+The intended operating model is:
+
+- roadmap or orchestration skill closes phase gates and task class;
+- the agent then routes by domain and surface, not by remembering a fixed list of skill names;
+- the canonical discovery source is the family manifest plus the skill frontmatter/descriptions in `codex-skills/`;
+- `ergon-*` flows may call into `praxis-*` skills when the work touches shared platform runtime, contracts, authoring, validation, or UX;
+- `praxis-*` skills must stay free of Ergon-specific guidance even when they are used during migration.
+
+When the runtime environment exposes skill inventory/discovery, the agent should search the Praxis family by topic such as `table`, `form`, `crud`, `list`, `rich-content`, `files-upload`, `page-builder`, `settings`, `charts`, `metadata-editor`, `ai`, `i18n`, `public-api`, or `validation`, instead of relying on explicit mentions in migration documentation.
+
+When the runtime environment does not expose discovery, the fallback is to consult this repository canonically: start from the most relevant gateway skill, then fan out through manifest dependencies and companion-skill sections.
+
 ## Audit
 
 ```powershell
