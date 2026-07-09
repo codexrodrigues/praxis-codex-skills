@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Table Runtime Data"
+  short_description: "Govern @praxisui/table runtime data"
+  default_prompt: "Use $praxis-table-runtime-data to inspect @praxisui/table runtime data mode, TableConfig, resourcePath, renderers, export, analytics, and validation before changing a table integration."
+
+policy:
+  allow_implicit_invocation: true

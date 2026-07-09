@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Table Filter Actions"
+  short_description: "Govern table filters and actions"
+  default_prompt: "Use $praxis-table-filter-actions to inspect Praxis table filters, filter payloads, toolbar actions, row actions, bulk actions, global actions, CRUD actions, and export grounding."
+
+policy:
+  allow_implicit_invocation: true

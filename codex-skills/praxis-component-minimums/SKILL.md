@@ -136,6 +136,8 @@ For collection operations reused by Table, List, or future collection components
 - For collection export specifically, require `canonicalOperations.export === true` or `_links.export` before telling a host to expose export UI.
 - Do not infer export support from a generic base route such as `POST /{resource}/export`; the service must opt in.
 
+For `@praxisui/table`, use `praxis-table-runtime-data` when the minimum involves local/remote data mode, renderers, selection, export, analytics, or runtime observations. Use `praxis-table-filter-actions` when the question involves filters, toolbar actions, row actions, bulk actions, global actions, or export availability. Use `praxis-table-authoring-settings` when the minimum includes customization or Settings Panel support.
+
 ## Entity Lookup Minimum
 
 For `entityLookup`, separate render bootstrap from governed backend semantics:
