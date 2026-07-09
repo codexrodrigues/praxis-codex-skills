@@ -11,6 +11,7 @@ This covers the normal authoring path used by libs such as `@praxisui/dynamic-fo
 
 For focused Settings Panel work, use the specialized family: `praxis-settings-panel-shell` for shell/protocol, `praxis-settings-roundtrip-authoring` for apply/save/reset/reopen across hosted editors, `praxis-settings-global-config` for the Global Config Editor, and `praxis-settings-ai-i18n-validation` for AI manifest and i18n coverage.
 For AI-assisted authoring work, use `praxis-ai-assistant-runtime`, `praxis-ai-authoring-manifests`, `praxis-ai-registry-ingestion`, and `praxis-ai-semantic-intent` according to whether the task touches assistant UX, executable manifests, generated registry/catalog artifacts, or semantic intent boundaries.
+For Page Builder work, use `praxis-page-builder-composition` for page/runtime composition, `praxis-page-builder-authoring` for page config, shell, Settings Panel and child editor hosting, and `praxis-page-builder-ai-agentic` for agentic page authoring. For Visual Builder rule authoring, use `praxis-visual-builder-rules`.
 
 Do not use this skill as the primary workflow for `@praxisui/dynamic-fields` discovery/editorial changes. For that case, use `praxis-dynamic-fields-editorial`.
 
