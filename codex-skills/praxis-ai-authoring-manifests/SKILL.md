@@ -29,6 +29,8 @@ Inspect the owning component:
 
 Also inspect `projects/praxis-core/src/lib/ai/authoring-manifest.types.ts` when changing manifest shape.
 
+For component-specific manifest work, use the focused skill when available: `praxis-page-builder-ai-agentic` for `PRAXIS_PAGE_BUILDER_AUTHORING_MANIFEST`, `UiCompositionPlan`, child operation delegation, streaming authoring, and Page Builder registry gates; `praxis-visual-builder-rules` for `PRAXIS_VISUAL_BUILDER_AUTHORING_MANIFEST`, rule graph operations, JSON Logic round-trip, and visual-builder AI adapter behavior.
+
 ## Manifest Rules
 
 - Separate `consult/answer` from `edit/componentEditPlan`; factual questions must not fabricate patches.

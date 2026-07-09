@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Visual Builder Rules"
+  short_description: "JSON Logic rules and visual round-trip"
+  default_prompt: "Use $praxis-visual-builder-rules to review a Visual Builder rule or JSON Logic change."

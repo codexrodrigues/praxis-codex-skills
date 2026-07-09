@@ -42,6 +42,7 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 ## Decision Rules
 
 - If the task is about authoring a page/editor graph, use the builder skill as the functional owner and this skill for the runtime contract.
+- If the task is specifically about `@praxisui/page-builder`, pair with `praxis-page-builder-composition` for palette, canvas, graph, connection editor, and page-builder-owned authoring semantics.
 - If the task is about `SettingsValueProvider`, apply/save/reset, or config editor round-trip, use `praxis-authoring-editors` as well.
 - If the task is about a specific widget's visual/product UX, use `praxis-ui-product-design` with the owning component skill.
 - If a host composes a page by copying local event buses, action routers, or link transforms, prefer the core composition runtime or open a core follow-up.
@@ -76,4 +77,5 @@ For visual/editor flows, add screenshot or browser validation through the offici
 
 - Use `praxis-core-runtime-contracts` for public API, shared models, tokens, i18n, logging, and providers.
 - Use `praxis-authoring-editors` for editor/runtime round-trip and Settings Panel behavior.
+- Use `praxis-page-builder-composition`, `praxis-page-builder-authoring`, and `praxis-page-builder-ai-agentic` when the shared runtime contract is being authored or exercised through `@praxisui/page-builder`.
 - Use `praxis-ui-product-design` for visual hierarchy, accessibility, and screenshot QA.
