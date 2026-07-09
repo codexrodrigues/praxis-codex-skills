@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Upload Field"
+  short_description: "Files upload field and form integration"
+  default_prompt: "Use $praxis-files-upload-form-field to wire Praxis files upload into dynamic forms."

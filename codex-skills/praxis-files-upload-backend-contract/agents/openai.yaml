@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Files Backend"
+  short_description: "Upload backend, presign, quota contracts"
+  default_prompt: "Use $praxis-files-upload-backend-contract to audit Praxis upload backend and presign contracts."
