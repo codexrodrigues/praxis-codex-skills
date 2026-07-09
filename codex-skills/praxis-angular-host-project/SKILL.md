@@ -217,6 +217,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-crud-ai-authoring`: CRUD authoring document, metadata editor, widget config editor, authoring manifest, capabilities, permissions, and child-operation delegation.
 - `praxis-dialog-overlay-runtime`: Dialog service API, overlay lifecycle, tag mode, presets, focus, accessibility, sizing, positioning, and close policy.
 - `praxis-dialog-global-actions-ai`: Dialog global actions, component/template registries, global presets from config, authoring manifest, and registry validation.
+- `praxis-tabs-runtime-authoring`: `@praxisui/tabs` group/nav runtime, `tabsId`, selected index, quick setup, Settings Panel authoring, `renderBody`, lazy loading, and widget events.
+- `praxis-stepper-wizard-runtime`: `@praxisui/stepper` and `PraxisWizardFormComponent` runtime, `stepperId`, dynamic-form steps, canonical `resourcePath`, validation, wizard adapter, and widget events.
+- `praxis-expansion-runtime-panels`: `@praxisui/expansion` metadata-first panels, defaults providers, `expansionId`, lazy content, panel events, registry metadata, and widget events.
+- `praxis-navigation-containers-ai-validation`: AI authoring, manifests, context packs, registry projection, docs, and validation for tabs, stepper, wizard, and expansion containers.
 - `praxis-fields-runtime-loader`: dynamic-fields loader, component registry, selector mapping, hot metadata, and runtime coverage.
 - `praxis-fields-option-sources`: optionSource, async/searchable selects, entity lookup, by-ids reload, and dependency filters.
 - `praxis-fields-editorial-discovery`: dynamic-fields editorial descriptors, catalogs, i18n, and metadata-editor/tooling discovery.
