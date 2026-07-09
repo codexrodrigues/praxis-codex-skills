@@ -71,4 +71,6 @@ If no visual editor is affected, say so explicitly and explain why.
 - Use `praxis-table-runtime-data` for runtime behavior that the editor materializes.
 - Use `praxis-table-filter-actions` for filters, actions, CRUD action wiring, and export operation authoring.
 - Use `praxis-table-ai-validation` for AI component edit plan coverage and registry ingestion.
+- Use `praxis-table-rule-effects-runtime`, `praxis-table-rule-animation-presets`, and `praxis-table-rule-table-integration` when the table rules editor embeds `@praxisui/table-rule-builder` effects, presets, animations, or renderer placement.
+- Use `praxis-table-rule-ai-validation` when table visual rule effects are AI-authorable or delegated from the table assistant.
 - Use `praxis-ui-product-design` for editor layout, density, accessibility, and screenshot validation.

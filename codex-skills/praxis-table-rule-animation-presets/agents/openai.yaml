@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Table Rule Animation Presets"
+  short_description: "Govern semantic table animations"
+  default_prompt: "Use $praxis-table-rule-animation-presets to validate Praxis table rule animation presets and aliases."

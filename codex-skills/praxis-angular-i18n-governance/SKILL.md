@@ -51,6 +51,8 @@ For Settings Panel, Page Builder, table, form, charts, and visual builders, upda
 
 For `@praxisui/cron-builder`, separate internal builder text, validation messages, preset labels, preview labels, and humanized schedule text from host domain schedule names, owners, tags, and governance descriptions. Use `praxis-cron-builder-runtime` or `praxis-cron-schedule-authoring` for the runtime/source boundary before changing locale behavior.
 
+For `@praxisui/table-rule-builder`, keep panel tabs, preset names, placeholders, aria labels, advanced field labels, preview copy, and validation messages in the `praxisTableRuleBuilder` i18n namespace. Use `labels` only as host override above the catalog and never persist it into `RuleEffectDefinition`.
+
 ## Validation
 
 Choose the smallest reliable validation:

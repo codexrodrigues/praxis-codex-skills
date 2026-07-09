@@ -94,6 +94,10 @@ For `@praxisui/cron-builder`, use `praxis-cron-builder-runtime`,
 `praxis-cron-schedule-authoring`, `praxis-cron-builder-form-field`, and
 `praxis-cron-builder-ai-validation` as applicable before updating component guides, API references,
 docs manifests, examples, playgrounds, AI recipes, or registry docs.
+For `@praxisui/table-rule-builder`, use `praxis-table-rule-effects-runtime`,
+`praxis-table-rule-animation-presets`, `praxis-table-rule-table-integration`, and
+`praxis-table-rule-ai-validation` as applicable before updating component guides, API references,
+docs manifests, examples, playgrounds, AI recipes, or registry docs.
 
 ## Editorial Guidance
 

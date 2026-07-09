@@ -57,6 +57,9 @@ projection.
 Use `praxis-cron-builder-ai-validation` for `@praxisui/cron-builder` manifests, capabilities,
 context packs, AI adapters, component docs, schedule operation validators, preview/diagnostics, and
 registry projection.
+Use `praxis-table-rule-ai-validation` for `@praxisui/table-rule-builder` manifests, capabilities,
+context packs, AI adapters, component docs, effect registry operations, semantic animation
+validators, table delegation, and registry projection.
 
 ## Required Inventory
 

@@ -197,6 +197,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-table-filter-actions`: table filters, dynamic filter payloads, toolbar/row/bulk actions, global actions, CRUD actions, and export grounding.
 - `praxis-table-authoring-settings`: table Settings Panel, config editors, columns, rules, filters, actions, CRUD integration, and round-trip.
 - `praxis-table-ai-validation`: table AI manifests, component edit plans, runtime operations, context packs, registry ingestion, and assistant E2E.
+- `praxis-table-rule-effects-runtime`: `@praxisui/table-rule-builder` visual effects panel, `RuleEffectDefinition`, effect registry, presets, labels, and conversion utilities.
+- `praxis-table-rule-animation-presets`: semantic table rule animations, preset aliases, fail-closed normalization, reduced-motion, and preview class policy.
+- `praxis-table-rule-table-integration`: table-rule-builder effects embedded in `@praxisui/table`, renderer placement, `effects[]` normalization, and Settings Panel round-trip.
+- `praxis-table-rule-ai-validation`: table-rule-builder AI manifest, effect operations, destructive confirmation, table delegation, and registry validation.
 - `praxis-form-runtime-submit`: dynamic-form runtime modes, schema metadata, submit payload, local/transient fields, hooks, actions, and validation.
 - `praxis-form-layout-canvas`: dynamic-form layout policy, schema-driven layout, visual blocks, canvas, and layout validation.
 - `praxis-form-authoring-settings`: dynamic-form config editors, Settings Panel, authoring document, apply/save/reset, and round-trip.
