@@ -192,6 +192,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-form-layout-canvas`: dynamic-form layout policy, schema-driven layout, visual blocks, canvas, and layout validation.
 - `praxis-form-authoring-settings`: dynamic-form config editors, Settings Panel, authoring document, apply/save/reset, and round-trip.
 - `praxis-form-ai-rules-validation`: dynamic-form AI manifests, rules, diagnostics, context packs, registry ingestion, and assistant validation.
+- `praxis-fields-runtime-loader`: dynamic-fields loader, component registry, selector mapping, hot metadata, and runtime coverage.
+- `praxis-fields-option-sources`: optionSource, async/searchable selects, entity lookup, by-ids reload, and dependency filters.
+- `praxis-fields-editorial-discovery`: dynamic-fields editorial descriptors, catalogs, i18n, and metadata-editor/tooling discovery.
+- `praxis-fields-ai-canvas-validation`: dynamic-fields AI manifest, control profiles, catalog ingestion, recipes, and canvas validation.
 - `praxis-ui-product-design`: visual quality, responsive layout, screenshot QA, product polish, theme/accessibility.
 - `praxis-authoring-editors`: Settings Panel, config editors, apply/save/reset, editor/runtime round-trip.
 - `praxis-dynamic-fields-editorial`: control types, aliases, field discovery, `optionSource`, async select, metadata editor coverage.

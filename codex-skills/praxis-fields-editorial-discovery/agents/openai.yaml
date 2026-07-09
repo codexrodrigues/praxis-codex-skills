@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Fields Editorial Discovery"
+  short_description: "Keep dynamic fields discoverable in tooling"
+  default_prompt: "Use $praxis-fields-editorial-discovery to update Praxis dynamic-fields editorial descriptors and tooling discovery."

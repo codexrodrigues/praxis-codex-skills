@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Fields AI Canvas Validation"
+  short_description: "Validate dynamic fields AI and canvas coverage"
+  default_prompt: "Use $praxis-fields-ai-canvas-validation to audit Praxis dynamic-fields AI manifest, catalog, and canvas behavior."
