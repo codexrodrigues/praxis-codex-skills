@@ -9,6 +9,12 @@ Use this skill for Dynamic Form AI authoring, rules, and validation. Form AI mus
 
 For shared AI runtime, manifest, registry, or semantic intent work, pair this skill with `praxis-ai-assistant-runtime`, `praxis-ai-authoring-manifests`, `praxis-ai-registry-ingestion`, or `praxis-ai-semantic-intent`.
 
+When a form rule is authored or previewed through `@praxisui/visual-builder`, pair with
+`praxis-visual-builder-jsonlogic-roundtrip` for JSON Logic support and with
+`praxis-visual-builder-schemas-templates` for field schemas, target/property schemas, context
+variables, and template-compatible rules. Use `praxis-visual-builder-ai-validation` when the same
+rule path is exposed through visual-builder AI operations.
+
 ## Source Audit
 
 Inspect the AI/rules surface:
@@ -36,6 +42,9 @@ Inspect `tools/ai-registry/AGENTS.md` when registry ingestion or component autho
 - `field.local.add` is for local form-only fields. Do not create backend DTO fields for local/transient UI needs.
 - Never write `formRulesState` directly; write `formRules` and let internals derive builder state.
 - Use Json Logic only; do not generate JavaScript handlers or arbitrary functions.
+- Do not assume every visual-builder node or value type is form-rule-ready. Context-variable and
+  custom-function operands require a canonical JSON Logic shape before they can be projected into
+  dynamic-form rules.
 - Use allowed targets from rule authoring context: fields, sections, rows, columns, actions, messages, visual blocks.
 - Use `RULE_PROPERTY_SCHEMA`/diagnostics as the allowed property source.
 - Visual block guidance writes only visual rules or `columns[].items[]`; it must not create `FormControl`, `fieldMetadata`, or submit payload.

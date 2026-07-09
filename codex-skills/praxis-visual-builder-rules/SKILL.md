@@ -9,6 +9,10 @@ Use this skill for visual rule and expression authoring in `@praxisui/visual-bui
 
 Pair it with:
 
+- `praxis-visual-builder-graph-runtime` when the task touches `RuleBuilderState`, `RuleNode`, graph identity, `rootNodes`, `children`, registry integrity, selection, undo/redo, orphan/cycle validation, or visual editor state.
+- `praxis-visual-builder-jsonlogic-roundtrip` when the task touches JSON Logic import/export, `currentJSON`, condition parsing, `FormLayoutRule` bridge, unsupported context/function operands, legacy expression safeguards, or round-trip stability.
+- `praxis-visual-builder-schemas-templates` when the task touches field schemas, target schemas, property schemas, `FieldSchemaService`, context variables, collection validators, or reusable templates.
+- `praxis-visual-builder-ai-validation` when the task touches `PRAXIS_VISUAL_BUILDER_AUTHORING_MANIFEST`, `VisualBuilderAiAdapter`, capabilities, editable targets, operation validators, examples, or AI registry ingestion.
 - `praxis-core-runtime-contracts` when shared JSON Logic, form-rule, metadata, or public model contracts change.
 - `praxis-ai-authoring-manifests` and `praxis-ai-registry-ingestion` when the visual builder AI manifest or generated assets change.
 - `praxis-authoring-editors` when the visual builder is hosted as a config editor in another component.
@@ -26,6 +30,8 @@ Pair it with:
 - visual-builder AI manifest and adapter for governed authoring.
 
 Consumers should not create local parsers, local mini-DSLs, or duplicate rule graph models. If a consumer needs a rule editor, it should host the visual builder or a component-owned editor that delegates to this contract.
+
+This skill is the umbrella entrypoint. For implementation work, load the narrow companion skill that owns the active subdomain before editing so the audit can distinguish existing support from a real contract gap.
 
 ## Required Source Inventory
 

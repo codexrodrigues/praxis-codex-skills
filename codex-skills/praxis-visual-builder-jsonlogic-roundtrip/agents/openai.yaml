@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Visual Builder JSON Logic"
+  short_description: "Validate JSON Logic round-trip"
+  default_prompt: "Use $praxis-visual-builder-jsonlogic-roundtrip to implement or audit Praxis visual-builder JSON Logic import, export, parsing, and round-trip stability."

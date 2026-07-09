@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Visual Builder AI"
+  short_description: "Validate AI authoring manifest"
+  default_prompt: "Use $praxis-visual-builder-ai-validation to implement or audit Praxis visual-builder AI manifest operations, validators, adapter behavior, and registry ingestion."

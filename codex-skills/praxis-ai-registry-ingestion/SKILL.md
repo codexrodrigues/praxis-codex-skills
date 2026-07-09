@@ -60,6 +60,12 @@ registry projection.
 Use `praxis-table-rule-ai-validation` for `@praxisui/table-rule-builder` manifests, capabilities,
 context packs, AI adapters, component docs, effect registry operations, semantic animation
 validators, table delegation, and registry projection.
+Use `praxis-visual-builder-ai-validation` for `@praxisui/visual-builder` authoring manifest,
+capabilities, context packs, AI adapter, editable targets, operation validators, JSON Logic
+round-trip validation, and registry projection. Pair it with
+`praxis-visual-builder-graph-runtime`, `praxis-visual-builder-jsonlogic-roundtrip`, or
+`praxis-visual-builder-schemas-templates` when generated docs derive from graph, JSON Logic, schema,
+context, property-effect, collection-validator, or template behavior.
 
 ## Required Inventory
 
