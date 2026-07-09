@@ -28,6 +28,12 @@ metadata files, config editor metadata, service injections, local/remote mode te
 `@praxisui/core` contracts. The purpose is to codify canonical Praxis runtime knowledge, not repeat
 a remembered setup recipe.
 
+Use `praxis-core-runtime-contracts` when the minimum depends on core tokens, providers, public API,
+shared models, logging, or i18n. Use `praxis-core-resource-runtime` when the minimum depends on
+`GenericCrudService`, schema discovery, resource discovery, capabilities, actions, surfaces,
+option sources, or related-resource materialization. Use `praxis-core-composition-runtime` when the
+minimum involves dynamic widget pages, composition links, widget events, or surface hosts.
+
 ## Canonical Decision Rule
 
 Always answer by separating the component into one of these modes:
