@@ -77,4 +77,4 @@ Report exactly what remained unvalidated, especially visual preview, persisted p
 - Use `praxis-table-rule-animation-presets` for semantic animations, aliases, reduced-motion, and fail-closed animation resolution.
 - Use `praxis-table-rule-table-integration` when effects are embedded into `@praxisui/table` rules, renderers, config editors, or Settings Panel.
 - Use `praxis-table-rule-ai-validation` for AI authoring manifest operations, validators, examples, and registry ingestion.
-- Use `praxis-visual-builder-rules` for general JSON Logic rule editing and visual/textual round-trip outside table visual effect payloads.
+- Use `praxis-visual-builder-rules` as the umbrella for general Visual Builder work, and use `praxis-visual-builder-jsonlogic-roundtrip` for JSON Logic condition editing or round-trip outside table visual effect payloads.

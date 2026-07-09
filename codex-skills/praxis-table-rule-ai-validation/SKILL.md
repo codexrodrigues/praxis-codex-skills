@@ -25,7 +25,7 @@ Before editing code or guidance, inspect:
 
 `PRAXIS_TABLE_RULE_BUILDER_AUTHORING_MANIFEST` governs table visual effect authoring only. It owns rule/effect identity, condition attachment to table context, effect registry categories, default presets, semantic animations, fail-closed conversion, and explicit delegation to `praxis-table`.
 
-It does not own table columns, datasource, renderer placement, table ordering, `TableConfigV2`, or general visual-builder JSON Logic. Those must route through `praxis-table` or `praxis-visual-builder-rules`.
+It does not own table columns, datasource, renderer placement, table ordering, `TableConfigV2`, or general visual-builder JSON Logic. Those must route through `praxis-table`, `praxis-visual-builder-rules`, or the focused `praxis-visual-builder-jsonlogic-roundtrip` skill when the concern is condition parsing/export.
 
 ## AI Authoring Rules
 

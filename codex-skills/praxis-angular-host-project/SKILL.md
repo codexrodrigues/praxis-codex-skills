@@ -27,7 +27,7 @@ Do not depend on migration docs, quickstarts, or one orchestration skill to enum
 
 When the environment exposes skill inventory or search:
 
-1. Classify the task by domain first: `core`, `table`, `form`, `list`, `crud`, `dialog`, `tabs`, `stepper`, `expansion`, `files-upload`, `rich-content`, `page-builder`, `metadata-editor`, `fields`, `charts`, `settings`, `ai`, `docs`, `i18n`, `public-api`, or `validation`.
+1. Classify the task by domain first: `core`, `table`, `form`, `list`, `crud`, `dialog`, `tabs`, `stepper`, `expansion`, `files-upload`, `rich-content`, `page-builder`, `visual-builder`, `metadata-editor`, `fields`, `charts`, `settings`, `ai`, `docs`, `i18n`, `public-api`, or `validation`.
 2. Search the Praxis family for the matching domain skills.
 3. Load the narrow functional owner first, then add transversal skills such as validation, public-api, i18n, docs, or visual-product QA only when the scope actually requires them.
 
@@ -271,7 +271,11 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-page-builder-composition`: Page Builder runtime composition, component palette, `WidgetPageDefinition`, canvas, `page.composition.links`, connection graph, nested ports, and dynamic page materialization.
 - `praxis-page-builder-authoring`: Page Builder page config editors, widget shell editor, Settings Panel bridge, child config editor hosting, apply/save/reset/reopen, and visual/textual round-trip.
 - `praxis-page-builder-ai-agentic`: Page Builder agentic authoring, UI composition plans, capability catalogs, streaming turn flow, runtime observations, preview/apply, and AI registry gates.
-- `praxis-visual-builder-rules`: Visual Builder JSON Logic rules, `RuleBuilderState`, rule graph validation, field schemas, context variables, property effects, templates, and visual/textual round-trip.
+- `praxis-visual-builder-rules`: Visual Builder umbrella skill for JSON Logic rules, graph validation, field schemas, context variables, property effects, templates, AI manifest, and round-trip.
+- `praxis-visual-builder-graph-runtime`: `RuleBuilderState`, `RuleNode`, node IDs, root nodes, child edge IDs, registry integrity, selection, undo/redo, validation errors, orphan/cycle checks, and focused graph UI validation.
+- `praxis-visual-builder-jsonlogic-roundtrip`: JSON Logic import/export, `currentJSON`, condition parsing, `FormLayoutRule` bridge, unsupported context/function operands, legacy expression safeguards, and semantic round-trip proof.
+- `praxis-visual-builder-schemas-templates`: field schemas, target/property schemas, operator catalogs, context scopes/variables, collection validators, templates, and template-compatible rule nodes.
+- `praxis-visual-builder-ai-validation`: visual-builder AI authoring manifest, adapter, capabilities, editable targets, operation validators, examples, registry ingestion, and `dsl.roundTrip.validate`.
 - `praxis-settings-panel-shell`: Settings Panel shell, drawer protocol, bridge separation, footer actions, and sizing.
 - `praxis-settings-roundtrip-authoring`: visual editor apply/save/reset/reopen, persistence, and runtime consume validation.
 - `praxis-settings-global-config`: Global Config Editor, effective config, save/clear, and remote persistence.

@@ -98,6 +98,11 @@ For `@praxisui/table-rule-builder`, use `praxis-table-rule-effects-runtime`,
 `praxis-table-rule-animation-presets`, `praxis-table-rule-table-integration`, and
 `praxis-table-rule-ai-validation` as applicable before updating component guides, API references,
 docs manifests, examples, playgrounds, AI recipes, or registry docs.
+For `@praxisui/visual-builder`, use `praxis-visual-builder-rules` as the umbrella and then the
+focused skills `praxis-visual-builder-graph-runtime`, `praxis-visual-builder-jsonlogic-roundtrip`,
+`praxis-visual-builder-schemas-templates`, and `praxis-visual-builder-ai-validation` before updating
+component guides, API references, docs manifests, examples, playgrounds, AI recipes, or registry
+docs.
 
 ## Editorial Guidance
 

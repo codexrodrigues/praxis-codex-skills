@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Visual Builder Graph Runtime"
+  short_description: "Audit visual rule graph state"
+  default_prompt: "Use $praxis-visual-builder-graph-runtime to implement or audit Praxis visual-builder graph state, nodes, edges, registry integrity, and local validation."
