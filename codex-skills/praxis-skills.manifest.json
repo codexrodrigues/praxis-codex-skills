@@ -23,8 +23,8 @@
         "praxis-core-resource-runtime",
         "praxis-core-composition-runtime"
       ],
-      "skillMdSha256": "427B524C75549CABC5EC5F9A55EAC555493C838EE3BB38B5B0655602C14423AB",
-      "treeSha256": "65D704D411125927AB67780D9AFB2A3C6A8494C85C69AC9348F55DE7E3FC0E7F"
+      "skillMdSha256": "CEB69F3E08BEC58D7F524EE4B68E8959A2D887CF9D0CA0DDEE5AE71E82A77BA1",
+      "treeSha256": "A2104A9F2F07CDBA9F679033D069AC6A31054B788B83BD6CB518FD64527A63F7"
     },
     {
       "name": "praxis-authoring-editors",
@@ -36,8 +36,8 @@
         "praxis-dynamic-fields-editorial",
         "praxis-resource-entity-lookup-backend"
       ],
-      "skillMdSha256": "1B4851E416BAFD68B46977EB0CB5684B505B9A36DBBAB68A07EF75616E82F9C5",
-      "treeSha256": "4583EA30BB8E98F40B948C8BA32004F858C1C5B391783C1F9881A70C7BC2C4D2"
+      "skillMdSha256": "BCAF9725EA6C6EAFC1224B46B10F7C970E470ACF51E73DEBA1A50C7ABBB7BA52",
+      "treeSha256": "BFD358D8ED4D58322EF16D945ED20E77EAA6E9DEFEA32148095D0BA86E345BAC"
     },
     {
       "name": "praxis-component-minimums",
@@ -53,8 +53,8 @@
         "praxis-core-resource-runtime",
         "praxis-core-composition-runtime"
       ],
-      "skillMdSha256": "77DB3370056C4C32BD475D6ACEF50CA83572FF07C6DC6CC7200939131021EBB0",
-      "treeSha256": "8CC53A418AA92BCC67536E45499DF0464C1B0AD4922F7E0CADC459F1FD46E918"
+      "skillMdSha256": "74366EE60DC3FA6C7ACC8F0CFA10B51D3F04100E4E09CB89514B811BA85B055E",
+      "treeSha256": "79DB7319C4DBF4DFED40FA7AC2719074CF1C27994B1DA2402E59AEF43EB53949"
     },
     {
       "name": "praxis-core-composition-runtime",
@@ -306,6 +306,64 @@
       ],
       "skillMdSha256": "D8C6E3CA533285957EC26B99EE8508B56A4443AFDF2FFAED62FA561FDE5C2E01",
       "treeSha256": "2C5AC66AC53E5B81C5041ACD85BFDEC2109B3710AE8F151DD6CC835379F87617"
+    },
+    {
+      "name": "praxis-settings-ai-i18n-validation",
+      "sourcePath": "codex-skills/praxis-settings-ai-i18n-validation",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-settings-panel-shell",
+        "praxis-settings-roundtrip-authoring",
+        "praxis-authoring-editors",
+        "praxis-core-runtime-contracts"
+      ],
+      "skillMdSha256": "A68E7710E9924D4617C4E27F82ACBBB298C694DA810A0C9A00607973ADBBD7C0",
+      "treeSha256": "79B7E5DBD8D9B4A146D4DFEC045AFFD88CAD068418487C3F49A950DCCF7FECCF"
+    },
+    {
+      "name": "praxis-settings-global-config",
+      "sourcePath": "codex-skills/praxis-settings-global-config",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-settings-panel-shell",
+        "praxis-settings-roundtrip-authoring",
+        "praxis-core-runtime-contracts",
+        "praxis-core-resource-runtime"
+      ],
+      "skillMdSha256": "547CC0AAE03737F896AF6DE140953CDD2BE9A0DDDEB77430344594F21092C34E",
+      "treeSha256": "8BE57049EFB19C9DAFB4B1BF2B59CB7F0F3724F41595C35D3D9EB12A1CA168E0"
+    },
+    {
+      "name": "praxis-settings-panel-shell",
+      "sourcePath": "codex-skills/praxis-settings-panel-shell",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-authoring-editors",
+        "praxis-core-runtime-contracts",
+        "praxis-ui-product-design"
+      ],
+      "skillMdSha256": "F38EC4E32169CA00EAC4570F8E5D737402900532FE3D819DCB0882B09F58BD0B",
+      "treeSha256": "595E4DCA72881EDA9FF559BE59FA7642BC22A874B111A94AB34664145B92F64D"
+    },
+    {
+      "name": "praxis-settings-roundtrip-authoring",
+      "sourcePath": "codex-skills/praxis-settings-roundtrip-authoring",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-settings-panel-shell",
+        "praxis-authoring-editors",
+        "praxis-core-runtime-contracts"
+      ],
+      "skillMdSha256": "FA8D4F4418352921929A8001286DF60A12BE18FAC7012767B692362CDAF4B208",
+      "treeSha256": "45343FC2A9249F93AEE587439CB5FF3BD110B40E63AF1F9E4BCD6581F0B23A0B"
     },
     {
       "name": "praxis-table-ai-validation",

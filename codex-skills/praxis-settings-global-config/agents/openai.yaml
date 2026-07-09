@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Global Config Editor"
+  short_description: "Guide global config editor persistence"
+  default_prompt: "Use $praxis-settings-global-config to update Praxis Global Config Editor behavior."
