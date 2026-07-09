@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Charts Runtime Data"
+  short_description: "Chart runtime contracts and data adapters"
+  default_prompt: "Use $praxis-charts-runtime-data to review a Praxis chart runtime or data adapter change."

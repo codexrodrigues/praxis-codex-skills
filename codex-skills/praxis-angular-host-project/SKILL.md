@@ -196,6 +196,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-fields-option-sources`: optionSource, async/searchable selects, entity lookup, by-ids reload, and dependency filters.
 - `praxis-fields-editorial-discovery`: dynamic-fields editorial descriptors, catalogs, i18n, and metadata-editor/tooling discovery.
 - `praxis-fields-ai-canvas-validation`: dynamic-fields AI manifest, control profiles, catalog ingestion, recipes, and canvas validation.
+- `praxis-charts-runtime-data`: `@praxisui/charts` runtime, `x-ui.chart`, `chartDocument`, ECharts adapter boundary, analytics adapters, stats execution, `queryContext`, drilldown, and cross-filter.
+- `praxis-charts-authoring-settings`: chart config editor, widget config editor, Settings Panel, apply/save/reset/reopen, governed resource/field/target catalogs, and chart editor round-trip.
+- `praxis-charts-ai-validation`: chart AI manifest, editable targets, validators, handler contracts, registry ingestion, and component edit-plan validation.
+- `praxis-dashboard-analytics`: backend dashboard/analytics resources, `/stats/*`, `@UiAnalytics`, aggregate resources, custom dashboard catalog/summary endpoints, capabilities, and option sources.
 - `praxis-settings-panel-shell`: Settings Panel shell, drawer protocol, bridge separation, footer actions, and sizing.
 - `praxis-settings-roundtrip-authoring`: visual editor apply/save/reset/reopen, persistence, and runtime consume validation.
 - `praxis-settings-global-config`: Global Config Editor, effective config, save/clear, and remote persistence.

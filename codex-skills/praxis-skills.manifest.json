@@ -75,10 +75,14 @@
         "praxis-java-host-project",
         "praxis-core-runtime-contracts",
         "praxis-core-resource-runtime",
-        "praxis-core-composition-runtime"
+        "praxis-core-composition-runtime",
+        "praxis-charts-runtime-data",
+        "praxis-charts-authoring-settings",
+        "praxis-charts-ai-validation",
+        "praxis-dashboard-analytics"
       ],
-      "skillMdSha256": "88AF31515742D7847D248C3787D5EC83A717BD709086F1CFAB7F0F9D1B815177",
-      "treeSha256": "209B9E8E2D02EB15A7D8053C40576D063AE0EFAEF31B837419528E71049B9E37"
+      "skillMdSha256": "3C0CBCFF67EE36874B17D4416F427FFDC592C374C0CBFE01DE4887340D20DE60",
+      "treeSha256": "B9FF4886FA8BCFAD893E4064C2E825A4C31CD90ACFCB18FAB3D018E5EA05F434"
     },
     {
       "name": "praxis-authoring-editors",
@@ -92,6 +96,50 @@
       ],
       "skillMdSha256": "2F2542E8CE652A99C6385629FEBE8B5CE3E13E9825FC1752D01F6FC01906E87C",
       "treeSha256": "5088590B268139D3D449B0FC4281EAAF1A5C0C51932C88632D0488F27BA740E4"
+    },
+    {
+      "name": "praxis-charts-ai-validation",
+      "sourcePath": "codex-skills/praxis-charts-ai-validation",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-ai-authoring-manifests",
+        "praxis-ai-registry-ingestion",
+        "praxis-ai-semantic-intent",
+        "praxis-charts-runtime-data",
+        "praxis-charts-authoring-settings"
+      ],
+      "skillMdSha256": "A93E56DBB7B29A21A9DD07BA4F2207137D629A78730179C2D4B839B35AD2D722",
+      "treeSha256": "6A7311921DB5D236FA8D47E9D0E80F72EFF06470E7A6473CEF8E31B1FCFA25C1"
+    },
+    {
+      "name": "praxis-charts-authoring-settings",
+      "sourcePath": "codex-skills/praxis-charts-authoring-settings",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-settings-panel-shell",
+        "praxis-settings-roundtrip-authoring",
+        "praxis-authoring-editors",
+        "praxis-charts-runtime-data"
+      ],
+      "skillMdSha256": "EABCCB6182EAA79009F6A81BB17D66CEC65EB310D60815049D3C0D307CFB8F7B",
+      "treeSha256": "3CB65BB664AE4F2089676167A743C76EAFD403B877B6A22649D3F32928275E38"
+    },
+    {
+      "name": "praxis-charts-runtime-data",
+      "sourcePath": "codex-skills/praxis-charts-runtime-data",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-core-runtime-contracts",
+        "praxis-core-resource-runtime"
+      ],
+      "skillMdSha256": "B8CD94F4CCB0E4C51B465CDE532CA060D54713B09718DA31758E82ADC1B7134D",
+      "treeSha256": "35049ABE1796B9D4BC392EBC0BB3F95E2BA840B3DE444CD2B6E372E809EAE683"
     },
     {
       "name": "praxis-component-minimums",
@@ -152,7 +200,7 @@
       "name": "praxis-dashboard-analytics",
       "sourcePath": "codex-skills/praxis-dashboard-analytics",
       "version": "0.1.0-beta.0",
-      "status": "active-needs-curation",
+      "status": "active",
       "compatibility": "0.x",
       "dependencies": [
         "praxis-java-host-project",
@@ -160,10 +208,13 @@
         "praxis-resource-entity-lookup-backend",
         "praxis-ui-product-design",
         "praxis-core-runtime-contracts",
-        "praxis-core-resource-runtime"
+        "praxis-core-resource-runtime",
+        "praxis-charts-runtime-data",
+        "praxis-charts-authoring-settings",
+        "praxis-charts-ai-validation"
       ],
-      "skillMdSha256": "B478FC0F55EB634021D3D8702AEBEF6ACD8607BDC4F5C174FF5ADED0434D9E8C",
-      "treeSha256": "280EBF28002AC83912BEEE79D368FC5D0D4B9EF17D9A00B8D9E8F70BBD7471F1"
+      "skillMdSha256": "67F75AA48184FB1BD56D2FA0B5FCB77FB23CC2538856BCCBDAF26A11B2C2159D",
+      "treeSha256": "85B4C99C658621291F10A199D1CB77D7E4DAE5A1B75CFCDE2751DB3CB5187C73"
     },
     {
       "name": "praxis-dto-annotations",

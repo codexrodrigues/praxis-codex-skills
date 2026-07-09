@@ -13,6 +13,9 @@ Use this skill to design dashboard APIs that stay native to `praxis-metadata-sta
 - `praxis-dto-annotations` for DTO, filter, `@Schema`, `@UISchema`, `@Filterable`, and governance metadata.
 - `praxis-resource-entity-lookup-backend` when chart filters use `OptionSourceRegistry`, `RESOURCE_ENTITY`, `LIGHT_LOOKUP`, or `DISTINCT_DIMENSION`.
 - `praxis-ui-product-design` when dashboard visual quality or UX is in scope.
+- `praxis-charts-runtime-data` when Angular must materialize `x-ui.chart`, `PraxisXUiChartContract`, `chartDocument`, `queryContext`, or stats-backed chart data.
+- `praxis-charts-authoring-settings` when dashboard chart documents are edited through `@praxisui/charts` config editors or Settings Panel.
+- `praxis-charts-ai-validation` when dashboard/chart semantics are exposed to AI authoring manifests, edit plans, or generated registry assets.
 - `praxis-core-resource-runtime` when Angular chart/dashboard behavior depends on core analytics
   schema contracts, stats request builders, query context, capabilities, resource discovery, or
   metadata materialization.
@@ -201,6 +204,15 @@ layout unavailable from the stats operation. Bind projection fields only to `Sta
 fields and DTO semantics that are executable by the resource.
 
 For chart-discoverable resources, assert that `/schemas/filtered` response schemas publish `x-ui.analytics.projections` with ids, bindings, defaults, presentation families, sort, drill-down, and granularity where applicable.
+
+When an Angular dashboard needs an actual chart document, keep the boundary explicit:
+
+- `x-ui.analytics.projections` describes discoverable analytics intent and executable stats bindings.
+- `x-ui.chart` / `PraxisXUiChartContract` describes a concrete chart materialization for `@praxisui/charts`.
+- a product `/api/dashboard/catalog` may choose official first-fold panels, layout, load policy, and chart documents, but it does not own the generic chart vocabulary.
+- `queryContext` carries runtime filters and cross-widget context; do not fold contextual filters into string-built stats paths or host-only field aliases.
+
+If a projection can be materialized by `AnalyticsChartConfigAdapterService`, prefer that path before adding custom dashboard payloads. If the catalog publishes `widget.chart`, the Angular side should use the `@praxisui/charts` backend payload/schema mapper path rather than local ECharts options.
 
 In `praxis-metadata-starter` `8.0.0-rc.24`, the first runtime resolution of grouped OpenAPI for `/schemas/filtered` response schemas can be slow while the group document is initialized and cached. Use a smoke timeout of at least 60 seconds for the first analytics schema pass, then rely on cached calls for faster repeat checks.
 
