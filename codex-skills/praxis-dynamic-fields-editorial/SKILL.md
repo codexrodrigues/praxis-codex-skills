@@ -18,6 +18,9 @@ the editor, use `praxis-metadata-editor-cascade-normalization`.
 For operational file upload fields, use `praxis-files-upload-form-field` for `pdx-material-files-upload`,
 `valueMode`, ControlValueAccessor behavior, and upload-specific field UX. Return here only when the
 dynamic-fields catalog, selector mapping, aliases, or metadata discovery for that field changes.
+For rich content or rich-input fields, use `praxis-rich-content-runtime` and
+`praxis-rich-content-integration-adapters` for `RichContentDocument` semantics. Return here only when
+dynamic-fields metadata discovery, control aliases, selector mapping, or editor/tooling coverage changes.
 
 This library does not primarily follow the pattern "runtime component has its own config editor". Runtime rendering, editorial discovery, metadata tooling, and editor coverage are separate layers.
 

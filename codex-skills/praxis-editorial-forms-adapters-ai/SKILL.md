@@ -46,6 +46,7 @@ Use `PRAXIS_EDITORIAL_FORMS_AUTHORING_MANIFEST` as the executable contract.
 - `fieldBinding.set` writes governed runtime context bindings and delegates `FieldMetadata` changes to metadata-editor.
 
 Do not author `FieldMetadata` inside editorial-forms. Use `praxis-metadata-editor-ai-validation` and dynamic-fields discovery when the field shape changes. Use `praxis-form-ai-rules-validation` or dynamic-form skills when data collection form semantics change.
+Use `praxis-rich-content-integration-adapters` and `praxis-rich-content-ai-security-validation` when adapter or AI work materializes `RichContentDocument` in editorial blocks, previews, or generated examples.
 
 ## AI And Registry
 

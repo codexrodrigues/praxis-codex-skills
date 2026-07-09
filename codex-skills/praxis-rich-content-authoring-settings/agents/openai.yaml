@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rich Content Authoring"
+  short_description: "Rich content editor and presets"
+  default_prompt: "Use $praxis-rich-content-authoring-settings to author or audit Praxis rich content editors and presets."

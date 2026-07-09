@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rich Content AI Security"
+  short_description: "AI and safety validation for rich content"
+  default_prompt: "Use $praxis-rich-content-ai-security-validation to validate AI and safety rules for Praxis rich content."

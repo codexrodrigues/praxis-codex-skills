@@ -225,6 +225,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-files-upload-backend-contract`: files API base URL, direct/bulk/presign endpoints, multipart fields, backend envelopes, quotas, rate limits, headers, and error codes.
 - `praxis-files-upload-form-field`: `pdx-material-files-upload`, ControlValueAccessor behavior, `valueMode`, dynamic-form field integration, and submit payload shape.
 - `praxis-files-upload-ai-validation`: files-upload authoring manifest, AI adapter, context pack, registry projection, endpoint/security operations, and assistant validation.
+- `praxis-rich-content-runtime`: `@praxisui/rich-content` renderer, `RichContentDocument`, semantic nodes, context bindings, host-mediated actions, presets, and metadata provider.
+- `praxis-rich-content-authoring-settings`: rich-content config editor, guided editing, preview, advanced JSON, presets, i18n, and Settings Panel round-trip.
+- `praxis-rich-content-integration-adapters`: rich-content integration across Page Builder, stepper, editorial forms, dynamic forms, metadata previews, and migration from legacy editorial blocks.
+- `praxis-rich-content-ai-security-validation`: rich-content AI manifest, validator, safe URL/style policy, JsonLogic fail-safe behavior, registry, docs, and assistant validation.
 - `praxis-fields-runtime-loader`: dynamic-fields loader, component registry, selector mapping, hot metadata, and runtime coverage.
 - `praxis-fields-option-sources`: optionSource, async/searchable selects, entity lookup, by-ids reload, and dependency filters.
 - `praxis-fields-editorial-discovery`: dynamic-fields editorial descriptors, catalogs, i18n, and metadata-editor/tooling discovery.

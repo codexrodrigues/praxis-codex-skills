@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Rich Content"
+  short_description: "RichContentDocument runtime guidance"
+  default_prompt: "Use $praxis-rich-content-runtime to build or audit canonical Praxis rich content."

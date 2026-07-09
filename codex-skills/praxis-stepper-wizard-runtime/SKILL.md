@@ -48,6 +48,7 @@ Hosts consume these contracts. Do not move linear validation, form step mapping,
 - Pass dynamic-form `resourcePath` as a canonical base resource path, such as `domain/resource`; do not include `/api`, `/filter`, `/{id}`, schema endpoints, operation URLs, or query strings.
 - Use `linear=true` plus form `FormGroup` validity for normal blocking behavior. Use `serverValidate` for remote validation instead of inventing a parallel validation DSL in stepper config.
 - Prefer `stepBlocksBeforeForm` and `stepBlocksAfterForm` for editorial content. Use `steps[].widgets` only for advanced host-owned widgets after the canonical rich content path is unsuitable.
+- Pair with `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters` when step rich content changes; new editorial content should prefer `RichContentDocument` over legacy wizard blocks.
 - Keep navigation config as workflow chrome. Do not encode business approval rules as button labels, local command strings, or keyword-routed step actions.
 - Forward nested widget events through `widgetEvent` instead of host-local event buses.
 
@@ -83,6 +84,7 @@ Report exactly what was validated and what remained unvalidated.
 ## Companion Skills
 
 - Use `praxis-form-runtime-submit` for dynamic-form step integration, submit behavior, hooks, schema metadata, and resource path boundaries.
+- Use `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters` for step rich content, wizard legacy block convergence, and `stepBlocksBeforeForm`/`stepBlocksAfterForm` semantics.
 - Use `praxis-navigation-containers-ai-validation` for stepper AI manifests, registry projection, context packs, assistant turns, and cross-container validation.
 - Use `praxis-authoring-editors` for Settings Panel editor round-trip.
 - Use `praxis-core-composition-runtime` for nested widgets, widget events, composition links, and dynamic page materialization.

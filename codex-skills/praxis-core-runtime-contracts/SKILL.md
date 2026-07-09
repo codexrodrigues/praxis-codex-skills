@@ -35,6 +35,7 @@ Put the fix in `@praxisui/core` when the concern is shared across libraries or a
 - global actions, global surfaces, action refs, action UI schema, action catalogs, and shared action providers
 - tokens such as `API_URL`, `PAX_FETCH_HEADERS`, global config, loading, overlay decisions, export, external editors, field selectors, or surface/drawer bridges
 - common models: table config, field metadata, option sources, resource discovery, domain catalog, domain knowledge/rules, query context, analytics presentation, loading state, collection export, surface actions, runtime observations
+- shared rich-content models such as `RichContentDocument`, rich nodes, action refs, presenter nodes, and JsonLogic-backed rich-content conditions
 - logging, observability, error normalization, telemetry sinks, and global error handling
 - i18n service, providers, resource-discovery copy, value presentation, and shared internal framework text
 - reconcilers and config normalization shared by multiple libs
@@ -90,6 +91,7 @@ core text, logging UX, resource-discovery copy, or shared localization changes. 
 
 - Use `praxis-core-resource-runtime` for resource discovery, schema, actions, surfaces, capabilities, HATEOAS, option sources, CRUD operation resolution, and analytics request contracts.
 - Use `praxis-core-composition-runtime` for composition runtime, widgets, dynamic widget pages, nested ports, connection/link execution, and surface hosts.
+- Use `praxis-rich-content-runtime` and `praxis-rich-content-ai-security-validation` when shared rich-content models, validator assumptions, host-mediated actions, or public rich-content exports are involved.
 - Use `praxis-angular-host-project` when applying core contracts in a consuming host.
 - Use `praxis-component-minimums` when the question is the smallest runtime setup for a component.
 - Use `praxis-ui-product-design` for visual/product UX and screenshot validation.
