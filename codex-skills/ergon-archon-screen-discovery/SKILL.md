@@ -102,6 +102,16 @@ Use this as phases 1 and 1.5 of the migration:
 
 If the user asks for write implementation before these artifacts exist, keep the work in discovery mode and close the missing handoff evidence first.
 
+## Discovery Gates
+
+Before starting Phase 1, require an entry gate. `docs/migracao/<SCREEN>/migration-plan.md` and `phase-0-execution-gate.md` must exist, the target screen code must be explicit, and Fase 0 must recommend `ergon-archon-screen-discovery`. If these are missing, do not create a partial discovery package by hand; return to `ergon-migration-orchestration` and the canonical roadmap entry point.
+
+At the start of discovery, record the evidence plan: browser/runtime availability, runtime XML/local XML/HADES source plan, `docs-legado` paths to search, Oracle access status, expected factory helpers, and whether the intended slice is quick discovery, full discovery, or API migration. Missing browser, Oracle, XML export, or docs access is not fatal by itself, but it must become an explicit `Blocked`, `Partial`, or `Unavailable` status in the gate and artifacts.
+
+Before handing off to any API implementation skill, require an exit gate. The package must contain `phase-1-execution-gate.md`, `closure-checklist.md`, `component-lineage-matrix.md`, `operation-inventory.md`, `read-parity-matrix.md`, Oracle/HADES confirmation or blocked rerun artifacts, and a candidate `api-contract.md` when API migration is in scope. A gate may be `Ready for read API`, `Read handoff ready; write deferred`, `Ready for write API`, `Blocked`, or `Deferred`; it must not be implied by the presence of Markdown files alone.
+
+Legacy documentation under `docs-legado` is primary evidence for business meaning, historical model context, related flows, and parity scenarios, but it is not implementation proof by itself. Promote a doc fact into API readiness only after it is tied to browser/runtime, XML/debug, local source, Oracle metadata, or an explicit accepted deferral.
+
 ## Legacy System Access
 
 Default demo entry point:

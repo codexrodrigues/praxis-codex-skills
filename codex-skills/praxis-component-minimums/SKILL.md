@@ -22,6 +22,12 @@ If the task implements or reviews backend `RESOURCE_ENTITY` option sources, use
 `praxis-resource-entity-lookup-backend`; this skill may explain why `resourcePath` alone is not
 enough, but it does not define the backend contract.
 
+Before changing this skill or answering a minimum-setup question, inspect the current source for the
+target component and its host services. For Angular components this normally means component inputs,
+metadata files, config editor metadata, service injections, local/remote mode tests, and the owning
+`@praxisui/core` contracts. The purpose is to codify canonical Praxis runtime knowledge, not repeat
+a remembered setup recipe.
+
 ## Canonical Decision Rule
 
 Always answer by separating the component into one of these modes:
@@ -85,6 +91,36 @@ Important guardrails:
 - In remote mode, the table derives columns from `/schemas/filtered` and data from the backend resource/filter contract.
 - Optional collection operations, including export, are not implied by remote bootstrap. Gate them through backend `capabilities` and `_links`.
 
+## CRUD Minimum
+
+For `@praxisui/crud`, do not describe the minimum as "table plus `resourcePath`". CRUD is a
+composed runtime with table, form launcher, action resolution, capabilities, and optional
+modal/drawer form contracts.
+
+- Local/static minimum: pass `metadata` with local resource/data/table/form structure sufficient for
+  the desired static display or hosted example. This does not prove backend action availability.
+- Remote resource minimum: pass `metadata.resource.path` and ensure the host provides the Praxis
+  API/CRUD wiring. The runtime can use the resource path for table/schema/data flows, but create,
+  view, edit, delete, and collection workflows must still be aligned with resource capabilities and
+  HATEOAS links.
+- Explicit form-action minimum: when a modal/drawer action uses backend-published surfaces or a
+  non-generic operation, provide `metadata.actions[].form.schemaUrl`, `submitUrl`, and
+  `submitMethod` instead of relying on a generic fallback from `metadata.resource.path`.
+- Nested or contextual resource minimum: use `metadata.resource.schemaPath` when schema discovery
+  needs the canonical schema template while `metadata.resource.path` targets a concrete nested
+  collection.
+
+Host requirements:
+
+- effective API endpoint/CRUD service configuration
+- dynamic-form dependencies for opened forms
+- table dependencies for the embedded collection surface
+- resource capabilities resolvable before claiming action availability
+
+Answer "is resourcePath enough?" for CRUD as: enough only to enter a basic remote resource flow when
+host wiring exists; not enough to prove action permissions, export, modal form endpoints, or nested
+schema binding.
+
 ## Collection Operation Minimums
 
 For collection operations reused by Table, List, or future collection components, separate render/data bootstrap from operation availability:
@@ -113,6 +149,8 @@ remote bootstrap when host wiring exists; not enough for a canonical governed en
 4. Identify what the host must already provide.
 5. Answer explicitly whether `resourcePath` is sufficient, optional, or not the preferred canonical path.
 6. If the question involves an optional collection action, identify the capability or link that proves availability.
+7. If the target is composed, such as CRUD, map the minimum of each embedded runtime instead of
+   collapsing the answer to the outer component input.
 
 ## Required Output Shape
 
@@ -134,6 +172,8 @@ When answering, prefer this structure:
 - assuming Table/List export is available because a base controller route exists
 - treating generic `/options/filter` or `resourcePath` as equivalent to a governed `RESOURCE_ENTITY`
   option source
+- treating CRUD as a thin table wrapper and omitting `metadata.actions[].form`, capabilities, row
+  links, or `metadata.resource.schemaPath` when those are the contracts that make the runtime safe
 
 ## References
 

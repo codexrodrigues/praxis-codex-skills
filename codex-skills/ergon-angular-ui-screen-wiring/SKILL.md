@@ -13,6 +13,12 @@ where they exist; defects owned by `praxis-ui-angular`,
 `praxis-metadata-starter`, or `praxis-config-starter` must become
 `Praxis Platform Follow-up` evidence instead of Ergon-local platform patches.
 
+Treat Angular as the cockpit for governed Praxis materializations, not as the
+source of business semantics. The UI may compose, bind, and visually verify
+metadata-driven resources, but it must not decide user intent, redefine field
+meaning, invent action availability, or replace missing backend contracts with
+screen-local conventions.
+
 ## Required Companion Skills
 
 Load only the skills needed for the current task:
@@ -23,7 +29,26 @@ Load only the skills needed for the current task:
 - Use `ergon-archon-write-api-migration` when create/update/delete/duplicate actions are in scope.
 - Use `ergon-fieldspec-ui-contract` and `praxis-dto-annotations` before changing DTO, FilterDTO, `@UISchema`, `@Filterable`, options, or `/schemas/filtered`.
 - Use `praxis-angular-host-project`, `praxis-component-minimums`, and `praxis-dynamic-fields-editorial` before wiring Angular or choosing Praxis controls.
+- Use `praxis-rich-crud-screen-authoring` when the target shape is a standard table-plus-create/edit/view/delete flow with `@praxisui/crud`.
 - Use `praxis-ui-product-design` and browser/Playwright validation for visual QA.
+
+## Native Praxis Source Audit
+
+Before creating or changing Angular components, routes, config objects, or adapters, inspect the current Praxis runtime source and record the result in `ui-implementation-plan.md`:
+
+- `@praxisui/core`: `API_URL`, `PAX_FETCH_HEADERS`, `ResourceDiscoveryService`, `CrudOperationResolutionService`, `ResourceActionOpenAdapterService`, `ResourceSurfaceOpenAdapterService`, `SurfaceOpenMaterializerService`, `GlobalActionService`, `PraxisSurfaceHostComponent`, and `GenericCrudService`.
+- `@praxisui/crud`: `PraxisCrudComponent`, `CrudLauncherService`, open-mode resolution, standard drawer/modal/route behavior, CRUD metadata, and native refresh-after-save/delete flow.
+- `@praxisui/table`: `PraxisTable`, schema/filter consumption, row/toolbar actions from capabilities, `duplicate-draft`, `surface.open`, `queryContext`, and event outputs.
+- `@praxisui/dynamic-form` and `@praxisui/dynamic-fields`: schema-backed detail/create/edit forms, option-source controls, selected-value reload, command rules, and field shell/editor behavior.
+
+Classify each requested UI feature with the platform adherence categories:
+
+- `ja-suportado-so-ux`: use native Praxis APIs and adjust only composition/layout.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: fix DTO/schema/catalog/resource metadata before adding UI code.
+- `suportado-parcialmente`: implement the smallest host composition while recording the missing platform extension.
+- `lacuna-real-de-contrato`: stop UI implementation and create the canonical Praxis follow-up with owner, affected consumers, derived docs/examples, tests, and removal criteria.
+
+Only `lacuna-real-de-contrato` may justify a new platform contract. Do not add an Ergon-only `actions`, `surfaces`, lookup, drawer, field semantics, command router, or table adapter layer when the native Praxis runtime already owns the concept.
 
 ## Workflow
 
@@ -74,6 +99,7 @@ Load only the skills needed for the current task:
    - Do not build an Ergon launcher for `_links`, `/actions`, `/surfaces`, or `/capabilities`. The Angular packages already provide the native discovery/runtime path through services and components such as `PraxisCrudComponent`, `PraxisTable`, `ResourceDiscoveryService`, `ResourceActionOpenAdapterService`, `ResourceSurfaceOpenAdapterService`, `SurfaceOpenMaterializerService`, `CrudOperationResolutionService`, `CrudLauncherService`, and `GlobalActionService`.
    - Enable and configure the native Praxis discovery path for row, collection, and global operations. If host config disables discovery, such as `actions.row.discovery.enabled = false`, record why in the UI gate and do not call that screen scalable until the backend/runtime contract is consumed natively.
    - For CRUD-style screens, prefer `PraxisCrudComponent` and `CrudLauncherService`. Custom shell composition may use official Praxis services and adapters, but must not duplicate discovery, availability, or action/surface materialization locally.
+   - For standard CRUD screens, configure `PraxisCrudComponent` from resource metadata, capabilities, `_links`, `/schemas/filtered`, and CRUD metadata. Do not split it into local table + local drawer unless the native source audit classified an actual platform gap.
    - For create/edit or schema-backed commands, use `CrudLauncherService`/`PraxisCrudComponent` with `openMode='drawer'` before building any host-owned drawer. A local drawer, backdrop, z-index, focus policy, submit callback shell, or custom command launcher is allowed only as `manual-temporary-gap` with owner, removal trigger, and an entry in `docs/migracao/platform-issues.md`.
    - For read-only details, use `PraxisDynamicForm` with `responseSchemaUrl` and `layoutPolicy.source='schema'`, `intent='detail'`, `preset='compactPresentation'` before declaring `FormConfig.sections`. Do not keep `sections: []` placeholders.
    - For related tabs, use `@UiSurface`, `ResourceSurfaceOpenAdapterService`, `SurfaceOpenMaterializerService`, and `PraxisSurfaceHostComponent` before rendering local tables or mapping arrays manually.
@@ -82,12 +108,14 @@ Load only the skills needed for the current task:
    - For tabs, use the tab strategy in `references/praxis-screen-composition.md`; do not merge unrelated tab data into the main DTO just to match the legacy layout.
    - Hide or disable write actions until the write API gate is closed.
    - For `Duplicar`, do not wire it as a generic action from the legacy button state. Wait for the backend contract to classify it as `duplicate-draft + POST`, a real `@WorkflowAction`, `Blocked`, or `Not present`, then consume the native Praxis discovery/runtime path for that classification.
+   - For option and LOV fields, consume canonical option-source metadata, including by-ids reload for selected values. Do not build screen-specific Angular lookup services when `RESOURCE_ENTITY`, `/option-sources/{sourceKey}/options/filter`, or `/options/by-ids` can express the need.
 
 6. Verify end to end.
    - Run backend tests affected by DTO/schema/API changes.
    - Run frontend tests/lint/build for `ui-administracao-pessoal`.
    - Start the dev server when the UI needs one.
    - Use browser/Playwright screenshots for desktop and mobile; verify table, filters, loading/empty/error states, row selection, detail rendering, and no text overlap.
+   - Verify the UI consumed canonical evidence: `/schemas/filtered`, capabilities/actions/surfaces/HATEOAS, option sources, and read/write gates. A screen is not reusable if it works only because host code bypasses those surfaces.
    - Before promoting a screen as a reusable reference, run `tools/migration-factory/check-angular-praxis-reference-pattern.ps1` with `-Strict` against the component and resource config when the checker exists.
 
 ## Output Artifacts
@@ -108,12 +136,14 @@ Historical `phase-6-5-ui-execution-gate.md` files may remain as evidence from ol
 ## Hard Gates
 
 - Do not create a duplicate API when an approved reusable resource already covers the functionality.
+- Do not create a duplicate Angular runtime for concepts owned by `@praxisui/core`, `@praxisui/crud`, `@praxisui/table`, `@praxisui/dynamic-form`, or `@praxisui/dynamic-fields`.
 - Do not expose `empresa`, `usuario`, HADES/package flags, SQL names, ROWID, cookies, tokens, or hidden XML state in public DTOs or `x-ui`.
 - Do not use a free text filter for a governed lookup when a usable option endpoint/source exists.
 - Do not implement Angular when a visible legacy detail/grid field required for the target slice is absent from the response/detail DTO. Return to the backend read/options phase and fix the DTO, mapper/adapter, schema, and tests.
 - Do not implement Angular when `/schemas/filtered` would emit a weaker control than the known legacy/Praxis contract, such as `SEARCH_INPUT` for an approved remote LOV. Return to the backend contract phase.
 - Do not implement or accept Angular workarounds for weak semantic DTO metadata. Labels, icons, help, tooltips, domain descriptions, governance, AI policy, display fields, and value presentation must come from DTO/schema or a documented Praxis platform contract.
 - Do not implement a local launcher or hardcoded enablement model for Praxis actions, surfaces, capabilities, or HATEOAS links when the native Praxis runtime can discover and materialize them.
+- Do not route action, surface, tab, lookup, or command intent by labels, regexes, XML names, or keyword lists. Resolve the canonical operation/resource/surface/action first; textual matching may only rank candidates after that semantic scope is known.
 - Do not implement or promote host-owned `command-drawer`, `FormConfig.sections`, `sections: []`, `::ng-deep`, `ViewEncapsulation.None`, or local table/rendering workarounds as a reference pattern. If a workaround is unavoidable, classify it as `manual-temporary-gap` and register the platform/workflow follow-up before closing the UI gate.
 - Do not fix `praxis-ui-angular` or Praxis starter defects inside the Ergon host. Record a `Praxis Platform Follow-up` with owner, expected behavior, observed evidence, impact, temporary workaround, and a suggested prompt for the Praxis specialist.
 - Do not mark a DTO/UI handoff as ready while visible fields remain `SEMANTIC_UNCONFIRMED`, unless the gap is explicitly documented as accepted with conservative copy and an owner to investigate legacy docs/source.

@@ -134,6 +134,8 @@ const resourcePath = 'human-resources/funcionarios';
 
 Do not use `/api/human-resources/funcionarios` when `API_URL` already includes `/api`.
 
+`API_URL` and `resourcePath` are transport/runtime wiring, not semantic modeling surfaces. The host must not encode operation semantics by changing resource paths to `/filter`, `/options`, `/schemas/filtered`, item-id URLs, action URLs, or query strings. Praxis runtime services derive those operations from the base resource plus canonical metadata.
+
 For SSR, use an absolute `API_URL.default.baseUrl`. Relative bases can produce invalid URL errors during server rendering.
 
 For local proxy mode, proxy `/api`, `/schemas`, and `/v3/api-docs` to the backend. Data may work while schema discovery fails if `/schemas` is omitted. When forwarded headers are enabled, backend schema code may resolve OpenAPI discovery through the frontend origin; omitting `/v3/api-docs` can make `/schemas/filtered` fail even though direct backend calls work. If the backend emits absolute HATEOAS links, send forwarded headers from the dev proxy and make sure the backend honors them, otherwise browser clients can follow `http://backend-port/...` links and hit CORS even though ordinary data requests use `/api`.
@@ -228,6 +230,7 @@ Recommended stance:
 - Remove quickstart-style `provideGlobalConfigSeed(...)` during remote migration.
 - Decide `USER` versus `TENANT` scope explicitly.
 - Backend must expose `/api/praxis/config/ui`, require `X-Tenant-ID`, support ETag/If-Match, and have the config migrations applied.
+- Remote config may persist governed materializations and user/product configuration, but it does not make the Angular host the canonical author of backend metadata, AI contracts, option sources, or business rules.
 
 Important behavior:
 

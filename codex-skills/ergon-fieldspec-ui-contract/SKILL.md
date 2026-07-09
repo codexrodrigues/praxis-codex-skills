@@ -17,6 +17,12 @@ Do not close this gate using only static code inspection. When endpoints already
 
 For published examples, demos, and corporate-facing surfaces, validate both contract and presentation. A filter is not ready if it works technically but exposes implementation suffixes, ambiguous labels, missing tooltips, duplicate selected values, or labels that hide the business effect of the predicate.
 
+Treat FieldSpec as a public Praxis semantic contract, not as a DTO decoration pass. Before adding fields, filters, actions, `x-ui`, option sources, or command DTOs, inventory what the platform already knows from legacy runtime evidence, XML, Oracle lineage, `docs-legado`, existing DTOs/services, `/schemas/filtered`, `/schemas/domain`, capabilities, actions, surfaces, and option-source descriptors. Classify each gap as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`; only the last category justifies a new public contract.
+
+`/schemas/filtered` is the structural schema source for Angular runtime. `/schemas/catalog`, `/schemas/domain`, actions, surfaces, capabilities, HATEOAS, and `/api/praxis/config/**` are discovery, grounding, availability, or materialization surfaces. Do not publish Ergon-specific aliases, command words, routine flags, package state, or UI-only fields as semantic shortcuts when the correct fix is a canonical DTO, metadata starter, config starter, option-source, or Angular runtime contract.
+
+When a field represents a real selectable business entity or relationship, prefer a governed `RESOURCE_ENTITY` option source over a local select endpoint or DTO-level `extraProperties` workaround. Use `praxis-resource-entity-lookup-backend` to validate `x-ui.optionSource`, dependencies, selected-value reload, public display metadata, and by-ids behavior.
+
 ## When To Run
 
 Run this skill:
@@ -98,6 +104,18 @@ Apply native Praxis first for frontend consumption. Confirm the intended table, 
 If the backend emits a technically valid schema but Angular needs local `FormConfig`, local labels, DOM selectors, or manual actions to achieve the target UX, do not silently approve the handoff as canonical. Either return to DTO/schema/platform contract hardening or record a traceable Praxis platform follow-up with the smallest temporary host bridge and its removal trigger.
 
 For Angular host implementation details, use `praxis-angular-host-project`; keep this skill focused on proving that DTO, OpenAPI, options, schemas, and action metadata are renderable without frontend semantic compensation.
+
+## Handoff Evidence
+
+Before declaring the contract frontend-ready, produce or update the screen's `ui-contract-checklist.md` with:
+
+- field matrix: DTO/FilterDTO/command field, legacy evidence, `@Schema.description`, `@UISchema`/`x-ui`, visibility, internal/public decision, and Angular control proof;
+- filter matrix: operator, `@Filterable.relation`, backend predicate, null/default behavior, label/help text, schema request path, and executed filter payload;
+- option matrix: static options, `/options/*`, or `x-ui.optionSource`; filter endpoint, by-ids endpoint, dependency context, selected reload proof, and Angular component evidence;
+- action/command matrix: implemented, blocked, deferred, hidden, disabled, or 501, with parity evidence and write-risk dependency when applicable;
+- renderability matrix: backend enum/resolver, `/schemas/filtered` payload, `FieldMetadata` normalization, `ComponentRegistryService` registration or canonical alias, and authoring/configurator support when required.
+
+A handoff can be `Ready`, `Ready with accepted residual`, `Blocked`, or `Deferred`. Do not use `Ready` while business descriptions are label-derived, option rehydration is unproven, specialized controls lack registry evidence, `@Filterable` aliases miss `relation`, or Angular would need host-owned semantic compensation.
 
 ## Standard Mapping
 

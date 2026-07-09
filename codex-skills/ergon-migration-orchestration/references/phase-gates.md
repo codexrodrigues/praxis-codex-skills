@@ -16,6 +16,9 @@ Use the current orchestration numbering from `SKILL.md`:
 | Phase 6 | Java implementation by operation |
 | Phase 7 | Quality Round 2 |
 | Phase 8 | Final parity and handoff |
+| UI track | Native Praxis UI wiring after backend handoff |
+| Dashboard track | Praxis analytics and chart materialization |
+| Rule Migration Parte 2 | Governed rule migration after Parte 1 baseline |
 
 Older historical notes may use UI-oriented numbering. Treat those labels as legacy wording only and map the work to the current taxonomy above before deciding gates or next skills.
 
@@ -305,3 +308,52 @@ Blocking gaps:
 - related flows are promoted to full parity from a parent-screen accepted gap;
 - residual risks lack owner, accepted/deferred state, or next action;
 - `phase-8-execution-gate.md` is missing.
+
+## UI Track - Native Praxis UI Wiring
+
+Ready when:
+
+- backend handoff names the resource/API scope, read/write operation states, schema endpoints, option sources, capabilities, actions, surfaces, HATEOAS links, and residual platform gaps;
+- `ergon-angular-ui-screen-wiring` was selected as the execution skill;
+- `ui-api-readiness.md`, `ui-dto-contract-review.md`, `ui-translation-map.md`, `ui-implementation-plan.md`, `ui-visual-qa.md`, and `ui-execution-gate.md` exist or are deliberately scoped with explicit blockers;
+- `ui-implementation-plan.md` includes a native Praxis source audit across `@praxisui/core`, `@praxisui/crud`, `@praxisui/table`, `@praxisui/dynamic-form`, and `@praxisui/dynamic-fields`;
+- every proposed UI improvement is classified as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`;
+- the implementation consumes canonical `/schemas/filtered`, capabilities, actions, surfaces, HATEOAS links, option sources, and selected-value reload where applicable;
+- local tests or browser QA prove the selected UI scope, or the missing authenticated fixture/browser blocker is explicit.
+
+Blocking gaps:
+
+- UI introduces a local action, surface, drawer, lookup, table, form, command router, or option-source runtime for a concept already owned by `@praxisui/*`;
+- action/surface/tab/lookup/command intent is routed by labels, regex, XML names, aliases, or keyword lists instead of canonical metadata and declared tools;
+- backend/schema/option/write gaps are patched in Angular instead of returning to the owning backend/API phase;
+- visual QA is claimed without executed screenshot/browser evidence or an explicit blocker.
+
+## Dashboard Track - Praxis Analytics And Charts
+
+Ready when:
+
+- `ergon-dashboard-praxis-charts` and `praxis-dashboard-analytics` are selected for dashboard/KPI/cockpit/chart work;
+- metric ownership is classified as canonical analytics projection, governed aggregate resource, custom dashboard endpoint, blocked, or platform follow-up;
+- chart UI consumes governed metadata and runtime contracts rather than hardcoded metric vocabulary in the host screen;
+- filters, query context, capability protection, and option sources are mapped to canonical Praxis resources.
+
+Blocking gaps:
+
+- chart semantics are embedded in Angular configuration while a backend analytics or aggregate contract is required;
+- metrics are inferred from labels or XML names without canonical resource/field/analytics grounding;
+- protected metrics ignore capabilities, scope, or company/user context.
+
+## Rule Migration Parte 2 Gate
+
+Ready when:
+
+- `ergon-rule-migration-orchestration` is selected and the relevant Parte 1 baseline is closed with `phase-8-execution-gate.md`, `backend-api-handoff.md` or scoped `pilot-handoff.md`, and explicit residuals;
+- Phase 4/5 table-rule evidence, HADES findings, read/write operation inventory, route safety states, and parity status are available for the rule scope;
+- missing API/write/UI evidence is returned to the exact Parte 1 phase that owns it before rule extraction or promotion;
+- shadow mode, preflight, promotion, rollback, and legacy containment are planned as governed rule-migration artifacts.
+
+Blocking gaps:
+
+- Parte 2 starts from table names or source snippets without a closed Parte 1 baseline;
+- HADES or table-rule chains are unknown but rule promotion is proposed;
+- shadow-mode or preflight evidence is skipped for a behavior that can alter production decisions.

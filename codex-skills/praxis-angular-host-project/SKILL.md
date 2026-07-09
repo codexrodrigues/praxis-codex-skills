@@ -7,6 +7,8 @@ description: Create or evolve Angular host applications that consume Praxis UI p
 
 Use this skill to build Angular hosts for the Praxis UI runtime. Default to public npm packages and treat `praxis-ui-quickstart` as a reference host, not as the source of platform semantics or a required local dependency.
 
+Before changing this skill or implementing a host, audit the current runtime contract that will be consumed: `@praxisui/core` public API, `API_URL`, `PAX_FETCH_HEADERS`, `GenericCrudService`, `SchemaMetadataClient`, global config bootstrap/storage, resource discovery, surface and related-resource materializers, `@praxisui/crud` launcher/open-mode APIs, component registry assets, and the reference quickstart package/bootstrap graph. Codify what Praxis already knows and materializes before adding host adapters, local schemas, local aliases, or new contracts.
+
 ## Canonical Sources
 
 - `praxis-ui-angular` owns the public Angular packages, runtime providers, tokens, services, component APIs, and public Angular contracts.
@@ -16,6 +18,16 @@ Use this skill to build Angular hosts for the Praxis UI runtime. Default to publ
 - `praxisui.dev` and `praxis-ui-landing-page` publish docs and examples; they do not override the canonical backend or runtime owners.
 
 When these disagree, prefer the canonical owner. Do not create local frontend conventions that bypass a missing backend/runtime contract.
+
+## Semantic Runtime Boundary
+
+Treat an Angular host as the cockpit and runtime for governed Praxis materializations, not as the primary source of business rules or semantic decisions. The host owns shell, routes, auth, tenant/locale/user headers, deployment, theme, and product layout decisions. It consumes canonical decisions and projections from `praxis-metadata-starter`, `praxis-config-starter`, and the published `@praxisui/*` runtime.
+
+Use `/schemas/filtered` as the structural schema source. Use `/schemas/catalog`, `/schemas/surfaces`, `/schemas/actions`, `/schemas/domain`, capabilities, HATEOAS links, option sources, and `/api/praxis/config/**` as discovery, availability, grounding, persistence, or materialization surfaces according to their canonical owner. Do not make a host component, route, page-builder screen, or assistant flow redefine those contracts.
+
+Do not route user intent in the Angular host by keywords, regexes, command words, field aliases, or local fuzzy matching as the primary decision mechanism. If an assistant or authoring UI needs to decide intent, use governed AI/LLM authoring contracts, component registries, semantic catalogs, capabilities, actions, surfaces, and declared tools as grounding. Text matching may rank candidates only after the semantic scope is resolved.
+
+Before creating a new Angular-only input, DTO, adapter, service, manifest field, config shape, or fetcher, inventory platform support and classify the gap as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`. Only `lacuna-real-de-contrato` justifies a new public contract, and the owner should normally be `praxis-ui-angular`, `praxis-metadata-starter`, or `praxis-config-starter`, not an app-local route.
 
 ## Platform And Skill Feedback Loop
 
@@ -174,6 +186,7 @@ Use these alongside this skill when the task scope requires them:
 - Do not use `npm link` as the default local-library strategy.
 - Do not scaffold local schema fetchers that bypass `GenericCrudService`, `SchemaMetadataClient`, or Praxis runtime services for critical schema flows.
 - Do not create frontend-only aliases for missing backend semantics, fields, filters, surfaces, actions, or capabilities.
+- Do not author frontend-only semantic decisions, AI patch formats, field aliases, command vocabularies, or keyword routers to compensate for missing platform tools or canonical metadata.
 - Do not enable remote config persistence when the backend contract and headers are not ready.
 - Do not treat `praxis-ui-quickstart` as complete component catalog coverage.
 

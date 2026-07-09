@@ -32,6 +32,13 @@ docs/migracao/<SCREEN>/
   plsql-error-map.md
   write-parity-matrix.md
   ui-contract-checklist.md
+  ui-api-readiness.md
+  ui-dto-contract-review.md
+  ui-translation-map.md
+  ui-implementation-plan.md
+  ui-visual-qa.md
+  ui-execution-gate.md
+  platform-issues.md
   phase-<PHASE-ID>-<slug>-plan.md
   phase-<PHASE-ID>-execution-gate.md
   parity-results.md
@@ -245,3 +252,18 @@ If Phase 7 is only planned, the latest artifact must be named as a plan and must
 - related flows classified as full parity, partial read-only, accepted gap, blocked, or deferred;
 - residual owner, next action, and whether the residual blocks handoff;
 - explicit statement that reusable implementation patterns such as `direct-table-with-triggers` are not reusable unless the new screen's evidence proves the same route.
+
+## Backend to UI Handoff
+
+Before `ergon-angular-ui-screen-wiring` starts, the screen package must provide:
+
+- `backend-api-handoff.md` or scoped `pilot-handoff.md` with resource/API scope, read/write operation states, allowed and blocked operations, and residual owners;
+- schema evidence for `/schemas/filtered` or the equivalent canonical metadata endpoint consumed by the UI;
+- capabilities, actions, surfaces, HATEOAS links, option-source descriptors, and selected-value reload support needed by the target screen;
+- `ui-contract-checklist.md` or equivalent section showing DTO, FilterDTO, command DTO, option DTO/source, and field-control support;
+- explicit write gate state for create, edit, delete, duplicate, cancel, and any custom workflow action that the UI could expose;
+- known platform gaps in `platform-issues.md` when the UI cannot consume a canonical Praxis contract yet.
+
+If any of these inputs is missing, the UI track must either produce a scoped
+readiness artifact that blocks implementation or return to the backend/API phase
+that owns the gap. Do not compensate with Ergon-local Angular semantics.

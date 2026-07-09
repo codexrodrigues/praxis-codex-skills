@@ -1,11 +1,11 @@
 ---
 name: ergon-migration-orchestration
-description: Orchestrate complex Ergon/Archon legacy-to-Java migrations across ordered phases. Use when Codex must plan, audit, gate, or coordinate screen discovery, table rule audit, read API migration, write API migration, parity testing, handoff artifacts, or when the user asks what phase/skill should run next.
+description: Orchestrate complex Ergon/Archon legacy-to-Praxis migrations across ordered tracks. Use when Codex must plan, audit, gate, or coordinate screen discovery, table rule audit, read/write API migration, UI wiring readiness, dashboard or rule-migration routing, parity testing, handoff artifacts, or when the user asks what phase/skill should run next.
 ---
 
 # Ergon Migration Orchestration
 
-Use this skill as the top-level conductor for Ergon/Archon migrations. It does not replace the specialized skills; it decides the order, required artifacts, phase gates, and next action.
+Use this skill as the top-level conductor for Ergon/Archon migrations. It does not replace the specialized skills; it decides the order, required artifacts, phase gates, and next action. When a phase enters a domain owned by another skill, route to that skill and preserve its gates instead of restating or weakening them here.
 
 ## Core Rule
 
@@ -29,6 +29,17 @@ Every phase closeout must produce a reusable gate packet: final decision, eviden
 Endpoint readiness is not a static-test decision. Do not call an endpoint `Verified` or promote it to handoff solely because unit tests, OpenAPI generation, schema assertions, or mocked service tests passed. For backend API handoff, require executed endpoint evidence plus legacy/API/database comparison with the same user/company/context and filters. If any part was not executed, use a narrower state such as `Implemented with automated tests`, `Schema/static contract passed`, `Executed endpoint smoke`, `Legacy parity pending`, `Blocked`, or `Deferred`.
 
 For write operations, classify the route per operation instead of assuming either generic CRUD or DB-backed by default. The conservative default is: unknown rule, context, route, side effect, or error behavior means `WRITE_DB_BACKED_REQUIRED` or `WRITE_BLOCKED`. Direct table/Praxis CRUD can be approved only as `WRITE_TABLE_DIRECT_SAFE` when Phase 4/5 evidence proves it preserves required behavior, errors, session context, side effects, and parity.
+
+## Track Boundaries
+
+This skill coordinates tracks; it does not make local substitutes for canonical Praxis skills or runtimes.
+
+- **Backend/API Parte 1**: Phases 0-8 cover legacy evidence, platform reuse inventory, read/options API, write audit/contract/implementation, parity, and backend handoff. Use `ergon-archon-screen-discovery`, `ergon-archon-read-api-migration`, `ergon-table-rule-audit`, `ergon-archon-write-api-migration`, `praxis-dto-annotations`, `praxis-java-host-project`, and `praxis-resource-entity-lookup-backend` as required by the phase.
+- **Angular/UI Native Praxis track**: Starts only from a closed backend handoff, scoped pilot handoff, or explicit backend gap package. Use `ergon-angular-ui-screen-wiring` and the general Praxis UI skills it requires. UI work must consume canonical schemas, capabilities, HATEOAS links, actions, surfaces, option sources, and `@praxisui/*` runtime behavior; it must not introduce an Ergon-local action/surface/lookup/form/table runtime.
+- **Dashboard/analytics track**: When the target is dashboard, KPI, cockpit, analytics, charts, stats, or aggregate metrics, route to `ergon-dashboard-praxis-charts` plus `praxis-dashboard-analytics`. Do not model metrics as ordinary screen fields when the canonical analytics contract is required.
+- **Rule migration Parte 2**: Starts only after the relevant Parte 1 baseline is closed and the rule scope has table-rule evidence, read/write boundaries, and parity residuals explicit. Use `ergon-rule-migration-orchestration`; if it finds missing API, write, HADES, shadow-mode, or parity evidence, return to the exact Parte 1 phase that owns the gap.
+
+Every cross-track handoff must state the selected skill, required inputs, expected outputs, residuals carried forward, and the return-to-previous-track rule.
 
 ## Canonical Phase Management Artifacts
 
@@ -134,7 +145,7 @@ checklist.
 
 ## Parte 1 Scope
 
-The Parte 1 scope is generating Java/Spring read and write APIs. This is the only active scope for this orchestration.
+The Parte 1 scope is generating Java/Spring read and write APIs. It is the active backend/API scope for Phases 0-8. UI, dashboard, and rule-migration tracks are coordinated by this orchestration but executed by their specialized skills after the required backend gates are closed.
 
 In this scope:
 
@@ -142,6 +153,7 @@ In this scope:
 - Endpoint readiness means API execution evidence plus legacy/API/database parity.
 - Phase 7 compares the authenticated legacy behavior against implemented endpoints and database effects.
 - Phase 8 produces `backend-api-handoff.md` or `pilot-handoff.md`.
+- After Phase 8, the next recommended track may be Angular/UI wiring, dashboard/analytics materialization, Rule Migration Parte 2, or backend hardening. Choose from the closed gate and residuals; do not continue into UI or rules from an implicit assumption.
 - When a Phase 8 backend screen is intended to become a reusable Praxis
   reference case, require `backend-praxis-reference-audit.md`. If
   `docs/migracao/backend-praxis-reference-quick-guide.md` exists, use it first
@@ -343,8 +355,9 @@ When the user asks "qual proximo passo recomendado?":
 1. Identify current phase from existing artifacts.
 2. Check the gate for that phase.
 3. If gate is open, recommend the smallest action that closes the highest-risk missing artifact.
-4. If gate is closed, recommend the next phase and the first skill/prompt to run.
-5. State whether Java implementation is allowed or blocked.
+4. If gate is closed, recommend the next phase or track and the first skill/prompt to run.
+5. State whether Java implementation, UI wiring, dashboard materialization, or Rule Migration Parte 2 is allowed or blocked.
+6. If more than one track is plausible, pick the one named by the latest gate; otherwise repair the gate before executing work.
 
 When the user says only `continuar`, `seguir`, `ok`, `1`, or `proximo`, treat it as consent to execute the latest gate's recommended next phase if the latest gate is ready. If the latest gate is not ready, explain the blocker and recommend the smallest corrective action.
 
@@ -356,6 +369,29 @@ should close with `ui-execution-gate.md`. If the gate state mentions a
 temporary drawer residual such as `REFERENCE_PARTIAL_PENDING_DRAWER`, carry that
 residual explicitly and do not promote the screen as a final reusable Praxis UI
 reference until the drawer workaround is removed and strict validation passes.
+
+Before starting UI wiring, require the latest backend handoff to name the
+resource/API scope, schemas, capabilities/actions/surfaces, option sources,
+write states, and residual platform gaps. Then route to
+`ergon-angular-ui-screen-wiring`; its native Praxis source audit is mandatory.
+If Angular work discovers that `/schemas/filtered`, actions, surfaces,
+capabilities, option sources, command DTOs, or write gates are missing or wrong,
+return to the owning backend/API phase instead of solving the gap with local UI
+configuration.
+
+When the next step mentions dashboard, KPI, cockpit, chart, analytics, stats,
+aggregate, `@UiAnalytics`, `StatsFieldRegistry`, or chart UX, route to
+`ergon-dashboard-praxis-charts`. Require evidence that the metric is either a
+canonical Praxis analytics projection, a governed aggregate resource, or a
+documented platform follow-up. Do not let screen-level UI composition become the
+source of metric semantics.
+
+When the next step mentions rule migration, Parte 2, HADES rule extraction,
+shadow mode, rule promotion, preflight, rule replay, or legacy containment,
+route to `ergon-rule-migration-orchestration`. Require the relevant Phase 8
+backend baseline, Phase 4/5 table-rule evidence, operation inventory, and
+parity residuals. If any baseline is missing, recommend the precise Parte 1
+phase to repair instead of starting Parte 2.
 
 When the current or recommended next step mentions backend reference case,
 example screen, Praxis exemplar, reusable pilot, or Phase 8 hardening, read

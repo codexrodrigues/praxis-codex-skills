@@ -4,6 +4,9 @@ Use this before handing an investigation to the implementation team.
 
 ## Evidence
 
+- [ ] Fase 0 entry is valid: `migration-plan.md` exists, `phase-0-execution-gate.md` recommends `ergon-archon-screen-discovery`, and the screen code/scope are explicit.
+- [ ] `phase-1-execution-gate.md` exists; a `.prelim.md` draft alone is not treated as handoff-ready.
+- [ ] The discovery mode is stated as Quick discovery, Full discovery, or API migration, with unavailable evidence sources marked Blocked, Partial, Missing, or Not applicable.
 - [ ] Screen code, title, module, navigation path, and final URL are recorded.
 - [ ] Browser status is marked as Complete, Partial, or Missing.
 - [ ] The page was found through the menu/search field when browser access was available.
@@ -17,6 +20,7 @@ Use this before handing an investigation to the implementation team.
 - [ ] Local/runtime XML differences are classified in `cronos-source-of-truth.md` as matched, divergent, blocked, forbidden, not found, or local-only unconfirmed.
 - [ ] `legacy-doc-sources.md` exists when `docs-legado/v7x` is available, with documentation facts separated from implementation evidence.
 - [ ] The searched documentation layers are named explicitly: `java`, `aps`, `EA`, `help`, `docs/Interno`, `workflow`, `forms`, `reports`, `web`/portal, and customizations when relevant.
+- [ ] No documentation-only fact is promoted to API readiness unless it is tied to browser/runtime, XML/debug, local source, Oracle metadata, or an accepted deferral.
 - [ ] `component-lineage-matrix.md` maps each relevant XML/debug component to functional role, SQL/action/link, binds/hidden keys, API translation, resource/endpoint candidate, DTO/FilterDTO/OptionDTO/CommandDTO impact, readiness, and blocking checks.
 - [ ] Layout-only/static components are marked `Not API`; the package does not create one endpoint per visual component.
 - [ ] `closure-checklist.md` states whether the screen is Open, Ready for read API, Ready for write API, or Deferred.

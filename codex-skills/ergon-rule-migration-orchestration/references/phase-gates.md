@@ -14,11 +14,40 @@ Every phase must validate that the same identity appears in code, artifacts, evi
 
 If Java code reports `screen=ERGadm00189`, do not evaluate or close that rule from `docs/migracao/ERGadm00033/`. A screen/resource/rule mismatch blocks phase closeout until the artifact location or matrix row is corrected.
 
+## Canonical Decision Gate
+
+Every Parte 2 phase that proposes a new rule contract, error envelope, feature
+flag, config/registry state, metadata field, UI capability, dashboard behavior,
+or reusable runtime abstraction must update
+`rule-canonical-decision-inventory.md` before code or promotion work.
+
+Close only when:
+
+- existing Praxis metadata/config/API/UI knowledge is inventoried;
+- each proposed change is classified as `ja-suportado-so-ux`,
+  `ja-suportado-mal-nomeado-ou-mal-materializado`,
+  `suportado-parcialmente`, or `lacuna-real-de-contrato`;
+- the canonical owner is named;
+- any real contract gap states the missing UX/API/runtime behavior, impacted
+  consumers, derived artifacts, and minimum validation;
+- no UI, dashboard, workflow, or host-local adapter is the primary source of
+  rule semantics.
+
+Blocking gaps:
+
+- rule behavior is routed by keywords, labels, regexes, aliases, XML names, or
+  table-name heuristics as the primary decision mechanism;
+- a local UI/config/feature-flag workaround is introduced while an existing
+  Praxis contract could express or materialize the rule state;
+- a new contract is proposed without first classifying existing platform
+  support.
+
 ## Phase 9 - Rule Migration Intake
 
 Required outputs:
 
 - `rule-migration-intake.md`
+- `rule-canonical-decision-inventory.md`
 - initial `rule-traceability-matrix.md`
 - `phase-9-execution-gate.md`
 
@@ -27,6 +56,8 @@ Close only when:
 - Parte 1 baseline artifacts are present or missing gaps are explicitly mapped to Parte 1;
 - eligible and excluded operations are listed;
 - approved baseline route (`WRITE_DB_BACKED_REQUIRED` or `WRITE_TABLE_DIRECT_SAFE`) and parity baseline are linked;
+- UI/dashboard/workflow consumer gates are checked when the rule can be exposed outside the backend route;
+- canonical decision owner and support classification are recorded;
 - intake decision is recorded.
 
 ## Phase 10 - Rule Inventory

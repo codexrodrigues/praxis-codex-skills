@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ergon Archon Write API Migration"
+  short_description: "Migrate governed Ergon write APIs"
+  default_prompt: "Use $ergon-archon-write-api-migration to design, gate, implement, and verify a legacy-backed Ergon write API from closed discovery, read API, and table-rule evidence."
+
+policy:
+  allow_implicit_invocation: true

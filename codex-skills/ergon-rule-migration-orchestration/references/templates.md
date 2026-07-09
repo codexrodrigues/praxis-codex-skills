@@ -30,6 +30,12 @@ Copy these templates into `docs/migracao/<SCREEN>/rule-migration/` and fill them
 | write-parity-matrix.md |  |  |  |
 | parity-results.md |  |  |  |
 | pilot-handoff.md |  |  |  |
+| ui-execution-gate.md, if UI-exposed |  |  |  |
+
+## Canonical Decision Inventory
+
+| Proposed change | Existing Praxis support | Classification | Canonical owner | Decision |
+| --- | --- | --- | --- | --- |
 
 ## Eligible Operations
 
@@ -144,6 +150,45 @@ State whether code implementation may start. If implementation is not explicitly
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ```
 
+## `rule-canonical-decision-inventory.md`
+
+```markdown
+# <SCREEN> Rule Canonical Decision Inventory
+
+## Scope
+
+| Item | Value |
+| --- | --- |
+| Screen |  |
+| Operation(s) |  |
+| Rule slice |  |
+| Parte 1 baseline |  |
+
+## Existing Praxis Knowledge
+
+| Surface | Evidence | Gap or materialization issue |
+| --- | --- | --- |
+| Metadata/schema/capabilities/actions/surfaces |  |  |
+| Config/registry/templates/ETag/authoring state |  |  |
+| API error envelope/feature flags/observability |  |  |
+| UI/dashboard/workflow consumer gates |  |  |
+
+## Proposed Changes
+
+| Proposed change | Classification | Canonical owner | Impacted consumers | Minimum validation |
+| --- | --- | --- | --- | --- |
+
+Allowed classifications: `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, `lacuna-real-de-contrato`.
+
+## Decision Boundary
+
+State whether the rule remains DB-backed, can enter shadow, can enter guarded preflight, can become authoritative for a precise boundary, remains retained defense, is deferred, or is blocked.
+
+## Local Source Check
+
+State explicitly that no UI, dashboard, workflow, host-local adapter, label list, regex, alias table, XML name, or table-name heuristic is the primary source of the rule decision.
+```
+
 ## `phase-<PHASE-ID>-execution-gate.md`
 
 ```markdown
@@ -170,6 +215,15 @@ State one of: `Open`, `Blocked`, `Ready for next phase`, `Ready for next phase w
 
 | Artifact | Status | Link |
 | --- | --- | --- |
+
+## Canonical Decision Inventory
+
+| Item | Value |
+| --- | --- |
+| Inventory status |  |
+| New contract needed? |  |
+| Canonical owner |  |
+| Local semantic workaround present? | No |
 
 ## Rule Status Changes
 

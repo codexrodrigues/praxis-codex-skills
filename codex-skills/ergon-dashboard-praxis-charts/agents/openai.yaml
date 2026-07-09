@@ -1,4 +1,4 @@
 interface:
   display_name: "Ergon Dashboard Praxis Charts"
-  short_description: "Materializar dashboards Ergon com Praxis Charts."
-  default_prompt: "Use $ergon-dashboard-praxis-charts para evoluir o Cockpit Executivo Ergon com contratos x-ui.chart, catalogo de dashboard e componentes Praxis Charts."
+  short_description: "Materializar dashboards Ergon com contratos Praxis Charts canonicos."
+  default_prompt: "Use $ergon-dashboard-praxis-charts para evoluir o Cockpit Executivo Ergon com x-ui.chart canonico, catalogo governado, load policies e componentes @praxisui/charts."
