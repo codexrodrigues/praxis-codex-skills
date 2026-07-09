@@ -14,6 +14,13 @@ Use this skill to design dashboard APIs that stay native to `praxis-metadata-sta
 - `praxis-resource-entity-lookup-backend` when chart filters use `OptionSourceRegistry`, `RESOURCE_ENTITY`, `LIGHT_LOOKUP`, or `DISTINCT_DIMENSION`.
 - `praxis-ui-product-design` when dashboard visual quality or UX is in scope.
 
+Before changing this skill or implementing a dashboard, inspect the resolved starter/source for
+`StatsFieldRegistry`, `StatsFieldDescriptor`, `StatsSupportMode`, stats request/response DTOs,
+`@UiAnalytics`, `UiAnalyticsOpenApiCustomizer`, option-source descriptors, capabilities, export,
+`/schemas/filtered`, `/schemas/catalog`, and a representative reference-host analytics resource
+when available. The goal is to model what Praxis already publishes before adding custom dashboard
+contracts.
+
 ## Classification
 
 Classify work before editing:
@@ -30,6 +37,12 @@ For `contrato-publico` or `arquitetural`, map impacted consumers, OpenAPI, schem
 Prefer a Praxis read-only aggregate resource when the dashboard panel can be represented as one analytic dataset with fields, filters, dimensions, and metrics.
 
 Use a custom dashboard endpoint only when the response composes several resources, expresses product layout, returns cross-resource KPIs, reports load status, or generates a composed executive artifact.
+
+First inventory whether the need is already supported by resource `/filter`, `/stats/*`,
+`StatsFieldRegistry`, `@UiAnalytics`, option sources, capabilities, collection export, surfaces, or
+catalog/domain metadata. Classify the gap as already supported but missing in UX, supported but
+poorly materialized, partial support, or a real contract gap. Only a real contract gap justifies a
+new public dashboard endpoint or starter contract.
 
 Default split:
 
@@ -51,7 +64,6 @@ Default split:
 Create aggregate read-only resources with stable paths and keys:
 
 ```java
-@RestController
 @ApiResource(
         value = ApiPaths.Dashboard.VINCULOS_AGREGADOS,
         resourceKey = "dashboard.vinculos-agregados"
@@ -63,6 +75,10 @@ public class VinculoAgregadoController extends AbstractReadOnlyResourceControlle
         VinculoAgregadoFilterDTO> {
 }
 ```
+
+Do not add `@RestController` by reflex when the resolved starter's `@ApiResource` already supplies
+the controller/request-mapping semantics. Keep extra stereotypes only when the target host version
+or local base pattern explicitly requires them.
 
 Expected resource operations:
 
@@ -174,6 +190,11 @@ Model:
 
 Keep `@UiAnalytics` honest: declare projections only for operations backed by real stats support and tests.
 
+`@UiAnalytics` publishes `x-ui.analytics.projections` on real OpenAPI operations. It is not a
+dashboard manifest, not a second schema source, and not a place to invent metrics, SQL, filters, or
+layout unavailable from the stats operation. Bind projection fields only to `StatsFieldRegistry`
+fields and DTO semantics that are executable by the resource.
+
 For chart-discoverable resources, assert that `/schemas/filtered` response schemas publish `x-ui.analytics.projections` with ids, bindings, defaults, presentation families, sort, drill-down, and granularity where applicable.
 
 In `praxis-metadata-starter` `8.0.0-rc.24`, the first runtime resolution of grouped OpenAPI for `/schemas/filtered` response schemas can be slow while the group document is initialized and cached. Use a smoke timeout of at least 60 seconds for the first analytics schema pass, then rely on cached calls for faster repeat checks.
@@ -196,6 +217,11 @@ Required rules:
 
 Do not publish provider details, SQL, table names, internal package/procedure names, tenant context, or private bind parameters through `x-ui`, `@UISchema.extraProperties`, option source metadata, or `OptionDTO.extra`.
 
+For AI-authored dashboards, do not route dashboard intent by keywords such as "ranking", "trend",
+or "pie" inside the host. Expose semantic resources, stats capabilities, analytics projections,
+catalog/domain metadata, and option-source contracts so the governed authoring flow can resolve the
+intent semantically and then ground it against executable stats operations.
+
 ## Custom Dashboard Endpoints
 
 Keep custom endpoints thin and compositional:
@@ -217,6 +243,11 @@ Guidelines:
 - composed PDF/export may remain custom when it crosses multiple resources.
 
 Do not duplicate `/stats/*` or `/filter` behavior in custom dashboard endpoints unless a real product response shape requires it.
+
+Custom dashboard endpoints may materialize product composition, first-viewport summaries, load
+freshness, or cross-resource capabilities, but they must link back to canonical resource paths,
+operation names, schema links, capabilities, and option sources. They should not hide unsupported
+stats or turn SQL/provider internals into public dashboard contract.
 
 ## Legacy-Backed Hosts
 
@@ -247,6 +278,12 @@ Minimum validation for a dashboard resource:
 - no leaked private fields in schema, response, option metadata, or errors;
 - aggregate parity check against the legacy/source dataset for at least one period.
 
+Schema smokes can run against an isolated H2/test datasource when they only assert OpenAPI,
+`/schemas/filtered`, catalog links, `x-ui.analytics`, and option-source metadata. Content smokes
+that expect non-empty buckets, points, or option lists require seeded fixture data or the approved
+published/local reference database; do not treat an empty H2 dataset failure as proof that the
+dashboard contract is broken without checking data setup.
+
 When validation is partial, report exactly which endpoints were executed and which remain planned.
 
 ## Iteration During Implementation
@@ -275,3 +312,6 @@ When updating, keep `SKILL.md` concise and move version-specific observations to
 Read `references/praxis-metadata-starter-8-rc24.md` when you need confirmed classes, methods, or endpoint families observed in `praxis-metadata-starter` `8.0.0-rc.24`.
 
 Read `references/quickstart-dashboard-patterns.md` when you need concrete reference-host patterns from `praxis-api-quickstart`, especially payroll analytics, `@UiAnalytics`, multi-metric stats, option-source dependencies, and smoke test shapes.
+
+Treat references as versioned evidence, not the current source of truth. When local starter or
+quickstart source is available, prefer the current source/tests over older reference notes.

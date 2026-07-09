@@ -13,6 +13,13 @@ Do not use this skill as the primary workflow for `@praxisui/dynamic-fields` dis
 
 This skill is not a generic frontend-design workflow. For Praxis, the canonical contract and the authoring round-trip matter more than local UI polish. The main question is not "can the user edit it?" but "does the editor express the canonical document correctly, persist it correctly, and survive reopen/reset without drift?"
 
+Before changing this skill or implementing an authoring editor, inspect the current source for the
+involved runtime and editor path instead of relying on memory. For widget input editors, this means
+the component `ComponentDocMeta`, `configEditor`, `authoringManifestRef`, widget config editor,
+editor-capability helpers, focused editor specs, AI manifest/context pack when present, i18n files,
+and the host that opens the editor. The goal is to encode working Praxis platform knowledge into the
+skill, not only document a UI convention.
+
 ## Primary Component Map
 
 Use the real component family of the task, not a generic "editor changed" label.
@@ -62,11 +69,26 @@ For `@praxisui/dynamic-form` field metadata, local/transient submit semantics ar
 - `SettingsPanelBridge`, `SettingsValueProvider`, and `Apply` / `Save` / `Reset` / `Cancel` are part of the contract.
 - Consumer libs own the semantics of the config document they edit.
 - Component input editors for dynamic widgets must be published by the owning lib through `ComponentDocMeta.configEditor`. Hosts such as `@praxisui/page-builder` should discover and open that editor via metadata instead of creating local editors for another lib's semantics.
+- Widget config editors opened by a host should emit the owning component's canonical input patch or
+  authoring document shape. When the component metadata exposes `inputPatch`, `configPatchChange`,
+  `savedPatch`, or similar host-facing outputs, preserve that shape through
+  `SettingsValueProvider.getSettingsValue()`/`onSave()` instead of inventing a host-local wrapper.
+- If the component has `ComponentDocMeta.authoringManifestRef`, keep the visual editor, manifest
+  operations, component capabilities, and config editor specs aligned. The visual editor is not a
+  substitute for the manifest, and the manifest is not proof that the visual round-trip works.
 - `@praxisui/metadata-editor` owns structural metadata authoring concerns such as dynamic renderer coverage, schema normalization, contextual hints, and cascade flows.
 - For option-source cascades, treat `x-ui.optionSource.dependsOn` and `x-ui.optionSource.dependencyFilterMap` as the canonical backend/editor shape, and `dependencyFields`/`dependencyFilterMap` as runtime/manual metadata. Do not silently migrate persistence between those shapes unless the task explicitly includes an authoring migration; a form cascade editor may hydrate from the canonical shape while preserving its existing save contract.
 - For global app actions in authored configs, the canonical persisted shape is `globalAction: { actionId, payload?, payloadExpr?, meta? }` and execution goes through `GlobalActionService.executeRef(...)`. Keep `action` for local component/host events only. Do not persist or reintroduce command strings such as `showAlert:...`, `openUrl:...`, `navigate:...`, `apiCall:...`, or `surface.open:{...}`.
 - When visual authoring edits a `globalAction` payload, reuse the canonical `GlobalActionUiSchema`/`getGlobalActionUiSchema(...)` field model and shared global-action authoring helpers where available. Do not leave required payloads as JSON-only fields when the platform already exposes structured fields such as `dialog.alert.message`; the editor may keep an advanced JSON escape hatch, but the primary path must produce the canonical `GlobalActionRef` shape and validate required payloads before apply/save.
 - Internal authoring chrome is platform text. Labels, placeholders, helper text, section titles, tab titles, empty states, and fallback messages must follow the lib i18n path instead of hardcoded literals.
+- Domain Catalog, governance, and semantic context are grounding inputs for authoring decisions, not
+  rules to copy into local `FormConfig`, table config, or CRUD metadata. Persist lightweight
+  references/probes only when the owning contract declares that shape, such as
+  `queryContext.meta.domainCatalog`; do not materialize shared governance rules into component JSON
+  as a shortcut.
+- Composed editors such as CRUD must delegate child semantics to their owners. Form layout,
+  `FieldMetadata`, validation rules, and table columns belong to the dynamic-form, metadata-editor,
+  or table contracts; the composed editor should bind/delegate rather than redefine those contracts.
 - When a public authoring surface changes, also review the canonical lib artifacts that govern it: `README.md`, `src/public-api.ts`, and the subarea docs called out by the local `AGENTS.md`.
 - Structural panel problems should be fixed in `@praxisui/settings-panel`, not reimplemented in each consumer editor.
 
@@ -123,7 +145,13 @@ If the owner is unclear, load `references/scope-boundaries.md` and `references/o
    - the consumer lib editor
    - `@praxisui/metadata-editor`
    - `praxis-dynamic-fields-editorial` instead of this skill
-5. Check whether the change affects:
+5. For widget-hosted editors, verify the owning component metadata and host contract:
+   - `ComponentDocMeta.configEditor`
+   - `authoringManifestRef` when present
+   - `SettingsValueProvider` output shape
+   - host-facing `inputPatch`/saved patch outputs
+   - focused editor-capability specs
+6. Check whether the change affects:
    - field visibility
    - field editability
    - labels or internal authoring text
@@ -134,8 +162,8 @@ If the owner is unclear, load `references/scope-boundaries.md` and `references/o
    - partial save behavior
    - schema normalization or metadata coverage
    - docs or `public-api` governed by the canonical lib
-6. If the task creates or significantly expands an editor, load `references/new-editor-checklist.md`.
-7. Run the smallest reliable round-trip validation for that component family.
+7. If the task creates or significantly expands an editor, load `references/new-editor-checklist.md`.
+8. Run the smallest reliable round-trip validation for that component family.
 
 ## When Creating A New Editor
 
@@ -153,6 +181,8 @@ Minimum expectations for a new editor:
 - reopening the editor reloads the same value without silent normalization drift
 - runtime consumes the saved document without adapter-only hacks
 - i18n and governed docs/public API are reviewed when the surface is public
+- widget-hosted editors preserve the canonical `inputPatch`/authoring document shape expected by
+  page-builder or the host that opened the editor
 
 If the runtime cannot already consume the intended semantics, fix the canonical runtime contract first instead of building a compensating editor.
 
@@ -168,6 +198,8 @@ Before considering the task complete, verify:
 - New or changed internal authoring text still follows the workspace i18n rules instead of hardcoded literals.
 - If the change touched a governed authoring surface, the canonical `README`, `public-api`, or subarea docs were reviewed for sync.
 - If the task created a new editor surface, the editor owner and canonical document shape are now discoverable in the code and docs of the owning lib.
+- For widget-hosted editors, the host receives the same canonical input patch or authoring document
+  shape on apply/save that the owning component documents and tests.
 
 ## Agentic Manifest Checks
 

@@ -9,11 +9,34 @@ Use this skill as the top-level conductor for Parte 2 - Migracao Progressiva de 
 
 ## Core Rule
 
+Treat rule migration as governed decision migration, not as a mechanical PL/SQL-to-Java rewrite. The legacy route is the approved parity authority and evidence source; the target platform shape should be a canonical, observable, reversible decision boundary that can later be materialized through Praxis metadata, config/authoring, runtime services, UI capabilities, and API responses.
+
 Apply the root migration `AGENTS.md` when Parte 2 introduces or changes public
 runtime contracts, rule APIs, error envelopes, feature flags, or migration
 documents. Do not expose HADES, SQL, `ROWID`, empresa, usuario, perfil,
 package names, or session context as public API metadata while moving rules
 toward Java.
+
+Before creating a new rule contract, rule API, feature flag, error envelope,
+metadata field, action, surface, or UI affordance, inventory what Praxis already
+knows but has not materialized correctly. Classify each need as
+`ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`,
+`suportado-parcialmente`, or `lacuna-real-de-contrato`. Only
+`lacuna-real-de-contrato` justifies a new platform contract; otherwise fix the
+canonical owner or materialization.
+
+Use the canonical owner map when a rule becomes platform behavior:
+`praxis-config-starter` is the natural boundary for governed semantic decision
+authoring, simulation, approval, publication, templates, registry state, ETag,
+and materialization contracts; `praxis-metadata-starter` owns resource
+metadata, schemas, capabilities, HATEOAS links, actions, surfaces, and
+operation/schema resolution; `praxis-ui-angular` consumes materialized
+decisions and must not become the primary rule source.
+
+Do not route rule intent, UI actions, rule selection, or promotion boundaries by
+keywords, labels, regexes, aliases, XML names, or table-name heuristics. Textual
+matching may rank candidates only after the target screen, operation, rule, and
+canonical artifact scope have been resolved from governed evidence.
 
 Never let Parte 2 correct, complete, or contradict Parte 1 silently. If rule migration discovers missing baseline evidence, return to the correct Parte 1 phase before proceeding.
 
@@ -31,6 +54,12 @@ No rule can advance to shadow, preflight, or promotion without:
 For every operation under Parte 2, the orchestrator must be able to answer or explicitly block on this canonical question: which legacy rules exist for this operation, where each rule comes from, in what known order they execute, whether each one is product/client/security/side-effect/unknown, and what HADES activates, bypasses, orders, or leaves unknown. If any part is unknown, do not infer it; route to Phase 10/11/12, `ergon-table-rule-audit`, or the appropriate Parte 1 return.
 
 If Parte 1 uses `WRITE_TABLE_DIRECT_SAFE` instead of DB-backed for an operation, validate that `write-route-decision.md`, `write-contract.md`, `write-parity-matrix.md`, `parity-results.md`, and the handoff all carry that state explicitly. If the operation is only `WRITE_TABLE_DIRECT_CANDIDATE`, Parte 2 must not start for rule migration on that operation.
+
+If a UI, dashboard, workflow, or external consumer can expose the operation
+whose rule is migrating, validate the latest UI/dashboard/handoff gate before
+advancing. A UI must not expose a preflight, promoted, blocked, or deferred rule
+as a local capability; it must consume the canonical API/metadata/config state
+or return to Parte 1/UI wiring for repair.
 
 Do not make legacy fallback the permanent conceptual model for new rule runtime code. Treat DB-backed behavior as a current baseline/authority and historical parity source. For reusable abstractions, prefer neutral names such as `RuleExecutionMode`, `RuleExecutionTarget`, `RuleAuthority`, `RuleDecisionPlan`, `RuleEvaluationResult`, and `RuleObservation`. Avoid new long-lived names such as `LegacyFallback`, `LegacyRuleEngine`, `OracleRuleRuntime`, or `HadesRuleEngine`. Parte 2 must not be blocked by TemporalIO, DSL, or workflow orchestration, but new contracts should be DSL-ready and TemporalIO-ready for later phases.
 
@@ -56,6 +85,7 @@ Use `docs/migracao/<SCREEN>/rule-migration/` for Parte 2 artifacts.
 Always maintain:
 
 - `rule-migration-intake.md`
+- `rule-canonical-decision-inventory.md`
 - `rule-traceability-matrix.md`
 - `phase-<PHASE-ID>-execution-gate.md`
 
@@ -102,7 +132,7 @@ Before closing any phase, validate cross-artifact identity: screen/transaction, 
 
 1. Identify the target screen, operation, and current Parte 2 phase.
 2. Read `references/part-1-baseline-contract.md` and validate required Parte 1 inputs.
-3. Create or update `rule-migration-intake.md` and `rule-traceability-matrix.md`.
+3. Create or update `rule-migration-intake.md`, `rule-canonical-decision-inventory.md`, and `rule-traceability-matrix.md`.
 4. If baseline evidence is missing, use `references/return-to-part-1.md` and stop Parte 2 advancement.
 5. If the baseline is sufficient, route the work to the appropriate Parte 2 skill or phase:
    - inventory and classification;

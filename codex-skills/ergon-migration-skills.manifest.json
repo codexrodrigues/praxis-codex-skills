@@ -13,12 +13,22 @@
                        "status":  "active",
                        "compatibility":  "0.x",
                        "dependencies":  [
+                                            "ergon-migration-orchestration",
+                                            "ergon-archon-screen-discovery",
+                                            "ergon-archon-read-api-migration",
+                                            "ergon-archon-write-api-migration",
+                                            "ergon-fieldspec-ui-contract",
+                                            "praxis-angular-host-project",
+                                            "praxis-component-minimums",
+                                            "praxis-rich-crud-screen-authoring",
                                             "praxis-ui-product-design",
                                             "praxis-authoring-editors",
-                                            "praxis-dynamic-fields-editorial"
+                                            "praxis-dynamic-fields-editorial",
+                                            "praxis-dto-annotations",
+                                            "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "2FC6458B8360B8DA74FD3208EA29136570E276664883E3FD3ACCEF7545111670",
-                       "treeSha256":  "1BB4FA6DB8BB8DFEFBC96232898342ACB6A342444EEC25916EB3BF49853EE429"
+                       "skillMdSha256":  "6455277C6816F7F92AC92F08D7B086E0C74FB4A28C0BB73283242F7FC21F53D9",
+                       "treeSha256":  "0347859A8B308F401F962D32755D4B131443B74CCD7DA12B2C03DDF403684F9F"
                    },
                    {
                        "name":  "ergon-archon-read-api-migration",
@@ -27,12 +37,13 @@
                        "status":  "active",
                        "compatibility":  "0.x",
                        "dependencies":  [
+                                            "ergon-fieldspec-ui-contract",
                                             "praxis-dto-annotations",
                                             "praxis-java-host-project",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "DCF4CC954E07D832CBB9AE6A705DD754FD231D0ED6FA7F0F495018313037A0FF",
-                       "treeSha256":  "E1E0B78ED2D631A05F148536C7A4B594F15A3E49FC4888F61533549619A36BE7"
+                       "skillMdSha256":  "EEAC51C5A05C64DE478A5BF99EA1461944C4DE1181A2FB58DBD844025A41B7E2",
+                       "treeSha256":  "E531AC3DB75CE6B224F90946D4ECC380943630864EDD32B2B97E94236AED2AEB"
                    },
                    {
                        "name":  "ergon-archon-screen-discovery",
@@ -43,8 +54,8 @@
                        "dependencies":  [
 
                                         ],
-                       "skillMdSha256":  "5E74D343690DFEDE8B74DF1CB78F6D29F04A4119CFA3F39238C8D1413A206F3F",
-                       "treeSha256":  "70702084BA1DF13869A7E1CE1AD76A01644DE3AD6A627E58E4FB99F0AF3D7A39"
+                       "skillMdSha256":  "5CFBFE3FC512D6FCB833C0467E4CB6C5F42C58F44ADB0BB9074393DBD5CCA87D",
+                       "treeSha256":  "133C248D6D17E3F051F9DD3C417DEF963DC584128F92BAC459778F376D92A971"
                    },
                    {
                        "name":  "ergon-archon-write-api-migration",
@@ -53,12 +64,16 @@
                        "status":  "active",
                        "compatibility":  "0.x",
                        "dependencies":  [
+                                            "ergon-archon-screen-discovery",
+                                            "ergon-archon-read-api-migration",
                                             "ergon-table-rule-audit",
+                                            "ergon-fieldspec-ui-contract",
                                             "praxis-dto-annotations",
-                                            "praxis-java-host-project"
+                                            "praxis-java-host-project",
+                                            "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "6C17163B5668D6AAF63C48481D8CF5E3937AC0540F72B4390060965A52D4CB2E",
-                       "treeSha256":  "34B88EE3A95E31EDBD3A9D30D827EAF07EF58E2B082474E06887721BD15464B8"
+                       "skillMdSha256":  "7C06C6566290A47AE35B714C92662BEC233C98C6AF79BFA80CFD7694B06368E2",
+                       "treeSha256":  "B9CBC68CF3FC0C23E32C728B76FE703043A85FD0A78EDBA9D1DF868DD327E41A"
                    },
                    {
                        "name":  "ergon-dashboard-praxis-charts",
@@ -68,10 +83,13 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                             "praxis-dashboard-analytics",
-                                            "praxis-dto-annotations"
+                                            "praxis-angular-host-project",
+                                            "praxis-ui-product-design",
+                                            "praxis-dto-annotations",
+                                            "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "103841D53E8BB2FD49E48F8CF5E2E74FF1C18EA2541DABF0BE7CEDF85C395C35",
-                       "treeSha256":  "36913DCF912AE9355B07B8435EBCCD51846C346A7843135D6E6E2ACCE2C2EFA8"
+                       "skillMdSha256":  "3B2431DC4CF2D5BC2B16E0391674139465509DD4A6B05713C8CCD1E71D54BF00",
+                       "treeSha256":  "4480A1BC454C3EBE2A0EB3D9AEA9920100F8C9D17E9A876BACE5A5A6E32B1A02"
                    },
                    {
                        "name":  "ergon-fieldspec-ui-contract",
@@ -81,10 +99,11 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                             "praxis-dto-annotations",
-                                            "praxis-dynamic-fields-editorial"
+                                            "praxis-dynamic-fields-editorial",
+                                            "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "9717779874AF12C5C23B19109F8DE6F9B64AD617A3B36D7A51611A33EAB17EBD",
-                       "treeSha256":  "1F59BEBD9BB94BFA1200AD6B10618876B2E8F7192AAF116BD578EA02B1121F08"
+                       "skillMdSha256":  "4B0E52263D3EAC020A180400122BEE8DF57EF827B41767F15321249B987E04F3",
+                       "treeSha256":  "DD8CD9A8B61B0BE594933D79FF4EF2C0ABE043D1DBD956DA7ED8613824FC38C3"
                    },
                    {
                        "name":  "ergon-migration-orchestration",
@@ -99,10 +118,15 @@
                                             "ergon-archon-write-api-migration",
                                             "praxis-dto-annotations",
                                             "praxis-java-host-project",
-                                            "praxis-resource-entity-lookup-backend"
+                                            "praxis-resource-entity-lookup-backend",
+                                            "ergon-dashboard-praxis-charts",
+                                            "ergon-fieldspec-ui-contract",
+                                            "praxis-dashboard-analytics",
+                                            "praxis-angular-host-project",
+                                            "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "FB76F23F8C9A7C7204D078655E6F8F6EAA364C4E45A4A99102C28117CBF25689",
-                       "treeSha256":  "33C24F94222921D63F0A1DB590CFA855BFD4F80948CC3397A4663E67567218D9"
+                       "skillMdSha256":  "4526285135698479B645E5FD148BD8BCF871BB12EC6FA4AB8B6293C58B1BB2CD",
+                       "treeSha256":  "8646C6908940B9962608592A43B515575892927D729D6EFB9B5CAEBADE2DFA99"
                    },
                    {
                        "name":  "ergon-rule-migration-orchestration",
@@ -112,10 +136,16 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                             "ergon-migration-orchestration",
-                                            "ergon-table-rule-audit"
+                                            "ergon-table-rule-audit",
+                                            "ergon-archon-read-api-migration",
+                                            "ergon-archon-write-api-migration",
+                                            "ergon-fieldspec-ui-contract",
+                                            "praxis-dto-annotations",
+                                            "praxis-java-host-project",
+                                            "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "54046DA39485FC5AEE009FEB61BAE43736D8D029492EFED9551C147E3AB3FFC0",
-                       "treeSha256":  "E48D42EC86BB122B8851A6808D6922AA4DC860F986ABB385F8600C65A5E4F4DF"
+                       "skillMdSha256":  "72ED72F85990FAF27730677B7D0F20F0F53BC072BFDA802D81525DD126D0B19F",
+                       "treeSha256":  "8544D8A12037EC09869ADA3AE7DAE03BC6BA45EBF10E6A688E366B33F0DC1213"
                    },
                    {
                        "name":  "ergon-table-rule-audit",
@@ -126,8 +156,8 @@
                        "dependencies":  [
 
                                         ],
-                       "skillMdSha256":  "49362DEF8D31EC05A84B6CFFF15C193B1451BE4DFB559ED1DCABC26D377319C4",
-                       "treeSha256":  "199739B0011D8320BCFD440E47056970DC4BEF6BE220D9502F0FB35E8C1F8853"
+                       "skillMdSha256":  "B34B9E0951A319BE78C032878C708E07D8490F33699A3A483E28B81730908C73",
+                       "treeSha256":  "1974560BECEA221DD1C0BE2AE1375EE80B542A123234438690ED4001C7436492"
                    }
                ]
 }

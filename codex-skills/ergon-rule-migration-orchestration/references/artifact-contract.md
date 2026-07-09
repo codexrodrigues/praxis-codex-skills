@@ -47,10 +47,33 @@ Required columns:
 | Return to Parte 1 | Phase and trigger condition. |
 | Status | Rule-level status from `status-taxonomy.md`. |
 
+### `rule-canonical-decision-inventory.md` - Canonical Decision Inventory
+
+Records whether the target behavior is already represented by Praxis platform
+semantics before Parte 2 creates or changes a contract.
+
+Required sections:
+
+- target screen, operation, rule slice, and Parte 1 baseline link;
+- existing Praxis metadata/config/API/UI evidence, including schemas,
+  capabilities, actions, surfaces, HATEOAS links, config/registry/template
+  state, error envelope, feature flag, observability, and consumer UI gates;
+- one classification per proposed platform change:
+  `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`,
+  `suportado-parcialmente`, or `lacuna-real-de-contrato`;
+- canonical owner for each needed change: `praxis-config-starter`,
+  `praxis-metadata-starter`, `praxis-ui-angular`, backend API resource,
+  migration artifact only, or blocked;
+- decision boundary: DB-backed, shadow, preflight, authoritative, retained
+  defense, deferred, or blocked;
+- explicit statement that no UI, dashboard, workflow, or host-local adapter is
+  acting as the primary source of the rule.
+
 ## Phase Artifacts
 
 | Artifact | Purpose |
 | --- | --- |
+| `rule-canonical-decision-inventory.md` | Existing platform knowledge, canonical owner, support classification, and whether a real contract gap exists before new rule contracts are introduced. |
 | `rule-inventory.md` | Detailed rules extracted from Parte 1 audits and source. |
 | `rule-dependency-graph.md` | Nested calls, packages, functions, tables, HADES, and side-effect graph. |
 | `hades-rule-chain.sql` | Read-only SQL used to classify scoped HADES routines. |
@@ -80,6 +103,7 @@ Required sections:
 - scope;
 - evidence executed;
 - artifacts updated;
+- canonical decision inventory status;
 - rule statuses changed;
 - residual issues;
 - return-to-Parte-1 triggers;

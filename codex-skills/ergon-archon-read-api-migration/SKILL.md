@@ -43,6 +43,20 @@ This is the read API phase.
 
 If discovery artifacts are missing, `closure-checklist.md` is not closed as `Ready for read API`, `Read handoff ready; write deferred`, or an equivalent read-ready state for the intended slice, or the read gate is open, return to `ergon-archon-screen-discovery`.
 
+## Phase Entry Gate
+
+Before editing Java, prove the handoff is not still discovery or contract design:
+
+- Phase 1 has `phase-1-execution-gate.md`, `closure-checklist.md`, `operation-inventory.md`, `component-lineage-matrix.md`, `read-parity-matrix.md`, and `platform-reuse-inventory.md` or equivalent reuse decisions.
+- The target endpoint is marked `Required Now` or `Ready for implementation`, not merely `Candidate`.
+- `api-contract.md` records the `praxis-dto-annotations`, `ergon-fieldspec-ui-contract`, `praxis-java-host-project`, and, when applicable, `praxis-resource-entity-lookup-backend` reviews.
+- Read-only scope is explicit for visible write operations: create, edit, delete, duplicate, legal documents, publications, pending flows, and cancel/reset are omitted, blocked, 405/501, or deferred with owner and follow-up.
+- Same-connection context, server-side authorization/scope, stable public key, filter predicates, options, schemas, and parity cases are closed or explicitly blocked/deferred.
+
+If any item is missing, do not implement a local Java endpoint as a shortcut. Return to the owning phase or mark the read endpoint `Blocked`.
+
+Use the term `same-connection context` in the gate artifact when Oracle package/session state must be set and cleaned on the same physical connection that executes the read query.
+
 ## Required Inputs
 
 Before using this skill, verify the screen package has:
@@ -173,6 +187,8 @@ When the legacy screen uses authorization helpers such as `MOSTRA_FREQ(flag_pack
 Do not treat a new read endpoint as closed until backend read contracts, minimal automated backend tests, executed endpoint smoke/parity evidence, and explicit write blocking are recorded.
 
 After read/options implementation, expect executed endpoint evidence and Phase 7 Quality Round 2 before final backend/pilot handoff. The agent should operate the authenticated legacy screen, execute representative filters, detail selection, selected-value reload, and option searches, then compare them with `POST /filter`, `GET /{id}`, `/by-ids`, and `/options/*`. Record the comparison in `quality-round-2.md`; API tests alone are not a substitute for this browser-vs-endpoint pass.
+
+At minimum, the executed evidence must include the exact HTTP method/path, request payload, response status, response wrapper shape, representative id/key fields, row/option counts, option labels, `/schemas/filtered` `x-ui` metadata, capabilities/actions when scoped, and the user/company/session context used by the shared legacy bridge. A schema/static test without running HTTP is `Schema/static contract passed`, not `Verified`.
 
 ## Read Gates
 

@@ -12,6 +12,8 @@ Parte 2 never fixes a Parte 1 gap silently. If the baseline is incomplete or con
 | Required parity case is absent or fixture coverage cannot prove baseline behavior | Parte 1 Phase 7 |
 | Handoff says a behavior is closed but evidence contradicts it | Parte 1 Phase 8 |
 | A consumer or external flow exposes an operation whose backend/rule state is not closed | Parte 1 Phase 6 or Phase 8, depending on source of contradiction |
+| UI exposes preflight/promoted/blocked/deferred behavior through local capability, action, surface, drawer, or workflow semantics | UI track via `ergon-angular-ui-screen-wiring`, and Parte 1 Phase 8 if backend handoff is inconsistent |
+| New rule contract, metadata, config, feature flag, or error envelope is needed but canonical owner/support classification is missing | Parte 2 Canonical Decision Gate before implementation; if backend contract changes, Parte 1 Phase 5/6/8 as applicable |
 
 ## Return Artifact
 
@@ -34,3 +36,4 @@ Block Parte 2 if any of these are true:
 - side effects are unclassified;
 - no fallback is defined;
 - promotion would cause unproven double execution.
+- a host/UI/dashboard adapter is being used as the primary rule source instead of canonical Praxis metadata/config/API decision state.
