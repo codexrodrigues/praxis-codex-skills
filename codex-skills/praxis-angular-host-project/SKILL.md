@@ -200,6 +200,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-charts-authoring-settings`: chart config editor, widget config editor, Settings Panel, apply/save/reset/reopen, governed resource/field/target catalogs, and chart editor round-trip.
 - `praxis-charts-ai-validation`: chart AI manifest, editable targets, validators, handler contracts, registry ingestion, and component edit-plan validation.
 - `praxis-dashboard-analytics`: backend dashboard/analytics resources, `/stats/*`, `@UiAnalytics`, aggregate resources, custom dashboard catalog/summary endpoints, capabilities, and option sources.
+- `praxis-page-builder-composition`: Page Builder runtime composition, component palette, `WidgetPageDefinition`, canvas, `page.composition.links`, connection graph, nested ports, and dynamic page materialization.
+- `praxis-page-builder-authoring`: Page Builder page config editors, widget shell editor, Settings Panel bridge, child config editor hosting, apply/save/reset/reopen, and visual/textual round-trip.
+- `praxis-page-builder-ai-agentic`: Page Builder agentic authoring, UI composition plans, capability catalogs, streaming turn flow, runtime observations, preview/apply, and AI registry gates.
+- `praxis-visual-builder-rules`: Visual Builder JSON Logic rules, `RuleBuilderState`, rule graph validation, field schemas, context variables, property effects, templates, and visual/textual round-trip.
 - `praxis-settings-panel-shell`: Settings Panel shell, drawer protocol, bridge separation, footer actions, and sizing.
 - `praxis-settings-roundtrip-authoring`: visual editor apply/save/reset/reopen, persistence, and runtime consume validation.
 - `praxis-settings-global-config`: Global Config Editor, effective config, save/clear, and remote persistence.
