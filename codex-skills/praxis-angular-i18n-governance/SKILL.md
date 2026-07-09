@@ -13,6 +13,8 @@ Do not introduce visible hardcoded text in components, directives, UX services, 
 
 Use the lib's existing i18n path or the shared localization layer in `@praxisui/core`. The canonical authoring pattern is `PraxisI18nService` plus a lib namespace/catalog registered through the appropriate provider.
 
+For shared core i18n, resource-discovery copy, value presentation, translator providers, or cross-lib framework text, use `praxis-core-i18n-resource-copy` before changing catalogs or copy.
+
 ## Required Inventory
 
 Before editing:

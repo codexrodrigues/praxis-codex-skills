@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Core Providers Bootstrap"
+  short_description: "Govern shared core providers and tokens"
+  default_prompt: "Use $praxis-core-providers-bootstrap to wire or audit Praxis core providers and tokens."

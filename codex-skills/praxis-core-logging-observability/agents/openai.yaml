@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Core Logging Observability"
+  short_description: "Govern logging and telemetry contracts"
+  default_prompt: "Use $praxis-core-logging-observability to implement or audit Praxis logging and observability."
