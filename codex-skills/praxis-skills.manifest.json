@@ -50,8 +50,8 @@
                                             "praxis-cron-builder-ai-validation",
                                             "praxis-table-rule-ai-validation"
                                         ],
-                       "skillMdSha256":  "00E120BE78EBE7C911622AC45BF601D3029D72831A9473CE1A562703B82C43C9",
-                       "treeSha256":  "CD844F20EF4C00724FAC790AEEE2F5992BC798BA7A1B3A1C5FEC3A6C4C79416B"
+                       "skillMdSha256":  "933CC9C9795AA7E62C71A00181CBC9B9A1714BD69C7B7614741D12E4C052CF01",
+                       "treeSha256":  "B0736FCE7A4DBF417BDCB2F4D7AE0E4FB8FADF382A5CB7339529FE0006CBE1BA"
                    },
                    {
                        "name":  "praxis-ai-semantic-intent",
@@ -95,8 +95,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-table-rule-ai-validation"
                                         ],
-                       "skillMdSha256":  "71EB09CB0853B5AA2A605B48FBC8283A8FC41B00044B914AF9DFA381266906DA",
-                       "treeSha256":  "AE68E0A0BA00B8C19A303EF753E45662FE6F4606132AC8C1FFD82E8F7FEDE07B"
+                       "skillMdSha256":  "FCC32AC8A29EA3A77860709CB89788B826BCB5E1C3DD0C340C442B6CE0A474EF",
+                       "treeSha256":  "7985381EBE0A556C45A8D394B15A0809D5513764A841F1701BA2BB36A41001AD"
                    },
                    {
                        "name":  "praxis-angular-host-project",
@@ -176,8 +176,8 @@
                                             "praxis-table-rule-effects-runtime",
                                             "praxis-table-rule-animation-presets"
                                         ],
-                       "skillMdSha256":  "991D480EA663C7A8D8885ADAECE0358C3AF50622E0537559C88A8EF634483F65",
-                       "treeSha256":  "CB630C18A92375CDADE1E45F2FD2F3CA80472412219E92995A1800793FEB329D"
+                       "skillMdSha256":  "2AD82E4F8085DAC1356C0091FA8FF688DA948748E7630A515C75206C9C334F6F",
+                       "treeSha256":  "CEF615023821659FADC56E6E49F208E5A1A72CA1C6BF9C7323C8B09F4B014A9A"
                    },
                    {
                        "name":  "praxis-angular-public-api-governance",
@@ -234,8 +234,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-table-rule-ai-validation"
                                         ],
-                       "skillMdSha256":  "FBD791826D1814BEF6C7D5558D28436E5D87C48326777980D1A4D8CF86390D3E",
-                       "treeSha256":  "F953DD5B69D7F79AAE0C48C46559194A76CF6227571173E5EB8833DCE5C7E5E1"
+                       "skillMdSha256":  "17819FDDAB6D6DEE8BD4D2C74DE1DB69F2CD70BC1093FFA1BA113F728E9FB9B4",
+                       "treeSha256":  "499DDC5C9F746815512BBEE316B7F66F6B6E0408CA3B92D37101385513F206C6"
                    },
                    {
                        "name":  "praxis-charts-ai-validation",
@@ -356,8 +356,8 @@
                                             "praxis-cron-builder-runtime",
                                             "praxis-cron-schedule-authoring"
                                         ],
-                       "skillMdSha256":  "D78411475FC22D98FC1E81672C0FF7B3DDB9A595A2AC8ACF15B12777A5FBD167",
-                       "treeSha256":  "CB72A2B4BFF67DC4AD5576AC34B95EC3B8F961F9DB1887C3905ADAD5CCEAE2CE"
+                       "skillMdSha256":  "A2482452957D423DF238D8FAC0470CE0AF9604944DF12B29910061F1C7139B43",
+                       "treeSha256":  "C212E36C20DD2A45FFA1BBE57831F2A4DA9C56366ACE72B5CA3A4E4A45070483"
                    },
                    {
                        "name":  "praxis-cron-builder-form-field",
@@ -369,8 +369,8 @@
                                             "praxis-cron-builder-runtime",
                                             "praxis-cron-schedule-authoring"
                                         ],
-                       "skillMdSha256":  "6579D809662B882882F24E3AE01D73B7E8273B6E34FD1E05C7BC8C3190C78D61",
-                       "treeSha256":  "603B4A483817170F91A6F79E7D583B941056CB98770FFE9ACA89A5FA6EE6740A"
+                       "skillMdSha256":  "FE61C83C13D7008B905BC45472F6DB28AE0AB27D0DCEAD8DA427E52137B97941",
+                       "treeSha256":  "79D4708C592796D2C7FB1DE93F04F1049C63B4E4B447F2DEC0BE94EAF891AA6E"
                    },
                    {
                        "name":  "praxis-cron-builder-runtime",
@@ -381,8 +381,8 @@
                        "dependencies":  [
 
                                         ],
-                       "skillMdSha256":  "F0626C567EA71F546D90576AA14504C9BEDABF2ADA04B8B70842CF91A89D8450",
-                       "treeSha256":  "EF2E0C7AFDE7F2EC277322934BCAA730BDE51F2DE8D6284A4BD51342913CE362"
+                       "skillMdSha256":  "73BC039CE64FB8A4F08D4EA1F09112B243F689A3928272A75B9FC8479F81766C",
+                       "treeSha256":  "81E3D9ED38859EEA8F7FDDC78EF4301FD22BCF24F6365965447FAEBB49C7DB47"
                    },
                    {
                        "name":  "praxis-cron-schedule-authoring",
@@ -393,8 +393,8 @@
                        "dependencies":  [
                                             "praxis-cron-builder-runtime"
                                         ],
-                       "skillMdSha256":  "74B33D3BF01A7B63DF8488DE0EE6E2D495D4380405D35F6137FD3366A7C34CA2",
-                       "treeSha256":  "0F81BD6952665EAEFF90DBA27A4D62391BDE6485A7ECB0017EC49DB290E1A163"
+                       "skillMdSha256":  "BAAF983BE78E6A123C8696D406271F837BEBA6AB57744814C5F4D16F38EDAFD2",
+                       "treeSha256":  "FE4E6DF4C6F43B74CCE74FEA33ABE33428F1871ECDC8D9D3B04E121C1C2E227A"
                    },
                    {
                        "name":  "praxis-crud-ai-authoring",
@@ -508,8 +508,8 @@
                                             "praxis-cron-builder-runtime",
                                             "praxis-cron-schedule-authoring"
                                         ],
-                       "skillMdSha256":  "411E0ACCDAF7D1DF8119551E2AAB7440FF41371646295D9A8DC2A8E3BAABBB90",
-                       "treeSha256":  "96C26940EC44CCD98B931E9DC027CE783F809B6562965C37222D691ACC22C988"
+                       "skillMdSha256":  "586D8ED91A593D2D23FFAA1B956407D77D822DCEA9A644A30B497B995AFC21AA",
+                       "treeSha256":  "9B9A275721A0110A59867F61BAF2A79B8809D56E97CD7B01EAE5BE9CDAAEF444"
                    },
                    {
                        "name":  "praxis-editorial-forms-adapters-ai",
@@ -733,8 +733,8 @@
                                             "praxis-cron-builder-form-field",
                                             "praxis-cron-schedule-authoring"
                                         ],
-                       "skillMdSha256":  "E17AB11B5B6B070BDB5D928BD5082B0BCBDFAD83B620AD4250C15447F7D09D86",
-                       "treeSha256":  "985D631FB79131D95C9EBF27C246992B164E807750130F07AA7D7EB25D8DA781"
+                       "skillMdSha256":  "09E0CB1C739835A4BD01BB1F6ED2F9D6ABA21793A4A9D6E4868C4078D907D3C6",
+                       "treeSha256":  "BC26E15876FB02B1DFC9D79FB895770172B41DD85887E7E1420EC71CEA6E052F"
                    },
                    {
                        "name":  "praxis-java-host-project",
@@ -1126,8 +1126,8 @@
                                             "praxis-table-rule-ai-validation",
                                             "praxis-table-rule-table-integration"
                                         ],
-                       "skillMdSha256":  "B916863ADCFF3D2F0F2B7C9AC6BC50C739C2D415B2B241DA950996AE451EDC7C",
-                       "treeSha256":  "05441DA30E7A22E5E55A7845D5F492767C7E6D0BE26D84572B8E615498F6F97B"
+                       "skillMdSha256":  "758237B7DF16E015EC287FF63101C4A1E9344D4861EA9645DFCCA5A0B6031633",
+                       "treeSha256":  "A780EF5130E3D0784174833BCB6E651F45F80DC48D85976CFC449A89398B04A2"
                    },
                    {
                        "name":  "praxis-table-authoring-settings",
@@ -1146,8 +1146,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-table-rule-ai-validation"
                                         ],
-                       "skillMdSha256":  "555B23CF0DB522418D48EE1A2EE11C17437AA7FD64ACB005F5FA29FB40D3E0DF",
-                       "treeSha256":  "C89B60CB4009282B0B5EB8E79A41AC95F4018B4D68966FA770738D0AB300FAE8"
+                       "skillMdSha256":  "74A14782C5016C81491F6A33F12E9998172AAEA1FCA2B21F2DD027121716B2DF",
+                       "treeSha256":  "F1AD542AA2FF1C08923940A5089537BA6636FB0F632DE68D7F00E56BFA9B9140"
                    },
                    {
                        "name":  "praxis-table-filter-actions",
@@ -1175,8 +1175,8 @@
                                             "praxis-table-rule-animation-presets",
                                             "praxis-table-rule-table-integration"
                                         ],
-                       "skillMdSha256":  "1ECC3AA668623ABC312850DAECC9644388DBA4DDBE30AAA2AF747974C513C51A",
-                       "treeSha256":  "7B997C2EB957E533994F86F1B9AA59202D3B9D045650811BADCC13A34FF89EC6"
+                       "skillMdSha256":  "9123225C222F49059DF79C2772419D3F523AB43EC13179AF1D939E971E596520",
+                       "treeSha256":  "4234B1778BAECC800687D2E2BA00759B8840B4118C7ED4E36A96063DEF1BE971"
                    },
                    {
                        "name":  "praxis-table-rule-animation-presets",
@@ -1187,8 +1187,8 @@
                        "dependencies":  [
                                             "praxis-table-rule-effects-runtime"
                                         ],
-                       "skillMdSha256":  "505AF2F54D3B5F58BF6D36C2A94779D7BD9B0CBDBAA2A4E94C4C5DC4A11CCEF5",
-                       "treeSha256":  "B513E4A1A44BD0B405E71A8B5B5AAD848BEA9C91D6C1A8742A9071A77C6C72C7"
+                       "skillMdSha256":  "2D732C7FD3FFA688A8967EC89A59DACC8A806CADD5B6BE5DC4635AD4D446790D",
+                       "treeSha256":  "F18A0A7417D0C413BE8C17B77F54ECB5E39E361CA8B593F58A7B4F17E422E901"
                    },
                    {
                        "name":  "praxis-table-rule-effects-runtime",
@@ -1199,8 +1199,8 @@
                        "dependencies":  [
 
                                         ],
-                       "skillMdSha256":  "2D59DD379848D2C05759656BBBFC47BE4900F66D79F1E0D5AC945F312563BA86",
-                       "treeSha256":  "368D788902374838B4E3B45C77E6AD5C7E012F5A60AB260D7586842E3EBAF54F"
+                       "skillMdSha256":  "95F5113C46F3E8FF0C6D06DC7122519041D1E9C064221F5AC08F1CAECE141AE9",
+                       "treeSha256":  "C3BD316C7DA75460EF58AC2820F8E23E6D0624AB43E68BD8A04313CA65363702"
                    },
                    {
                        "name":  "praxis-table-rule-table-integration",
@@ -1212,8 +1212,8 @@
                                             "praxis-table-rule-effects-runtime",
                                             "praxis-table-rule-animation-presets"
                                         ],
-                       "skillMdSha256":  "C89AC5EEE9B71CCD48C091AF512FDD54B525C43C5A07EEB207D5F59A001CD381",
-                       "treeSha256":  "D5720EC4AB3BB269AC04BEC7C837217359596C7F0EB1935DBA2B473A7C5F2969"
+                       "skillMdSha256":  "4E24F97713A190FD7F959B68AFF16D40ECFAAADA22271DDCBB8F08E8A4CC20F3",
+                       "treeSha256":  "3346D43267D286F7F0FC49B68D2A4D8E65DD7A93633AF2E8AF03C83378A532B1"
                    },
                    {
                        "name":  "praxis-table-runtime-data",
@@ -1270,8 +1270,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-table-rule-ai-validation"
                                         ],
-                       "skillMdSha256":  "E19CED99610AF16A430C252B2BFF49F44AEDFC76BC8555D6316206781ADBC609",
-                       "treeSha256":  "B11BF152FEDD342177AA4B983C628664896A7723B2E4FAE3AA5248F806E96864"
+                       "skillMdSha256":  "ABED1989C8F402C9E9E653AE6646BEFAC40906D67AB972DB1FA94AA01BF1BFFD",
+                       "treeSha256":  "319123082C107106D3CC68D98FC10357704773470023BAE3CD45F2CD226677F0"
                    }
                ]
 }
