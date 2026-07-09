@@ -44,6 +44,11 @@ Before editing, inspect:
 
 Use `entityLookup` / `inlineEntityLookup` for corporate entity selection when the backend publishes `RESOURCE_ENTITY` semantics, rich display fields, selection state, dependency requirements, create/detail affordances, or lookup filtering/sorting.
 
+Pair with `praxis-fields-selection-lookup-controls` when the task also touches select, chips, tree,
+list, inline selection overlays, option identity UI, or AI control-family guidance. Keep this skill
+as the owner for backend option-source semantics, cascades, by-ids reload, and selected reload
+policies.
+
 Do not replace entity lookup with a plain async select unless the canonical metadata lacks entity semantics. If metadata lacks semantics but the domain requires them, fix the backend option-source contract instead of creating a local UI convention.
 
 ## Validation

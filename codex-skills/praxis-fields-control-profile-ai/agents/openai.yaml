@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Fields Control Profiles"
+  short_description: "Audit field AI control profiles"
+  default_prompt: "Use $praxis-fields-control-profile-ai to implement or audit Praxis Dynamic Fields AI control profiles, family manifest coverage, capability catalogs, and registry ingestion."

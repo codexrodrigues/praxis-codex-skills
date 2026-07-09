@@ -25,6 +25,10 @@ For `@praxisui/cron-builder`, use `praxis-cron-builder-runtime` for component ru
 For transversal Angular governance around an editor, use `praxis-angular-i18n-governance` for internal authoring text, `praxis-angular-public-api-governance` for public editor exports, `praxis-angular-docs-playgrounds` for examples/docs/playgrounds, and `praxis-angular-validation-gates` to pick the local proof.
 
 Do not use this skill as the primary workflow for `@praxisui/dynamic-fields` discovery/editorial changes. For that case, use `praxis-dynamic-fields-editorial`.
+For dynamic-fields subdomains, route further to `praxis-fields-inline-overlay-runtime`,
+`praxis-fields-text-number-time-controls`, `praxis-fields-selection-lookup-controls`, or
+`praxis-fields-control-profile-ai` before changing metadata-editor coverage, Settings Panel
+authoring, or generated docs for those controls.
 
 This skill is not a generic frontend-design workflow. For Praxis, the canonical contract and the authoring round-trip matter more than local UI polish. The main question is not "can the user edit it?" but "does the editor express the canonical document correctly, persist it correctly, and survive reopen/reset without drift?"
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Text Number Time Fields"
+  short_description: "Audit text, number, time controls"
+  default_prompt: "Use $praxis-fields-text-number-time-controls to implement or audit Praxis Dynamic Fields text, numeric, currency, date, time, range, and temporal control semantics."
