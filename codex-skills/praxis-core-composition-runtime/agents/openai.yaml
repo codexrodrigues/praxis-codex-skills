@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Core Composition Runtime"
+  short_description: "Govern core composition runtime"
+  default_prompt: "Use $praxis-core-composition-runtime to inspect @praxisui/core widget, dynamic page, composition link, nested port, surface host, related-resource outlet, and runtime observation contracts."
+
+policy:
+  allow_implicit_invocation: true

@@ -47,6 +47,11 @@ Check, when available:
 - ETag and required headers
 - existing CRUD examples, labs, playgrounds, or docs for the same resource
 
+Use `praxis-core-resource-runtime` when CRUD behavior depends on core schema discovery,
+`GenericCrudService`, capabilities, actions, HATEOAS links, option sources, related-resource
+surfaces, or CRUD operation resolution. Use `praxis-core-runtime-contracts` if the task touches
+core public API, tokens, providers, or shared model contracts.
+
 For each relevant improvement, classify adherence:
 
 - `ja-suportado-so-ux`

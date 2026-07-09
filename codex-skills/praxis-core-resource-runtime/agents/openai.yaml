@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Core Resource Runtime"
+  short_description: "Materialize Praxis resource metadata"
+  default_prompt: "Use $praxis-core-resource-runtime to inspect @praxisui/core schema, resource discovery, actions, surfaces, capabilities, HATEOAS, option-source, related-resource, CRUD resolution, and analytics runtime contracts."
+
+policy:
+  allow_implicit_invocation: true

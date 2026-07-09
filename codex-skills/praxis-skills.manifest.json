@@ -18,10 +18,13 @@
                                             "praxis-authoring-editors",
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-resource-entity-lookup-backend",
-                                            "praxis-java-host-project"
+                                            "praxis-java-host-project",
+                                            "praxis-core-runtime-contracts",
+                                            "praxis-core-resource-runtime",
+                                            "praxis-core-composition-runtime"
                                         ],
-                       "skillMdSha256":  "8A56FED8B21AFFEB3C73CF01E6279E0831F2D188FC7E83D1C0F3F2DBD9727F8E",
-                       "treeSha256":  "BFDA4AD30A0CF2854A6C66249C322515F96276EEAAAAC9F1E3D04442DBCDDB9A"
+                       "skillMdSha256":  "2F84B874A9AD63396C242884AB1904BBF1126C0E3960891082CAA6D326AEE1F4",
+                       "treeSha256":  "E92C43634AA67F03136E23D14F8F1112FD7D0CA47C7ECADEBFCE2AA5C7249C9B"
                    },
                    {
                        "name":  "praxis-authoring-editors",
@@ -45,10 +48,53 @@
                        "dependencies":  [
                                             "praxis-authoring-editors",
                                             "praxis-dynamic-fields-editorial",
+                                            "praxis-resource-entity-lookup-backend",
+                                            "praxis-core-runtime-contracts",
+                                            "praxis-core-resource-runtime",
+                                            "praxis-core-composition-runtime"
+                                        ],
+                       "skillMdSha256":  "47972749A03F1EF4263B2005D108581DE40AB1F561A804AB1E498A1564CAE05F",
+                       "treeSha256":  "6CD86BB8AA448BB906721ACC120EDFFC57863351A6494294AB7E7784B04927EF"
+                   },
+                   {
+                       "name":  "praxis-core-composition-runtime",
+                       "sourcePath":  "codex-skills/praxis-core-composition-runtime",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-core-runtime-contracts",
+                                            "praxis-authoring-editors",
+                                            "praxis-ui-product-design"
+                                        ],
+                       "skillMdSha256":  "991A6E1DBB2037115B3B7F356B13577F2CC164D465DC0AA4254ADDEE91FCBA97",
+                       "treeSha256":  "DCA61EC177C29D355E006F5CA9FB123E0854C7FEA5513B8FFB32DB60191751A7"
+                   },
+                   {
+                       "name":  "praxis-core-resource-runtime",
+                       "sourcePath":  "codex-skills/praxis-core-resource-runtime",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-core-runtime-contracts",
+                                            "praxis-dto-annotations",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "1F435C4F12066C93193CF64AC216A1518D707CD0AF6377302CB1652557857F88",
-                       "treeSha256":  "81622F64B46FEDE567AC192CA6E272E2D05CB6386C25134FFD5A84B7FC99009F"
+                       "skillMdSha256":  "ECDB2436833BDEF1317E042010F38271D259D927D5DD900F2553EF627321D9D3",
+                       "treeSha256":  "5A216B77C33C6B1DFDFBFA71DC22415B2FB5661EA506A1FF343CD96A2F5E9A5A"
+                   },
+                   {
+                       "name":  "praxis-core-runtime-contracts",
+                       "sourcePath":  "codex-skills/praxis-core-runtime-contracts",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+
+                                        ],
+                       "skillMdSha256":  "40F8A34D0DA66F38DACE776784C996CF6AA6E1B009D12BF6997559A513BDC7EE",
+                       "treeSha256":  "30572E2FCD8AE32D86DE0B79DB39DABE5CA90F61225482D9F71E7FE3863ACF96"
                    },
                    {
                        "name":  "praxis-dashboard-analytics",
@@ -60,10 +106,12 @@
                                             "praxis-java-host-project",
                                             "praxis-dto-annotations",
                                             "praxis-resource-entity-lookup-backend",
-                                            "praxis-ui-product-design"
+                                            "praxis-ui-product-design",
+                                            "praxis-core-runtime-contracts",
+                                            "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "928FA34DE67C93882F7FB866CC6E46B6965FF8C85DF7DF99CB1B6EE463E09B51",
-                       "treeSha256":  "6BB213DBF54289AEA1AFB80D1F720D1A8853B408AED2AB16F54774A52C0F028B"
+                       "skillMdSha256":  "B478FC0F55EB634021D3D8702AEBEF6ACD8607BDC4F5C174FF5ADED0434D9E8C",
+                       "treeSha256":  "E770DCDC2739E2CEF252451635A22B9D31EC9FBD0A723E2688AE276235B81616"
                    },
                    {
                        "name":  "praxis-dto-annotations",
@@ -132,10 +180,12 @@
                                             "praxis-angular-host-project",
                                             "praxis-component-minimums",
                                             "praxis-dto-annotations",
-                                            "praxis-ui-product-design"
+                                            "praxis-ui-product-design",
+                                            "praxis-core-runtime-contracts",
+                                            "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "DA63483924B3586D439435CB532B54A10F6B875B211B535CBEFBE58CA824CC66",
-                       "treeSha256":  "8FDF1D7E7477E77A979EDDA3EC8BB06A47DC649579320A6DA3ACEAC3CFB8C48D"
+                       "skillMdSha256":  "BCF828DB312AFCA10B0ED2B34E2B5DDB6ECA4AE25362BF4136D0A29AEA862163",
+                       "treeSha256":  "892C8000D5B3C5CADFA559F9EDFF69272621CF97E0F13DDAEF0C4CCDDC326DDB"
                    },
                    {
                        "name":  "praxis-ui-product-design",

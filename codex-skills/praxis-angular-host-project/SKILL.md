@@ -9,6 +9,13 @@ Use this skill to build Angular hosts for the Praxis UI runtime. Default to publ
 
 Before changing this skill or implementing a host, audit the current runtime contract that will be consumed: `@praxisui/core` public API, `API_URL`, `PAX_FETCH_HEADERS`, `GenericCrudService`, `SchemaMetadataClient`, global config bootstrap/storage, resource discovery, surface and related-resource materializers, `@praxisui/crud` launcher/open-mode APIs, component registry assets, and the reference quickstart package/bootstrap graph. Codify what Praxis already knows and materializes before adding host adapters, local schemas, local aliases, or new contracts.
 
+Use `praxis-core-runtime-contracts` whenever the task touches `@praxisui/core` public API, tokens,
+providers, shared services, i18n, logging, or cross-lib contracts. Use
+`praxis-core-resource-runtime` for `GenericCrudService`, schema metadata, resource discovery,
+actions, surfaces, capabilities, option sources, related resources, and analytics runtime. Use
+`praxis-core-composition-runtime` for dynamic widget pages, composition links, surface hosts, and
+runtime observations.
+
 ## Canonical Sources
 
 - `praxis-ui-angular` owns the public Angular packages, runtime providers, tokens, services, component APIs, and public Angular contracts.
@@ -174,6 +181,9 @@ For configurable surfaces:
 Use these alongside this skill when the task scope requires them:
 
 - `praxis-component-minimums`: minimum setup for table/form/list/CRUD, local vs remote metadata-driven modes, and `resourcePath` boundaries.
+- `praxis-core-runtime-contracts`: core public API, tokens, providers, models, i18n, logging, and shared services.
+- `praxis-core-resource-runtime`: core schema/resource discovery, actions, surfaces, capabilities, option sources, related resources, and analytics materialization.
+- `praxis-core-composition-runtime`: dynamic widget pages, composition links, widget events, surface hosts, and runtime observations.
 - `praxis-ui-product-design`: visual quality, responsive layout, screenshot QA, product polish, theme/accessibility.
 - `praxis-authoring-editors`: Settings Panel, config editors, apply/save/reset, editor/runtime round-trip.
 - `praxis-dynamic-fields-editorial`: control types, aliases, field discovery, `optionSource`, async select, metadata editor coverage.

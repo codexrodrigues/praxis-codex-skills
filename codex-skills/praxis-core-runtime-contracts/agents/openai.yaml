@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Core Runtime Contracts"
+  short_description: "Govern @praxisui/core contracts"
+  default_prompt: "Use $praxis-core-runtime-contracts to inspect @praxisui/core owners, public APIs, tokens, providers, services, i18n, logging, and shared runtime contracts before changing a Praxis Angular integration."
+
+policy:
+  allow_implicit_invocation: true
