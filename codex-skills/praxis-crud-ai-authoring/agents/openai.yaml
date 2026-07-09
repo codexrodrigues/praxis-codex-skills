@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis CRUD AI"
+  short_description: "CRUD authoring and AI flows"
+  default_prompt: "Use $praxis-crud-ai-authoring to review CRUD authoring manifests, config editors, capabilities, and child-operation delegation."
