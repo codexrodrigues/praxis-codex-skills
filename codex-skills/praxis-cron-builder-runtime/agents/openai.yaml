@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Cron Builder Runtime"
+  short_description: "Author canonical CRON runtime surfaces"
+  default_prompt: "Use $praxis-cron-builder-runtime to implement or audit a Praxis CRON editor runtime."

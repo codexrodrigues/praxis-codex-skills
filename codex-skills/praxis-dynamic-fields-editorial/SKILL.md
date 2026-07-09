@@ -21,6 +21,9 @@ dynamic-fields catalog, selector mapping, aliases, or metadata discovery for tha
 For rich content or rich-input fields, use `praxis-rich-content-runtime` and
 `praxis-rich-content-integration-adapters` for `RichContentDocument` semantics. Return here only when
 dynamic-fields metadata discovery, control aliases, selector mapping, or editor/tooling coverage changes.
+For CRON or schedule fields, use `praxis-cron-builder-form-field`, `praxis-cron-builder-runtime`, and
+`praxis-cron-schedule-authoring` for field/runtime semantics. Return here only when dynamic-fields
+catalog registration, selector mapping, aliases, editorial descriptors, or tooling discovery changes.
 
 This library does not primarily follow the pattern "runtime component has its own config editor". Runtime rendering, editorial discovery, metadata tooling, and editor coverage are separate layers.
 

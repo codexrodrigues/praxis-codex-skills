@@ -9,6 +9,7 @@ Use this skill for the `@praxisui/dynamic-form` runtime and submit contract. Dyn
 
 When Dynamic Form is consumed through `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` for host template, autosave, toolbar, and metadata bridge behavior. When Dynamic Form is consumed through `@praxisui/editorial-forms` `dataCollection` blocks, use `praxis-editorial-forms-adapters-ai` for adapter binding and `praxis-editorial-forms-runtime` for snapshot/fallback semantics. When a dynamic form field performs operational upload through `pdx-material-files-upload`, use `praxis-files-upload-form-field` for `valueMode`, ControlValueAccessor behavior, and upload field UX, plus `praxis-files-upload-backend-contract` when the submit payload depends on backend file ids or metadata.
 When form layouts, helper content, previews, or rich inputs use `RichContentDocument`, use `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters`; do not submit arbitrary HTML or markdown when the platform expects structured rich content.
+When a dynamic form field edits CRON or schedule values through `@praxisui/cron-builder`, use `praxis-cron-builder-form-field` for CVA/form integration and `praxis-cron-schedule-authoring` for the payload choice between legacy CRON string and `ScheduleAuthoringConfig`.
 
 ## Source Audit
 
@@ -80,5 +81,6 @@ Only `lacuna-real-de-contrato` justifies a new public contract. Prefer materiali
 - Use `praxis-dynamic-fields-editorial` for field component metadata, option sources, async select, entity lookup, and custom field coverage.
 - Use `praxis-files-upload-form-field` for upload field `valueMode`, metadata/id submit shape, ControlValueAccessor behavior, and dynamic-form upload integration.
 - Use `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters` for rich helper content, previews, or structured rich-input documents embedded in form flows.
+- Use `praxis-cron-builder-form-field` and `praxis-cron-schedule-authoring` for schedule fields, CRON compatibility values, structured schedule configs, timezone/locale metadata, and validation diagnostics in submit flows.
 - Use `praxis-manual-form-runtime-bridge` when a manual-form wrapper owns the host template and persistence.
 - Use `praxis-editorial-forms-adapters-ai` when a dynamic form is rendered as an editorial `dataCollection` adapter.

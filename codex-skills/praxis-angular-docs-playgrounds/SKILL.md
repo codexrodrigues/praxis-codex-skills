@@ -90,6 +90,10 @@ For `@praxisui/rich-content`, use `praxis-rich-content-runtime`,
 `praxis-rich-content-authoring-settings`, `praxis-rich-content-integration-adapters`, and
 `praxis-rich-content-ai-security-validation` as applicable before updating component guides, docs
 manifests, examples, playgrounds, AI recipes, or registry docs.
+For `@praxisui/cron-builder`, use `praxis-cron-builder-runtime`,
+`praxis-cron-schedule-authoring`, `praxis-cron-builder-form-field`, and
+`praxis-cron-builder-ai-validation` as applicable before updating component guides, API references,
+docs manifests, examples, playgrounds, AI recipes, or registry docs.
 
 ## Editorial Guidance
 

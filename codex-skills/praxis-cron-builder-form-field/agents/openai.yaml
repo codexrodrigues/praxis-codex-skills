@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Cron Builder Form Field"
+  short_description: "Wire CRON builder into Praxis forms"
+  default_prompt: "Use $praxis-cron-builder-form-field to integrate the Praxis CRON builder with metadata-driven forms."

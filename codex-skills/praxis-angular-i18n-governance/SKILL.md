@@ -49,6 +49,8 @@ For `@praxisui/dynamic-fields`, do not look only for component templates. Also i
 
 For Settings Panel, Page Builder, table, form, charts, and visual builders, update the shared catalog of the owning lib rather than scattering microcatalogs for each component unless that is already the local convention.
 
+For `@praxisui/cron-builder`, separate internal builder text, validation messages, preset labels, preview labels, and humanized schedule text from host domain schedule names, owners, tags, and governance descriptions. Use `praxis-cron-builder-runtime` or `praxis-cron-schedule-authoring` for the runtime/source boundary before changing locale behavior.
+
 ## Validation
 
 Choose the smallest reliable validation:
