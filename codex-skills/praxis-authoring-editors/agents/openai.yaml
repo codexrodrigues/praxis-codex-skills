@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Authoring Editors"
+  short_description: "Create or review Praxis config editors, builders, and authoring round-trip"
+  default_prompt: "Use $praxis-authoring-editors to create, expand, or review this change across the owning Praxis config editor or builder, canonical contract ownership, the settings-panel/apply-save flow, persistence, reopening, docs sync, and runtime round-trip."

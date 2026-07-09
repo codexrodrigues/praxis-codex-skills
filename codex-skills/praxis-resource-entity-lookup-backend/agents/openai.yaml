@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis RESOURCE_ENTITY Backend"
+  short_description: "Implement governed entity lookup backends"
+  default_prompt: "Use $praxis-resource-entity-lookup-backend to implement or review a governed backend RESOURCE_ENTITY option source, x-ui.optionSource schema output, filter/by-ids endpoints, and DTO consumers."

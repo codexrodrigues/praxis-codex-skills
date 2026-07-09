@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Dashboard Analytics"
+  short_description: "Design Praxis analytics APIs"
+  default_prompt: "Use $praxis-dashboard-analytics to design dashboard analytics APIs with Praxis metadata."

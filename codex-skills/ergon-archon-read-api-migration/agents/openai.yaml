@@ -1,0 +1,3 @@
+display_name: Ergon Archon Read API Migration
+short_description: Cria APIs de consulta Java/Spring a partir da descoberta de telas Archon.
+default_prompt: Use esta skill somente depois que os gates de discovery/reuso exigidos estiverem fechados para a tela. Se a fase atual for incerta, volte ao prompt de retomada em docs/migracao/backend-api-only-roadmap.md antes de migrar consulta para API read-only.

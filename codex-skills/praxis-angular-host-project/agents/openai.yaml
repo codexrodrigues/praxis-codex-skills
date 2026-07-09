@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Angular Host Project"
+  short_description: "Scaffold Angular hosts for Praxis UI."
+  default_prompt: "Create or evolve an Angular host that consumes published @praxisui packages with canonical API_URL, headers, resourcePath, runtime providers, configuration storage, and validation gates."

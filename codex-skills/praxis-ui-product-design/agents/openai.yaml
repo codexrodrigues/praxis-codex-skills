@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis UI Product Design"
+  short_description: "Audit and verify Praxis Angular UI product design, hierarchy, responsiveness, and screenshot QA."
+  default_prompt: "Use this skill to identify the canonical UI owner, apply the smallest platform fix when requested, and verify Praxis UX with official browser screenshots when feasible."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Archon Discovery"
+  short_description: "Map legacy Ergon screens to Oracle/API contracts"
+  default_prompt: "Use $ergon-archon-screen-discovery only after docs/migracao/<SCREEN>/phase-0-execution-gate.md recommends Fase 1/discovery. If Fase 0 is missing, start from docs/migracao/backend-api-only-roadmap.md instead."

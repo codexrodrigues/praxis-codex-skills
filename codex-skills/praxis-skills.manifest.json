@@ -1,0 +1,138 @@
+﻿{
+    "schemaVersion":  1,
+    "family":  "praxis",
+    "version":  "0.1.0-beta.0",
+    "ownerRepo":  "praxis-plataform",
+    "sourceRoot":  "codex-skills",
+    "description":  "Praxis platform Codex skills that must remain independent from Ergon-specific migration guidance.",
+    "skills":  [
+                   {
+                       "name":  "praxis-angular-host-project",
+                       "sourcePath":  "codex-skills/praxis-angular-host-project",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-component-minimums",
+                                            "praxis-ui-product-design",
+                                            "praxis-authoring-editors",
+                                            "praxis-dynamic-fields-editorial",
+                                            "praxis-resource-entity-lookup-backend",
+                                            "praxis-java-host-project"
+                                        ],
+                       "skillMdSha256":  "5E1F1303AF879E4D24F9AA3E595D4987791128FC6B1D0EEC2FED2C545B303813",
+                       "treeSha256":  "1F06FEE09A79C3F2EF4718359D2AEF088E18C05DDE3E84C2F2618AD3A2C6D4C3"
+                   },
+                   {
+                       "name":  "praxis-authoring-editors",
+                       "sourcePath":  "codex-skills/praxis-authoring-editors",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-dynamic-fields-editorial"
+                                        ],
+                       "skillMdSha256":  "60C7862DC8FEF4E8F4F499639C1C87D585694B8CC664A10EDF037CB664EC3F2F",
+                       "treeSha256":  "E4CF283A4798F5FC8E53E9C44822F8736499B5BF93B21EE885D1E4B33985A8EF"
+                   },
+                   {
+                       "name":  "praxis-component-minimums",
+                       "sourcePath":  "codex-skills/praxis-component-minimums",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-authoring-editors",
+                                            "praxis-dynamic-fields-editorial",
+                                            "praxis-resource-entity-lookup-backend"
+                                        ],
+                       "skillMdSha256":  "0A27457A902420C373A7AA379B31F3AFBF15CAFBCE79A70C395FB51D418B1C84",
+                       "treeSha256":  "4BB9B396A742606A63402B8C4623173E88DE75F3E9CD21A9222192F1D3CF4660"
+                   },
+                   {
+                       "name":  "praxis-dashboard-analytics",
+                       "sourcePath":  "codex-skills/praxis-dashboard-analytics",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active-needs-curation",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-host-project",
+                                            "praxis-dto-annotations",
+                                            "praxis-resource-entity-lookup-backend",
+                                            "praxis-ui-product-design"
+                                        ],
+                       "skillMdSha256":  "216DCAE233E65F6BDF6BECB1E149DEB2C9CCB1DB0E600F86D38287C1913038D3",
+                       "treeSha256":  "E4971D01141CB8407A9A29B125AAB0AA715B8965C35FB4666940C83DC03BE99E"
+                   },
+                   {
+                       "name":  "praxis-dto-annotations",
+                       "sourcePath":  "codex-skills/praxis-dto-annotations",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active-needs-curation",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-host-project",
+                                            "praxis-resource-entity-lookup-backend",
+                                            "praxis-dynamic-fields-editorial",
+                                            "praxis-ui-product-design"
+                                        ],
+                       "skillMdSha256":  "613C1A21DE812D18011011AA214A1F3B992A735F463DA3FEA94A93C87D532F03",
+                       "treeSha256":  "6C0EBFB25E5E7F485D80249B3FA9DB8AC9E5A07D1E912027CBC5991AE6CDFFFD"
+                   },
+                   {
+                       "name":  "praxis-dynamic-fields-editorial",
+                       "sourcePath":  "codex-skills/praxis-dynamic-fields-editorial",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-resource-entity-lookup-backend",
+                                            "praxis-component-minimums"
+                                        ],
+                       "skillMdSha256":  "87D153A1EDA18C096F229D1A7CEC92E6AABA26BB8411839C6C0018D9C584E6AC",
+                       "treeSha256":  "774E2BD57B13F734CC2A672F1F78996DF0D2894D666C7FFB0295DCFDBCBCFA55"
+                   },
+                   {
+                       "name":  "praxis-java-host-project",
+                       "sourcePath":  "codex-skills/praxis-java-host-project",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active-needs-curation",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-dto-annotations",
+                                            "praxis-resource-entity-lookup-backend",
+                                            "praxis-component-minimums",
+                                            "praxis-dynamic-fields-editorial",
+                                            "praxis-authoring-editors"
+                                        ],
+                       "skillMdSha256":  "3B29CA47280EEA7FA0D3BAF7F9B0419BB20B53C3D7E9CBC461ADEABE7160BA3F",
+                       "treeSha256":  "78F353C69CDA92FBC8E1F3EEA25A3C6CA4A2E8C26A9BDD922B444BF7C433576F"
+                   },
+                   {
+                       "name":  "praxis-resource-entity-lookup-backend",
+                       "sourcePath":  "codex-skills/praxis-resource-entity-lookup-backend",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-dynamic-fields-editorial",
+                                            "praxis-component-minimums"
+                                        ],
+                       "skillMdSha256":  "540AF52FD4E5A09922B8961B02B7D561E9CEF100FE9F9683BC3FE372F68A5B62",
+                       "treeSha256":  "8E7CD2A1F7C8D985B00B375240AFA3220F06258E51D7CABFE189A2ABC115B7DB"
+                   },
+                   {
+                       "name":  "praxis-ui-product-design",
+                       "sourcePath":  "codex-skills/praxis-ui-product-design",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-authoring-editors",
+                                            "praxis-dynamic-fields-editorial"
+                                        ],
+                       "skillMdSha256":  "A3CD62F67B74429E8ED78DD8944BF8CAE022861E6F0CC0F343D9424837207E95",
+                       "treeSha256":  "AB6891F5B8A50CD56A7901509530F4446A74A08488BF1F888457E5585EEBAC66"
+                   }
+               ]
+}

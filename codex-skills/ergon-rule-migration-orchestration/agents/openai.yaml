@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Rule Migration Orchestration"
+  short_description: "Orchestrate progressive Ergon rule migration"
+  default_prompt: "Use $ergon-rule-migration-orchestration to validate a Parte 1 handoff and plan Parte 2 rule migration gates."

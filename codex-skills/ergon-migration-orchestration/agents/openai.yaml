@@ -1,0 +1,3 @@
+display_name: Ergon Migration Orchestration
+short_description: Orquestra fases, gates e artefatos de migração Ergon/Archon para Java.
+default_prompt: Organize a migração Ergon/Archon em fases, verifique gates e recomende o próximo passo com artefatos obrigatórios.

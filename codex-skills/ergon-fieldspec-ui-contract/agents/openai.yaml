@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon FieldSpec UI Contract"
+  short_description: "Validate Java DTO annotations, OpenAPI x-ui, and Angular dynamic UI compatibility for Ergon migrations"
+  default_prompt: "Use $ergon-fieldspec-ui-contract to validate the FieldSpec and Angular UI contract for this Ergon migration screen, including DTOs, filters, options, controls, schemas, runtime evidence, and frontend handoff readiness."

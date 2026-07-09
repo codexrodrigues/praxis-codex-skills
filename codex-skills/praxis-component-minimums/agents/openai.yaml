@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Component Minimums"
+  short_description: "Explain the minimum viable setup for Praxis runtime components"
+  default_prompt: "Use $praxis-component-minimums to explain the minimum runtime setup, metadata source, host requirements, and whether resourcePath alone is enough for this Praxis component."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Table Rule Audit"
+  short_description: "Mapeia regras de produto e cliente por tabela Ergon."
+  default_prompt: "Audite uma tabela Ergon e reporte regras de produto e cliente, ativacao e ordem de execucao."

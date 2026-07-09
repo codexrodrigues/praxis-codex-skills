@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis DTO Annotations"
+  short_description: "Annotate Praxis DTO metadata correctly"
+  default_prompt: "Use $praxis-dto-annotations to review or correct Praxis DTO annotations, filters, governance, x-ui metadata, semantic data formatting, table display formatting, and OpenAPI documentation for a praxis-metadata-starter host."
