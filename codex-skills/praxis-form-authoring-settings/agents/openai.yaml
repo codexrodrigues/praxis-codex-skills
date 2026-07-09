@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Form Authoring Settings"
+  short_description: "Govern form editor round-trip"
+  default_prompt: "Use $praxis-form-authoring-settings to inspect Praxis dynamic-form config editors, Settings Panel, apply/save/reset, messages, hooks, actions, JSON editor, and round-trip."
+
+policy:
+  allow_implicit_invocation: true

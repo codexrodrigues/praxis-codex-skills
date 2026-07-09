@@ -188,6 +188,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-table-filter-actions`: table filters, dynamic filter payloads, toolbar/row/bulk actions, global actions, CRUD actions, and export grounding.
 - `praxis-table-authoring-settings`: table Settings Panel, config editors, columns, rules, filters, actions, CRUD integration, and round-trip.
 - `praxis-table-ai-validation`: table AI manifests, component edit plans, runtime operations, context packs, registry ingestion, and assistant E2E.
+- `praxis-form-runtime-submit`: dynamic-form runtime modes, schema metadata, submit payload, local/transient fields, hooks, actions, and validation.
+- `praxis-form-layout-canvas`: dynamic-form layout policy, schema-driven layout, visual blocks, canvas, and layout validation.
+- `praxis-form-authoring-settings`: dynamic-form config editors, Settings Panel, authoring document, apply/save/reset, and round-trip.
+- `praxis-form-ai-rules-validation`: dynamic-form AI manifests, rules, diagnostics, context packs, registry ingestion, and assistant validation.
 - `praxis-ui-product-design`: visual quality, responsive layout, screenshot QA, product polish, theme/accessibility.
 - `praxis-authoring-editors`: Settings Panel, config editors, apply/save/reset, editor/runtime round-trip.
 - `praxis-dynamic-fields-editorial`: control types, aliases, field discovery, `optionSource`, async select, metadata editor coverage.
