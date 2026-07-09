@@ -267,6 +267,7 @@ When a Playwright authoring flow validates `Save`/persistence followed by `reope
 Bias the validation toward the owning lib:
 
 - `dynamic-form`: config/layout/messages/rules/hooks/actions/json editor specs, then e2e only if authoring flow changed materially
+- for deep `dynamic-form` work, use `praxis-form-authoring-settings`; add `praxis-form-layout-canvas` for layout/canvas/visual blocks and `praxis-form-ai-rules-validation` for AI/rules/diagnostics
 - `table`: use `praxis-table-authoring-settings`; run focused editor specs first, then table authoring e2e when config visibility, Settings Panel round-trip, rules, filters, CRUD integration, or drag/drop behavior changed
 - `list`: editor specs first, then doc-page or e2e only if canonical authoring behavior changed
 - `page-builder`: focused builder or connection specs first; treat settings bridge changes as cross-lib impact

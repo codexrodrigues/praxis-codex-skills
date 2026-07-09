@@ -90,6 +90,8 @@ If the user asks for those, use or create a separate composed-screen/master-deta
 
 When the CRUD screen depends on richer table behavior inside `PraxisCrudComponent`, use `praxis-table-runtime-data` for table runtime/data-mode/export concerns, `praxis-table-filter-actions` for filters and row/toolbar/bulk actions, and `praxis-table-authoring-settings` for table editor or Settings Panel parity.
 
+When CRUD opens or embeds richer Dynamic Form behavior, use `praxis-form-runtime-submit` for schema/submit/runtime contracts, `praxis-form-authoring-settings` for form editor round-trip, and `praxis-form-layout-canvas` for schema-driven form layout or visual blocks.
+
 ## CRUD Experience Selection
 
 Select the smallest CRUD experience that fits the workflow:

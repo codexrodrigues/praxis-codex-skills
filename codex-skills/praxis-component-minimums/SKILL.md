@@ -160,6 +160,8 @@ remote bootstrap when host wiring exists; not enough for a canonical governed en
 7. If the target is composed, such as CRUD, map the minimum of each embedded runtime instead of
    collapsing the answer to the outer component input.
 
+For `@praxisui/dynamic-form`, use `praxis-form-runtime-submit` when the minimum involves schema metadata, runtime mode, submit payload, local/transient fields, or hooks/actions. Use `praxis-form-layout-canvas` when the minimum involves schema-driven layout, visual blocks, compact presentation, grouped command forms, or canvas. Use `praxis-form-authoring-settings` when customization or Settings Panel support is part of the minimum.
+
 ## Required Output Shape
 
 When answering, prefer this structure:
