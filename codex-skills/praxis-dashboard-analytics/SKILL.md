@@ -16,6 +16,10 @@ Use this skill to design dashboard APIs that stay native to `praxis-metadata-sta
 - `praxis-charts-runtime-data` when Angular must materialize `x-ui.chart`, `PraxisXUiChartContract`, `chartDocument`, `queryContext`, or stats-backed chart data.
 - `praxis-charts-authoring-settings` when dashboard chart documents are edited through `@praxisui/charts` config editors or Settings Panel.
 - `praxis-charts-ai-validation` when dashboard/chart semantics are exposed to AI authoring manifests, edit plans, or generated registry assets.
+- `praxis-charts-analytics-interactions` for stats execution, `queryContext`, drilldown, cross-filter, point selection, and dashboard interaction contracts.
+- `praxis-charts-authoring-catalogs` for dashboard chart documents edited from governed resource, field, and target catalogs.
+- `praxis-charts-echarts-engine-boundary` for adapter, option-builder, provider, and event-mapping safety in Angular chart rendering.
+- `praxis-charts-ai-handler-contracts` for AI chart operations, validators, handlers, and registry projections.
 - `praxis-core-resource-runtime` when Angular chart/dashboard behavior depends on core analytics
   schema contracts, stats request builders, query context, capabilities, resource discovery, or
   metadata materialization.

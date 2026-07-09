@@ -14,6 +14,10 @@ Pair it with:
 - `praxis-ai-semantic-intent` when the change touches intent routing or consult/edit boundaries.
 - `praxis-charts-authoring-settings` when manifest operations must match visual editor paths.
 - `praxis-charts-runtime-data` when operations affect runtime chart mapping, stats requests, events, or public chart models.
+- `praxis-charts-ai-handler-contracts` for operation schemas, validators, handler contracts, edit plans, and generated AI registry details.
+- `praxis-charts-authoring-catalogs` when operations depend on governed resources, fields, targets, editor catalogs, or preview mapping.
+- `praxis-charts-analytics-interactions` when operations affect `queryContext`, stats, cross-filter, drilldown, or selection behavior.
+- `praxis-charts-echarts-engine-boundary` when a request appears to require raw ECharts options so the adapter boundary stays canonical.
 
 ## Canonical AI Boundary
 

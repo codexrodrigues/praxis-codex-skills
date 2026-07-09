@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Charts AI Handlers"
+  short_description: "Audit chart AI handler contracts"
+  default_prompt: "Use $praxis-charts-ai-handler-contracts to implement or audit Praxis Charts AI manifest operations, handler contracts, validators, edit plans, and registry ingestion."

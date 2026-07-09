@@ -14,6 +14,10 @@ Pair it with:
 - `praxis-authoring-editors` for cross-component editor governance.
 - `praxis-charts-runtime-data` when the edited document must be consumed by chart runtime services.
 - `praxis-charts-ai-validation` when the editor path must remain aligned with AI manifest operations.
+- `praxis-charts-authoring-catalogs` for governed resource, field, target, `SettingsValueProvider`, and preview catalogs.
+- `praxis-charts-analytics-interactions` for `queryContext`, stats binding, drilldown, cross-filter, and selection semantics edited from the UI.
+- `praxis-charts-echarts-engine-boundary` when preview/runtime parity depends on ECharts option mapping or adapter behavior.
+- `praxis-charts-ai-handler-contracts` when AI operations must mirror visual editor paths.
 
 ## Canonical Chain
 

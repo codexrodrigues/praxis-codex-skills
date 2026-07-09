@@ -98,6 +98,11 @@ For `@praxisui/table-rule-builder`, use `praxis-table-rule-effects-runtime`,
 `praxis-table-rule-animation-presets`, `praxis-table-rule-table-integration`, and
 `praxis-table-rule-ai-validation` as applicable before updating component guides, API references,
 docs manifests, examples, playgrounds, AI recipes, or registry docs.
+For `@praxisui/charts`, use `praxis-charts-runtime-data`, `praxis-charts-authoring-settings`,
+`praxis-charts-ai-validation`, `praxis-charts-echarts-engine-boundary`,
+`praxis-charts-analytics-interactions`, `praxis-charts-authoring-catalogs`, and
+`praxis-charts-ai-handler-contracts` as applicable before updating chart docs, API references,
+examples, playgrounds, dashboard analytics evidence, AI recipes, or registry docs.
 For `@praxisui/dynamic-fields`, use `praxis-dynamic-fields-editorial`, `praxis-fields-runtime-loader`,
 `praxis-fields-editorial-discovery`, `praxis-fields-option-sources`,
 `praxis-fields-inline-overlay-runtime`, `praxis-fields-text-number-time-controls`,
