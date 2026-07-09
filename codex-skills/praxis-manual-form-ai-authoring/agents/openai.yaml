@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Manual AI"
+  short_description: "Manual form authoring and AI"
+  default_prompt: "Use $praxis-manual-form-ai-authoring to review Manual Form authoring manifests, config editor, AI capabilities, and round-trip."
