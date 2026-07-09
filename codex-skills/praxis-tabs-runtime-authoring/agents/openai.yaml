@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Tabs Runtime"
+  short_description: "Tabs runtime, authoring, and persistence"
+  default_prompt: "Use $praxis-tabs-runtime-authoring to build or audit a canonical Praxis tabs surface."

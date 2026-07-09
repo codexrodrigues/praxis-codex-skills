@@ -45,6 +45,9 @@ field binding, fallback, presentation, and registry projections.
 Use `praxis-crud-ai-authoring` for `@praxisui/crud` manifest, capabilities, context packs, metadata
 editor, and child-operation delegation. Use `praxis-dialog-global-actions-ai` for `@praxisui/dialog`
 global actions, registries, authoring manifest, and registry projections.
+Use `praxis-navigation-containers-ai-validation` for `@praxisui/tabs`, `@praxisui/stepper`,
+`PraxisWizardFormComponent`, and `@praxisui/expansion` manifests, capabilities, context packs,
+AI adapters, component docs, and registry projection.
 
 ## Required Inventory
 

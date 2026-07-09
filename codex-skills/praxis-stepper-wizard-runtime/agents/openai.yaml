@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Stepper Wizard"
+  short_description: "Stepper and wizard runtime guidance"
+  default_prompt: "Use $praxis-stepper-wizard-runtime to build or audit a canonical Praxis stepper or wizard flow."

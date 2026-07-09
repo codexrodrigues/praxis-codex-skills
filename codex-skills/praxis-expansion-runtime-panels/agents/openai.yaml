@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Expansion Panels"
+  short_description: "Expansion panel runtime and authoring"
+  default_prompt: "Use $praxis-expansion-runtime-panels to build or audit canonical Praxis expansion panels."
