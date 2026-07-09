@@ -75,5 +75,8 @@ For public or cross-lib changes, also validate a direct consumer such as table, 
 ## Companion Skills
 
 - Use `praxis-core-runtime-contracts` for public API, tokens, providers, shared models, logging, and i18n.
+- Use `praxis-core-global-actions-metadata` for global action refs, action catalogs/providers, payload validation, surface open presets, component metadata registry, and domain/resource metadata services.
+- Use `praxis-core-i18n-resource-copy` when resource discovery availability, row action menu copy, or value presentation text changes.
+- Use `praxis-core-providers-bootstrap` when resource runtime requires shared provider/token wiring.
 - Use `praxis-dto-annotations` and `praxis-resource-entity-lookup-backend` when the backend metadata contract is missing or wrong.
 - Use `praxis-rich-crud-screen-authoring` for standard CRUD screen composition on top of resolved core contracts.

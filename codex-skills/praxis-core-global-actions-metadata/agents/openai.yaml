@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Core Global Actions Metadata"
+  short_description: "Govern global actions and metadata services"
+  default_prompt: "Use $praxis-core-global-actions-metadata to validate Praxis global actions and metadata services."

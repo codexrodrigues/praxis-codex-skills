@@ -91,6 +91,11 @@ core text, logging UX, resource-discovery copy, or shared localization changes. 
 
 - Use `praxis-core-resource-runtime` for resource discovery, schema, actions, surfaces, capabilities, HATEOAS, option sources, CRUD operation resolution, and analytics request contracts.
 - Use `praxis-core-composition-runtime` for composition runtime, widgets, dynamic widget pages, nested ports, connection/link execution, and surface hosts.
+- Use `praxis-core-providers-bootstrap` for shared providers, tokens, bootstrap, global config, loading, icon, field selector, collection export, and registry wiring.
+- Use `praxis-core-widget-observations` for dynamic widgets, widget pages, widget events, composition observations, runtime observation envelopes, and observation registry.
+- Use `praxis-core-logging-observability` for logging, telemetry sinks, error normalization, PII redaction, throttling, global error handling, and observability alerts.
+- Use `praxis-core-i18n-resource-copy` for `PraxisI18nService`, i18n providers, resource-discovery copy, value presentation, and shared framework text.
+- Use `praxis-core-global-actions-metadata` for `GlobalActionRef`, global action catalogs/providers, payload validation, surface open presets, component metadata registry, and metadata services.
 - Use `praxis-rich-content-runtime` and `praxis-rich-content-ai-security-validation` when shared rich-content models, validator assumptions, host-mediated actions, or public rich-content exports are involved.
 - Use `praxis-angular-host-project` when applying core contracts in a consuming host.
 - Use `praxis-component-minimums` when the question is the smallest runtime setup for a component.

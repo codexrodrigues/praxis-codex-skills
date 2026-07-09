@@ -54,6 +54,7 @@ Minimum validation for public API changes:
 If the change touches `@praxisui/ai`, `@praxisui/core`, or public AI contracts, add the focal E2E or consumer gates named by `praxis-ui-angular/AGENTS.md` when applicable.
 
 Use `praxis-angular-validation-gates` to pick the smallest reliable command set, and `praxis-ai-registry-ingestion` if the export affects AI manifests, component docs, or packaged AI assets.
+For `@praxisui/core` exports, also use the focused core skill for the affected subdomain: `praxis-core-providers-bootstrap`, `praxis-core-widget-observations`, `praxis-core-logging-observability`, `praxis-core-i18n-resource-copy`, or `praxis-core-global-actions-metadata`.
 
 ## Derived Artifacts
 

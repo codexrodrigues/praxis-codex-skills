@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Core Widget Observations"
+  short_description: "Govern dynamic widgets and observations"
+  default_prompt: "Use $praxis-core-widget-observations to validate Praxis dynamic widgets and runtime observations."
