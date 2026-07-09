@@ -211,6 +211,11 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-core-runtime-contracts`: core public API, tokens, providers, models, i18n, logging, and shared services.
 - `praxis-core-resource-runtime`: core schema/resource discovery, actions, surfaces, capabilities, option sources, related resources, and analytics materialization.
 - `praxis-core-composition-runtime`: dynamic widget pages, composition links, widget events, surface hosts, and runtime observations.
+- `praxis-core-providers-bootstrap`: shared core providers, tokens, global config, API URL, loading, icons, field selectors, collection export, and registry bootstrap.
+- `praxis-core-widget-observations`: dynamic widget contracts, widget pages, widget events, runtime observations, observation registry, diagnostics, and redaction proof.
+- `praxis-core-logging-observability`: logging providers, logger sinks, telemetry payloads, error normalization, redaction, throttling, and observability alerts.
+- `praxis-core-i18n-resource-copy`: shared `PraxisI18nService`, i18n providers, resource-discovery messages, value presentation, and PT-BR/en-US framework copy.
+- `praxis-core-global-actions-metadata`: global actions, action catalogs/providers, payload validation, surface open presets, component metadata registry, and metadata services.
 - `praxis-table-runtime-data`: table runtime data modes, `resourcePath`, renderers, selection, export, analytics, and validation.
 - `praxis-table-filter-actions`: table filters, dynamic filter payloads, toolbar/row/bulk actions, global actions, CRUD actions, and export grounding.
 - `praxis-table-authoring-settings`: table Settings Panel, config editors, columns, rules, filters, actions, CRUD integration, and round-trip.

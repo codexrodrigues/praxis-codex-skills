@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Core I18n Resource Copy"
+  short_description: "Govern shared i18n and resource copy"
+  default_prompt: "Use $praxis-core-i18n-resource-copy to update Praxis shared i18n and resource-discovery copy."
