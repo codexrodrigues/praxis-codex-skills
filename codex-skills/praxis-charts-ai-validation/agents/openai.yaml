@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Charts AI Validation"
+  short_description: "Chart AI manifest and registry validation"
+  default_prompt: "Use $praxis-charts-ai-validation to validate a Praxis chart AI authoring change."
