@@ -77,6 +77,11 @@ updating open-mode docs, drawer adapter ADRs, CRUD authoring docs, examples, doc
 registry docs. For `@praxisui/dialog`, use `praxis-dialog-overlay-runtime` and
 `praxis-dialog-global-actions-ai` before updating dialog integration guides, examples, presets,
 global actions, docs manifests, or registry projections.
+For `@praxisui/tabs`, `@praxisui/stepper`, `PraxisWizardFormComponent`, or `@praxisui/expansion`,
+use `praxis-tabs-runtime-authoring`, `praxis-stepper-wizard-runtime`,
+`praxis-expansion-runtime-panels`, and `praxis-navigation-containers-ai-validation` as applicable
+before updating component guides, API references, examples, docs manifests, playgrounds, or AI
+registry docs for navigation and disclosure containers.
 
 ## Editorial Guidance
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Navigation AI"
+  short_description: "AI validation for navigation containers"
+  default_prompt: "Use $praxis-navigation-containers-ai-validation to validate AI authoring for Praxis tabs, stepper, and expansion containers."
