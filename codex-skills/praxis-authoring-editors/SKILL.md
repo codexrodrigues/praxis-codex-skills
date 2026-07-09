@@ -15,6 +15,7 @@ For Page Builder work, use `praxis-page-builder-composition` for page/runtime co
 For `@praxisui/list`, use `praxis-list-authoring-settings` for list config editor, widget editor, JSON editor, `ListAuthoringDocument`, Settings Panel round-trip, and runtime/editor parity. Use `praxis-list-ai-validation` if the same path is authorable by assistant.
 For `@praxisui/metadata-editor`, use `praxis-metadata-editor-renderer-coverage` for visual renderer/property coverage, `praxis-metadata-editor-cascade-normalization` for cascades, option-source dependencies, schema normalization, and form factory rules, `praxis-metadata-editor-consumer-bridges` for dynamic-form/table/manual-form/Page Builder hosts, and `praxis-metadata-editor-ai-validation` for manifest/capability/context-pack work.
 For `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` for runtime/autosave/toolbar/metadata bridge behavior and `praxis-manual-form-ai-authoring` for config editor, Settings Panel, manifest, capabilities, formRules, and registry work. For `@praxisui/editorial-forms`, use `praxis-editorial-forms-runtime` for snapshot/fallback/presentation/runtime work and `praxis-editorial-forms-adapters-ai` for optional adapters, dataCollection binding, and manifest operations.
+For `@praxisui/crud`, use `praxis-crud-runtime-openmodes` for runtime/open-mode/launcher/drawer behavior and `praxis-crud-ai-authoring` for CRUD authoring manifest, config editor, and child-operation delegation. For `@praxisui/dialog`, use `praxis-dialog-overlay-runtime` for overlay/focus/preset behavior and `praxis-dialog-global-actions-ai` for global actions, registries, and manifest work.
 For transversal Angular governance around an editor, use `praxis-angular-i18n-governance` for internal authoring text, `praxis-angular-public-api-governance` for public editor exports, `praxis-angular-docs-playgrounds` for examples/docs/playgrounds, and `praxis-angular-validation-gates` to pick the local proof.
 
 Do not use this skill as the primary workflow for `@praxisui/dynamic-fields` discovery/editorial changes. For that case, use `praxis-dynamic-fields-editorial`.
@@ -40,6 +41,8 @@ Use the real component family of the task, not a generic "editor changed" label.
 - `@praxisui/metadata-editor`: `field-metadata-editor`, `dynamic-editor-renderer`, cascade manager, coverage and normalization flows
 - `@praxisui/manual-form`: `manual-form-config-editor`, field toolbar, metadata bridge, autosave and AI authoring flows
 - `@praxisui/editorial-forms`: editorial runtime, dataCollection adapters, presentation/fallback authoring, and manifest operations
+- `@praxisui/crud`: CRUD metadata editor, widget config editor, launcher/open-mode authoring, and child delegation
+- `@praxisui/dialog`: dialog shell, preset authoring, global actions, component/template registries, and child host authoring
 - `@praxisui/charts`, `@praxisui/tabs`, `@praxisui/stepper`: config editor or quick-setup component exposed by the lib
 
 If the problem is structural and spans several editors, bias toward the canonical lib contract instead of patching a consumer editor locally.

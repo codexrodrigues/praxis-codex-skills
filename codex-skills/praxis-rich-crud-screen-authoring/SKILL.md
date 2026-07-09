@@ -51,6 +51,11 @@ Use `praxis-core-resource-runtime` when CRUD behavior depends on core schema dis
 `GenericCrudService`, capabilities, actions, HATEOAS links, option sources, related-resource
 surfaces, or CRUD operation resolution. Use `praxis-core-runtime-contracts` if the task touches
 core public API, tokens, providers, or shared model contracts.
+Use `praxis-crud-runtime-openmodes` when the task changes `@praxisui/crud` runtime behavior, open
+modes, drawer adapter, launcher inputs, or table/form orchestration. Use `praxis-crud-ai-authoring`
+when the task changes CRUD authoring documents, config editors, manifests, capabilities, or child
+operation delegation. Use `praxis-dialog-overlay-runtime` or `praxis-dialog-global-actions-ai` when
+the CRUD flow depends on dialog shell behavior, presets, registries, or global dialog actions.
 
 For each relevant improvement, classify adherence:
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Dialog AI"
+  short_description: "Dialog global actions and AI"
+  default_prompt: "Use $praxis-dialog-global-actions-ai to review Dialog global actions, registries, authoring manifest, and AI registry validation."

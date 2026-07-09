@@ -72,6 +72,11 @@ For `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` and
 examples, docs manifests, or AI registry docs. For `@praxisui/editorial-forms`, use
 `praxis-editorial-forms-runtime` and `praxis-editorial-forms-adapters-ai` before updating
 architecture docs, authoring playbooks, labs, examples, docs manifests, or registry projections.
+For `@praxisui/crud`, use `praxis-crud-runtime-openmodes` and `praxis-crud-ai-authoring` before
+updating open-mode docs, drawer adapter ADRs, CRUD authoring docs, examples, docs manifests, or AI
+registry docs. For `@praxisui/dialog`, use `praxis-dialog-overlay-runtime` and
+`praxis-dialog-global-actions-ai` before updating dialog integration guides, examples, presets,
+global actions, docs manifests, or registry projections.
 
 ## Editorial Guidance
 
