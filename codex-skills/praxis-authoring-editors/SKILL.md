@@ -22,6 +22,7 @@ For `@praxisui/table-rule-builder`, use `praxis-table-rule-effects-runtime` for 
 For `@praxisui/files-upload`, use `praxis-files-upload-runtime` for runtime/config editor behavior, `praxis-files-upload-backend-contract` for endpoint/security/quota/rate-limit semantics, `praxis-files-upload-form-field` for form wrapper integration, and `praxis-files-upload-ai-validation` when the surface is AI-authorable or registry-projected.
 For `@praxisui/rich-content`, use `praxis-rich-content-runtime` for `RichContentDocument` semantics, `praxis-rich-content-authoring-settings` for config editor and presets, `praxis-rich-content-integration-adapters` for cross-surface embedding, and `praxis-rich-content-ai-security-validation` for AI/sanitization/registry work.
 For `@praxisui/cron-builder`, use `praxis-cron-builder-runtime` for component runtime and preview, `praxis-cron-schedule-authoring` for canonical schedule semantics and dialects, `praxis-cron-builder-form-field` for form/metadata integration, and `praxis-cron-builder-ai-validation` when the surface is AI-authorable or registry-projected.
+For `@praxisui/charts`, use `praxis-charts-authoring-settings` for config editor and widget editor round-trip, `praxis-charts-authoring-catalogs` for resource/field/target catalogs and preview mapping, `praxis-charts-analytics-interactions` for `queryContext`, stats, drilldown, cross-filter, and selection behavior, `praxis-charts-echarts-engine-boundary` for preview/runtime ECharts adapter parity, and `praxis-charts-ai-handler-contracts` when the edited paths are AI-authorable.
 For transversal Angular governance around an editor, use `praxis-angular-i18n-governance` for internal authoring text, `praxis-angular-public-api-governance` for public editor exports, `praxis-angular-docs-playgrounds` for examples/docs/playgrounds, and `praxis-angular-validation-gates` to pick the local proof.
 
 Do not use this skill as the primary workflow for `@praxisui/dynamic-fields` discovery/editorial changes. For that case, use `praxis-dynamic-fields-editorial`.
@@ -53,7 +54,7 @@ Use the real component family of the task, not a generic "editor changed" label.
 - `@praxisui/editorial-forms`: editorial runtime, dataCollection adapters, presentation/fallback authoring, and manifest operations
 - `@praxisui/crud`: CRUD metadata editor, widget config editor, launcher/open-mode authoring, and child delegation
 - `@praxisui/dialog`: dialog shell, preset authoring, global actions, component/template registries, and child host authoring
-- `@praxisui/charts`: config editor exposed by the lib
+- `@praxisui/charts`: `praxis-chart-config-editor`, `praxis-chart-widget-config-editor`, resource/field/target catalogs, preview mapper, `queryContext`, drilldown, cross-filter, runtime/editor parity, and AI authoring manifest
 - `@praxisui/tabs`: tabs config editor, quick setup, editor capability, group/nav document, and AI authoring manifest
 - `@praxisui/stepper`: stepper config editor, dynamic-form step config, wizard config adapter, and AI authoring manifest
 - `@praxisui/expansion`: expansion widget config editor, provider metadata, panel document, and AI authoring manifest

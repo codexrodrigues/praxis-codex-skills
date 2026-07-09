@@ -71,6 +71,12 @@ round-trip validation, and registry projection. Pair it with
 `praxis-visual-builder-graph-runtime`, `praxis-visual-builder-jsonlogic-roundtrip`, or
 `praxis-visual-builder-schemas-templates` when generated docs derive from graph, JSON Logic, schema,
 context, property-effect, collection-validator, or template behavior.
+Use `praxis-charts-ai-validation` for `@praxisui/charts` authoring manifest, editable targets,
+validators, handler contracts, component metadata, and generated AI assets. Pair it with
+`praxis-charts-ai-handler-contracts`, `praxis-charts-authoring-catalogs`,
+`praxis-charts-analytics-interactions`, or `praxis-charts-echarts-engine-boundary` when registry docs
+derive from handler contracts, resource/field/target catalogs, analytics interactions, or
+engine-boundary behavior.
 
 ## Required Inventory
 
