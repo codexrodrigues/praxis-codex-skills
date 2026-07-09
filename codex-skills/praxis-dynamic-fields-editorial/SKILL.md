@@ -32,6 +32,7 @@ For metadata-driven option-source cascades, keep the boundary explicit:
 - `x-ui.optionSource.includeIds` is an explicit runtime permission. Option-source filters must send `includeIds` only when this flag is `true`; when it is `false` or absent, selected-value rehydration must use the canonical by-ids/display path instead of adding `includeIds` to filter requests.
 - `dependencyFields` and `dependencyFilterMap` are the runtime/manual metadata consumed by select components.
 - A bridge may derive runtime metadata from `optionSource`, but it should not synthesize authoring state or reset/reload policy unless the canonical contract says so.
+- For dependent sources, editor/runtime support is incomplete until selected-value reload is proven on reopen/edit. If the selected ID is not self-contained, the runtime must use a contextual option-source by-ids path rather than assuming the filter cascade proves hydration.
 
 ## Canonical Boundaries
 

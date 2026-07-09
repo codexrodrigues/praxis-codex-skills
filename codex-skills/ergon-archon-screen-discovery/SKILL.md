@@ -85,7 +85,7 @@ Inspect at minimum:
 - semantic gaps between the existing new-platform resource and the legacy screen behavior.
 
 If an existing resource matches the legacy operation, record the exact path/class and prefer reuse or extension. Do not propose a duplicate endpoint unless the incompatibility is explicit.
-For LOV/options, record `PLATFORM_OPTION_SOURCE_RESOLVED` when sourceKey, dependencies, selected-value reload, and visible semantics match; `PLATFORM_OPTION_SOURCE_REVIEW_REQUIRED` when an existing source is close but semantically incomplete; and `PLATFORM_OPTION_SOURCE_BACKLOG_REQUIRED` only when no configured/promoted source fits and the target microservice/module was covered by the inventory. Treat review-required as an `extend` decision by default; use `block` only when the gap prevents the current screen contract.
+For LOV/options, record `PLATFORM_OPTION_SOURCE_RESOLVED` when sourceKey, dependencies, selected-value reload, and visible semantics match; `PLATFORM_OPTION_SOURCE_REVIEW_REQUIRED` when an existing source is close but semantically incomplete; and `PLATFORM_OPTION_SOURCE_BACKLOG_REQUIRED` only when no configured/promoted source fits and the target microservice/module was covered by the inventory. For dependent sources, selected-value reload must be proven separately from filtering: either the ID is self-contained for `GET .../by-ids`, or the contextual `POST .../by-ids` path is implemented and consumed with the required public dependencies. Treat review-required as an `extend` decision by default; use `block` only when the gap prevents the current screen contract.
 
 ## Phase Boundary
 

@@ -67,6 +67,13 @@ receive and apply the effective filter payload for those dependencies, or the de
 publishing them. Add tests proving dependent values change the returned option set; otherwise the
 contract looks enterprise-ready while the runtime ignores a business constraint.
 
+Treat selected-value reload as a separate contract from filtering. `GET
+/option-sources/{sourceKey}/options/by-ids` is sufficient only when the public ID is
+self-contained for the provider. If reload needs the same public dependencies used by filtering,
+the backend must prove the contextual `POST /option-sources/{sourceKey}/options/by-ids` path sends
+the effective filter/dependency payload to the provider and still preserves requested ID order.
+Do not claim a dependent source is reusable or Angular-ready from a passing filter smoke alone.
+
 Use `OptionSourceContextResolver` as the internal extension point for host execution context.
 Provider context attributes can carry tenant, datasource, user, or other private host state, but
 those attributes must never be published through `x-ui.optionSource`, OpenAPI, docs examples, or
@@ -265,6 +272,9 @@ Cover:
   capabilities are present.
 - `POST /option-sources/{sourceKey}/options/filter` returns expected options.
 - `GET /option-sources/{sourceKey}/options/by-ids` rehydrates selected IDs in order.
+- For dependent or context-sensitive sources, `POST /option-sources/{sourceKey}/options/by-ids`
+  rehydrates selected IDs with the declared dependency/filter payload and preserves the requested
+  order.
 - Blocked/inactive records are rehydratable but not selectable when the policy says so.
 - Search excludes sensitive fields.
 
@@ -319,6 +329,8 @@ If the task updates official Angular examples, recipes, registry, or editor disc
 - Exposing sensitive fields in `searchPropertyPaths` or descriptions.
 - Publishing `dependsOn`/`dependencyFilterMap` without passing and enforcing the effective filter
   payload in host-specific or external providers.
+- Marking a dependent option source as reusable after only `filter` passes, without proving
+  selected-value reload through either self-contained IDs or contextual `POST .../by-ids`.
 - Letting `@UISchema.extraProperties` leak private `optionSource.sql`, `providerConfig`, package
   names, raw endpoints, context fields, bind parameters, or cache internals through `/schemas/filtered`,
   including inside nested public containers.

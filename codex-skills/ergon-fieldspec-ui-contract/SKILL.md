@@ -51,6 +51,7 @@ Run this skill:
    - `/schemas/flex?entity=...` returns a non-error response when Angular dynamic forms or flexible-field metadata request it, or the absence of flexible fields is explicitly documented as a non-blocking residual, classified as accepted-gap with owner and next action;
    - resource `filter` endpoints follow their resource response contract, while generic options endpoints follow the current Praxis options contract consumed by `GenericCrudService`: bare `Page<OptionDTO>` for `POST /options/filter` and bare `List<OptionDTO>` for `GET /options/by-ids`;
    - option-source endpoints follow the same no-envelope options convention: bare `Page<OptionDTO<Object>>` for `POST /option-sources/{sourceKey}/options/filter` and bare `List<OptionDTO<Object>>` for `GET /option-sources/{sourceKey}/options/by-ids` or its contextual POST variant;
+   - dependent option sources prove selected-value reload separately from filtering: `GET .../by-ids` is enough only when the public ID is self-contained, otherwise `POST .../by-ids` must carry the required public filter/dependency context through the current backend and Angular path;
    - command DTOs hide derived/internal fields and use `copyOnDuplicate` deliberately.
    - when the API is implemented, execute the running endpoints that provide this contract and record payload/response evidence, not only generated OpenAPI.
 5. Validate the Angular contract:
@@ -60,7 +61,7 @@ Run this skill:
    - naming mismatches and aliases are resolved deliberately through the current Praxis selector/control-type mapping, not by inventing host-local aliases;
    - field configurator support exists when authoring is required;
    - list/select components can call the expected endpoints;
-   - selected-value reload uses an ID shape that the current Angular code will actually pass to `/options/by-ids`, including explicit evidence for composite IDs or option-source contextual reload.
+   - selected-value reload uses an ID shape that the current Angular code will actually pass to `/options/by-ids`, including explicit evidence for composite IDs or option-source contextual reload; if Angular cannot send required context yet, downgrade the handoff to a platform follow-up instead of declaring the source reusable.
    - HATEOAS/action metadata or equivalent action state exposes only operations implemented with parity evidence; blocked/deferred operations must be omitted, hidden, disabled, or blocked deliberately.
 6. Verify service semantics:
    - JPA filters may use `@Filterable`;
@@ -136,7 +137,7 @@ For `FilterDTO` classes, review both machine semantics and human-facing metadata
 - No enum array or list handoff when options exist only on the item schema and the parent property lacks the `x-ui.options` shape Angular will render.
 - No plain array field should be promoted to select-like `x-ui` metadata without enum/options evidence.
 - No schema assertion for remote selects that expects the final `x-ui.displayField` to remain the business DTO field. The resolver normalizes select-like controls to `OptionDTO` (`valueField`/`displayField`); assert the business search/sort fields through `filterField` and `sortField`.
-- No selected-value reload handoff for composite IDs unless the current Angular component has evidence that it calls `/options/by-ids` or the contextual option-source by-ids endpoint for that ID shape. Do not use old `BaseDynamicListComponent` behavior as current evidence; inspect the active `praxis-dynamic-fields` component and `GenericCrudService`.
+- No selected-value reload handoff for composite IDs unless the current Angular component has evidence that it calls `/options/by-ids` or the contextual option-source by-ids endpoint for that ID shape. Do not use old `BaseDynamicListComponent` behavior as current evidence; inspect the active `praxis-dynamic-fields` component and `GenericCrudService`. A passing `POST /option-sources/{sourceKey}/options/filter` smoke does not prove reopen/edit hydration.
 - No `/schemas` handoff without proving the exact `/schemas/filtered` query Angular uses, including `path`, `operation`, and `schemaType`.
 - No dynamic-form handoff when Angular requests `/schemas/flex?entity=...` and that endpoint returns `500`. Absence of flexible fields should return an empty successful result or be formally accepted as a non-blocking residual with owner and next action.
 - No `rangeSlider` or specialized control unless it is emitted in `x-ui`, accepted by `FieldMetadata`, and registered in the current `ComponentRegistryService`.

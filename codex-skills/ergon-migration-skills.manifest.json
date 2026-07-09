@@ -43,8 +43,8 @@
                        "dependencies":  [
 
                                         ],
-                       "skillMdSha256":  "8C401381E8EEBC4DDCEF74C6C9BB648D6A316F8445F1511F8414FFECE5A610C1",
-                       "treeSha256":  "8F290CC14D36A17172AA5E68DDA58A5BA79BCF3B58BE78825CD6F2B46499551A"
+                       "skillMdSha256":  "5E74D343690DFEDE8B74DF1CB78F6D29F04A4119CFA3F39238C8D1413A206F3F",
+                       "treeSha256":  "70702084BA1DF13869A7E1CE1AD76A01644DE3AD6A627E58E4FB99F0AF3D7A39"
                    },
                    {
                        "name":  "ergon-archon-write-api-migration",
@@ -83,8 +83,8 @@
                                             "praxis-dto-annotations",
                                             "praxis-dynamic-fields-editorial"
                                         ],
-                       "skillMdSha256":  "E45B37DB1D1090DC784EFB2A7818F2A99912857C2CEF0F2591F1C247D4AD8C89",
-                       "treeSha256":  "137F52E2FB2484603AAAEED3A2CE903796AE365D381CFD6659016217A4DFF644"
+                       "skillMdSha256":  "9717779874AF12C5C23B19109F8DE6F9B64AD617A3B36D7A51611A33EAB17EBD",
+                       "treeSha256":  "1F59BEBD9BB94BFA1200AD6B10618876B2E8F7192AAF116BD578EA02B1121F08"
                    },
                    {
                        "name":  "ergon-migration-orchestration",
@@ -101,8 +101,8 @@
                                             "praxis-java-host-project",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "AACABC39DF73FA97A639AE8C1D267FDAF6CAA3764539B3E145E169EE32C24AB6",
-                       "treeSha256":  "80B77E4B4DE935F9A2665424B4A8C5592C77B567B0191F1663F24F370DBD6075"
+                       "skillMdSha256":  "FB76F23F8C9A7C7204D078655E6F8F6EAA364C4E45A4A99102C28117CBF25689",
+                       "treeSha256":  "33C24F94222921D63F0A1DB590CFA855BFD4F80948CC3397A4663E67567218D9"
                    },
                    {
                        "name":  "ergon-rule-migration-orchestration",

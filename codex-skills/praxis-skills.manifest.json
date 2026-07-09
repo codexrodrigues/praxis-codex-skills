@@ -89,8 +89,8 @@
                                             "praxis-resource-entity-lookup-backend",
                                             "praxis-component-minimums"
                                         ],
-                       "skillMdSha256":  "87D153A1EDA18C096F229D1A7CEC92E6AABA26BB8411839C6C0018D9C584E6AC",
-                       "treeSha256":  "774E2BD57B13F734CC2A672F1F78996DF0D2894D666C7FFB0295DCFDBCBCFA55"
+                       "skillMdSha256":  "F43F5EC07FCE1DA502DBA388CBB1AC7FE2B3974170DF2112BDD3EA3614860B60",
+                       "treeSha256":  "305C08EFC956131BBFCAD5CCD1244D83FEAADE086542ED0286110BDF9EFB3E79"
                    },
                    {
                        "name":  "praxis-java-host-project",
@@ -118,8 +118,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-component-minimums"
                                         ],
-                       "skillMdSha256":  "540AF52FD4E5A09922B8961B02B7D561E9CEF100FE9F9683BC3FE372F68A5B62",
-                       "treeSha256":  "8E7CD2A1F7C8D985B00B375240AFA3220F06258E51D7CABFE189A2ABC115B7DB"
+                       "skillMdSha256":  "E1485EA61D46BB6E85F32A6F6F194CF719EB137D88C4259C4F89C71FE2C1AEF9",
+                       "treeSha256":  "EB40E83A2644375C4E0D13DB771E66CAD859C0A4285AE027B73A5988301FB503"
                    },
                    {
                        "name":  "praxis-ui-product-design",
