@@ -81,6 +81,11 @@ Prefer the smallest reliable validation:
 
 If PowerShell audit scripts are unavailable, run an equivalent local manifest/hash/frontmatter audit and state the limitation.
 
+Use `praxis-angular-validation-gates` for command selection and `praxis-angular-public-api-governance`
+before changing root exports or cross-lib public contracts. Use `praxis-angular-i18n-governance` when
+core text, logging UX, resource-discovery copy, or shared localization changes. Use
+`praxis-angular-docs-playgrounds` when public docs, examples, or package docs reflect the contract.
+
 ## Companion Skills
 
 - Use `praxis-core-resource-runtime` for resource discovery, schema, actions, surfaces, capabilities, HATEOAS, option sources, CRUD operation resolution, and analytics request contracts.
@@ -88,3 +93,5 @@ If PowerShell audit scripts are unavailable, run an equivalent local manifest/ha
 - Use `praxis-angular-host-project` when applying core contracts in a consuming host.
 - Use `praxis-component-minimums` when the question is the smallest runtime setup for a component.
 - Use `praxis-ui-product-design` for visual/product UX and screenshot validation.
+- Use `praxis-angular-public-api-governance` for public API boundaries and cross-lib export decisions.
+- Use `praxis-angular-validation-gates` for focused local validation and release/preflight boundaries.

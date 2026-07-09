@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Angular Public API"
+  short_description: "Govern @praxisui public exports"
+  default_prompt: "Use $praxis-angular-public-api-governance to review this @praxisui public API or cross-lib export change."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Angular i18n"
+  short_description: "Govern framework and authoring text"
+  default_prompt: "Use $praxis-angular-i18n-governance to audit internal UI text and translation catalogs for this Praxis Angular change."
