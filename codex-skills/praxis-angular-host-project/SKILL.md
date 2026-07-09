@@ -221,6 +221,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-stepper-wizard-runtime`: `@praxisui/stepper` and `PraxisWizardFormComponent` runtime, `stepperId`, dynamic-form steps, canonical `resourcePath`, validation, wizard adapter, and widget events.
 - `praxis-expansion-runtime-panels`: `@praxisui/expansion` metadata-first panels, defaults providers, `expansionId`, lazy content, panel events, registry metadata, and widget events.
 - `praxis-navigation-containers-ai-validation`: AI authoring, manifests, context packs, registry projection, docs, and validation for tabs, stepper, wizard, and expansion containers.
+- `praxis-files-upload-runtime`: `@praxisui/files-upload` direct/presign/auto runtime, `filesUploadId`, `baseUrl`, full/compact UX, validators, upload states, i18n, and events.
+- `praxis-files-upload-backend-contract`: files API base URL, direct/bulk/presign endpoints, multipart fields, backend envelopes, quotas, rate limits, headers, and error codes.
+- `praxis-files-upload-form-field`: `pdx-material-files-upload`, ControlValueAccessor behavior, `valueMode`, dynamic-form field integration, and submit payload shape.
+- `praxis-files-upload-ai-validation`: files-upload authoring manifest, AI adapter, context pack, registry projection, endpoint/security operations, and assistant validation.
 - `praxis-fields-runtime-loader`: dynamic-fields loader, component registry, selector mapping, hot metadata, and runtime coverage.
 - `praxis-fields-option-sources`: optionSource, async/searchable selects, entity lookup, by-ids reload, and dependency filters.
 - `praxis-fields-editorial-discovery`: dynamic-fields editorial descriptors, catalogs, i18n, and metadata-editor/tooling discovery.

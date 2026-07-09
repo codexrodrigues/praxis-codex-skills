@@ -17,6 +17,7 @@ For `@praxisui/metadata-editor`, use `praxis-metadata-editor-renderer-coverage` 
 For `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` for runtime/autosave/toolbar/metadata bridge behavior and `praxis-manual-form-ai-authoring` for config editor, Settings Panel, manifest, capabilities, formRules, and registry work. For `@praxisui/editorial-forms`, use `praxis-editorial-forms-runtime` for snapshot/fallback/presentation/runtime work and `praxis-editorial-forms-adapters-ai` for optional adapters, dataCollection binding, and manifest operations.
 For `@praxisui/crud`, use `praxis-crud-runtime-openmodes` for runtime/open-mode/launcher/drawer behavior and `praxis-crud-ai-authoring` for CRUD authoring manifest, config editor, and child-operation delegation. For `@praxisui/dialog`, use `praxis-dialog-overlay-runtime` for overlay/focus/preset behavior and `praxis-dialog-global-actions-ai` for global actions, registries, and manifest work.
 For `@praxisui/tabs`, use `praxis-tabs-runtime-authoring` for group/nav config, quick setup, `tabsId`, `renderBody`, selected index, widget events, and tabs editor capability. For `@praxisui/stepper`, use `praxis-stepper-wizard-runtime` for stepper config editor, dynamic-form steps, validation, wizard adapter, and `stepperId` persistence. For `@praxisui/expansion`, use `praxis-expansion-runtime-panels` for panel metadata, defaults providers, panel events, widget config editor, and `expansionId` persistence. Use `praxis-navigation-containers-ai-validation` when those editor changes are also AI-authorable or registry-projected.
+For `@praxisui/files-upload`, use `praxis-files-upload-runtime` for runtime/config editor behavior, `praxis-files-upload-backend-contract` for endpoint/security/quota/rate-limit semantics, `praxis-files-upload-form-field` for form wrapper integration, and `praxis-files-upload-ai-validation` when the surface is AI-authorable or registry-projected.
 For transversal Angular governance around an editor, use `praxis-angular-i18n-governance` for internal authoring text, `praxis-angular-public-api-governance` for public editor exports, `praxis-angular-docs-playgrounds` for examples/docs/playgrounds, and `praxis-angular-validation-gates` to pick the local proof.
 
 Do not use this skill as the primary workflow for `@praxisui/dynamic-fields` discovery/editorial changes. For that case, use `praxis-dynamic-fields-editorial`.
@@ -48,6 +49,7 @@ Use the real component family of the task, not a generic "editor changed" label.
 - `@praxisui/tabs`: tabs config editor, quick setup, editor capability, group/nav document, and AI authoring manifest
 - `@praxisui/stepper`: stepper config editor, dynamic-form step config, wizard config adapter, and AI authoring manifest
 - `@praxisui/expansion`: expansion widget config editor, provider metadata, panel document, and AI authoring manifest
+- `@praxisui/files-upload`: files upload config editor, widget config editor, field wrapper, backend upload policy, and AI authoring manifest
 
 If the problem is structural and spans several editors, bias toward the canonical lib contract instead of patching a consumer editor locally.
 

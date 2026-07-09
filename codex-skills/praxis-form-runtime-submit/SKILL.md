@@ -7,7 +7,7 @@ description: Use when Codex must inspect, change, or scaffold @praxisui/dynamic-
 
 Use this skill for the `@praxisui/dynamic-form` runtime and submit contract. Dynamic Form is the canonical Angular runtime for schema-driven forms and configuration editing, but backend resource semantics remain owned by `praxis-metadata-starter`. Shared form models and services often belong to `@praxisui/core`.
 
-When Dynamic Form is consumed through `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` for host template, autosave, toolbar, and metadata bridge behavior. When Dynamic Form is consumed through `@praxisui/editorial-forms` `dataCollection` blocks, use `praxis-editorial-forms-adapters-ai` for adapter binding and `praxis-editorial-forms-runtime` for snapshot/fallback semantics.
+When Dynamic Form is consumed through `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` for host template, autosave, toolbar, and metadata bridge behavior. When Dynamic Form is consumed through `@praxisui/editorial-forms` `dataCollection` blocks, use `praxis-editorial-forms-adapters-ai` for adapter binding and `praxis-editorial-forms-runtime` for snapshot/fallback semantics. When a dynamic form field performs operational upload through `pdx-material-files-upload`, use `praxis-files-upload-form-field` for `valueMode`, ControlValueAccessor behavior, and upload field UX, plus `praxis-files-upload-backend-contract` when the submit payload depends on backend file ids or metadata.
 
 ## Source Audit
 
@@ -77,5 +77,6 @@ Only `lacuna-real-de-contrato` justifies a new public contract. Prefer materiali
 - Use `praxis-form-ai-rules-validation` for AI manifests, rules, context packs, component edit plans, diagnostics, and registry validation.
 - Use `praxis-core-resource-runtime` for schema/resource discovery, option sources, capabilities, actions, and submit/read contract grounding.
 - Use `praxis-dynamic-fields-editorial` for field component metadata, option sources, async select, entity lookup, and custom field coverage.
+- Use `praxis-files-upload-form-field` for upload field `valueMode`, metadata/id submit shape, ControlValueAccessor behavior, and dynamic-form upload integration.
 - Use `praxis-manual-form-runtime-bridge` when a manual-form wrapper owns the host template and persistence.
 - Use `praxis-editorial-forms-adapters-ai` when a dynamic form is rendered as an editorial `dataCollection` adapter.

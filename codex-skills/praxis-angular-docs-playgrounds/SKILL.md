@@ -82,6 +82,10 @@ use `praxis-tabs-runtime-authoring`, `praxis-stepper-wizard-runtime`,
 `praxis-expansion-runtime-panels`, and `praxis-navigation-containers-ai-validation` as applicable
 before updating component guides, API references, examples, docs manifests, playgrounds, or AI
 registry docs for navigation and disclosure containers.
+For `@praxisui/files-upload`, use `praxis-files-upload-runtime`,
+`praxis-files-upload-backend-contract`, `praxis-files-upload-form-field`, and
+`praxis-files-upload-ai-validation` as applicable before updating component guides, host
+integration docs, API references, examples, docs manifests, playgrounds, or AI registry docs.
 
 ## Editorial Guidance
 

@@ -15,6 +15,9 @@ For focused changes, pair this general editorial skill with the specialized fami
 For visual authoring coverage inside `@praxisui/metadata-editor`, pair this with
 `praxis-metadata-editor-renderer-coverage`; for cascade or option-source dependency normalization in
 the editor, use `praxis-metadata-editor-cascade-normalization`.
+For operational file upload fields, use `praxis-files-upload-form-field` for `pdx-material-files-upload`,
+`valueMode`, ControlValueAccessor behavior, and upload-specific field UX. Return here only when the
+dynamic-fields catalog, selector mapping, aliases, or metadata discovery for that field changes.
 
 This library does not primarily follow the pattern "runtime component has its own config editor". Runtime rendering, editorial discovery, metadata tooling, and editor coverage are separate layers.
 
