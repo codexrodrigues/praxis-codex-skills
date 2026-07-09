@@ -23,6 +23,7 @@ Use this skill when a form experience is an editorial journey rather than a flat
 - package i18n provider/dictionaries
 
 `@praxisui/core` owns shared editorial domain contracts such as `EditorialSolutionDefinition` and `EditorialTemplateInstance`. `@praxisui/dynamic-form` may render `dataCollection` blocks only through optional adapters; it must not become the primary language of the editorial runtime.
+When editorial presentation or narrative blocks use `RichContentDocument`, pair with `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters`; do not invent an editorial-only rich content dialect.
 
 ## Required Source Audit
 
