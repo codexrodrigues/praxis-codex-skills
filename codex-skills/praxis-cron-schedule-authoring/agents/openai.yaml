@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Cron Schedule Authoring"
+  short_description: "Model canonical schedule semantics"
+  default_prompt: "Use $praxis-cron-schedule-authoring to model Praxis schedule intent and CRON dialects."
