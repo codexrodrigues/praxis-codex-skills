@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis AI Assistant Runtime"
+  short_description: "Guide Praxis AI assistant runtime UX"
+  default_prompt: "Use $praxis-ai-assistant-runtime to review a Praxis AI assistant runtime or client change."

@@ -7,6 +7,8 @@ description: Use when Codex must inspect, change, or validate @praxisui/dynamic-
 
 Use this skill for Dynamic Form AI authoring, rules, and validation. Form AI must operate through declared semantic contracts: component authoring manifest, component edit plans, rule authoring context, diagnostics, allowed targets/properties, context packs, and registry ingestion. It must not route primary intent through local keyword matching.
 
+For shared AI runtime, manifest, registry, or semantic intent work, pair this skill with `praxis-ai-assistant-runtime`, `praxis-ai-authoring-manifests`, `praxis-ai-registry-ingestion`, or `praxis-ai-semantic-intent`.
+
 ## Source Audit
 
 Inspect the AI/rules surface:
