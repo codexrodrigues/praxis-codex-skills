@@ -21,6 +21,10 @@ This skill is about runtime bootstrap and host wiring, not authoring/editor pari
 If the task implements or reviews backend `RESOURCE_ENTITY` option sources, use
 `praxis-resource-entity-lookup-backend`; this skill may explain why `resourcePath` alone is not
 enough, but it does not define the backend contract.
+For dynamic-fields runtime or control coverage, use `praxis-fields-runtime-loader`. For select-like
+remote options, use `praxis-fields-option-sources`. For editor/tooling discovery, use
+`praxis-fields-editorial-discovery`. For AI authoring or canvas coverage, use
+`praxis-fields-ai-canvas-validation`.
 
 Before changing this skill or answering a minimum-setup question, inspect the current source for the
 target component and its host services. For Angular components this normally means component inputs,

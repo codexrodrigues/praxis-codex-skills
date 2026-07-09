@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Fields Runtime Loader"
+  short_description: "Guide dynamic field loader and registry changes"
+  default_prompt: "Use $praxis-fields-runtime-loader to review a Praxis dynamic field loader or registry change."

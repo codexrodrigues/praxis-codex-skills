@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Fields Option Sources"
+  short_description: "Guide optionSource selects and entity lookups"
+  default_prompt: "Use $praxis-fields-option-sources to implement a Praxis optionSource select or entity lookup flow."

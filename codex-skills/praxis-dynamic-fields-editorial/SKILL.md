@@ -7,6 +7,12 @@ description: Use when changing Praxis Dynamic Fields control types, aliases, dis
 
 Use this skill for the special authoring/discovery model of `@praxisui/dynamic-fields`.
 
+For focused changes, pair this general editorial skill with the specialized family:
+`praxis-fields-runtime-loader` for loader/registry/runtime coverage,
+`praxis-fields-option-sources` for async selects, option sources, and entity lookup,
+`praxis-fields-editorial-discovery` for descriptor/catalog/tooling coverage, and
+`praxis-fields-ai-canvas-validation` for AI manifest, registry ingestion, recipes, or canvas proof.
+
 This library does not primarily follow the pattern "runtime component has its own config editor". Runtime rendering, editorial discovery, metadata tooling, and editor coverage are separate layers.
 
 Before changing this skill or a dynamic-fields feature, inspect the current source for the involved
