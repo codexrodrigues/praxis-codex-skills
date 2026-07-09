@@ -271,6 +271,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-charts-runtime-data`: `@praxisui/charts` runtime, `x-ui.chart`, `chartDocument`, ECharts adapter boundary, analytics adapters, stats execution, `queryContext`, drilldown, and cross-filter.
 - `praxis-charts-authoring-settings`: chart config editor, widget config editor, Settings Panel, apply/save/reset/reopen, governed resource/field/target catalogs, and chart editor round-trip.
 - `praxis-charts-ai-validation`: chart AI manifest, editable targets, validators, handler contracts, registry ingestion, and component edit-plan validation.
+- `praxis-charts-echarts-engine-boundary`: ECharts adapter lifecycle, option builder, engine provider, click event mapping, raw option safety, and micro-visualization boundary.
+- `praxis-charts-analytics-interactions`: stats contracts, analytics projections, `queryContext`, drilldown, cross-filter, point selection, and dashboard chart interactions.
+- `praxis-charts-authoring-catalogs`: chart config editor catalogs, `availableResources`, `availableFields`, `availableTargets`, preview mapper, and Settings Panel round-trip.
+- `praxis-charts-ai-handler-contracts`: chart manifest operation schemas, validators, handler contracts, edit plans, and generated AI registry assets.
 - `praxis-dashboard-analytics`: backend dashboard/analytics resources, `/stats/*`, `@UiAnalytics`, aggregate resources, custom dashboard catalog/summary endpoints, capabilities, and option sources.
 - `praxis-page-builder-composition`: Page Builder runtime composition, component palette, `WidgetPageDefinition`, canvas, `page.composition.links`, connection graph, nested ports, and dynamic page materialization.
 - `praxis-page-builder-authoring`: Page Builder page config editors, widget shell editor, Settings Panel bridge, child config editor hosting, apply/save/reset/reopen, and visual/textual round-trip.

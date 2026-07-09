@@ -13,6 +13,10 @@ Pair it with:
 - `praxis-core-resource-runtime` when chart data depends on core analytics schema contracts, stats request builders, resource discovery, or query context.
 - `praxis-charts-authoring-settings` when `config-editor`, Settings Panel, or chart widget input editing changes.
 - `praxis-charts-ai-validation` when chart authoring manifests, edit plans, validators, or registry assets change.
+- `praxis-charts-echarts-engine-boundary` for ECharts adapter lifecycle, option building, engine providers, point-event mapping, and raw option safety.
+- `praxis-charts-analytics-interactions` for stats execution, analytics projections, `queryContext`, drilldown, cross-filter, point selection, or dashboard interactions.
+- `praxis-charts-authoring-catalogs` for config editors, resource/field/target catalogs, preview mapping, and Settings Panel round-trip.
+- `praxis-charts-ai-handler-contracts` for runtime paths that are authorable by manifest operations or AI edit plans.
 - `praxis-angular-host-project` when a host must register providers or consume published chart packages.
 
 ## Canonical Boundary

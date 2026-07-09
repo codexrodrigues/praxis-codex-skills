@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Charts Authoring Catalogs"
+  short_description: "Audit chart editor catalogs"
+  default_prompt: "Use $praxis-charts-authoring-catalogs to implement or audit Praxis Charts config editors, resource/field/target catalogs, preview mapping, and Settings Panel round-trip."

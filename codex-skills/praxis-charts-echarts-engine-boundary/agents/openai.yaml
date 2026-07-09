@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Charts ECharts Boundary"
+  short_description: "Audit ECharts adapter boundary"
+  default_prompt: "Use $praxis-charts-echarts-engine-boundary to implement or audit Praxis Charts ECharts adapter boundaries, option safety, chart engine providers, and point event mapping."

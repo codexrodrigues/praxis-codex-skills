@@ -54,10 +54,14 @@
         "praxis-fields-control-profile-ai",
         "praxis-fields-inline-overlay-runtime",
         "praxis-fields-text-number-time-controls",
-        "praxis-fields-selection-lookup-controls"
+        "praxis-fields-selection-lookup-controls",
+        "praxis-charts-ai-handler-contracts",
+        "praxis-charts-authoring-catalogs",
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-echarts-engine-boundary"
       ],
-      "skillMdSha256": "2881CA867F7A617F5228912BC5F429FF1B7D2F553BE9FFFBD43F1DFF8057AED6",
-      "treeSha256": "EF7DB3AFE6AA757A8757C241CABDF5574AA31F9039EE5049FF802F16C5F07478"
+      "skillMdSha256": "787CC4CD9DD38748945175F47462C686F02688BB34A2A05D16059C18218D9CC4",
+      "treeSha256": "6DB784C67ED352A3B0AF9ED4916CC702A4156045117A1F649803ACD0D56DD72D"
     },
     {
       "name": "praxis-ai-semantic-intent",
@@ -108,10 +112,14 @@
         "praxis-fields-inline-overlay-runtime",
         "praxis-fields-text-number-time-controls",
         "praxis-fields-selection-lookup-controls",
-        "praxis-fields-control-profile-ai"
+        "praxis-fields-control-profile-ai",
+        "praxis-charts-echarts-engine-boundary",
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-authoring-catalogs",
+        "praxis-charts-ai-handler-contracts"
       ],
-      "skillMdSha256": "A68C4B3E54E00AF32E4CEEECDDB1677A2D9BA52D91522EA5F7EBEC4F5DE4B6D7",
-      "treeSha256": "422D88B259B4FEE8BADCB6750D68365F77185D3926E635E80E0AE75C8ED3B90E"
+      "skillMdSha256": "7E19A7A683C98DB8103E9FA737E219C3BA37F4BC2729D105268062CDB47A90C6",
+      "treeSha256": "48506F3E6E15455BA797D4CEFCF0A068EAD3C0BE3478049A8BF8125392F1DA71"
     },
     {
       "name": "praxis-angular-host-project",
@@ -186,10 +194,14 @@
         "praxis-fields-inline-overlay-runtime",
         "praxis-fields-text-number-time-controls",
         "praxis-fields-selection-lookup-controls",
-        "praxis-fields-control-profile-ai"
+        "praxis-fields-control-profile-ai",
+        "praxis-charts-echarts-engine-boundary",
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-authoring-catalogs",
+        "praxis-charts-ai-handler-contracts"
       ],
-      "skillMdSha256": "2C8101DB9D03FC209B0B43712FE376B7D25194D660AB3A99051187AD633FB967",
-      "treeSha256": "CF7425F907F9EF37DC85114EB95175CF42598C85A24BA8EC9C8D87A2F39D57BA"
+      "skillMdSha256": "6F2C16E527A047A7B527BD4B3B001DD5A7850495D6AE5F3842032EF6E2579FE5",
+      "treeSha256": "7FE31F07C470C2F2349FCD211BEF4E432FA1420C958953CC225D4BC1924C210C"
     },
     {
       "name": "praxis-angular-i18n-governance",
@@ -277,10 +289,14 @@
         "praxis-fields-inline-overlay-runtime",
         "praxis-fields-text-number-time-controls",
         "praxis-fields-selection-lookup-controls",
-        "praxis-fields-control-profile-ai"
+        "praxis-fields-control-profile-ai",
+        "praxis-charts-echarts-engine-boundary",
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-authoring-catalogs",
+        "praxis-charts-ai-handler-contracts"
       ],
-      "skillMdSha256": "5925F14A933B739E60FC3EBF1428A073827F6B85770087C32B25AC1C04913A45",
-      "treeSha256": "9DC9435B8A4B0E97AA7B29B2F25830B698503813D7BF40638CB799C7684D4CC1"
+      "skillMdSha256": "74E03040B4795281D95B87FF0E607D6DFF3FFD890FCCD32C6E2FB83860D32F06",
+      "treeSha256": "6422692995E4D90F9396DB7E6017B3DAFCCA3EDA42FD1882B7C1FA25FF5F7954"
     },
     {
       "name": "praxis-charts-ai-validation",
@@ -293,10 +309,14 @@
         "praxis-ai-registry-ingestion",
         "praxis-ai-semantic-intent",
         "praxis-charts-runtime-data",
-        "praxis-charts-authoring-settings"
+        "praxis-charts-authoring-settings",
+        "praxis-charts-ai-handler-contracts",
+        "praxis-charts-authoring-catalogs",
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-echarts-engine-boundary"
       ],
-      "skillMdSha256": "AF0A25801CF6CC2226CF68C5460CC46C4E79E46B4AC8BDEE93FC6F653642D847",
-      "treeSha256": "282DBA9DB72E7BC33B5FDF45B4DE7FD971C79CCE2F6F37A5BC3D4468377D8BFD"
+      "skillMdSha256": "336A4193EF9B119629DFA95A45A8A22B22E42C5D6C3B919DA5855D4FD284A892",
+      "treeSha256": "F887E6319A24E5B48A9F10FE7E380E5CB5FA39B6ADBADF5460A2BBB897BD5985"
     },
     {
       "name": "praxis-charts-authoring-settings",
@@ -308,10 +328,14 @@
         "praxis-settings-panel-shell",
         "praxis-settings-roundtrip-authoring",
         "praxis-authoring-editors",
-        "praxis-charts-runtime-data"
+        "praxis-charts-runtime-data",
+        "praxis-charts-authoring-catalogs",
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-echarts-engine-boundary",
+        "praxis-charts-ai-handler-contracts"
       ],
-      "skillMdSha256": "9C44B42BD02986E96DFC3C0883BCE764E86E475E07758E47884A9CE64DDC9615",
-      "treeSha256": "C117C174A76010B9641CA38B349A0026C88ADF18B66ECDA166CEAB10D062A4C0"
+      "skillMdSha256": "74AB90A8A769D7F96E469992F6628873F2229B53F815620EDFC627F88A65263E",
+      "treeSha256": "98392A37385BF682357C9B498C346F1F3AF584100CC6188D2444A237499BDAE6"
     },
     {
       "name": "praxis-charts-runtime-data",
@@ -321,10 +345,14 @@
       "compatibility": "0.x",
       "dependencies": [
         "praxis-core-runtime-contracts",
-        "praxis-core-resource-runtime"
+        "praxis-core-resource-runtime",
+        "praxis-charts-echarts-engine-boundary",
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-authoring-catalogs",
+        "praxis-charts-ai-handler-contracts"
       ],
-      "skillMdSha256": "3AA7F1BE4801D3D9487967247BEE12FCCE61B9171332184F8B33381B1A864569",
-      "treeSha256": "83058FB32AA15E0DE6A9D143855DA1037A48AC97D49AC7C321BCA6B3CCBC6680"
+      "skillMdSha256": "BCA29A3A0CF35E76D1415D268A18455F0C6014F3401A264109AD4D255B8B30B5",
+      "treeSha256": "141EB7631CCAE1615FBEC04C8F0FC06F30F1378130BC157C8AACFE6B25AF64E6"
     },
     {
       "name": "praxis-component-minimums",
@@ -557,10 +585,14 @@
         "praxis-core-resource-runtime",
         "praxis-charts-runtime-data",
         "praxis-charts-authoring-settings",
-        "praxis-charts-ai-validation"
+        "praxis-charts-ai-validation",
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-authoring-catalogs",
+        "praxis-charts-echarts-engine-boundary",
+        "praxis-charts-ai-handler-contracts"
       ],
-      "skillMdSha256": "C8FBAFF395A6CAD5D2204D03C0D358B4F71FE5AF258517C4DEE158DD997FF912",
-      "treeSha256": "DCAB7CE36719F52BA11744B87ADE641DE945807774488FC6273A5BA532FDFE17"
+      "skillMdSha256": "CD577ABE7C5F628303994BA4D4DBFFF499AF69AF2E207DF23BFEBEE161C561AF",
+      "treeSha256": "B085C27F7CA19986E6E70007B9538CE32BAEEE920D87193E087851E30BE23386"
     },
     {
       "name": "praxis-dialog-global-actions-ai",
@@ -1500,6 +1532,55 @@
       ],
       "skillMdSha256": "41905620C3C1F3341EE96C81B00BE94532FE524F6E8919C1D9D053F311408934",
       "treeSha256": "E4C6E6F43E91D2C8E5D0C5950534A6466883FF1EB4B53E14A4AE9E5F706A7797"
+    },
+    {
+      "name": "praxis-charts-echarts-engine-boundary",
+      "sourcePath": "codex-skills/praxis-charts-echarts-engine-boundary",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [],
+      "skillMdSha256": "ED763BA9902D3221FF875D9872555AA8F9B6715EDEDFA4FE8CF61D81DE8F68D8",
+      "treeSha256": "09F5715A167957A3D4C556CC02FE9AD758096F34B3588D1EAF91BA8C1DDAE392"
+    },
+    {
+      "name": "praxis-charts-analytics-interactions",
+      "sourcePath": "codex-skills/praxis-charts-analytics-interactions",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-charts-echarts-engine-boundary"
+      ],
+      "skillMdSha256": "1E2C4BE01142A866077786E420A55359F7F93ED7EFC8B90B0851CC05A78B3DAC",
+      "treeSha256": "0E86C28A48AC27D5D0D8CCD83F763E5FFF5080D3D7FDD071DBD4C0840EF185A4"
+    },
+    {
+      "name": "praxis-charts-authoring-catalogs",
+      "sourcePath": "codex-skills/praxis-charts-authoring-catalogs",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-echarts-engine-boundary"
+      ],
+      "skillMdSha256": "95051B8957BAC93EB4C8C5A04F7E0E7D199D67170DEBB464F031E392FE32D77E",
+      "treeSha256": "0516B233538800694637FE584A4276F459B4727163240E5095EA9D1FB25850F0"
+    },
+    {
+      "name": "praxis-charts-ai-handler-contracts",
+      "sourcePath": "codex-skills/praxis-charts-ai-handler-contracts",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-charts-authoring-catalogs",
+        "praxis-charts-analytics-interactions",
+        "praxis-charts-echarts-engine-boundary"
+      ],
+      "skillMdSha256": "79BBD6AC9AFAEB2B06D698186C5B929329B140693E453EFF0FCD2FEAE7741F01",
+      "treeSha256": "45DF1CC9B0B280A717C876B627E74600387F99735C06266C2B518EBC36A019DA"
     }
   ]
 }
