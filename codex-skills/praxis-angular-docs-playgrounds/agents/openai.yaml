@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Docs Playgrounds"
+  short_description: "Sync docs, examples, and playgrounds"
+  default_prompt: "Use $praxis-angular-docs-playgrounds to keep Praxis public docs, examples, and playgrounds aligned with a component change."
