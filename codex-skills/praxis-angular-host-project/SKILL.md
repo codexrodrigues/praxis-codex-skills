@@ -21,6 +21,24 @@ for public exports and package boundaries, `praxis-angular-i18n-governance` for 
 and `praxis-angular-docs-playgrounds` for public docs, examples, landing pages, playgrounds, and
 derived artifacts.
 
+## Skill Discovery Policy
+
+Do not depend on migration docs, quickstarts, or one orchestration skill to enumerate every relevant `praxis-*` skill explicitly.
+
+When the environment exposes skill inventory or search:
+
+1. Classify the task by domain first: `core`, `table`, `form`, `list`, `crud`, `dialog`, `tabs`, `stepper`, `expansion`, `files-upload`, `rich-content`, `page-builder`, `metadata-editor`, `fields`, `charts`, `settings`, `ai`, `docs`, `i18n`, `public-api`, or `validation`.
+2. Search the Praxis family for the matching domain skills.
+3. Load the narrow functional owner first, then add transversal skills such as validation, public-api, i18n, docs, or visual-product QA only when the scope actually requires them.
+
+When the environment does not expose skill discovery:
+
+1. Start from this gateway skill for Angular-host work.
+2. Use the family manifest plus the companion-skill list below as the canonical routing table.
+3. Prefer routing by surface/runtime owner rather than by remembering a static list from migration documentation.
+
+For Ergon/Archon migrations, the orchestration skill still owns phase gating, but once UI/platform work is in scope the agent should discover and load the relevant `praxis-*` specializations even if the migration roadmap did not cite them by name.
+
 ## Canonical Sources
 
 - `praxis-ui-angular` owns the public Angular packages, runtime providers, tokens, services, component APIs, and public Angular contracts.
