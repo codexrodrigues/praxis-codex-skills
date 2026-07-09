@@ -61,5 +61,7 @@ State whether live AI E2E was skipped. Do not use GitHub Actions as exploratory 
 - Use `praxis-table-runtime-data` for runtime state, selection, local/remote data mode, export, analytics, and renderers.
 - Use `praxis-table-filter-actions` for filter/action operation grounding.
 - Use `praxis-table-authoring-settings` for Settings Panel and config editor round-trip.
+- Use `praxis-table-rule-ai-validation` when AI authoring targets table visual effects, presets, semantic animations, or `tableIntegration.delegate`.
+- Use `praxis-table-rule-table-integration` when table-owned renderer placement must coordinate with table-rule-builder effect payloads.
 - Use `praxis-core-runtime-contracts` and `praxis-core-resource-runtime` for shared AI contracts, resource capabilities, surfaces, and schema grounding.
 - Use `praxis-authoring-editors` for cross-component authoring/persistence patterns.

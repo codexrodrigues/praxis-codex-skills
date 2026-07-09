@@ -47,10 +47,11 @@
         "praxis-navigation-containers-ai-validation",
         "praxis-files-upload-ai-validation",
         "praxis-rich-content-ai-security-validation",
-        "praxis-cron-builder-ai-validation"
+        "praxis-cron-builder-ai-validation",
+        "praxis-table-rule-ai-validation"
       ],
-      "skillMdSha256": "ECF1E2B3BFB6B33B8E81143CD9ED2DC05A96D6063AF879EC3E8C969B05A0417B",
-      "treeSha256": "B2CBB50BD42CDBA2134C5B7359EA5A37F064D884AFCA061E28E2739DDC4FC4B0"
+      "skillMdSha256": "00E120BE78EBE7C911622AC45BF601D3029D72831A9473CE1A562703B82C43C9",
+      "treeSha256": "CD844F20EF4C00724FAC790AEEE2F5992BC798BA7A1B3A1C5FEC3A6C4C79416B"
     },
     {
       "name": "praxis-ai-semantic-intent",
@@ -88,10 +89,14 @@
         "praxis-cron-builder-runtime",
         "praxis-cron-schedule-authoring",
         "praxis-cron-builder-form-field",
-        "praxis-cron-builder-ai-validation"
+        "praxis-cron-builder-ai-validation",
+        "praxis-table-rule-effects-runtime",
+        "praxis-table-rule-animation-presets",
+        "praxis-table-rule-table-integration",
+        "praxis-table-rule-ai-validation"
       ],
-      "skillMdSha256": "36492F33F173C48E5B0289BCC10D77F88DEB7BC0AF3AA3A49188B2297A785521",
-      "treeSha256": "26F360C7D4E359A742E0F07F0B1977DA979168928B4D3E57EE5B88B2F8CDA090"
+      "skillMdSha256": "71EB09CB0853B5AA2A605B48FBC8283A8FC41B00044B914AF9DFA381266906DA",
+      "treeSha256": "AE68E0A0BA00B8C19A303EF753E45662FE6F4606132AC8C1FFD82E8F7FEDE07B"
     },
     {
       "name": "praxis-angular-host-project",
@@ -148,10 +153,14 @@
         "praxis-cron-builder-runtime",
         "praxis-cron-schedule-authoring",
         "praxis-cron-builder-form-field",
-        "praxis-cron-builder-ai-validation"
+        "praxis-cron-builder-ai-validation",
+        "praxis-table-rule-effects-runtime",
+        "praxis-table-rule-animation-presets",
+        "praxis-table-rule-table-integration",
+        "praxis-table-rule-ai-validation"
       ],
-      "skillMdSha256": "21099BF5C5DBEE6B4AB1B8C865F2023824726441F332F3BF2E98354487E9A9D7",
-      "treeSha256": "2AE8FC5103E842A35EF803D467D09831DC7FE3E2CF11BA8348FB4798AE4074AB"
+      "skillMdSha256": "937766FDB0D0C3DE8FCF62F0BC13B21786202B26A9855FA499DFC6C048B56C0B",
+      "treeSha256": "9FE672B89797E86B7071B4FA31868250DFC3564D03C2FE82EA938BD52F29D374"
     },
     {
       "name": "praxis-angular-i18n-governance",
@@ -163,10 +172,12 @@
         "praxis-angular-validation-gates",
         "praxis-core-runtime-contracts",
         "praxis-cron-builder-runtime",
-        "praxis-cron-schedule-authoring"
+        "praxis-cron-schedule-authoring",
+        "praxis-table-rule-effects-runtime",
+        "praxis-table-rule-animation-presets"
       ],
-      "skillMdSha256": "B1E309B4FFA9136ED1438B2C63D26DAECCA3C818C7B8ED97F9B40FBA3EC1409E",
-      "treeSha256": "929370998ED9094769450A5481FD41B50F98804D14BE1A5B50CDE0DD8BCD6AD3"
+      "skillMdSha256": "991D480EA663C7A8D8885ADAECE0358C3AF50622E0537559C88A8EF634483F65",
+      "treeSha256": "CB630C18A92375CDADE1E45F2FD2F3CA80472412219E92995A1800793FEB329D"
     },
     {
       "name": "praxis-angular-public-api-governance",
@@ -215,10 +226,14 @@
         "praxis-cron-builder-runtime",
         "praxis-cron-schedule-authoring",
         "praxis-cron-builder-form-field",
-        "praxis-cron-builder-ai-validation"
+        "praxis-cron-builder-ai-validation",
+        "praxis-table-rule-effects-runtime",
+        "praxis-table-rule-animation-presets",
+        "praxis-table-rule-table-integration",
+        "praxis-table-rule-ai-validation"
       ],
-      "skillMdSha256": "9844D94E1BF74279DF55240EF2446E6F1F05A939AD823B1FDE938A2650B406A7",
-      "treeSha256": "007015F15DD5F96061D33B5824D6F37C6EA5AEED3CBDEEAC695FCF361A1611EC"
+      "skillMdSha256": "FBD791826D1814BEF6C7D5558D28436E5D87C48326777980D1A4D8CF86390D3E",
+      "treeSha256": "F953DD5B69D7F79AAE0C48C46559194A76CF6227571173E5EB8833DCE5C7E5E1"
     },
     {
       "name": "praxis-charts-ai-validation",
@@ -1097,10 +1112,12 @@
         "praxis-table-authoring-settings",
         "praxis-core-runtime-contracts",
         "praxis-core-resource-runtime",
-        "praxis-authoring-editors"
+        "praxis-authoring-editors",
+        "praxis-table-rule-ai-validation",
+        "praxis-table-rule-table-integration"
       ],
-      "skillMdSha256": "E4FD43464D09747AE51D3B022F724FECCD371D10D850FB5FC3BF374979E5F0BD",
-      "treeSha256": "95FF4375994BDF8FCB3633D479857F9097F8A194A8501536757C5B54EA2AA1D4"
+      "skillMdSha256": "B916863ADCFF3D2F0F2B7C9AC6BC50C739C2D415B2B241DA950996AE451EDC7C",
+      "treeSha256": "05441DA30E7A22E5E55A7845D5F492767C7E6D0BE26D84572B8E615498F6F97B"
     },
     {
       "name": "praxis-table-authoring-settings",
@@ -1113,10 +1130,14 @@
         "praxis-table-filter-actions",
         "praxis-authoring-editors",
         "praxis-ui-product-design",
-        "praxis-core-runtime-contracts"
+        "praxis-core-runtime-contracts",
+        "praxis-table-rule-effects-runtime",
+        "praxis-table-rule-animation-presets",
+        "praxis-table-rule-table-integration",
+        "praxis-table-rule-ai-validation"
       ],
-      "skillMdSha256": "86E847A6A6337DA823F15485E60D4AC7E630699D195DD7416A719EEFB284B8EB",
-      "treeSha256": "6A419B3874925A7355A4AC9C02FBD1975382AE900F238A92D8BF2CD3B66CAC7F"
+      "skillMdSha256": "555B23CF0DB522418D48EE1A2EE11C17437AA7FD64ACB005F5FA29FB40D3E0DF",
+      "treeSha256": "C89B60CB4009282B0B5EB8E79A41AC95F4018B4D68966FA770738D0AB300FAE8"
     },
     {
       "name": "praxis-table-filter-actions",
@@ -1132,6 +1153,55 @@
       ],
       "skillMdSha256": "6ACDF99CDE6F2202FEF5EC7CAFCD217691F903D824915B053F5CFC7FD6DBE284",
       "treeSha256": "171BE55A05514AF3F707A845DF5DE9FB220E06CA9368C0000BE9D79E84D390D0"
+    },
+    {
+      "name": "praxis-table-rule-ai-validation",
+      "sourcePath": "codex-skills/praxis-table-rule-ai-validation",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-table-rule-effects-runtime",
+        "praxis-table-rule-animation-presets",
+        "praxis-table-rule-table-integration"
+      ],
+      "skillMdSha256": "1ECC3AA668623ABC312850DAECC9644388DBA4DDBE30AAA2AF747974C513C51A",
+      "treeSha256": "7B997C2EB957E533994F86F1B9AA59202D3B9D045650811BADCC13A34FF89EC6"
+    },
+    {
+      "name": "praxis-table-rule-animation-presets",
+      "sourcePath": "codex-skills/praxis-table-rule-animation-presets",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-table-rule-effects-runtime"
+      ],
+      "skillMdSha256": "505AF2F54D3B5F58BF6D36C2A94779D7BD9B0CBDBAA2A4E94C4C5DC4A11CCEF5",
+      "treeSha256": "B513E4A1A44BD0B405E71A8B5B5AAD848BEA9C91D6C1A8742A9071A77C6C72C7"
+    },
+    {
+      "name": "praxis-table-rule-effects-runtime",
+      "sourcePath": "codex-skills/praxis-table-rule-effects-runtime",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [],
+      "skillMdSha256": "2D59DD379848D2C05759656BBBFC47BE4900F66D79F1E0D5AC945F312563BA86",
+      "treeSha256": "368D788902374838B4E3B45C77E6AD5C7E012F5A60AB260D7586842E3EBAF54F"
+    },
+    {
+      "name": "praxis-table-rule-table-integration",
+      "sourcePath": "codex-skills/praxis-table-rule-table-integration",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-table-rule-effects-runtime",
+        "praxis-table-rule-animation-presets"
+      ],
+      "skillMdSha256": "C89AC5EEE9B71CCD48C091AF512FDD54B525C43C5A07EEB207D5F59A001CD381",
+      "treeSha256": "D5720EC4AB3BB269AC04BEC7C837217359596C7F0EB1935DBA2B473A7C5F2969"
     },
     {
       "name": "praxis-table-runtime-data",
@@ -1181,10 +1251,13 @@
       "dependencies": [
         "praxis-core-runtime-contracts",
         "praxis-ai-authoring-manifests",
-        "praxis-ai-registry-ingestion"
+        "praxis-ai-registry-ingestion",
+        "praxis-table-rule-effects-runtime",
+        "praxis-table-rule-table-integration",
+        "praxis-table-rule-ai-validation"
       ],
-      "skillMdSha256": "AD1D11F9D1EAEC0EBD008C9B2E7CC6EBD7B190036038B3E87DC0DEA50AA015FA",
-      "treeSha256": "B8B83778579292944DEED298A49443331AF979EDD45D1C7FA624E68CE2011CAD"
+      "skillMdSha256": "E19CED99610AF16A430C252B2BFF49F44AEDFC76BC8555D6316206781ADBC609",
+      "treeSha256": "B11BF152FEDD342177AA4B983C628664896A7723B2E4FAE3AA5248F806E96864"
     }
   ]
 }

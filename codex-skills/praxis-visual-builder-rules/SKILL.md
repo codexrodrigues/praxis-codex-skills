@@ -13,6 +13,7 @@ Pair it with:
 - `praxis-ai-authoring-manifests` and `praxis-ai-registry-ingestion` when the visual builder AI manifest or generated assets change.
 - `praxis-authoring-editors` when the visual builder is hosted as a config editor in another component.
 - `praxis-form-ai-rules-validation` when form rules, field visibility, submit behavior, or dynamic-form rule materialization are involved.
+- `praxis-table-rule-effects-runtime`, `praxis-table-rule-table-integration`, and `praxis-table-rule-ai-validation` when the rule expression is specifically table visual conditional effects owned by `@praxisui/table-rule-builder`.
 
 ## Canonical Boundary
 

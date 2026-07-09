@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Table Rule Effects Runtime"
+  short_description: "Author table visual effect rules"
+  default_prompt: "Use $praxis-table-rule-effects-runtime to implement or audit Praxis table visual rule effects."
