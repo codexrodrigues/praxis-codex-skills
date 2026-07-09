@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Angular Validation Gates"
+  short_description: "Choose focused Angular validation gates"
+  default_prompt: "Use $praxis-angular-validation-gates to pick the smallest reliable local validation for this Praxis Angular change."

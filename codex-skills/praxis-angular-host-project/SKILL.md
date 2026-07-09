@@ -15,6 +15,11 @@ providers, shared services, i18n, logging, or cross-lib contracts. Use
 actions, surfaces, capabilities, option sources, related resources, and analytics runtime. Use
 `praxis-core-composition-runtime` for dynamic widget pages, composition links, surface hosts, and
 runtime observations.
+Use the transversal Angular family when the work is not a single component behavior:
+`praxis-angular-validation-gates` for local validation planning, `praxis-angular-public-api-governance`
+for public exports and package boundaries, `praxis-angular-i18n-governance` for framework-owned text,
+and `praxis-angular-docs-playgrounds` for public docs, examples, landing pages, playgrounds, and
+derived artifacts.
 
 ## Canonical Sources
 
@@ -181,6 +186,10 @@ For configurable surfaces:
 Use these alongside this skill when the task scope requires them:
 
 - `praxis-component-minimums`: minimum setup for table/form/list/CRUD, local vs remote metadata-driven modes, and `resourcePath` boundaries.
+- `praxis-angular-validation-gates`: focused local validation, consumer builds, Playwright/screenshot QA, registry/docs gates, release preflight, and GitHub Actions boundaries.
+- `praxis-angular-public-api-governance`: `@praxisui/*` public exports, barrel ownership, cross-lib edges, direct-consumer validation, and derived public API artifacts.
+- `praxis-angular-i18n-governance`: internal framework text, authoring chrome, locale catalogs, `PraxisI18nService`, hardcoded text audits, and PT-BR/en-US coverage.
+- `praxis-angular-docs-playgrounds`: public docs, component docs manifests, examples, AI recipes, landing pages, playgrounds, sitemap, and docs validation.
 - `praxis-core-runtime-contracts`: core public API, tokens, providers, models, i18n, logging, and shared services.
 - `praxis-core-resource-runtime`: core schema/resource discovery, actions, surfaces, capabilities, option sources, related resources, and analytics materialization.
 - `praxis-core-composition-runtime`: dynamic widget pages, composition links, widget events, surface hosts, and runtime observations.

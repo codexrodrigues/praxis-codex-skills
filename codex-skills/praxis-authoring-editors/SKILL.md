@@ -12,6 +12,7 @@ This covers the normal authoring path used by libs such as `@praxisui/dynamic-fo
 For focused Settings Panel work, use the specialized family: `praxis-settings-panel-shell` for shell/protocol, `praxis-settings-roundtrip-authoring` for apply/save/reset/reopen across hosted editors, `praxis-settings-global-config` for the Global Config Editor, and `praxis-settings-ai-i18n-validation` for AI manifest and i18n coverage.
 For AI-assisted authoring work, use `praxis-ai-assistant-runtime`, `praxis-ai-authoring-manifests`, `praxis-ai-registry-ingestion`, and `praxis-ai-semantic-intent` according to whether the task touches assistant UX, executable manifests, generated registry/catalog artifacts, or semantic intent boundaries.
 For Page Builder work, use `praxis-page-builder-composition` for page/runtime composition, `praxis-page-builder-authoring` for page config, shell, Settings Panel and child editor hosting, and `praxis-page-builder-ai-agentic` for agentic page authoring. For Visual Builder rule authoring, use `praxis-visual-builder-rules`.
+For transversal Angular governance around an editor, use `praxis-angular-i18n-governance` for internal authoring text, `praxis-angular-public-api-governance` for public editor exports, `praxis-angular-docs-playgrounds` for examples/docs/playgrounds, and `praxis-angular-validation-gates` to pick the local proof.
 
 Do not use this skill as the primary workflow for `@praxisui/dynamic-fields` discovery/editorial changes. For that case, use `praxis-dynamic-fields-editorial`.
 
@@ -204,6 +205,7 @@ Before considering the task complete, verify:
 - If the task created a new editor surface, the editor owner and canonical document shape are now discoverable in the code and docs of the owning lib.
 - For widget-hosted editors, the host receives the same canonical input patch or authoring document
   shape on apply/save that the owning component documents and tests.
+- If the editor change crosses package, docs, i18n, or validation boundaries, the matching transversal Angular skill was applied or explicitly ruled out.
 
 ## Agentic Manifest Checks
 

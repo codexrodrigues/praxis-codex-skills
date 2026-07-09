@@ -26,6 +26,12 @@ Use narrower commands only when the change scope is narrower:
 - `npm run package:ai-assets` when package-scoped `ai/component-registry.json` assets must be refreshed
 - `npm run ai:sync-backend` only when backend synchronization is explicitly required
 
+Use `praxis-angular-docs-playgrounds` when registry extraction changes public component docs,
+examples, landing pages, or playground evidence. Use `praxis-angular-validation-gates` to decide
+whether full ingestion is required or a narrower registry validator is enough for the current scope.
+Use `praxis-angular-public-api-governance` when the registry change is caused by package-facing
+exports or public component contracts.
+
 ## Required Inventory
 
 Inspect:
