@@ -9,6 +9,8 @@ Use this skill when a task creates, expands, or corrects any configuration that 
 
 This covers the normal authoring path used by libs such as `@praxisui/dynamic-form`, `@praxisui/table`, `@praxisui/list`, `@praxisui/charts`, `@praxisui/page-builder`, `@praxisui/manual-form`, `@praxisui/tabs`, `@praxisui/stepper`, `@praxisui/metadata-editor`, and any editor integrated with `@praxisui/settings-panel`.
 
+For focused Settings Panel work, use the specialized family: `praxis-settings-panel-shell` for shell/protocol, `praxis-settings-roundtrip-authoring` for apply/save/reset/reopen across hosted editors, `praxis-settings-global-config` for the Global Config Editor, and `praxis-settings-ai-i18n-validation` for AI manifest and i18n coverage.
+
 Do not use this skill as the primary workflow for `@praxisui/dynamic-fields` discovery/editorial changes. For that case, use `praxis-dynamic-fields-editorial`.
 
 This skill is not a generic frontend-design workflow. For Praxis, the canonical contract and the authoring round-trip matter more than local UI polish. The main question is not "can the user edit it?" but "does the editor express the canonical document correctly, persist it correctly, and survive reopen/reset without drift?"
