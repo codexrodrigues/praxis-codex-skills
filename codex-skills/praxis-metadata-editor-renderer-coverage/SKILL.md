@@ -1,0 +1,73 @@
+---
+name: praxis-metadata-editor-renderer-coverage
+description: Use when implementing, reviewing, or auditing `@praxisui/metadata-editor` renderer coverage: `FieldMetadataEditorComponent`, `DynamicEditorRendererComponent`, `EditorProperty[]` configs, inline editor coverage, dynamic-fields parity, form factory controls, visual coverage versus JSON-only fallback, hints, i18n labels, and public API for metadata editor components/services.
+---
+
+# Praxis Metadata Editor Renderer Coverage
+
+Use this skill for visual metadata authoring coverage in `@praxisui/metadata-editor`. The editor owns the UI that edits canonical `FieldMetadata`; it does not render final form fields at runtime and it must not duplicate `@praxisui/dynamic-fields` component semantics.
+
+## Canonical Boundary
+
+`@praxisui/metadata-editor` owns:
+
+- `FieldMetadataEditorComponent`
+- `DynamicEditorRendererComponent`
+- `ConfigRegistryService`
+- `EditorComponentRegistryService`
+- `EditorProperty[]` config catalogs under `src/lib/config/*.config.ts`
+- `DynamicFormFactoryService`
+- visual coverage docs/checklists
+
+`@praxisui/dynamic-fields` owns the actual field components, control type discovery, descriptors, and runtime interpretation. When a dynamic-field runtime property is missing from the editor, add visual coverage in metadata-editor; do not copy runtime component logic into the editor.
+
+## Required Source Audit
+
+Inspect before editing:
+
+- `projects/praxis-metadata-editor/AGENTS.md`
+- `README.md`
+- `docs/metadata-editors-architecture.praxis.md`
+- `docs/EDITOR-COVERAGE-CHECKLIST.md`
+- `docs/HINTS-STYLE-GUIDE.md`
+- `src/public-api.ts`
+- `src/lib/components/field-metadata-editor/field-metadata-editor.component.ts`
+- `src/lib/components/dynamic-editor-renderer/dynamic-editor-renderer.component.ts`
+- `src/lib/config/*.config.ts` for the affected control type
+- `src/lib/config/inline-editor-coverage.spec.ts`
+- the owning dynamic-fields component/descriptor for the same control
+
+## Coverage Rules
+
+- Every critical runtime metadata property should have visual coverage or an explicitly documented advanced JSON fallback.
+- JSON-only support is not acceptable for common authoring paths such as labels, placeholders, validators, icons, clear buttons, option sources, entity lookup, presentation, submit policy, and accessibility.
+- `EditorProperty.name` dot paths must match canonical `FieldMetadata` paths or documented metadata-editor paths.
+- Groups, hints, labels, placeholders, and options must use the metadata-editor i18n path when the lib has catalog coverage.
+- Icon fields should use Material Symbols guidance such as `mi:...`; ordinary prefix/suffix text must not receive icon-only hints.
+- `controlType` must be normalized through core helpers and must exist in both dynamic-fields discovery and metadata-editor config coverage.
+
+## Renderer And Form Factory
+
+`DynamicEditorRendererComponent` renders `EditorProperty[]` into grouped form rows through `DynamicFieldLoaderDirective`. `DynamicFormFactoryService` creates controls by dot path and attaches contextual validators. Do not bypass that path with local component-specific forms unless the editor property type itself is missing and needs to be added to the registry.
+
+When adding an editor property:
+
+1. Confirm the runtime component actually consumes the metadata.
+2. Add or update the correct `*.config.ts`.
+3. Ensure `SchemaNormalizerService` hydrates seed defaults correctly for complex values.
+4. Ensure `DynamicFormFactoryService` creates the control at the correct dot path.
+5. Add/update focused coverage specs.
+6. Update docs/checklists if coverage status changed.
+
+## Validation
+
+Use focused gates:
+
+- renderer layout or grouping: `components/dynamic-editor-renderer/dynamic-editor-renderer.component.spec.ts`
+- field host/control-type resolution: `components/field-metadata-editor/field-metadata-editor.component.spec.ts`
+- inline/dynamic-fields parity: `config/inline-editor-coverage.spec.ts`
+- form factory dot-path/control creation: `testing/dynamic-form-factory.service.spec.ts`
+- i18n catalog behavior: `i18n/metadata-editor.i18n.spec.ts`
+- compile surface: `ng build praxis-metadata-editor`
+
+Use `praxis-angular-public-api-governance` for root exports and `praxis-angular-validation-gates` to decide whether a consumer E2E is needed.

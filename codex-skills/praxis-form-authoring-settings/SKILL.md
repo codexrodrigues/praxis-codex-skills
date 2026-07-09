@@ -7,6 +7,12 @@ description: Use when Codex must work on @praxisui/dynamic-form authoring, Setti
 
 Use this skill for Dynamic Form authoring and Settings Panel flows. A change is incomplete when runtime config works but the visual editor cannot show, edit, apply, save, reset, reopen, or round-trip the same semantics.
 
+When Dynamic Form opens or embeds `FieldMetadataEditorComponent`, `DynamicEditorRendererComponent`,
+or `CascadeManagerTabComponent`, use `praxis-metadata-editor-consumer-bridges` for the host bridge.
+If the behavior belongs to the metadata editor itself, route to
+`praxis-metadata-editor-renderer-coverage` or `praxis-metadata-editor-cascade-normalization` instead
+of patching Dynamic Form locally.
+
 ## Source Audit
 
 Inspect the authoring surface:
@@ -76,3 +82,4 @@ If no visual editor is affected, state why.
 - Use `praxis-form-layout-canvas` for layout editor, visual blocks, canvas, schema-driven layout policy, and presentation.
 - Use `praxis-form-ai-rules-validation` for AI component edit plans, rules, diagnostics, and registry ingestion.
 - Use `praxis-dynamic-fields-editorial` for field component coverage and metadata editor chains.
+- Use `praxis-metadata-editor-consumer-bridges` for Dynamic Form bridge behavior around metadata-editor hosted editors.
