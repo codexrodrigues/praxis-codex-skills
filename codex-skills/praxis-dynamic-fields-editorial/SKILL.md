@@ -12,6 +12,10 @@ For focused changes, pair this general editorial skill with the specialized fami
 `praxis-fields-option-sources` for async selects, option sources, and entity lookup,
 `praxis-fields-editorial-discovery` for descriptor/catalog/tooling coverage, and
 `praxis-fields-ai-canvas-validation` for AI manifest, registry ingestion, recipes, or canvas proof.
+Use `praxis-fields-control-profile-ai` for per-control AI profiles and capability catalogs,
+`praxis-fields-inline-overlay-runtime` for inline overlay apply/cancel/clear semantics,
+`praxis-fields-text-number-time-controls` for text, numeric, currency, date, time, and range families,
+and `praxis-fields-selection-lookup-controls` for select, autocomplete, chips, tree, list, and lookup families.
 For visual authoring coverage inside `@praxisui/metadata-editor`, pair this with
 `praxis-metadata-editor-renderer-coverage`; for cascade or option-source dependency normalization in
 the editor, use `praxis-metadata-editor-cascade-normalization`.
@@ -75,7 +79,7 @@ editor must mark the source as partial and point back to the backend/platform wa
 - `@praxisui/core` owns `FieldControlType`, `OptionSourceMetadata`,
   `DEFAULT_FIELD_SELECTOR_CONTROL_TYPE_MAP`, and selector registry tokens. Do not add a
   dynamic-fields-only alias when the canonical type or selector mapping belongs in core.
-- Agentic authoring uses one family-level manifest for shared `FieldMetadata`/registry/editorial semantics plus component-level control profiles for granular per-control operation hints; do not duplicate a full manifest per runtime control when a profile can express the semantic difference.
+- Agentic authoring uses one family-level manifest for shared `FieldMetadata`/registry/editorial semantics plus component-level control profiles for granular per-control operation hints; use `praxis-fields-control-profile-ai` for that layer and do not duplicate a full manifest per runtime control when a profile can express the semantic difference.
 - Derived catalogs and inventories must stay aligned with the editorial source.
 - AI Registry component docs must remain extractable from either literal `ComponentDocMeta` metadata files or supported editorial factories such as `createWave1ComponentDocMeta(descriptor)`. If a package-owned field uses a metadata factory, verify the registry extractor still projects it before claiming catalog coverage.
 - `@praxisui/metadata-editor`, `@praxisui/dynamic-form`, `praxis-filter`, and related tooling consume this chain downstream.

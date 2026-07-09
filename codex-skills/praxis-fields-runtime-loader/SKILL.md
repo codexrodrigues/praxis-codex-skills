@@ -7,6 +7,11 @@ description: Use when changing or reviewing Praxis `@praxisui/dynamic-fields` ru
 
 Use this skill for runtime field rendering in `@praxisui/dynamic-fields`. Treat the loader and registry as the canonical Angular runtime for metadata-driven fields; do not patch consumers with local `controlType` maps when the issue belongs in the package registry, selector registry, or field component.
 
+Pair it with `praxis-fields-inline-overlay-runtime` for compact inline overlay behavior,
+`praxis-fields-text-number-time-controls` for scalar/temporal control semantics,
+`praxis-fields-selection-lookup-controls` for option-bearing controls, and
+`praxis-fields-control-profile-ai` when runtime coverage must be reflected in AI profiles or generated registry docs.
+
 ## Canonical Runtime Chain
 
 Audit this chain before editing:

@@ -54,6 +54,9 @@ Inspect:
 - Use `praxis-fields-runtime-loader` for loader, registry, selector, or hot metadata behavior.
 - Use `praxis-fields-option-sources` for `optionSource`, async select, searchable select, and entity lookup behavior.
 - Use `praxis-fields-ai-canvas-validation` when the change affects AI manifests, component profiles, canvas integration, or generated registry ingestion.
+- Use `praxis-fields-control-profile-ai` when the field needs per-control AI profile or capability coverage.
+- Use `praxis-fields-inline-overlay-runtime` when the discovery claim is about inline filter controls, `inlineOverlay`, compact pills, or overlay actions.
+- Use `praxis-fields-text-number-time-controls` or `praxis-fields-selection-lookup-controls` when discovery must preserve the semantics of a specific control family.
 - Use `praxis-authoring-editors` when downstream metadata editor behavior must be changed.
 - Use `praxis-metadata-editor-renderer-coverage` when the downstream behavior is specifically metadata-editor visual coverage or renderer parity.
 

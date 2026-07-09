@@ -60,6 +60,11 @@ registry projection.
 Use `praxis-table-rule-ai-validation` for `@praxisui/table-rule-builder` manifests, capabilities,
 context packs, AI adapters, component docs, effect registry operations, semantic animation
 validators, table delegation, and registry projection.
+Use `praxis-fields-control-profile-ai` for `@praxisui/dynamic-fields` per-control AI profiles,
+capability catalogs, registry component docs, and family-specific profile validation. Pair it with
+`praxis-fields-inline-overlay-runtime`, `praxis-fields-text-number-time-controls`, or
+`praxis-fields-selection-lookup-controls` when generated docs derive from inline overlay behavior or
+specific control-family semantics.
 Use `praxis-visual-builder-ai-validation` for `@praxisui/visual-builder` authoring manifest,
 capabilities, context packs, AI adapter, editable targets, operation validators, JSON Logic
 round-trip validation, and registry projection. Pair it with

@@ -7,6 +7,11 @@ description: Use when changing or auditing Praxis Dynamic Fields AI authoring ma
 
 Use this skill to prove that `@praxisui/dynamic-fields` knowledge is available to AI-assisted authoring and canvas/editor surfaces. This is the validation layer for decisions, not a place to invent field semantics.
 
+For focused profile work, use `praxis-fields-control-profile-ai`. For inline overlay recipes or
+compact filter semantics, use `praxis-fields-inline-overlay-runtime`. For family-specific control
+semantics, use `praxis-fields-text-number-time-controls` or
+`praxis-fields-selection-lookup-controls` before updating AI catalogs or registry projections.
+
 ## Canonical AI/Canvas Surfaces
 
 Inspect the actual sources:
