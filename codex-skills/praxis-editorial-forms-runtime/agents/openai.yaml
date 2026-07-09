@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Editorial Runtime"
+  short_description: "Editorial runtime snapshots"
+  default_prompt: "Use $praxis-editorial-forms-runtime to audit Editorial Forms runtime, snapshots, fallback, presentation, diagnostics, and i18n."

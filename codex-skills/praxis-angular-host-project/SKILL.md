@@ -209,6 +209,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-metadata-editor-cascade-normalization`: cascade manager, `optionSource` dependency shapes, backend `x-ui` preservation, schema normalization, form factory, contextual validators, and remote-source editor coverage.
 - `praxis-metadata-editor-consumer-bridges`: dynamic-form, table, manual-form, and Page Builder bridges that host `FieldMetadataEditorComponent`, `DynamicEditorRendererComponent`, or `CascadeManagerTabComponent`.
 - `praxis-metadata-editor-ai-validation`: metadata-editor authoring manifest, capabilities, context packs, AI registry projection, and declared operation safety.
+- `praxis-manual-form-runtime-bridge`: manual-form runtime, host `FormGroup` adoption, field autodetection, autosave, toolbar, persistence, and metadata-editor bridge.
+- `praxis-manual-form-ai-authoring`: manual-form config editor, Settings Panel, authoring manifest, AI capabilities, formRules, autosave/toolbar operations, and registry/docs validation.
+- `praxis-editorial-forms-runtime`: editorial-form journeys, snapshots, fallback, presentation, diagnostics, operational events, renderers, i18n, and labs.
+- `praxis-editorial-forms-adapters-ai`: editorial data block adapters, optional dynamic-form adapter, dataCollection binding, AI manifest, field binding, and registry validation.
 - `praxis-fields-runtime-loader`: dynamic-fields loader, component registry, selector mapping, hot metadata, and runtime coverage.
 - `praxis-fields-option-sources`: optionSource, async/searchable selects, entity lookup, by-ids reload, and dependency filters.
 - `praxis-fields-editorial-discovery`: dynamic-fields editorial descriptors, catalogs, i18n, and metadata-editor/tooling discovery.

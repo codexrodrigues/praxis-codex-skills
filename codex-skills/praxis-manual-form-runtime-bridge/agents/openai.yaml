@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Manual Runtime"
+  short_description: "Manual form runtime and bridge"
+  default_prompt: "Use $praxis-manual-form-runtime-bridge to audit Manual Form runtime, autosave, field detection, toolbar, and metadata bridge."
