@@ -59,6 +59,11 @@ For `praxis-ui-landing-page`:
 
 Use official local origins documented in AGENTS files. Do not invent ports for published quickstart or landing validation.
 
+Use component-specific docs skills when they exist. For `@praxisui/list`, use
+`praxis-list-docs-evidence` to preserve the Active/Partial/Declared-only status matrix, living
+examples, executive evidence, and list-specific docs manifest before editing landing or playground
+content.
+
 ## Editorial Guidance
 
 - Explain Praxis components as configurable, metadata-driven, governed runtime surfaces, not generic UI widgets.
