@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Files Upload"
+  short_description: "Files upload runtime and UX guidance"
+  default_prompt: "Use $praxis-files-upload-runtime to build or audit a canonical Praxis files upload surface."

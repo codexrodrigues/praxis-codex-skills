@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Upload AI"
+  short_description: "AI validation for files upload authoring"
+  default_prompt: "Use $praxis-files-upload-ai-validation to validate AI authoring for Praxis files upload."
