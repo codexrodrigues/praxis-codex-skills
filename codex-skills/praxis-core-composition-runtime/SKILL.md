@@ -43,6 +43,7 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 
 - If the task is about authoring a page/editor graph, use the builder skill as the functional owner and this skill for the runtime contract.
 - If the task is specifically about `@praxisui/page-builder`, pair with `praxis-page-builder-composition` for palette, canvas, graph, connection editor, and page-builder-owned authoring semantics.
+- If the task is about rich-content widgets, presets, host-mediated actions, or `RichContentDocument` materialization inside dynamic pages, pair with `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters`.
 - If the task is about container widgets such as `@praxisui/tabs`, `@praxisui/stepper`, or `@praxisui/expansion`, pair with the owning runtime skill before changing widget event paths, nested widgets, registry metadata, or dynamic page materialization.
 - If the task is about `SettingsValueProvider`, apply/save/reset, or config editor round-trip, use `praxis-authoring-editors` as well.
 - If the task is about a specific widget's visual/product UX, use `praxis-ui-product-design` with the owning component skill.
@@ -80,4 +81,5 @@ For visual/editor flows, add screenshot or browser validation through the offici
 - Use `praxis-authoring-editors` for editor/runtime round-trip and Settings Panel behavior.
 - Use `praxis-page-builder-composition`, `praxis-page-builder-authoring`, and `praxis-page-builder-ai-agentic` when the shared runtime contract is being authored or exercised through `@praxisui/page-builder`.
 - Use `praxis-tabs-runtime-authoring`, `praxis-stepper-wizard-runtime`, and `praxis-expansion-runtime-panels` when composition flows through those container widgets; use `praxis-navigation-containers-ai-validation` when their AI manifests, capabilities, context packs, or registry projection are involved.
+- Use `praxis-rich-content-runtime`, `praxis-rich-content-integration-adapters`, and `praxis-rich-content-ai-security-validation` when composition flows through structured rich-content documents or rich-content widgets.
 - Use `praxis-ui-product-design` for visual hierarchy, accessibility, and screenshot QA.

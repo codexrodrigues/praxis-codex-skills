@@ -86,6 +86,10 @@ For `@praxisui/files-upload`, use `praxis-files-upload-runtime`,
 `praxis-files-upload-backend-contract`, `praxis-files-upload-form-field`, and
 `praxis-files-upload-ai-validation` as applicable before updating component guides, host
 integration docs, API references, examples, docs manifests, playgrounds, or AI registry docs.
+For `@praxisui/rich-content`, use `praxis-rich-content-runtime`,
+`praxis-rich-content-authoring-settings`, `praxis-rich-content-integration-adapters`, and
+`praxis-rich-content-ai-security-validation` as applicable before updating component guides, docs
+manifests, examples, playgrounds, AI recipes, or registry docs.
 
 ## Editorial Guidance
 

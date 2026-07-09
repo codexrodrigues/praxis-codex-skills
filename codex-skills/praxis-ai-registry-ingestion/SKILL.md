@@ -51,6 +51,9 @@ AI adapters, component docs, and registry projection.
 Use `praxis-files-upload-ai-validation` for `@praxisui/files-upload` manifests, capabilities,
 context packs, AI adapters, component docs, backend endpoint/security operations, and registry
 projection.
+Use `praxis-rich-content-ai-security-validation` for `@praxisui/rich-content` manifests,
+capabilities, recipes, document validator, sanitization policy, component docs, and registry
+projection.
 
 ## Required Inventory
 

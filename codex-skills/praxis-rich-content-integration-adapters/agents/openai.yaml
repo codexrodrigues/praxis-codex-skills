@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rich Content Adapters"
+  short_description: "Rich content integration adapters"
+  default_prompt: "Use $praxis-rich-content-integration-adapters to integrate RichContentDocument across Praxis surfaces."
