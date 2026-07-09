@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Settings AI I18n"
+  short_description: "Validate Settings Panel AI and i18n coverage"
+  default_prompt: "Use $praxis-settings-ai-i18n-validation to audit Settings Panel AI and i18n coverage."

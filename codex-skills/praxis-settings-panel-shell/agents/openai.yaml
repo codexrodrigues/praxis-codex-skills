@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Settings Panel Shell"
+  short_description: "Guide Settings Panel shell and protocol"
+  default_prompt: "Use $praxis-settings-panel-shell to review a Praxis Settings Panel shell or protocol change."
