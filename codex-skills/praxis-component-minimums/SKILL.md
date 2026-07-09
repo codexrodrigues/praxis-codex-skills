@@ -144,6 +144,8 @@ For collection operations reused by Table, List, or future collection components
 
 For `@praxisui/table`, use `praxis-table-runtime-data` when the minimum involves local/remote data mode, renderers, selection, export, analytics, or runtime observations. Use `praxis-table-filter-actions` when the question involves filters, toolbar actions, row actions, bulk actions, global actions, or export availability. Use `praxis-table-authoring-settings` when the minimum includes customization or Settings Panel support.
 
+For `@praxisui/list`, use `praxis-list-runtime-data` when the minimum involves local versus remote data precedence, `dataSource.data`, `dataSource.resourcePath`, query context, selection, item actions, templating, skin, export, grouping, or declared-only runtime boundaries. Use `praxis-list-authoring-settings` when customization or Settings Panel support is part of the minimum, and `praxis-list-docs-evidence` before promoting list examples or docs as canonical behavior.
+
 ## Entity Lookup Minimum
 
 For `entityLookup`, separate render bootstrap from governed backend semantics:

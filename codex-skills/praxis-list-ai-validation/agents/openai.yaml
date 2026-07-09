@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis List AI Validation"
+  short_description: "List AI manifest and registry gates"
+  default_prompt: "Use $praxis-list-ai-validation to validate Praxis List AI authoring manifests and registry artifacts."

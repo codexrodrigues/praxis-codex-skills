@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis List Authoring"
+  short_description: "List editor and Settings round-trip"
+  default_prompt: "Use $praxis-list-authoring-settings to update or audit Praxis List config editor round-trip."

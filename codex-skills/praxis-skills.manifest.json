@@ -45,8 +45,8 @@
         "praxis-ai-assistant-runtime",
         "praxis-core-runtime-contracts"
       ],
-      "skillMdSha256": "44309605B3371DCB3023216F611B37DAD16B692D72C490598B7974E8E64274F4",
-      "treeSha256": "32611C8F38BB95AE9BC2D49C55DA65C0B5602AEAF7AB57A64882836600F86343"
+      "skillMdSha256": "FA2A1A0825D3899C1FF0F36E21A997FB6006BED40799FD7C4912475015A9AA0A",
+      "treeSha256": "EBCD189FA01618427E902D01E8F180596CC6259C1E9AC2C2AEDD22C591180C87"
     },
     {
       "name": "praxis-ai-semantic-intent",
@@ -70,8 +70,8 @@
         "praxis-angular-validation-gates",
         "praxis-ai-registry-ingestion"
       ],
-      "skillMdSha256": "E40569FC9A5B3A97F2612F26162007EF4B23CD452281AFC675FA50B40244B251",
-      "treeSha256": "CF353B81575C86D4B7253676F0861308CB5F4548A6B742A8E0AC59B9C850C6D2"
+      "skillMdSha256": "B2236FAEEE51A008D3C9707F017B3D3B936C3FEE79403E37E65E6AE5025676E7",
+      "treeSha256": "81130640C3CD2816F4117AFAFD3B98B6A5FA743EA382B44516D86522EADE3588"
     },
     {
       "name": "praxis-angular-host-project",
@@ -96,10 +96,14 @@
         "praxis-angular-validation-gates",
         "praxis-angular-public-api-governance",
         "praxis-angular-i18n-governance",
-        "praxis-angular-docs-playgrounds"
+        "praxis-angular-docs-playgrounds",
+        "praxis-list-runtime-data",
+        "praxis-list-authoring-settings",
+        "praxis-list-ai-validation",
+        "praxis-list-docs-evidence"
       ],
-      "skillMdSha256": "CFFC3C6DB05BDA8E51E9F1D3108E0DE4FFC63541F7423D3977BA22982C5EF3FC",
-      "treeSha256": "6A13665FA6864F162F092314C8EB02176BD92BBD98A989DCA7A5E6DD753ED162"
+      "skillMdSha256": "29F861EBCB10947E4F88410EB2CFCF2AA102E235B6CF6DBD751FA379C3FECE90",
+      "treeSha256": "B41FC12CE5174FA8C60999BB77372D3CBF2F72E79AA68E5D8D19F87484D6A193"
     },
     {
       "name": "praxis-angular-i18n-governance",
@@ -147,8 +151,8 @@
         "praxis-dynamic-fields-editorial",
         "praxis-resource-entity-lookup-backend"
       ],
-      "skillMdSha256": "8AC390076915497CBEC2DF9479A12BEAA72D2F8D8813C8E771206145939F06B8",
-      "treeSha256": "C6901C3467619682E26BD82FC9DCEE1B0ABCB6CB41B0DBB3BFB07E2C8CB385D7"
+      "skillMdSha256": "E3E02BDF9752F3EC09C19907DD2091A16D3BE4E31D5239571D6BF1ACBF644172",
+      "treeSha256": "C70E2F11462D6B485196C3C35797038D36CA0B6C783BF41F5DE618210FE1BC0E"
     },
     {
       "name": "praxis-charts-ai-validation",
@@ -208,8 +212,8 @@
         "praxis-core-resource-runtime",
         "praxis-core-composition-runtime"
       ],
-      "skillMdSha256": "74366EE60DC3FA6C7ACC8F0CFA10B51D3F04100E4E09CB89514B811BA85B055E",
-      "treeSha256": "79DB7319C4DBF4DFED40FA7AC2719074CF1C27994B1DA2402E59AEF43EB53949"
+      "skillMdSha256": "DB603B62F14D51161B97C2900DC48AAE1449C40F5BE287787DEA1B9FB0FCC2CD",
+      "treeSha256": "7149AE82152A505DEDBF42F6F8F96CB7B480D846D8A47E34DA069551FA80E4EE"
     },
     {
       "name": "praxis-core-composition-runtime",
@@ -436,6 +440,65 @@
       "treeSha256": "03E17CC2C7F419FBF0FE1B73632D70B9257A57B6391FF5D70D6645DCAAA03DEF"
     },
     {
+      "name": "praxis-list-ai-validation",
+      "sourcePath": "codex-skills/praxis-list-ai-validation",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-list-runtime-data",
+        "praxis-list-authoring-settings",
+        "praxis-ai-authoring-manifests",
+        "praxis-ai-registry-ingestion"
+      ],
+      "skillMdSha256": "6E21FB71E50C488550DC887AD3621C3A832E771A5A4898DA2BBAE4EC06B73F9E",
+      "treeSha256": "FA60A827D70E1224F71D32D401A600677589E932E27A46FD62C5CEE601AADED1"
+    },
+    {
+      "name": "praxis-list-authoring-settings",
+      "sourcePath": "codex-skills/praxis-list-authoring-settings",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-list-runtime-data",
+        "praxis-authoring-editors",
+        "praxis-settings-roundtrip-authoring",
+        "praxis-angular-i18n-governance"
+      ],
+      "skillMdSha256": "8F084654B3A56546AE24DC787C51AFB822C3902BC4714166A40ECC79D5608C66",
+      "treeSha256": "E959C505908F9718138D19936464577E11CF6FE425DFBA58DC97AF4FD7A2E562"
+    },
+    {
+      "name": "praxis-list-docs-evidence",
+      "sourcePath": "codex-skills/praxis-list-docs-evidence",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-list-runtime-data",
+        "praxis-list-authoring-settings",
+        "praxis-list-ai-validation",
+        "praxis-angular-docs-playgrounds"
+      ],
+      "skillMdSha256": "98C46717CCEB7EBD530951C8D0400A845364905EB7ABB5AE7AB984957ABD5F76",
+      "treeSha256": "91B886A027601E196A94CD74C6DF1C404F19F48AA532A3A00623E694242E4CC1"
+    },
+    {
+      "name": "praxis-list-runtime-data",
+      "sourcePath": "codex-skills/praxis-list-runtime-data",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-core-runtime-contracts",
+        "praxis-core-resource-runtime",
+        "praxis-angular-validation-gates"
+      ],
+      "skillMdSha256": "430463C33D70BDA0175E11692CEF006ECD07A03A5AF4AEA9E13F2D0AD0ACD067",
+      "treeSha256": "81E8A6B6784AD5479F11F9941FB24D4E416F769A08B99931CF8C31D1EF4BC667"
+    },
+    {
       "name": "praxis-page-builder-ai-agentic",
       "sourcePath": "codex-skills/praxis-page-builder-ai-agentic",
       "version": "0.1.0-beta.0",
@@ -473,8 +536,8 @@
         "praxis-core-runtime-contracts",
         "praxis-core-composition-runtime"
       ],
-      "skillMdSha256": "02AFFF7A9142D579C1021CFD77F73851079F6E1126A68AB38BD0DB62077FD9F5",
-      "treeSha256": "F26C0074D53CEF8A3A051FCD607F905F410B44FB2CA1B1F0FF05C6BD996055A3"
+      "skillMdSha256": "C95A4AC9E7F4A32DE2B79D89F660085D03935F29FB01B48A78AD946A04722A17",
+      "treeSha256": "05ECCC6E642D51044916F178AC5144730305B504032DC3892F4D267699055226"
     },
     {
       "name": "praxis-resource-entity-lookup-backend",

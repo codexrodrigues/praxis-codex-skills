@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis List Runtime"
+  short_description: "List/card runtime and data modes"
+  default_prompt: "Use $praxis-list-runtime-data to implement or review a Praxis List runtime/data change."

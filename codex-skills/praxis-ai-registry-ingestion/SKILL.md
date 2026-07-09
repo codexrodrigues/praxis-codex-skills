@@ -31,6 +31,8 @@ examples, landing pages, or playground evidence. Use `praxis-angular-validation-
 whether full ingestion is required or a narrower registry validator is enough for the current scope.
 Use `praxis-angular-public-api-governance` when the registry change is caused by package-facing
 exports or public component contracts.
+Use `praxis-list-ai-validation` for `@praxisui/list` manifest/capability/context-pack changes, and
+`praxis-list-docs-evidence` when list docs or living examples feed the registry projection.
 
 ## Required Inventory
 
