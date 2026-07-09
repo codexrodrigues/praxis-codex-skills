@@ -184,6 +184,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-core-runtime-contracts`: core public API, tokens, providers, models, i18n, logging, and shared services.
 - `praxis-core-resource-runtime`: core schema/resource discovery, actions, surfaces, capabilities, option sources, related resources, and analytics materialization.
 - `praxis-core-composition-runtime`: dynamic widget pages, composition links, widget events, surface hosts, and runtime observations.
+- `praxis-table-runtime-data`: table runtime data modes, `resourcePath`, renderers, selection, export, analytics, and validation.
+- `praxis-table-filter-actions`: table filters, dynamic filter payloads, toolbar/row/bulk actions, global actions, CRUD actions, and export grounding.
+- `praxis-table-authoring-settings`: table Settings Panel, config editors, columns, rules, filters, actions, CRUD integration, and round-trip.
+- `praxis-table-ai-validation`: table AI manifests, component edit plans, runtime operations, context packs, registry ingestion, and assistant E2E.
 - `praxis-ui-product-design`: visual quality, responsive layout, screenshot QA, product polish, theme/accessibility.
 - `praxis-authoring-editors`: Settings Panel, config editors, apply/save/reset, editor/runtime round-trip.
 - `praxis-dynamic-fields-editorial`: control types, aliases, field discovery, `optionSource`, async select, metadata editor coverage.

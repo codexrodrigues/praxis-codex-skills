@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Table AI Validation"
+  short_description: "Validate table AI authoring contracts"
+  default_prompt: "Use $praxis-table-ai-validation to inspect Praxis table AI manifests, component edit plans, runtime operations, context packs, registry ingestion, and assistant E2E validation."
+
+policy:
+  allow_implicit_invocation: true

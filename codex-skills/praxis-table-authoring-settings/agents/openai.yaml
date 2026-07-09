@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Table Authoring Settings"
+  short_description: "Govern table authoring round-trip"
+  default_prompt: "Use $praxis-table-authoring-settings to inspect Praxis table Settings Panel editors, config round-trip, columns, rules, filters, actions, CRUD integration, and apply/save/reset behavior."
+
+policy:
+  allow_implicit_invocation: true

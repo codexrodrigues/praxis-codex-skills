@@ -88,6 +88,8 @@ Do not use these unless explicitly requested:
 
 If the user asks for those, use or create a separate composed-screen/master-detail skill. Do not stretch this CRUD skill into an application builder.
 
+When the CRUD screen depends on richer table behavior inside `PraxisCrudComponent`, use `praxis-table-runtime-data` for table runtime/data-mode/export concerns, `praxis-table-filter-actions` for filters and row/toolbar/bulk actions, and `praxis-table-authoring-settings` for table editor or Settings Panel parity.
+
 ## CRUD Experience Selection
 
 Select the smallest CRUD experience that fits the workflow:
