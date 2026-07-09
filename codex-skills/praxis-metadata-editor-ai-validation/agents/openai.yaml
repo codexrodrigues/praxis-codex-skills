@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Metadata AI"
+  short_description: "Metadata editor AI manifest gates"
+  default_prompt: "Use $praxis-metadata-editor-ai-validation to validate metadata editor AI manifests and registry artifacts."

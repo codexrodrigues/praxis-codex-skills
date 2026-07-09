@@ -12,6 +12,9 @@ For focused changes, pair this general editorial skill with the specialized fami
 `praxis-fields-option-sources` for async selects, option sources, and entity lookup,
 `praxis-fields-editorial-discovery` for descriptor/catalog/tooling coverage, and
 `praxis-fields-ai-canvas-validation` for AI manifest, registry ingestion, recipes, or canvas proof.
+For visual authoring coverage inside `@praxisui/metadata-editor`, pair this with
+`praxis-metadata-editor-renderer-coverage`; for cascade or option-source dependency normalization in
+the editor, use `praxis-metadata-editor-cascade-normalization`.
 
 This library does not primarily follow the pattern "runtime component has its own config editor". Runtime rendering, editorial discovery, metadata tooling, and editor coverage are separate layers.
 
