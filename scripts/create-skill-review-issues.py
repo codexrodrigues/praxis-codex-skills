@@ -74,6 +74,11 @@ def duplicate_issue_reports(payloads: list[dict[str, str]], issues: list[dict[st
     return reports
 
 
+def missing_payloads(payloads: list[dict[str, str]], issues: list[dict[str, str]]) -> list[dict[str, str]]:
+    existing_titles = {issue["title"] for issue in issues}
+    return [payload for payload in payloads if payload["title"] not in existing_titles]
+
+
 def issue_coverage_rows(payloads: list[dict[str, str]], issues: list[dict[str, str]]) -> list[dict[str, str]]:
     issues_by_title = {issue["title"]: issue for issue in issues}
     rows: list[dict[str, str]] = []
@@ -137,6 +142,7 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--check-existing", action="store_true", help="Fail before creating if a draft title already exists.")
     parser.add_argument("--report-existing", action="store_true", help="Report draft coverage against existing issues.")
+    parser.add_argument("--missing-only", action="store_true", help="Process only drafts without an existing issue title.")
     parser.add_argument("--limit", type=int, help="Maximum number of drafts to process.")
     args = parser.parse_args()
 
@@ -145,18 +151,31 @@ def main() -> int:
         return 1
 
     try:
-        payloads = issue_payloads(Path(args.draft_root), args.limit)
+        payloads = issue_payloads(Path(args.draft_root), None if args.missing_only else args.limit)
+        issues = existing_issues(args.repo) if args.report_existing or args.check_existing or args.missing_only else []
+
         if args.report_existing:
-            print_issue_coverage(issue_coverage_rows(payloads, existing_issues(args.repo)))
+            rows = issue_coverage_rows(payloads, issues)
+            if args.missing_only:
+                missing_titles = {payload["title"] for payload in missing_payloads(payloads, issues)}
+                rows = [row for row in rows if row["title"] in missing_titles]
+                if args.limit is not None:
+                    rows = rows[: args.limit]
+            print_issue_coverage(rows)
             return 0
 
         if args.check_existing:
-            duplicates = duplicate_issue_reports(payloads, existing_issues(args.repo))
+            duplicates = duplicate_issue_reports(payloads, issues)
             if duplicates:
                 print("Existing GitHub issues match draft titles.", file=sys.stderr)
                 for duplicate in duplicates:
                     print(f" - {duplicate}", file=sys.stderr)
                 return 1
+
+        if args.missing_only:
+            payloads = missing_payloads(payloads, issues)
+            if args.limit is not None:
+                payloads = payloads[: args.limit]
 
         for payload in payloads:
             if args.dry_run:

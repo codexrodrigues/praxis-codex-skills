@@ -79,6 +79,7 @@ python3 scripts/validate-issue-drafts.py
 python3 scripts/create-skill-review-issues.py --dry-run --limit 3
 python3 scripts/create-skill-review-issues.py --dry-run --limit 3 --check-existing
 python3 scripts/create-skill-review-issues.py --report-existing --limit 5
+python3 scripts/create-skill-review-issues.py --dry-run --missing-only --limit 1
 ```
 
 `--check-existing` fails when a draft title already exists in GitHub issues, before creating anything.
