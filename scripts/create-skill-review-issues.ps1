@@ -8,28 +8,21 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
-    throw 'GitHub CLI (gh) not found. Install gh or create the issues manually from docs/issue-drafts/skill-reviews.'
+$python = Get-Command python3 -ErrorAction SilentlyContinue
+if (-not $python) {
+    $python = Get-Command python -ErrorAction SilentlyContinue
+}
+if (-not $python) {
+    throw 'Python not found. Run python3 scripts/create-skill-review-issues.py instead after installing Python.'
 }
 
-Get-ChildItem -LiteralPath $DraftRoot -Filter '*.md' | Sort-Object Name | ForEach-Object {
-    $content = Get-Content -LiteralPath $_.FullName -Raw
-    $title = (($content -split "`n") | Where-Object { $_ -match '^# ' } | Select-Object -First 1) -replace '^\#\s+', ''
-    if (-not $title) {
-        throw "Draft has no H1 title: $($_.FullName)"
-    }
+$script = Join-Path $PSScriptRoot 'create-skill-review-issues.py'
+$pythonArgs = @($script, '--repo', $Repository, '--draft-root', $DraftRoot)
+if ($DryRun) {
+    $pythonArgs += '--dry-run'
+}
 
-    if ($DryRun) {
-        Write-Host "DRY-RUN issue: $title"
-        return
-    }
-
-    $tmp = New-TemporaryFile
-    try {
-        Set-Content -LiteralPath $tmp -Value $content -Encoding UTF8
-        gh issue create --repo $Repository --title $title --body-file $tmp
-    }
-    finally {
-        Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
-    }
+& $python.Source @pythonArgs
+if ($LASTEXITCODE -ne 0) {
+    throw "Python issue creator failed with exit code $LASTEXITCODE."
 }
