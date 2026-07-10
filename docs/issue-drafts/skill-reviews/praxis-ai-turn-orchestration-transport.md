@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-ai-turn-orchestration-transport/
-- Descricao atual: Use when changing or reviewing `PraxisAssistantTurnOrchestratorService`, assistant turn models, flow controllers, session/client turn ids, runtime observation collection, apply/retry/cancel/edit/resend lifecycle, `AgenticAuthoringTurnClientService`, SSE/fetch streaming fallback, lifecycle events, terminal result handling, or agentic authoring turn transport.
+- Descricao atual: Use when implementing, auditing, or debugging Praxis Angular assistant turn orchestration, `PraxisAssistantTurnOrchestratorService`, flow controllers, session/client turn identity, runtime observation evidence, clarifications, review/apply/cancel/retry/edit/resend state, `AgenticAuthoringTurnClientService`, generated authoring-turn contracts, or SSE/fetch stream lifecycle and terminal handling.
 
 ## Classificacao inicial
 
