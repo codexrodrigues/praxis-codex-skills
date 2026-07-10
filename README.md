@@ -25,6 +25,12 @@ When the runtime environment does not expose discovery, the fallback is to consu
 
 ## Audit
 
+Preferred local Python fallback preflight:
+
+```bash
+python3 scripts/preflight-python-fallbacks.py
+```
+
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.ps1 -Family praxis
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.ps1 -Family ergon-migration
