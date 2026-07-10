@@ -18,6 +18,12 @@ migration `AGENTS.md`. Classify the change as `docs-apenas`, `local-pequena`,
 `transversal`, `contrato-publico`, or `arquitetural`, and record the canonical
 owner in the phase plan/gate.
 
+Before editing Java, docs, tests, DTOs, resources, or build files, run the
+duplicate-module-root guard from `ergon-migration-orchestration` for the target
+module/artifactId. If it reports a competing `migracao-package` or another
+duplicate root, switch to the canonical root from `AGENTS.md` or require an
+explicit human choice before implementation evidence is accepted.
+
 Do not create Ergon-local substitutes for Praxis contracts. Before adding an
 endpoint shape, schema metadata, option source, capability, surface, action, or
 Angular-facing workaround, inventory the native Praxis support and classify the

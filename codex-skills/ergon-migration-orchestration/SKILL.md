@@ -17,6 +17,25 @@ root migration `AGENTS.md` platform governance. Classify the change as
 `arquitetural`; identify the canonical owner; and record the impact map when
 the change touches public contract, multiple consumers, or architecture.
 
+Before editing Java, Angular, docs, migration artifacts, or tests for a target
+module, run the duplicate-module-root guard when a module name/artifactId is
+known:
+
+```bash
+python3 codex-skills/ergon-migration-orchestration/scripts/check_duplicate_module_roots.py \
+  --workspace-root <canonical-migracao-root-from-AGENTS> \
+  --module <module-directory-or-artifactId> \
+  --current-root <intended-edit-root>
+```
+
+If it returns `MIGRATION_MODULE_ROOT_GUARD_BLOCKED`, stop before editing. Use
+the canonical root from `AGENTS.md` or require an explicit human choice. This
+guard catches duplicated roots such as `migracao/<module>` and
+`migracao-package/<module>`, current directories outside the canonical
+workspace, and canonical module roots outside a git checkout. Its message must
+remain sanitized: no credentials, users, company identifiers, headers, cookies,
+or environment secret values.
+
 Do not solve Praxis platform gaps by inventing Ergon-local semantics. If the
 issue belongs to `praxis-ui-angular`, `praxis-metadata-starter`, or
 `praxis-config-starter`, create a `Praxis Platform Follow-up` with objective
@@ -210,6 +229,12 @@ requires a proven `403` release gate.
 For a new screen, do not assume `docs/migracao/<SCREEN>` already exists. If the package or `migration-plan.md` is missing, create the initial screen package, produce `migration-plan.md`, produce `phase-0-execution-gate.md`, and keep the phase at Phase 0 until the intake target, backend module candidates, repository access, Oracle connection status, XML/export source status, legacy app/browser access, evidence-source availability, initial expected operations, risks, and next prompt are explicit. Phase 0 does not close the real functional scope; Phase 1 does that from observed legacy evidence and `operation-inventory.md`. Verify every cited local evidence path before presenting it as available; if a historical artifact exists only in Git history or is missing from the working tree, mark it as `HEAD-only`, `missing`, or `unconfirmed` instead of treating it as a local source. Do not start Phase 1, API contract, or Java implementation from the first prompt unless the user explicitly provides equivalent Phase 0 evidence.
 
 Phase 0 is operational preparation for Phase 1. Before closing it, try to open the legacy `.tp` route, try to download/export the screen XML from the legacy app when credentials/session allow it, identify any local/classpath XML fallback, and test Oracle with a simple read-only probe when database credentials are available. If any of these cannot be done, record the exact blocker, impact on Phase 1, and next action. A Phase 0 with no usable XML/export/local fallback, no legacy browser access, and no Oracle access must be `Blocked`, not `Ready`.
+
+Phase 0 must also record the canonical migration workspace root and backend
+module root candidates. If multiple roots resolve to the same module
+directory/artifactId, such as `migracao/` and `migracao-package/`, close Phase
+0 as `Blocked` or `Ready for next phase with adjustments` only after the
+canonical root is explicit and all later edit commands point to that root.
 
 When the repository provides `tools/migration-factory/download-runtime-xml.ps1`, use it as the preferred deterministic path for `.xml` runtime export before hand-written browser-text extraction. It parses the login form, resolves `form action`, keeps cookies in memory, validates the saved file with an XML parser, and writes sanitized evidence. Provide credentials only through an already-created `PSCredential` object or pre-existing environment variables such as `ERGON_LEGACY_USER` and `ERGON_LEGACY_PASSWORD`; never put literal secrets in the command. If the helper returns `RUNTIME_LOGIN_SAFE_INJECTION_REQUIRED`, then use browser login/manual login or ask for a safe credential injection path.
 
