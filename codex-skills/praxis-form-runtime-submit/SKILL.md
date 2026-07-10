@@ -10,6 +10,7 @@ Use this skill for the `@praxisui/dynamic-form` runtime and submit contract. Dyn
 When Dynamic Form is consumed through `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` for host template, autosave, toolbar, and metadata bridge behavior. When Dynamic Form is consumed through `@praxisui/editorial-forms` `dataCollection` blocks, use `praxis-editorial-forms-adapters-ai` for adapter binding and `praxis-editorial-forms-runtime` for snapshot/fallback semantics. When a dynamic form field performs operational upload through `pdx-material-files-upload`, use `praxis-files-upload-form-field` for `valueMode`, ControlValueAccessor behavior, and upload field UX, plus `praxis-files-upload-backend-contract` when the submit payload depends on backend file ids or metadata.
 When form layouts, helper content, previews, or rich inputs use `RichContentDocument`, use `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters`; do not submit arbitrary HTML or markdown when the platform expects structured rich content.
 When a dynamic form field edits CRON or schedule values through `@praxisui/cron-builder`, use `praxis-cron-builder-form-field` for CVA/form integration and `praxis-cron-schedule-authoring` for the payload choice between legacy CRON string and `ScheduleAuthoringConfig`.
+For narrower runtime work, prefer `praxis-form-schema-runtime-modes` for schema URLs/modes/hydration, `praxis-form-submit-payload-pipeline` for payload normalization, `praxis-form-actions-hooks-runtime` for actions/hooks, and `praxis-form-editor-document-roundtrip` for editor document persistence.
 
 ## Source Audit
 
@@ -74,6 +75,10 @@ Only `lacuna-real-de-contrato` justifies a new public contract. Prefer materiali
 
 ## Companion Skills
 
+- Use `praxis-form-schema-runtime-modes` for `resourcePath`, `schemaUrl`, `readUrl`, `submitUrl`, `submitMethod`, create/edit/view modes, `initialValue`, metadata hot updates, and runtime reconciliation.
+- Use `praxis-form-submit-payload-pipeline` for `prepareSubmitPayload`, `normalizeSubmitPayload`, date arrays, local/transient fields, `submitPolicy`, entity lookup payloads, and nested array submits.
+- Use `praxis-form-actions-hooks-runtime` for form actions, hooks, global action payloads, shortcuts, surface opens, and action editor runtime behavior.
+- Use `praxis-form-editor-document-roundtrip` for `DynamicFormAuthoringDocument`, bindings, context snapshots, Settings Panel apply/save/reset, and editor round-trip.
 - Use `praxis-form-layout-canvas` for layout policy, schema-driven layout, visual blocks, and canvas.
 - Use `praxis-form-authoring-settings` for config editors, Settings Panel, apply/save/reset, JSON editor, hooks/messages/actions editors, and round-trip.
 - Use `praxis-form-ai-rules-validation` for AI manifests, rules, context packs, component edit plans, diagnostics, and registry validation.

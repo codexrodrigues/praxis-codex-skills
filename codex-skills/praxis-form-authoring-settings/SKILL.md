@@ -6,6 +6,7 @@ description: Use when Codex must work on @praxisui/dynamic-form authoring, Setti
 # Praxis Form Authoring Settings
 
 Use this skill for Dynamic Form authoring and Settings Panel flows. A change is incomplete when runtime config works but the visual editor cannot show, edit, apply, save, reset, reopen, or round-trip the same semantics.
+For the canonical document/apply-plan contract itself, load `praxis-form-editor-document-roundtrip`. For action or hook editor details, pair with `praxis-form-actions-hooks-runtime`.
 
 When Dynamic Form opens or embeds `FieldMetadataEditorComponent`, `DynamicEditorRendererComponent`,
 or `CascadeManagerTabComponent`, use `praxis-metadata-editor-consumer-bridges` for the host bridge.
@@ -85,6 +86,10 @@ If no visual editor is affected, state why.
 
 - Use `praxis-authoring-editors` for cross-component Settings Panel and round-trip guidance.
 - Use `praxis-form-runtime-submit` when authoring changes runtime construction, submit behavior, field metadata, or resource contracts.
+- Use `praxis-form-editor-document-roundtrip` for `DynamicFormAuthoringDocument`, bindings, context snapshots, diagnostics, replace-all apply/save/reset, and reopen semantics.
+- Use `praxis-form-schema-runtime-modes` when authoring changes schema URLs, mode bindings, presentation mode, schema preferences, or metadata reconciliation.
+- Use `praxis-form-submit-payload-pipeline` when editors expose local/transient fields, `submitPolicy`, entity lookup payload mode, or payload-affecting metadata.
+- Use `praxis-form-actions-hooks-runtime` for actions editor, hooks editor, global action refs, surface open payloads, and shortcut/action runtime round-trip.
 - Use `praxis-form-layout-canvas` for layout editor, visual blocks, canvas, schema-driven layout policy, and presentation.
 - Use `praxis-form-ai-rules-validation` for AI component edit plans, rules, diagnostics, and registry ingestion.
 - Use `praxis-dynamic-fields-editorial` for field component coverage and metadata editor chains.

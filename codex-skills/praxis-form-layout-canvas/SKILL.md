@@ -59,8 +59,10 @@ Classify repeated local section configs as `ja-suportado-mal-nomeado-ou-mal-mate
 
 ## Companion Skills
 
+- Use `praxis-form-schema-runtime-modes` when `layoutPolicy`, generated presets, or presentation mode depend on schema-driven create/edit/view runtime.
 - Use `praxis-form-runtime-submit` when layout affects runtime form construction or submit payload boundaries.
 - Use `praxis-form-authoring-settings` when layout is edited through config editor, Settings Panel, JSON editor, or apply/save/reset.
+- Use `praxis-form-editor-document-roundtrip` when layout changes must persist through `DynamicFormAuthoringDocument` and reopen exactly.
 - Use `praxis-form-ai-rules-validation` when layout or visual blocks are authorable by AI/rules.
 - Use `praxis-ui-product-design` for visual hierarchy, density, accessibility, and screenshot validation.
 - Use `praxis-dynamic-fields-editorial` when field discovery or editor metadata coverage changes.
