@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-api-quickstart-cockpit-http-validation/
-- Descricao atual: Use when Codex must validate or document praxis-api-quickstart real HTTP evidence: Praxis Cockpit, docs/COCKPIT-QUICKSTART-REFERENCE.md, verify-cockpit-* scripts, domain catalog ingest/verify scripts, HTTP examples, Render/public host proof, /actuator/info build evidence, schemas/actions/surfaces/related resources/stats/option-source verification, and quickstart validation routing.
+- Descricao atual: Use when Codex must implement, audit, or document Praxis API Quickstart HTTP evidence: the starter-bundled Praxis Cockpit, Cockpit reference inventory, verify-cockpit scripts, OpenAPI/schema/action/surface/relationship/stats/option-source contracts, build identity, domain-catalog context, domain authoring, governed domain-rule/knowledge/federation smokes, executable HTTP examples, or published-host diagnosis.
 
 ## Classificacao inicial
 

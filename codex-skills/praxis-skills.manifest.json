@@ -2232,9 +2232,22 @@
                        "status":  "active",
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
+                                            "praxis-api-quickstart-operational-proof",
+                                            "praxis-api-quickstart-domain-pilots",
+                                            "praxis-api-quickstart-security-config",
+                                            "praxis-metadata-schema-contracts",
+                                            "praxis-metadata-discovery-capabilities",
+                                            "praxis-metadata-domain-option-sources",
+                                            "praxis-config-domain-decisions",
+                                            "praxis-http-examples-corpus-manifest",
+                                            "praxis-http-examples-contract-surfaces",
+                                            "praxis-http-examples-llm-smoke",
+                                            "praxis-landing-public-docs-contracts",
+                                            "praxis-landing-registries-sitemap-playgrounds",
+                                            "praxis-angular-docs-playgrounds"
                                         ],
-                       "skillMdSha256":  "7D02C925BF821C99F07E01C663871B7AA374A4F4F33C52AB70AB9D3994EE30F8",
-                       "treeSha256":  "91CE69F15DFAB8CF140ADCCF7DCA805F3D051E4AF9BC1EEEBE03208036F6C187"
+                       "skillMdSha256":  "8EF19082ECAEA82D7C54A42500744ED8258355BB43E979BB1DDF226108CE4481",
+                       "treeSha256":  "212FC5A4FBE39DC90601EBE454F914119B5CB925D4625314016010A3113621B3"
                    },
                    {
                        "name":  "praxis-http-examples-corpus-manifest",
