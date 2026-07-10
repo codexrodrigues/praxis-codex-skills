@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-ai-registry-ingestion/
-- Descricao atual: Use when changing or validating Praxis AI registry tooling, `tools/ai-registry`, component docs extraction, registry ingestion generation, catalog governance, RAG/provider projections, packaged `ai/component-registry.json` assets, AI-ready docs, backend sync/upload scripts, or generated registry artifacts after component authoring manifest or metadata changes.
+- Descricao atual: Use when implementing, auditing, generating, packaging, or synchronizing Praxis AI registry artifacts: component docs extraction, AI metadata, ingestion corpus/chunks, catalog governance, authoring-contract acceptance, AI-ready docs, RAG/provider projections, package `ai/component-registry.json` assets, or official backend uploads.
 
 ## Classificacao inicial
 
