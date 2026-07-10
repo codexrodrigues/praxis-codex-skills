@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-ai-composer-attachments-quick-replies/
-- Descricao atual: Use when changing or reviewing `@praxisui/ai` assistant composer actions, prompt submission, quick replies, recommended intents, clarification state, pasted/selected attachments, attachment summaries, safe forwarding, message edit/resend, feedback actions, or browser voice input.
+- Descricao atual: Use when implementing, auditing, or consuming `@praxisui/ai` composer submission, quick replies, recommended intents, clarification continuation, pasted/selected attachments, safe attachment forwarding, edit/resend/feedback actions, or optional browser speech input.
 
 ## Classificacao inicial
 
