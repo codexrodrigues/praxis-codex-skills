@@ -39,6 +39,17 @@ python3 scripts/audit-praxis-skills.py --family praxis
 python3 scripts/audit-praxis-skills.py --family ergon-migration
 ```
 
+## Structure Validation
+
+When `quick_validate.py` is unavailable because local Python lacks optional packages,
+use the repository validator:
+
+```bash
+python3 scripts/validate-praxis-skills.py --family praxis
+python3 scripts/validate-praxis-skills.py --family ergon-migration
+python3 scripts/validate-praxis-skills.py codex-skills/praxis-ai-assistant-runtime
+```
+
 ## Sync
 
 ```powershell
