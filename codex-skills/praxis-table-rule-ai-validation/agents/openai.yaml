@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Table Rule AI Validation"
   short_description: "Validate AI-authored table effects"
-  default_prompt: "Use $praxis-table-rule-ai-validation to validate AI-authored Praxis table visual rules."
+  default_prompt: "Use $praxis-table-rule-ai-validation to validate AI-authored @praxisui/table-rule-builder package visual rules."
