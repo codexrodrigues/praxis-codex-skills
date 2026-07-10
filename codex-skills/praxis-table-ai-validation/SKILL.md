@@ -58,7 +58,11 @@ State whether live AI E2E was skipped. Do not use GitHub Actions as exploratory 
 
 ## Companion Skills
 
-- Use `praxis-table-runtime-data` for runtime state, selection, local/remote data mode, export, analytics, and renderers.
+- Use `praxis-table-data-source-precedence` when the assistant authors or explains local/remote mode, `resourcePath`, `queryContext`, or persisted bindings.
+- Use `praxis-table-selection-export-runtime` when the assistant works with selected records, bulk actions, export operations, or selected-record context.
+- Use `praxis-table-analytics-stats-runtime` when the assistant works with analytics projections, stats, or dashboard table views.
+- Use `praxis-table-renderer-state-diagnostics` when the assistant changes renderers, formatting, empty/loading/error states, or diagnostics.
+- Use `praxis-table-runtime-data` for the broader runtime state umbrella.
 - Use `praxis-table-filter-actions` for filter/action operation grounding.
 - Use `praxis-table-authoring-settings` for Settings Panel and config editor round-trip.
 - Use `praxis-table-rule-ai-validation` when AI authoring targets table visual effects, presets, semantic animations, or `tableIntegration.delegate`.

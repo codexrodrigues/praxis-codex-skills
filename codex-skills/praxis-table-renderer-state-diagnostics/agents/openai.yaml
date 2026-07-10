@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Table Renderer State Diagnostics"
+  short_description: "Audit table renderers and visible states"
+  default_prompt: "Use $praxis-table-renderer-state-diagnostics to inspect @praxisui/table renderers, loading, empty, error, i18n, and diagnostics."
+
+policy:
+  allow_implicit_invocation: true

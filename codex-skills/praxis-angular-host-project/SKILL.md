@@ -217,7 +217,11 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-core-logging-observability`: logging providers, logger sinks, telemetry payloads, error normalization, redaction, throttling, and observability alerts.
 - `praxis-core-i18n-resource-copy`: shared `PraxisI18nService`, i18n providers, resource-discovery messages, value presentation, and PT-BR/en-US framework copy.
 - `praxis-core-global-actions-metadata`: global actions, action catalogs/providers, payload validation, surface open presets, component metadata registry, and metadata services.
-- `praxis-table-runtime-data`: table runtime data modes, `resourcePath`, renderers, selection, export, analytics, and validation.
+- `praxis-table-runtime-data`: table runtime umbrella for data modes, renderers, selection, export, analytics, and validation.
+- `praxis-table-data-source-precedence`: local/remote source precedence, `resourcePath`, `queryContext`, local pipeline, persisted connections, and apply-plan diagnostics.
+- `praxis-table-selection-export-runtime`: selected rows/ids, bulk state, export scopes, collection export, and selected-record context.
+- `praxis-table-analytics-stats-runtime`: analytic-table projections, stats requests, fallback rows, and dashboard table views.
+- `praxis-table-renderer-state-diagnostics`: renderers, formatting, empty/loading/error states, i18n, diagnostics, and runtime observations.
 - `praxis-table-filter-actions`: table filters, dynamic filter payloads, toolbar/row/bulk actions, global actions, CRUD actions, and export grounding.
 - `praxis-table-authoring-settings`: table Settings Panel, config editors, columns, rules, filters, actions, CRUD integration, and round-trip.
 - `praxis-table-ai-validation`: table AI manifests, component edit plans, runtime operations, context packs, registry ingestion, and assistant E2E.

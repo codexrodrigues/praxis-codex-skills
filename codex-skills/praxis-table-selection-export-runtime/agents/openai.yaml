@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Table Selection Export Runtime"
+  short_description: "Govern table selection and export operations"
+  default_prompt: "Use $praxis-table-selection-export-runtime to audit @praxisui/table selected rows, bulk actions, and collection export scopes."
+
+policy:
+  allow_implicit_invocation: true

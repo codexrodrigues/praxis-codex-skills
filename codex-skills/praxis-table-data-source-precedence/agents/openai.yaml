@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Table Data Source Precedence"
+  short_description: "Resolve table local versus remote data mode"
+  default_prompt: "Use $praxis-table-data-source-precedence to audit @praxisui/table resourcePath, local data, queryContext, and authoring data-source precedence."
+
+policy:
+  allow_implicit_invocation: true
