@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-charts-ai-validation/
-- Descricao atual: Use when Codex must create, update, or audit @praxisui/charts AI authoring contracts: PRAXIS_CHARTS_AUTHORING_MANIFEST, chartDocument operations, editableTargets, validators, handler contracts, chart edit plans, queryContext/crossFilter/drilldown operations, AI registry ingestion, component metadata, generated AI assets, or assistant validation for chart authoring.
+- Descricao atual: Use when Codex must implement, audit, or consume @praxisui/charts AI authoring from the Angular manifest through registry ingestion and praxis-config-starter execution, including edit plans, target resolution, capability-backed validators, domain compilers, canonical chart patches, and editor/runtime round-trip.
 
 ## Classificacao inicial
 

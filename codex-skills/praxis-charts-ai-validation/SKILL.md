@@ -1,37 +1,45 @@
 ---
 name: praxis-charts-ai-validation
-description: Use when Codex must create, update, or audit @praxisui/charts AI authoring contracts: PRAXIS_CHARTS_AUTHORING_MANIFEST, chartDocument operations, editableTargets, validators, handler contracts, chart edit plans, queryContext/crossFilter/drilldown operations, AI registry ingestion, component metadata, generated AI assets, or assistant validation for chart authoring.
+description: Use when Codex must implement, audit, or consume @praxisui/charts AI authoring from the Angular manifest through registry ingestion and praxis-config-starter execution, including edit plans, target resolution, capability-backed validators, domain compilers, canonical chart patches, and editor/runtime round-trip.
 ---
 
 # Praxis Charts AI Validation
 
-Use this skill for executable AI chart authoring. The chart manifest is a governed contract for semantic edits to `PraxisXUiChartContract` and widget inputs; it is not decorative documentation and must not devolve into arbitrary JSON patching.
+Use this skill for executable AI chart authoring. `PRAXIS_CHARTS_AUTHORING_MANIFEST` is the Angular declaration of governed semantic edits to `PraxisXUiChartContract`; it is not proof by itself that an edit is published, executable, capability-safe, or consumed correctly.
 
 Pair it with:
 
-- `praxis-ai-authoring-manifests` for shared manifest invariants and edit-plan rules.
-- `praxis-ai-registry-ingestion` when generated registry/catalog/package AI assets are affected.
-- `praxis-ai-semantic-intent` when the change touches intent routing or consult/edit boundaries.
-- `praxis-charts-authoring-settings` when manifest operations must match visual editor paths.
-- `praxis-charts-runtime-data` when operations affect runtime chart mapping, stats requests, events, or public chart models.
-- `praxis-charts-ai-handler-contracts` for operation schemas, validators, handler contracts, edit plans, and generated AI registry details.
-- `praxis-charts-authoring-catalogs` when operations depend on governed resources, fields, targets, editor catalogs, or preview mapping.
-- `praxis-charts-analytics-interactions` when operations affect `queryContext`, stats, cross-filter, drilldown, or selection behavior.
-- `praxis-charts-echarts-engine-boundary` when a request appears to require raw ECharts options so the adapter boundary stays canonical.
+- `praxis-ai-authoring-manifests` for shared manifest and edit-plan invariants.
+- `praxis-ai-registry-ingestion` for generated registry projections and snapshot synchronization.
+- `praxis-ai-semantic-intent` for semantic intent routing and consult/edit boundaries.
+- `praxis-config-ai-registry-manifests` for `praxis-config-starter` ingestion and executable manifest projection.
+- `praxis-charts-ai-handler-contracts` for operation schemas, handlers, validators, effects, and edit plans.
+- `praxis-charts-authoring-settings` for visual editor parity.
+- `praxis-charts-authoring-catalogs` for governed resources, fields, targets, and previews.
+- `praxis-charts-runtime-data` and `praxis-charts-analytics-interactions` for data, stats, query context, and interaction behavior.
+- `praxis-charts-echarts-engine-boundary` when a request appears to require raw ECharts options.
 
-## Canonical AI Boundary
+## Canonical Execution Chain
 
-AI must author chart decisions through governed targets and operations:
+Treat these as distinct proofs:
 
-`semantic request -> editable target -> operation schema -> validator -> effect/handler contract -> chartDocument/queryContext path -> editor/runtime round-trip`
+1. **Declaration**: the Angular manifest declares targets, operations, schemas, validators, effects, examples, and handler contracts.
+2. **Publication**: registry tooling projects that exact manifest into `praxis-component-registry-ingestion.json`, and `praxis-config-starter` ingests or snapshots it without semantic drift.
+3. **Execution**: the backend resolves targets, validates grounded input, compiles canonical effects, rejects unsupported semantics, and produces a document that the editor and runtime can read back unchanged.
 
-Do not route chart intent by keywords such as "ranking", "trend", "pie", or "KPI" in the Angular host. The assistant should use governed component manifests, available resources, available fields, analytics projections, capabilities, and declared tools for grounding. Text matching can rank field or resource candidates only after semantic scope is resolved.
+The canonical flow is:
 
-Do not expose raw ECharts option patches, free-form JSON Patch, local metric aliases, or host-only command strings as the primary edit mechanism. If a requested edit needs a new semantic operation, add or revise a manifest operation with deterministic target resolution and validators.
+`semantic request -> component manifest -> componentEditPlan -> target resolver -> input schema -> validators -> effect compiler -> canonical chartDocument/queryContext patch -> editor/runtime round-trip`
+
+Do not call a chart operation executable because its TypeScript object passes a structural spec. A declared validator without backend implementation, an unknown domain compiler, a missing required target resolver, or unavailable grounding must fail the edit plan. Warnings are not sufficient for required semantics.
+
+AI must resolve intent semantically from governed context and declared tools. Keywords such as "ranking", "trend", "pie", or "KPI" may help rank candidates only after semantic scope is resolved. Never use raw ECharts patches, generic JSON Patch, metric aliases, regex command routing, or host-only command strings as the primary authoring mechanism.
 
 ## Required Source Inventory
 
-Before editing chart AI behavior, inspect:
+Before changing or certifying Charts AI authoring, inspect all three ownership layers.
+
+Angular declaration and consumers:
 
 - `projects/praxis-charts/src/lib/ai/praxis-charts-authoring-manifest.ts`
 - `projects/praxis-charts/src/lib/ai/praxis-charts-authoring-manifest.spec.ts`
@@ -41,54 +49,139 @@ Before editing chart AI behavior, inspect:
 - `projects/praxis-charts/src/lib/services/chart-contract-validation.service.ts`
 - `projects/praxis-charts/src/lib/services/chart-canonical-contract-mapper.service.ts`
 - `projects/praxis-charts/src/public-api.ts`
-- AI registry ingestion outputs or generated component docs when the repo produces them
 
-Read `projects/praxis-charts/AGENTS.md` before editing chart AI authoring contracts. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
+Registry publication:
 
-## Manifest Rules
+- `tools/ai-registry/generate-registry-ingestion.ts`
+- `tools/ai-registry/validate-authoring-contracts-acceptance.js`
+- generated `dist/praxis-component-registry-ingestion.json`
+- `praxis-config-starter/src/main/resources/ai-registry/registry-snapshot.json`
 
-The chart manifest should declare:
+Backend execution:
 
-- component identity: `componentId = praxis-chart`, owner package `@praxisui/charts`, config schema `PraxisXUiChartContract`.
-- runtime inputs: `chartDocument`, `config`, `queryContext`, `remoteDataResolver`, `availableResources`, `availableFields`, and `availableTargets`.
-- editable targets for chart type, series, axis, data binding, query context, cross-filter, drilldown, selection, legend, tooltip, labels, theme, sizing, motion, and state when supported.
-- operations with concrete schemas for `chart.document.set`, `chart.type.set`, `series.add`, `series.remove`, `axis.configure`, `data.resource.bind`, `queryContext.set`, event mapping, and visual toggles.
-- destructive operations such as series removal with confirmation.
-- `compile-domain-patch` handler contracts for operations requiring semantic field/resource/target resolution.
-- affected paths that overlap actual effects.
-- validators that prove chart type compatibility, governed field/resource existence, stats operation support, safe query context, event target validity, and editor/runtime round-trip.
+- `AgenticAuthoringManifestContractValidator`
+- `AgenticAuthoringManifestService`
+- `AgenticAuthoringTargetResolverRegistry`
+- `AgenticAuthoringValidatorRegistry`
+- `AgenticAuthoringEffectCompilerRegistry`
+- focused tests for each registry and manifest service
 
-Every operation target must resolve through an editable target with `ambiguityPolicy: "fail"`. Broad object schemas are acceptable only when the downstream handler contract declares how candidates are grounded and validated.
+Read the applicable `AGENTS.md` files in Charts, `tools/ai-registry`, and `praxis-config-starter`. Use `praxis-angular-agents-governance` when Angular governance is missing or stale.
 
-## Chart-Specific Guardrails
+## Adherence Inventory
 
-For series edits, use `chartDocument.metrics[].field` as identity and validate against `availableFields[]`. For axes, preserve combo-only secondary axis constraints and cartesian versus pie/donut requirements. For data binding, validate `source.kind`, resource, operation, dimensions, and metrics against governed catalogs. For `queryContext`, require structured object semantics.
+Before adding a target, operation, validator, DTO, or handler, ask what the platform already knows but is not materializing correctly. Classify each requested improvement:
 
-For cross-filter, drilldown, and selection, emit structured event actions such as `filter-widget`, `open-detail`, `navigate`, `update-context`, or `emit` with governed targets and field mappings. Never encode event behavior as command words, regexes, metric-name conventions, or Angular switch statements.
+- `ja-suportado-so-ux`: canonical state and execution exist; only presentation is missing.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: the contract exists but a validator, patch, registry projection, or consumer overclaims or distorts it.
+- `suportado-parcialmente`: declaration, publication, execution, or runtime parity is incomplete.
+- `lacuna-real-de-contrato`: required semantic data has no canonical owner.
 
-For capability-protected metrics, require the backend/catalog to publish the capability decision or omit/block the chart. AI must not infer authorization from labels, menu visibility, or previous examples.
+Only the last classification justifies a new contract. Prefer fixing the canonical manifest, registry projection, backend executor, or chart consumer over creating a UI-local concept.
+
+## Manifest Invariants
+
+The manifest identity is `praxis-chart`, owner `@praxisui/charts`, schema `PraxisXUiChartContract`. Runtime inputs and editable paths must match actual public inputs and canonical chart models.
+
+For every operation verify:
+
+- its target kind exists and resolves deterministically with `ambiguityPolicy: "fail"`;
+- its input schema is specific enough for the semantic operation;
+- every referenced validator is implemented by the backend or a declared canonical tool;
+- `affectedPaths` overlap the compiled effects;
+- destructive edits require confirmation;
+- `compile-domain-patch` names an implemented compiler;
+- the compiler writes only canonical chart fields;
+- examples pass the same schemas and validators as real plans;
+- publication preserves operation IDs, target kinds, validators, examples, and handler contracts exactly.
+
+Do not invent manifest coverage from model breadth. Maintain an explicit matrix of `AI-editable`, `editor-only`, `preserved-only`, and `unsupported` paths for chart type, series, axes, source, query context, events, legend, tooltip, labels, theme, sizing, motion, and state.
+
+## Grounding And Capabilities
+
+Validation names must describe behavior actually enforced.
+
+- `remote-resource-in-api-metadata` must resolve the requested resource against governed API metadata or a canonical resource catalog. Checking that a string begins with `/` is only path-shape validation.
+- `stats-operation-supported` must verify the selected resource's published stats capability, not only membership in a global operation enum.
+- `series-field-aggregable` must verify the selected field and metric against the resource's stats field capabilities.
+- field validators must use the correct source catalog for each field role. An absent required catalog must fail closed or produce an explicit unresolved-target result; it must not silently pass.
+- event targets must resolve against governed target descriptors and action-specific constraints, including target kind, port/schema, required capability, and mapping compatibility.
+- authorization-sensitive metrics and resources must come from backend capability decisions. Labels, menu visibility, examples, and prior successful plans are not authorization evidence.
+
+If the platform lacks the necessary resource, stats, field, or target tool, register that as a canonical contract gap. Do not replace it with keyword matching or permissive validation.
+
+## Operation Semantics
+
+Series identity is `chartDocument.metrics[].field`; preserve deterministic add/remove behavior and reject ambiguous duplicate identities. Axis edits must enforce chart-family compatibility, including cartesian versus pie/donut behavior and combo-only secondary axes.
+
+Data binding must validate `source.kind`, resource, operation, dimensions, metrics, filters, and sorting against the same governed metadata and capabilities used at runtime. `queryContext` must remain structured and support the canonical context fields, including filter expression when the runtime contract supports it; do not hide a missing contract behind opaque URL fragments.
+
+For cross-filter, drilldown, and selection:
+
+- compile event actions to the canonical `PraxisXUiChartEventAction` shape;
+- derive the event key/path from the operation rather than persisting operation-only fields into the event action;
+- treat mapping as `{ sourceField: targetField }` consistently in schema, validation, compiler, editor, and runtime;
+- validate source-field keys against chart output fields and target-field values against the governed target input contract;
+- do not advertise authoring support before the runtime emits and consumes that interaction correctly.
+
+Structured actions such as `filter-widget`, `open-detail`, `navigate`, `update-context`, or `emit` must remain governed. Never translate them into Angular switch statements driven by user wording.
+
+## Fail-Closed Backend Parity
+
+`AgenticAuthoringManifestContractValidator` proving internal references is necessary but insufficient. The executable gate must also prove that required resolvers, validator IDs, and domain compiler IDs are registered.
+
+Reject the plan before apply when:
+
+- an operation validator has no backend implementation;
+- a required target resolver cannot resolve exactly one governed target;
+- a `compile-domain-patch` handler is unknown;
+- required metadata, capabilities, fields, resources, or target catalogs are absent;
+- compiled operations write outside declared affected paths or canonical chart models;
+- the resulting chart document fails Angular contract validation or editor/runtime round-trip.
+
+A validator named `editor-runtime-round-trip` must execute a real proof or be renamed/narrowed to what it checks. A no-op validator is not evidence.
 
 ## Synchronization Triggers
 
-Review chart AI contracts when any of these change:
+Re-run the full chain when any of these change:
 
-- `PraxisXUiChartContract`, `PraxisChartConfig`, data source, query context, events, sizing, theme, or state models.
-- `PraxisChartConfigEditor` or `PraxisChartWidgetConfigEditor` editable paths.
-- `PraxisChartComponent` inputs/outputs or component metadata.
-- chart public API exports.
-- registry ingestion, generated component docs, AI assets, context packs, quick replies, diagnostics, previews, or apply payloads.
-- dashboard catalog chart document shape or chart backend payload adapter behavior.
+- `PraxisXUiChartContract`, data source, query context, event, sizing, theme, motion, state, or stats models;
+- chart editor editable paths, runtime inputs/outputs, mapper behavior, or public exports;
+- manifest targets, operations, validators, examples, effects, or handler contracts;
+- registry generation, component metadata, snapshot ingestion, context packs, quick replies, diagnostics, previews, or apply payloads;
+- dashboard chart documents or backend payload adapters.
 
-If no manifest update is required after a public chart/runtime/editor change, state why.
+Compare generated registry content with the Angular source and backend snapshot. Update derived assets in the same cycle when public semantics change. If no update is required, state why.
 
-## Validation
+## Validation Matrix
 
-Minimum validation:
+Use the smallest sufficient local gates, but cover every changed layer.
 
-- run `praxis-charts-authoring-manifest.spec.ts` after manifest changes.
-- run editor specs when changed operation paths are exposed visually.
-- run runtime mapper/validator specs when operations affect `x-ui.chart` shape or runtime consumption.
-- run registry ingestion validation when generated AI registry/catalog assets are expected to change.
-- run assistant/edit-plan E2E or a focused harness when consult/edit response behavior changes.
+Angular declaration and round-trip:
 
-When validation is partial, report which manifest invariants were checked and which registry or assistant gates remain unexecuted.
+```bash
+npx ng test praxis-charts --watch=false --progress=false \
+  --include='projects/praxis-charts/src/lib/ai/praxis-charts-authoring-manifest.spec.ts' \
+  --include='projects/praxis-charts/src/lib/services/chart-contract-validation.service.spec.ts' \
+  --include='projects/praxis-charts/src/lib/services/chart-canonical-contract-mapper.service.spec.ts' \
+  --include='projects/praxis-charts/src/lib/config-editor/praxis-chart-config-editor.spec.ts' \
+  --include='projects/praxis-charts/src/lib/config-editor/praxis-chart-widget-config-editor.spec.ts'
+npm run build:praxis-charts
+```
+
+Registry publication:
+
+```bash
+npm run generate:registry:ingestion
+npm run validate:authoring-contracts
+```
+
+Backend execution, from `praxis-config-starter`:
+
+```bash
+mvn -Dtest=AgenticAuthoringManifestServiceTest,AgenticAuthoringManifestContractValidatorTest,AgenticAuthoringTargetResolverRegistryTest,AgenticAuthoringValidatorRegistryTest,AgenticAuthoringEffectCompilerRegistryTest test
+```
+
+Add negative tests for unknown validator/compiler/resolver, absent catalogs, unsupported resource capability, invalid field metric, reversed mapping, noncanonical event fields, and round-trip loss. Run assistant/edit-plan E2E or a focused harness when consult/edit/apply behavior changes.
+
+Acceptance requires all applicable layers to pass. Report separately what was proven structurally, what was published, what executed, and what runtime/editor behavior was exercised. Never present a skipped backend or consumer gate as complete AI validation.
