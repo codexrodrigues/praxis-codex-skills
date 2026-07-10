@@ -54,6 +54,12 @@ python3 scripts/validate-praxis-skills.py --family ergon-migration
 python3 scripts/validate-praxis-skills.py codex-skills/praxis-ai-assistant-runtime
 ```
 
+Focused Python fallback tests:
+
+```bash
+python3 -m unittest discover -s tests
+```
+
 ## Sync
 
 ```powershell
