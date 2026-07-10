@@ -2261,8 +2261,8 @@
                                             "praxis-core-widget-observations",
                                             "praxis-core-composition-runtime"
                                         ],
-                       "skillMdSha256":  "CE1CEFAE9CD3B3488453945DAA128FD0D3A914F786EC83F51254C7AA8D7C4230",
-                       "treeSha256":  "2E6B3EF0AFFA4D05A7531D27AD95A0E2B4C5855299B7C2B87315E250E6959712"
+                       "skillMdSha256":  "D171C73461C3E2B43F4733C685D5CB9CCC2B4622A14A394048584FC8BC5AFA48",
+                       "treeSha256":  "2D1DFF7D4DE4781F396715C230336665E8D76BA6F7F5FA2695E99B873208F6D1"
                    },
                    {
                        "name":  "praxis-table-data-source-precedence",
