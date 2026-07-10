@@ -151,7 +151,13 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                             "praxis-angular-validation-gates",
+                                            "praxis-angular-public-api-governance",
+                                            "praxis-angular-i18n-governance",
+                                            "praxis-angular-agents-governance",
                                             "praxis-ai-registry-ingestion",
+                                            "praxis-ai-authoring-manifests",
+                                            "praxis-authoring-editors",
+                                            "praxis-ui-product-design",
                                             "praxis-landing-public-docs-contracts",
                                             "praxis-landing-registries-sitemap-playgrounds",
                                             "praxis-tabs-runtime-authoring",
@@ -190,7 +196,6 @@
                                             "praxis-navigation-container-composition-events",
                                             "praxis-stepper-wizard-orchestration",
                                             "praxis-navigation-agentic-registry",
-                                            "praxis-angular-agents-governance",
                                             "praxis-manual-form-field-detection-instance",
                                             "praxis-manual-form-autosave-persistence",
                                             "praxis-manual-form-toolbar-metadata-bridge",
@@ -200,8 +205,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "BCC0BAE89A3448AAE4BB4BB284028E3BA64DD399DBEDEFAC875458E5E92E327E",
-                       "treeSha256":  "7C1E85ECB796545BE1D880F82694F23F3ADF3E6340956757D1CB02CAB2B917DD"
+                       "skillMdSha256":  "1608C949F2CD06560E7464B2B36C397F7DF02E7CF084532AECF53AC3A4963995",
+                       "treeSha256":  "C007C763053F7BC9493FFCC34B6D02DAEAAC4BD46E8812F23B134CFEE1C8746A"
                    },
                    {
                        "name":  "praxis-angular-host-project",

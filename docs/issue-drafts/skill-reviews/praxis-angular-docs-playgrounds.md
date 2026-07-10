@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-angular-docs-playgrounds/
-- Descricao atual: Use when updating or auditing Praxis Angular public documentation, component docs, `docs/praxis-docs.manifest.json`, `*.json-api.md`, examples, `examples/ai-recipes`, landing pages, playgrounds, published guides, sitemap entries, AI registry derived docs, or other public derived artifacts.
+- Descricao atual: Use when implementing, auditing, synchronizing, or validating Praxis Angular public documentation and derived experiences: library README/json-api/host/editor docs, docs/praxis-docs.manifest.json, docs shell and vendor sync, component/published-guide registries, examples, AI recipes, playground/demo routes, screenshots, landing pages, sitemap, LLM/public guide artifacts, or documentation-contract drift.
 
 ## Classificacao inicial
 
