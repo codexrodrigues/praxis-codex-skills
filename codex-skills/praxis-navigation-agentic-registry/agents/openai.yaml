@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Navigation Agentic Registry"
+  short_description: "Audit navigation AI registry flows"
+  default_prompt: "Use $praxis-navigation-agentic-registry to implement or audit Praxis navigation container AI manifests, adapters, agentic turn flows, context packs, registry ingestion, and cross-container authoring consistency."

@@ -48,6 +48,10 @@ global actions, registries, authoring manifest, and registry projections.
 Use `praxis-navigation-containers-ai-validation` for `@praxisui/tabs`, `@praxisui/stepper`,
 `PraxisWizardFormComponent`, and `@praxisui/expansion` manifests, capabilities, context packs,
 AI adapters, component docs, and registry projection.
+Pair it with `praxis-navigation-agentic-registry`,
+`praxis-navigation-container-composition-events`, or `praxis-stepper-wizard-orchestration` when
+generated docs derive from agentic turn flows, nested widget composition, dynamic page events,
+wizard submit/validation, or cross-container authoring consistency.
 Use `praxis-files-upload-ai-validation` for `@praxisui/files-upload` manifests, capabilities,
 context packs, AI adapters, component docs, backend endpoint/security operations, and registry
 projection.
