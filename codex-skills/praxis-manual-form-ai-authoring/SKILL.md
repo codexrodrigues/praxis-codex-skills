@@ -7,6 +7,13 @@ description: Use when changing or validating `@praxisui/manual-form` authoring s
 
 Use this skill for governed manual-form authoring. Manual Form AI must compile to manifest-backed component edit plans; it must not emit arbitrary JSON patches over host templates or duplicate `dynamic-form`/`metadata-editor` semantics.
 
+For focused work, load the narrow companion first:
+
+- `praxis-manual-form-rules-agentic` for `PRAXIS_MANUAL_FORM_AUTHORING_MANIFEST`, component edit plans, `formRules`, `formRulesState`, JSON Logic, config editor, context pack, turn flow, and registry projections.
+- `praxis-manual-form-toolbar-metadata-bridge` for toolbar/metadata bridge authoring operations and metadata-editor delegation.
+- `praxis-manual-form-autosave-persistence` for autosave operations, debounce, persistence key validation, and draft reload semantics.
+- `praxis-manual-form-field-detection-instance` for manual field targets, host-template field existence, control-type discovery, and `ManualFormInstance` state.
+
 ## Required Source Audit
 
 Inspect:
@@ -49,6 +56,13 @@ Use `PRAXIS_MANUAL_FORM_AUTHORING_MANIFEST` as the executable contract.
 - `metadataBridge.configure` must preserve `praxis-metadata-editor` and dynamic-fields discovery ownership.
 
 `formRules` is the authorable rules surface and conditions must be JSON Logic objects. Treat `formRulesState` as internal visual-editor round-trip state.
+
+Classify authoring gaps before adding manifest operations or config paths:
+
+- `ja-suportado-so-ux`: the manifest/config path exists but editor, assistant, registry, or docs projection does not expose it well.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: the persisted shape already exists as `FieldMetadata`, `formRules`, `ManualFormPersistenceOptions`, or a metadata-editor patch but is named locally.
+- `suportado-parcialmente`: manifest, editor, capability, context pack, registry, or focused specs are not aligned.
+- `lacuna-real-de-contrato`: no existing manifest operation, target, config path, or governed handoff can express the decision.
 
 ## AI And Registry
 

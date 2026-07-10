@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Manual Autosave"
+  short_description: "Manual form autosave and draft persistence"
+  default_prompt: "Use $praxis-manual-form-autosave-persistence to audit ManualFormInstance.saveDraft, resetToSeed, storage keys, ASYNC_CONFIG_STORAGE, debounce, and SSR-safe persistence."
