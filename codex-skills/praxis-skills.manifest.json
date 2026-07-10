@@ -445,8 +445,8 @@
                                             "praxis-charts-echarts-engine-boundary",
                                             "praxis-charts-ai-handler-contracts"
                                         ],
-                       "skillMdSha256":  "74AB90A8A769D7F96E469992F6628873F2229B53F815620EDFC627F88A65263E",
-                       "treeSha256":  "E1508BE6BFF9496BB6E84EC2214CA26C01529336E6A32862CB2CC72796B60820"
+                       "skillMdSha256":  "FF2FBD26B90E797D0E620D89922853B02B90DB3CD68B9E26D5D1B0ACFB00D21E",
+                       "treeSha256":  "F79C6DE4769E696749F046C65B4560C33C2BE13FD05AE4AB6FDB2B7DFEB4EB72"
                    },
                    {
                        "name":  "praxis-charts-runtime-data",
