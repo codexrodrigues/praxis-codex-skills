@@ -1,71 +1,157 @@
 ---
 name: praxis-api-quickstart-domain-pilots
-description: Use when Codex must work on praxis-api-quickstart concrete pilot domains: ApiPaths, @ApiResource controllers, DTOs, filters, @Schema business descriptions, @UISchema endpoints, @DomainGovernance, option sources, entity lookup pilots, stats, export, actions, services, mappers, operational migrations, hero-demo domains, HR, operations, assets, procurement, risk intelligence, and pilot integration tests.
+description: Use when Codex must implement, audit, or extend Praxis API Quickstart pilot domains: ApiPaths, resource-oriented controllers and services, DTO/filter meaning, @UISchema, @DomainGovernance, option sources and entity lookup, stats/export, surfaces/actions, demo data, operational migrations, cockpit evidence, or governed domain-decision materializations across HR, operations, assets, procurement, and risk intelligence.
 ---
 
 # Praxis API Quickstart Domain Pilots
 
-Use this skill for concrete quickstart resources and pilot domains. These domains are didactic operational proof of Praxis patterns, not sources of canonical starter semantics.
+Use this skill when a concrete quickstart domain must prove a Praxis capability in a real Spring Boot host. A pilot is not a disposable CRUD example: it is executable, didactic evidence that semantic grounding, metadata, discovery, governed decisions, and runtime behavior agree end to end.
+
+## Classify And Map Impact
+
+Classify a change before editing:
+
+- `local-pequena`: one host resource, with no public contract change.
+- `transversal`: a pilot plus another quickstart domain, docs, HTTP evidence, or a runtime consumer.
+- `contrato-publico`: `ApiPaths`, `@ApiResource`, OpenAPI groups, schemas, option-source endpoints, `_links`, actions, surfaces, capabilities, stats, or export behavior changes.
+- `arquitetural`: ownership or lifecycle crosses the quickstart, metadata starter, config starter, or Angular runtime.
+
+For `transversal`, `contrato-publico`, or `arquitetural`, map the canonical owner, affected resource keys and paths, consumers, cockpit/docs/HTTP evidence, focused tests, and breaking-change risk before patching.
 
 ## Source Audit
 
-Inspect the owner before editing:
+Read the host and the exact pilot before deciding that it needs a new contract:
 
 - `praxis-api-quickstart/AGENTS.md`
 - `src/main/java/com/example/praxis/apiquickstart/constants/ApiPaths.java`
-- `src/main/java/com/example/praxis/apiquickstart/hr/**`
-- `src/main/java/com/example/praxis/apiquickstart/operations/**`
-- `src/main/java/com/example/praxis/apiquickstart/operationalassets/**`
-- `src/main/java/com/example/praxis/apiquickstart/procurement/**`
-- `src/main/java/com/example/praxis/apiquickstart/riskintelligence/**`
-- `db/operational-migrations/**`
-- `docs/DEMO-DATABASE.md`
+- `src/main/java/com/example/praxis/apiquickstart/config/OptionSourceConfig.java`
+- the affected `controller`, `service`, `dto`, `dto/filter`, `dto/actions`, `mapper`, `entity`, and repository
+- `db/operational-migrations/**` and `docs/DEMO-DATABASE.md` when persistence or seed data changes
 - `docs/SEMANTIC-DOMAIN-CATALOG-CONTRACT.md`
-- focused pilot integration tests for the affected domain.
+- `docs/COCKPIT-QUICKSTART-REFERENCE.md` and its verification scripts when a published pilot contract changes
+- focused integration tests in `src/test/java/com/example/praxis/apiquickstart/**`
 
-## Canonical Boundary
+The current reference families are intentionally complementary:
 
-`ApiPaths` is a contract synchronization point. It feeds real resource URLs, `@ApiResource`, OpenAPI, `/schemas/filtered`, `x-ui.endpoint`, lookup endpoints, cockpit docs, and Angular runtime discovery.
+| Pilot family | Primary proof |
+| --- | --- |
+| Human resources | resource CRUD, payroll workflow, privacy/governance, export, and people lookup |
+| Operations | explicit lifecycle actions, cross-domain relationships, mission and incident workflows |
+| Assets | custody, readiness, allocation, fleet/missions, and analytics |
+| Procurement | governed entity lookup, supplier eligibility, contract/product/order lifecycle, and config decision materialization |
+| Risk intelligence | threat lookup, triage actions, derived incident analytics, and chart-ready stats |
 
-Pilot domains should demonstrate resource-oriented controllers/services, DTO business descriptions, filters, options, entity lookup, stats, export, workflow actions, surfaces, domain governance, and domain-rule materializations.
+Do not copy one pilot mechanically into another. Start with the business question, existing resource keys, published schemas, capability/action catalogs, and decision evidence.
 
-## Decision Rules
+## Canonical Ownership
 
-- Do not spread path literals when an `ApiPaths` constant exists.
-- Do not change `ApiPaths` without reviewing controllers, DTOs, filters, option-source endpoints, OpenAPI groups, tests, docs, and cockpit verification scripts.
-- Treat `@Schema(description=...)` as business meaning, not UI labels or technical field restatements.
-- Use `@UISchema` for UI behavior and `@DomainGovernance`/domain catalog for governance meaning.
-- Model business workflows as actions/workflows, not opportunistic CRUD/PATCH shortcuts.
-- If a pilot exposes a starter bug, fix the starter and keep the pilot as proof.
+The quickstart owns concrete example resources, host composition, paths, demo persistence, security exposure, and downstream proof. It is not the source of canonical platform semantics.
 
-## No Keyword Routing
+- `praxis-metadata-starter` owns `x-ui`, `/schemas/filtered`, schema resolution and headers, surfaces, actions, capabilities, HATEOAS, resource bases, option-source runtime contracts, and metadata discovery.
+- `praxis-config-starter` owns governed Domain Catalog/Federation/Knowledge, domain-rule intake, simulation, approval, publication, diagnostics, and materialization lifecycle.
+- `praxis-ui-angular` consumes materialized contracts and decisions; it must not become an alternative owner of backend semantics.
+- The quickstart proves all of the above with real resources, HTTP contracts, and focused tests.
 
-Do not infer resources, fields, filters, option sources, actions, or workflow intent from labels, aliases, regexes, or local fuzzy matching as the primary decision. Use `ApiPaths`, `@ApiResource(resourceKey=...)`, DTO/schema metadata, option-source keys, actions, capabilities, and domain catalog grounding; textual matching may only rank already-scoped candidates.
+If a metadata or config behavior is missing, reproduce it with the pilot, fix it in the responsible starter, and keep the quickstart change as a minimal downstream proof. Do not add host-local endpoint aliases, schema patches, decision engines, or UI conventions to hide a platform gap.
 
-## Aderence Inventory
+## ApiPaths Is An Identity Ledger
 
-Before adding or changing paths, resources, DTO fields, filters, option sources, stats, actions, migrations, or examples, classify:
+`ApiPaths` is a public synchronization point, not a string helper. A path or lookup-source change must be audited as one identity change across:
+
+1. `@ApiResource(value, resourceKey)` and OpenAPI group resolution.
+2. Controller mappings, resource base behavior, `_links`, and schema operation URLs.
+3. `@UISchema(endpoint=...)`, filter DTOs, option-source descriptors, filter/by-ids endpoints, and dependency maps.
+4. Related-resource/surface/action references, stats/export endpoints, test fixtures, HTTP scripts, and cockpit documentation.
+5. Existing external consumers and the breaking-change plan.
+
+Prefer the existing `ApiPaths` constant everywhere. Do not construct an equivalent URL in a DTO, service, test, documentation script, or frontend consumer. A resource key is the stable semantic identity; a label or path fragment is not a substitute for it.
+
+## Build A Resource As A Complete Contract
+
+For a mutable pilot, use the resource-oriented baseline: `AbstractResourceController`, `AbstractBaseResourceService`, `ResourceMapper`, and `RestApiResponse`. For read-only analytics/views, use the read-only counterpart. Keep the controller, service, mapper, response ID, filter, and test evidence aligned.
+
+For each resource, verify:
+
+- a stable `@ApiResource(resourceKey=...)`, canonical `ApiPaths` path, and correct `@ApiGroup`;
+- operation-specific create, update, response, filter, action, and stats schemas resolve through `/schemas/filtered` rather than a host map;
+- DTO `@Schema(description=...)` explains business meaning, boundary, relationship, or lifecycle in the context of that operation;
+- `@UISchema` publishes presentation/control behavior only; it does not redefine business or governance meaning;
+- filters express query semantics and option-source dependencies, rather than being create DTOs with a few fields removed;
+- resource identity, `_links`, capabilities, export, and stats remain inherited from the canonical resource base where applicable.
+
+Never use a generic PATCH or ordinary CRUD update to conceal an explicit business transition. A command such as approval, triage, activation, custody resolution, cancellation, or payment must be a documented workflow action with its own request/response schema, state checks, outcome, and discovery metadata.
+
+## Metadata, Governance, And Lookup
+
+Use the published contract rather than local UI knowledge:
+
+- `@Schema` states business semantics; it is not a duplicate of a screen label or Java type.
+- `@UISchema` declares UI behavior such as control type, endpoint, read-only, formatting, or field mechanics.
+- `@DomainGovernance` and the semantic domain catalog express privacy, compliance, AI-use, visibility, and governance context. UI hints do not enforce security or replace this meaning.
+- Register option sources in `OptionSourceConfig` and publish a descriptor for every declared source.
+- Use `RESOURCE_ENTITY` with canonical source key, resource path, value/display fields, dependencies, filter endpoint, by-ids reload behavior, selection policy, and entity-lookup capability metadata when a relation points at a Praxis resource.
+- Use a provider-backed option source only when the source truly is not a resource entity; do not build a separate autocomplete endpoint.
+
+When a lookup crosses domains, prove the chain from the consuming field's `x-ui.optionSource` through its source key, source resource, filter/by-ids endpoints, dependency filters, selected-value reload, and authorization behavior. The `ResourceEntityLookupGovernanceIntegrationTest` pattern is the reference inventory, not an optional UI enhancement.
+
+Do not decide a resource, field, lookup, action, relation, or domain intent from labels, aliases, regexes, routes, or fuzzy matching as the primary mechanism. Resolve semantic scope through resource keys, schemas, governed catalogs, actions, capabilities, and declared tools. Textual matching can only rank candidates after that scope is known.
+
+## Actions, Surfaces, And Decision Materializations
+
+`@WorkflowAction` publishes a business command; `@UiSurface` publishes a composed business experience. Both must say what decision or journey is supported, which resource/action contract it uses, and how a runtime can discover it. Do not create decorative surfaces or labels that have no executable contract.
+
+For a workflow action, check action id, scope, allowed states, request/response schema, HTTP status semantics, success/failure result, HATEOAS schema links when the controller exposes them, action catalog, capabilities, and negative-path test. Collection actions such as payroll bulk approval must preserve per-item outcomes instead of pretending that every transition is atomic.
+
+When a pilot consumes a shared domain decision:
+
+1. Resolve the domain and target through metadata/catalog grounding before authoring a rule.
+2. Treat Domain Rule/Domain Knowledge definitions, evidence, simulation, approval, publication, diagnostics, statuses, source hashes, and materialization outcomes as config-starter contracts.
+3. Consume only an applied materialization in the host, such as procurement supplier selection eligibility, backend validation, or workflow-action policy.
+4. Keep the host enforcement narrow and deterministic; it must not recreate authoring, publication, status transitions, or policy inference locally.
+5. Prove a published materialization changes runtime behavior, including the relevant rejected state, without presenting simulation as business-data execution.
+
+The quickstart may demonstrate a materialization, but no pilot may route rules through command words, local keyword rules, or copied assistant text. Governed semantic resolution remains the primary path.
+
+## Persistence And Demo Data
+
+Operational migrations and deterministic demo data support proof; they do not define canonical platform semantics. Preserve resource relationships, lifecycle states, and representative data needed for filters, lookups, actions, analytics, governance, and negative paths. Update `docs/DEMO-DATABASE.md` when the operational model or seed assumptions change.
+
+Do not make a test only pass by changing production-like seed data without proving the contract it represents. Keep sensitive business data fictional and respect published governance/visibility restrictions in fixtures, exports, and docs.
+
+## Adherence Inventory
+
+Before adding a path, DTO field, endpoint, filter, option source, stat, export, action, surface, migration, or domain materialization, classify the need:
 
 - `ja-suportado-so-ux`
 - `ja-suportado-mal-nomeado-ou-mal-materializado`
 - `suportado-parcialmente`
 - `lacuna-real-de-contrato`
 
-Only local host/domain gaps justify quickstart pilot changes. Canonical metadata/config gaps belong to the starters.
+Only `lacuna-real-de-contrato` justifies a new contract. State the missing behavior, canonical owner, impacted consumers, derived artifacts, and minimum proof. In particular, inspect whether existing schema, action, capability, option-source, domain-governance, decision diagnostic, or materialization data simply is not being materialized well by the cockpit or Angular runtime.
 
-## Validation
+## Proof Matrix And Validation
 
-Use focused local gates:
+Choose the smallest focused proof that covers the changed contract:
 
-- metadata pilot proof: `mvn "-Dtest=QuickstartMetadataMigrationIntegrationTest,EventosFolhaPilotIntegrationTest,OpenApiGroupResolutionIsolatedIntegrationTest" test`
-- domain-specific pilots: run the affected `*PilotIntegrationTest`, entity lookup test, stats smoke, or export smoke.
-- `ApiPaths` or broad resource identity changes: add cockpit verification scripts and `mvn test` when focal proof is insufficient.
+| Changed behavior | Minimum local proof |
+| --- | --- |
+| resource identity, schema, groups, actions | `mvn "-Dtest=QuickstartMetadataMigrationIntegrationTest,EventosFolhaPilotIntegrationTest,OpenApiGroupResolutionIsolatedIntegrationTest" test` |
+| cross-domain entity lookup/option-source contract | `mvn "-Dtest=FuncionarioEntityLookupIntegrationTest,ResourceEntityLookupGovernanceIntegrationTest" test` |
+| stats, analytics, or export | `mvn "-Dtest=StatsSchemaSmokeHttpTest,FuncionarioExportSmokeHttpTest" test` plus the affected pilot test |
+| Domain Knowledge/config host wiring | `mvn "-Dtest=DomainKnowledgeProjectionWiringIntegrationTest" test`; use the config-starter smoke for authoring/publication lifecycle |
+| one pilot implementation | its focused `*PilotIntegrationTest` plus any directly affected lookup/action/stats/export proof |
+| `ApiPaths` or cross-domain public identity | focused proofs above and cockpit verification scripts; use `mvn test` only if those cannot cover the resulting identity graph |
 
-Review README, `docs/DEMO-DATABASE.md`, `docs/COCKPIT-QUICKSTART-REFERENCE.md`, HTTP examples, and public docs when a pilot changes public behavior.
+For public cockpit evidence, run the relevant documented script, such as `scripts/verify-cockpit-inventory-doc.sh`, `scripts/verify-cockpit-action-contracts.sh`, `scripts/verify-cockpit-surface-contracts.sh`, `scripts/verify-cockpit-related-resource-contracts.sh`, `scripts/verify-cockpit-analytics-contracts.sh`, `scripts/verify-cockpit-option-source-contracts.sh`, or `scripts/verify-cockpit-structural-ui-contracts.sh`.
+
+Review `README.md`, `docs/DEMO-DATABASE.md`, `docs/COCKPIT-QUICKSTART-REFERENCE.md`, relevant quickstart scripts, public landing docs, and executable HTTP examples when behavior is published. State explicitly when no derived artifact changes.
 
 ## Companion Skills
 
-- Use `praxis-api-quickstart-operational-proof` for host/starter ownership and dependency validation.
-- Use `praxis-api-quickstart-cockpit-http-validation` for cockpit and script proof.
-- Use `praxis-metadata-resource-baseline`, `praxis-metadata-schema-contracts`, `praxis-metadata-discovery-capabilities`, and `praxis-metadata-domain-option-sources` when the pilot exercises metadata starter contracts.
-- Use `praxis-config-domain-decisions` when pilots consume governed domain-rule/domain-knowledge materializations.
+- Use `praxis-api-quickstart-operational-proof` for host/starter ownership, dependency versions, and host validation.
+- Use `praxis-api-quickstart-cockpit-http-validation` for cockpit docs, HTTP scripts, and published proof.
+- Use `praxis-metadata-resource-baseline` for resource controller/service/HATEOAS behavior.
+- Use `praxis-metadata-schema-contracts` for `/schemas/filtered`, operation resolution, `x-ui`, ETag, and schema headers.
+- Use `praxis-metadata-discovery-capabilities` for surfaces, actions, capabilities, availability, stats, export, and `_links` discovery.
+- Use `praxis-metadata-domain-option-sources` for `@DomainGovernance`, semantic domain catalog, option-source, and lookup contracts.
+- Use `praxis-config-domain-decisions` for governed domain rules, Domain Knowledge, publications, and runtime materializations.
