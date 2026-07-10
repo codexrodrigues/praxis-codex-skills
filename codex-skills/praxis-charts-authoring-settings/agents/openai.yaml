@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Charts Authoring"
-  short_description: "Chart config editor and Settings Panel"
-  default_prompt: "Use $praxis-charts-authoring-settings to audit a chart config editor round-trip."
+  short_description: "Govern chart editor round-trip"
+  default_prompt: "Use $praxis-charts-authoring-settings to implement or audit canonical chart document and widget-input authoring across Settings Panel apply, save, reset, persistence, and reopen."
