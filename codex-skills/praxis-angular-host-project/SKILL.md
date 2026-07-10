@@ -301,6 +301,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-settings-global-config`: Global Config Editor, effective config, save/clear, and remote persistence.
 - `praxis-settings-ai-i18n-validation`: Settings Panel AI manifest, adapter, context pack, diagnostics, and i18n coverage.
 - `praxis-ai-assistant-runtime`: `@praxisui/ai` assistant shell/client/runtime state, quick replies, diagnostics, previews, and apply payloads.
+- `praxis-ai-shell-session-context`: assistant shell, dock, session registry, session host, and safe context snapshots.
+- `praxis-ai-composer-attachments-quick-replies`: composer actions, quick replies, clarifications, attachments, message replay, and voice input.
+- `praxis-ai-turn-orchestration-transport`: assistant turn controllers, lifecycle phases, runtime observations, stream transport, and terminal results.
+- `praxis-ai-backend-config-contracts`: AI endpoint resolution, backend config tokens, headers, provider endpoints, manifest endpoints, and Praxis Config boundary.
 - `praxis-ai-authoring-manifests`: component authoring manifests, operations, validators, handler contracts, and edit plans.
 - `praxis-ai-registry-ingestion`: AI registry ingestion, catalog governance, generated component docs, packaged AI assets, and backend sync.
 - `praxis-ai-semantic-intent`: semantic intent routing, consult/edit boundaries, scope policy, and no keyword-based assistant routing.

@@ -15,10 +15,66 @@
       "dependencies": [
         "praxis-ai-semantic-intent",
         "praxis-core-runtime-contracts",
-        "praxis-core-resource-runtime"
+        "praxis-core-resource-runtime",
+        "praxis-ai-shell-session-context",
+        "praxis-ai-composer-attachments-quick-replies",
+        "praxis-ai-turn-orchestration-transport",
+        "praxis-ai-backend-config-contracts"
       ],
-      "skillMdSha256": "8D531A6175DC8126C1DA0A0C98BB1DF7B0347B352A239CD8397E097BE99C0B9E",
-      "treeSha256": "E18ADB6F70D6F2BFD72AE1AB91137AD743BAFC4AEC26D9AD6DEC72E3EC29E67A"
+      "skillMdSha256": "0B9AC71DF0A4F131E015117DC15D50B62ECA77503F19D1A529DA60681606C265",
+      "treeSha256": "0B4FA21CCE7D9E69DF89617506C0AE4F69858E3A3CC9B5F16844494D2537CFA1"
+    },
+    {
+      "name": "praxis-ai-shell-session-context",
+      "sourcePath": "codex-skills/praxis-ai-shell-session-context",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-ai-semantic-intent",
+        "praxis-core-runtime-contracts"
+      ],
+      "skillMdSha256": "62E8BA61289DB00B009D3A82967C234E2C451FB7BB37D91E2A592192128CFF22",
+      "treeSha256": "D5993E1CC5CD6F28917DB0374D419DB8CD43E5FE77153E353A1EE8DD7563ECC0"
+    },
+    {
+      "name": "praxis-ai-composer-attachments-quick-replies",
+      "sourcePath": "codex-skills/praxis-ai-composer-attachments-quick-replies",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-ai-shell-session-context",
+        "praxis-ai-semantic-intent"
+      ],
+      "skillMdSha256": "81326F785F4B0E65911F369BFE9FE26B70B9B83CEA91B381F1029AF1A23E66CE",
+      "treeSha256": "75D167013C19ECF742633D5DC2F038E81889E8C04B6E744D89FC6C625D3DDB57"
+    },
+    {
+      "name": "praxis-ai-turn-orchestration-transport",
+      "sourcePath": "codex-skills/praxis-ai-turn-orchestration-transport",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-ai-composer-attachments-quick-replies",
+        "praxis-ai-shell-session-context",
+        "praxis-core-widget-observations"
+      ],
+      "skillMdSha256": "C751EEA52D9DEAD2CB91882669AAC1B91D29093CFB91424BEC82C420747EAF69",
+      "treeSha256": "AA99D8AD3708ABBE03C34A995F4CD259F98CEFA02F455B851EDD3D66A059F6D6"
+    },
+    {
+      "name": "praxis-ai-backend-config-contracts",
+      "sourcePath": "codex-skills/praxis-ai-backend-config-contracts",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-ai-turn-orchestration-transport"
+      ],
+      "skillMdSha256": "F4786255FF53D81D35C8F5A12AFDE3E24814C5BA35CC6150F4755FD258CE49B7",
+      "treeSha256": "4C13046AC63E47C9FFC17DDC969C303611ECCCF267E5805C66BBA9FDFB291BD6"
     },
     {
       "name": "praxis-ai-authoring-manifests",
@@ -31,8 +87,8 @@
         "praxis-authoring-editors",
         "praxis-core-runtime-contracts"
       ],
-      "skillMdSha256": "39FAEF29F878E28DA4AC01A99E6D57DA9F770049EE216A313E30C223556E9592",
-      "treeSha256": "5BD3384179A2550306460EE5E954A986EC46824839CA297F63F6CB0B86A825A3"
+      "skillMdSha256": "218564368FC0E9F9CCC103ECFA7EB743656094A05FA4AF6601C0381D4CAB43BC",
+      "treeSha256": "9388A1A52F21191E8988F649041533A26509A912C42846D64C7ED0C3A29F4671"
     },
     {
       "name": "praxis-ai-registry-ingestion",
@@ -72,8 +128,8 @@
         "praxis-editorial-forms-data-collection-adapters",
         "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "E88ED94A93027C1752077EC556267031F6F0529040235AEEB0179CBAEFD1A786",
-      "treeSha256": "ACC508D613AAB1510388F0C7F00890A33278027C2611FBBDD85F176F2109E297"
+      "skillMdSha256": "1A4CF4371ABFEB03EB71C31E2D935CDD41829124EDEC24865E9CD3A48CBFE7B8",
+      "treeSha256": "E4DBE00928CC9859A409EDF67B4A1068AD69CAD24A8639DCED1FA32AAA55FCD0"
     },
     {
       "name": "praxis-ai-semantic-intent",
@@ -84,8 +140,8 @@
       "dependencies": [
         "praxis-core-runtime-contracts"
       ],
-      "skillMdSha256": "F4CE666FBF0591CDF78C4BACBB7DC743DC5A841D53B9B97EED4B46DC22816BD4",
-      "treeSha256": "5DC6799C7308E650C3046FFC17EE93E7F6FE3DCB28EA30A75822996E9363B3CE"
+      "skillMdSha256": "3CE3DECE0AAC17A873BAB472C67E817759AD7604530A01F2F75DA6496C84334F",
+      "treeSha256": "B4E05049796F7C380864006CC2449E5422B7D4D14B4A3A6AC34266658027BE72"
     },
     {
       "name": "praxis-angular-docs-playgrounds",
@@ -236,8 +292,8 @@
         "praxis-editorial-forms-data-collection-adapters",
         "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "E1094D72820ECBFEBF17924A11C7592B003184FF472469AB04957A51E666FA6D",
-      "treeSha256": "03042F714347E5C9F8D60C30A31B493932564256C5F71DA9D094F7D9D448FEA7"
+      "skillMdSha256": "89C5470A85D59052D0836AFC09BDEF0652C654009F78BF9BDEFB1B8D01E44986",
+      "treeSha256": "D0EC38F4243580876B253679BB430834A57586638906278725C4E2061ECC13BB"
     },
     {
       "name": "praxis-angular-i18n-governance",
@@ -347,8 +403,8 @@
         "praxis-editorial-forms-data-collection-adapters",
         "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "03AA16145F5DFF11FBAA3D5CA910AB924DF8B6F270A76A5881EDCB10FFC55B7D",
-      "treeSha256": "A6FFFDC3BC9E3857E4BA3028CDF691F1BE7C83E5754EC3BE004DDFAE0CBA0D96"
+      "skillMdSha256": "14D2BA1B4DAA736ADF8192FC1995561C59864C472FD1419D4CE5BA371834F830",
+      "treeSha256": "F50829137EB1C2CF51BE82F41CCFA73C62D0D191470609E2AEB265503B13B49C"
     },
     {
       "name": "praxis-charts-ai-validation",
@@ -1318,8 +1374,8 @@
         "praxis-ai-registry-ingestion",
         "praxis-ai-semantic-intent"
       ],
-      "skillMdSha256": "984DF0EE79A3E68E574E5415D5CA204F9DAE7F638007AFBE7379FA15F3E2FB07",
-      "treeSha256": "AB797009D5B424FBFEBF75FF76C2B6EF9A5CAF7C89D81C4D930F8D860BE4F66C"
+      "skillMdSha256": "F471EDC71A09E35F9A331C2F52588757C446633B8BB9D197DB4C0DB56D707895",
+      "treeSha256": "DF578C41A5C723A127404E4CC8FF5EEBD712027073D2B4628624A936D74BF47A"
     },
     {
       "name": "praxis-page-builder-authoring",

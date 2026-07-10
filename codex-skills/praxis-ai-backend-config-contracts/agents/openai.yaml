@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis AI Backend"
+  short_description: "AI backend endpoints and config contracts"
+  default_prompt: "Use $praxis-ai-backend-config-contracts to review Praxis AI backend endpoint, config token, header, stream, provider, or manifest contract work."
