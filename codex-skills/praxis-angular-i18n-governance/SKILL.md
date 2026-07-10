@@ -26,6 +26,7 @@ Before editing:
    - framework chrome: translate through Praxis i18n
    - domain/business labels: preserve schema/config/metadata values from the host
 5. If the change touches an authoring editor, use `praxis-authoring-editors` as the contract owner for round-trip parity.
+6. Check whether docs, examples, screenshots, playgrounds, or landing copy quote the changed framework text. If they do, use `praxis-angular-docs-playgrounds` to keep derived public artifacts aligned.
 
 ## Implementation Guidance
 
@@ -75,3 +76,4 @@ Report:
 - `pt-BR` and `en-US` coverage
 - validation run
 - any remaining hardcoded text intentionally left and why
+- docs/playground/screenshot artifacts reviewed or intentionally ruled out

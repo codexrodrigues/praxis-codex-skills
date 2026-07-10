@@ -22,6 +22,7 @@ Before choosing commands:
 3. Identify high-risk surfaces: `public-api`, `@praxisui/core`, `@praxisui/dynamic-form`, `@praxisui/table`, AI manifests, docs/playgrounds, i18n catalogs, release assets, or `/api/praxis/config/**` integrations.
 4. Inspect `praxis-ui-angular/package.json` for current commands instead of relying on old docs.
 5. If the task touches Angular/Node in a mixed OS workspace, verify whether `node_modules` belongs to Windows or Unix before running Node-sensitive commands.
+6. Decide whether derived artifacts must be updated or explicitly ruled out. Review docs, examples, playgrounds, recipes, public API exports, AI registry assets, i18n catalogs, screenshots, manifests, and landing pages according to the owning surface.
 
 ## Validation Matrix
 
@@ -33,6 +34,7 @@ Before choosing commands:
 - Public docs, examples, recipes, playgrounds, or landing content: use `praxis-angular-docs-playgrounds` and run the relevant docs validators from the owning project.
 - Visual/product UI: use `praxis-ui-product-design`; add screenshot/browser validation in desktop and narrow viewports when feasible.
 - Release or npm publication preflight: do not publish locally. Use local preflight commands only as evidence; official publication is through the documented tag/workflow path.
+- Skills-only guidance change: validate the touched skills, manifest hashes/count, `$skill` prompts, and sync availability. Do not run Angular suites unless platform code, generated assets, or runtime contracts changed.
 
 ## Common Commands
 
@@ -65,5 +67,6 @@ When reporting validation, include:
 - exact commands run and result
 - commands intentionally skipped and why
 - unvalidated risks, especially browser, docs, registry, direct consumer, and release gates
+- derived artifacts updated, reviewed, or intentionally ruled out with the reason
 
 Never claim full validation when only structural checks or a focused subset ran.
