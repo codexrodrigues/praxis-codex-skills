@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Metadata Domain Options"
+  short_description: "Ground domain and lookup metadata"
+  default_prompt: "Use $skill-name to inspect DomainGovernance, /schemas/domain, x-ui optionSource, field access, entity lookup, and selected reload contracts."
+
+policy:
+  allow_implicit_invocation: true

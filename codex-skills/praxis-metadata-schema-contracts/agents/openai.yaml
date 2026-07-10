@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Metadata Schemas"
+  short_description: "Govern backend schema contracts"
+  default_prompt: "Use $skill-name to inspect praxis-metadata-starter x-ui, /schemas/filtered, schema hashes, OpenAPI resolution, and Angular schema consumption."
+
+policy:
+  allow_implicit_invocation: true
