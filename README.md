@@ -39,6 +39,10 @@ python3 scripts/audit-praxis-skills.py --family praxis
 python3 scripts/audit-praxis-skills.py --family ergon-migration
 ```
 
+Family-scoped audits report source directories from other known family manifests separately as
+`sourceInOtherFamilyManifest`. `sourceNotInManifest` is reserved for directories not tracked by
+any known family manifest.
+
 ## Structure Validation
 
 When `quick_validate.py` is unavailable because local Python lacks optional packages,

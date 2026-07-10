@@ -97,6 +97,17 @@ $results = foreach ($skill in $manifest.skills) {
 }
 
 $manifestNames = @($manifest.skills | Select-Object -ExpandProperty name)
+$otherFamilyNames = @()
+foreach ($knownFamily in @('praxis', 'ergon-migration')) {
+    if ($knownFamily -eq $Family) {
+        continue
+    }
+
+    $otherManifestBundle = Read-CodexSkillManifest -RepoRoot $resolvedRepoRoot -Family $knownFamily
+    $otherFamilyNames += @($otherManifestBundle.Manifest.skills | Select-Object -ExpandProperty name)
+}
+$otherFamilyNames = @($otherFamilyNames | Sort-Object -Unique)
+
 $installedOnly = @()
 if (Test-Path -LiteralPath $resolvedSkillsRoot) {
     $installedOnly = @(
@@ -108,8 +119,9 @@ if (Test-Path -LiteralPath $resolvedSkillsRoot) {
 }
 
 $sourceRoot = Join-Path $resolvedRepoRoot 'codex-skills'
-$sourceDirs = @(Get-ChildItem -LiteralPath $sourceRoot -Directory | Select-Object -ExpandProperty Name)
-$sourceNotInManifest = @($sourceDirs | Where-Object { $_ -notin $manifestNames } | Sort-Object)
+$sourceDirs = @(Get-ChildItem -LiteralPath $sourceRoot -Directory | Where-Object { $_.Name -ne '__pycache__' } | Select-Object -ExpandProperty Name)
+$sourceInOtherFamilyManifest = @($sourceDirs | Where-Object { $_ -notin $manifestNames -and $_ -in $otherFamilyNames } | Sort-Object)
+$sourceNotInManifest = @($sourceDirs | Where-Object { $_ -notin $manifestNames -and $_ -notin $otherFamilyNames } | Sort-Object)
 
 $report = [pscustomobject]@{
     Family = $manifest.family
@@ -124,10 +136,12 @@ $report = [pscustomobject]@{
         SourceInvalid = @($results | Where-Object { $_.Status -like 'SOURCE_*' }).Count
         InstalledOnly = $installedOnly.Count
         SourceNotInManifest = $sourceNotInManifest.Count
+        SourceInOtherFamilyManifest = $sourceInOtherFamilyManifest.Count
     }
     Results = $results
     InstalledOnly = $installedOnly
     SourceNotInManifest = $sourceNotInManifest
+    SourceInOtherFamilyManifest = $sourceInOtherFamilyManifest
 }
 
 if ($Json) {
@@ -141,7 +155,7 @@ Write-Host "Manifest: $($report.ManifestPath)"
 Write-Host "Source: $($report.SourceRoot)"
 Write-Host "Destination: $($report.SkillsRoot)"
 Write-Host ""
-Write-Host ("Summary: OK={0} DRIFT={1} MISSING={2} SOURCE_INVALID={3} INSTALLED_ONLY={4} SOURCE_NOT_IN_MANIFEST={5}" -f $report.Summary.Ok, $report.Summary.Drift, $report.Summary.Missing, $report.Summary.SourceInvalid, $report.Summary.InstalledOnly, $report.Summary.SourceNotInManifest)
+Write-Host ("Summary: OK={0} DRIFT={1} MISSING={2} SOURCE_INVALID={3} INSTALLED_ONLY={4} SOURCE_NOT_IN_MANIFEST={5} SOURCE_IN_OTHER_FAMILY_MANIFEST={6}" -f $report.Summary.Ok, $report.Summary.Drift, $report.Summary.Missing, $report.Summary.SourceInvalid, $report.Summary.InstalledOnly, $report.Summary.SourceNotInManifest, $report.Summary.SourceInOtherFamilyManifest)
 
 foreach ($item in $results) {
     Write-Host ""
@@ -169,4 +183,9 @@ if ($installedOnly.Count -gt 0) {
 if ($sourceNotInManifest.Count -gt 0) {
     Write-Host ""
     Write-Host ("Source directories outside selected manifest: {0}" -f ($sourceNotInManifest -join ', '))
+}
+
+if ($sourceInOtherFamilyManifest.Count -gt 0) {
+    Write-Host ""
+    Write-Host ("Source directories tracked by another family manifest: {0}" -f ($sourceInOtherFamilyManifest -join ', '))
 }
