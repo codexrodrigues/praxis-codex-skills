@@ -222,6 +222,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-config-api-metadata-grounding`: `api_metadata`, AI context, RAG, Project Knowledge, API Catalog Q&A, and resource candidate grounding.
 - `praxis-config-agentic-authoring-streaming`: backend semantic intent, declared tools, preview/apply, turn streams, quick replies, warnings, diagnostics, replay, and cancel.
 - `praxis-config-domain-decisions`: domain rules, domain knowledge, simulations, publications, materializations, decision diagnostics, timelines, and derived projections.
+- `praxis-api-quickstart-operational-proof`: reference host proof for metadata/config starter integration, Maven versions, and ownership routing.
+- `praxis-api-quickstart-security-config`: quickstart CORS/CSRF/origin/read-open policy for `/schemas/**`, `/api/praxis/config/**`, and runtime endpoints.
+- `praxis-api-quickstart-domain-pilots`: quickstart `ApiPaths`, pilot resources, DTOs, filters, option sources, stats, workflow actions, and example domains.
+- `praxis-api-quickstart-cockpit-http-validation`: cockpit docs, verification scripts, HTTP examples, domain catalog/rule/knowledge smokes, and published-host evidence.
 - `praxis-core-composition-runtime`: dynamic widget pages, composition links, widget events, surface hosts, and runtime observations.
 - `praxis-core-providers-bootstrap`: shared core providers, tokens, global config, API URL, loading, icons, field selectors, collection export, and registry bootstrap.
 - `praxis-core-widget-observations`: dynamic widget contracts, widget pages, widget events, runtime observations, observation registry, diagnostics, and redaction proof.

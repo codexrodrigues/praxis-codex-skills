@@ -71,4 +71,5 @@ Review `docs/ai/**`, `docs/domain-catalog/**`, API contract docs, quickstart ing
 - Use `praxis-metadata-schema-contracts` when grounding depends on backend resource schema semantics.
 - Use `praxis-config-agentic-authoring-streaming` when candidates feed intent resolution, turn stream, quick replies, or terminal diagnostics.
 - Use `praxis-config-domain-decisions` when grounding should route to shared rule/knowledge authoring.
+- Use `praxis-api-quickstart-cockpit-http-validation` for downstream proof of domain catalog ingest, API catalog grounding, Project Knowledge, and HTTP examples.
 - Use `praxis-ai-semantic-intent` for Angular assistant consult/edit boundaries.
