@@ -7,6 +7,8 @@ description: Use when implementing or auditing `@praxisui/crud` runtime orchestr
 
 Use this skill for the canonical CRUD runtime. CRUD owns the orchestration of table, form launchers, resource actions, open modes, refresh after save/delete, and stable handoff between child components.
 
+Pair with `praxis-crud-drawer-adapter-contract` when drawer mode or the lightweight adapter entrypoint is involved. Pair with `praxis-crud-dialog-form-host-lifecycle` when modal/drawer dynamic-form hosting, result propagation, or refresh-after-save/delete is involved.
+
 ## Required Source Audit
 
 Inspect:
@@ -39,6 +41,8 @@ Do not rebuild CRUD drawers, modals, or table/form launchers in apps when the mi
 - Route mode requires `route`.
 - Modal/drawer modes require `formId`, unless the canonical CRUD operation can be inferred.
 - Drawer mode uses `CRUD_DRAWER_ADAPTER` when provided; otherwise it falls back to the package dialog host with drawer presentation.
+- Host adapters must import from `@praxisui/crud/drawer-adapter`; the adapter seam must not become a second CRUD runtime.
+- Save/delete results must propagate back to `PraxisCrudComponent` so outputs and table refresh stay component-owned.
 - `form.submitUrl` and `form.submitMethod` must appear together.
 - `actions[].params` maps row/context values into route/query/input and is not persistence.
 - Keep `crudContext` stable; avoid getters or object literals that recreate context each change detection cycle.

@@ -249,10 +249,13 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-editorial-forms-data-collection-adapters`: `dataCollection` blocks, adapter registry, optional dynamic-form adapter, config lookup, readiness diagnostics, adapter events, and `runtimeContext.formData`.
 - `praxis-editorial-forms-adapters-ai`: editorial adapters/AI umbrella for data block adapters, optional dynamic-form adapter, AI manifest, field binding, and registry validation.
 - `praxis-editorial-forms-agentic-authoring`: `PRAXIS_EDITORIAL_FORMS_AUTHORING_MANIFEST`, component edit plans, snapshot/fallback/presentation operations, adapter binding, data block add/remove, component metadata, docs, labs, and registry projection.
-- `praxis-crud-runtime-openmodes`: CRUD runtime, `CrudLauncherService`, route/modal/drawer open modes, drawer adapter, dynamic-form dialog host, and table/form orchestration.
+- `praxis-crud-runtime-openmodes`: CRUD runtime, `CrudLauncherService`, route/modal/drawer open modes, and table/form orchestration.
+- `praxis-crud-drawer-adapter-contract`: lightweight drawer adapter entrypoint, host drawer parity, and drawer result propagation.
+- `praxis-crud-dialog-form-host-lifecycle`: modal/drawer dynamic-form host lifecycle, save/delete/close results, and refresh-after-save/delete.
 - `praxis-crud-ai-authoring`: CRUD authoring document, metadata editor, widget config editor, authoring manifest, capabilities, permissions, and child-operation delegation.
 - `praxis-dialog-overlay-runtime`: Dialog service API, overlay lifecycle, tag mode, presets, focus, accessibility, sizing, positioning, and close policy.
 - `praxis-dialog-global-actions-ai`: Dialog global actions, component/template registries, global presets from config, authoring manifest, and registry validation.
+- `praxis-dialog-surface-global-actions`: dialog-backed surface materialization, `GLOBAL_SURFACE_SERVICE`, `SURFACE_DRAWER_BRIDGE`, and surface result forwarding.
 - `praxis-tabs-runtime-authoring`: `@praxisui/tabs` group/nav runtime, `tabsId`, selected index, quick setup, Settings Panel authoring, `renderBody`, lazy loading, and widget events.
 - `praxis-stepper-wizard-runtime`: `@praxisui/stepper` and `PraxisWizardFormComponent` runtime, `stepperId`, dynamic-form steps, canonical `resourcePath`, validation, wizard adapter, and widget events.
 - `praxis-expansion-runtime-panels`: `@praxisui/expansion` metadata-first panels, defaults providers, `expansionId`, lazy content, panel events, registry metadata, and widget events.

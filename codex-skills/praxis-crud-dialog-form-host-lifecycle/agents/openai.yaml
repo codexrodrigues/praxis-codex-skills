@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis CRUD Dialog Host"
+  short_description: "CRUD dialog and form host lifecycle"
+  default_prompt: "Use $praxis-crud-dialog-form-host-lifecycle to review Praxis CRUD modal/drawer dynamic-form host lifecycle, result handling, or refresh behavior."

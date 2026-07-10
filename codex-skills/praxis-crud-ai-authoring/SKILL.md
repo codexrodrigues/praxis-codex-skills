@@ -7,6 +7,8 @@ description: Use when changing or validating `@praxisui/crud` authoring and AI s
 
 Use this skill for governed CRUD authoring. CRUD AI edits must compile to manifest-backed operations over `CrudMetadata`; they must not emit free JSON patches or redefine table, form, dialog, or settings-panel child contracts.
 
+Pair with `praxis-crud-drawer-adapter-contract` for drawer adapter/public entrypoint work and with `praxis-crud-dialog-form-host-lifecycle` for modal/drawer form-host lifecycle, semantic result propagation, and refresh behavior.
+
 ## Required Source Audit
 
 Inspect:
@@ -49,6 +51,7 @@ Use `PRAXIS_CRUD_AUTHORING_MANIFEST` as executable source.
 - `resource.bind` must validate canonical resource path/key, id field, schema path, api metadata, and capabilities.
 - `list.surface.configure` may patch CRUD list orchestration but must delegate table semantics.
 - `surface.create|edit|view.configure` must produce complete route/modal/drawer bindings.
+- Drawer bindings configure CRUD orchestration only; host drawer shell overrides remain adapter contracts and must not be authored as freeform component patches.
 - `delete.enabled.set` requires explicit confirmation/capability policy when destructive.
 - `dialog.size.set` or dialog defaults must remain shell-level and delegate dialog details.
 - `form.childOperation.delegate` is required when the user asks to change form fields, rules, layout, or submit behavior.

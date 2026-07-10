@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Dialog Surfaces"
+  short_description: "Dialog surface global actions"
+  default_prompt: "Use $praxis-dialog-surface-global-actions to review Praxis dialog surface/global-action materialization, registries, or drawer bridge behavior."

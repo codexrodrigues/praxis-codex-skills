@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis CRUD Drawer"
+  short_description: "CRUD drawer adapter and entrypoint"
+  default_prompt: "Use $praxis-crud-drawer-adapter-contract to review Praxis CRUD drawer mode, drawer adapter, secondary entrypoint, or host drawer integration."
