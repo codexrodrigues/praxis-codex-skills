@@ -1,163 +1,159 @@
-{
-    "schemaVersion":  1,
-    "family":  "ergon-migration",
-    "version":  "0.1.0-beta.0",
-    "ownerRepo":  "praxis-plataform",
-    "sourceRoot":  "codex-skills",
-    "description":  "Ergon/Archon migration Codex skills that may depend on Praxis platform skills but must remain outside the Praxis platform skill family.",
-    "skills":  [
-                   {
-                       "name":  "ergon-angular-ui-screen-wiring",
-                       "sourcePath":  "codex-skills/ergon-angular-ui-screen-wiring",
-                       "version":  "0.1.0-beta.0",
-                       "status":  "active",
-                       "compatibility":  "0.x",
-                       "dependencies":  [
-                                            "ergon-migration-orchestration",
-                                            "ergon-archon-screen-discovery",
-                                            "ergon-archon-read-api-migration",
-                                            "ergon-archon-write-api-migration",
-                                            "ergon-fieldspec-ui-contract",
-                                            "praxis-angular-host-project",
-                                            "praxis-component-minimums",
-                                            "praxis-rich-crud-screen-authoring",
-                                            "praxis-ui-product-design",
-                                            "praxis-authoring-editors",
-                                            "praxis-dynamic-fields-editorial",
-                                            "praxis-dto-annotations",
-                                            "praxis-resource-entity-lookup-backend"
-                                        ],
-                       "skillMdSha256":  "9693F77D5D98ED1BA05B3670004A4350A705B32F41B32841AE0656EAE8A520F0",
-                       "treeSha256":  "E3FD6F975F9EC7DC2DBAEC424DFA18B6DDAA17F29EFD98D74A0FBF47835A2B11"
-                   },
-                   {
-                       "name":  "ergon-archon-read-api-migration",
-                       "sourcePath":  "codex-skills/ergon-archon-read-api-migration",
-                       "version":  "0.1.0-beta.0",
-                       "status":  "active",
-                       "compatibility":  "0.x",
-                       "dependencies":  [
-                                            "ergon-fieldspec-ui-contract",
-                                            "praxis-dto-annotations",
-                                            "praxis-java-host-project",
-                                            "praxis-resource-entity-lookup-backend"
-                                        ],
-                       "skillMdSha256":  "0691ACE77BE2BE2BEF070987CF9B2CCB59057FD9BA6DFF3ABA61DCBEE2F73A2F",
-                       "treeSha256":  "2C808BC669503DA7C56940FC31F1B2E3F103B69659F433B1B50EA0C171F04FBB"
-                   },
-                   {
-                       "name":  "ergon-archon-screen-discovery",
-                       "sourcePath":  "codex-skills/ergon-archon-screen-discovery",
-                       "version":  "0.1.0-beta.0",
-                       "status":  "active",
-                       "compatibility":  "0.x",
-                       "dependencies":  [
-
-                                        ],
-                       "skillMdSha256":  "A22D53510D4DADB752BCDD988FC505955412C41A5794E95C3153C10367008938",
-                       "treeSha256":  "653D2457323E33FA33AC1715F8A2ECBA82FF57A839A367E9B600EB2E60F839A4"
-                   },
-                   {
-                       "name":  "ergon-archon-write-api-migration",
-                       "sourcePath":  "codex-skills/ergon-archon-write-api-migration",
-                       "version":  "0.1.0-beta.0",
-                       "status":  "active",
-                       "compatibility":  "0.x",
-                       "dependencies":  [
-                                            "ergon-archon-screen-discovery",
-                                            "ergon-archon-read-api-migration",
-                                            "ergon-table-rule-audit",
-                                            "ergon-fieldspec-ui-contract",
-                                            "praxis-dto-annotations",
-                                            "praxis-java-host-project",
-                                            "praxis-resource-entity-lookup-backend"
-                                        ],
-                       "skillMdSha256":  "63D2C51D4CAF00931A55FDDA63996BB5BF9ABC48130BF39D8820FC56AAF94DC5",
-                       "treeSha256":  "7FDAC34C2466F48BE229B27BF609B16A51E47D73D11CBE16BF2CD3991E07C349"
-                   },
-                   {
-                       "name":  "ergon-dashboard-praxis-charts",
-                       "sourcePath":  "codex-skills/ergon-dashboard-praxis-charts",
-                       "version":  "0.1.0-beta.0",
-                       "status":  "active",
-                       "compatibility":  "0.x",
-                       "dependencies":  [
-                                            "praxis-dashboard-analytics",
-                                            "praxis-angular-host-project",
-                                            "praxis-ui-product-design",
-                                            "praxis-dto-annotations",
-                                            "praxis-resource-entity-lookup-backend"
-                                        ],
-                       "skillMdSha256":  "EA6DC60F1FC078D41C4787148DF7755CCC851E7389B9254B22452E08F64A2F8B",
-                       "treeSha256":  "33AB8654E6DD14EB69FBD022A871F5EC56D4ACA9D6CA0B419EA695D85FF807DB"
-                   },
-                   {
-                       "name":  "ergon-fieldspec-ui-contract",
-                       "sourcePath":  "codex-skills/ergon-fieldspec-ui-contract",
-                       "version":  "0.1.0-beta.0",
-                       "status":  "active",
-                       "compatibility":  "0.x",
-                       "dependencies":  [
-                                            "praxis-dto-annotations",
-                                            "praxis-dynamic-fields-editorial",
-                                            "praxis-resource-entity-lookup-backend"
-                                        ],
-                       "skillMdSha256":  "A1FFA145496051983913F0A9C05730B50E89ACC603D191055167BC41E68A616A",
-                       "treeSha256":  "EDBCE324E607376230702EF48938AAB02251DF9E7A2E25AE493D3FE8F0F7D241"
-                   },
-                   {
-                       "name":  "ergon-migration-orchestration",
-                       "sourcePath":  "codex-skills/ergon-migration-orchestration",
-                       "version":  "0.1.0-beta.0",
-                       "status":  "active",
-                       "compatibility":  "0.x",
-                       "dependencies":  [
-                                            "ergon-archon-screen-discovery",
-                                            "ergon-archon-read-api-migration",
-                                            "ergon-table-rule-audit",
-                                            "ergon-archon-write-api-migration",
-                                            "praxis-dto-annotations",
-                                            "praxis-java-host-project",
-                                            "praxis-resource-entity-lookup-backend",
-                                            "ergon-dashboard-praxis-charts",
-                                            "ergon-fieldspec-ui-contract",
-                                            "praxis-dashboard-analytics",
-                                            "praxis-angular-host-project",
-                                            "praxis-ui-product-design"
-                                        ],
-                       "skillMdSha256":  "8A293F0F218588509F41901CAAC2639ACE40AC0C9F9D021FD90CC55F5BCCBDB1",
-                       "treeSha256":  "3586636E6C527EE11C9F7C69915B3E9929C206F6C26EB785E6C22EACDB883735"
-                   },
-                   {
-                       "name":  "ergon-rule-migration-orchestration",
-                       "sourcePath":  "codex-skills/ergon-rule-migration-orchestration",
-                       "version":  "0.1.0-beta.0",
-                       "status":  "active",
-                       "compatibility":  "0.x",
-                       "dependencies":  [
-                                            "ergon-migration-orchestration",
-                                            "ergon-table-rule-audit",
-                                            "ergon-archon-read-api-migration",
-                                            "ergon-archon-write-api-migration",
-                                            "ergon-fieldspec-ui-contract",
-                                            "praxis-dto-annotations",
-                                            "praxis-java-host-project",
-                                            "praxis-resource-entity-lookup-backend"
-                                        ],
-                       "skillMdSha256":  "4169885823348FD6A0E93D99F22BDC0E307B3CF1D7A573B40F63F3F861395482",
-                       "treeSha256":  "5B03F4FEF11FF86572EB6AD647F571D04B6C138F61F4BC6590E479148F89D427"
-                   },
-                   {
-                       "name":  "ergon-table-rule-audit",
-                       "sourcePath":  "codex-skills/ergon-table-rule-audit",
-                       "version":  "0.1.0-beta.0",
-                       "status":  "active",
-                       "compatibility":  "0.x",
-                       "dependencies":  [
-
-                                        ],
-                       "skillMdSha256":  "1A8C5FB233157E8C3AF2AC66DEA8DE5CE828D4327073602674CA1745D0F79C43",
-                       "treeSha256":  "8F3B05CA9B5D401002507B77987E9B3A4081FCABA42A9C9F56630059ED51AFE8"
-                   }
-               ]
+﻿{
+  "schemaVersion": 1,
+  "family": "ergon-migration",
+  "version": "0.1.0-beta.0",
+  "ownerRepo": "praxis-plataform",
+  "sourceRoot": "codex-skills",
+  "description": "Ergon/Archon migration Codex skills that may depend on Praxis platform skills but must remain outside the Praxis platform skill family.",
+  "skills": [
+    {
+      "name": "ergon-angular-ui-screen-wiring",
+      "sourcePath": "codex-skills/ergon-angular-ui-screen-wiring",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "ergon-migration-orchestration",
+        "ergon-archon-screen-discovery",
+        "ergon-archon-read-api-migration",
+        "ergon-archon-write-api-migration",
+        "ergon-fieldspec-ui-contract",
+        "praxis-angular-host-project",
+        "praxis-component-minimums",
+        "praxis-rich-crud-screen-authoring",
+        "praxis-ui-product-design",
+        "praxis-authoring-editors",
+        "praxis-dynamic-fields-editorial",
+        "praxis-dto-annotations",
+        "praxis-resource-entity-lookup-backend"
+      ],
+      "skillMdSha256": "8A420CEDF6E24C865A692DAF10E5C556B560266CA8EC0544EBE024ADE5680F7A",
+      "treeSha256": "76381502226D75F6BEF7DA6EF1D845A96228E99FFC5687186A8A7C7DD45070F3"
+    },
+    {
+      "name": "ergon-archon-read-api-migration",
+      "sourcePath": "codex-skills/ergon-archon-read-api-migration",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "ergon-fieldspec-ui-contract",
+        "praxis-dto-annotations",
+        "praxis-java-host-project",
+        "praxis-resource-entity-lookup-backend"
+      ],
+      "skillMdSha256": "C5A54DF59BDD5BD5BF07AA6B4991CD95E60545EEACA6A332D293C1E0A84133C7",
+      "treeSha256": "4E6A111B64FB8E959FA01A5B8A57D62C1EA4733590656D435CAFF7DC008F4C57"
+    },
+    {
+      "name": "ergon-archon-screen-discovery",
+      "sourcePath": "codex-skills/ergon-archon-screen-discovery",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [],
+      "skillMdSha256": "A22D53510D4DADB752BCDD988FC505955412C41A5794E95C3153C10367008938",
+      "treeSha256": "653D2457323E33FA33AC1715F8A2ECBA82FF57A839A367E9B600EB2E60F839A4"
+    },
+    {
+      "name": "ergon-archon-write-api-migration",
+      "sourcePath": "codex-skills/ergon-archon-write-api-migration",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "ergon-archon-screen-discovery",
+        "ergon-archon-read-api-migration",
+        "ergon-table-rule-audit",
+        "ergon-fieldspec-ui-contract",
+        "praxis-dto-annotations",
+        "praxis-java-host-project",
+        "praxis-resource-entity-lookup-backend"
+      ],
+      "skillMdSha256": "197BC676B5CAF395D91C0ABD5BAC645B047EB1F5CA1F268859BCAB563D34CC14",
+      "treeSha256": "1AA406E4C71CF852DB681FF4B95859D4106A41C2A63DFBBB46B18222531FF4AC"
+    },
+    {
+      "name": "ergon-dashboard-praxis-charts",
+      "sourcePath": "codex-skills/ergon-dashboard-praxis-charts",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-dashboard-analytics",
+        "praxis-angular-host-project",
+        "praxis-ui-product-design",
+        "praxis-dto-annotations",
+        "praxis-resource-entity-lookup-backend"
+      ],
+      "skillMdSha256": "EA6DC60F1FC078D41C4787148DF7755CCC851E7389B9254B22452E08F64A2F8B",
+      "treeSha256": "33AB8654E6DD14EB69FBD022A871F5EC56D4ACA9D6CA0B419EA695D85FF807DB"
+    },
+    {
+      "name": "ergon-fieldspec-ui-contract",
+      "sourcePath": "codex-skills/ergon-fieldspec-ui-contract",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-dto-annotations",
+        "praxis-dynamic-fields-editorial",
+        "praxis-resource-entity-lookup-backend"
+      ],
+      "skillMdSha256": "A1FFA145496051983913F0A9C05730B50E89ACC603D191055167BC41E68A616A",
+      "treeSha256": "EDBCE324E607376230702EF48938AAB02251DF9E7A2E25AE493D3FE8F0F7D241"
+    },
+    {
+      "name": "ergon-migration-orchestration",
+      "sourcePath": "codex-skills/ergon-migration-orchestration",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "ergon-archon-screen-discovery",
+        "ergon-archon-read-api-migration",
+        "ergon-table-rule-audit",
+        "ergon-archon-write-api-migration",
+        "praxis-dto-annotations",
+        "praxis-java-host-project",
+        "praxis-resource-entity-lookup-backend",
+        "ergon-dashboard-praxis-charts",
+        "ergon-fieldspec-ui-contract",
+        "praxis-dashboard-analytics",
+        "praxis-angular-host-project",
+        "praxis-ui-product-design"
+      ],
+      "skillMdSha256": "C132E60786603CAF78D74F8D4661D3920E14FD46ADD5E77F04EA01EC00DDFEB0",
+      "treeSha256": "6DBCFF9A659E52F0D13277316371A2ABED7632D8FCD78C42CFCC11F448C59607"
+    },
+    {
+      "name": "ergon-rule-migration-orchestration",
+      "sourcePath": "codex-skills/ergon-rule-migration-orchestration",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "ergon-migration-orchestration",
+        "ergon-table-rule-audit",
+        "ergon-archon-read-api-migration",
+        "ergon-archon-write-api-migration",
+        "ergon-fieldspec-ui-contract",
+        "praxis-dto-annotations",
+        "praxis-java-host-project",
+        "praxis-resource-entity-lookup-backend"
+      ],
+      "skillMdSha256": "4169885823348FD6A0E93D99F22BDC0E307B3CF1D7A573B40F63F3F861395482",
+      "treeSha256": "5B03F4FEF11FF86572EB6AD647F571D04B6C138F61F4BC6590E479148F89D427"
+    },
+    {
+      "name": "ergon-table-rule-audit",
+      "sourcePath": "codex-skills/ergon-table-rule-audit",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [],
+      "skillMdSha256": "1A8C5FB233157E8C3AF2AC66DEA8DE5CE828D4327073602674CA1745D0F79C43",
+      "treeSha256": "8F3B05CA9B5D401002507B77987E9B3A4081FCABA42A9C9F56630059ED51AFE8"
+    }
+  ]
 }

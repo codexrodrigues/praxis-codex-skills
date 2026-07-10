@@ -1,3 +1,3 @@
 display_name: Ergon Migration Orchestration
 short_description: Orquestra fases, gates e trilhas Ergon/Archon para Praxis.
-default_prompt: Organize a migração Ergon/Archon entre backend/API, UI, dashboard e regras, verifique gates e recomende a próxima skill com artefatos obrigatórios.
+default_prompt: Use $ergon-migration-orchestration para organizar a migração Ergon/Archon entre backend/API, UI, dashboard e regras, verificar gates e recomendar a próxima skill com artefatos obrigatórios.
