@@ -34,6 +34,10 @@ Use `praxis-angular-agents-governance` when registry work touches a component wh
 Angular platform source.
 Use `praxis-angular-public-api-governance` when the registry change is caused by package-facing
 exports or public component contracts.
+Use `praxis-ai-shell-session-context`, `praxis-ai-composer-attachments-quick-replies`,
+`praxis-ai-turn-orchestration-transport`, or `praxis-ai-backend-config-contracts` when registry or
+AI-ready docs derive from assistant context snapshots, quick reply/clarification payloads, turn
+stream materialization, backend AI endpoints, or AI config tokens.
 Use `praxis-list-ai-validation` for `@praxisui/list` manifest/capability/context-pack changes, and
 `praxis-list-docs-evidence` when list docs or living examples feed the registry projection.
 Use `praxis-metadata-editor-ai-validation` for `@praxisui/metadata-editor`

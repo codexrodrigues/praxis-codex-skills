@@ -7,6 +7,8 @@ description: Use when creating, updating, reviewing, or validating Praxis compon
 
 Use this skill for executable AI authoring contracts. A manifest is not decorative documentation; it is the contract that tells backend tools how to ground, validate, compile, and reject component edits.
 
+Pair with `praxis-ai-backend-config-contracts` when manifest operations are exposed through `/api/praxis/config/ai/**`; pair with `praxis-ai-turn-orchestration-transport` when component edit plans are transported through assistant turns; pair with `praxis-ai-composer-attachments-quick-replies` when quick replies or clarifications select manifest targets or operations.
+
 ## Canonical Model
 
 Every manifest change must preserve:
@@ -51,6 +53,7 @@ Review manifests when a public component change touches:
 - runtime/editor parity
 - `ComponentDocMeta`, `configEditor`, public README, examples, recipes, playgrounds
 - AI assistant context, quick replies, diagnostics, preview, apply payload, or component edit plan
+- backend AI manifest endpoints, turn stream payloads, quick reply semantic decisions, or clarification options that reference manifest targets/operations
 
 If no manifest update is required after a public change, state why.
 

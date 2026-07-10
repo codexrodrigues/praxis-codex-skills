@@ -12,6 +12,8 @@ Pair it with:
 - `praxis-ai-authoring-manifests` for shared manifest invariants, validators, and edit-plan rules.
 - `praxis-ai-registry-ingestion` for generated registry/catalog/package AI assets.
 - `praxis-ai-semantic-intent` for consult/edit boundaries and no keyword-based intent routing.
+- `praxis-ai-turn-orchestration-transport` for assistant turn stream lifecycle, runtime observation trust boundary, and terminal result handling.
+- `praxis-ai-composer-attachments-quick-replies` for quick replies, clarifications, and composer actions that select Page Builder targets or operations.
 - `praxis-page-builder-composition` for `WidgetPageDefinition`, `UiCompositionPlan`, composition links, and runtime page materialization.
 - `praxis-page-builder-authoring` for Settings Panel and visual editor round-trip.
 

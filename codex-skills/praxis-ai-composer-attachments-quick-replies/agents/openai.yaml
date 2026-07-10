@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis AI Composer"
+  short_description: "Composer, attachments, quick replies"
+  default_prompt: "Use $praxis-ai-composer-attachments-quick-replies to review Praxis AI assistant composer, quick reply, clarification, attachment, or voice-input work."
