@@ -30,11 +30,27 @@ def draft_title(content: str, path: Path) -> str:
     raise RuntimeError(f"Draft has no H1 title: {path}")
 
 
+def draft_family(content: str, path: Path) -> str:
+    for line in content.splitlines():
+        if line.startswith("- Familia:"):
+            family = line.split(":", 1)[1].strip()
+            if family:
+                return family
+    raise RuntimeError(f"Draft has no Familia field: {path}")
+
+
 def issue_payloads(draft_root: Path, limit: int | None = None) -> list[dict[str, str]]:
     payloads: list[dict[str, str]] = []
     for path in draft_files(draft_root):
         content = path.read_text()
-        payloads.append({"path": str(path), "title": draft_title(content, path), "body": content})
+        payloads.append(
+            {
+                "path": str(path),
+                "title": draft_title(content, path),
+                "family": draft_family(content, path),
+                "body": content,
+            }
+        )
         if limit is not None and len(payloads) >= limit:
             break
     return payloads
@@ -121,14 +137,25 @@ def print_issue_coverage(rows: list[dict[str, str]]) -> None:
     print(f"Summary: total={len(rows)} found={found} missing={missing}")
 
 
-def create_issue(repository: str, title: str, body: str) -> None:
+def issue_labels(payload: dict[str, str], extra_labels: list[str], default_labels: bool) -> list[str]:
+    labels: list[str] = []
+    if default_labels:
+        labels.extend(["skill-review", payload["family"]])
+    labels.extend(extra_labels)
+    return list(dict.fromkeys(label for label in labels if label))
+
+
+def create_issue(repository: str, title: str, body: str, labels: list[str]) -> None:
     with tempfile.NamedTemporaryFile("w", delete=False) as temporary:
         temporary.write(body)
         temporary_path = Path(temporary.name)
 
     try:
+        command = ["gh", "issue", "create", "--repo", repository, "--title", title, "--body-file", str(temporary_path)]
+        for label in labels:
+            command.extend(["--label", label])
         subprocess.run(
-            ["gh", "issue", "create", "--repo", repository, "--title", title, "--body-file", str(temporary_path)],
+            command,
             check=True,
         )
     finally:
@@ -143,6 +170,8 @@ def main() -> int:
     parser.add_argument("--check-existing", action="store_true", help="Fail before creating if a draft title already exists.")
     parser.add_argument("--report-existing", action="store_true", help="Report draft coverage against existing issues.")
     parser.add_argument("--missing-only", action="store_true", help="Process only drafts without an existing issue title.")
+    parser.add_argument("--label", action="append", default=[], help="Additional label to apply when creating issues.")
+    parser.add_argument("--no-default-labels", action="store_true", help="Do not apply skill-review and family labels.")
     parser.add_argument("--limit", type=int, help="Maximum number of drafts to process.")
     args = parser.parse_args()
 
@@ -178,10 +207,12 @@ def main() -> int:
                 payloads = payloads[: args.limit]
 
         for payload in payloads:
+            labels = issue_labels(payload, args.label, not args.no_default_labels)
             if args.dry_run:
-                print(f"DRY-RUN issue: {payload['title']}")
+                label_text = f" [labels: {', '.join(labels)}]" if labels else ""
+                print(f"DRY-RUN issue: {payload['title']}{label_text}")
             else:
-                create_issue(args.repo, payload["title"], payload["body"])
+                create_issue(args.repo, payload["title"], payload["body"], labels)
     except (RuntimeError, subprocess.CalledProcessError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
