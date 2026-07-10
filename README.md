@@ -31,6 +31,8 @@ Preferred local Python fallback preflight:
 python3 scripts/preflight-python-fallbacks.py
 ```
 
+The same preflight runs in GitHub Actions on pull requests and pushes to `main`.
+
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.ps1 -Family praxis
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.ps1 -Family ergon-migration

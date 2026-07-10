@@ -120,9 +120,9 @@ def audit(args: argparse.Namespace) -> int:
     source_not_in_manifest = sorted(
         name for name in source_dirs if name not in source_names and name not in other_source_names
     )
-    installed_only = sorted(
-        p.name for p in destination.iterdir() if destination.exists() and p.is_dir() and p.name not in source_names
-    )
+    installed_only = []
+    if destination.exists():
+        installed_only = sorted(p.name for p in destination.iterdir() if p.is_dir() and p.name not in source_names)
 
     summary = {
         "totalManifestSkills": len(results),
