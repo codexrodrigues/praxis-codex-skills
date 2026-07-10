@@ -292,8 +292,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "9A6FE1656927E1009B37E748109CE7C2E2FAB00FAA9397650A4C5324B6426AE4",
-                       "treeSha256":  "F46E858A66DDEE33844E945CC425D15137A448F414C936BCFFF6DEA83AF67022"
+                       "skillMdSha256":  "120A373CEF1EB5C9C262EA10DAE2D34C9886D5866A46A22D8E267D650C5EFBCA",
+                       "treeSha256":  "1E19A7E07669C61A0CEA3992501705599ACA6E34574058BC0E4CEA8A9B41E12E"
                    },
                    {
                        "name":  "praxis-angular-i18n-governance",
@@ -1635,8 +1635,8 @@
                                             "praxis-table-rule-ai-validation",
                                             "praxis-table-rule-table-integration"
                                         ],
-                       "skillMdSha256":  "758237B7DF16E015EC287FF63101C4A1E9344D4861EA9645DFCCA5A0B6031633",
-                       "treeSha256":  "A780EF5130E3D0784174833BCB6E651F45F80DC48D85976CFC449A89398B04A2"
+                       "skillMdSha256":  "EB1C2935CEDB71F66FA45CC8575F49B6629CBDF651B674D7CF8BD7D82693BC90",
+                       "treeSha256":  "C74F3035A2CDCAFDC2DE4207D86779D6025482AF22281C26C2D7709480C6A0FD"
                    },
                    {
                        "name":  "praxis-table-authoring-settings",
@@ -1655,8 +1655,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-table-rule-ai-validation"
                                         ],
-                       "skillMdSha256":  "74A14782C5016C81491F6A33F12E9998172AAEA1FCA2B21F2DD027121716B2DF",
-                       "treeSha256":  "F1AD542AA2FF1C08923940A5089537BA6636FB0F632DE68D7F00E56BFA9B9140"
+                       "skillMdSha256":  "441DDBAFCA2B45EF2DD0CE5203593728289918F9105B184646E4862A04CF0441",
+                       "treeSha256":  "6972608124012E342A5B017AA3EF5B8C665AE0ABFFA51BB8CF594AC613414137"
                    },
                    {
                        "name":  "praxis-table-filter-actions",
@@ -1670,8 +1670,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "6ACDF99CDE6F2202FEF5EC7CAFCD217691F903D824915B053F5CFC7FD6DBE284",
-                       "treeSha256":  "171BE55A05514AF3F707A845DF5DE9FB220E06CA9368C0000BE9D79E84D390D0"
+                       "skillMdSha256":  "6010898896035A1E496A2746253C7B6EBE19D49A1ED885E418F8292C2F731E8E",
+                       "treeSha256":  "54554ED6571C5719CFF8DBD294C6C5EDC409A494CF5E630180BD8EA3ACDFF289"
                    },
                    {
                        "name":  "praxis-table-rule-ai-validation",
@@ -1736,8 +1736,8 @@
                                             "praxis-core-resource-runtime",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "81676AD29B354CC0C052835E2C73189BD0A1BF94F132E45526D0AA8BC7EE9858",
-                       "treeSha256":  "A5DEB67D855B7EB015EBB934B3E36F3D6045E7614490C31792E10F076AD429D9"
+                       "skillMdSha256":  "5B1218341A938AAD13CB8ED41C25668842B8A8E05A687221B085266B41F7C793",
+                       "treeSha256":  "41DFD8D7543D73A9065F8E14D72F52AF83F1D520A9C96CEE02A8FEEFDA9801A6"
                    },
                    {
                        "name":  "praxis-tabs-runtime-authoring",
@@ -1990,6 +1990,59 @@
                                         ],
                        "skillMdSha256":  "CE1CEFAE9CD3B3488453945DAA128FD0D3A914F786EC83F51254C7AA8D7C4230",
                        "treeSha256":  "0CCF555D75C0995D39D4DF2C919388250E83B8EAF2DBE054FB3D7449633EC56A"
+                   },
+                   {
+                       "name":  "praxis-table-data-source-precedence",
+                       "sourcePath":  "codex-skills/praxis-table-data-source-precedence",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-table-runtime-data",
+                                            "praxis-core-resource-runtime"
+                                        ],
+                       "skillMdSha256":  "A358C3FA8BED4A81EF672A5184364CE64F7B9D558F44FBE98171D56C543CDA9B",
+                       "treeSha256":  "6F735080938640CF8D695E3A22BA25105D03D96CFEFBCD2A7765938B7D98BBDF"
+                   },
+                   {
+                       "name":  "praxis-table-selection-export-runtime",
+                       "sourcePath":  "codex-skills/praxis-table-selection-export-runtime",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-table-runtime-data",
+                                            "praxis-table-filter-actions",
+                                            "praxis-core-resource-runtime"
+                                        ],
+                       "skillMdSha256":  "AB5DDBCAA958AEAD69F306E74D2AF85052BB8F6D397B6E87226E78CE2DED40AA",
+                       "treeSha256":  "C31E575027BF44D6CAA37F451D7D765BC47DD1BF3433D72479DD5941D88C80BB"
+                   },
+                   {
+                       "name":  "praxis-table-analytics-stats-runtime",
+                       "sourcePath":  "codex-skills/praxis-table-analytics-stats-runtime",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-table-runtime-data",
+                                            "praxis-core-resource-runtime"
+                                        ],
+                       "skillMdSha256":  "D9FBD9D7106F0FD2F79488CF974EC8B33C76CCEBA6855166E10549B6E9731DEC",
+                       "treeSha256":  "73DAEB33C19E33152BE7ACAF3820C94280A5036A8F17A6562FA48CE1C47978FF"
+                   },
+                   {
+                       "name":  "praxis-table-renderer-state-diagnostics",
+                       "sourcePath":  "codex-skills/praxis-table-renderer-state-diagnostics",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-table-runtime-data",
+                                            "praxis-core-widget-observations"
+                                        ],
+                       "skillMdSha256":  "4395111DC7EB251EF3C61CBE90B65A56A9D1A8F00FEFFB17D06F251B0ABC2353",
+                       "treeSha256":  "52AB796BA10A1AC1C8137AE57FDA6774CC12CBCEE77F48E29FEF8DE29CA6E68C"
                    }
                ]
 }

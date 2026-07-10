@@ -68,7 +68,10 @@ If no visual editor is affected, say so explicitly and explain why.
 ## Companion Skills
 
 - Use `praxis-authoring-editors` for cross-component editor, persistence, Settings Panel, and round-trip principles.
-- Use `praxis-table-runtime-data` for runtime behavior that the editor materializes.
+- Use `praxis-table-data-source-precedence` for authoring `resourcePath`, local-data mode, bindings, apply-plan diagnostics, and source precedence.
+- Use `praxis-table-selection-export-runtime` when Settings Panel authors export, bulk actions, row actions, or selection-dependent behavior.
+- Use `praxis-table-renderer-state-diagnostics` when editors change renderer config, formatting, state copy, or visible diagnostics.
+- Use `praxis-table-runtime-data` for broader runtime behavior that the editor materializes.
 - Use `praxis-table-filter-actions` for filters, actions, CRUD action wiring, and export operation authoring.
 - Use `praxis-table-ai-validation` for AI component edit plan coverage and registry ingestion.
 - Use `praxis-table-rule-effects-runtime`, `praxis-table-rule-animation-presets`, and `praxis-table-rule-table-integration` when the table rules editor embeds `@praxisui/table-rule-builder` effects, presets, animations, or renderer placement.

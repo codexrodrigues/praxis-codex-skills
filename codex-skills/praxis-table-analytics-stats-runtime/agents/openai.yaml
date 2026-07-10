@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Table Analytics Stats Runtime"
+  short_description: "Materialize analytics projections as tables"
+  default_prompt: "Use $praxis-table-analytics-stats-runtime to audit Praxis analytics projections, stats requests, and table view materialization."
+
+policy:
+  allow_implicit_invocation: true

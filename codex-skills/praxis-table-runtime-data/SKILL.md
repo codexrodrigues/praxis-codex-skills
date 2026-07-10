@@ -72,7 +72,11 @@ When PowerShell is unavailable, run equivalent local manifest/frontmatter/hash c
 
 ## Companion Skills
 
-- Use `praxis-table-filter-actions` for filters, toolbar actions, row actions, bulk actions, filter drawer adapter, global actions, and export operations.
+- Use `praxis-table-data-source-precedence` for focused local/remote data-source resolution, `resourcePath`, `queryContext`, persisted connections, local pipeline, and apply-plan diagnostics.
+- Use `praxis-table-selection-export-runtime` for selected rows/ids, `selectionChange`, bulk state, export scopes, and collection export requests.
+- Use `praxis-table-analytics-stats-runtime` for analytic-table projections, stats request execution, fallback rows, and dashboard table views.
+- Use `praxis-table-renderer-state-diagnostics` for renderers, rich-content cells, formatting, empty/loading/error states, i18n, and runtime observations.
+- Use `praxis-table-filter-actions` for filters, toolbar actions, row actions, bulk actions, filter drawer adapter, global actions, and action grounding.
 - Use `praxis-table-authoring-settings` for Settings Panel, config editors, round-trip, resourcePath, idField, and editor parity.
 - Use `praxis-table-ai-validation` for table AI manifest, component edit plans, runtime operations, context packs, registry ingestion, and AI E2E.
 - Use `praxis-core-resource-runtime` for schemas, actions, surfaces, capabilities, HATEOAS, option sources, CRUD operation resolution, and resource discovery.
