@@ -28,6 +28,9 @@ def load_script_module(name: str, path: Path):
 
 
 AUDIT_MODULE = load_script_module("audit_praxis_skills", SCRIPTS_ROOT / "audit-praxis-skills.py")
+GENERATE_DRAFTS_MODULE = load_script_module(
+    "generate_skill_review_issue_drafts", SCRIPTS_ROOT / "generate-skill-review-issue-drafts.py"
+)
 SYNC_MODULE = load_script_module("sync_praxis_skills", SCRIPTS_ROOT / "sync-praxis-skills.py")
 VALIDATE_MODULE = load_script_module("validate_praxis_skills", SCRIPTS_ROOT / "validate-praxis-skills.py")
 ISSUE_DRAFTS_MODULE = load_script_module("validate_issue_drafts", SCRIPTS_ROOT / "validate-issue-drafts.py")
@@ -310,6 +313,58 @@ class PythonSkillScriptTests(unittest.TestCase):
                 f"README missing local validation guidance: {ISSUE_DRAFTS_MODULE.README_VALIDATION_LINE}",
                 errors,
             )
+
+    def test_generate_issue_drafts_uses_manifests_and_removes_stale_drafts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            praxis_skill = write_skill(root, "praxis-test")
+            ergon_skill = write_skill(root, "ergon-test")
+            write_skill(root, "praxis-untracked")
+            write_manifest(root, "praxis", [manifest_entry(root, praxis_skill)])
+            write_manifest(root, "ergon-migration", [manifest_entry(root, ergon_skill)])
+
+            drafts_root = root / "docs" / "issue-drafts" / "skill-reviews"
+            drafts_root.mkdir(parents=True)
+            (drafts_root / "stale.md").write_text("stale\n")
+
+            count = GENERATE_DRAFTS_MODULE.generate(
+                root,
+                "example/repo",
+                Path("docs/issue-drafts/skill-reviews"),
+                Path("docs/issue-drafts/README.md"),
+                ["praxis", "ergon-migration"],
+            )
+
+            self.assertEqual(2, count)
+            self.assertTrue((drafts_root / "praxis-test.md").is_file())
+            self.assertTrue((drafts_root / "ergon-test.md").is_file())
+            self.assertFalse((drafts_root / "praxis-untracked.md").exists())
+            self.assertFalse((drafts_root / "stale.md").exists())
+
+    def test_generate_issue_drafts_output_passes_issue_draft_validator(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            praxis_skill = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, praxis_skill)])
+            write_manifest(root, "ergon-migration", [])
+
+            GENERATE_DRAFTS_MODULE.generate(
+                root,
+                "example/repo",
+                Path("docs/issue-drafts/skill-reviews"),
+                Path("docs/issue-drafts/README.md"),
+                ["praxis", "ergon-migration"],
+            )
+
+            errors = ISSUE_DRAFTS_MODULE.validate_drafts(root, ["praxis", "ergon-migration"])
+
+            self.assertEqual([], errors)
+
+    def test_generate_issue_drafts_uses_validator_readme_guidance(self) -> None:
+        self.assertEqual(
+            ISSUE_DRAFTS_MODULE.README_VALIDATION_LINE,
+            GENERATE_DRAFTS_MODULE.README_VALIDATION_LINE,
+        )
 
     def test_preflight_audit_policy_allows_informational_counters(self) -> None:
         report = audit_report(installedOnly=3, sourceInOtherFamilyManifest=2)

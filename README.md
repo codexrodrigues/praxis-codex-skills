@@ -68,6 +68,15 @@ Focused Python fallback tests:
 python3 -m unittest discover -s tests
 ```
 
+## Issue Drafts
+
+Generate skill review issue drafts from the canonical manifests:
+
+```bash
+python3 scripts/generate-skill-review-issue-drafts.py
+python3 scripts/validate-issue-drafts.py
+```
+
 ## Sync
 
 ```powershell

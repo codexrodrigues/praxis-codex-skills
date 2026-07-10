@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-ui-product-design/
-- Descricao atual: "Use alongside the canonical functional Praxis skill when the user's request materially asks for visual/product UX quality in Praxis web UI: auditing, reviewing, redesigning, polishing, screenshot QA, visual hierarchy, layout composition, responsive behavior, dark theme quality, accessibility of visual controls, or making Angular UI, authoring editors, settings panels, dynamic form/table/list experiences, playgrounds, or examples feel modern, elegant, usable, professional, or product-grade. Do not use as the primary skill for config round-trip, config shape, persistence, apply/save/reset correctness, public APIs, dynamic-fields discovery, metadata contracts, or ordinary editor correctness unless visual UX is explicitly in scope."
+- Descricao atual: Use alongside the canonical functional Praxis skill when the user's request materially asks for visual/product UX quality in Praxis web UI: auditing, reviewing, redesigning, polishing, screenshot QA, visual hierarchy, layout composition, responsive behavior, dark theme quality, accessibility of visual controls, or making Angular UI, authoring editors, settings panels, dynamic form/table/list experiences, playgrounds, or examples feel modern, elegant, usable, professional, or product-grade. Do not use as the primary skill for config round-trip, config shape, persistence, apply/save/reset correctness, public APIs, dynamic-fields discovery, metadata contracts, or ordinary editor correctness unless visual UX is explicitly in scope.
 
 ## Foco da revisao
 
