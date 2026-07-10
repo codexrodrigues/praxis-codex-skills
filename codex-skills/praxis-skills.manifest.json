@@ -311,10 +311,14 @@
                                             "praxis-table-rule-effects-runtime",
                                             "praxis-table-rule-animation-presets",
                                             "praxis-core-i18n-resource-copy",
-                                            "praxis-angular-agents-governance"
+                                            "praxis-angular-agents-governance",
+                                            "praxis-authoring-editors",
+                                            "praxis-angular-docs-playgrounds",
+                                            "praxis-ui-product-design",
+                                            "praxis-ai-authoring-manifests"
                                         ],
-                       "skillMdSha256":  "26C963905602AD1F7C4D49CEC3D5719E16546B4366BEC7C35CFF6F8794209ED4",
-                       "treeSha256":  "086C951C5702584226937D1BCB5BD42C0A3E7F546CB83D86B2E89CCF4778318A"
+                       "skillMdSha256":  "5E2B314C97640626D6BFD342B1C550254AFD65E6EDA14DA93D87106E3C28BAAC",
+                       "treeSha256":  "61171EE0A5C68F3526FBDDDA60B892B63C3195D39C74CA720263CFB317CC3C49"
                    },
                    {
                        "name":  "praxis-angular-public-api-governance",
