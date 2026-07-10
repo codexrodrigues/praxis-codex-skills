@@ -7,6 +7,22 @@
     "description":  "Praxis platform Codex skills that must remain independent from Ergon-specific migration guidance.",
     "skills":  [
                    {
+                       "name":  "praxis-product-evolution",
+                       "sourcePath":  "codex-skills/praxis-product-evolution",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-ui-product-design",
+                                            "praxis-angular-agents-governance",
+                                            "praxis-authoring-editors",
+                                            "praxis-angular-public-api-governance",
+                                            "praxis-angular-validation-gates"
+                                        ],
+                       "skillMdSha256":  "0529883F14FD0822243F892B3A4BED088274164EB509020EB203BA32F9100031",
+                       "treeSha256":  "99053239BD66EE13C25A12B0CFC9B27CF715475764695FE713F887526CCA9525"
+                   },
+                   {
                        "name":  "praxis-ai-assistant-runtime",
                        "sourcePath":  "codex-skills/praxis-ai-assistant-runtime",
                        "version":  "0.1.0-beta.0",
