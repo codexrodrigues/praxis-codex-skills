@@ -21,8 +21,8 @@
                                             "praxis-ai-turn-orchestration-transport",
                                             "praxis-ai-backend-config-contracts"
                                         ],
-                       "skillMdSha256":  "DB9A77EC228133BAFEA6ACF81AB54ACB99BB86A9E3722473E7A638E0C5F53FD9",
-                       "treeSha256":  "8E698CC862ECB7E12D4F625491BA556418F4A54E0DD2858E291AEE8BC2452BDD"
+                       "skillMdSha256":  "0B9AC71DF0A4F131E015117DC15D50B62ECA77503F19D1A529DA60681606C265",
+                       "treeSha256":  "0B4FA21CCE7D9E69DF89617506C0AE4F69858E3A3CC9B5F16844494D2537CFA1"
                    },
                    {
                        "name":  "praxis-ai-shell-session-context",
@@ -34,8 +34,8 @@
                                             "praxis-ai-semantic-intent",
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "76DC1C99751B02409DA85D7231873C039698EBF23BED75B981E3C076AB464F35",
-                       "treeSha256":  "82AF77C4AE9633B2F901F5279380A621147410A074368A6D30CE31F5BF88507A"
+                       "skillMdSha256":  "62E8BA61289DB00B009D3A82967C234E2C451FB7BB37D91E2A592192128CFF22",
+                       "treeSha256":  "D5993E1CC5CD6F28917DB0374D419DB8CD43E5FE77153E353A1EE8DD7563ECC0"
                    },
                    {
                        "name":  "praxis-ai-composer-attachments-quick-replies",
@@ -47,8 +47,8 @@
                                             "praxis-ai-shell-session-context",
                                             "praxis-ai-semantic-intent"
                                         ],
-                       "skillMdSha256":  "994625F9304E11C488548CFFD994F8AD60BD840A399A060C72BCF85A83A07F8E",
-                       "treeSha256":  "8DAD1D12B6254FC60A5A4159836799BD8F7349E2ABD7083B52FBA17590FEDAA2"
+                       "skillMdSha256":  "81326F785F4B0E65911F369BFE9FE26B70B9B83CEA91B381F1029AF1A23E66CE",
+                       "treeSha256":  "75D167013C19ECF742633D5DC2F038E81889E8C04B6E744D89FC6C625D3DDB57"
                    },
                    {
                        "name":  "praxis-ai-turn-orchestration-transport",
@@ -62,7 +62,7 @@
                                             "praxis-core-widget-observations"
                                         ],
                        "skillMdSha256":  "18716AFE03577A3C37E64763819AF3690451AC4628AADC86B4C14C8CA59E8457",
-                       "treeSha256":  "A3D8D30BE6C1859C41CC58CB5BCFE461191A2F2AE66EDFF72E34AC27B73156F0"
+                       "treeSha256":  "38CE336603DB3D7BFD1A61068106091B32F0CE271B34759F7D1D4C5CE23B87CE"
                    },
                    {
                        "name":  "praxis-ai-backend-config-contracts",
@@ -74,7 +74,7 @@
                                             "praxis-ai-turn-orchestration-transport"
                                         ],
                        "skillMdSha256":  "F4B88FC2BD49A59FD6B2E1EB7497DDC3A1E1E753688DFE06345070CDF537877F",
-                       "treeSha256":  "A07121D9C3A3E49FB05B02D3837711A8CEDA4ADEC4290386F48E169738932FDC"
+                       "treeSha256":  "6263CCBDCA5F680F467A36B89332E8646FD8F08A85AE92A2458E3D03F4369F4A"
                    },
                    {
                        "name":  "praxis-ai-authoring-manifests",
@@ -88,7 +88,7 @@
                                             "praxis-core-runtime-contracts"
                                         ],
                        "skillMdSha256":  "A1F173D7B393137D256168D44908D8C101B1D96B262CD42C04424146A4042705",
-                       "treeSha256":  "B504A9707C927ADDB485023D91265DA75A88DA9901B67E82F2E5F2C4BE79CFAB"
+                       "treeSha256":  "8E458AB8FBE507ADDE9B2C96E23AB3A708376C7990110B17EF7A69199B046D98"
                    },
                    {
                        "name":  "praxis-ai-registry-ingestion",
@@ -128,8 +128,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "873747E08F0B6B2E25ED7EB3972FC0CB3EAE3AD7BB7176340E5A7236B11EAB4D",
-                       "treeSha256":  "BE623098AB139C585E5FBEFA3147632D856080373A6240E9EAC9ED9D088DCCB4"
+                       "skillMdSha256":  "1A4CF4371ABFEB03EB71C31E2D935CDD41829124EDEC24865E9CD3A48CBFE7B8",
+                       "treeSha256":  "A36CB97F354EB2D3702A7738848A89938D12D1A6ED3378402BB213931F940BB4"
                    },
                    {
                        "name":  "praxis-ai-semantic-intent",
@@ -140,8 +140,8 @@
                        "dependencies":  [
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "58F30839AE6CB9F613988C72B55C3A273371C8504B15C11ABE4BB68F277CC6C4",
-                       "treeSha256":  "FB4E64671D6055DE24EB333C25795AA5072E17634BF4AF11CF3A991307C82B68"
+                       "skillMdSha256":  "3CE3DECE0AAC17A873BAB472C67E817759AD7604530A01F2F75DA6496C84334F",
+                       "treeSha256":  "B4E05049796F7C380864006CC2449E5422B7D4D14B4A3A6AC34266658027BE72"
                    },
                    {
                        "name":  "praxis-angular-docs-playgrounds",
@@ -314,7 +314,7 @@
                                             "praxis-angular-agents-governance"
                                         ],
                        "skillMdSha256":  "26C963905602AD1F7C4D49CEC3D5719E16546B4366BEC7C35CFF6F8794209ED4",
-                       "treeSha256":  "2BF234AC77210102A10A836509B756FFF00ED298C4A6250A692B87AE1905A408"
+                       "treeSha256":  "086C951C5702584226937D1BCB5BD42C0A3E7F546CB83D86B2E89CCF4778318A"
                    },
                    {
                        "name":  "praxis-angular-public-api-governance",
@@ -333,7 +333,7 @@
                                             "praxis-angular-agents-governance"
                                         ],
                        "skillMdSha256":  "A3849E45E31E3A3759479A7E8C48A096379B4D6AC6A3D82429EC602FEDC02D12",
-                       "treeSha256":  "7894639CABA01344616122EE7AF31C6C17C0F82C1E4927CD8BA80F507276EAE1"
+                       "treeSha256":  "863E02194A518ECE1E50CBF74B869B01D047A3FBE7806154D0746AB6DCCECD5C"
                    },
                    {
                        "name":  "praxis-angular-validation-gates",
@@ -345,7 +345,7 @@
                                             "praxis-angular-agents-governance"
                                         ],
                        "skillMdSha256":  "2726FE5ACE006E172149AA392C67F484AA153AC96E4404CE1E0ADCACDC289CCC",
-                       "treeSha256":  "489A66F34BD573DC791D947D81B500D4FD5A3C148E176C33DAF302650836DBD2"
+                       "treeSha256":  "3243910CD28992D55DAF9933D6E487A6EDB75FE81BA7B514190E0093900842E9"
                    },
                    {
                        "name":  "praxis-authoring-editors",
@@ -406,7 +406,7 @@
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
                        "skillMdSha256":  "D5D7A617980136697EE759E0A458CA5EA30BB4D69558A7BD9C6B3B1F0B53E8D1",
-                       "treeSha256":  "A25483530A9B8C76B017990DD10FBB041B6F8DE313D1D7E0E5EA9B060F5F3186"
+                       "treeSha256":  "6C10A546C8F9163CF9FFF685D2E895AEB05C371B237EEF4A2EB3CA578ACF07A5"
                    },
                    {
                        "name":  "praxis-charts-ai-validation",
@@ -445,8 +445,8 @@
                                             "praxis-charts-echarts-engine-boundary",
                                             "praxis-charts-ai-handler-contracts"
                                         ],
-                       "skillMdSha256":  "B5C45F2E9D1D385A8CE52F6B531DCE3E1D7094E3F0FFE74ED3CD5385FF2FAF62",
-                       "treeSha256":  "48552D03E18443ECEA5DD51697A6A24605D184E8CB79B94568E8A70530D441F4"
+                       "skillMdSha256":  "74AB90A8A769D7F96E469992F6628873F2229B53F815620EDFC627F88A65263E",
+                       "treeSha256":  "E1508BE6BFF9496BB6E84EC2214CA26C01529336E6A32862CB2CC72796B60820"
                    },
                    {
                        "name":  "praxis-charts-runtime-data",
@@ -480,8 +480,8 @@
                                             "praxis-core-resource-runtime",
                                             "praxis-core-composition-runtime"
                                         ],
-                       "skillMdSha256":  "D4410496E803F828C2B12B07460DFD5FF36012E338A4A33B82CE3C951711805E",
-                       "treeSha256":  "ACF8771D8540D7203BAF40890FC37D72B356CEBF398190A4E89288A77E2B61F8"
+                       "skillMdSha256":  "DB603B62F14D51161B97C2900DC48AAE1449C40F5BE287787DEA1B9FB0FCC2CD",
+                       "treeSha256":  "7149AE82152A505DEDBF42F6F8F96CB7B480D846D8A47E34DA069551FA80E4EE"
                    },
                    {
                        "name":  "praxis-core-composition-runtime",
@@ -506,7 +506,7 @@
                                             "praxis-navigation-container-composition-events"
                                         ],
                        "skillMdSha256":  "63617B1AC9390BCF791C0EC36391C8CB4C19825BAA1A889AA5A9E551B8BCCBA4",
-                       "treeSha256":  "B0E0C46BBFBBBAFC9920E78E073B4E9F32C7E36F2094B476BEF16B414F6C700F"
+                       "treeSha256":  "FF81E3EFADCD1C5F0F9A36A368C4E7A5BFC071C27FD382D81BD50EE52A1A34DF"
                    },
                    {
                        "name":  "praxis-core-global-actions-metadata",
@@ -519,7 +519,7 @@
                                             "praxis-core-i18n-resource-copy"
                                         ],
                        "skillMdSha256":  "8ADB95CE17D0081939F97AD1A49786996EA713E375E8745AC9C818E8BB9ABCE6",
-                       "treeSha256":  "82A2F89717603BD0CABDE05019D33E5DA00D65B824208AC0E19674FFFDEA7E2D"
+                       "treeSha256":  "3A2035D36EF1E97330130FF2EB32BF9C967A93B7522CB346770FA0E73CC0E9AA"
                    },
                    {
                        "name":  "praxis-core-i18n-resource-copy",
@@ -530,8 +530,8 @@
                        "dependencies":  [
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "B2721E3641298F1E56CA197CD374E5915EE24146843F2A00F215ACC844EB44A6",
-                       "treeSha256":  "8D8743F7B32B37889FC6E7C1C09431B613DB35E79DFFC2D965989466AF8B15DD"
+                       "skillMdSha256":  "99A61B7181D41F44FBA1E5763AC03AD6C8B82BC58049E3C9FD492751ACDBD2C3",
+                       "treeSha256":  "EDC9792E39FAC4BB4A0FE0F494E60DBF3548CA9DE4252C31AF459163A27253F8"
                    },
                    {
                        "name":  "praxis-core-logging-observability",
@@ -542,8 +542,8 @@
                        "dependencies":  [
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "C43C8AFBD4016108169A748219EBB4F290ABCF4EC1DC9D8C845F2FF31C017C39",
-                       "treeSha256":  "6369E3AD6CC18FB1F718BB2DE07F131C215E09A9D9FD3708A8F1AE5BDEA3AF6D"
+                       "skillMdSha256":  "EC9E63DD320E3DDCF37363AD28DB091B7AB0F329A12FE47FED6AF807096E5173",
+                       "treeSha256":  "E3065A57467824CB8353425356565B62CB9B73D3394717AC96BE811969E54EDA"
                    },
                    {
                        "name":  "praxis-core-providers-bootstrap",
@@ -553,8 +553,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "0DB52C9E9B83BE2261129CD0152741AC37425E03CB9E86474ED0362E7C671A83",
-                       "treeSha256":  "C699BE9B733812C05C8D2F6D565B80E8C1FC1B65FF5A9F0B446DB5A081187765"
+                       "skillMdSha256":  "84236F5F0E3212496BD4D345BF020A59607795A3CB95EBB11A129FFAB19E2C44",
+                       "treeSha256":  "86D7C406A48E378624A29E95D1DFE389F4F6A5731A8ECF95ED2765DEDAEE9D6A"
                    },
                    {
                        "name":  "praxis-core-resource-runtime",
@@ -571,7 +571,7 @@
                                             "praxis-core-providers-bootstrap"
                                         ],
                        "skillMdSha256":  "7F80B3D3AC21FA0ECC7BBD6DCC94445FBC8AF654F4BB09D11FB592CA70F7DB1B",
-                       "treeSha256":  "91DB78654579FF9F519CFCC7C74C186931DB5185A178C4E21A6BBCE5035E7C9C"
+                       "treeSha256":  "402CCB2E4A47C755E58C928D02E51A5441423D855BAA3655EE3E3CAA5121C7BA"
                    },
                    {
                        "name":  "praxis-metadata-schema-contracts",
@@ -593,7 +593,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "0E08C931B508591574AB5F209A210B06D8A10FC06F64528DA039FD918573A615",
-                       "treeSha256":  "E86A67DDA6F1E9BD425EEF56B1CD36245F5F56898495C6E1321F3AA7BF8A4BAE"
+                       "treeSha256":  "F5D2C5E2C60C87706861299BF06D0E51B81BB1F2BB241699E633D563EEE6F913"
                    },
                    {
                        "name":  "praxis-metadata-discovery-capabilities",
@@ -604,7 +604,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "AD34F91FDAF2C30E1C5502C6622991C976C1C387ACF34D38DEF3D63CAC3B82AD",
-                       "treeSha256":  "6EE734B497C84FC8E39CF1A4BD7995B61A2449EFDC83427A599AF5356CBD1DBF"
+                       "treeSha256":  "8D41FBB4BD3073AA8E47C471FFDB5BB35C6DF7BE37ABEF406FC8F65E5163229A"
                    },
                    {
                        "name":  "praxis-metadata-domain-option-sources",
@@ -615,7 +615,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "9D3A7D53F13920DAD55DC5F065A0F76D7B58DEA666D5DB3AA1653F586E07419D",
-                       "treeSha256":  "BDAFA0B7354322FE0B5F210DA189B1E4A20D3D8D33EB096A20DD2EA364EC66F1"
+                       "treeSha256":  "2E3F056B5668C4DEEB89FE4F4281FD3677F3344F6FF1A7605A26CB1ECE9BC09F"
                    },
                    {
                        "name":  "praxis-core-runtime-contracts",
@@ -633,7 +633,7 @@
                                             "praxis-core-widget-observations"
                                         ],
                        "skillMdSha256":  "75C4D67700BA6128289464889C8CCB4F25027DD2E0AD4E760BCBBB9E2681E2E0",
-                       "treeSha256":  "CC9E12AB06464EF2C74E4F2EE4458CEF246B4ED1F564DE3E4578DA6A3FFA84A6"
+                       "treeSha256":  "0E5F0B77846B3FB4F85968F17ECC0E0251ED93E2FDDE3D95E72B807FF44D7309"
                    },
                    {
                        "name":  "praxis-core-widget-observations",
@@ -646,7 +646,7 @@
                                             "praxis-core-global-actions-metadata"
                                         ],
                        "skillMdSha256":  "C519F9E982E78148141E97447D3314EB8142666CDA652D1A7F100EF7C20F04E8",
-                       "treeSha256":  "E5610FCC9EA9F802C106913FCE5218CA8E91031EBA33C5DEF5E238A5934FB2D1"
+                       "treeSha256":  "8B42837949E960367EAF6257EAD5B5C2E0D4CFF401A8B368EE5C968F0E02D1F7"
                    },
                    {
                        "name":  "praxis-cron-builder-ai-validation",
@@ -658,8 +658,8 @@
                                             "praxis-cron-builder-runtime",
                                             "praxis-cron-schedule-authoring"
                                         ],
-                       "skillMdSha256":  "A2482452957D423DF238D8FAC0470CE0AF9604944DF12B29910061F1C7139B43",
-                       "treeSha256":  "C212E36C20DD2A45FFA1BBE57831F2A4DA9C56366ACE72B5CA3A4E4A45070483"
+                       "skillMdSha256":  "D78411475FC22D98FC1E81672C0FF7B3DDB9A595A2AC8ACF15B12777A5FBD167",
+                       "treeSha256":  "CB72A2B4BFF67DC4AD5576AC34B95EC3B8F961F9DB1887C3905ADAD5CCEAE2CE"
                    },
                    {
                        "name":  "praxis-cron-builder-form-field",
@@ -671,8 +671,8 @@
                                             "praxis-cron-builder-runtime",
                                             "praxis-cron-schedule-authoring"
                                         ],
-                       "skillMdSha256":  "FE61C83C13D7008B905BC45472F6DB28AE0AB27D0DCEAD8DA427E52137B97941",
-                       "treeSha256":  "79D4708C592796D2C7FB1DE93F04F1049C63B4E4B447F2DEC0BE94EAF891AA6E"
+                       "skillMdSha256":  "6579D809662B882882F24E3AE01D73B7E8273B6E34FD1E05C7BC8C3190C78D61",
+                       "treeSha256":  "603B4A483817170F91A6F79E7D583B941056CB98770FFE9ACA89A5FA6EE6740A"
                    },
                    {
                        "name":  "praxis-cron-builder-runtime",
@@ -682,8 +682,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "73BC039CE64FB8A4F08D4EA1F09112B243F689A3928272A75B9FC8479F81766C",
-                       "treeSha256":  "81E3D9ED38859EEA8F7FDDC78EF4301FD22BCF24F6365965447FAEBB49C7DB47"
+                       "skillMdSha256":  "F0626C567EA71F546D90576AA14504C9BEDABF2ADA04B8B70842CF91A89D8450",
+                       "treeSha256":  "EF2E0C7AFDE7F2EC277322934BCAA730BDE51F2DE8D6284A4BD51342913CE362"
                    },
                    {
                        "name":  "praxis-cron-schedule-authoring",
@@ -694,8 +694,8 @@
                        "dependencies":  [
                                             "praxis-cron-builder-runtime"
                                         ],
-                       "skillMdSha256":  "BAAF983BE78E6A123C8696D406271F837BEBA6AB57744814C5F4D16F38EDAFD2",
-                       "treeSha256":  "FE4E6DF4C6F43B74CCE74FEA33ABE33428F1871ECDC8D9D3B04E121C1C2E227A"
+                       "skillMdSha256":  "74B33D3BF01A7B63DF8488DE0EE6E2D495D4380405D35F6137FD3366A7C34CA2",
+                       "treeSha256":  "0F81BD6952665EAEFF90DBA27A4D62391BDE6485A7ECB0017EC49DB290E1A163"
                    },
                    {
                        "name":  "praxis-crud-ai-authoring",
@@ -713,7 +713,7 @@
                                             "praxis-crud-dialog-form-host-lifecycle"
                                         ],
                        "skillMdSha256":  "FBA20DCBE1D21F7C011C33F45572E5AD1E195F08BCE3A1124B7043112E8CB050",
-                       "treeSha256":  "E81F0B2043CCC12393011E2AF92A831264139F1360F28DB4C8009FF9D40AA7DF"
+                       "treeSha256":  "7782BB1F8AD6C8EA33013B81403A41997990F9442477499F9315E54A805990AC"
                    },
                    {
                        "name":  "praxis-crud-runtime-openmodes",
@@ -745,7 +745,7 @@
                                             "praxis-angular-validation-gates"
                                         ],
                        "skillMdSha256":  "8EBEA2DE9D625E790189C63337858740835D6B5D253231EC69CEF4862D099C02",
-                       "treeSha256":  "66CC742CDD811C5267CBDDD466F92035809E5ADE76727337EEED2E4653566B4C"
+                       "treeSha256":  "DBD255909AFC2A3C0EBF9FBE2A28C2CDDA446A85502EC33427D73773F8010AF5"
                    },
                    {
                        "name":  "praxis-crud-dialog-form-host-lifecycle",
@@ -760,7 +760,7 @@
                                             "praxis-angular-validation-gates"
                                         ],
                        "skillMdSha256":  "F8B55DD3A4963408BD254C3CC8A4DE590DF29BD383B3DF1EEB9B099E55A196A7",
-                       "treeSha256":  "2CFB34F1C4C4D67C8242B2F89297EF5A3EBA29601928C4325C84479461DF56D6"
+                       "treeSha256":  "624AF771BE32937F86F99106384A7BB5AAD471C86CF466639B988E8AB74D4365"
                    },
                    {
                        "name":  "praxis-dashboard-analytics",
@@ -783,8 +783,8 @@
                                             "praxis-charts-echarts-engine-boundary",
                                             "praxis-charts-ai-handler-contracts"
                                         ],
-                       "skillMdSha256":  "40774C2A68E4D805B9ED1CE7629B912EC2CA800836E65D531D2CAF441ED014D5",
-                       "treeSha256":  "141DFFCDB45F152F608B23D8C9C7CBC603FB5EAB0951B0B9F70AEE72D1CFE95D"
+                       "skillMdSha256":  "CD577ABE7C5F628303994BA4D4DBFFF499AF69AF2E207DF23BFEBEE161C561AF",
+                       "treeSha256":  "3C5B692091E753FBD418D707395156E770E2C48E3E8C41A636B783EC8E19B769"
                    },
                    {
                        "name":  "praxis-dialog-global-actions-ai",
@@ -800,7 +800,7 @@
                                             "praxis-dialog-surface-global-actions"
                                         ],
                        "skillMdSha256":  "73DD1623422B6F0B318AB1EEA1C3288CDFCBDDC137D50D9FF2B122EA6BB4464C",
-                       "treeSha256":  "BECB79A1EBECE52A8C547798C555AEF7116C8EBA3A30B5CE08A1488DDE8B59FB"
+                       "treeSha256":  "EBBF6AB20F75EBE38C0193707DB7E0B7D7597B28A0E572176BAB522E1E98162F"
                    },
                    {
                        "name":  "praxis-dialog-surface-global-actions",
@@ -828,7 +828,7 @@
                                             "praxis-angular-validation-gates"
                                         ],
                        "skillMdSha256":  "724CF711407A0D769A4212C7B6DC8A123623744E268D7529B9BD8967417452A8",
-                       "treeSha256":  "01EDC1BD3ED97F321E403CD3A8D5397F32B6E980057D0E59FE3C6FFE3785EFF8"
+                       "treeSha256":  "B030A192A61460A387DBF4F5C2019C3232E29B403574CC3EE89C864284C2F88D"
                    },
                    {
                        "name":  "praxis-dto-annotations",
@@ -887,8 +887,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "97687C54C44D877FF3DB73E352BFB8F7392A1D1C186D270D932D98E5B9599869",
-                       "treeSha256":  "46C060612B525C835F8DF682D5053AE5FC152A76339E4D07D63CC479DB01336D"
+                       "skillMdSha256":  "7DA9E5B0B646A94EA498334E1676FB9B908066244B2908E26B9D32B8C8C86A94",
+                       "treeSha256":  "F5E8038F95C85AF7971B795A314075B92B848B79D196EF45E82C5A1440F0B84D"
                    },
                    {
                        "name":  "praxis-editorial-forms-agentic-authoring",
@@ -901,8 +901,8 @@
                                             "praxis-editorial-forms-presentation-diagnostics",
                                             "praxis-editorial-forms-data-collection-adapters"
                                         ],
-                       "skillMdSha256":  "119F393D30964715C35B9E721DD48AF5774FBEA8224EFD849BCD1694879BACAC",
-                       "treeSha256":  "73217E4CEAAD30A107EAF67BFB89AF910514EC49F4F413E0C06845646CCF5561"
+                       "skillMdSha256":  "C220968902D1FDBE1DB730E023AC7C1C08F7854F3806616881E2DBB189E14253",
+                       "treeSha256":  "7A8D6A5B1AC67C3F4021102F1062368F2EA8CBD70D1CA22A19BBDAC593AF8B23"
                    },
                    {
                        "name":  "praxis-editorial-forms-data-collection-adapters",
@@ -914,8 +914,8 @@
                                             "praxis-editorial-forms-journey-snapshot-runtime",
                                             "praxis-editorial-forms-presentation-diagnostics"
                                         ],
-                       "skillMdSha256":  "A65E1F008491CAFB90D7F2C4C749BF6172BAA2312C5C070C8C3AA3AA8EE06BE1",
-                       "treeSha256":  "71FBE96839E2DA2140DD1FFBE59234C8E5D60D34162EC69850EF78289318135C"
+                       "skillMdSha256":  "48A27BF076A50C68BF7BCBBA6B5341699E09C0CD79219E634A2B6651B4BDF457",
+                       "treeSha256":  "4EFBFFE9231A19B150C160629AACD3E344B009C347ED507B3C7956D463481AC9"
                    },
                    {
                        "name":  "praxis-editorial-forms-journey-snapshot-runtime",
@@ -925,8 +925,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "756CFCAE5A9FBC7959271BF0852C5C0DCFFB492CE4854B9D358B08FBE95F8744",
-                       "treeSha256":  "791B78722BD255C4FB09B24064D91E8970F1B73D5B32BBE73154224EB29F5797"
+                       "skillMdSha256":  "F112A771E158CCCF45C931EAE239C8D3713D3BE2A1B10C0AB1723DABBA7A26FC",
+                       "treeSha256":  "8601FA8A28F65E6005A13321AD54A12598772D9B176E2E80B0683204FFDEB811"
                    },
                    {
                        "name":  "praxis-editorial-forms-presentation-diagnostics",
@@ -937,8 +937,8 @@
                        "dependencies":  [
                                             "praxis-editorial-forms-journey-snapshot-runtime"
                                         ],
-                       "skillMdSha256":  "A344C1C30F24DA16E48428893F5C1B579D1174A2F481566545F6D9B439830616",
-                       "treeSha256":  "E607C9279AA5139592A6059E80175B4F13BCB8604CE24AEAAD6BF0B09934FA39"
+                       "skillMdSha256":  "2CC71E650A4E334AE006201D681155D1BFAEB472C99D81B84487227775570226",
+                       "treeSha256":  "25E9236608D4DEAF7B6D66A97D683666B02CA0E18DA7FA329924E8A240AE18C8"
                    },
                    {
                        "name":  "praxis-editorial-forms-runtime",
@@ -958,8 +958,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "FBD29B7BC456EFDA7DA46ACD2C34163D214CD6F0A4B0979596AF84AACCF27014",
-                       "treeSha256":  "CE1A539CC792DFCC47A927A0310E213987EE066EB7146A65D44EFB2DBCCAF10D"
+                       "skillMdSha256":  "612B30EA664455555F36523574C8F607A7FD22B94D1B5169F812EA874F76AA7E",
+                       "treeSha256":  "CB3B60BFA255B24D690A3C675B428DEEC0374E2CD7B34B7D0D9A1ADBE0435E13"
                    },
                    {
                        "name":  "praxis-expansion-runtime-panels",
@@ -971,8 +971,8 @@
                                             "praxis-navigation-container-composition-events",
                                             "praxis-navigation-agentic-registry"
                                         ],
-                       "skillMdSha256":  "371CAEC7B507DECE2DE883CD5C902E0F490E3D949274F64A3E172CD1C0CE6326",
-                       "treeSha256":  "FBEE326A64A22FBB103CFD39091B1E812CB40E3251A01FD210AD4F14BFED3D6F"
+                       "skillMdSha256":  "E09F78C219A86E7ECB48CD5D236480BBE02ACA8992E838C02F0FFD992FF4DB12",
+                       "treeSha256":  "DE5336562BED762B1603B0BB96B12443E9752A0AEA55011F00C5E4AD563E582D"
                    },
                    {
                        "name":  "praxis-fields-ai-canvas-validation",
@@ -1106,8 +1106,8 @@
                                             "praxis-files-upload-backend-contract",
                                             "praxis-files-upload-form-field"
                                         ],
-                       "skillMdSha256":  "DCD4756464F20B42B5B93901330427F850A3BAF22D006066FD129D12F1E42866",
-                       "treeSha256":  "5B8BF296338060BBAE9FBCA7B00BB9F7B371A66731F1A2C195AD98A1C91733DE"
+                       "skillMdSha256":  "61BE0FAEF2D890E287F92BDCD366A118315FAC0B0E03DA373AC720CF664E82AC",
+                       "treeSha256":  "A098D5343A2E8435337EBD864C765DAD0A245DB4D1238526B1713F9BD490623B"
                    },
                    {
                        "name":  "praxis-files-upload-backend-contract",
@@ -1117,8 +1117,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "D964C8716CF33A82C224C8F5B129FB69BB99A8E7D7A5D6D41E9B87679B64E630",
-                       "treeSha256":  "55DA3844E12378AEC762A6633855ECC7FE1B419B9416C94058CDC61CB05B463B"
+                       "skillMdSha256":  "159E8183542C0708AAED443BCF57EA8A46C2136196B15E325DA02790756F3003",
+                       "treeSha256":  "D16A6349EB610E9D4878AEF6371D73D900CC7D66B6AB502D324085E99BE428E7"
                    },
                    {
                        "name":  "praxis-files-upload-form-field",
@@ -1130,8 +1130,8 @@
                                             "praxis-files-upload-runtime",
                                             "praxis-files-upload-backend-contract"
                                         ],
-                       "skillMdSha256":  "B7A75826690207DD5C3DC271E07722AA814993644A923AC1FCD47B84C05C229B",
-                       "treeSha256":  "935E6C9A237FF17DA2F0BA6B06A4530D6CE27AD4CD534A2915163AB393986CC4"
+                       "skillMdSha256":  "0B2EFB6C84710A615C61FB2511DAE26F4D5C487D0BD91E75404F9D19F070ADE4",
+                       "treeSha256":  "84AB4634025AD490AE5962A20E5D4508230810737CED198294586594EA7E6F35"
                    },
                    {
                        "name":  "praxis-files-upload-runtime",
@@ -1142,8 +1142,8 @@
                        "dependencies":  [
                                             "praxis-files-upload-backend-contract"
                                         ],
-                       "skillMdSha256":  "ED2ADAAC6580576F1E7EC14EAD17588548B94EF62C4F9315799FBF2B8C44066A",
-                       "treeSha256":  "D18ABD213FA741452844983398455176F775D829CB404FFD5F023945B7382254"
+                       "skillMdSha256":  "1AB4E0868738191C344EFE302E9982930799252A648D0755DF4E0046556F85A7",
+                       "treeSha256":  "6C8D3325B4C48E86E7B59D6E41FF9887ACBB58ECACE81F234846130BBFFF1171"
                    },
                    {
                        "name":  "praxis-form-ai-rules-validation",
@@ -1343,8 +1343,8 @@
                                             "praxis-ai-authoring-manifests",
                                             "praxis-ai-registry-ingestion"
                                         ],
-                       "skillMdSha256":  "9C6BAC2E80BF80A3FC91129ACF24786BD89B4E99C2375800C72184E812939FC6",
-                       "treeSha256":  "4774C3672C5884C4AF3A9EDCDE7E313478F61059BF93193545D2ED13251A3B70"
+                       "skillMdSha256":  "6E21FB71E50C488550DC887AD3621C3A832E771A5A4898DA2BBAE4EC06B73F9E",
+                       "treeSha256":  "FA60A827D70E1224F71D32D401A600677589E932E27A46FD62C5CEE601AADED1"
                    },
                    {
                        "name":  "praxis-list-authoring-settings",
@@ -1358,8 +1358,8 @@
                                             "praxis-settings-roundtrip-authoring",
                                             "praxis-angular-i18n-governance"
                                         ],
-                       "skillMdSha256":  "F6ECAC4EABF5E0168396A6A6F105B4F1F2A4CB480919888A58902DCDF626E052",
-                       "treeSha256":  "8ACDD4761C3C6FA9324AA161735C88C1A5F80CD12AC250443E92B6762C1E572C"
+                       "skillMdSha256":  "8F084654B3A56546AE24DC787C51AFB822C3902BC4714166A40ECC79D5608C66",
+                       "treeSha256":  "E959C505908F9718138D19936464577E11CF6FE425DFBA58DC97AF4FD7A2E562"
                    },
                    {
                        "name":  "praxis-list-docs-evidence",
@@ -1373,8 +1373,8 @@
                                             "praxis-list-ai-validation",
                                             "praxis-angular-docs-playgrounds"
                                         ],
-                       "skillMdSha256":  "A2B6FF8F6C4CB4601028A5977D040F43E9D2228032948E8B200AA0E59B4DBEB1",
-                       "treeSha256":  "F4C8F47C8105FC1D6D2D51DAABABF46BC84B1142B5FCB10A0D0FD67B145DDE76"
+                       "skillMdSha256":  "98C46717CCEB7EBD530951C8D0400A845364905EB7ABB5AE7AB984957ABD5F76",
+                       "treeSha256":  "91B886A027601E196A94CD74C6DF1C404F19F48AA532A3A00623E694242E4CC1"
                    },
                    {
                        "name":  "praxis-list-runtime-data",
@@ -1387,8 +1387,8 @@
                                             "praxis-core-resource-runtime",
                                             "praxis-angular-validation-gates"
                                         ],
-                       "skillMdSha256":  "2139FFB6D3C7FC4A325A0A8C976F5D53489983A515275E0DC767773A72DFD566",
-                       "treeSha256":  "A6B581C920E34F499BD924F72D5F97AF3F09016FB6FF91D0357C46CD4AF761F3"
+                       "skillMdSha256":  "430463C33D70BDA0175E11692CEF006ECD07A03A5AF4AEA9E13F2D0AD0ACD067",
+                       "treeSha256":  "81E8A6B6784AD5479F11F9941FB24D4E416F769A08B99931CF8C31D1EF4BC667"
                    },
                    {
                        "name":  "praxis-manual-form-ai-authoring",
@@ -1407,8 +1407,8 @@
                                             "praxis-manual-form-toolbar-metadata-bridge",
                                             "praxis-manual-form-rules-agentic"
                                         ],
-                       "skillMdSha256":  "1395C6BF00BEDA111493AB26BB0CB949F81FEF57DFB31FA1B7560F80005323FB",
-                       "treeSha256":  "938524A09378F2520DE5BCCB612BCA29D24FC0F14DA0999D8291B8B9E2941B96"
+                       "skillMdSha256":  "6B1CB4412D731574D4C18907049F7C146FFBCBEF141BFB2F2897353DA35AFFC7",
+                       "treeSha256":  "89D9CB10F1AC4A6EF221AE47A1476B87146F7612DB25ECBC2D2CDEB5714959E7"
                    },
                    {
                        "name":  "praxis-manual-form-autosave-persistence",
@@ -1419,8 +1419,8 @@
                        "dependencies":  [
                                             "praxis-manual-form-field-detection-instance"
                                         ],
-                       "skillMdSha256":  "A18D50A7EBBF7AC4EF4D9A0FDBA5A63C6C32E1738AF9B7D1C2CA919D9BE7EC43",
-                       "treeSha256":  "EBB71716D38A315D0D29CB1A423CD5CCF450D80313F30FF5B482ABBC33CBDD48"
+                       "skillMdSha256":  "AD0C6A64741281A6FC68936A19DA2A5EECA2EAE75BFC2CC256A6EFEF831506D6",
+                       "treeSha256":  "8B84B69B8743A20EF3845C3FC1CA603AFB49B581D6B506A77C11D9133B0BB0F0"
                    },
                    {
                        "name":  "praxis-manual-form-field-detection-instance",
@@ -1430,8 +1430,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "3DBF55486374E3E7C959167B67F795B5A00B08498061A48F81E6AF33F447E857",
-                       "treeSha256":  "4BEB10C7E061991C0BF6CA2F0351E1914CDFE79BE11AD30B49ED69CEC0F8BCD7"
+                       "skillMdSha256":  "61892D26FBABAD008AC9D0E9071D966E0B754828E5FEBB8738C34BDA29B54D61",
+                       "treeSha256":  "7ED73A1413FDFE90F9B62A7622BB0D1973001B57FD9BB11CC2D4EADC8FE6A66E"
                    },
                    {
                        "name":  "praxis-manual-form-rules-agentic",
@@ -1443,8 +1443,8 @@
                                             "praxis-manual-form-field-detection-instance",
                                             "praxis-manual-form-toolbar-metadata-bridge"
                                         ],
-                       "skillMdSha256":  "F148BC95F5228845A1EE905DF0BB1AEF1E14756717591093E156B1801DF90C9A",
-                       "treeSha256":  "CB7C3B5CD8063F3FACC8A9E8E20DB54796A447AF4F2112F77B14D8044129BE17"
+                       "skillMdSha256":  "3C9594E5DADAD7EBBF95C0991DD6BEFA7CCB4D837AF84FF8366E6B0F71C7C54D",
+                       "treeSha256":  "BCFB120DFD0AE9916A5F898E538A273B4A37985C207A151DFD1F7B1BEB230350"
                    },
                    {
                        "name":  "praxis-manual-form-toolbar-metadata-bridge",
@@ -1455,8 +1455,8 @@
                        "dependencies":  [
                                             "praxis-manual-form-field-detection-instance"
                                         ],
-                       "skillMdSha256":  "F0483F60FE7831100F23946852792822C3A6B0975FB04E9A630B508B856D7CD8",
-                       "treeSha256":  "B4C902AEAEDF5E82891831D10D2D6FBFEBE2FBB305ED78221E2BF199861A192D"
+                       "skillMdSha256":  "FCA60A5F606786A607A2A3C7666416A1A729BBB7AC09CCD526B36CA65FEB4BFC",
+                       "treeSha256":  "026370B522ED80CECEF4525CFDE8CDB11AD8D5B7E590314DE0A57979A2675FEF"
                    },
                    {
                        "name":  "praxis-manual-form-runtime-bridge",
@@ -1475,8 +1475,8 @@
                                             "praxis-manual-form-toolbar-metadata-bridge",
                                             "praxis-manual-form-rules-agentic"
                                         ],
-                       "skillMdSha256":  "AC09E63F66FDD39E2A4D62FD7E72712FD246285ADD709364CECA20B36C5B928B",
-                       "treeSha256":  "6FBE6A75CF6737B0D6D90C17AC703CE532C8D342FE8A05D5A826B7AE588348E4"
+                       "skillMdSha256":  "FC60B3A716ACBA545AE8AEBC04DB4A809A0E2F058F3322ACAEE54FDF4162DFC8",
+                       "treeSha256":  "ED65D5784EB52D9981BDFB6CE594640A5488E74194C47342F6DD3EB10A160E02"
                    },
                    {
                        "name":  "praxis-metadata-editor-ai-validation",
@@ -1490,8 +1490,8 @@
                                             "praxis-ai-authoring-manifests",
                                             "praxis-ai-registry-ingestion"
                                         ],
-                       "skillMdSha256":  "00660CA117D9671CA9D05DC403C506CBFF7048E57195EEAC427495705B4FE556",
-                       "treeSha256":  "EB2100CEE6D9660F03F3EE345BCEB764F92D2DE788A53ABD6372E3F50E8C1CD4"
+                       "skillMdSha256":  "EFAE4DA804942A7C00601CABB533C9AC120D9E78781C816CFC27E4472A8DC264",
+                       "treeSha256":  "68727EE90DD18E46D9398C378D1B3C96201AFDCF57F7F90C331E4C5B8803DEB4"
                    },
                    {
                        "name":  "praxis-metadata-editor-cascade-normalization",
@@ -1504,8 +1504,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "0326A7C47B63FC185C8E14B76799AA1A78D68104B7B38A666C23D3C134C9D508",
-                       "treeSha256":  "5F94D45BB00FC96831E22AD7B33581460CB5FD08487FC11FBC90EB97498CC600"
+                       "skillMdSha256":  "7576C852A1589C1D8547585E962B8AA12FC1DD93E7E5BEC921574A908B948FB5",
+                       "treeSha256":  "101E41911EB732ABD3E87674FEF23812975D93DFA8C0679546F3A2C64557731D"
                    },
                    {
                        "name":  "praxis-metadata-editor-consumer-bridges",
@@ -1521,8 +1521,8 @@
                                             "praxis-manual-form-toolbar-metadata-bridge",
                                             "praxis-manual-form-field-detection-instance"
                                         ],
-                       "skillMdSha256":  "CA2F315D711DEA55D3E13676CB727F114A538DEBC524333B8091CDDD2DF58B71",
-                       "treeSha256":  "B329E87BDA025D3C2EB4D942E37BB54AA78DFE698E344EEDEDC4A543D873671D"
+                       "skillMdSha256":  "5E2F84BD3561030BED28BE2C93D48D78426095EAD34012325A4C0A2358638136",
+                       "treeSha256":  "24537796B8D1B1B4743675631446311625919D3451FADE35A4FA361BF98C4B20"
                    },
                    {
                        "name":  "praxis-metadata-editor-renderer-coverage",
@@ -1536,8 +1536,8 @@
                                             "praxis-angular-validation-gates",
                                             "praxis-angular-i18n-governance"
                                         ],
-                       "skillMdSha256":  "ABA16D733A8DA012476198514CCAE7F6C3B7F2731A2C5BFAA1246515713008C3",
-                       "treeSha256":  "805AC8B9E407A07322E0BBB0925E4E5CE79B77AE2A6FD52AD3F33A23D7AC382B"
+                       "skillMdSha256":  "2A95D567B86E2FBDF9EA9C0D471BEBA5C60AB207B6431A4FC73FDC716763D417",
+                       "treeSha256":  "75ED5100C159DEA9C5EB2EE598799C053808AB686E47AF297C99B6455D0692E9"
                    },
                    {
                        "name":  "praxis-navigation-containers-ai-validation",
@@ -1553,8 +1553,8 @@
                                             "praxis-stepper-wizard-orchestration",
                                             "praxis-navigation-agentic-registry"
                                         ],
-                       "skillMdSha256":  "B46555228450994F3560EF5F7FF2DC639AAC763F48C6238385D99E1023B2004E",
-                       "treeSha256":  "5060D0A52E2E9E97EF1D30FC85598CBA54D54626E44BB8C7931A378B03E7FF3F"
+                       "skillMdSha256":  "94B51FE5660293EB9A14FD3E54877FACC7E058AA1B6394636D83C17D6698C310",
+                       "treeSha256":  "BC38E6690516F1F24BCCB9CB0CD56541E6C98FDEF811AFF564D95FBB9FECE342"
                    },
                    {
                        "name":  "praxis-page-builder-ai-agentic",
@@ -1611,8 +1611,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-component-minimums"
                                         ],
-                       "skillMdSha256":  "A01DDB2F7DE3EF2AD58572D8EEE95BFCF3930A84C79EC5985A11447388787F98",
-                       "treeSha256":  "BC030409DC3E9091C90BCA350C375B7DE931E245F58E1D66ABDA7EB048698275"
+                       "skillMdSha256":  "B4003E6C359149E5F0A4C4E0B34F48ED6641269E7FA52B94C5E035B7E3B1111A",
+                       "treeSha256":  "23C8634A3242791EE6D83D04D687376C88836369F7E7DC67285480670CBBBEC1"
                    },
                    {
                        "name":  "praxis-rich-content-ai-security-validation",
@@ -1683,8 +1683,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "1399CA9AFD3B86C9036595B4334A193132118EB098197A894507E9FF3CEDBEFC",
-                       "treeSha256":  "F95C02ECC1B839B84BA766A7B9F87841605ED66F302F7F12A1ECA8294D616670"
+                       "skillMdSha256":  "4F40C7DDF565615801FEF8595CC9B086C1115A6134C16E79D686EDA5809D07D1",
+                       "treeSha256":  "09E28CB056B9C40D8CFC29B031049BA7FD8D52C5F9873961796D28AEC113DFC8"
                    },
                    {
                        "name":  "praxis-settings-ai-i18n-validation",
@@ -1757,8 +1757,8 @@
                                             "praxis-navigation-container-composition-events",
                                             "praxis-navigation-agentic-registry"
                                         ],
-                       "skillMdSha256":  "84999AD5F9EC9E01178312DA72EC2A60FF34798D5B38F120CA5344DCDA433836",
-                       "treeSha256":  "5960CDD3A1B48EF57FE5E291A3E38F3CC5AD54CC44431C55AE4289DAC37025F5"
+                       "skillMdSha256":  "34D39B8AE7D8E974C7C4C6CE9D41F194F8B360BBC0403567A4788A940C76D808",
+                       "treeSha256":  "ED2197809850914A893938CB1185CF250AC01112EC3FD1324B9B10A626E129E1"
                    },
                    {
                        "name":  "praxis-table-ai-validation",
@@ -1777,7 +1777,7 @@
                                             "praxis-table-rule-table-integration"
                                         ],
                        "skillMdSha256":  "EB1C2935CEDB71F66FA45CC8575F49B6629CBDF651B674D7CF8BD7D82693BC90",
-                       "treeSha256":  "C74F3035A2CDCAFDC2DE4207D86779D6025482AF22281C26C2D7709480C6A0FD"
+                       "treeSha256":  "7683651ABAB415E671F12A14309BBD1D8C734F7CEA2BF3ED012426CA736A7379"
                    },
                    {
                        "name":  "praxis-table-authoring-settings",
@@ -1797,7 +1797,7 @@
                                             "praxis-table-rule-ai-validation"
                                         ],
                        "skillMdSha256":  "441DDBAFCA2B45EF2DD0CE5203593728289918F9105B184646E4862A04CF0441",
-                       "treeSha256":  "6972608124012E342A5B017AA3EF5B8C665AE0ABFFA51BB8CF594AC613414137"
+                       "treeSha256":  "8A0CA3E12E43E47EBB5EA0C3FA683758747386E89CF40B95419F2EA1F4D78F8D"
                    },
                    {
                        "name":  "praxis-table-filter-actions",
@@ -1812,7 +1812,7 @@
                                             "praxis-resource-entity-lookup-backend"
                                         ],
                        "skillMdSha256":  "6010898896035A1E496A2746253C7B6EBE19D49A1ED885E418F8292C2F731E8E",
-                       "treeSha256":  "54554ED6571C5719CFF8DBD294C6C5EDC409A494CF5E630180BD8EA3ACDFF289"
+                       "treeSha256":  "E2794FBE40CE1535BF5BD0C0B73407A9AF0768C29C34E00C7C0B364C2EA16D9F"
                    },
                    {
                        "name":  "praxis-table-rule-ai-validation",
@@ -1878,7 +1878,7 @@
                                             "praxis-ui-product-design"
                                         ],
                        "skillMdSha256":  "5B1218341A938AAD13CB8ED41C25668842B8A8E05A687221B085266B41F7C793",
-                       "treeSha256":  "41DFD8D7543D73A9065F8E14D72F52AF83F1D520A9C96CEE02A8FEEFDA9801A6"
+                       "treeSha256":  "A657FB38437250AA7B52107EA465DDBEBA61A5A93276A9C67DBA163104E36977"
                    },
                    {
                        "name":  "praxis-tabs-runtime-authoring",
@@ -1890,8 +1890,8 @@
                                             "praxis-navigation-container-composition-events",
                                             "praxis-navigation-agentic-registry"
                                         ],
-                       "skillMdSha256":  "922BBDE0EF99E583E5D576618B5D7A9583B94EC21CA3708B5E467CAE852F0DA9",
-                       "treeSha256":  "90E7887831408538CA93F619130C8A90B4F4BA1BF7230CB2D48B2DB47872D5CE"
+                       "skillMdSha256":  "5B46222285A7D4CF71429D9C77947838B0C26DCF65E31C5E3386537B2215A6B9",
+                       "treeSha256":  "1D158944AC20C04B6FCA92B98C4896C78F660006F018A869EA1A08E2576A0EE5"
                    },
                    {
                        "name":  "praxis-ui-product-design",
@@ -1906,8 +1906,8 @@
                                             "praxis-resource-entity-lookup-backend",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "4C7F8D6294A943FA8B3F6EBB6D0D6D2EE6361DA9F9F9AFD97A0954DB7355D363",
-                       "treeSha256":  "68D449F94313F242D0995E9D0EB7CA38FBE18F8A853731D95AC22BEF35BEF744"
+                       "skillMdSha256":  "9B4D749ED6BFCBB697256BCE8D22B297992F8BBE48E0010ED005C597B538F24D",
+                       "treeSha256":  "49477C03261AB67B51CA68A13883870FD3882B0ED957150AABF5A3267EF3F88E"
                    },
                    {
                        "name":  "praxis-visual-builder-ai-validation",
@@ -1921,7 +1921,7 @@
                                             "praxis-visual-builder-schemas-templates"
                                         ],
                        "skillMdSha256":  "1395940BD5839179811DE37CCE8AF22558118D9FB2B4F30FB5A61CE513088FB6",
-                       "treeSha256":  "443D67F06939AC4B97BD847B3B6AC1EC6BF6808CAC941DB0A8DB247619FE59D1"
+                       "treeSha256":  "48C0FA6A5E7C2FFB29DF0AF80D8D9F9043D771304D13D5AA3CB839A649D73620"
                    },
                    {
                        "name":  "praxis-visual-builder-graph-runtime",
@@ -1932,7 +1932,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "B42C8E4AEA1A4BB6672D9D2B17087F5030319495871ACC90A616A49160010B86",
-                       "treeSha256":  "8DDD0D9A975EA78D63EAC9DFD329FD83C0A67984C39313F3C495EA7038901035"
+                       "treeSha256":  "2B077AB2232DD52A10002295BBDD26E990D478AE302CC60258BC0ABB6FAD594A"
                    },
                    {
                        "name":  "praxis-visual-builder-jsonlogic-roundtrip",
@@ -1944,8 +1944,8 @@
                                             "praxis-visual-builder-graph-runtime",
                                             "praxis-manual-form-rules-agentic"
                                         ],
-                       "skillMdSha256":  "93F71B1B60E0C4778C5FC82560662626F6F4C2F6F0E0D869AC9C467BCBCD76B1",
-                       "treeSha256":  "FF285BC58849A38E214C1AF8B05869444B369AA6C0EFDFF0DF3A628B4E0722EE"
+                       "skillMdSha256":  "2BC1446D5DD7E92BBE7F6B26173FFE2267097EF8C89B7517612EC5688C5D129B",
+                       "treeSha256":  "39311D41D2F3DCA1C3159088BC5C9C15EDD3D0FEBA080FD542D9061479110039"
                    },
                    {
                        "name":  "praxis-visual-builder-rules",
@@ -1966,7 +1966,7 @@
                                             "praxis-visual-builder-ai-validation"
                                         ],
                        "skillMdSha256":  "0F66417D954F167452FCF96F2CBC11E32C192C529D48EA0816D27FE1D62D9775",
-                       "treeSha256":  "60FC16BDF636743620514263B4BC96DA525FEC8D8EDC9B45544212380A2A3D86"
+                       "treeSha256":  "B8FAA798A5EB6BBCD25A0E6295FBF2E2D32B55B0E6D2DB8D96B436B676816B47"
                    },
                    {
                        "name":  "praxis-visual-builder-schemas-templates",
@@ -1979,7 +1979,7 @@
                                             "praxis-visual-builder-jsonlogic-roundtrip"
                                         ],
                        "skillMdSha256":  "9CCA07FCF2581293F40985704207DF8399B94D8F63CFF5B21A5183F49407B508",
-                       "treeSha256":  "97DDEFFE4207B0949743E96478125B54AEFA5BF7B36596FD9C836D74736C6DB8"
+                       "treeSha256":  "C5E56E76BB0C22D70BF9C4092C5CCB7C38E5A76FCE9503D787BF8C7BFF90E99B"
                    },
                    {
                        "name":  "praxis-charts-echarts-engine-boundary",
@@ -2043,8 +2043,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "56DB304923FC9EFDE3E813E636C9DE6D3CCE57AA9D2581EC05CFBAC840F8BCA0",
-                       "treeSha256":  "8A247C73D1F73A3B9ABF970B1C786605B09C757C2A45F02BB66EA49E9D97BD50"
+                       "skillMdSha256":  "3F1FA55C5D3C2CFD307380181B04FAF610E2F932E1CA1A4DA946DA8802FB46FD",
+                       "treeSha256":  "6D999351EEF27BB154A145CAF44811FE2473E8E044A0785489C3BA9EFF82FCCA"
                    },
                    {
                        "name":  "praxis-stepper-wizard-orchestration",
@@ -2055,8 +2055,8 @@
                        "dependencies":  [
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "323309CAA95B8F1BFB802E693A8201AD462DAFCCADC59D907214E57259332C65",
-                       "treeSha256":  "A27DEF1F4B17D7571F4156FBEE14EA9C02D7BA0C7C2EDA93C1FE46D033E3E741"
+                       "skillMdSha256":  "3D5689846106002166B4F92FB59BAC4BE638752005761F25783C9225EF5A0F73",
+                       "treeSha256":  "C40084A94A279C6B0C423EBFE8BF69CDF28E4CCB0961440ED9DC16241B6940C5"
                    },
                    {
                        "name":  "praxis-navigation-agentic-registry",
@@ -2068,8 +2068,8 @@
                                             "praxis-navigation-container-composition-events",
                                             "praxis-stepper-wizard-orchestration"
                                         ],
-                       "skillMdSha256":  "75E351F608088097E8FF6D278FB39E02E08FA6C0B1C139F70CC7C3F2B31E9409",
-                       "treeSha256":  "1F567306F21C07590AA868A329B3E0E077E2C92B5F6409B229F338D1DB28C83D"
+                       "skillMdSha256":  "916236570B8D48F1809266005EF832DCE68F19193F6E6877546F9167C0BA376C",
+                       "treeSha256":  "B1477A353DE16509064C7D9E46BB354EED38B23384C828D021989E561B60EB8C"
                    },
                    {
                        "name":  "praxis-angular-agents-governance",
@@ -2093,7 +2093,7 @@
                                             "praxis-core-global-action-payloads"
                                         ],
                        "skillMdSha256":  "8C26870DB35B5194E244B2C3442E9764B375D94519E12DE803AD0AE09738D839",
-                       "treeSha256":  "DC2C904FDAD47B424FF2742B9F32FB93C48C8994959DB6237E4D6104DB0FFE7E"
+                       "treeSha256":  "6EB1578027BA60AAEEE7C00C581E3B454C9408A169E86454278942CD61C6A80F"
                    },
                    {
                        "name":  "praxis-core-global-action-payloads",
@@ -2105,7 +2105,7 @@
                                             "praxis-core-global-actions-metadata"
                                         ],
                        "skillMdSha256":  "4BBC29D351B1522DA216B8B337C0B5796D87B66E126828BF081A369612DD9F12",
-                       "treeSha256":  "5D80019D1542E096F0F763D4D14FA8D248CA8CE29B78CA2D812749F2F5301FEA"
+                       "treeSha256":  "9578FD088F92C2B97389929334DF80F54E7BFD8986E4DE0DC20C66A293E03417"
                    },
                    {
                        "name":  "praxis-core-domain-governance-runtime",
@@ -2117,7 +2117,7 @@
                                             "praxis-core-runtime-contracts"
                                         ],
                        "skillMdSha256":  "AEE8824ABB787EABD84F2DED78209F1DA2542F6410F42C1043AD9158367648C5",
-                       "treeSha256":  "6AC674DD11FC4B6B756DD0034AED17F4315EF0CD98724120D09AA5EE2F891BCA"
+                       "treeSha256":  "9EB4D45336EE3A78AA22FDB6D1ED9EFFAA9550AFE10570CC31AFE79815552204"
                    },
                    {
                        "name":  "praxis-config-runtime-persistence",
@@ -2128,7 +2128,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "2DADC3D282BE3ED2ACBD8075F1C6BFD437D9D1703D62A45F4F0142C909612F0D",
-                       "treeSha256":  "723491ECDBC1D1E160C8AAB96CCB017021BD9A4DF2A2F0925CB06DF636950DA0"
+                       "treeSha256":  "4D1F5FE3C0B0C6237C253862CE0131F44467A78C82FBCD1B5394511C02E03BAC"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
@@ -2139,7 +2139,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "72D8B18973E851D65B62B548A9E03033BB7003B4CEA7216D5871617F1FE145B0",
-                       "treeSha256":  "974457694B9B512BA3D79717B2D60EE76171E6E58F87A0761D2FA34B4CAFB79C"
+                       "treeSha256":  "BC6F9FFCDB56F650DDF80A19056B74BDF0F97D3077D54D2D96224733C742C4F9"
                    },
                    {
                        "name":  "praxis-config-api-metadata-grounding",
@@ -2150,7 +2150,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "A6C70EBBC8AA88375B38CD7E2D9241E3724EF0FA29720979542931375A534608",
-                       "treeSha256":  "C79CF1FB15240118B96CE1C6DCBEB7120A3FD7F55876BDDC33F8EB3A7A6FF58C"
+                       "treeSha256":  "0A4CC019753ABEF9FF4E7962F47C3D3B9CAD6A2F9AA58D80E29598E5E029AF8A"
                    },
                    {
                        "name":  "praxis-config-agentic-authoring-streaming",
@@ -2172,7 +2172,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "6B7057AA8E1FBA2C685190452D720259A4002F977CEF75FF04DB9A659D9A4F7E",
-                       "treeSha256":  "5A03C04E7DF071E77EE3B863C75C4E51E5A5C809044F39E232FB8930AC28909E"
+                       "treeSha256":  "67CE0385BF94561D9FD9ABA8AD055B29EB33F156709D4B1CC6AB578447ED29FB"
                    },
                    {
                        "name":  "praxis-api-quickstart-operational-proof",
@@ -2183,7 +2183,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "C750997DD9B02883133E31F09ADFDAD6B9DA514E813D44011BA02D74AC1A1140",
-                       "treeSha256":  "2FA904FBC04AF43375EAFFEB53E727A739A440452F71A74FA8FDB8134ED01A21"
+                       "treeSha256":  "098CE097D67E4A8D8DCE2754C886AA814B4C4E48BD872BE4AB91302A4828AEE5"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
@@ -2194,7 +2194,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "8A227819EE9AF0C2CA742ECF9BF6BC74D49A83EBB667BA1DCC2EF321A0140431",
-                       "treeSha256":  "D0BAF7D224C1CD54EE00C671CF1E6DDB88CE633B4BE59568F03B7EE34A1D0043"
+                       "treeSha256":  "F6485B4210106D0FA7C5F3C28870342B75F2FAE794C09390DC0CDE01738D2C65"
                    },
                    {
                        "name":  "praxis-api-quickstart-domain-pilots",
@@ -2205,7 +2205,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "870D02AB054CD0F91A531B0E30C6A7E0C1250E5F6331152D7048D133F2D1CFF5",
-                       "treeSha256":  "9A875A4E83E7FD487D07F95D7D2037FFC4CF72014C956AB54436B6A13FF972FF"
+                       "treeSha256":  "359942AB6A15857FB09518C725A8DFAE22EFEAC9021220EFDBA6FBAFCE53CCEA"
                    },
                    {
                        "name":  "praxis-api-quickstart-cockpit-http-validation",
@@ -2227,7 +2227,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "8B5EE0F04E3EF399A6B7CCF87736CE2C419F6F5F48A89673131709731051C163",
-                       "treeSha256":  "8357841B8669E7AABC842E367A6AF2FA01DF071396EAE566A3BA919F145A304C"
+                       "treeSha256":  "F8898DB318E00934D6C45C49C722892F007A6D9F121A3DF26C933D328755662D"
                    },
                    {
                        "name":  "praxis-http-examples-contract-surfaces",
@@ -2238,7 +2238,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "FDC81C2F9554F599E620329D9B32719A76D43A89383DE3FE724863924A6D6D80",
-                       "treeSha256":  "926F70EDF74E86466D32250E88F67FC9037BC71C527A146C1D34CC78E9E759CF"
+                       "treeSha256":  "5AC051B021267F0317EF7E399ACB60E5EF5CC4431DD33D12D793861BDD5728D4"
                    },
                    {
                        "name":  "praxis-http-examples-llm-smoke",
@@ -2262,7 +2262,7 @@
                                             "praxis-core-composition-runtime"
                                         ],
                        "skillMdSha256":  "CE1CEFAE9CD3B3488453945DAA128FD0D3A914F786EC83F51254C7AA8D7C4230",
-                       "treeSha256":  "0CCF555D75C0995D39D4DF2C919388250E83B8EAF2DBE054FB3D7449633EC56A"
+                       "treeSha256":  "2E6B3EF0AFFA4D05A7531D27AD95A0E2B4C5855299B7C2B87315E250E6959712"
                    },
                    {
                        "name":  "praxis-table-data-source-precedence",
@@ -2275,7 +2275,7 @@
                                             "praxis-core-resource-runtime"
                                         ],
                        "skillMdSha256":  "A358C3FA8BED4A81EF672A5184364CE64F7B9D558F44FBE98171D56C543CDA9B",
-                       "treeSha256":  "6F735080938640CF8D695E3A22BA25105D03D96CFEFBCD2A7765938B7D98BBDF"
+                       "treeSha256":  "EC1FC99A95CDDB2ECABBDAB4838B7103B464F312007EA5B6243C685DC4B9F08D"
                    },
                    {
                        "name":  "praxis-table-selection-export-runtime",
@@ -2289,7 +2289,7 @@
                                             "praxis-core-resource-runtime"
                                         ],
                        "skillMdSha256":  "AB5DDBCAA958AEAD69F306E74D2AF85052BB8F6D397B6E87226E78CE2DED40AA",
-                       "treeSha256":  "C31E575027BF44D6CAA37F451D7D765BC47DD1BF3433D72479DD5941D88C80BB"
+                       "treeSha256":  "29448826E5DABA8D2BBB13DE19358BCAC7C73EE836C9E9B700ABBE748D806F11"
                    },
                    {
                        "name":  "praxis-table-analytics-stats-runtime",
@@ -2302,7 +2302,7 @@
                                             "praxis-core-resource-runtime"
                                         ],
                        "skillMdSha256":  "D9FBD9D7106F0FD2F79488CF974EC8B33C76CCEBA6855166E10549B6E9731DEC",
-                       "treeSha256":  "73DAEB33C19E33152BE7ACAF3820C94280A5036A8F17A6562FA48CE1C47978FF"
+                       "treeSha256":  "6C055D6DB557ED25FE39DB87868288DC164236A4658D51825B7AF4B0399F0B90"
                    },
                    {
                        "name":  "praxis-table-renderer-state-diagnostics",
@@ -2315,7 +2315,7 @@
                                             "praxis-core-widget-observations"
                                         ],
                        "skillMdSha256":  "4395111DC7EB251EF3C61CBE90B65A56A9D1A8F00FEFFB17D06F251B0ABC2353",
-                       "treeSha256":  "52AB796BA10A1AC1C8137AE57FDA6774CC12CBCEE77F48E29FEF8DE29CA6E68C"
+                       "treeSha256":  "541C0B9B49B2E1DD34F9D499D8C206954689B8AED767BE20D2E9BC4570A81D41"
                    }
                ]
 }

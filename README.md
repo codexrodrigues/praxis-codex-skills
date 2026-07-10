@@ -30,6 +30,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.ps1 -Family ergon-migration
 ```
 
+When PowerShell is unavailable, use the Python fallback. It computes `skillMdSha256`
+from `SKILL.md` bytes and `treeSha256` from sorted `SHA256  relative/path` entries,
+matching the manifest semantics used by the PowerShell scripts.
+
+```bash
+python3 scripts/audit-praxis-skills.py --family praxis
+python3 scripts/audit-praxis-skills.py --family ergon-migration
+```
+
 ## Sync
 
 ```powershell
