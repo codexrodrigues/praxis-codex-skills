@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-api-quickstart-operational-proof/
-- Descricao atual: Use when Codex must work on praxis-api-quickstart as the operational reference host proving Praxis contracts in real HTTP: starter dependency versions, pom.xml, Spring Boot bootstrap, /schemas/**, /api/praxis/config/**, /api/praxis/runtime/**, metadata/config integration, Maven resolution, quickstart smoke tests, and deciding whether a fix belongs to quickstart, praxis-metadata-starter, or praxis-config-starter.
+- Descricao atual: Use when Codex must implement, audit, or diagnose Praxis API Quickstart as the real Spring Boot reference host: Maven starter composition and versions, bootstrap/properties/datasources, security and browser policy, metadata/config/runtime HTTP integration, schemas and discovery, agentic authoring/SSE host proof, deployment identity, or ownership routing between quickstart, metadata starter, config starter, and Angular consumers.
 
 ## Classificacao inicial
 
