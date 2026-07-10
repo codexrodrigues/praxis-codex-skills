@@ -85,7 +85,10 @@ Report exactly what was validated and what remained unvalidated.
 
 - Use `praxis-form-runtime-submit` for dynamic-form step integration, submit behavior, hooks, schema metadata, and resource path boundaries.
 - Use `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters` for step rich content, wizard legacy block convergence, and `stepBlocksBeforeForm`/`stepBlocksAfterForm` semantics.
+- Use `praxis-stepper-wizard-orchestration` for linear navigation, `serverValidate`, `validateStep`, `nextWithValidation`, step form events, wizard adapter, submit/completed/customAction, preferences, and host workflow boundaries.
+- Use `praxis-navigation-container-composition-events` for nested widgets, step-aware `WidgetEventEnvelope` paths, dynamic page embedding, and composition links.
 - Use `praxis-navigation-containers-ai-validation` for stepper AI manifests, registry projection, context packs, assistant turns, and cross-container validation.
+- Use `praxis-navigation-agentic-registry` for stepper/wizard AI adapters, agentic turn flows, context packs, registry projection, and cross-container authoring consistency.
 - Use `praxis-authoring-editors` for Settings Panel editor round-trip.
 - Use `praxis-core-composition-runtime` for nested widgets, widget events, composition links, and dynamic page materialization.
 - Use `praxis-angular-i18n-governance`, `praxis-angular-public-api-governance`, `praxis-angular-docs-playgrounds`, and `praxis-angular-validation-gates` when the change touches their governed areas.
