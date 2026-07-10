@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 import io
 import json
@@ -47,7 +48,8 @@ def write_skill(root: Path, name: str) -> Path:
     skill_root = root / "codex-skills" / name
     skill_root.mkdir(parents=True)
     (skill_root / "SKILL.md").write_text(
-        f"---\nname: {name}\ndescription: Test skill {name}.\n---\n\n# {name}\n"
+        f"---\nname: {name}\ndescription: Test skill {name}.\n---\n\n# {name}\n",
+        encoding="utf-8",
     )
     return skill_root
 
@@ -55,7 +57,7 @@ def write_skill(root: Path, name: str) -> Path:
 def write_raw_skill(root: Path, directory_name: str, content: str) -> Path:
     skill_root = root / "codex-skills" / directory_name
     skill_root.mkdir(parents=True)
-    (skill_root / "SKILL.md").write_text(content)
+    (skill_root / "SKILL.md").write_text(content, encoding="utf-8")
     return skill_root
 
 
@@ -142,6 +144,57 @@ def audit_report(**summary_overrides):
 
 
 class PythonSkillScriptTests(unittest.TestCase):
+    def test_validate_skill_structure_reads_utf8_skill_content(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_root = write_raw_skill(
+                root,
+                "praxis-test",
+                "---\nname: praxis-test\ndescription: DireÃ§Ã£o encantadora para operaÃ§Ã£o.\n---\n\n# ExperiÃªncia\n",
+            )
+
+            self.assertEqual([], VALIDATE_MODULE.validate_directories([skill_root]))
+
+    def test_manifest_hash_updates_are_scoped_to_the_named_skill(self) -> None:
+        manifest = '''{
+  "skills": [
+    {
+      "name": "praxis-first",
+      "skillMdSha256": "AAAAAAAA",
+      "treeSha256": "BBBBBBBB"
+    },
+    {
+      "name": "praxis-second",
+      "skillMdSha256": "AAAAAAAA",
+      "treeSha256": "BBBBBBBB"
+    }
+  ]
+}
+'''
+
+        updated = AUDIT_MODULE.update_manifest_text(
+            manifest,
+            {"praxis-second": {"skillMdSha256": "CCCCCCCC", "treeSha256": "DDDDDDDD"}},
+        )
+
+        self.assertIn('"name": "praxis-first",\n      "skillMdSha256": "AAAAAAAA"', updated)
+        self.assertIn('"name": "praxis-second",\n      "skillMdSha256": "CCCCCCCC"', updated)
+        self.assertIn('"treeSha256": "DDDDDDDD"', updated)
+
+    def test_sha256_file_normalizes_text_line_endings_and_preserves_binary_bytes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            lf = root / "lf.md"
+            crlf = root / "crlf.md"
+            binary = root / "asset.bin"
+            lf.write_bytes(b"first\nsecond\n")
+            crlf.write_bytes(b"first\r\nsecond\r\n")
+            binary_bytes = b"\x89PNG\r\n\x1a\n\x00\xff"
+            binary.write_bytes(binary_bytes)
+
+            self.assertEqual(sha256_file(lf), sha256_file(crlf))
+            self.assertEqual(hashlib.sha256(binary_bytes).hexdigest().upper(), sha256_file(binary))
+
     def test_tree_hash_ignores_install_metadata(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -611,3 +664,4 @@ class PythonSkillScriptTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

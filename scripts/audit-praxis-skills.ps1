@@ -37,7 +37,7 @@ $results = foreach ($skill in $manifest.skills) {
     else {
         $sourceErrors = @(Test-CodexSkillStructure -SkillRoot $sourceDir -ExpectedName $skill.name)
         $skillMd = Join-Path $sourceDir 'SKILL.md'
-        $sourceHash = (Get-FileHash -LiteralPath $skillMd -Algorithm SHA256).Hash
+        $sourceHash = Get-CodexSkillContentHash -Path $skillMd
         $sourceTreeHash = Get-CodexSkillTreeHash -Root $sourceDir
         if ($skill.skillMdSha256 -and $sourceHash -ne $skill.skillMdSha256) {
             $status = 'SOURCE_DRIFT'
@@ -189,3 +189,4 @@ if ($sourceInOtherFamilyManifest.Count -gt 0) {
     Write-Host ""
     Write-Host ("Source directories tracked by another family manifest: {0}" -f ($sourceInOtherFamilyManifest -join ', '))
 }
+
