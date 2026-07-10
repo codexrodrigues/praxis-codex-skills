@@ -41,6 +41,14 @@ Review derived artifacts when a change touches:
 
 Do not update generated `dist/` artifacts by hand. Regenerate through the owning command when the task requires it.
 
+When concluding no docs/playground update is needed, state the negative evidence explicitly:
+
+- no public input/output/event/config/default behavior changed
+- no `public-api`, `ComponentDocMeta`, authoring manifest, capability, schema, action, or runtime observation changed
+- no example, recipe, playground, screenshot, or public guide currently claims the changed behavior
+- no i18n/user-visible copy changed
+- no package publication/search/sitemap surface changed
+
 ## Validation
 
 For `praxis-ui-angular` docs:
@@ -140,3 +148,4 @@ Report:
 - validation commands run
 - generated artifacts intentionally not edited by hand
 - any public surface still out of sync and why
+- reason when no derived docs/playground artifact was updated

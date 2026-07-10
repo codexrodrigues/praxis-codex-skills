@@ -78,6 +78,7 @@ Missing AGENTS guidance alone is not a runtime contract gap.
 - When a skill and local AGENTS disagree, prefer the local platform source and update the skill.
 - When local AGENTS is absent, avoid memory-based commands; derive validation from root AGENTS, `package.json`, README/docs, focused specs, and public API ownership.
 - Treat docs, examples, public API, AI registry, i18n, and playgrounds as derived artifacts that must be reviewed when the missing AGENTS would normally name them.
+- For skills-only updates, prefer changing the versioned source under `codex-skills/`, updating the manifest hashes, and running the smallest available audit/sync path. If PowerShell is unavailable, record that `scripts/sync-praxis-skills.ps1` could not run instead of silently skipping local installation sync.
 
 ## Known Follow-Ups
 
@@ -95,5 +96,6 @@ For skills-only governance updates:
 - run `git diff --check`;
 - run `skill-creator` validation when the environment has PyYAML;
 - run skill sync when PowerShell is available, or state why sync was skipped.
+- if `quick_validate.py` is absent, state that absence and use the repo's manifest/hash audit as the local substitute.
 
 For monorepo follow-ups, validate in `praxis-ui-angular` according to the affected local AGENTS, root AGENTS, and the smallest reliable package/docs/registry gates.

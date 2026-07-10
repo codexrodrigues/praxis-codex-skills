@@ -65,7 +65,7 @@ After public API changes, review:
 - examples, recipes, playgrounds, and landing pages that publish the public surface
 - generated registry/package assets when component metadata or authoring contracts changed
 
-If none apply, say why.
+If none apply, say why. A valid "no derived artifact" conclusion should name the reviewed categories and the reason they are unaffected, for example: no public export changed, no component metadata changed, no docs/example claim changed, no AI-authorable contract changed, and no i18n-visible text changed.
 
 ## Output Expectations
 
@@ -76,3 +76,4 @@ Report:
 - whether the export creates a new cross-lib edge
 - validation run for owner and consumer
 - derived artifacts reviewed or intentionally skipped
+- breaking-change risk and whether beta cleanup should replace compatibility aliases
