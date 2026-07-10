@@ -330,10 +330,16 @@
                                             "praxis-core-logging-observability",
                                             "praxis-core-global-actions-metadata",
                                             "praxis-core-widget-observations",
-                                            "praxis-angular-agents-governance"
+                                            "praxis-angular-agents-governance",
+                                            "praxis-ai-authoring-manifests",
+                                            "praxis-ai-registry-ingestion",
+                                            "praxis-ai-turn-orchestration-transport",
+                                            "praxis-angular-docs-playgrounds",
+                                            "praxis-angular-i18n-governance",
+                                            "praxis-authoring-editors"
                                         ],
-                       "skillMdSha256":  "A3849E45E31E3A3759479A7E8C48A096379B4D6AC6A3D82429EC602FEDC02D12",
-                       "treeSha256":  "863E02194A518ECE1E50CBF74B869B01D047A3FBE7806154D0746AB6DCCECD5C"
+                       "skillMdSha256":  "7C63A549903C1CCDC944EBACCB8D9731EBE8BD2D4BC019BD21B9E9693966C499",
+                       "treeSha256":  "32CCC1F41428AD332300D9886A87B2C9F52939532FED8165B618DD1BE79F36C1"
                    },
                    {
                        "name":  "praxis-angular-validation-gates",
