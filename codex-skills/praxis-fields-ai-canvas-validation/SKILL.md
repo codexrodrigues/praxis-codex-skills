@@ -1,9 +1,11 @@
 ---
 name: praxis-fields-ai-canvas-validation
-description: Use when changing or auditing Praxis Dynamic Fields AI authoring manifest, control-type AI catalog, authoring profiles, AI registry ingestion, canvas integration tokens, playground recipes, generated component docs, or validation that dynamic field runtime/editorial/canvas coverage is actually available to AI-assisted authoring.
+description: Use when changing or auditing @praxisui/dynamic-fields or praxis-dynamic-fields package AI authoring manifest, control-type AI catalog, authoring profiles, AI registry ingestion, canvas integration tokens, playground recipes, generated component docs, or validation that dynamic field runtime/editorial/canvas coverage is actually available to AI-assisted authoring.
 ---
 
 # Praxis Fields AI Canvas Validation
+
+This `praxis-fields-*` plus `praxis-dynamic-fields-editorial` skill family is the canonical Codex skill surface for `@praxisui/dynamic-fields` and `projects/praxis-dynamic-fields`; do not create parallel dynamic-fields guidance unless this family cannot express a proven contract gap.
 
 Use this skill to prove that `@praxisui/dynamic-fields` knowledge is available to AI-assisted authoring and canvas/editor surfaces. This is the validation layer for decisions, not a place to invent field semantics.
 

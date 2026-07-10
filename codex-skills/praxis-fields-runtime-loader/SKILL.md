@@ -1,9 +1,11 @@
 ---
 name: praxis-fields-runtime-loader
-description: Use when changing or reviewing Praxis `@praxisui/dynamic-fields` runtime rendering, DynamicFieldLoaderDirective behavior, ComponentRegistryService registrations, controlType normalization, selector mappings, package-owned field loading, host custom field registration, hot metadata updates, or runtime coverage claims for metadata-driven Angular fields.
+description: Use when changing or reviewing @praxisui/dynamic-fields or praxis-dynamic-fields package runtime rendering, DynamicFieldLoaderDirective behavior, ComponentRegistryService registrations, controlType normalization, selector mappings, package-owned field loading, host custom field registration, hot metadata updates, or runtime coverage claims for metadata-driven Angular fields.
 ---
 
 # Praxis Fields Runtime Loader
+
+This `praxis-fields-*` plus `praxis-dynamic-fields-editorial` skill family is the canonical Codex skill surface for `@praxisui/dynamic-fields` and `projects/praxis-dynamic-fields`; do not create parallel dynamic-fields guidance unless this family cannot express a proven contract gap.
 
 Use this skill for runtime field rendering in `@praxisui/dynamic-fields`. Treat the loader and registry as the canonical Angular runtime for metadata-driven fields; do not patch consumers with local `controlType` maps when the issue belongs in the package registry, selector registry, or field component.
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Selection Lookup Fields"
   short_description: "Audit select and lookup controls"
-  default_prompt: "Use $praxis-fields-selection-lookup-controls to implement or audit Praxis Dynamic Fields select, async select, autocomplete, chips, tree, list, and entity lookup controls."
+  default_prompt: "Use $praxis-fields-selection-lookup-controls to implement or audit @praxisui/dynamic-fields package select, async select, autocomplete, chips, tree, list, and entity lookup controls."

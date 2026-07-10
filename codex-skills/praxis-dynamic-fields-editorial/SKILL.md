@@ -1,9 +1,11 @@
 ---
 name: praxis-dynamic-fields-editorial
-description: Use when changing Praxis Dynamic Fields control types, aliases, discovery, editorial descriptors, metadata registry entries, selector mappings, inline filter tooling coverage, or any change where runtime support and editor/tooling support may diverge.
+description: Use when changing @praxisui/dynamic-fields or praxis-dynamic-fields package control types, aliases, discovery, editorial descriptors, metadata registry entries, selector mappings, inline filter tooling coverage, runtime registry, field catalogs, or any change where runtime support and editor/tooling support may diverge.
 ---
 
 # Praxis Dynamic Fields Editorial
+
+This `praxis-fields-*` plus `praxis-dynamic-fields-editorial` skill family is the canonical Codex skill surface for `@praxisui/dynamic-fields` and `projects/praxis-dynamic-fields`; do not create another parallel dynamic-fields skill family unless this family cannot express a proven contract gap.
 
 Use this skill for the special authoring/discovery model of `@praxisui/dynamic-fields`.
 

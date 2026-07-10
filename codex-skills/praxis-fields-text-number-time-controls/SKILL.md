@@ -1,9 +1,11 @@
 ---
 name: praxis-fields-text-number-time-controls
-description: Use when Codex must implement, audit, or consume @praxisui/dynamic-fields text, email, password, textarea, search, phone, URL, CPF/CNPJ, numericTextBox, currency, slider, rangeSlider, priceRange, rating, dateInput, date, dateRange, dateTimeLocal, month, week, year, time, timePicker, timeRange, inline text/number/currency/date/time/period controls, temporal bounds, masks, value shapes, formatting, and related AI profiles.
+description: Use when Codex must implement, audit, or consume @praxisui/dynamic-fields or praxis-dynamic-fields package text, email, password, textarea, search, phone, URL, CPF/CNPJ, numericTextBox, currency, slider, rangeSlider, priceRange, rating, dateInput, date, dateRange, dateTimeLocal, month, week, year, time, timePicker, timeRange, inline text/number/currency/date/time/period controls, temporal bounds, masks, value shapes, formatting, and related AI profiles.
 ---
 
 # Praxis Fields Text Number Time Controls
+
+This `praxis-fields-*` plus `praxis-dynamic-fields-editorial` skill family is the canonical Codex skill surface for `@praxisui/dynamic-fields` and `projects/praxis-dynamic-fields`; do not create parallel dynamic-fields guidance unless this family cannot express a proven contract gap.
 
 Use this skill for scalar and temporal control families in `@praxisui/dynamic-fields`: text-like inputs, regional documents, numbers, currency, sliders/ranges, dates, times, periods, and their inline variants.
 

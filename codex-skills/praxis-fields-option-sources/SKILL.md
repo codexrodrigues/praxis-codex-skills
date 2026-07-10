@@ -1,9 +1,11 @@
 ---
 name: praxis-fields-option-sources
-description: Use when implementing or reviewing Praxis Dynamic Fields option-source controls, async selects, searchable selects, entity lookup, `RESOURCE_ENTITY` lookup projections, selected-value reload by IDs, dependency filters, option display resolution, `GenericCrudService` option APIs, or backend `x-ui.optionSource` materialization in Angular fields.
+description: Use when implementing or reviewing @praxisui/dynamic-fields or praxis-dynamic-fields package option-source controls, async selects, searchable selects, entity lookup, `RESOURCE_ENTITY` lookup projections, selected-value reload by IDs, dependency filters, option display resolution, `GenericCrudService` option APIs, or backend `x-ui.optionSource` materialization in Angular fields.
 ---
 
 # Praxis Fields Option Sources
+
+This `praxis-fields-*` plus `praxis-dynamic-fields-editorial` skill family is the canonical Codex skill surface for `@praxisui/dynamic-fields` and `projects/praxis-dynamic-fields`; do not create parallel dynamic-fields guidance unless this family cannot express a proven contract gap.
 
 Use this skill for select-like fields backed by canonical Praxis option sources. The goal is to prevent local autocomplete/select implementations when `x-ui.optionSource`, `RESOURCE_ENTITY`, `async-select`, `searchable-select`, or `entityLookup` already cover the workflow.
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Dynamic Fields Editorial"
   short_description: "Review dynamic-fields discovery and editorial parity"
-  default_prompt: "Use $praxis-dynamic-fields-editorial to review this dynamic-fields change across runtime registry, editorial descriptors, downstream tooling, and coverage semantics."
+  default_prompt: "Use $praxis-dynamic-fields-editorial to review this @praxisui/dynamic-fields package change across runtime registry, editorial descriptors, downstream tooling, and coverage semantics."
