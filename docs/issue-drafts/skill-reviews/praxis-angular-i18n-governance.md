@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-angular-i18n-governance/
-- Descricao atual: Use when adding, reviewing, or fixing internal UI text, authoring chrome, translation catalogs, `PraxisI18nService`, locale files, hardcoded labels, tooltips, placeholders, aria labels, errors, empty states, or i18n coverage in Praxis Angular libraries.
+- Descricao atual: Use when implementing, auditing, or migrating Praxis Angular framework-owned text: PraxisI18nService/config/providers, namespace catalogs and locales, authoring chrome, hardcoded labels/tooltips/placeholders/aria/errors/empty states, LOCALE_ID formatting, translation fallbacks/overrides, legacy text tokens, catalog conformance, or i18n-derived docs and visual QA.
 
 ## Classificacao inicial
 
