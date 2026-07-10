@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-ai-shell-session-context/
-- Descricao atual: Use when changing or reviewing the `@praxisui/ai` assistant shell, dock, session host, session registry, `PraxisAssistantContextSnapshot`, context normalization, safe summaries, governance/risk hints, session identity, or public shell/context exports.
+- Descricao atual: Use when implementing, auditing, or consuming the `@praxisui/ai` assistant shell, dock, session host or registry, `PraxisAssistantContextSnapshot`, context normalization/redaction, safe summaries, session identity and visibility, governance/risk hints, attachments summaries, or public shell/context exports.
 
 ## Classificacao inicial
 

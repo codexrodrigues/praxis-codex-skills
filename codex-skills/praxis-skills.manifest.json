@@ -32,10 +32,12 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                             "praxis-ai-semantic-intent",
-                                            "praxis-core-runtime-contracts"
+                                            "praxis-core-runtime-contracts",
+                                            "praxis-core-widget-observations",
+                                            "praxis-config-agentic-authoring-streaming"
                                         ],
-                       "skillMdSha256":  "62E8BA61289DB00B009D3A82967C234E2C451FB7BB37D91E2A592192128CFF22",
-                       "treeSha256":  "D5993E1CC5CD6F28917DB0374D419DB8CD43E5FE77153E353A1EE8DD7563ECC0"
+                       "skillMdSha256":  "B7F912A246EDFFD6841108A3D05F76DFF4B07320BF5FA74D6096C2C08122412F",
+                       "treeSha256":  "9AC092E8C36E187D2CFFC4B9FF8959CD298C26B82BE65B59F4048DE5E50C7AC3"
                    },
                    {
                        "name":  "praxis-ai-composer-attachments-quick-replies",
