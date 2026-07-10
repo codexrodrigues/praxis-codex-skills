@@ -43,7 +43,7 @@ Before editing chart AI behavior, inspect:
 - `projects/praxis-charts/src/public-api.ts`
 - AI registry ingestion outputs or generated component docs when the repo produces them
 
-If `projects/praxis-charts/AGENTS.md` is still absent, use `praxis-angular-agents-governance` and record a platform follow-up for local chart commands, manifest validation gates, and public API boundaries instead of inventing local policy in one task.
+Read `projects/praxis-charts/AGENTS.md` before editing chart AI authoring contracts. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
 
 ## Manifest Rules
 

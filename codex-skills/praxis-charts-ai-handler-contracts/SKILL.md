@@ -28,7 +28,7 @@ Inspect:
 - runtime validation and mapper services used by affected operations
 - AI registry outputs when generated assets are expected to change
 
-If `projects/praxis-charts/AGENTS.md` is absent, use `praxis-angular-agents-governance` and record the missing local chart AI governance/gates.
+Read `projects/praxis-charts/AGENTS.md` before editing chart AI handlers. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
 
 ## Handler Rules
 

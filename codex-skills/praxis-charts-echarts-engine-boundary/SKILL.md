@@ -30,7 +30,7 @@ Inspect:
 - `src/lib/components/praxis-micro-visualization/praxis-micro-visualization.component.ts`
 - focused adapter, option builder, component, and micro-visualization specs
 
-If `projects/praxis-charts/AGENTS.md` is absent, use `praxis-angular-agents-governance`, record that governance gap, and do not invent local validation commands in a one-off patch.
+Read `projects/praxis-charts/AGENTS.md` before editing chart engine boundaries. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
 
 ## Boundary Rules
 
