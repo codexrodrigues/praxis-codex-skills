@@ -91,7 +91,7 @@ foreach ($skill in $manifest.skills) {
         throw "Invalid source skill $($skill.name): $($structureErrors -join '; ')"
     }
 
-    $sourceSkillHash = (Get-FileHash -LiteralPath (Join-Path $sourceDir 'SKILL.md') -Algorithm SHA256).Hash
+    $sourceSkillHash = Get-CodexSkillContentHash -Path (Join-Path $sourceDir 'SKILL.md')
     if ($skill.skillMdSha256 -and $sourceSkillHash -ne $skill.skillMdSha256) {
         throw "Source hash drift for $($skill.name). Manifest=$($skill.skillMdSha256) Actual=$sourceSkillHash"
     }
@@ -142,3 +142,4 @@ else {
 Write-Host "Family: $($manifest.family)"
 Write-Host "Manifest: $($manifestBundle.Path)"
 Write-Host "Destination: $resolvedSkillsRoot"
+
