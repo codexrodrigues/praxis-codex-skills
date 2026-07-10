@@ -28,6 +28,7 @@ def load_script_module(name: str, path: Path):
 
 
 AUDIT_MODULE = load_script_module("audit_praxis_skills", SCRIPTS_ROOT / "audit-praxis-skills.py")
+SYNC_MODULE = load_script_module("sync_praxis_skills", SCRIPTS_ROOT / "sync-praxis-skills.py")
 
 
 def write_skill(root: Path, name: str) -> Path:
@@ -37,6 +38,23 @@ def write_skill(root: Path, name: str) -> Path:
         f"---\nname: {name}\ndescription: Test skill {name}.\n---\n\n# {name}\n"
     )
     return skill_root
+
+
+def sync_args(repo_root: Path, skills_root: Path, *, force: bool = False, delete_extraneous: bool = False):
+    return argparse.Namespace(
+        repo_root=str(repo_root),
+        family="praxis",
+        manifest=None,
+        skills_root=str(skills_root),
+        dry_run=False,
+        force=force,
+        delete_extraneous_within_manifest=delete_extraneous,
+    )
+
+
+def run_sync(args) -> int:
+    with redirect_stdout(io.StringIO()):
+        return SYNC_MODULE.sync(args)
 
 
 def manifest_entry(repo_root: Path, skill_root: Path) -> dict[str, str]:
@@ -118,6 +136,60 @@ class PythonSkillScriptTests(unittest.TestCase):
             self.assertEqual(["scratch-test"], report["sourceNotInManifest"])
             self.assertEqual(1, report["summary"]["sourceInOtherFamilyManifest"])
             self.assertEqual(1, report["summary"]["sourceNotInManifest"])
+
+    def test_sync_installs_skill_and_metadata_into_temporary_root(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skills_root = root / "installed-skills"
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+            write_manifest(root, "ergon-migration", [])
+
+            result = run_sync(sync_args(root, skills_root))
+
+            installed = skills_root / "praxis-test"
+            metadata = json.loads((installed / ".codex-skill-install.json").read_text())
+            self.assertEqual(0, result)
+            self.assertTrue((installed / "SKILL.md").is_file())
+            self.assertEqual("praxis", metadata["family"])
+            self.assertEqual("praxis-test", metadata["skill"])
+            self.assertEqual(skill_tree_hash(skill_root), metadata["sourceHash"])
+            self.assertIn("installedAt", metadata)
+
+    def test_sync_blocks_destination_drift_without_force(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skills_root = root / "installed-skills"
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+            write_manifest(root, "ergon-migration", [])
+
+            self.assertEqual(0, run_sync(sync_args(root, skills_root)))
+            (skills_root / "praxis-test" / "SKILL.md").write_text("local drift\n")
+
+            with self.assertRaisesRegex(RuntimeError, "Sync blocked"):
+                run_sync(sync_args(root, skills_root))
+
+            self.assertEqual("local drift\n", (skills_root / "praxis-test" / "SKILL.md").read_text())
+
+    def test_sync_force_delete_extraneous_replaces_managed_skill_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skills_root = root / "installed-skills"
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+            write_manifest(root, "ergon-migration", [])
+
+            self.assertEqual(0, run_sync(sync_args(root, skills_root)))
+            installed = skills_root / "praxis-test"
+            (installed / "SKILL.md").write_text("local drift\n")
+            (installed / "extra.txt").write_text("remove me\n")
+
+            result = run_sync(sync_args(root, skills_root, force=True, delete_extraneous=True))
+
+            self.assertEqual(0, result)
+            self.assertEqual((skill_root / "SKILL.md").read_text(), (installed / "SKILL.md").read_text())
+            self.assertFalse((installed / "extra.txt").exists())
 
 
 if __name__ == "__main__":
