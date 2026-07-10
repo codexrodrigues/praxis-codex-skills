@@ -2028,13 +2028,18 @@
                        "status":  "active",
                        "compatibility":  "0.x",
                        "dependencies":  [
+                                            "praxis-ai-authoring-manifests",
+                                            "praxis-ai-registry-ingestion",
+                                            "praxis-config-ai-registry-manifests",
+                                            "praxis-charts-runtime-data",
+                                            "praxis-charts-authoring-settings",
                                             "praxis-charts-authoring-catalogs",
                                             "praxis-charts-analytics-interactions",
                                             "praxis-charts-echarts-engine-boundary",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "DA8C5610AFDE60AE2DD59E007CA36E28E2719EDD51FD1392548AD31754CDE59B",
-                       "treeSha256":  "F6A38CCB7CEC835EDB8A098167BABB4EFA1A056E3EFBA11B6C08C2F7E74A7C45"
+                       "skillMdSha256":  "1FC22644194CCADEB56DD9043C8DA784CF4E87F436930EC6C82A407F19085E08",
+                       "treeSha256":  "3F9DD512A7EF579E93016853F8065B4F6DB2610EE5BEB0D9A641144311C4ACF5"
                    },
                    {
                        "name":  "praxis-navigation-container-composition-events",

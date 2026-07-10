@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-charts-ai-handler-contracts/
-- Descricao atual: Use when Codex must implement, audit, or consume @praxisui/charts AI handler contracts: PRAXIS_CHARTS_AUTHORING_MANIFEST operations, editable targets, compile-domain-patch handlers, chart.document.set, chart.type.set, series.add/remove, axis.configure, data.resource.bind, queryContext.set, crossFilter/drilldown/selection configure, validators, failure modes, edit plans, generated AI registry assets, and assistant chart authoring.
+- Descricao atual: Use when Codex must implement, audit, or consume executable @praxisui/charts authoring operations across PRAXIS_CHARTS_AUTHORING_MANIFEST, target resolution, validators, compile-domain-patch handlers, compiled patch evidence, canonical chartDocument/queryContext/event writes, registry projection, and editor/runtime round-trip.
 
 ## Classificacao inicial
 
