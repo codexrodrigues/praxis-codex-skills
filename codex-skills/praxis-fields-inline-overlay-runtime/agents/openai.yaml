@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Fields Inline Overlays"
   short_description: "Audit inline overlay semantics"
-  default_prompt: "Use $praxis-fields-inline-overlay-runtime to implement or audit Praxis Dynamic Fields inline filter overlays, applyMode, apply/cancel/clear actions, value shapes, and surface tokens."
+  default_prompt: "Use $praxis-fields-inline-overlay-runtime to implement or audit @praxisui/dynamic-fields package inline filter overlays, applyMode, apply/cancel/clear actions, value shapes, and surface tokens."

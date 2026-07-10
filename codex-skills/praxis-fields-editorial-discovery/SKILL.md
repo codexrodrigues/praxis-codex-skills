@@ -1,9 +1,11 @@
 ---
 name: praxis-fields-editorial-discovery
-description: Use when changing Praxis Dynamic Fields editorial descriptors, ComponentMetadataRegistry entries, component doc metadata, field catalogs, inventory, metadata-editor/dynamic-form discovery, i18n copy, control friendly names/icons/tags, or any case where a field renders at runtime but must also be discoverable by authoring tools.
+description: Use when changing @praxisui/dynamic-fields or praxis-dynamic-fields package editorial descriptors, ComponentMetadataRegistry entries, component doc metadata, field catalogs, inventory, metadata-editor/dynamic-form discovery, i18n copy, control friendly names/icons/tags, or any case where a field renders at runtime but must also be discoverable by authoring tools.
 ---
 
 # Praxis Fields Editorial Discovery
+
+This `praxis-fields-*` plus `praxis-dynamic-fields-editorial` skill family is the canonical Codex skill surface for `@praxisui/dynamic-fields` and `projects/praxis-dynamic-fields`; do not create parallel dynamic-fields guidance unless this family cannot express a proven contract gap.
 
 Use this skill when a field must be found, explained, configured, or selected by Praxis authoring tools. Runtime rendering alone is not enough for package-owned `@praxisui/dynamic-fields` controls.
 

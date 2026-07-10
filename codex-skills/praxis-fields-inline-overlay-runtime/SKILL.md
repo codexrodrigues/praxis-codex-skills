@@ -1,9 +1,11 @@
 ---
 name: praxis-fields-inline-overlay-runtime
-description: Use when Codex must implement, audit, or consume @praxisui/dynamic-fields inline filter controls and overlays: inline* controlTypes, praxis-filter promotion, inlineOverlay.applyMode auto/explicit, apply/cancel/clear actions, draft versus committed value, overlay/panel tokens, CDK layer issues, clearButton, inlineAutoSize, inline context tooltips, compact toolbar value shapes, and inline filter docs/catalogs.
+description: Use when Codex must implement, audit, or consume @praxisui/dynamic-fields or praxis-dynamic-fields package inline filter controls and overlays: inline* controlTypes, praxis-filter promotion, inlineOverlay.applyMode auto/explicit, apply/cancel/clear actions, draft versus committed value, overlay/panel tokens, CDK layer issues, clearButton, inlineAutoSize, inline context tooltips, compact toolbar value shapes, and inline filter docs/catalogs.
 ---
 
 # Praxis Fields Inline Overlay Runtime
+
+This `praxis-fields-*` plus `praxis-dynamic-fields-editorial` skill family is the canonical Codex skill surface for `@praxisui/dynamic-fields` and `projects/praxis-dynamic-fields`; do not create parallel dynamic-fields guidance unless this family cannot express a proven contract gap.
 
 Use this skill for compact inline filter controls in `@praxisui/dynamic-fields`. Inline controls are package-owned compact field renderers with a runtime/filter contract; they are not default form controls unless the authoring context is explicitly filter-focused.
 
