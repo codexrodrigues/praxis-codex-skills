@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis HTTP LLM"
+  short_description: "Validate LLM HTTP surface"
+  default_prompt: "Use $skill-name to inspect praxisui-http-examples LLM_SURFACE, LLM_BOOTSTRAP, llm_bootstrap.json, LLM common questions, smoke scripts, safe-first lanes, and CI baseline."
+
+policy:
+  allow_implicit_invocation: true

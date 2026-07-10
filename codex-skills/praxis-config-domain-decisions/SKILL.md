@@ -76,4 +76,5 @@ For public decision/materialization changes, review `docs/ai/**`, `docs/domain-c
 - Use `praxis-config-agentic-authoring-streaming` when turn streams route into shared rule/domain knowledge authoring.
 - Use `praxis-config-api-metadata-grounding` when decisions depend on API metadata, Domain Catalog, Project Knowledge, or resource candidates.
 - Use `praxis-api-quickstart-cockpit-http-validation` and `praxis-api-quickstart-domain-pilots` for downstream proof of domain-rule/domain-knowledge materializations in the reference host.
+- Use `praxis-http-examples-contract-surfaces` and `praxis-http-examples-llm-smoke` when governed decision examples or read-only LLM lanes are affected.
 - Use `praxis-metadata-discovery-capabilities` when materializations project to backend resource actions, surfaces, capabilities, or option sources.
