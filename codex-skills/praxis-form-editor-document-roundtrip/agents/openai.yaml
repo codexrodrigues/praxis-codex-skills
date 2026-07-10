@@ -1,7 +1,7 @@
 interface:
   display_name: "Praxis Form Editor Document"
   short_description: "Round-trip form editor documents"
-  default_prompt: "Use $praxis-form-editor-document-roundtrip to inspect DynamicFormAuthoringDocument, Settings Panel apply/save/reset, bindings, context snapshots, diagnostics, and editor round-trip."
+  default_prompt: "Use $praxis-form-editor-document-roundtrip to inspect @praxisui/dynamic-form DynamicFormAuthoringDocument, Settings Panel apply/save/reset, bindings, context snapshots, diagnostics, and editor round-trip."
 
 policy:
   allow_implicit_invocation: true

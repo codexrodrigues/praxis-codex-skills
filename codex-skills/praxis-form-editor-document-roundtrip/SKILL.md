@@ -1,9 +1,11 @@
 ---
 name: praxis-form-editor-document-roundtrip
-description: Use when Codex must work on @praxisui/dynamic-form DynamicFormAuthoringDocument, editor capability apply plans, Settings Panel round-trip, bindings, contextSnapshot, presentation snapshots, schema preferences, backConfig, legacy editor payload migration, diagnostics, apply/save/reset, or runtime/editor synchronization.
+description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package DynamicFormAuthoringDocument, editor capability apply plans, Settings Panel round-trip, bindings, contextSnapshot, presentation snapshots, schema preferences, backConfig, legacy editor payload migration, diagnostics, apply/save/reset, or runtime/editor synchronization.
 ---
 
 # Praxis Form Editor Document Roundtrip
+
+This `praxis-form-*` skill family is the canonical Codex skill surface for `@praxisui/dynamic-form` and `projects/praxis-dynamic-form`; do not create parallel `praxis-dynamic-form-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for the canonical authoring document contract of `@praxisui/dynamic-form`. The editor document is the complete snapshot exchanged by Settings Panel/editor surfaces; runtime discovery values are evidence, not persisted semantic ownership.
 

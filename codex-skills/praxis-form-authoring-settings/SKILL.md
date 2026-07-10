@@ -1,9 +1,11 @@
 ---
 name: praxis-form-authoring-settings
-description: Use when Codex must work on @praxisui/dynamic-form authoring, Settings Panel integration, config editor, layout editor, behavior editor, rules editor, messages editor, hooks editor, actions editor, JSON config editor, widget config editor, apply/save/reset, DynamicFormAuthoringDocument, schema preferences, presentation snapshots, or runtime/editor round-trip.
+description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package authoring, Settings Panel integration, config editor, layout editor, behavior editor, rules editor, messages editor, hooks editor, actions editor, JSON config editor, widget config editor, apply/save/reset, DynamicFormAuthoringDocument, schema preferences, presentation snapshots, or runtime/editor round-trip.
 ---
 
 # Praxis Form Authoring Settings
+
+This `praxis-form-*` skill family is the canonical Codex skill surface for `@praxisui/dynamic-form` and `projects/praxis-dynamic-form`; do not create parallel `praxis-dynamic-form-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for Dynamic Form authoring and Settings Panel flows. A change is incomplete when runtime config works but the visual editor cannot show, edit, apply, save, reset, reopen, or round-trip the same semantics.
 For the canonical document/apply-plan contract itself, load `praxis-form-editor-document-roundtrip`. For action or hook editor details, pair with `praxis-form-actions-hooks-runtime`.

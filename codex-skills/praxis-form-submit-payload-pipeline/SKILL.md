@@ -1,9 +1,11 @@
 ---
 name: praxis-form-submit-payload-pipeline
-description: Use when Codex must inspect, change, or test @praxisui/dynamic-form submit payload normalization, prepareSubmitPayload, normalizeSubmitPayload, normalizeDateArrays, local/transient fields, submitPolicy, entity lookup payloadMode, dirty-field filtering, nested array item schemas, or submit validation.
+description: Use when Codex must inspect, change, or test @praxisui/dynamic-form or praxis-dynamic-form package submit payload normalization, prepareSubmitPayload, normalizeSubmitPayload, normalizeDateArrays, local/transient fields, submitPolicy, entity lookup payloadMode, dirty-field filtering, nested array item schemas, or submit validation.
 ---
 
 # Praxis Form Submit Payload Pipeline
+
+This `praxis-form-*` skill family is the canonical Codex skill surface for `@praxisui/dynamic-form` and `projects/praxis-dynamic-form`; do not create parallel `praxis-dynamic-form-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for the canonical client-side submit pipeline of `@praxisui/dynamic-form`. The submit payload is a projection of form value plus field metadata; do not patch payload shape in host components when the issue belongs to metadata, `@praxisui/core`, or backend DTO/schema semantics.
 

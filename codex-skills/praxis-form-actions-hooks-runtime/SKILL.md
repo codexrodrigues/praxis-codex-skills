@@ -1,9 +1,11 @@
 ---
 name: praxis-form-actions-hooks-runtime
-description: Use when Codex must work on @praxisui/dynamic-form actions, hooks, PraxisFormActionsComponent, action authoring, global action refs, surface open payloads, action visibility/shortcuts, submit/cancel/reset/custom action behavior, hook registries, or action editor round-trip.
+description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package actions, hooks, PraxisFormActionsComponent, action authoring, global action refs, surface open payloads, action visibility/shortcuts, submit/cancel/reset/custom action behavior, hook registries, or action editor round-trip.
 ---
 
 # Praxis Form Actions Hooks Runtime
+
+This `praxis-form-*` skill family is the canonical Codex skill surface for `@praxisui/dynamic-form` and `projects/praxis-dynamic-form`; do not create parallel `praxis-dynamic-form-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for Dynamic Form action surfaces and hook execution. Actions and hooks are runtime materializations of declared `FormConfig`, global action catalogs, and hook registries; do not implement host-local command parsing or keyword-driven routing.
 

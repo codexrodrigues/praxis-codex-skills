@@ -1,9 +1,11 @@
 ---
 name: praxis-form-ai-rules-validation
-description: Use when Codex must inspect, change, or validate @praxisui/dynamic-form AI authoring: authoring manifests, component edit plans, form AI catalogs, dynamic form rules, visual block guidance, Json Logic, diagnostics, rule authoring context, context packs, agentic turn flow, AI registry ingestion, or assistant Playwright flows.
+description: Use when Codex must inspect, change, or validate @praxisui/dynamic-form or praxis-dynamic-form package AI authoring: authoring manifests, component edit plans, form AI catalogs, dynamic form rules, visual block guidance, Json Logic, diagnostics, rule authoring context, context packs, agentic turn flow, AI registry ingestion, or assistant Playwright flows.
 ---
 
 # Praxis Form AI Rules Validation
+
+This `praxis-form-*` skill family is the canonical Codex skill surface for `@praxisui/dynamic-form` and `projects/praxis-dynamic-form`; do not create parallel `praxis-dynamic-form-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for Dynamic Form AI authoring, rules, and validation. Form AI must operate through declared semantic contracts: component authoring manifest, component edit plans, rule authoring context, diagnostics, allowed targets/properties, context packs, and registry ingestion. It must not route primary intent through local keyword matching.
 
