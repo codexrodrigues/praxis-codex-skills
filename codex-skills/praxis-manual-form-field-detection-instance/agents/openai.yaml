@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Manual Fields"
+  short_description: "Manual form field detection and instance state"
+  default_prompt: "Use $praxis-manual-form-field-detection-instance to audit projected pdx fields, FormGroup adoption, ManualFormInstance state, seeds, and field key resolution."

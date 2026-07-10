@@ -237,8 +237,12 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-metadata-editor-cascade-normalization`: cascade manager, `optionSource` dependency shapes, backend `x-ui` preservation, schema normalization, form factory, contextual validators, and remote-source editor coverage.
 - `praxis-metadata-editor-consumer-bridges`: dynamic-form, table, manual-form, and Page Builder bridges that host `FieldMetadataEditorComponent`, `DynamicEditorRendererComponent`, or `CascadeManagerTabComponent`.
 - `praxis-metadata-editor-ai-validation`: metadata-editor authoring manifest, capabilities, context packs, AI registry projection, and declared operation safety.
-- `praxis-manual-form-runtime-bridge`: manual-form runtime, host `FormGroup` adoption, field autodetection, autosave, toolbar, persistence, and metadata-editor bridge.
-- `praxis-manual-form-ai-authoring`: manual-form config editor, Settings Panel, authoring manifest, AI capabilities, formRules, autosave/toolbar operations, and registry/docs validation.
+- `praxis-manual-form-runtime-bridge`: manual-form runtime umbrella for host `FormGroup` adoption, field autodetection, autosave, toolbar, persistence, and metadata-editor bridge.
+- `praxis-manual-form-field-detection-instance`: projected `pdx-*` detection, `ManualFormInstance`, seed creation, metadata streams, bound components, `usePathNames`, and field key resolution.
+- `praxis-manual-form-autosave-persistence`: `saveDraft`, `resetToSeed`, `ASYNC_CONFIG_STORAGE`, persistence options, storage keys, debounce, SSR-safe storage, and draft reload.
+- `praxis-manual-form-toolbar-metadata-bridge`: `enableCustomization`, floating field toolbar, `pdxManualEdit`, Settings Panel, lazy metadata-editor bridge, and JSON Merge Patch diagnostics.
+- `praxis-manual-form-ai-authoring`: manual-form authoring umbrella for config editor, Settings Panel, authoring manifest, AI capabilities, formRules, autosave/toolbar operations, and registry/docs validation.
+- `praxis-manual-form-rules-agentic`: manual-form component edit plans, `formRules`, `formRulesState`, JSON Logic, agentic turn flow, context packs, governed rule handoff, and registry projection.
 - `praxis-editorial-forms-runtime`: editorial-form journeys, snapshots, fallback, presentation, diagnostics, operational events, renderers, i18n, and labs.
 - `praxis-editorial-forms-adapters-ai`: editorial data block adapters, optional dynamic-form adapter, dataCollection binding, AI manifest, field binding, and registry validation.
 - `praxis-crud-runtime-openmodes`: CRUD runtime, `CrudLauncherService`, route/modal/drawer open modes, drawer adapter, dynamic-form dialog host, and table/form orchestration.

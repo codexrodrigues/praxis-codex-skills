@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Manual Rules AI"
+  short_description: "Manual form rules and agentic authoring"
+  default_prompt: "Use $praxis-manual-form-rules-agentic to audit PRAXIS_MANUAL_FORM_AUTHORING_MANIFEST, component edit plans, formRules JSON Logic, config editor, agentic turn flow, and registry projection."

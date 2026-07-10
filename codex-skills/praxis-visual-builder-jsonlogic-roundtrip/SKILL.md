@@ -13,6 +13,7 @@ Pair it with:
 - `praxis-visual-builder-schemas-templates` for field schemas, target property schemas, template-compatible rules, and context variables.
 - `praxis-visual-builder-ai-validation` for manifest operation `condition.set`, `effect.set`, and `dsl.roundTrip.validate`.
 - `praxis-form-ai-rules-validation` when exported form rules materialize in dynamic-form behavior.
+- `praxis-manual-form-rules-agentic` when `FormLayoutRule` JSON Logic is authored or round-tripped through manual-form `formRules`/`formRulesState`.
 - `praxis-core-runtime-contracts` when shared `JsonLogicExpression`, `JsonLogicValue`, `FormLayoutRule`, or `RULE_PROPERTY_SCHEMA` contracts change.
 
 ## Source Audit

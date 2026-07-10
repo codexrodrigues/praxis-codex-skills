@@ -7,6 +7,13 @@ description: Use when implementing or auditing `@praxisui/manual-form` runtime b
 
 Use this skill when the host owns the Angular template but Praxis must still govern metadata, persistence, hot updates, field editing, and autosave. `@praxisui/manual-form` is not a local convenience wrapper; it is the canonical runtime for declarative manual Praxis forms.
 
+For focused work, load the narrow companion first:
+
+- `praxis-manual-form-field-detection-instance` for projected `pdx-*` controls, host `FormGroup` adoption, `ManualFormInstance`, seeds, metadata streams, and field-key resolution.
+- `praxis-manual-form-autosave-persistence` for `saveDraft()`, `resetToSeed()`, `ASYNC_CONFIG_STORAGE`, storage keys, debounce, and persisted reload.
+- `praxis-manual-form-toolbar-metadata-bridge` for `enableCustomization`, field toolbar, `pdxManualEdit`, Settings Panel, metadata-editor lazy bridge, and JSON Merge Patch behavior.
+- `praxis-manual-form-rules-agentic` for manifest-backed AI operations, `formRules`, config editor, and registry projections that touch runtime behavior.
+
 ## Canonical Boundary
 
 `@praxisui/manual-form` owns:
@@ -49,6 +56,17 @@ Inspect before editing:
 - Use `ManualFieldKeyService` for path/last-segment resolution and treat ambiguous matches as a diagnostic.
 - Preserve `ManualFormInstance.patchFieldMetadata()` as the patch application point so `FormConfig`, `FieldMetadata`, `FormGroup`, bound components, and state streams stay synchronized.
 - Treat JSON Merge Patch `null` values from metadata-editor as removals.
+
+## Inventory Before New Contract
+
+Before adding inputs, exports, DTOs, metadata fields, or host conventions, classify the need:
+
+- `ja-suportado-so-ux`: the runtime state already exists but is poorly surfaced in toolbar, docs, examples, or diagnostics.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: a consumer uses local names for concepts already owned by `FieldMetadata`, `ManualFormInstance`, persistence options, or metadata-editor patches.
+- `suportado-parcialmente`: the owner exists but a projected control, bridge path, autosave path, or validation proof is incomplete.
+- `lacuna-real-de-contrato`: no existing runtime, metadata, storage, bridge, or authoring contract can express the required behavior.
+
+Only `lacuna-real-de-contrato` justifies a new public contract. Otherwise correct the canonical manual-form path or its materialization.
 
 ## Persistence And Autosave
 
