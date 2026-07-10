@@ -12,6 +12,13 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 - Caminho: codex-skills/praxis-dto-annotations/
 - Descricao atual: Annotate or review Java DTOs, FilterDTOs, command DTOs, and OpenAPI metadata for hosts that use praxis-metadata-starter. Use when Codex must fill or correct @Schema, @UISchema, @Filterable, @DomainGovernance, AiUsagePolicy, FieldControlType, x-ui labels/help text/icons/groups/order/visibility/valuePresentation/numericFormat/mask, table display formatting, option endpoints, optionSource/entityLookup metadata, or PT-BR domain documentation in Praxis backend projects.
 
+## Classificacao inicial
+
+- Projeto canonico: praxis-metadata-starter
+- Area: transversal
+- Risco: alto
+- Estado: backlog
+
 ## Foco da revisao
 
 - Confirmar aderencia aos recursos oficiais e atuais da plataforma Praxis.
@@ -28,9 +35,27 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 - [ ] Identificar guidance obsoleto, ambiguo, duplicado, local demais ou contrario ao contrato canonico.
 - [ ] Confirmar interoperacao com skills relacionadas declaradas no manifesto.
 - [ ] Revisar exemplos, templates, comandos e checklists para garantir que um agente consiga executar a tarefa sem lacunas criticas.
+- [ ] Mapear `AGENTS.md`, APIs publicas, implementacao, specs, docs, manifests, exemplos e consumidores diretamente relevantes.
+- [ ] Classificar cada gap como `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente` ou `lacuna-real-de-contrato`.
 - [ ] Atualizar `skillMdSha256` e `treeSha256` no manifesto quando houver mudanca.
 - [ ] Rodar `python3 scripts/preflight-python-fallbacks.py` apos qualquer ajuste.
 - [ ] Quando precisar de diagnostico focado, rodar `scripts/audit-praxis-skills.ps1 -Family praxis` ou `python3 scripts/audit-praxis-skills.py --family praxis`.
+
+## Prova operacional obrigatoria
+
+- [ ] Executar um cenario feliz representativo usando a skill revisada.
+- [ ] Executar um cenario de risco, ambiguidade ou edge case relevante para o escopo.
+- [ ] Executar um cenario adversarial em que a skill deve rejeitar workaround local, contrato paralelo ou decisao fora do owner canonico.
+- [ ] Rodar a menor validacao focal confiavel do codigo Praxis auditado e registrar comando e resultado.
+- [ ] Comparar o resultado produzido com as decisoes canonicas esperadas, sem considerar apenas o preflight estrutural.
+
+## Evidencias para encerramento
+
+- [ ] Registrar arquivos-fonte e contratos inspecionados.
+- [ ] Registrar alteracoes realizadas na skill, referencias, scripts ou metadata.
+- [ ] Registrar comandos locais, resultados, limitacoes e validacoes nao executadas.
+- [ ] Associar PR ou commit e publicar a auditoria final na issue.
+- [ ] Declarar se a skill ficou `aprovada-com-evidencia`, `implementada-sem-auditoria-funcional`, `precisa-reabertura` ou `skill-desatualizada-por-drift`.
 
 ## Criterios de aceite
 
@@ -39,3 +64,5 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 - Os recursos ricos do Praxis relacionados ao escopo da skill estao mencionados e roteados corretamente.
 - O agente usuario da skill sabe quando aplicar, quando combinar com outra skill e quando abrir follow-up de plataforma.
 - O manifesto permanece consistente, com hashes atualizados.
+- A prova operacional demonstra que a skill conduz pelo menos um fluxo real e rejeita um antipadrao relevante.
+- A issue contem evidencia suficiente para que outra pessoa reproduza a auditoria local.

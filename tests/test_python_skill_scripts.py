@@ -104,11 +104,19 @@ def write_issue_draft(repo_root: Path, family: str, skill_name: str) -> None:
         "## Skill\n\n"
         f"- Familia: {family}\n"
         f"- Caminho: codex-skills/{skill_name}/\n\n"
+        "## Classificacao inicial\n\n"
+        "- Projeto canonico: praxis-ui-angular\n"
+        "- Risco: medio\n\n"
         "## Checklist minimo\n\n"
         "- [ ] Rodar `python3 scripts/preflight-python-fallbacks.py` apos qualquer ajuste.\n"
         "- [ ] Quando precisar de diagnostico focado, rodar "
         f"`scripts/audit-praxis-skills.ps1 -Family {family}` ou "
-        f"`python3 scripts/audit-praxis-skills.py --family {family}`.\n"
+        f"`python3 scripts/audit-praxis-skills.py --family {family}`.\n\n"
+        "## Prova operacional obrigatoria\n\n"
+        "- [ ] Executar um cenario feliz representativo usando a skill revisada.\n"
+        "- [ ] Executar um cenario adversarial em que a skill deve rejeitar workaround local.\n\n"
+        "## Evidencias para encerramento\n\n"
+        "- [ ] Associar PR ou commit e publicar a auditoria final na issue.\n"
     )
 
 
@@ -365,6 +373,24 @@ class PythonSkillScriptTests(unittest.TestCase):
             errors = ISSUE_DRAFTS_MODULE.validate_drafts(root, ["praxis", "ergon-migration"])
 
             self.assertEqual([], errors)
+
+    def test_generate_issue_drafts_classifies_projects_and_risk(self) -> None:
+        praxis_ai = {"family": "praxis", "name": "praxis-ai-semantic-intent"}
+        metadata = {"family": "praxis", "name": "praxis-metadata-schema-contracts"}
+        metadata_editor = {"family": "praxis", "name": "praxis-metadata-editor-ai-validation"}
+
+        self.assertEqual("praxis-ui-angular", GENERATE_DRAFTS_MODULE.canonical_project(praxis_ai))
+        self.assertEqual("alto", GENERATE_DRAFTS_MODULE.risk_level(praxis_ai))
+        self.assertEqual("praxis-metadata-starter", GENERATE_DRAFTS_MODULE.canonical_project(metadata))
+        self.assertEqual("praxis-ui-angular", GENERATE_DRAFTS_MODULE.canonical_project(metadata_editor))
+        self.assertIn(
+            "## Escopo especifico do piloto",
+            GENERATE_DRAFTS_MODULE.draft_body({
+                **praxis_ai,
+                "path": "codex-skills/praxis-ai-semantic-intent/",
+                "description": "Test",
+            }),
+        )
 
     def test_generate_issue_drafts_check_accepts_current_generated_outputs(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

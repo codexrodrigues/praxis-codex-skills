@@ -12,6 +12,13 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 - Caminho: codex-skills/ergon-fieldspec-ui-contract/
 - Descricao atual: Validate and design Praxis metadata DTO, FilterDTO, option, OpenAPI x-ui, and Angular dynamic-field control contracts for Ergon/Archon migrations. Use when mapping @UISchema, @Filterable, schemas, filters, selects/options, date ranges, duplicate drafts, command DTOs, or when checking whether @praxisui Angular can render fields generated from Java annotations.
 
+## Classificacao inicial
+
+- Projeto canonico: ergon-migration
+- Area: migration
+- Risco: medio
+- Estado: backlog
+
 ## Foco da revisao
 
 - Confirmar que a skill conduz o processo Ergon/Archon sem redefinir contratos da plataforma Praxis.
@@ -28,9 +35,27 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 - [ ] Identificar guidance obsoleto, ambiguo, duplicado, local demais ou contrario ao contrato canonico.
 - [ ] Confirmar interoperacao com skills relacionadas declaradas no manifesto.
 - [ ] Revisar exemplos, templates, comandos e checklists para garantir que um agente consiga executar a tarefa sem lacunas criticas.
+- [ ] Mapear `AGENTS.md`, APIs publicas, implementacao, specs, docs, manifests, exemplos e consumidores diretamente relevantes.
+- [ ] Classificar cada gap como `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente` ou `lacuna-real-de-contrato`.
 - [ ] Atualizar `skillMdSha256` e `treeSha256` no manifesto quando houver mudanca.
 - [ ] Rodar `python3 scripts/preflight-python-fallbacks.py` apos qualquer ajuste.
 - [ ] Quando precisar de diagnostico focado, rodar `scripts/audit-praxis-skills.ps1 -Family ergon-migration` ou `python3 scripts/audit-praxis-skills.py --family ergon-migration`.
+
+## Prova operacional obrigatoria
+
+- [ ] Executar um cenario feliz representativo usando a skill revisada.
+- [ ] Executar um cenario de risco, ambiguidade ou edge case relevante para o escopo.
+- [ ] Executar um cenario adversarial em que a skill deve rejeitar workaround local, contrato paralelo ou decisao fora do owner canonico.
+- [ ] Rodar a menor validacao focal confiavel do codigo Praxis auditado e registrar comando e resultado.
+- [ ] Comparar o resultado produzido com as decisoes canonicas esperadas, sem considerar apenas o preflight estrutural.
+
+## Evidencias para encerramento
+
+- [ ] Registrar arquivos-fonte e contratos inspecionados.
+- [ ] Registrar alteracoes realizadas na skill, referencias, scripts ou metadata.
+- [ ] Registrar comandos locais, resultados, limitacoes e validacoes nao executadas.
+- [ ] Associar PR ou commit e publicar a auditoria final na issue.
+- [ ] Declarar se a skill ficou `aprovada-com-evidencia`, `implementada-sem-auditoria-funcional`, `precisa-reabertura` ou `skill-desatualizada-por-drift`.
 
 ## Criterios de aceite
 
@@ -39,3 +64,5 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 - Os recursos ricos do Praxis relacionados ao escopo da skill estao mencionados e roteados corretamente.
 - O agente usuario da skill sabe quando aplicar, quando combinar com outra skill e quando abrir follow-up de plataforma.
 - O manifesto permanece consistente, com hashes atualizados.
+- A prova operacional demonstra que a skill conduz pelo menos um fluxo real e rejeita um antipadrao relevante.
+- A issue contem evidencia suficiente para que outra pessoa reproduza a auditoria local.
