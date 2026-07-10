@@ -35,6 +35,12 @@ Status after Wave 6, with `codex-skills/praxis-skills.manifest.json` at 146 skil
 
 There are no Praxis skills currently marked `active-needs-curation`.
 
+Follow-up live source audit:
+
+- `docs/praxis-angular-live-coverage-audit-2026-07.md`
+
+That audit confirms that 146 active skills are sufficient for strong canonical Angular coverage, while 180-200 remains a reasonable upper band for exhaustive Angular-only coverage. The next recommended work is not a broad skill-count wave, but focused curation for package-name discoverability, source parity, and validation gates in high-risk Angular surfaces.
+
 The repository has moved past the minimum useful coverage tier and is now inside the strong canonical coverage band for the Angular side. The current 146-skill set is no longer just an initial foundation: it encodes substantial platform knowledge across runtime, authoring, AI, validation, docs, metadata, config, quickstart proof, HTTP examples, and landing/public docs.
 
 It should still not be treated as exhaustive coverage. The largest remaining risk is not raw skill count, but whether each high-complexity Praxis surface has enough canonical guidance to prevent local workarounds, keyword-based routing, duplicated contracts, or weak validation choices during future implementation.
@@ -239,17 +245,12 @@ Target: 25-35 additional skills.
 
 Do not create another batch of broad skill-generation issues just to increase the count. The next backlog should be driven by audit findings, curation gaps, and observed implementation misses.
 
-Recommended next issues:
+Use the July 2026 live audit as the current source for the next small backlog:
 
-1. Run a live monorepo coverage audit for the most complex Angular packages: `praxis-core`, `praxis-table`, `praxis-dynamic-form`, `praxis-dynamic-fields`, `praxis-page-builder`, `praxis-visual-builder`, `praxis-ai`, and `praxis-charts`.
-2. Verify whether the 146 current skills still match source reality after recent platform changes, especially public APIs, authoring manifests, AI contracts, docs registries, quickstart scripts, and HTTP examples.
-3. Create only focused follow-up issues where the audit finds one of these signals:
-   - recurring missing canonical guidance;
-   - skill guidance drifting from source;
-   - high-risk runtime/API surface not covered by a focused skill;
-   - validation gates missing or too broad;
-   - a public docs/example/playground projection that can mislead future implementation;
-   - any guidance that still encourages local adapters, keyword routing, duplicate contracts, or frontend-only semantics.
+1. Curate dynamic-form skill discoverability and source parity.
+2. Curate dynamic-fields skill discoverability and editorial chain parity.
+3. Curate page-builder agentic validation gates.
+4. Curate package-name aliases for table-rule-builder and settings-related routing.
 
 Recommended near-term target:
 
