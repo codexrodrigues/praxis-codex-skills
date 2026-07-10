@@ -38,6 +38,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.
 Se PowerShell não estiver disponível, use os fallbacks Python canônicos:
 
 ```bash
+python3 scripts/preflight-python-fallbacks.py
 python3 scripts/audit-praxis-skills.py --family praxis
 python3 scripts/audit-praxis-skills.py --family ergon-migration
 ```
