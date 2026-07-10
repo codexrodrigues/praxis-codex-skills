@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-config-api-metadata-grounding/
-- Descricao atual: Use when Codex must work on praxis-config-starter API metadata and grounding: api_metadata, /api/praxis/config/api-catalog/ingest, /api/praxis/config/ai-context/**, ApiMetadataIngestionService, schema/context retrieval, RAG vector store, project knowledge, component corpus retrieval, candidate resources, API Catalog Q&A, and grounding diagnostics.
+- Descricao atual: Use when Codex must implement, audit, or consume Praxis API grounding: api_metadata ingestion and search, release-scoped RAG documents, /api/praxis/config/ai-context/**, /schemas/filtered resolution, Project Knowledge retrieval, component corpus evidence, resource candidates, consultative API Catalog answers, or grounding provenance and diagnostics.
 
 ## Classificacao inicial
 
