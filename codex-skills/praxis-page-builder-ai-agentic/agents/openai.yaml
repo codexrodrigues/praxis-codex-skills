@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Page Builder AI"
   short_description: "Agentic page authoring and AI catalogs"
-  default_prompt: "Use $praxis-page-builder-ai-agentic to validate an agentic Page Builder change."
+  default_prompt: "Use $praxis-page-builder-ai-agentic to validate an @praxisui/page-builder agentic change and choose between build/spec, quick smoke, and full backend/SSE/LLM Playwright gates."

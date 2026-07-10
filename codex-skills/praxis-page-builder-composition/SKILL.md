@@ -1,6 +1,6 @@
 ---
 name: praxis-page-builder-composition
-description: Use when Codex must inspect, change, or scaffold @praxisui/page-builder composition behavior: DynamicPageBuilderComponent, WidgetPageDefinition, praxis-dynamic-page runtime materialization, component palette, ComponentMetadataRegistry, widget keys, canvas layout, page.composition.links, connection editor graph, nestedPath component-port endpoints, page state, global-action endpoints, or public API.
+description: Use when Codex must inspect, change, or scaffold @praxisui/page-builder composition behavior: DynamicPageBuilderComponent, WidgetPageDefinition, praxis-dynamic-page runtime materialization, component palette, ComponentMetadataRegistry, widget keys, canvas layout, page.composition.links, connection editor graph, nestedPath component-port endpoints, page state, global-action endpoints, public API, or composition changes that feed Page Builder agentic validation gates.
 ---
 
 # Praxis Page Builder Composition
@@ -89,4 +89,4 @@ Use the smallest reliable gate:
 - public API changes: build `praxis-page-builder` and at least one direct consumer when feasible.
 - browser interaction changes: local Playwright lane for palette insertion or page-builder authoring, not GitHub Actions as the first diagnostic tool.
 
-When validation is partial, state exactly which specs or browser lanes ran and which runtime/materialization gates remain.
+When validation is partial, state exactly which specs or browser lanes ran and which runtime/materialization gates remain. If composition changes alter agentic context, runtime observations, preview/apply, backend tools, manifests, SSE, or LLM-backed page edits, pair with `praxis-page-builder-ai-agentic` and use the full local agentic Playwright gate required by `projects/praxis-page-builder/AGENTS.md`; the quick smoke is diagnostic, not a substitute for that gate.

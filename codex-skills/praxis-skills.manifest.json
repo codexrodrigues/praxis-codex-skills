@@ -1569,8 +1569,8 @@
                                             "praxis-ai-registry-ingestion",
                                             "praxis-ai-semantic-intent"
                                         ],
-                       "skillMdSha256":  "89E39845066EAE51301E0093CC556D4847B7F7F5645007F39764937D743D19BB",
-                       "treeSha256":  "2315C2F17887C938ACC38FEF1E8AF27A1385CF5B91AE67B5067CCBECDDAFC793"
+                       "skillMdSha256":  "5BFD1D52EE01370E5E2E140C55247A6E79E66FAB28CBE96276E6D8D72055A092",
+                       "treeSha256":  "7E5F156A0371E9D7CA5779603E044B356D52EA09D1337BF2B009A180C8A3CF3A"
                    },
                    {
                        "name":  "praxis-page-builder-authoring",
@@ -1581,8 +1581,8 @@
                        "dependencies":  [
                                             "praxis-page-builder-composition"
                                         ],
-                       "skillMdSha256":  "4373CF5CF439C84149AFEC6D03AC75999767F06BFCE7BD7CABD7D9D9D244B8C6",
-                       "treeSha256":  "6233F14A2EF743C49ABFD80823B7B52F1CDCDDCA8DCBF1EA9E14692794CA4FBC"
+                       "skillMdSha256":  "1167756CC7D2EDA08C530A803937BDC5B316A628370ACD0E8DB6FAB2F214075B",
+                       "treeSha256":  "46724FF9689B5F79408CCCE039DB5C4305787FDFF938DF9FFBBEB860569F0E6B"
                    },
                    {
                        "name":  "praxis-page-builder-composition",
@@ -1598,8 +1598,8 @@
                                             "praxis-rich-content-integration-adapters",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "D46A18985271F9C6AC354C3E7369348F2CD0D7F73651BBDFD3FA3FBD11234AFA",
-                       "treeSha256":  "1C528D29F01FDBD1D3FEC19CF5117377003A674734993F87F31A368CF033E1AB"
+                       "skillMdSha256":  "D053499ED5A062AB831D09BB92E6838FDA7250AC5BEDC1594641126362987C72",
+                       "treeSha256":  "12493404B11F4DEC48694E62785276CE6BB33CD61F9D9439E50B3BA3B7B532B7"
                    },
                    {
                        "name":  "praxis-resource-entity-lookup-backend",
