@@ -13,6 +13,13 @@ where they exist; defects owned by `praxis-ui-angular`,
 `praxis-metadata-starter`, or `praxis-config-starter` must become
 `Praxis Platform Follow-up` evidence instead of Ergon-local platform patches.
 
+Before editing Angular, docs, DTO/schema wiring, tests, or generated migration
+artifacts, run the duplicate-module-root guard from
+`ergon-migration-orchestration` for the target module/artifactId. Do not accept
+browser or test evidence produced from a competing temporary root such as
+`migracao-package/<module>` unless the user explicitly selected that root for
+the task.
+
 Treat Angular as the cockpit for governed Praxis materializations, not as the
 source of business semantics. The UI may compose, bind, and visually verify
 metadata-driven resources, but it must not decide user intent, redefine field

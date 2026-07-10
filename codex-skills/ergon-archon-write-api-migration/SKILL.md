@@ -20,6 +20,12 @@ migration `AGENTS.md`. Classify the change as `docs-apenas`, `local-pequena`,
 `transversal`, `contrato-publico`, or `arquitetural`, and record the canonical
 owner in the phase plan/gate.
 
+Before editing Java, docs, tests, DTOs, resources, or build files, run the
+duplicate-module-root guard from `ergon-migration-orchestration` for the target
+module/artifactId. A passing unit or parity test in a temporary
+`migracao-package` clone is not implementation evidence for the versioned
+canonical migration module.
+
 Do not patch Praxis platform limitations inside the Ergon write endpoint or UI
 contract. Before introducing `@WorkflowAction`, `@UiSurface`, capabilities,
 availability rules, custom action models, or Angular workarounds, inventory the
