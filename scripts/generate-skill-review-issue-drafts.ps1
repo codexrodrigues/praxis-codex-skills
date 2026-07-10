@@ -95,6 +95,8 @@ $index = @(
     ''
     "Repo alvo: $Repository"
     ''
+    'Validacao local: `python3 scripts/validate-issue-drafts.py`'
+    ''
 )
 
 foreach ($skill in $skills) {
