@@ -61,13 +61,20 @@ def write_raw_skill(root: Path, directory_name: str, content: str) -> Path:
     return skill_root
 
 
-def sync_args(repo_root: Path, skills_root: Path, *, force: bool = False, delete_extraneous: bool = False):
+def sync_args(
+    repo_root: Path,
+    skills_root: Path,
+    *,
+    force: bool = False,
+    delete_extraneous: bool = False,
+    dry_run: bool = False,
+):
     return argparse.Namespace(
         repo_root=str(repo_root),
         family="praxis",
         manifest=None,
         skills_root=str(skills_root),
-        dry_run=False,
+        dry_run=dry_run,
         force=force,
         delete_extraneous_within_manifest=delete_extraneous,
     )
@@ -76,6 +83,17 @@ def sync_args(repo_root: Path, skills_root: Path, *, force: bool = False, delete
 def run_sync(args) -> int:
     with redirect_stdout(io.StringIO()):
         return SYNC_MODULE.sync(args)
+
+
+def audit_args(repo_root: Path, skills_root: Path):
+    return argparse.Namespace(
+        repo_root=str(repo_root),
+        family="praxis",
+        manifest=None,
+        skills_root=str(skills_root),
+        json=True,
+        fix_manifest=False,
+    )
 
 
 def manifest_entry(repo_root: Path, skill_root: Path) -> dict[str, str]:
@@ -642,26 +660,58 @@ class PythonSkillScriptTests(unittest.TestCase):
 
             self.assertEqual("local drift\n", (skills_root / "praxis-test" / "SKILL.md").read_text())
 
-    def test_sync_force_delete_extraneous_replaces_managed_skill_files(self) -> None:
+    def test_sync_force_converges_removed_files_without_touching_other_skill_directories(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             skills_root = root / "installed-skills"
             skill_root = write_skill(root, "praxis-test")
+            stale_source = skill_root / "references" / "obsolete.md"
+            stale_source.parent.mkdir()
+            stale_source.write_text("version one\n")
             write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
-            write_manifest(root, "ergon-migration", [])
+            other_skill = write_skill(root, "ergon-test")
+            write_manifest(root, "ergon-migration", [manifest_entry(root, other_skill)])
 
             self.assertEqual(0, run_sync(sync_args(root, skills_root)))
             installed = skills_root / "praxis-test"
             (installed / "SKILL.md").write_text("local drift\n")
-            (installed / "extra.txt").write_text("remove me\n")
+            self.assertTrue((installed / "references" / "obsolete.md").is_file())
+            installed_only = skills_root / "installed-only"
+            installed_only.mkdir()
+            (installed_only / "local.md").write_text("keep me\n")
+            other_installed = skills_root / "ergon-test"
+            other_installed.mkdir()
+            (other_installed / "SKILL.md").write_text("other family\n")
 
-            result = run_sync(sync_args(root, skills_root, force=True, delete_extraneous=True))
+            stale_source.unlink()
+            stale_source.parent.rmdir()
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+
+            dry_run_output = io.StringIO()
+            with redirect_stdout(dry_run_output):
+                self.assertEqual(0, SYNC_MODULE.sync(sync_args(root, skills_root, force=True, dry_run=True)))
+
+            self.assertIn("DRY-RUN remove extra file within managed skill", dry_run_output.getvalue())
+            self.assertTrue((installed / "references" / "obsolete.md").exists())
+
+            sync_output = io.StringIO()
+            with redirect_stdout(sync_output):
+                result = SYNC_MODULE.sync(sync_args(root, skills_root, force=True))
 
             self.assertEqual(0, result)
+            self.assertIn("Removed extra file within managed skill", sync_output.getvalue())
             self.assertEqual((skill_root / "SKILL.md").read_text(), (installed / "SKILL.md").read_text())
-            self.assertFalse((installed / "extra.txt").exists())
+            self.assertFalse((installed / "references" / "obsolete.md").exists())
+            self.assertFalse((installed / "references").exists())
+            self.assertEqual("keep me\n", (installed_only / "local.md").read_text())
+            self.assertEqual("other family\n", (other_installed / "SKILL.md").read_text())
+
+            report_output = io.StringIO()
+            with redirect_stdout(report_output):
+                self.assertEqual(0, AUDIT_MODULE.audit(audit_args(root, skills_root)))
+            report = json.loads(report_output.getvalue())
+            self.assertEqual(0, report["summary"]["drift"])
 
 
 if __name__ == "__main__":
     unittest.main()
-
