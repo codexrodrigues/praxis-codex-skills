@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Editorial Adapters"
+  short_description: "Editorial dataCollection adapters"
+  default_prompt: "Use $praxis-editorial-forms-data-collection-adapters to audit dataCollection blocks, adapter registry, dynamic-form adapter, config lookup, readiness diagnostics, and runtimeContext.formData."
