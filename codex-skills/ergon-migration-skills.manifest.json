@@ -27,8 +27,8 @@
                                             "praxis-dto-annotations",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "8A420CEDF6E24C865A692DAF10E5C556B560266CA8EC0544EBE024ADE5680F7A",
-                       "treeSha256":  "F58A6A797FA34BB5671BEB274977A9A6B938342A707441D4760E3215B2CD5C62"
+                       "skillMdSha256":  "F752A863EC03EF03B7032AF1E7ED12F7B89F79E7E5CE7FA8A06032E60A24D639",
+                       "treeSha256":  "428BDD290B3E662BEB598E5E24DC23C2AFB1F45267060E9129ADAE59A810FB2C"
                    },
                    {
                        "name":  "ergon-archon-read-api-migration",
@@ -125,8 +125,8 @@
                                             "praxis-angular-host-project",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "C132E60786603CAF78D74F8D4661D3920E14FD46ADD5E77F04EA01EC00DDFEB0",
-                       "treeSha256":  "5F475758FBBB7701B2B315BEC18B2C5673B6C26D7BF3DE076A5FE317AD2066B1"
+                       "skillMdSha256":  "F9D523714312B784CF96ED765DCA2F978FE7C3631DDFEA31DD65D2A20B111DDE",
+                       "treeSha256":  "2430102E14972411529ABF6B30955CFFC550F01A4246918DC0310F86CE7EA287"
                    },
                    {
                        "name":  "ergon-rule-migration-orchestration",
