@@ -123,23 +123,53 @@ def readme_body(repository: str, skills: list[dict[str, str]]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def generate(repo_root: Path, repository: str, draft_root: Path, readme_path: Path, families: list[str]) -> int:
+def expected_outputs(repo_root: Path, repository: str, draft_root: Path, readme_path: Path, families: list[str]) -> dict[Path, str]:
     skills = load_skills(repo_root, families)
+    outputs = {readme_path: readme_body(repository, skills)}
+    for skill in skills:
+        outputs[draft_root / f"{skill['name']}.md"] = draft_body(skill)
+    return outputs
+
+
+def check_generated_outputs(
+    repo_root: Path, repository: str, draft_root: Path, readme_path: Path, families: list[str]
+) -> list[str]:
+    outputs = expected_outputs(repo_root, repository, draft_root, readme_path, families)
+    errors: list[str] = []
+
+    for relative_path, expected in outputs.items():
+        path = repo_root / relative_path
+        if not path.exists():
+            errors.append(f"Missing generated file: {relative_path.as_posix()}")
+        elif path.read_text() != expected:
+            errors.append(f"Generated file is stale: {relative_path.as_posix()}")
+
+    expected_drafts = {path.name for path in outputs if path.parent == draft_root}
+    resolved_draft_root = repo_root / draft_root
+    if resolved_draft_root.exists():
+        for stale in sorted(resolved_draft_root.glob("*.md")):
+            if stale.name not in expected_drafts:
+                errors.append(f"Stale generated draft: {stale.relative_to(repo_root).as_posix()}")
+
+    return errors
+
+
+def generate(repo_root: Path, repository: str, draft_root: Path, readme_path: Path, families: list[str]) -> int:
+    outputs = expected_outputs(repo_root, repository, draft_root, readme_path, families)
     resolved_draft_root = repo_root / draft_root
     resolved_readme = repo_root / readme_path
     resolved_draft_root.mkdir(parents=True, exist_ok=True)
     resolved_readme.parent.mkdir(parents=True, exist_ok=True)
 
-    expected_files = {f"{skill['name']}.md" for skill in skills}
+    expected_files = {path.name for path in outputs if path.parent == draft_root}
     for stale in resolved_draft_root.glob("*.md"):
         if stale.name not in expected_files:
             stale.unlink()
 
-    for skill in skills:
-        (resolved_draft_root / f"{skill['name']}.md").write_text(draft_body(skill))
+    for relative_path, content in outputs.items():
+        (repo_root / relative_path).write_text(content)
 
-    resolved_readme.write_text(readme_body(repository, skills))
-    return len(skills)
+    return len(expected_files)
 
 
 def main() -> int:
@@ -149,11 +179,25 @@ def main() -> int:
     parser.add_argument("--draft-root", default=str(DEFAULT_DRAFT_ROOT))
     parser.add_argument("--readme", default=str(DEFAULT_README))
     parser.add_argument("--family", choices=sorted(MANIFEST_BY_FAMILY), action="append")
+    parser.add_argument("--check", action="store_true", help="Check generated files without writing.")
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
     families = args.family or sorted(MANIFEST_BY_FAMILY)
-    count = generate(repo_root, args.repository, Path(args.draft_root), Path(args.readme), families)
+    draft_root = Path(args.draft_root)
+    readme_path = Path(args.readme)
+
+    if args.check:
+        errors = check_generated_outputs(repo_root, args.repository, draft_root, readme_path, families)
+        if errors:
+            print("Skill review issue drafts are not up to date.")
+            for error in errors:
+                print(f" - {error}")
+            return 1
+        print("Skill review issue drafts are up to date.")
+        return 0
+
+    count = generate(repo_root, args.repository, draft_root, readme_path, families)
     print(f"Generated {count} issue draft(s).")
     return 0
 
