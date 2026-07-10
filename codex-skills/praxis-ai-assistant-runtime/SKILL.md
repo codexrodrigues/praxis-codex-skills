@@ -7,12 +7,20 @@ description: Use when changing or reviewing `@praxisui/ai` assistant runtime, AI
 
 Use this skill for `@praxisui/ai` as shell, UX, HTTP client, history, and materializer of governed backend/LLM decisions. Do not turn browser UI into the primary intent router.
 
+For deeper work, pair this umbrella skill with:
+
+- `praxis-ai-shell-session-context` for shell, dock, session host, session registry, and safe context snapshots.
+- `praxis-ai-composer-attachments-quick-replies` for composer actions, quick replies, clarifications, attachments, message replay, and voice input.
+- `praxis-ai-turn-orchestration-transport` for turn controllers, lifecycle phases, runtime observations, stream events, and terminal result handling.
+- `praxis-ai-backend-config-contracts` for endpoint resolution, AI config tokens, headers, provider/model endpoints, manifest endpoints, and Praxis Config boundary.
+
 ## Canonical Boundary
 
 - `@praxisui/ai` sends prompt, messages, context, runtime state, capabilities, manifests, observations, and metadata to backend/LLM contracts.
 - Praxis Config backend endpoints under `/api/praxis/config/ai/**` own provider calls, model execution, streams, and persisted AI config.
 - Frontend logic may manage interaction state, accessibility, history, replay, confirmations, quick replies, clarifications, diagnostics, preview rendering, and apply of already resolved operations.
 - Runtime component observations are untrusted frontend evidence and must be marked with the trust boundary before backend grounding.
+- `PraxisAssistantContextSnapshot` carries safe summaries and digests; shell/session code should not invent component semantics or transport raw runtime payloads.
 
 ## Required Inventory
 
@@ -23,6 +31,7 @@ Inspect:
 - `src/lib/core/services/ai-backend-api.service.ts`
 - `src/lib/core/services/agentic-authoring-turn-client.service.ts`
 - `src/lib/core/services/assistant-turn-orchestrator.service.ts`
+- `src/lib/core/models/assistant-context.models.ts`
 - `src/lib/core/models/assistant-turn.models.ts`
 - `src/lib/ui/assistant-shell/**`
 - `src/lib/ui/ai-assistant/**`

@@ -7,6 +7,8 @@ description: Use when auditing or changing Praxis AI intent handling, governed d
 
 Use this skill to enforce the Praxis rule: user intent is resolved semantically through governed AI/LLM contracts, manifests, capabilities, catalogs, context, and declared tools. Browser keyword routing is not the primary decision mechanism.
 
+Pair with `praxis-ai-composer-attachments-quick-replies` when quick replies, recommended intents, or clarification options carry semantic payloads; pair with `praxis-ai-turn-orchestration-transport` when the resolved intent moves through turn streams; pair with `praxis-ai-shell-session-context` when context snapshots or session identity affect grounding.
+
 ## Canonical Boundary
 
 - `@praxisui/ai` may carry context, display state, ask clarifications, and materialize resolved decisions.
@@ -33,6 +35,7 @@ Inspect:
 - Out-of-scope prompts return informational guidance, not fabricated patches.
 - Clarify only for real component-authoring ambiguity that blocks a safe semantic decision.
 - Quick replies may carry canonical action/context hints returned by the contract; they must not be local command strings disguised as natural language.
+- Clarification options and quick replies must preserve `contextHints`, `canonicalAction`, and `semanticDecision`; labels and prompts are display material, not intent authority.
 - Normalization helpers are allowed for display/search support, not intent classification.
 
 ## Red Flags

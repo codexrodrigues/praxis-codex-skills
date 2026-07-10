@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis AI Shell Context"
+  short_description: "Assistant shell sessions and safe context"
+  default_prompt: "Use $praxis-ai-shell-session-context to review Praxis AI assistant shell, session registry, dock, session host, or safe context snapshot work."

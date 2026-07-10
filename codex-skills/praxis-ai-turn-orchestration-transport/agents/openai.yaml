@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis AI Turns"
+  short_description: "Turn orchestration and streaming transport"
+  default_prompt: "Use $praxis-ai-turn-orchestration-transport to review Praxis AI assistant turn orchestration, streaming, SSE/fetch fallback, or terminal result handling."
