@@ -292,8 +292,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "120A373CEF1EB5C9C262EA10DAE2D34C9886D5866A46A22D8E267D650C5EFBCA",
-                       "treeSha256":  "1E19A7E07669C61A0CEA3992501705599ACA6E34574058BC0E4CEA8A9B41E12E"
+                       "skillMdSha256":  "A16C0467FFF42FAF354E64CA095D0B909E247AD68BAD85BE594D23E6E150B02B",
+                       "treeSha256":  "CD706A6828FA04217C6A02709CEC58C63BC0F363B82197B177D812D643944BC3"
                    },
                    {
                        "name":  "praxis-angular-i18n-governance",
@@ -1117,8 +1117,8 @@
                                             "praxis-visual-builder-ai-validation",
                                             "praxis-manual-form-rules-agentic"
                                         ],
-                       "skillMdSha256":  "394DC2C04438FA49FA088F40A9F6871B3E26ECB57543458EDEFA5554FA24358C",
-                       "treeSha256":  "52F6A096EAD4E3D451AE3E045B996CCCB220145F317E2AB311F483B94B20A5D7"
+                       "skillMdSha256":  "BD91C83D0DF676F8F3474A0AD56B38BC4179FF3D75CFA7C2A656977F5E139583",
+                       "treeSha256":  "69454867D7A3598C4A57A2F46C0C14BC4DBE3CAB201439792D0207F99BD8751F"
                    },
                    {
                        "name":  "praxis-form-authoring-settings",
@@ -1136,8 +1136,8 @@
                                             "praxis-editorial-forms-presentation-diagnostics",
                                             "praxis-editorial-forms-data-collection-adapters"
                                         ],
-                       "skillMdSha256":  "133070EF7202BABCF7DB49BD3A4FC8732DBC91746434C4A049BB1C8985F72C05",
-                       "treeSha256":  "E4FE265BD3E90CD1E0BA85AA34CEBF3DFCC1FA05C3FC5CEC66C5D67E96908556"
+                       "skillMdSha256":  "5612C7E9B0A538FAB85D587AE9263904C3F394F4290E1D8E4A08900E87826BA3",
+                       "treeSha256":  "AE6D31D381C3DAC4937682D4D6DFCACA525BF532F14FEADE9E3A91B94A966E76"
                    },
                    {
                        "name":  "praxis-form-layout-canvas",
@@ -1151,8 +1151,8 @@
                                             "praxis-ui-product-design",
                                             "praxis-dynamic-fields-editorial"
                                         ],
-                       "skillMdSha256":  "378C286F7D9D97E31876BA1CC9B8032280F7BEA910F5F3FF0A12667238E90C91",
-                       "treeSha256":  "B71DF21DEC206690104F80663F6E9534119E624496D5A7275830AAFF000F2248"
+                       "skillMdSha256":  "65A4B969E186ED237C983EF1B529AA13F902044126A5DC788481A31033FF05F5",
+                       "treeSha256":  "0C67DC062EA3F67556159C877748637932DD47710FB572D93C661FE04A1341AB"
                    },
                    {
                        "name":  "praxis-form-runtime-submit",
@@ -1171,8 +1171,52 @@
                                             "praxis-cron-builder-form-field",
                                             "praxis-cron-schedule-authoring"
                                         ],
-                       "skillMdSha256":  "09E0CB1C739835A4BD01BB1F6ED2F9D6ABA21793A4A9D6E4868C4078D907D3C6",
-                       "treeSha256":  "BC26E15876FB02B1DFC9D79FB895770172B41DD85887E7E1420EC71CEA6E052F"
+                       "skillMdSha256":  "CD1B48703883206259FFB19CD9CD57B26C9C61588A90721AED862B626E6C4E5E",
+                       "treeSha256":  "97BD39B988DC323B80501ECAA424A3B90D6B339FA97CD319FB3DC0C6B0890CCF"
+                   },
+                   {
+                       "name":  "praxis-form-schema-runtime-modes",
+                       "sourcePath":  "codex-skills/praxis-form-schema-runtime-modes",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  ">=0.0.0",
+                       "dependencies":  [
+                                        ],
+                       "skillMdSha256":  "C041A76E19030431127C2EB5718FAFD93EE7DD3B2A5F2034F1FAD0A723DDE23B",
+                       "treeSha256":  "F06B4672C828FBD4986BA8C458A9F505E34033C91883BB5D7E0F22165DADF797"
+                   },
+                   {
+                       "name":  "praxis-form-submit-payload-pipeline",
+                       "sourcePath":  "codex-skills/praxis-form-submit-payload-pipeline",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  ">=0.0.0",
+                       "dependencies":  [
+                                        ],
+                       "skillMdSha256":  "FCE75D335F728AC7AAD812A6891C5330830983CD9C6F174176E902262E2721E3",
+                       "treeSha256":  "D9308BC1155F9751004115C8DD6C3EADB97A7661B266416641FFCBBAA5FB7EB5"
+                   },
+                   {
+                       "name":  "praxis-form-actions-hooks-runtime",
+                       "sourcePath":  "codex-skills/praxis-form-actions-hooks-runtime",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  ">=0.0.0",
+                       "dependencies":  [
+                                        ],
+                       "skillMdSha256":  "9F28547966EFED4A47CD1B0D42A2D7368FB4272939CB1C35B3C801AF5DEE1951",
+                       "treeSha256":  "95373952DD11BA3E449B6F5865B9078CCF2ED295BD7282EB2EEBCFC1477CBD9C"
+                   },
+                   {
+                       "name":  "praxis-form-editor-document-roundtrip",
+                       "sourcePath":  "codex-skills/praxis-form-editor-document-roundtrip",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  ">=0.0.0",
+                       "dependencies":  [
+                                        ],
+                       "skillMdSha256":  "CA4006FBFAC83E2D0D58692973BE527B1371DBAC7F6934DF1D24DFAAB7239CF3",
+                       "treeSha256":  "52EB7443F8166912A07BCF3215428A0AB2BD5E1A83850E7FC24FCD35E7B65B8C"
                    },
                    {
                        "name":  "praxis-java-host-project",

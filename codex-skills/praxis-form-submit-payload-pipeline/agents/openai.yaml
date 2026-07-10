@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Form Submit Pipeline"
+  short_description: "Normalize dynamic form submits"
+  default_prompt: "Use $praxis-form-submit-payload-pipeline to inspect prepareSubmitPayload, date normalization, local/transient fields, submitPolicy, entity lookup payloads, and nested array submits."
+
+policy:
+  allow_implicit_invocation: true

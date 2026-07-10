@@ -230,6 +230,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-table-rule-table-integration`: table-rule-builder effects embedded in `@praxisui/table`, renderer placement, `effects[]` normalization, and Settings Panel round-trip.
 - `praxis-table-rule-ai-validation`: table-rule-builder AI manifest, effect operations, destructive confirmation, table delegation, and registry validation.
 - `praxis-form-runtime-submit`: dynamic-form runtime modes, schema metadata, submit payload, local/transient fields, hooks, actions, and validation.
+- `praxis-form-schema-runtime-modes`: dynamic-form `resourcePath`, `schemaUrl`, `readUrl`, `submitUrl`, `submitMethod`, create/edit/view, `initialValue`, metadata hot updates, and runtime reconciliation.
+- `praxis-form-submit-payload-pipeline`: dynamic-form submit normalization, date arrays, local/transient fields, `submitPolicy`, entity lookup payloads, dirty filtering, and nested arrays.
+- `praxis-form-actions-hooks-runtime`: dynamic-form actions, hooks, global action refs, surface open payloads, shortcuts, and action/hook editor round-trip.
+- `praxis-form-editor-document-roundtrip`: `DynamicFormAuthoringDocument`, bindings, context snapshots, Settings Panel apply/save/reset, diagnostics, and editor reopen semantics.
 - `praxis-form-layout-canvas`: dynamic-form layout policy, schema-driven layout, visual blocks, canvas, and layout validation.
 - `praxis-form-authoring-settings`: dynamic-form config editors, Settings Panel, authoring document, apply/save/reset, and round-trip.
 - `praxis-form-ai-rules-validation`: dynamic-form AI manifests, rules, diagnostics, context packs, registry ingestion, and assistant validation.

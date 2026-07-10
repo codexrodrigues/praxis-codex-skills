@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Form Actions Hooks"
+  short_description: "Govern form actions and hooks"
+  default_prompt: "Use $praxis-form-actions-hooks-runtime to inspect dynamic-form actions, hooks, global action payloads, surface opens, shortcuts, and action editor round-trip."
+
+policy:
+  allow_implicit_invocation: true

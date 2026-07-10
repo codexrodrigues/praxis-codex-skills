@@ -74,6 +74,10 @@ State whether live AI E2E was skipped. Do not use GitHub Actions as exploratory 
 ## Companion Skills
 
 - Use `praxis-form-runtime-submit` for runtime state, submit payload, field metadata, local/transient fields, and schema contracts.
+- Use `praxis-form-schema-runtime-modes` for runtime inputs, schema/read/submit URL grounding, mode/presentation rules, and metadata reconciliation used by AI context.
+- Use `praxis-form-submit-payload-pipeline` when AI-authored local fields, `submitPolicy`, entity lookup payloads, or nested arrays affect submit semantics.
+- Use `praxis-form-actions-hooks-runtime` when AI edits form actions, hooks, global action refs, shortcuts, or surface open payloads.
+- Use `praxis-form-editor-document-roundtrip` when AI output must become a `DynamicFormAuthoringDocument`, apply plan, Settings Panel save, or registry-ingested editor document.
 - Use `praxis-form-layout-canvas` for layout, visual blocks, canvas, and schema-driven materialization.
 - Use `praxis-form-authoring-settings` for Settings Panel and editor round-trip.
 - Use `praxis-core-runtime-contracts` and `praxis-core-resource-runtime` for shared AI contracts, schema/resource grounding, option sources, and global actions.
