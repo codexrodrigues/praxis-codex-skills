@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-api-quickstart-domain-pilots/
-- Descricao atual: Use when Codex must work on praxis-api-quickstart concrete pilot domains: ApiPaths, @ApiResource controllers, DTOs, filters, @Schema business descriptions, @UISchema endpoints, @DomainGovernance, option sources, entity lookup pilots, stats, export, actions, services, mappers, operational migrations, hero-demo domains, HR, operations, assets, procurement, risk intelligence, and pilot integration tests.
+- Descricao atual: Use when Codex must implement, audit, or extend Praxis API Quickstart pilot domains: ApiPaths, resource-oriented controllers and services, DTO/filter meaning, @UISchema, @DomainGovernance, option sources and entity lookup, stats/export, surfaces/actions, demo data, operational migrations, cockpit evidence, or governed domain-decision materializations across HR, operations, assets, procurement, and risk intelligence.
 
 ## Classificacao inicial
 
