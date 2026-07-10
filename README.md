@@ -79,7 +79,7 @@ python3 scripts/validate-issue-drafts.py
 python3 scripts/create-skill-review-issues.py --dry-run --limit 3
 ```
 
-The PowerShell generator delegates to the Python generator for compatibility.
+The PowerShell issue draft generator and issue creator delegate to the Python scripts for compatibility.
 
 ## Sync
 
