@@ -59,7 +59,10 @@ Do not route user intent by local keywords. The AI or backend contract chooses t
 
 ## Companion Skills
 
-- Use `praxis-table-runtime-data` for runtime data modes, selection state, exports, renderers, and analytics.
+- Use `praxis-table-data-source-precedence` when filters depend on local/remote mode, `queryContext`, `filterCriteria`, or persisted `resourcePath`.
+- Use `praxis-table-selection-export-runtime` when toolbar/row/bulk actions depend on selection, export scopes, or collection export.
+- Use `praxis-table-analytics-stats-runtime` when filters feed analytics stats requests or analytic-table views.
+- Use `praxis-table-runtime-data` for the broader runtime umbrella.
 - Use `praxis-table-authoring-settings` when filters/actions are edited through Settings Panel or config editors.
 - Use `praxis-table-ai-validation` when action/filter behavior is available to table assistant or component edit plans.
 - Use `praxis-core-resource-runtime` for resource schemas, actions, surfaces, capabilities, `_links`, option sources, and CRUD operation resolution.
