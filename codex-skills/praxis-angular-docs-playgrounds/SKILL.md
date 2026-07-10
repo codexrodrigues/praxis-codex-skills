@@ -1,155 +1,129 @@
 ---
 name: praxis-angular-docs-playgrounds
-description: Use when updating or auditing Praxis Angular public documentation, component docs, `docs/praxis-docs.manifest.json`, `*.json-api.md`, examples, `examples/ai-recipes`, landing pages, playgrounds, published guides, sitemap entries, AI registry derived docs, or other public derived artifacts.
+description: Use when implementing, auditing, synchronizing, or validating Praxis Angular public documentation and derived experiences: library README/json-api/host/editor docs, docs/praxis-docs.manifest.json, docs shell and vendor sync, component/published-guide registries, examples, AI recipes, playground/demo routes, screenshots, landing pages, sitemap, LLM/public guide artifacts, or documentation-contract drift.
 ---
 
-# Praxis Angular Docs Playgrounds
+# Praxis Angular Docs And Playgrounds
 
-Use this skill when a Praxis Angular change must be reflected in public docs, examples, playgrounds, landing pages, recipes, or AI-derived documentation.
+Use this skill when a Praxis contract must be published as documentation, recipe, example, playground, or landing experience. These are derived evidence surfaces. They explain and demonstrate what the canonical owner already publishes; they do not invent runtime semantics, backend rules, AI routes, or business behavior.
 
-Docs and playgrounds are projections of canonical platform contracts. They must not invent semantics, capabilities, AI flows, statuses, or business rules that the canonical owner does not publish.
+## Classify The Publication Change
 
-## Canonical Sources
+Classify before editing:
 
-- `praxis-ui-angular` owns Angular runtime packages, component docs, manifests, AI registry extraction, examples, and playground source behavior.
-- `praxis-metadata-starter` owns backend metadata semantics such as `x-ui`, `/schemas/filtered`, surfaces, actions, capabilities, and option-source contracts.
-- `praxis-config-starter` owns governed config persistence and `/api/praxis/config/**`.
-- `praxis-ui-landing-page` publishes official site pages and guides, but does not override the owning lib.
+- `docs-apenas`: editorial or explanatory change with no public runtime/config/metadata contract change.
+- `local-pequena`: one library document, manifest item, recipe, or demo with no cross-project projection.
+- `transversal`: source library plus AI registry, docs shell, landing, public guide, recipe, or example consumer.
+- `contrato-publico`: public API/config/schema/action/capability/manifest/host integration claim or published route changes.
+- `arquitetural`: documentation exposes an unclear owner or a contradiction between Angular, metadata starter, config starter, Quickstart, or landing.
 
-When docs disagree with code or backend contracts, fix the canonical owner or explicitly record drift; do not normalize the docs as if they were the source of truth.
+For every non-editorial claim, identify the canonical source, executable evidence, affected projection chain, intended audience, and minimum validation before writing copy.
+
+## Canonical Sources And Projection Chain
+
+Keep these roles distinct:
+
+- `praxis-ui-angular` owns component runtime, public APIs, component docs, manifests, examples, recipes, playground source, and AI registry extraction.
+- `praxis-metadata-starter` owns backend `x-ui`, filtered schemas, actions, surfaces, capabilities, option sources, and discovery semantics.
+- `praxis-config-starter` owns persisted config, AI/context/authoring, domain decisions, ETag, and governed materialization lifecycle.
+- `praxis-api-quickstart` proves those contracts in a real host.
+- `praxis-ui-landing-page` projects library documentation into public routes; it never overrides the owning library.
+
+The canonical docs flow is:
+
+`library source/runtime/spec -> README/API/host/editor docs -> docs manifest -> landing vendor sync -> generated component docs/published-guide registries -> route links and sitemap`.
+
+When any step disagrees, repair the canonical owner or record the drift. Do not alter a landing sentence, generated vendor file, screenshot, or recipe merely to conceal an incorrect contract.
 
 ## Required Inventory
 
-Before editing docs or examples:
+Read `praxis-ui-angular/AGENTS.md`, `codex-rules.md`, the owning library `AGENTS.md`, `README.md`, `src/public-api.ts`, relevant component/manifest/spec, and `docs/praxis-docs.manifest.json`. For component landing work, read:
 
-1. Read `praxis-ui-angular/AGENTS.md`; for landing work also read `praxis-ui-landing-page/AGENTS.md`.
-2. Read the local `projects/<lib>/AGENTS.md` for the component family when present. If it is absent, use `praxis-angular-agents-governance`, record the local governance gap, and derive docs/validation impact from README, docs manifests, public API, metadata, examples, focused specs, and package scripts.
-3. Inspect the owning lib docs: `README.md`, `*.json-api.md`, host integration docs, patterns/editor docs, and `docs/praxis-docs.manifest.json`.
-4. For landing component pages, read `praxis-ui-angular/docs/templates/component-landing-template.md`, `docs/templates/README.md`, and landing registries such as `src/app/data/guides/component-docs.registry.ts`.
-5. For AI-authorable components, inspect manifests and registry tooling through `praxis-ai-registry-ingestion`.
-6. Classify whether the requested narrative is `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`.
+- `docs/component-documentation-contract.md` and `docs/component-documentation-matrix.md`;
+- `docs/templates/component-landing-template.md` and `docs/templates/README.md`;
+- `praxis-ui-landing-page/AGENTS.md`, `component-docs.registry.ts`, and `landing-docs.registry.ts`.
 
-## Update Triggers
+For AI-authorable behavior, inspect the manifest, `ComponentDocMeta`, registry tooling, and the component's recipe specs. For a backend-derived claim, inspect the corresponding metadata/config/Quickstart owner and its HTTP or focused test evidence before documenting it.
 
-Review derived artifacts when a change touches:
+## Documentation Contract
 
-- public component inputs, outputs, events, config shape, `public-api`, or default behavior
-- `ComponentDocMeta`, config editor metadata, authoring manifests, capabilities, actions, schemas, or runtime observations
-- examples, recipes, playgrounds, or demo routes used as reference behavior
-- i18n or visible authoring chrome that appears in docs/screenshots
-- package publication, npm docs, public links, or search surfaces
+Every public component surface has a deliberate role:
 
-Do not update generated `dist/` artifacts by hand. Regenerate through the owning command when the task requires it.
+| Surface | Must establish |
+| --- | --- |
+| overview | what Praxis materializes, why it differs from a basic widget, host boundary, and real value |
+| API | public inputs/outputs/events/config, precedence, defaults, constraints, and breaking behavior |
+| examples | executable or copyable proof of a valuable scenario, not decorative rendering |
+| host integration | required providers, persistence, authorization, backend/metadata/config responsibilities |
+| editor | runtime/config to visual-authoring parity, supported fields, apply/save/reset/reopen limits |
+| AI | capabilities, context, grounding, safety limits, authoring/apply boundary, and evidence |
+| styles | tokens, theming, density, and safe customization limits |
+| architecture/troubleshooting | owner decisions, failure signatures, and canonical correction path |
 
-When concluding no docs/playground update is needed, state the negative evidence explicitly:
+`docs/praxis-docs.manifest.json` records the owner, source paths, publication type, canonicality, routes, and automation. Only `docs-shell` or `component-route` content becomes a docs-shell surface. `published-guide` remains a supplemental public guide; `source-only` is evidence, not a promise to render a public tab. Never promote an empty, unverified, or source-only artifact to a public component claim.
 
-- no public input/output/event/config/default behavior changed
-- no `public-api`, `ComponentDocMeta`, authoring manifest, capability, schema, action, or runtime observation changed
-- no example, recipe, playground, screenshot, or public guide currently claims the changed behavior
-- no i18n/user-visible copy changed
-- no package publication/search/sitemap surface changed
+## Writing And Claim Rules
+
+Write for a technical buyer, product decision maker, or implementer: value, contract, host responsibility, evidence, and limit. Do not write production instructions, private implementation checklists, or marketing claims unsupported by code, manifest, runtime, metadata, spec, or host proof.
+
+Describe Angular components as governed, metadata-driven runtime surfaces. Preserve these boundaries:
+
+- schemas, `x-ui`, actions, surfaces, capabilities, option sources, and resource identity come from metadata contracts;
+- config/AI/domain decisions are authored and persisted at the config boundary;
+- Angular materializes those contracts and does not become a primary business-rule or intent-routing owner;
+- host business labels/content remain metadata/config values, not library prose or i18n defaults.
+
+Do not route user intent through labels, route fragments, aliases, regexes, or prompt phrases in examples or recipes. Use canonical component/resource/action/capability identifiers and backend-governed semantics. A recipe demonstrates declared capabilities; it does not authorize arbitrary JSON or a local frontend command parser.
+
+## Examples, Recipes, And Playgrounds
+
+An example or recipe must be tied to a canonical source and focused spec. It should declare setup, required host/backend context, expected materialized outcome, limitations, and the smallest reproducible flow. Update its importing recipe spec when its payload/contract changes.
+
+For visual or interactive playgrounds, prove the actual behavior in the owning runtime and, when relevant, the editor round trip. Use official routes/origins/ports and existing E2E lanes; do not create a parallel demo server or mock away a metadata/config/AI contract that the public example claims to exercise. Validate desktop and narrow viewports when the change affects visible composition, content fit, accessibility, or authoring.
+
+Generated artifacts under `dist/`, vendored landing copies, generated registry output, and package assets are never hand-edited. Regenerate/synchronize through the owning script.
+
+## Derived Artifact Decision Matrix
+
+| Changed canonical surface | Review/update |
+| --- | --- |
+| public API, config shape, default, event, provider | README/API, manifest, examples, host/editor docs, consumer/landing claims |
+| `ComponentDocMeta`, authoring manifest, AI capability/operation/context | manifest specs, `examples/ai-recipes`, registry ingestion, AI docs, playground/assistant evidence |
+| metadata/schema/action/surface/capability/option source | owner docs/HTTP evidence first, then Angular guides/examples that consume it |
+| runtime/editor persistence or visible authoring | editor docs, screenshots/playground, apply/save/reset/reopen proof |
+| docs manifest/source path/publication/route | landing vendor sync, component/published-guide registries, links, sitemap |
+| i18n or visible copy | docs/screenshots/examples that quote it plus i18n coverage |
+| package/release claim | package docs, public links, npm/landing claims, release validation |
+
+When nothing changes, record negative evidence: no public behavior/manifest/metadata/config changed, no example or public claim references it, no recipe/registry source changed, no visible copy changed, and no landing/sitemap/package surface is affected.
 
 ## Validation
 
-For `praxis-ui-angular` docs:
+Run the smallest official gate that proves the affected projection:
 
-- `npm run docs:validate-frontmatter:changed` for changed docs frontmatter
-- `npm run generate:registry:ingestion` when component docs or AI registry projections must update
-- `npm run validate:published-doc-assets` for publishable docs/assets when relevant
-- focused examples/playground build or E2E when the example behavior changed
+| Scope | Minimum validation |
+| --- | --- |
+| changed governed Angular docs | `npm run docs:validate-frontmatter:changed` |
+| changed publishable docs/assets | `npm run validate:published-doc-assets` |
+| component docs/metadata/AI registry projection | focused manifest/recipe specs plus `npm run generate:registry:ingestion` |
+| changed library example/playground | owning lib build/spec and focused browser/E2E proof when interactive |
+| docs manifest intended for landing | in landing: `npm run vendor-docs:sync`, then `npm run validate:vendor-docs` and `npm run docs:validate` |
+| landing guide/route publication | `npm run validate:published-guides` and `npm run validate:sitemap`; run `npm run sitemap:sync` only when intentional route drift requires it |
+| landing `site.data.ts` table manifests/examples | `npm run validate:table-manifests` |
+| broad landing projection | `npm run check:integration` after focused validation is green |
 
-For `praxis-ui-landing-page`:
+Use `praxis-angular-validation-gates` for Node environment and build/test selection. For landing-to-Quickstart validation, use the documented `4301` origin (`localhost` or `127.0.0.1`), not an improvised port. State exactly what browser, registry, vendor sync, landing, or hosted proof did not run.
 
-- `npm run validate:published-guides`
-- `npm run validate:sitemap`
-- `npm run validate:table-manifests` when `site.data.ts` manifests/examples change
-- `npm run check:integration` for sitemap plus dev/prod integration checks when the publication surface changed broadly
+## Follow-up And Reporting
 
-Use official local origins documented in AGENTS files. Do not invent ports for published quickstart or landing validation.
+If docs reveal behavior that has no canonical source or executable evidence, classify it. Improve an existing projection for `ja-suportado-*`; record a platform issue only for `lacuna-real-de-contrato`, naming owner, consumers, public artifacts, and proof. Do not create a new component/package solely because documentation needs a category: Filters and Timeline are existing capabilities, not pretexts for parallel packages.
 
-Use component-specific docs skills when they exist. For `@praxisui/list`, use
-`praxis-list-docs-evidence` to preserve the Active/Partial/Declared-only status matrix, living
-examples, executive evidence, and list-specific docs manifest before editing landing or playground
-content.
-For platform-level public docs, landing narrative, published guides that cross metadata/config/Angular
-boundaries, sitemap, LLM files, or route registries in `praxis-ui-landing-page`, use
-`praxis-landing-public-docs-contracts` and `praxis-landing-registries-sitemap-playgrounds` before
-editing the public site projection.
-For `@praxisui/metadata-editor`, use `praxis-metadata-editor-renderer-coverage`,
-`praxis-metadata-editor-cascade-normalization`, `praxis-metadata-editor-consumer-bridges`, or
-`praxis-metadata-editor-ai-validation` before updating docs manifests, architecture docs, coverage
-checklists, AI registry docs, or public examples that describe metadata-editor authoring behavior.
-For `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` and
-`praxis-manual-form-ai-authoring` as umbrellas, then narrow to
-`praxis-manual-form-field-detection-instance`, `praxis-manual-form-autosave-persistence`,
-`praxis-manual-form-toolbar-metadata-bridge`, or `praxis-manual-form-rules-agentic` before updating
-integration guides, API references, toolbar docs, examples, docs manifests, or AI registry docs.
-For `@praxisui/editorial-forms`, use
-`praxis-editorial-forms-runtime` and `praxis-editorial-forms-adapters-ai` as umbrellas, then narrow to
-`praxis-editorial-forms-journey-snapshot-runtime`,
-`praxis-editorial-forms-presentation-diagnostics`,
-`praxis-editorial-forms-data-collection-adapters`, or
-`praxis-editorial-forms-agentic-authoring` before updating architecture docs, authoring playbooks,
-labs, examples, docs manifests, or registry projections.
-For `@praxisui/crud`, use `praxis-crud-runtime-openmodes` and `praxis-crud-ai-authoring` before
-updating open-mode docs, drawer adapter ADRs, CRUD authoring docs, examples, docs manifests, or AI
-registry docs. For `@praxisui/dialog`, use `praxis-dialog-overlay-runtime` and
-`praxis-dialog-global-actions-ai` before updating dialog integration guides, examples, presets,
-global actions, docs manifests, or registry projections.
-For `@praxisui/tabs`, `@praxisui/stepper`, `PraxisWizardFormComponent`, or `@praxisui/expansion`,
-use `praxis-tabs-runtime-authoring`, `praxis-stepper-wizard-runtime`,
-`praxis-expansion-runtime-panels`, `praxis-navigation-containers-ai-validation`,
-`praxis-navigation-container-composition-events`, `praxis-stepper-wizard-orchestration`, and
-`praxis-navigation-agentic-registry` as applicable
-before updating component guides, API references, examples, docs manifests, playgrounds, or AI
-registry docs for navigation and disclosure containers.
-For `@praxisui/files-upload`, use `praxis-files-upload-runtime`,
-`praxis-files-upload-backend-contract`, `praxis-files-upload-form-field`, and
-`praxis-files-upload-ai-validation` as applicable before updating component guides, host
-integration docs, API references, examples, docs manifests, playgrounds, or AI registry docs.
-For `@praxisui/rich-content`, use `praxis-rich-content-runtime`,
-`praxis-rich-content-authoring-settings`, `praxis-rich-content-integration-adapters`, and
-`praxis-rich-content-ai-security-validation` as applicable before updating component guides, docs
-manifests, examples, playgrounds, AI recipes, or registry docs.
-For `@praxisui/cron-builder`, use `praxis-cron-builder-runtime`,
-`praxis-cron-schedule-authoring`, `praxis-cron-builder-form-field`, and
-`praxis-cron-builder-ai-validation` as applicable before updating component guides, API references,
-docs manifests, examples, playgrounds, AI recipes, or registry docs.
-For `@praxisui/table-rule-builder`, use `praxis-table-rule-effects-runtime`,
-`praxis-table-rule-animation-presets`, `praxis-table-rule-table-integration`, and
-`praxis-table-rule-ai-validation` as applicable before updating component guides, API references,
-docs manifests, examples, playgrounds, AI recipes, or registry docs.
-For `@praxisui/charts`, use `praxis-charts-runtime-data`, `praxis-charts-authoring-settings`,
-`praxis-charts-ai-validation`, `praxis-charts-echarts-engine-boundary`,
-`praxis-charts-analytics-interactions`, `praxis-charts-authoring-catalogs`, and
-`praxis-charts-ai-handler-contracts` as applicable before updating chart docs, API references,
-examples, playgrounds, dashboard analytics evidence, AI recipes, or registry docs.
-For `@praxisui/dynamic-fields`, use `praxis-dynamic-fields-editorial`, `praxis-fields-runtime-loader`,
-`praxis-fields-editorial-discovery`, `praxis-fields-option-sources`,
-`praxis-fields-inline-overlay-runtime`, `praxis-fields-text-number-time-controls`,
-`praxis-fields-selection-lookup-controls`, and `praxis-fields-control-profile-ai` as applicable
-before updating field catalogs, inline filter docs, examples, playgrounds, AI recipes, or registry
-docs.
-For `@praxisui/visual-builder`, use `praxis-visual-builder-rules` as the umbrella and then the
-focused skills `praxis-visual-builder-graph-runtime`, `praxis-visual-builder-jsonlogic-roundtrip`,
-`praxis-visual-builder-schemas-templates`, and `praxis-visual-builder-ai-validation` before updating
-component guides, API references, docs manifests, examples, playgrounds, AI recipes, or registry
-docs.
+Report canonical owner/evidence, source documents/manifests, derived artifacts updated or reviewed, commands run, generated artifacts not hand-edited, publication status, and remaining drift or unvalidated visual/host risk.
 
-## Editorial Guidance
+## Companion Skills
 
-- Explain Praxis components as configurable, metadata-driven, governed runtime surfaces, not generic UI widgets.
-- Public copy should explain value, evidence, host responsibility, and canonical contract.
-- Avoid internal production instructions such as "show", "start", or "the ideal video should" in public editorial pages unless the page is an explicit tutorial.
-- Keep `slug`, `related_docs`, markdown links, manifests, and sitemap entries valid.
-
-## Output Expectations
-
-Report:
-
-- canonical owner consulted
-- docs/examples/playgrounds updated or reviewed
-- validation commands run
-- generated artifacts intentionally not edited by hand
-- any public surface still out of sync and why
-- reason when no derived docs/playground artifact was updated
+- Use `praxis-landing-public-docs-contracts` and `praxis-landing-registries-sitemap-playgrounds` for public landing projection.
+- Use `praxis-angular-validation-gates`, `praxis-angular-public-api-governance`, and `praxis-angular-i18n-governance` for underlying contract gates.
+- Use `praxis-ai-authoring-manifests` and `praxis-ai-registry-ingestion` for AI-derived docs and recipes.
+- Use `praxis-authoring-editors`, `praxis-ui-product-design`, and the functional component skill for runtime/editor/visual proof.
+- Use metadata/config/quickstart skills when the documentation claim derives from those canonical owners.
