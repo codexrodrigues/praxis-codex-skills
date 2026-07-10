@@ -1,9 +1,11 @@
 ---
 name: praxis-form-layout-canvas
-description: Use when Codex must work on @praxisui/dynamic-form layout materialization, schema-driven layout policy, generated layout presets, layout editor, visual blocks, FormColumn.items, canvas editors, section/row/column/field placement, compact presentation, grouped command forms, or visual layout validation.
+description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package layout materialization, schema-driven layout policy, generated layout presets, layout editor, visual blocks, FormColumn.items, canvas editors, section/row/column/field placement, compact presentation, grouped command forms, or visual layout validation.
 ---
 
 # Praxis Form Layout Canvas
+
+This `praxis-form-*` skill family is the canonical Codex skill surface for `@praxisui/dynamic-form` and `projects/praxis-dynamic-form`; do not create parallel `praxis-dynamic-form-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for Dynamic Form layout, visual blocks, canvas, and schema-driven layout materialization. Layout is a governed projection of field metadata and authoring config; it must not become a second source of business semantics.
 
