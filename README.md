@@ -77,7 +77,10 @@ python3 scripts/generate-skill-review-issue-drafts.py
 python3 scripts/generate-skill-review-issue-drafts.py --check
 python3 scripts/validate-issue-drafts.py
 python3 scripts/create-skill-review-issues.py --dry-run --limit 3
+python3 scripts/create-skill-review-issues.py --dry-run --limit 3 --check-existing
 ```
+
+`--check-existing` fails when a draft title already exists in GitHub issues, before creating anything.
 
 The PowerShell issue draft generator and issue creator delegate to the Python scripts for compatibility.
 

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
 import tempfile
@@ -39,6 +40,40 @@ def issue_payloads(draft_root: Path, limit: int | None = None) -> list[dict[str,
     return payloads
 
 
+def existing_issues(repository: str) -> list[dict[str, str]]:
+    completed = subprocess.run(
+        [
+            "gh",
+            "issue",
+            "list",
+            "--repo",
+            repository,
+            "--state",
+            "all",
+            "--limit",
+            "1000",
+            "--json",
+            "number,title,url,state",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return json.loads(completed.stdout)
+
+
+def duplicate_issue_reports(payloads: list[dict[str, str]], issues: list[dict[str, str]]) -> list[str]:
+    issues_by_title = {issue["title"]: issue for issue in issues}
+    reports: list[str] = []
+    for payload in payloads:
+        issue = issues_by_title.get(payload["title"])
+        if issue:
+            reports.append(
+                f"{payload['title']} already exists as #{issue['number']} ({issue['state']}): {issue['url']}"
+            )
+    return reports
+
+
 def create_issue(repository: str, title: str, body: str) -> None:
     with tempfile.NamedTemporaryFile("w", delete=False) as temporary:
         temporary.write(body)
@@ -58,6 +93,7 @@ def main() -> int:
     parser.add_argument("--repo", default=DEFAULT_REPOSITORY)
     parser.add_argument("--draft-root", default=str(DEFAULT_DRAFT_ROOT))
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--check-existing", action="store_true", help="Fail before creating if a draft title already exists.")
     parser.add_argument("--limit", type=int, help="Maximum number of drafts to process.")
     args = parser.parse_args()
 
@@ -67,6 +103,14 @@ def main() -> int:
 
     try:
         payloads = issue_payloads(Path(args.draft_root), args.limit)
+        if args.check_existing:
+            duplicates = duplicate_issue_reports(payloads, existing_issues(args.repo))
+            if duplicates:
+                print("Existing GitHub issues match draft titles.", file=sys.stderr)
+                for duplicate in duplicates:
+                    print(f" - {duplicate}", file=sys.stderr)
+                return 1
+
         for payload in payloads:
             if args.dry_run:
                 print(f"DRY-RUN issue: {payload['title']}")

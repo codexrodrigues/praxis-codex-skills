@@ -441,6 +441,20 @@ class PythonSkillScriptTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "Draft has no H1 title"):
                 CREATE_ISSUES_MODULE.issue_payloads(draft_root)
 
+    def test_create_issue_duplicate_reports_match_titles(self) -> None:
+        payloads = [
+            {"title": "Review A", "body": "A", "path": "a.md"},
+            {"title": "Review B", "body": "B", "path": "b.md"},
+        ]
+        issues = [
+            {"number": 10, "title": "Review B", "url": "https://example.test/issues/10", "state": "OPEN"},
+            {"number": 11, "title": "Other", "url": "https://example.test/issues/11", "state": "CLOSED"},
+        ]
+
+        reports = CREATE_ISSUES_MODULE.duplicate_issue_reports(payloads, issues)
+
+        self.assertEqual(["Review B already exists as #10 (OPEN): https://example.test/issues/10"], reports)
+
     def test_preflight_audit_policy_allows_informational_counters(self) -> None:
         report = audit_report(installedOnly=3, sourceInOtherFamilyManifest=2)
 
