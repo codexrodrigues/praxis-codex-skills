@@ -14,6 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PYTHON_FILES = [
     "scripts/codex_skills_common.py",
     "scripts/audit-praxis-skills.py",
+    "scripts/generate-skill-review-issue-drafts.py",
     "scripts/sync-praxis-skills.py",
     "scripts/validate-issue-drafts.py",
     "scripts/validate-praxis-skills.py",
