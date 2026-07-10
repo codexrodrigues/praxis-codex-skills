@@ -1,13 +1,14 @@
 ---
 name: praxis-ui-product-design
-description: "Use alongside the canonical functional Praxis skill when the user's request materially asks for visual/product UX quality in Praxis web UI: auditing, reviewing, redesigning, polishing, screenshot QA, visual hierarchy, layout composition, responsive behavior, dark theme quality, accessibility of visual controls, or making Angular UI, authoring editors, settings panels, dynamic form/table/list experiences, playgrounds, or examples feel modern, elegant, usable, professional, or product-grade. Do not use as the primary skill for config round-trip, config shape, persistence, apply/save/reset correctness, public APIs, dynamic-fields discovery, metadata contracts, or ordinary editor correctness unless visual UX is explicitly in scope."
+description: "Use alongside the canonical functional Praxis skill when the user's request materially asks for visual/product UX quality in Praxis web UI: art direction, distinctive product character, modern or delightful composition, auditing, redesigning, polishing, screenshot QA, visual hierarchy, responsive behavior, dark theme quality, or accessibility of visual controls in Angular UI, authoring editors, settings panels, dynamic form/table/list experiences, playgrounds, or examples. Do not use as the primary skill for config round-trip, persistence, public APIs, dynamic-fields discovery, metadata contracts, or ordinary editor correctness unless visual UX is explicitly in scope."
 ---
 
 # Praxis UI Product Design
 
-Use this skill to make Praxis UI work like a product-grade enterprise authoring platform, not like a raw internal demo.
+Use this skill to make Praxis UI feel like a deliberate, contemporary enterprise product with a
+recognizable point of view, not like a raw internal demo or an untouched component-library sample.
 
-This is a visual/product QA layer. Use it with the functional Praxis owner skill whenever semantics, contracts, persistence, dynamic-fields discovery, or editor correctness are also in scope.
+This is a visual product-direction and QA layer. Use it with the functional Praxis owner skill whenever semantics, contracts, persistence, dynamic-fields discovery, or editor correctness are also in scope.
 
 Before changing this skill or judging a Praxis UI, inspect the current source for the involved
 surface instead of relying on general design memory. For authoring and AI-assisted surfaces this
@@ -94,6 +95,33 @@ For `controlType`, aliases, `optionSource`, `async-select`, inline filters, dyna
 
 Apply the detailed rubrics in `references/` when relevant. The non-negotiable defaults are: reuse shared components, preserve host theming through Material/Praxis tokens, choose controls by user intent rather than metadata shape, size fields by content and task importance, keep enterprise screens dense but scannable, validate visual changes with screenshots when feasible, and never trade accessibility or i18n for visual polish.
 
+## Distinctive Product Direction
+
+Correctness, restraint, and token compliance are the quality floor, not the visual direction. When
+the user asks for a modern, elegant, delightful, premium, distinctive, or redesigned experience,
+load `references/visual-direction-and-delight.md` before proposing or implementing the UI.
+
+Before code, establish a compact direction contract grounded in the actual product domain:
+
+- actual operator and job to be done
+- surface archetype and intended density
+- visual thesis: mood, material, rhythm, and energy
+- domain vocabulary, artifacts, and data shapes that can inform the composition
+- one product-specific signature: spatial, informational, typographic, or interaction-based
+- three generic defaults to reject and the deliberate replacements
+- token and composition plan that remains host-themeable
+- interaction thesis with only the motions that improve orientation, continuity, or feedback
+
+Spend boldness in one place. An operational signature is not a marketing hero: it may be a highly
+legible semantic decision trail, a distinctive list-detail rhythm, a diff-first preview, an
+exceptionally fluent canvas-to-inspector transition, or another expression backed by the real
+workflow and available contract. Keep surrounding chrome quiet enough for that signature to land.
+
+Do not equate modern with a fashionable effect. Glass, gradients, oversized radius, floating cards,
+purple accents, sparse layouts, and animation are not evidence of modernity. A modern enterprise UI
+earns delight through spatial intelligence, immediate state legibility, direct manipulation,
+continuity, fast scanning, excellent typography, and a coherent product-specific visual language.
+
 ## Enterprise Authoring Workstation Baseline
 
 Operational and editor screens must expose the working surface, not behave like a landing page. They fail if the first viewport is dominated by hero copy, decorative cards, large illustrations, decorative gradients, or explanatory marketing text instead of the actual task surface.
@@ -149,6 +177,8 @@ Praxis UI should feel:
 - precise, operational, and trustworthy
 - compact without being cramped
 - visually quiet until state or action requires emphasis
+- recognizably Praxis and specific to the workflow rather than generically "Material"
+- crafted in typography, rhythm, state transitions, and micro-interaction
 - metadata-driven but understandable to a human author
 - consistent across runtime, authoring, examples, and docs
 
@@ -176,6 +206,10 @@ Before editing, answer:
 8. Does the grid distribution match control importance, content length, and grouping, or are there orphan controls/empty columns?
 9. Which desktop and narrow/mobile viewport must be checked?
 10. Which public examples, playgrounds, recipes, or docs mirror this UI?
+11. What is the visual thesis for this workflow, in one concrete sentence?
+12. What single signature makes the result specific to this product and task?
+13. Which three generic visual or structural defaults will be rejected?
+14. What calibrated levels of distinction, motion, and density fit this operator?
 
 If the task affects config shape, persistence, apply/save/reset, dynamic fields discovery, or public component contracts, load the corresponding Praxis canonical skill before editing.
 
@@ -201,7 +235,7 @@ Use this workflow when the user asks to review, analyze, critique, inspect, or a
    - overlay risks: `rg "Overlay|cdk-overlay|mat-select|mat-menu|mat-dialog|mat-autocomplete" <scope>`
    - i18n paths: `rg "PraxisI18nService|i18n|pt-BR|en-US" <scope>`
    - public surfaces: `rg "public-api|@Input|@Output|InjectionToken|ComponentDocMeta" <scope>`
-4. Classify findings by hierarchy, information architecture, layout, component choice, interaction primitive choice, spacing/density, spatial composition, state design, accessibility, responsive behavior, theme/tokens, and i18n.
+4. Classify findings by hierarchy, information architecture, layout, component choice, interaction primitive choice, spacing/density, spatial composition, product specificity, signature strength, aesthetic coherence, state design, accessibility, responsive behavior, theme/tokens, and i18n.
 5. Report prioritized findings with file/screenshot evidence and recommend the canonical owner. Do not edit.
 
 ## Implementation Workflow
@@ -212,12 +246,13 @@ Use this workflow when the user asks to create, redesign, polish, improve, fix, 
 2. Run the Governance Preflight and impact map when required.
 3. Load required references for the affected visual dimension.
 4. Run the quick design-system audit: reused components, Material tokens, Praxis tokens/custom properties, raw values, host-themeability, local duplicate controls, missing primitive/owner, i18n path, and overlay behavior.
-5. Classify the UX problem and decide whether the fix belongs in a shared Praxis primitive, owning lib, settings-panel shell, or local host/demo.
-6. Implement the smallest canonical platform fix that satisfies repository governance.
-7. Run the smallest relevant build/test for the changed package.
-8. Open the UI only through official scripts, routes, ports, and origins. Do not invent local servers or origins.
-9. Capture desktop plus narrow/mobile screenshots when feasible, including open overlay states when relevant. When the workflow opens a Settings Panel, metadata editor, drawer, side sheet, or inspector, include at least one screenshot with that editor open in the narrow viewport; runtime-only narrow screenshots can miss clipped editor copy, hidden controls, and broken authoring access.
-10. Inspect screenshots against the rubrics and iterate on the top visual defects before reporting completion.
+5. For modern, delightful, distinctive, premium, or redesign work, write the direction contract from `references/visual-direction-and-delight.md` and reject generic defaults before coding.
+6. Classify the UX problem and decide whether the fix belongs in a shared Praxis primitive, owning lib, settings-panel shell, or local host/demo.
+7. Implement the smallest canonical platform fix that satisfies repository governance and the chosen direction.
+8. Run the smallest relevant build/test for the changed package.
+9. Open the UI only through official scripts, routes, ports, and origins. Do not invent local servers or origins.
+10. Capture desktop plus narrow/mobile screenshots when feasible, including open overlay states when relevant. When the workflow opens a Settings Panel, metadata editor, drawer, side sheet, or inspector, include at least one screenshot with that editor open in the narrow viewport; runtime-only narrow screenshots can miss clipped editor copy, hidden controls, and broken authoring access.
+11. Inspect screenshots against the rubrics. Run the genericity, swap, squint, signature, coherence, and craft tests from the direction reference, then iterate on the top visual defects before reporting completion.
 
 If browser validation is not feasible, state exactly why and perform static review against the rubrics.
 
@@ -241,6 +276,8 @@ A Praxis UI change is incomplete if any of these are true:
 
 - the main task is not visually obvious within a few seconds
 - the primary action is not clearly prioritized
+- a request for modern, delightful, premium, or distinctive UI ends in an untouched Material look, generic sidebar-plus-card composition, or a surface with no defensible product-specific signature
+- the chosen visual thesis is not visible in typography, composition, state treatment, or interaction
 - a common visual option is represented by a generic text select when a familiar icon/segmented control would be clearer
 - a compact field is stretched or stranded in a wide empty row without a layout reason
 - text is clipped, overlapped, hidden, or too low contrast
@@ -269,8 +306,10 @@ Screenshot evidence never replaces required contract validation.
 Load only what is needed, but follow these mandatory routing rules:
 
 - `references/research-curation.md` for the external design-system and UX principles behind this skill.
+- Load `references/visual-direction-and-delight.md` for new visual directions, redesigns, or requests using modern, delightful, elegant, premium, distinctive, memorable, polished, or non-generic language.
 - Load `references/praxis-visual-rubric.md` in audit mode and before screenshot review.
 - Load `references/authoring-editor-patterns.md` for settings panels, builders, schema editors, rule editors, metadata-driven authoring, field layout, or workstation composition.
 - Load `references/interaction-control-selection.md` when replacing or choosing selects, buttons, fields, commands, choices, modes, filters, visual properties, destructive actions, preview, or bulk operations.
 - Load `references/theme-accessibility-i18n-gate.md` when changing CSS, tokens, theme surfaces, overlays, icon-heavy controls, labels, tooltips, aria text, or internal editor copy.
 - Load `references/screenshot-review-checklist.md` before finalizing visual UI work.
+

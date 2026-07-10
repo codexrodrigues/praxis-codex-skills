@@ -1,4 +1,5 @@
 interface:
   display_name: "Praxis UI Product Design"
-  short_description: "Audit and verify Praxis Angular UI product design, hierarchy, responsiveness, and screenshot QA."
-  default_prompt: "Use $praxis-ui-product-design to identify the canonical UI owner, apply the smallest platform fix when requested, and verify Praxis UX with official browser screenshots when feasible."
+  short_description: "Direct, design, audit, and verify distinctive Praxis Angular product UI and screenshot quality."
+  default_prompt: "Use $praxis-ui-product-design to define a product-specific visual direction, identify the canonical UI owner, implement the smallest platform fix when requested, and verify hierarchy, signature, responsiveness, and craft with official browser screenshots when feasible."
+

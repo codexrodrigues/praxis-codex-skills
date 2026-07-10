@@ -1906,8 +1906,8 @@
                                             "praxis-resource-entity-lookup-backend",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "9B4D749ED6BFCBB697256BCE8D22B297992F8BBE48E0010ED005C597B538F24D",
-                       "treeSha256":  "49477C03261AB67B51CA68A13883870FD3882B0ED957150AABF5A3267EF3F88E"
+                       "skillMdSha256":  "F94B162FB217E241575E1B0ACC6E98B64DE33BB880E402D74BB2A6C201525979",
+                       "treeSha256":  "5EF0C30D7A9C22D6278CB318D08F286F6968E5C0520F382EBFDFA5E87E3B7E09"
                    },
                    {
                        "name":  "praxis-visual-builder-ai-validation",

@@ -43,10 +43,19 @@ Ask these from the screenshot, not from code intent:
 20. Do equivalent inline chip affordances, especially clear/close icon buttons, use consistent target size, background treatment, icon color, hover/focus state, and theme contrast across selected fields?
 21. For inline chips with more than one suffix action, do clear, dropdown/toggle, and decorative icons have reserved space without overlap, redundant affordances, or unnecessary width?
 22. When an inline component computes its own width, is any host shell, filter bar, grid minimum, or global Material override forcing a wider visual size than the component needs?
+23. Could this screenshot be mistaken for an untouched Material demo or generic AI admin template?
+24. What concrete element or behavior is the product-specific signature?
+25. Does the visual thesis remain visible in typography, composition, state treatment, and interaction?
+26. Which three defaults were rejected, and are their replacements actually visible?
+27. Does the signature survive the narrow, empty, busy, invalid, and readonly states that were captured?
+28. Would swapping the palette, typography, or layout for a common default leave the product meaning unchanged?
 
 ## Iteration Rule
 
-If the screenshot still looks crude, do not finish. List the top three defects, name the concrete redistribution or primitive replacement for each layout defect, fix the highest-impact one first, then recapture.
+If the screenshot still looks crude or generic, do not finish. List the top three defects, including
+at least one direction/signature defect when distinctiveness is in scope. Name the concrete
+redistribution, primitive replacement, or direction correction, fix the highest-impact one first,
+then recapture.
 
 Stop only when remaining defects are either out of scope, blocked by a canonical dependency, or explicitly accepted as follow-up debt.
 
@@ -62,3 +71,4 @@ Report:
 - validation skipped and exact reason
 - visual defects fixed
 - residual visual risk
+
