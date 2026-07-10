@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-charts-authoring-settings/
-- Descricao atual: Use when Codex must create, inspect, or fix @praxisui/charts visual authoring: PraxisChartConfigEditor, PraxisChartWidgetConfigEditor, SettingsValueProvider, Settings Panel apply/save/reset/reopen flows, availableResources/availableFields/availableTargets catalogs, chartDocument editing, queryContext editing, preview mapping, i18n, config editor metadata, or runtime/editor round-trip.
+- Descricao atual: Use when Codex must implement or audit @praxisui/charts visual authoring and Settings Panel round-trip: PraxisChartConfigEditor, PraxisChartWidgetConfigEditor, SettingsValueProvider, direct chart versus widget input envelopes, apply/save/reset/reopen, canonical x-ui.chart version and defaults, queryContext editing, config editor metadata, preview parity, governed catalogs, i18n, or AI manifest alignment.
 
 ## Classificacao inicial
 

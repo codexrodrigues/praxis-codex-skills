@@ -1,91 +1,138 @@
 ---
 name: praxis-charts-authoring-settings
-description: Use when Codex must create, inspect, or fix @praxisui/charts visual authoring: PraxisChartConfigEditor, PraxisChartWidgetConfigEditor, SettingsValueProvider, Settings Panel apply/save/reset/reopen flows, availableResources/availableFields/availableTargets catalogs, chartDocument editing, queryContext editing, preview mapping, i18n, config editor metadata, or runtime/editor round-trip.
+description: Use when Codex must implement or audit @praxisui/charts visual authoring and Settings Panel round-trip: PraxisChartConfigEditor, PraxisChartWidgetConfigEditor, SettingsValueProvider, direct chart versus widget input envelopes, apply/save/reset/reopen, canonical x-ui.chart version and defaults, queryContext editing, config editor metadata, preview parity, governed catalogs, i18n, or AI manifest alignment.
 ---
 
 # Praxis Charts Authoring Settings
 
-Use this skill for chart config editors and Settings Panel integration. The editor's job is to author the canonical `PraxisXUiChartContract` and runtime widget inputs faithfully, not to invent a separate chart configuration language.
+Use this skill for chart config editors and their Settings Panel hosts. The editor materializes canonical `x-ui.chart` decisions; it does not own business rules, analytics capabilities, persistence infrastructure, or an ECharts-shaped configuration language.
 
 Pair it with:
 
-- `praxis-settings-panel-shell` for Settings Panel shell/protocol issues.
-- `praxis-settings-roundtrip-authoring` for shared apply/save/reset/reopen behavior.
-- `praxis-authoring-editors` for cross-component editor governance.
-- `praxis-charts-runtime-data` when the edited document must be consumed by chart runtime services.
-- `praxis-charts-ai-validation` when the editor path must remain aligned with AI manifest operations.
-- `praxis-charts-authoring-catalogs` for governed resource, field, target, `SettingsValueProvider`, and preview catalogs.
-- `praxis-charts-analytics-interactions` for `queryContext`, stats binding, drilldown, cross-filter, and selection semantics edited from the UI.
-- `praxis-charts-echarts-engine-boundary` when preview/runtime parity depends on ECharts option mapping or adapter behavior.
-- `praxis-charts-ai-handler-contracts` when AI operations must mirror visual editor paths.
+- `praxis-settings-panel-shell` for shell, footer, close, drawer, and `SettingsValueProvider` protocol defects.
+- `praxis-settings-roundtrip-authoring` for shared apply/save/reset/reopen invariants.
+- `praxis-authoring-editors` and `praxis-ui-product-design` for transversal editor governance and visual UX changes.
+- `praxis-charts-authoring-catalogs` for resource, field, target, capability, and preview catalog grounding.
+- `praxis-charts-runtime-data` and `praxis-charts-analytics-interactions` for mapper, stats, `queryContext`, and runtime consumption.
+- `praxis-charts-ai-validation` and `praxis-charts-ai-handler-contracts` when visual paths, component metadata, or executable manifest operations change.
+- `praxis-charts-echarts-engine-boundary` only for preview/runtime engine materialization.
 
-## Canonical Chain
+## Canonical Owners
 
-Keep this chain intact:
+- `praxis-metadata-starter/docs/spec/x-ui-chart.schema.json` owns the published structural `x-ui.chart` vocabulary and version. Do not advance an Angular editor default independently from that schema.
+- `@praxisui/charts` owns `PraxisXUiChartContract`, normalization, validation, editor semantics, runtime mapping, preview, component metadata, and chart authoring manifest alignment.
+- `@praxisui/settings-panel` owns Apply/Save/Reset/Cancel gating and obtains values from `SettingsValueProvider`.
+- The dynamic Page Builder/core widget host owns opening `ComponentDocMeta.configEditor`, replacing widget inputs from the returned envelope, and persisting the page definition.
+- `praxis-config-starter` or the declared host storage owns governed persistence, ETag, approval, and publication. A chart editor does not write storage directly.
+- Backend metadata, schemas, analytics projections, option sources, and capabilities own which resources, fields, operations, metrics, and targets are authorable.
 
-`PraxisXUiChartContract -> PraxisChartConfigEditor state -> SettingsValueProvider output -> apply/save -> persistence -> reopen -> PraxisChartComponent runtime`
+## Two Authoring Envelopes
 
-For widget-hosted editing, keep:
+Do not conflate the direct chart editor with the widget editor.
 
-`inputs.chartDocument + inputs.queryContext -> PraxisChartWidgetConfigEditor -> { inputs } -> page-builder/widget host -> runtime`
+### Direct runtime chart
 
-Do not persist raw ECharts options, local chart aliases, one-off host wrappers, or free-form stats URLs when the canonical document can express the need. If the editor cannot express a real runtime feature, decide whether the gap belongs in `x-ui.chart`, chart runtime, Settings Panel, or the host catalog before adding UI-only state.
+`PraxisChartComponent.openConfigEditor()` hosts `PraxisChartConfigEditor` and expects the panel value to be a `PraxisXUiChartContract`:
 
-## Required Source Inventory
+`chartDocument -> editor state -> getSettingsValue/onSave -> applied$/saved$ -> runtimeChartDocument -> chartDocumentApplied/chartDocumentSaved`
 
-Before editing chart authoring, inspect:
+Apply updates the component preview/runtime without closing. Save emits the same document shape; the external host decides whether and where to persist it.
 
-- `projects/praxis-charts/src/lib/config-editor/praxis-chart-config-editor.ts`
-- `projects/praxis-charts/src/lib/config-editor/praxis-chart-config-editor.html`
-- `projects/praxis-charts/src/lib/config-editor/praxis-chart-config-editor.spec.ts`
-- `projects/praxis-charts/src/lib/config-editor/praxis-chart-widget-config-editor.ts`
-- `projects/praxis-charts/src/lib/config-editor/praxis-chart-widget-config-editor.spec.ts`
-- `projects/praxis-charts/src/lib/config-editor/services/chart-editor-defaults.service.ts`
-- `projects/praxis-charts/src/lib/config-editor/services/chart-editor-preview-mapper.service.ts`
-- `projects/praxis-charts/src/lib/praxis-chart.metadata.ts`
-- `projects/praxis-charts/src/lib/ai/praxis-charts-authoring-manifest.ts` when authorable paths change
-- `projects/praxis-charts/src/lib/i18n/charts.*.ts` when labels, errors, helper text, tabs, or empty states change
+### Dynamic widget/Page Builder
 
-Also inspect `@praxisui/settings-panel` contracts when the issue is panel protocol, footer state, dirty/valid/busy handling, save/apply timing, drawer sizing, or cancellation.
+`ComponentDocMeta.configEditor` points to `PraxisChartWidgetConfigEditor`. The widget host passes one `inputs` object and accepts either an `{ inputs }` envelope or a legacy bare object, then replaces the widget's complete input object:
 
-## Editor Rules
+`widget.definition.inputs -> PraxisChartWidgetConfigEditor -> { inputs } -> apply/save -> complete widget input replacement -> page persistence -> reopen`
 
-`PraxisChartConfigEditor` edits the canonical chart document. It should preserve:
+Therefore the widget editor must preserve every unrelated input deliberately, update `inputs.chartDocument` and `inputs.queryContext`, and remove only inputs whose precedence would be wrong. For `source.kind = "praxis.stats"`, remove stale local `inputs.data`; do not silently delete shell or host inputs.
 
-- `version`, `kind`, `source`, `dimensions`, `metrics`, `events`, `legend`, `tooltip`, `labels`, `theme`, `motion`, `sizing`, and state descriptors.
-- governed catalogs from `availableResources`, `availableFields`, and `availableTargets`.
-- validation through `ChartContractNormalizerService` and `ChartContractValidationService`.
-- preview through the chart preview mapper and runtime chart component, not a separate visual model.
-- i18n for internal authoring text.
+## Initialization And Baselines
 
-`PraxisChartWidgetConfigEditor` edits widget inputs. It must preserve `inputs.chartDocument` and structured `inputs.queryContext`. The query context editor may expose JSON as an advanced surface, but saved values must parse to an object and remain a runtime input, not be merged into `chartDocument.source` as string-built filters.
+- `PraxisChartConfigEditor` may initialize from its documented component input or `SETTINGS_PANEL_DATA` compatibility shape. Keep one canonical input name and do not rely on passing duplicate aliases that the Settings Panel filters out.
+- Normalize a cloned external document into both current state and the reset baseline. Controlled normalization drift must be tested and documented; unknown canonical fields must not disappear accidentally.
+- New documents must use the version published by the metadata schema and accepted by the manifest/validator. As of the current draft this is `0.1.0`; a local `1.0.0` default is not a version migration.
+- A widget with only runtime `config`/`data` has no canonical authoring document. Do not fabricate a generic chart document on save and let it take precedence over the existing chart. Prefer canonical `chartDocument` insertion defaults; otherwise require an explicit, tested `PraxisChartConfig -> PraxisXUiChartContract` migration or block authoring with a diagnostic.
+- Preserve a separate baseline for `queryContext` and every widget-owned editable input. Reset must restore the entire editor scope, not only the nested chart document.
+- When external inputs change while clean, rebase all baselines. Do not overwrite dirty local work silently.
 
-When the chart source is `praxis.stats`, remove stale local `inputs.data` on save/apply so remote stats remain the source of truth. When the source is `derived`, require a clear runtime data owner before relying on local rows.
+## SettingsValueProvider Semantics
 
-## Round-Trip Checklist
+- `isDirty$`, `isValid$`, and `isBusy$` are authoritative shell signals. Compose child editor and widget-level state without losing either source.
+- `getSettingsValue()` powers Apply and must be side-effect free: it returns the current canonical value but does not mark it saved or replace the reset baseline.
+- `onSave()` may finalize the same value, then establish the saved baseline. It must not return a different envelope from Apply.
+- `reset()` restores the opening/saved baseline for chart document, `queryContext`, errors, dirty, valid, and busy state. It must be idempotent.
+- Invalid state should prevent shell actions, but value methods should still fail predictably rather than leaking an unhandled `JSON.parse` exception if invoked programmatically.
+- Do not add local Apply/Save gating or persistence calls to compensate for Settings Panel behavior.
 
-Before calling chart authoring ready, verify:
+## Canonical Document Editing
 
-- opening an existing chart loads the same `chartDocument` without silent drift.
-- editing chart kind preserves compatible metrics/dimensions or produces visible validation errors.
-- adding/removing series uses `metrics[].field` as identity and governed field options.
-- changing source/resource/operation uses governed resource/field catalogs.
-- `queryContext` accepts valid objects, rejects invalid JSON/non-objects, and survives reopen.
-- apply/save emits the canonical `SettingsValueProvider` shape expected by the host.
-- reset returns to the initial document and updates dirty/valid state.
-- runtime preview consumes the same document shape that will be saved.
-- internal editor labels and validation messages use chart i18n.
+Use `ChartContractNormalizerService` and `ChartContractValidationService`, then prove every visually editable path survives round-trip. Review at least:
 
-If the editor is opened through a dynamic widget/page-builder host, also verify `ComponentDocMeta` or equivalent metadata exposes `PraxisChartWidgetConfigEditor` as the config editor and that the host preserves the returned `{ inputs }` shape.
+- version, kind, preset, id, title/subtitle, source, dimensions, metrics, aggregations, group/sort/filter/limit;
+- operation-specific stats options and refresh semantics supported by the runtime;
+- legend, labels, tooltip, theme, surface, sizing, states, and motion;
+- point click, selection, drilldown, cross-filter, governed targets, and mappings.
 
-## Validation
+Changing kind, source, operation, or resource may invalidate dependent state. Preserve compatible values; surface validation for incompatible values; remove data only through explicit normalizer rules. Do not silently keep stale metric/axis/source options merely because the form control is hidden.
 
-Run focused validation for the surface touched:
+The preview must consume the normalized document through the same canonical mapper and `PraxisChartComponent`. Synthetic rows are acceptable for an explicitly local authoring preview, but the UI must not imply that a remote stats request or backend capability was proved.
 
-- editor state/output: `praxis-chart-config-editor.spec.ts` and/or `praxis-chart-widget-config-editor.spec.ts`.
-- metadata exposure: `praxis-chart.metadata.spec.ts`.
-- runtime parity: mapper/validator specs from `praxis-charts-runtime-data`.
-- AI alignment: manifest spec from `praxis-charts-ai-validation`.
-- public authoring surface: build `@praxisui/charts` and validate a direct widget/editor consumer when available.
+## Query Context
 
-State any skipped browser or screenshot QA explicitly. For visual layout changes, inspect the actual rendered editor at desktop and mobile widths.
+- Keep `queryContext` as a structured widget runtime input, separate from `chartDocument.source` and static document filters.
+- A JSON textarea is an advanced fallback, not proof of rich authoring. Accept only a serializable non-array object and preserve filters, sort, limit, page, and meta that the runtime contract supports.
+- Do not display raw parser exception messages. Use chart i18n keys for label, help, invalid JSON, and non-object errors.
+- Empty text removes `inputs.queryContext`; reset restores the original value and dirty/valid state; apply/save/reopen preserve semantic equality.
+- Do not promise that every `queryContext` property changes the default stats POST. Use `praxis-charts-runtime-data` for the exact execution boundary.
+
+## Governed Catalogs
+
+- `availableResources`, `availableFields`, and `availableTargets` are authoring context from governed metadata/catalog owners, not values the editor invents.
+- Remote resource, field, metric, operation, and event-target choices must fail closed when required catalogs/capabilities are unavailable. A free-form resource URL or target input is not a safe fallback for governed authoring.
+- Selecting a resource must resolve or refresh its compatible field, metric, operation, and capability catalog before dependent selections are accepted.
+- Preserve stable identities: resource canonical key/path, `metrics[].field`, dimension field, and target id. Labels are presentation only.
+- Determine whether catalogs are transient editor context or intentionally persisted runtime inputs. Do not freeze stale API metadata into page config by accidental object spreading.
+- Reuse canonical option-source/search controls where appropriate; do not create a chart-local lookup service when shared metadata or `@praxisui/dynamic-fields` already owns discovery.
+
+## Metadata, AI, And Derived Artifacts
+
+When an editable path or input envelope changes, inspect together:
+
+- `praxis-chart.metadata.ts`: runtime inputs, outputs, `configEditor`, insertion defaults/presets, ports, and `authoringManifestRef`;
+- `praxis-charts-authoring-manifest.ts`: schema version, runtime inputs, editable targets, operations, validators, affected paths, and round-trip requirements;
+- AI registry ingestion/generated assets when metadata or manifest projection changes;
+- README, public docs, recipes, playgrounds, and the Settings Panel smoke when public authoring behavior changes.
+
+The visual editor and AI manifest must author the same canonical paths. Metadata must not expose a config editor whose default widget inputs cannot be reopened safely.
+
+## Inventory Before New Contract
+
+- `ja-suportado-so-ux`: canonical path exists; editor layout, i18n, diagnostics, or preview presentation is incomplete.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: local default version, raw URL/target fallback, stale catalog copy, or widget envelope obscures an existing canonical contract.
+- `suportado-parcialmente`: document/input/protocol exists but baseline, reset, catalog cascade, manifest metadata, persistence host, or runtime parity is incomplete.
+- `lacuna-real-de-contrato`: no canonical schema field, renderer-neutral runtime input, Settings Panel operation, catalog capability, or widget host envelope can express the behavior.
+
+Only a real gap justifies a new public input, model, operation, or persistence contract. During beta, correct the canonical source and migrate monorepo consumers in one cycle instead of adding parallel aliases.
+
+## Validation Matrix
+
+Require focused assertions for the changed rows:
+
+- document editor: input/DI initialization, current versus baseline, dirty/valid/busy, controlled normalization, Apply, Save, Reset, readonly, external rebase, and every affected canonical path;
+- widget editor: full `{ inputs }` preservation, chart document precedence, missing-document behavior, query context valid/invalid/non-object/empty, remote-data pruning, reset, reopen, and multiple save cycles;
+- catalogs: governed selection, missing-catalog fail-closed behavior, resource-to-field cascade, stale selection diagnostics, and stable identities;
+- metadata/defaults: canonical `0.1.0` insertion document, `configEditor`, ports, runtime inputs, and manifest reference;
+- AI: manifest version/schema/editable paths and registry projection;
+- runtime parity: normalizer, validator, canonical mapper, component precedence, and local preview boundary;
+- host proof: open -> edit -> Apply -> runtime reflects -> Save -> persisted widget inputs -> reopen -> Reset, at desktop and narrow widths when UI changed.
+
+Typical focused gates from the Angular workspace root are:
+
+```bash
+npx ng test praxis-charts --watch=false --progress=false --include='projects/praxis-charts/src/lib/config-editor/praxis-chart-config-editor.spec.ts' --include='projects/praxis-charts/src/lib/config-editor/praxis-chart-widget-config-editor.spec.ts' --include='projects/praxis-charts/src/lib/praxis-chart.metadata.spec.ts' --include='projects/praxis-charts/src/lib/ai/praxis-charts-authoring-manifest.spec.ts'
+npx ng test praxis-charts --watch=false --progress=false --include='projects/praxis-charts/src/lib/services/chart-contract-normalizer.service.spec.ts' --include='projects/praxis-charts/src/lib/services/chart-contract-validation.service.spec.ts' --include='projects/praxis-charts/src/lib/services/chart-canonical-contract-mapper.service.spec.ts' --include='projects/praxis-charts/src/lib/components/praxis-chart/praxis-chart.component.spec.ts'
+npm run build:praxis-charts
+npx playwright test --config tools/e2e/playwright/praxis-charts-settings-panel.playwright.config.ts
+```
+
+Do not claim round-trip from helper tests alone. Report the exact Settings Panel/host flow proved, backend/catalog capabilities not exercised, skipped screenshot/browser checks, and whether docs, metadata, manifest, registry, and direct consumers required updates.
