@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Quickstart Security"
+  short_description: "Govern host exposure policy"
+  default_prompt: "Use $skill-name to inspect praxis-api-quickstart SecurityConfig, ConfigOriginRestrictionFilter, CORS, CSRF, read-open, write-disabled, /schemas/**, /api/praxis/config/**, and runtime endpoint policy."
+
+policy:
+  allow_implicit_invocation: true

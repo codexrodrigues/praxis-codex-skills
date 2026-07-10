@@ -75,5 +75,6 @@ For release or end-to-end authoring changes, use the quickstart HTTP/SSE smoke f
 - Use `praxis-config-ai-registry-manifests` for executable manifests, validators, compilers, and registry projections.
 - Use `praxis-config-api-metadata-grounding` for API metadata, RAG, Project Knowledge, and resource candidate grounding.
 - Use `praxis-config-domain-decisions` when route class or quick reply should move into shared-rule/domain-knowledge authoring.
+- Use `praxis-api-quickstart-operational-proof`, `praxis-api-quickstart-security-config`, and `praxis-api-quickstart-cockpit-http-validation` for downstream HTTP/SSE proof in the reference host.
 - Use `praxis-ai-turn-orchestration-transport` for Angular stream transport and assistant state.
 - Use `praxis-page-builder-ai-agentic` for Page Builder cockpit consumption.

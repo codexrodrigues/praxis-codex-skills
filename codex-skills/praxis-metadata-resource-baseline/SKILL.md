@@ -65,4 +65,4 @@ For public baseline changes, review README, guides, quickstart docs/examples, An
 
 - Use `praxis-metadata-schema-contracts` for `/schemas/filtered`, schema refs, headers, and `x-ui` shape.
 - Use `praxis-metadata-discovery-capabilities` when resource behavior changes surfaces, actions, capabilities, `_links`, export, stats, or availability.
-- Use `praxis-api-quickstart` skills, when available, for downstream host proof instead of redefining starter contracts in the host.
+- Use `praxis-api-quickstart-operational-proof` and `praxis-api-quickstart-domain-pilots` for downstream host proof instead of redefining starter contracts in the host.

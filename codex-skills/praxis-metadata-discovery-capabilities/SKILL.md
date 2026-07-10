@@ -69,4 +69,5 @@ Review Angular core action/surface/materializer tests and public docs/examples w
 
 - Use `praxis-metadata-schema-contracts` for schema URLs, request/response shape, ETag, and `X-Schema-Hash`.
 - Use `praxis-metadata-resource-baseline` when discovery depends on resource base controller/service behavior.
+- Use `praxis-api-quickstart-cockpit-http-validation` for downstream proof of surfaces, actions, related resources, stats, option sources, cockpit inventory, and HTTP scripts.
 - Use `praxis-core-surface-materialization`, `praxis-core-global-action-payloads`, and `praxis-core-resource-runtime` for Angular runtime consumption.

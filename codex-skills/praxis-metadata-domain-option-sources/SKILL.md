@@ -69,5 +69,6 @@ Review `docs/spec/x-ui-field.schema.json`, option-source examples, guides, quick
 ## Companion Skills
 
 - Use `praxis-metadata-schema-contracts` for structural projection into `/schemas/filtered`.
+- Use `praxis-api-quickstart-domain-pilots` and `praxis-api-quickstart-cockpit-http-validation` for downstream proof of option-source, entity lookup, domain governance, and cockpit materialization.
 - Use `praxis-fields-option-sources`, `praxis-fields-selection-lookup-controls`, and `praxis-resource-entity-lookup-backend` for Angular/backend lookup consumption.
 - Use `praxis-core-domain-governance-runtime` when domain governance feeds config-starter semantic decision authoring or Angular runtime decision clients.

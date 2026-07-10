@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Quickstart Proof"
+  short_description: "Prove Praxis in real HTTP"
+  default_prompt: "Use $skill-name to inspect praxis-api-quickstart as the reference host for starter versions, HTTP proof, metadata/config integration, Maven resolution, and ownership routing."
+
+policy:
+  allow_implicit_invocation: true

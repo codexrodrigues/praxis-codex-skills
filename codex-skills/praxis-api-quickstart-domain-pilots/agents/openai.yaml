@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Quickstart Domains"
+  short_description: "Maintain pilot resources"
+  default_prompt: "Use $skill-name to inspect praxis-api-quickstart ApiPaths, pilot domains, controllers, DTOs, filters, option sources, stats, workflow actions, migrations, and pilot integration tests."
+
+policy:
+  allow_implicit_invocation: true

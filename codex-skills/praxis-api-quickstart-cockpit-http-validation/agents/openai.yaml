@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Quickstart HTTP"
+  short_description: "Validate cockpit evidence"
+  default_prompt: "Use $skill-name to inspect praxis-api-quickstart cockpit docs, verify scripts, HTTP examples, domain catalog/rule/knowledge smokes, Render/public host evidence, and real HTTP validation routing."
+
+policy:
+  allow_implicit_invocation: true
