@@ -8,6 +8,7 @@ Use this reference when choosing `@UISchema` metadata for DTO fields that publis
 - [Labels](#labels)
 - [Groups And Order](#groups-and-order)
 - [Control Selection](#control-selection)
+- [Presentation Presets](#presentation-presets)
 - [Layout And Value Presentation](#layout-and-value-presentation)
 - [Semantic Formatting Decision](#semantic-formatting-decision)
 - [Table Display Formatting](#table-display-formatting)
@@ -114,6 +115,43 @@ Common mappings:
 
 Check `FieldControlType.java` and `x-ui-field.schema.json` before using a less common control. If
 renderability is uncertain, also use `praxis-dynamic-fields-editorial`.
+
+## Presentation Presets
+
+Use `@UISchema(preset = UISchemaPreset.*)` only for repetitive presentation/value-handling choices
+that the platform already publishes in `x-ui.presentationPreset` and `x-ui.presentation`.
+
+Canonical presets currently include:
+
+- `ENTERPRISE_ID`
+- `ENTERPRISE_CODE`
+- `ENTERPRISE_NAME`
+- `ENTERPRISE_STATUS`
+- `DATE_RANGE`
+- `MONETARY_AMOUNT`
+- `BOOLEAN_FLAG`
+- `LEGAL_DOCUMENT_REFERENCE`
+- `TENANT_LABEL`
+- `AUDIT_TIMESTAMP`
+
+Presets reduce visual boilerplate; they do not author domain meaning. A field with a preset still
+needs an explicit `@Schema.description` that explains the business role, and may still need
+`@DomainGovernance`, Bean Validation, option-source metadata, or AI policy.
+
+Good:
+
+```java
+@Schema(description = "Codigo operacional reconhecido pelo backend legado de folha para classificar eventos e rubricas.")
+@UISchema(label = "Codigo", preset = UISchemaPreset.ENTERPRISE_CODE)
+private String code;
+```
+
+Incomplete:
+
+```java
+@UISchema(label = "Codigo", preset = UISchemaPreset.ENTERPRISE_CODE)
+private String code;
+```
 
 ## Layout And Value Presentation
 
