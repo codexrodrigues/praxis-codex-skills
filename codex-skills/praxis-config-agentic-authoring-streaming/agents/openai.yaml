@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Config Authoring"
+  short_description: "Govern agentic turn streams"
+  default_prompt: "Use $skill-name to inspect praxis-config-starter agentic authoring, semantic intent, declared tools, preview/apply, SSE start/probe/replay/cancel, terminal events, quick replies, and diagnostics."
+
+policy:
+  allow_implicit_invocation: true

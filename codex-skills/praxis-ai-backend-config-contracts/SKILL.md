@@ -32,6 +32,14 @@ Inspect:
 
 Use `praxis-ai-authoring-manifests` for component manifest endpoints and edit-plan shape. Use `praxis-ai-turn-orchestration-transport` for turn stream conversion.
 
+When backend contract behavior is in scope, load the relevant config-starter skill before changing Angular client DTOs or endpoint fallbacks:
+
+- `praxis-config-runtime-persistence` for `/api/praxis/config/ui`, headers, ETag, and `/api/praxis/runtime/**`.
+- `praxis-config-ai-registry-manifests` for `ai_registry`, templates, component definitions, manifest endpoints, validators, and compilers.
+- `praxis-config-api-metadata-grounding` for `api_metadata`, AI context, RAG, Project Knowledge, and resource candidates.
+- `praxis-config-agentic-authoring-streaming` for `/api/praxis/config/ai/**`, turn streams, quick replies, diagnostics, start/probe/replay/cancel, and terminal events.
+- `praxis-config-domain-decisions` for domain rules, domain knowledge, publications, materializations, and governed decision diagnostics.
+
 ## Endpoint Rules
 
 - Resolve AI base URL in this order: explicit `AI_BACKEND_ENDPOINTS.aiBaseUrl`, derived `API_URL.default.baseUrl + praxis/config/ai`, fallback `/api/praxis/config/ai`.

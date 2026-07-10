@@ -217,6 +217,11 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-metadata-resource-baseline`: resource-oriented controllers/services, `ResourceMapper`, filters, HATEOAS envelopes, export, stats, and canonical CRUD baseline.
 - `praxis-metadata-discovery-capabilities`: backend surfaces, actions, capabilities, `_links`, availability, related-resource surfaces, export, stats, and cockpit discovery.
 - `praxis-metadata-domain-option-sources`: domain governance, field access, option sources, `RESOURCE_ENTITY`, lookup/by-ids contracts, and semantic metadata review.
+- `praxis-config-runtime-persistence`: `/api/praxis/config/ui`, `ui_user_config`, headers, ETag, tenant/user/environment scope, and `/api/praxis/runtime/**`.
+- `praxis-config-ai-registry-manifests`: `ai_registry`, templates, component definitions, executable manifests, validators, compilers, and registry ingestion.
+- `praxis-config-api-metadata-grounding`: `api_metadata`, AI context, RAG, Project Knowledge, API Catalog Q&A, and resource candidate grounding.
+- `praxis-config-agentic-authoring-streaming`: backend semantic intent, declared tools, preview/apply, turn streams, quick replies, warnings, diagnostics, replay, and cancel.
+- `praxis-config-domain-decisions`: domain rules, domain knowledge, simulations, publications, materializations, decision diagnostics, timelines, and derived projections.
 - `praxis-core-composition-runtime`: dynamic widget pages, composition links, widget events, surface hosts, and runtime observations.
 - `praxis-core-providers-bootstrap`: shared core providers, tokens, global config, API URL, loading, icons, field selectors, collection export, and registry bootstrap.
 - `praxis-core-widget-observations`: dynamic widget contracts, widget pages, widget events, runtime observations, observation registry, diagnostics, and redaction proof.

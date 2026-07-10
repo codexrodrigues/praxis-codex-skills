@@ -9,6 +9,8 @@ Use this skill for executable AI authoring contracts. A manifest is not decorati
 
 Pair with `praxis-ai-backend-config-contracts` when manifest operations are exposed through `/api/praxis/config/ai/**`; pair with `praxis-ai-turn-orchestration-transport` when component edit plans are transported through assistant turns; pair with `praxis-ai-composer-attachments-quick-replies` when quick replies or clarifications select manifest targets or operations.
 
+Use `praxis-config-ai-registry-manifests` when the backend `ai_registry`, registry snapshot ingestion, manifest projection, validators, compilers, or `/api/praxis/config/ai/authoring/manifests/**` behavior is the source of truth. Do not patch Angular manifests to compensate for stale backend registry projection.
+
 ## Canonical Model
 
 Every manifest change must preserve:

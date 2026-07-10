@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Config Grounding"
+  short_description: "Ground AI with API metadata"
+  default_prompt: "Use $skill-name to inspect praxis-config-starter api_metadata, api-catalog ingestion, ai-context, RAG, Project Knowledge, resource candidates, and API Catalog Q&A grounding."
+
+policy:
+  allow_implicit_invocation: true

@@ -13,6 +13,9 @@ Pair it with:
 - `praxis-ai-registry-ingestion` for generated registry/catalog/package AI assets.
 - `praxis-ai-semantic-intent` for consult/edit boundaries and no keyword-based intent routing.
 - `praxis-ai-turn-orchestration-transport` for assistant turn stream lifecycle, runtime observation trust boundary, and terminal result handling.
+- `praxis-config-agentic-authoring-streaming` for backend semantic intent, declared tools, turn stream events, replay/cancel, diagnostics, quick replies, preview/apply, and fail-closed behavior.
+- `praxis-config-domain-decisions` for shared-rule/domain-knowledge handoffs, simulations, publications, materializations, and decision diagnostics.
+- `praxis-config-api-metadata-grounding` for backend API metadata, Project Knowledge, Domain Catalog grounding, and resource candidate evidence.
 - `praxis-ai-composer-attachments-quick-replies` for quick replies, clarifications, and composer actions that select Page Builder targets or operations.
 - `praxis-page-builder-composition` for `WidgetPageDefinition`, `UiCompositionPlan`, composition links, and runtime page materialization.
 - `praxis-page-builder-authoring` for Settings Panel and visual editor round-trip.

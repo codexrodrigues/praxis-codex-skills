@@ -15,6 +15,8 @@ Use this skill for the global configuration editor inside `@praxisui/settings-pa
 - `buildGlobalConfigFormConfig` owns the dynamic form schema for editable global config fields.
 - Remote persistence belongs to the configured global config storage, commonly `/api/praxis/config/**` from `praxis-config-starter`.
 
+Use `praxis-config-runtime-persistence` when save, clear, reload, tenant/user/environment scope, ETag, or remote config storage semantics depend on `praxis-config-starter`. Use `praxis-config-ai-registry-manifests` or `praxis-config-agentic-authoring-streaming` when global settings affect AI provider/model, registry, or authoring backend contracts.
+
 ## Required Inventory
 
 Inspect:

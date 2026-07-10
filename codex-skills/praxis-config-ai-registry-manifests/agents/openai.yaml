@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Config Registry"
+  short_description: "Govern AI registry manifests"
+  default_prompt: "Use $skill-name to inspect praxis-config-starter ai_registry, ai-registry endpoints, component definitions, templates, authoring manifests, validators, compilers, and patch compilation."
+
+policy:
+  allow_implicit_invocation: true
