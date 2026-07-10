@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-angular-public-api-governance/
-- Descricao atual: Use when changing, reviewing, or relying on `@praxisui/*` public APIs in `praxis-ui-angular`, including `src/public-api.ts`, exported types/services/tokens/components, cross-lib imports, barrel boundaries, packageable contracts, and direct-consumer validation.
+- Descricao atual: Use when designing, changing, auditing, or consuming @praxisui Angular package APIs: root public-api.ts, exported components/types/services/tokens/providers, package entrypoints, cross-library imports and dependency edges, beta migrations, packageable barrels, direct-consumer proofs, public docs/manifests, or release compatibility assessment.
 
 ## Classificacao inicial
 
