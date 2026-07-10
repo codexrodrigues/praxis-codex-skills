@@ -455,6 +455,20 @@ class PythonSkillScriptTests(unittest.TestCase):
 
         self.assertEqual(["Review B already exists as #10 (OPEN): https://example.test/issues/10"], reports)
 
+    def test_create_issue_missing_payloads_excludes_existing_titles(self) -> None:
+        payloads = [
+            {"title": "Review A", "body": "A", "path": "a.md"},
+            {"title": "Review B", "body": "B", "path": "b.md"},
+            {"title": "Review C", "body": "C", "path": "c.md"},
+        ]
+        issues = [
+            {"number": 10, "title": "Review B", "url": "https://example.test/issues/10", "state": "CLOSED"},
+        ]
+
+        missing = CREATE_ISSUES_MODULE.missing_payloads(payloads, issues)
+
+        self.assertEqual(["Review A", "Review C"], [payload["title"] for payload in missing])
+
     def test_create_issue_coverage_reports_found_and_missing(self) -> None:
         payloads = [
             {"title": "Review A", "body": "A", "path": "a.md"},
