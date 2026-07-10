@@ -1,101 +1,107 @@
 ---
 name: praxis-angular-agents-governance
-description: Use when Codex must audit or act on Praxis Angular local AGENTS.md governance: inventory projects/*/AGENTS.md coverage, handle absent subarea instructions, classify governance gaps, decide whether the fix belongs in praxis-ui-angular versus codex-skills, reconcile skill guidance with local platform source, and avoid relying on memory when component-local AGENTS files are missing.
+description: Use when Codex must discover, apply, audit, or repair Praxis Angular governance across repository AGENTS.md files, codex-rules.md, component-local instructions, tools/ai-registry, skills, or a suspected instruction/owner/validation/derived-artifact drift.
 ---
 
 # Praxis Angular AGENTS Governance
 
-Use this skill for governance around `praxis-ui-angular` local `AGENTS.md` files and drift between Codex skills and the Angular platform. A local AGENTS file is durable platform guidance; a skill should encode how to use that guidance, not replace it as the source of truth for a component subarea.
+Use this skill to turn a concrete Angular path or planned change into the applicable Praxis governance. `AGENTS.md` files are versioned platform instructions. Skills help locate and apply them; they never replace their canonical guidance.
 
-## Current Audited Inventory
+## When To Use
 
-In the audited checkout, `praxis-ui-angular/projects` contains 23 top-level directories.
+Use for a missing, stale, contradictory, or uncertain local rule; before changing a cross-lib surface; or when an implementation needs to determine its owner, allowed files, validation, publication artifacts, and follow-up repository.
 
-Local `AGENTS.md` exists for:
+Do not use this as a substitute for the functional skill of the affected component. Once the governing sources are resolved, load the functional skill and local guidance for the actual runtime, authoring, metadata, chart, table, form, AI, or tool change.
 
-- `praxis-ai`
-- `praxis-charts`
-- `praxis-core`
-- `praxis-cron-builder`
-- `praxis-crud`
-- `praxis-dialog`
-- `praxis-dynamic-fields`
-- `praxis-dynamic-form`
-- `praxis-editorial-forms`
-- `praxis-expansion`
-- `praxis-files-upload`
-- `praxis-list`
-- `praxis-manual-form`
-- `praxis-metadata-editor`
-- `praxis-page-builder`
-- `praxis-rich-content`
-- `praxis-settings-panel`
-- `praxis-stepper`
-- `praxis-table`
-- `praxis-table-rule-builder`
-- `praxis-tabs`
-- `praxis-visual-builder`
+## Resolve The Governance Stack
 
-Local `AGENTS.md` is absent for:
+Start from the exact file or area to change, not from a remembered inventory. Apply every file whose declared scope contains that path, from broad to narrow:
 
-- `projects/tools`: `docs/guidance`; tooling guidance exists under `tools/ai-registry/AGENTS.md`, not at `projects/tools/AGENTS.md`
+1. monorepo root `AGENTS.md`;
+2. `praxis-ui-angular/AGENTS.md`;
+3. `praxis-ui-angular/codex-rules.md` before any Angular task;
+4. the nearest applicable `AGENTS.md` below the workspace, such as `projects/<lib>/AGENTS.md` or `tools/ai-registry/AGENTS.md`;
+5. the component's `README.md`, `src/public-api.ts`, docs manifest, AI manifest, focused specs, and package scripts when the local instructions name them or are absent.
 
-Re-audit this inventory before using it as evidence. If the source changed, update this skill and the affected component skills in the same cycle.
+Confirm the workspace rule from `codex-rules.md` before editing Angular code: `Regras do codex-rules.md carregadas. Configurações do workspace NÃO serão modificadas.` Its build configuration, `tsconfig`, path mappings, package manifests, and dependency boundaries are protected unless the user explicitly authorizes a change.
 
-## Source Audit
+Local instructions complement broader ones. A narrow file may supply owner-specific commands and artifacts; it cannot silently weaken a root platform rule. When instructions appear to conflict, preserve the stricter canonical rule, inspect the source contract, and record the ambiguity rather than choosing a convenient interpretation.
 
-Before changing guidance or planning implementation:
+## Inventory, Do Not Assume
 
-- inspect `praxis-ui-angular/AGENTS.md`;
-- list `projects/*/AGENTS.md` coverage;
-- read the local AGENTS for each touched lib when it exists;
-- when absent, inspect the owning lib `README.md`, `src/public-api.ts`, docs manifests, AI manifests, focused specs, and package scripts;
-- inspect `tools/ai-registry/AGENTS.md` for AI registry work;
-- search Codex skills for stale statements about missing or existing AGENTS files.
+For the current checkout, enumerate only real source paths. Ignore generated or mirrored trees such as `.linux/**` unless the task explicitly targets them.
 
-## Classification
+```sh
+find praxis-ui-angular/projects -mindepth 1 -maxdepth 1 -type d -print | sort
+find praxis-ui-angular/projects -mindepth 2 -maxdepth 2 -name AGENTS.md -print | sort
+find praxis-ui-angular/tools -name AGENTS.md -print | sort
+```
 
-Classify each gap:
+The audited baseline has local `AGENTS.md` coverage for all 22 public component libraries under `projects/`; `projects/tools` is a tooling container, not an uncovered public library. AI registry work is governed by `tools/ai-registry/AGENTS.md`. Re-run the inventory before claiming this remains true.
 
-- `docs/guidance`: the component has enough local governance, but a skill routes poorly or omits the right source/validation/doc artifact.
-- `governança-local-ausente`: a component lib lacks `projects/<lib>/AGENTS.md`; create a follow-up in `praxis-ui-angular`, not in this skills repo.
-- `contrato-canônico-ambíguo`: the absence or drift hides uncertainty about owner, public API, validation gate, or derived artifact; pause local patches and identify the canonical platform owner.
+For every affected path, capture:
 
-Also classify implementation need with the standard Praxis categories:
+| Evidence | What it establishes |
+| --- | --- |
+| nearest `AGENTS.md` | owner boundary, paired files, focused gates, recurring risks |
+| `codex-rules.md` | protected workspace configuration and edit constraints |
+| `README.md` and `src/public-api.ts` | user-facing contract and package owner |
+| docs/AI manifests, recipes, landing data | derived documentation, registry, and authoring obligations |
+| specs, package scripts, root workspace guidance | smallest executable proof and environment constraints |
 
-- `ja-suportado-so-ux`
-- `ja-suportado-mal-nomeado-ou-mal-materializado`
-- `suportado-parcialmente`
-- `lacuna-real-de-contrato`
+Do not infer a contract merely because a local file is absent. Inspect the established sources above and classify what is actually missing.
 
-Missing AGENTS guidance alone is not a runtime contract gap.
+## Classify And Route The Gap
 
-## Decision Rules
+First classify the implementation using the platform categories: `local-pequena`, `transversal`, `arquitetural`, `contrato-publico`, or `docs-apenas`. For any proposed new surface, also classify adherence as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`.
 
-- Do not invent component-local AGENTS content inside `praxis-codex-skills`.
-- If the gap is local governance, open or record a follow-up against `praxis-ui-angular` with the missing lib, owner boundary, validation gates, public artifacts, and observed evidence.
-- Update skills when the evidence is already verifiable and the correction is small, objective, and directly useful for future Codex work.
-- When a skill and local AGENTS disagree, prefer the local platform source and update the skill.
-- When local AGENTS is absent, avoid memory-based commands; derive validation from root AGENTS, `package.json`, README/docs, focused specs, and public API ownership.
-- Treat docs, examples, public API, AI registry, i18n, and playgrounds as derived artifacts that must be reviewed when the missing AGENTS would normally name them.
-- For skills-only updates, prefer changing the versioned source under `codex-skills/`, updating the manifest hashes, and running the smallest available audit/sync path. If PowerShell is unavailable, record that `scripts/sync-praxis-skills.ps1` could not run instead of silently skipping local installation sync.
+Then classify the governance result:
 
-## Known Follow-Ups
+| Finding | Correct action |
+| --- | --- |
+| guidance exists but a skill omits, duplicates, or misroutes it | update the canonical skill in `codex-skills/`; do not copy local instructions into consumer code |
+| a component library lacks local instructions and broader evidence cannot safely define owner/gates | create a `praxis-ui-angular` governance issue with the path, owner, paired artifacts, focused validation, and risk |
+| local instructions are stale, mutually inconsistent, or contradict source behavior | fix the owning `AGENTS.md` in `praxis-ui-angular`; update affected skills in the same cycle when evidence is stable |
+| ambiguity is actually about metadata, config, public API, runtime, or backend semantics | stop treating it as a documentation gap; map the canonical owner and solve it at platform level |
+| generated registry/docs output differs from its source | repair the official generator flow, manifest, or source docs; never hand-edit generated output as a shortcut |
 
-- `praxis-charts` now has local AGENTS guidance for ECharts adapter boundaries, analytics/stats contracts, config editors, AI manifest/registry gates, public API, docs/playgrounds, and focused build/spec commands. Re-audit if source guidance changes.
-- `praxis-rich-content` now has local AGENTS guidance for core-owned `RichContentDocument`, renderer/editor/preset boundaries, safe URL/style policy, JsonLogic fail-safe behavior, AI manifest/registry gates, public API, docs/playgrounds, and focused build/spec commands. Re-audit if source guidance changes.
-- `projects/tools` should not be treated as a missing component-lib AGENTS gap while `tools/ai-registry/AGENTS.md` governs the actual AI registry tooling.
+A missing `AGENTS.md` is a governance gap, not automatically a new runtime or metadata contract. Do not create inputs, exports, aliases, local services, words-based intent routing, or consumer-side parallel semantics to compensate for unclear instructions.
 
-## Validation
+## Platform Decisions That Governance Must Preserve
 
-For skills-only governance updates:
+- Praxis Angular is a runtime and cockpit for AI-authored semantic decisions; it does not become the primary source of business rules.
+- Before proposing a contract, inventory existing metadata, schemas, `x-ui`, surfaces, actions, capabilities, option sources, registries, manifests, editor state, diagnostics, previews, and runtime adapters. Correct canonical materialization before adding parallel UI state.
+- User intent is semantically resolved by AI/LLM with governed grounding. Keyword or regex matching can only assist after a canonical scope has been resolved; it cannot decide primary intent.
+- Keep root `public-api.ts` intentional. Do not create a transitively exported facade for another public library; use `praxis-angular-public-api-governance` for cross-lib edges and direct-consumer proof.
+- Framework-owned text follows `PraxisI18nService` and the owning locale catalogs; schema and host business copy remain external. Use `praxis-angular-i18n-governance` for catalog and hardcoded-chrome work.
+- Runtime/config changes must be checked against their canonical visual authoring round-trip. For fields, include editorial discovery and tooling coverage, not just runtime rendering.
+- AI registry, generated docs, manifests, recipes, and backend synchronization belong to `tools/ai-registry` and its official scripts, not ad hoc scripts or manually changed derived assets.
+- In beta, prefer a clean canonical migration with updated consumers and artifacts over feature flags, aliases, or parallel v1/v2 contracts unless an operational exception is explicit.
 
-- re-run the project AGENTS inventory script;
-- search touched skills for stale AGENTS claims;
-- validate manifest count, hashes, frontmatter, `$skill` prompts, dependencies, and cycles;
-- run `git diff --check`;
-- run `skill-creator` validation when the environment has PyYAML;
-- run skill sync when PowerShell is available, or state why sync was skipped.
-- if `quick_validate.py` is absent, state that absence and use the repo's manifest/hash audit as the local substitute.
+## Required Impact Map
 
-For monorepo follow-ups, validate in `praxis-ui-angular` according to the affected local AGENTS, root AGENTS, and the smallest reliable package/docs/registry gates.
+For `transversal`, `arquitetural`, or `contrato-publico` work, produce this before editing:
+
+| Item | Record |
+| --- | --- |
+| canonical owner | library, starter, registry tool, or backend source that owns the semantics |
+| affected consumers | direct libraries, host demos, editors, and backend/landing consumers |
+| public/derived artifacts | `public-api`, README/docs manifest, AI manifest/registry, recipes, playground, landing, sitemap, corpus |
+| validation | smallest focused build/spec/browser/registry/doc proof that covers the changed behavior |
+| compatibility | breaking risk, clean beta migration, and any authorized operational exception |
+
+For a local change, still name why no adjacent owner or derived artifact applies. This prevents a local patch from silently creating platform drift.
+
+## Validation And Completion
+
+Use the affected local `AGENTS.md` first, then select the narrowest command with `praxis-angular-validation-gates`. Typical coupled surfaces require these companions:
+
+- public exports or cross-lib contracts: `praxis-angular-public-api-governance` plus altered-library and direct-consumer proof;
+- internal framework copy: `praxis-angular-i18n-governance` plus `pt-BR` and `en-US` evidence;
+- config, editors, Settings Panel, or field discovery: `praxis-authoring-editors` and the actual runtime-to-editor round trip;
+- docs, examples, playgrounds, registries, or site routes: `praxis-angular-docs-playgrounds`;
+- AI manifest, catalog, ingestion, generated AI docs, or backend sync: `praxis-ai-registry-ingestion` and `tools/ai-registry/AGENTS.md`.
+
+For a skills-only change, update `codex-skills/`, its manifest hashes/dependencies, and generated issue draft; run `python3 scripts/preflight-python-fallbacks.py`, `python3 scripts/audit-praxis-skills.py --family praxis`, `git diff --check`, then `python3 scripts/sync-praxis-skills.py --family praxis --force` and re-audit. State exact validation and omissions.
+
+Close with the resolved stack, classification, canonical owner, applied gates, derived-artifact decision, and any issue opened for a true governance or platform gap.
