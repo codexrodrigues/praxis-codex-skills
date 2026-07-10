@@ -101,11 +101,15 @@ These are the highest-risk packages for future skill drift because they combine 
 
 Create a small, evidence-driven backlog instead of a broad skill-count wave.
 
+Status as of the post-audit curation pass: all four follow-up issues below were completed and merged.
+
 1. Curate dynamic-form skill discoverability and source parity.
 
    Scope: review `praxis-form-*` skills against `projects/praxis-dynamic-form/AGENTS.md`, `README.md`, docs, authoring manifest, config editors, layout/rules/messages/hooks/actions editors, and focal validation commands.
 
    Expected outcome: either rename or add explicit routing language so tasks mentioning `@praxisui/dynamic-form` reliably load the correct skill family.
+
+   Status: completed in PR #110.
 
 2. Curate dynamic-fields skill discoverability and editorial chain parity.
 
@@ -113,17 +117,32 @@ Create a small, evidence-driven backlog instead of a broad skill-count wave.
 
    Expected outcome: make the skill family unmistakably canonical for `@praxisui/dynamic-fields`, especially runtime coverage versus editor/tooling coverage.
 
+   Status: completed in PR #111.
+
 3. Curate page-builder agentic validation gates.
 
    Scope: compare `praxis-page-builder-*` skills with the current local `AGENTS.md`, especially agentic authoring, SSE/backend gates, Settings Panel bridge, catalog AI, graph editor, shell editor, and environment assumptions for the full validation gate.
 
    Expected outcome: prevent future implementations from closing page-builder AI work with only a build or smoke when the local source requires the heavier gate.
 
+   Status: completed in PR #112.
+
 4. Curate package-name aliases for table-rule-builder and settings-related routing.
 
    Scope: ensure tasks mentioning exact package names such as `praxis-table-rule-builder` and `praxis-settings-panel` route to the correct canonical skill family without encouraging duplicate concepts or convenience wrappers.
 
    Expected outcome: better task-to-skill routing without creating parallel semantic layers.
+
+   Status: completed in PR #113.
+
+## Post-Curation Recommendation
+
+Do not create new Angular skill-count issues immediately. The current next step is to use the curated 146 active skills during real Praxis implementation and record only evidence-backed misses:
+
+- a skill routes to the wrong canonical owner;
+- a skill misses a validation gate that the source requires;
+- a package changes public API, authoring manifest, docs registry, or AI registry behavior;
+- a recurring implementation task needs new canonical guidance rather than local adaptation.
 
 ## What Not To Do Next
 
