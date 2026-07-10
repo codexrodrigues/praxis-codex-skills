@@ -28,6 +28,9 @@ Inspect:
 - selection component folders under `src/lib/components/**`
 - selection `*.metadata.ts` and `*.json-api.md`
 - `src/lib/base/option-store.ts`
+- `src/lib/base/simple-base-select.component.ts`
+- `src/lib/components/inline-entity-lookup/**`
+- `src/lib/components/material-async-select/**`
 - `src/lib/ai/select-controls-ai-capabilities.ts`
 - `src/lib/ai/chips-controls-ai-capabilities.ts`
 - `src/lib/ai/list-controls-ai-capabilities.ts`
@@ -53,6 +56,7 @@ Inspect:
 - Tree controls require stable node identity and parent/children semantics.
 - Chips/list/transfer controls must preserve array value shape, order policy, and max-selection rules.
 - Inline selection overlays use `inlineOverlay` when selections are drafted before commit.
+- Dynamic Form, metadata-editor, table filters, CRUD dialogs, and host projects should consume the same identity/source contract. Do not fork lookup behavior per consumer.
 
 ## Inventory Before New Contract
 
@@ -73,5 +77,6 @@ Use focused gates:
 - AI profile/catalog specs when assistant guidance changes;
 - selected reload/reopen tests for remote/entity options;
 - Playwright for inline selection overlays, multi-select draft behavior, and contrast.
+- direct consumer checks when a selection control is exposed through dynamic-form, metadata-editor, table filter, CRUD, or a host example.
 
 State which runtime, option identity, selected reload, editor/tooling, AI profile, and overlay checks were run.

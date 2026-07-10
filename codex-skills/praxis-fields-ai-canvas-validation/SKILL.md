@@ -23,6 +23,9 @@ Inspect the actual sources:
 - `src/lib/catalog/dynamic-fields-playground.catalog.ts`
 - `src/lib/catalog/dynamic-fields-playground.recipes.ts`
 - `src/lib/canvas-integration/canvas-state.token.ts`
+- `docs/dynamic-fields-field-catalog.md`
+- `docs/dynamic-fields-field-selection-guide.md`
+- `docs/dynamic-fields-inline-filter-runtime-contract.md`
 - generated AI registry artifacts when the task requires registry ingestion proof
 
 The family manifest should capture shared `FieldMetadata`, registry, and editorial semantics. Component profiles should express per-control differences such as text, numeric, option, temporal, upload, display, and entity-lookup behavior.
@@ -46,6 +49,7 @@ Do not use keyword routing as the primary way to pick a field. AI authoring shou
 - Keep runtime coverage, editorial discovery, AI profile coverage, and canvas/playground coverage as separate statuses.
 - Validate option-source and entity lookup controls with `praxis-fields-option-sources`; AI should understand by-ids reload, dependencies, and partial backend waivers instead of authoring a local select workaround.
 - Keep canvas integration as a projection of field metadata/editorial state. Do not create a second concept layer for canvas-only field behavior when the canonical registry already knows it.
+- For wrapper controls, AI/canvas may choose and place the field through dynamic-fields, but package-specific policy must come from the owning package AI/runtime skill.
 
 ## Validation
 
@@ -57,4 +61,4 @@ Prefer focused checks:
 - `catalog-derivation.spec.ts` and playground catalog specs when discovery materialization changed
 - AI registry generation/ingestion only when the changed source must appear in generated component docs
 
-For canvas-facing work, also verify that the field can be discovered, selected, configured, and previewed through the canonical runtime/editorial chain. A static manifest entry without runtime/editorial proof is not enough.
+For canvas-facing work, also verify that the field can be discovered, selected, configured, previewed, and projected into dynamic-form/metadata-editor consumers through the canonical runtime/editorial chain. A static manifest entry without runtime/editorial proof is not enough.
