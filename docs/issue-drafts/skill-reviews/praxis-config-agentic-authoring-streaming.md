@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-config-agentic-authoring-streaming/
-- Descricao atual: Use when Codex must work on praxis-config-starter agentic authoring backend: AiOrchestratorService, AgenticAuthoringController, AgenticAuthoringTurnStreamService, AgenticAuthoringTurnEngine, semantic intent resolution, declared tools, pre-intent tool planning, dry-run, plan, compile, preview, apply, SSE start/connect/probe/replay/cancel, AiTurnEventEnvelope, terminal events, quick replies, diagnostics, warnings, and observations.
+- Descricao atual: Use when implementing, reviewing, debugging, or validating praxis-config-starter semantic intent resolution, pre-intent planning, declared tools and tool loops, consult/edit routing, preview/repair/apply governance, runtime observation grounding, quick replies and active semantic decisions, authoring turn SSE, event-log replay, heartbeat, timeout, cancellation, stream identity/security, or legacy AI orchestrator and patch-stream migration.
 
 ## Classificacao inicial
 
