@@ -25,6 +25,8 @@ Inspect before editing:
 
 When behavior depends on backend semantics, also inspect the corresponding `praxis-config-starter` endpoint/contract instead of inferring it from the Angular caller.
 
+Use `praxis-config-domain-decisions` for the backend owner of domain rules, domain knowledge, simulations, publications, materializations, explainability, timelines, and evidence lifecycle. Use `praxis-config-api-metadata-grounding` when Domain Catalog or Project Knowledge grounding affects authoring context.
+
 ## Canonical Boundary
 
 - `DomainCatalogService` reads releases, items, governance context, and Domain 360 catalog projections.
@@ -67,5 +69,7 @@ For first-step issue resolution, audit that the flow preserves service key, reso
 
 - Use `praxis-core-runtime-contracts` for shared models, API_URL, public API, and provider boundaries.
 - Use `praxis-ai-backend-config-contracts` when backend config AI contracts are being changed.
+- Use `praxis-config-domain-decisions` when backend domain decision semantics, diagnostics, publication, or materialization contracts are being changed.
+- Use `praxis-config-agentic-authoring-streaming` when turn streams route into shared-rule or domain-knowledge authoring.
 - Use `praxis-core-component-registry-contracts` when domain decisions are projected into component catalogs or authoring registries.
 - Use `praxis-angular-validation-gates` for focused validation selection.

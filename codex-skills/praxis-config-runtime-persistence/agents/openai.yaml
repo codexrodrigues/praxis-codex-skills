@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Config Persistence"
+  short_description: "Persist runtime config safely"
+  default_prompt: "Use $skill-name to inspect praxis-config-starter /api/praxis/config/ui, ui_user_config, headers, ETag, runtime context, tenants, navigation, and security-event projections."
+
+policy:
+  allow_implicit_invocation: true
