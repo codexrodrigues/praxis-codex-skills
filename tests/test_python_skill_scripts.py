@@ -160,6 +160,31 @@ class PythonSkillScriptTests(unittest.TestCase):
             self.assertEqual(1, report["summary"]["sourceInOtherFamilyManifest"])
             self.assertEqual(1, report["summary"]["sourceNotInManifest"])
 
+    def test_audit_allows_missing_skills_root(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skills_root = root / "missing-installed-skills"
+            praxis_skill = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, praxis_skill)])
+            write_manifest(root, "ergon-migration", [])
+
+            args = argparse.Namespace(
+                repo_root=str(root),
+                family="praxis",
+                manifest=None,
+                skills_root=str(skills_root),
+                json=True,
+                fix_manifest=False,
+            )
+            output = io.StringIO()
+            with redirect_stdout(output):
+                result = AUDIT_MODULE.audit(args)
+
+            report = json.loads(output.getvalue())
+            self.assertEqual(0, result)
+            self.assertEqual([], report["installedOnly"])
+            self.assertEqual(1, report["summary"]["missing"])
+
     def test_validate_manifest_and_directories_accept_valid_skills(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

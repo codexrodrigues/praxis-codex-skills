@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -79,13 +80,35 @@ def main() -> int:
                 "ergon-migration",
             ]
         )
-        for family in FAMILIES:
-            report = run(
-                [sys.executable, "scripts/audit-praxis-skills.py", "--family", family, "--json"],
-                capture_json=True,
-            )
-            assert report is not None
-            assert_audit_clean(family, report)
+        with tempfile.TemporaryDirectory() as temporary_skills_root:
+            for family in FAMILIES:
+                run(
+                    [
+                        sys.executable,
+                        "scripts/sync-praxis-skills.py",
+                        "--family",
+                        family,
+                        "--skills-root",
+                        temporary_skills_root,
+                        "--force",
+                        "--delete-extraneous-within-manifest",
+                    ]
+                )
+            for family in FAMILIES:
+                report = run(
+                    [
+                        sys.executable,
+                        "scripts/audit-praxis-skills.py",
+                        "--family",
+                        family,
+                        "--skills-root",
+                        temporary_skills_root,
+                        "--json",
+                    ],
+                    capture_json=True,
+                )
+                assert report is not None
+                assert_audit_clean(family, report)
     except RuntimeError as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
