@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-api-quickstart-security-config/
-- Descricao atual: Use when Codex must work on praxis-api-quickstart security and exposure policy: SecurityConfig, ConfigOriginRestrictionFilter, CORS, CSRF, read-open, write-disabled, rate limits, /api/praxis/config/** permitAll plus origin governance, /schemas/** exposure, /api/praxis/runtime/**, Swagger/actuator policy, cookies, JWT filters, and security-focused integration tests.
+- Descricao atual: Use when Codex must implement, audit, or prove praxis-api-quickstart host security and exposure policy: SecurityConfig, CORS contract headers, CSRF/cookie JWT, read-open/write-disabled, schemas/actuator/runtime/config endpoint policy, trusted proxy and origin governance, rate limiting, encoded-path firewall settings, or security-focused HTTP integration tests.
 
 ## Classificacao inicial
 
