@@ -1,9 +1,11 @@
 ---
 name: praxis-settings-panel-shell
-description: Use when changing or reviewing `@praxisui/settings-panel` shell behavior, SettingsPanelService, SettingsPanelRef, SettingsValueProvider, BaseSidePanelService, drawer sizing, close/backdrop/Escape mediation, Apply/Save/Reset/Cancel enablement, diagnostics, tokens, or host bridge integration.
+description: Use when changing or reviewing `@praxisui/settings-panel` or the praxis-settings-panel package shell behavior, SettingsPanelService, SettingsPanelRef, SettingsValueProvider, BaseSidePanelService, drawer sizing, close/backdrop/Escape mediation, Apply/Save/Reset/Cancel enablement, diagnostics, tokens, or host bridge integration.
 ---
 
 # Praxis Settings Panel Shell
+
+The `praxis-settings-*` skill family is the canonical Codex skill surface for `@praxisui/settings-panel` and `projects/praxis-settings-panel`; do not create parallel `praxis-settings-panel-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for the canonical authoring drawer shell. Do not duplicate drawer chrome, footer protocol, dirty/valid/busy rules, resize, shortcuts, or close mediation in consumer editors when the issue belongs to `@praxisui/settings-panel`.
 

@@ -1,9 +1,11 @@
 ---
 name: praxis-table-rule-effects-runtime
-description: Use when Codex must implement, audit, document, or consume `@praxisui/table-rule-builder` visual effect runtime surfaces, including `RuleEffectsPanelComponent`, `RuleEffectDefinition`, `RuleScope`, effect editor tabs, `EffectRegistryService`, `DEFAULT_EFFECT_PRESETS`, `toCellClassAndStyle`, preview classes, labels/i18n overrides, component metadata, public API, docs, examples, or conditional table visual effects.
+description: Use when Codex must implement, audit, document, or consume `@praxisui/table-rule-builder` or the praxis-table-rule-builder package visual effect runtime surfaces, including `RuleEffectsPanelComponent`, `RuleEffectDefinition`, `RuleScope`, effect editor tabs, `EffectRegistryService`, `DEFAULT_EFFECT_PRESETS`, `toCellClassAndStyle`, preview classes, labels/i18n overrides, component metadata, public API, docs, examples, or conditional table visual effects.
 ---
 
 # Praxis Table Rule Effects Runtime
+
+The `praxis-table-rule-*` skill family is the canonical Codex skill surface for `@praxisui/table-rule-builder` and `projects/praxis-table-rule-builder`; do not create parallel `praxis-table-rule-builder-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for the canonical conditional visual effect editor in `@praxisui/table-rule-builder`. Treat it as the table-facing visual effects authoring surface, not as a generic CSS editor or business rules engine.
 

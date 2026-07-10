@@ -1,9 +1,11 @@
 ---
 name: praxis-settings-global-config
-description: Use when changing or reviewing Praxis Global Config Editor, GlobalConfigAdminService, openGlobalConfigEditor, global config schema, AI provider/model settings, cache/persistence settings, dynamic-fields/table/CRUD global policies, stored config clear/save behavior, or `/api/praxis/config/**`-backed global config persistence.
+description: Use when changing or reviewing @praxisui/settings-panel or praxis-settings-panel package Global Config Editor, GlobalConfigAdminService, openGlobalConfigEditor, global config schema, AI provider/model settings, cache/persistence settings, dynamic-fields/table/CRUD global policies, stored config clear/save behavior, or `/api/praxis/config/**`-backed global config persistence.
 ---
 
 # Praxis Settings Global Config
+
+The `praxis-settings-*` skill family is the canonical Codex skill surface for `@praxisui/settings-panel` and `projects/praxis-settings-panel`; do not create parallel `praxis-settings-panel-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for the global configuration editor inside `@praxisui/settings-panel`. Global config is a governed platform configuration surface, not a screen-local settings form.
 

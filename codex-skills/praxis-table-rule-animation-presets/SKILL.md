@@ -1,9 +1,11 @@
 ---
 name: praxis-table-rule-animation-presets
-description: Use when Codex must implement, audit, document, or validate semantic animations in `@praxisui/table-rule-builder`, including `RuleAnimationPreset`, `RULE_ANIMATION_PRESETS`, `RULE_ANIMATION_PRESET_ALIASES`, `resolveRuleAnimationPresetKey`, `resolveRuleAnimationConfig`, animation override normalization, reduced-motion behavior, preview-only animation classes, runtime precedence, docs, public API, or table rule animation validation.
+description: Use when Codex must implement, audit, document, or validate semantic animations in `@praxisui/table-rule-builder` or the praxis-table-rule-builder package, including `RuleAnimationPreset`, `RULE_ANIMATION_PRESETS`, `RULE_ANIMATION_PRESET_ALIASES`, `resolveRuleAnimationPresetKey`, `resolveRuleAnimationConfig`, animation override normalization, reduced-motion behavior, preview-only animation classes, runtime precedence, docs, public API, or table rule animation validation.
 ---
 
 # Praxis Table Rule Animation Presets
+
+The `praxis-table-rule-*` skill family is the canonical Codex skill surface for `@praxisui/table-rule-builder` and `projects/praxis-table-rule-builder`; do not create parallel `praxis-table-rule-builder-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for semantic table rule animations. Treat animations as governed visual feedback attached to table rule effects, not as arbitrary CSS animation names.
 
