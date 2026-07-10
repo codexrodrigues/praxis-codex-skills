@@ -104,7 +104,7 @@ python3 scripts/sync-praxis-skills.py --family ergon-migration
 
 The sync only manages skills listed in the selected manifest. It does not remove unrelated local skills from `$CODEX_HOME/skills`.
 
-Use `-Force` / `--force` only when intentionally replacing a locally modified managed skill with the canonical version from this repository.
+Use `-Force` / `--force` only when intentionally replacing a locally modified managed skill with the canonical version from this repository. Force sync also removes stale files and empty directories inside skills owned by the selected manifest; it never cleans installed-only skills or directories managed by another family.
 
 ## Manifests
 
@@ -118,4 +118,3 @@ Each family manifest lives in `codex-skills/` and records:
 When any file inside a skill changes, update the corresponding `treeSha256`; when `SKILL.md` changes, update both `skillMdSha256` and `treeSha256`.
 
 Migration workspaces should pin these manifests by hash instead of vendoring skill contents.
-
