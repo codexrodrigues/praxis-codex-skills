@@ -62,12 +62,44 @@ For remote analytics data:
 - Use `source.kind = "praxis.stats"` with `source.resource` and `source.operation`.
 - Let `PraxisChartCanonicalContractMapperService` derive `dataSource.query.statsPath` and `statsRequest`.
 - Let `PraxisChartStatsApiService` execute `query.statsPath` plus `query.statsRequest`.
-- Use `queryContext` for contextual filters, sort, pagination, joins, host period bounds, and cross-widget fan-out.
+- Use `queryContext` for governed runtime context and cross-widget fan-out. The chart runtime merges `filters` into `query.filters` and `statsRequest.filter`, and writes `sort` and `limit` to the runtime `query` object.
+- Treat dynamic `queryContext.sort`, `limit`, `page`, and `meta` as context available on `queryRequest` for a host resolver or observability. The default stats client posts only `statsRequest`; it does not translate those dynamic values into the stats payload. Static sort/limit authored in `x-ui.chart` remain part of the mapper-built `statsRequest` when the selected operation supports them.
+- Do not claim native join support in the chart runtime. Model a cross-resource analytical need in the backend projection/stats contract or open a platform follow-up; never implement a dashboard-only join vocabulary.
 - Keep capability decisions and safe metrics on the backend/catalog side; do not infer authorization from visible cards.
 
 For `x-ui.analytics.projections`, use `AnalyticsChartContractService` and `AnalyticsChartConfigAdapterService` when the backend publishes discoverable analytics projections. The adapter may map projection intent to chart family, but the projection and executable stats fields remain owned by `praxis-metadata-starter` or the host resource.
 
-For dashboard catalog payloads, use `PraxisChartBackendPayloadAdapterService` or `PraxisChartSchemaMapperService` when the payload already carries `widget.chart`. Do not create a parallel widget schema if `x-ui.chart` plus widget shell/canvas metadata is enough.
+For dashboard catalog payloads, choose the materialization path deliberately when the payload carries `widget.chart`:
+
+- `PraxisChartBackendPayloadAdapterService.toWidgetInstance` preserves the canonical document as `chartDocument` and also derives `config`.
+- `PraxisChartSchemaMapperService.toWidgetDefinition` currently materializes `config` and `data`; it does not preserve `chartDocument` for editor round-trip.
+- Direct dashboard and Page Builder definitions may bind `[chartDocument]` without pre-materializing config.
+
+Do not assume the schema mapper and backend payload adapter have identical round-trip behavior. If a flow must reopen, explain, or reauthor the governed document, preserve `chartDocument` through the canonical path instead of reconstructing it from runtime config. Do not create a parallel widget schema if `x-ui.chart` plus widget shell/canvas metadata is enough.
+
+## Operational Proof
+
+Prove the guidance against source and focused specs before declaring the skill current:
+
+1. Happy path: map a valid `PraxisXUiChartContract` with `source.kind = "praxis.stats"`; verify canonical `statsPath`, operation-specific `statsRequest`, dimensions, metrics, filters, and projected rows.
+2. Risk path: pass `queryContext` with `filters`, `sort`, `limit`, `page`, and `meta`; verify filters reach `statsRequest.filter`, sort/limit reach the runtime `query`, the complete context remains on `queryRequest`, and the default stats POST does not silently promise unsupported dynamic pagination or ordering.
+3. Adversarial path: reject raw ECharts options, a host-built stats URL, a local metric alias, or a frontend join contract when the canonical chart/stats owner already exists.
+
+Use the focused Angular gate from the `praxis-ui-angular` root, adapting the include list only when the audited surface is narrower:
+
+```bash
+npx ng test praxis-charts --watch=false --progress=false \
+  --include=projects/praxis-charts/src/lib/services/chart-canonical-contract-mapper.service.spec.ts \
+  --include=projects/praxis-charts/src/lib/services/chart-contract-normalizer.service.spec.ts \
+  --include=projects/praxis-charts/src/lib/services/chart-contract-validation.service.spec.ts \
+  --include=projects/praxis-charts/src/lib/services/chart-stats-api.service.spec.ts \
+  --include=projects/praxis-charts/src/lib/services/chart-schema-mapper.service.spec.ts \
+  --include=projects/praxis-charts/src/lib/services/chart-backend-payload-adapter.service.spec.ts \
+  --include=projects/praxis-charts/src/lib/components/praxis-chart/praxis-chart.component.spec.ts
+npx ng build praxis-charts --configuration production
+```
+
+The focused specs prove Angular mapping and execution boundaries, not backend authorization, metric registration, or a published dashboard integration. Record those as unverified unless a real stats host and consumer smoke were also exercised.
 
 ## Public API
 
