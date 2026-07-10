@@ -29,6 +29,7 @@ def load_script_module(name: str, path: Path):
 
 AUDIT_MODULE = load_script_module("audit_praxis_skills", SCRIPTS_ROOT / "audit-praxis-skills.py")
 SYNC_MODULE = load_script_module("sync_praxis_skills", SCRIPTS_ROOT / "sync-praxis-skills.py")
+VALIDATE_MODULE = load_script_module("validate_praxis_skills", SCRIPTS_ROOT / "validate-praxis-skills.py")
 
 
 def write_skill(root: Path, name: str) -> Path:
@@ -37,6 +38,13 @@ def write_skill(root: Path, name: str) -> Path:
     (skill_root / "SKILL.md").write_text(
         f"---\nname: {name}\ndescription: Test skill {name}.\n---\n\n# {name}\n"
     )
+    return skill_root
+
+
+def write_raw_skill(root: Path, directory_name: str, content: str) -> Path:
+    skill_root = root / "codex-skills" / directory_name
+    skill_root.mkdir(parents=True)
+    (skill_root / "SKILL.md").write_text(content)
     return skill_root
 
 
@@ -136,6 +144,41 @@ class PythonSkillScriptTests(unittest.TestCase):
             self.assertEqual(["scratch-test"], report["sourceNotInManifest"])
             self.assertEqual(1, report["summary"]["sourceInOtherFamilyManifest"])
             self.assertEqual(1, report["summary"]["sourceNotInManifest"])
+
+    def test_validate_manifest_and_directories_accept_valid_skills(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+
+            self.assertEqual([], VALIDATE_MODULE.validate_manifest(root, "praxis", None))
+            self.assertEqual([], VALIDATE_MODULE.validate_directories([skill_root]))
+
+    def test_validate_directories_reports_frontmatter_errors(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_root = write_raw_skill(
+                root,
+                "praxis-test",
+                "---\nname: praxis-other\n---\n\n# Invalid\n",
+            )
+
+            errors = VALIDATE_MODULE.validate_directories([skill_root])
+
+            self.assertIn("SKILL.md name 'praxis-other' does not match manifest name 'praxis-test'", errors[0])
+            self.assertTrue(any("frontmatter missing description" in error for error in errors))
+
+    def test_validate_manifest_reports_unknown_dependency_naming(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_root = write_skill(root, "praxis-test")
+            entry = manifest_entry(root, skill_root)
+            entry["dependencies"] = ["custom-helper"]
+            write_manifest(root, "praxis", [entry])
+
+            errors = VALIDATE_MODULE.validate_manifest(root, "praxis", None)
+
+            self.assertEqual(["praxis-test: unknown dependency naming: custom-helper"], errors)
 
     def test_sync_installs_skill_and_metadata_into_temporary_root(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
