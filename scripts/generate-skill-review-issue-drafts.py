@@ -19,6 +19,151 @@ DEFAULT_DRAFT_ROOT = Path("docs/issue-drafts/skill-reviews")
 DEFAULT_README = Path("docs/issue-drafts/README.md")
 
 
+def canonical_project(skill: dict[str, str]) -> str:
+    name = skill["name"]
+    if skill["family"] == "ergon-migration":
+        return "ergon-migration"
+    if name.startswith("praxis-config-"):
+        return "praxis-config-starter"
+    if name.startswith("praxis-api-quickstart-"):
+        return "praxis-api-quickstart"
+    if name.startswith("praxis-http-examples-"):
+        return "praxisui-http-examples"
+    if name.startswith("praxis-landing-"):
+        return "praxis-ui-landing-page"
+    if name.startswith("praxis-metadata-") and not name.startswith("praxis-metadata-editor-"):
+        return "praxis-metadata-starter"
+    if name in {
+        "praxis-dto-annotations",
+        "praxis-java-host-project",
+        "praxis-resource-entity-lookup-backend",
+    }:
+        return "praxis-metadata-starter"
+    if name in {"praxis-ai-backend-config-contracts", "praxis-files-upload-backend-contract"}:
+        return "transversal"
+    return "praxis-ui-angular"
+
+
+def review_area(skill: dict[str, str]) -> str:
+    name = skill["name"]
+    if skill["family"] == "ergon-migration":
+        return "migration"
+    area_prefixes = (
+        "ai",
+        "angular",
+        "api-quickstart",
+        "charts",
+        "config",
+        "core",
+        "cron",
+        "crud",
+        "dialog",
+        "editorial-forms",
+        "fields",
+        "files-upload",
+        "form",
+        "http-examples",
+        "landing",
+        "list",
+        "manual-form",
+        "metadata-editor",
+        "metadata",
+        "navigation",
+        "page-builder",
+        "rich-content",
+        "settings",
+        "stepper",
+        "table-rule",
+        "table",
+        "tabs",
+        "visual-builder",
+    )
+    suffix = name.removeprefix("praxis-")
+    return next((prefix for prefix in area_prefixes if suffix.startswith(prefix)), "transversal")
+
+
+def risk_level(skill: dict[str, str]) -> str:
+    project = canonical_project(skill)
+    area = review_area(skill)
+    if area in {"ai", "core", "fields", "form", "table", "table-rule", "metadata"}:
+        return "alto"
+    if project in {"praxis-config-starter", "praxis-metadata-starter", "transversal"}:
+        return "alto"
+    if area in {"charts", "metadata-editor", "page-builder", "visual-builder", "settings"}:
+        return "medio-alto"
+    return "medio"
+
+
+def pilot_requirements(skill: dict[str, str]) -> list[str]:
+    name = skill["name"]
+    if name == "praxis-ai-semantic-intent":
+        return [
+            "## Escopo especifico do piloto",
+            "",
+            "Fontes minimas:",
+            "",
+            "- `projects/praxis-ai/AGENTS.md` e `src/public-api.ts`.",
+            "- `core/authoring/governed-decision-routing.ts` e spec.",
+            "- `core/authoring/authoring-scope-policy.ts` e spec.",
+            "- `ui/ai-assistant/ai-assistant.component.ts`, com foco em clarifications, component identity e grounding textual.",
+            "- Consumidores diretos em manual form, list, table, expansion, tabs, stepper e page builder.",
+            "",
+            "Cenarios obrigatorios:",
+            "",
+            "- Feliz: contexto canonico `recommendedAuthoringFlow=shared_rule_authoring` governa o handoff independentemente do wording.",
+            "- Risco: matching textual usado depois da resolucao semantica apenas ranqueia alvo canonico ou materializa clarification.",
+            "- Adversarial: prompt com termos de regra, acesso ou elegibilidade nao autoriza handoff nem patch sem contexto semantico explicito.",
+            "",
+            "Validacao focal minima:",
+            "",
+            "```bash",
+            "npx ng test praxis-ai --watch=false --progress=false --include=projects/praxis-ai/src/lib/core/authoring/authoring-scope-policy.spec.ts --include=projects/praxis-ai/src/lib/core/authoring/governed-decision-routing.spec.ts",
+            "```",
+            "",
+        ]
+    if name == "praxis-charts-runtime-data":
+        return [
+            "## Escopo especifico do piloto",
+            "",
+            "Fontes minimas:",
+            "",
+            "- `projects/praxis-charts/AGENTS.md` e `src/public-api.ts`.",
+            "- Modelos `x-ui-chart`, config e dataset.",
+            "- Mapper, normalizer, validation, schema mapper e backend payload adapter.",
+            "- Stats API, analytics contract/config adapters, providers e specs focais.",
+            "",
+            "Cenarios obrigatorios:",
+            "",
+            "- Feliz: `chartDocument` com `source.kind=praxis.stats` materializa config e request canonicamente.",
+            "- Risco: `queryContext`, drilldown ou cross-filter preserva filtros sem inventar vocabulario frontend.",
+            "- Adversarial: rejeitar raw ECharts, URL de stats montada por string ou metrica local quando `x-ui.chart`/stats ja possui owner canonico.",
+            "",
+            "Validacao focal minima: specs dos mappers/validators e stats adapters envolvidos; registrar qualquer smoke backend/dashboard nao executado.",
+            "",
+        ]
+    if name == "praxis-core-composition-runtime":
+        return [
+            "## Escopo especifico do piloto",
+            "",
+            "Fontes minimas:",
+            "",
+            "- `projects/praxis-core/AGENTS.md`, docs de connection editor e canvas runtime.",
+            "- `src/lib/composition/**`, `src/lib/widgets/**` e modelos de composition/ports.",
+            "- Surface host, related-resource outlet, observation registry e binding runtime.",
+            "- Consumidores em page builder, visual builder e container widgets.",
+            "",
+            "Cenarios obrigatorios:",
+            "",
+            "- Feliz: evento de widget percorre link/transform/port e produz observacao diagnostica reproduzivel.",
+            "- Risco: nested port ou surface target ausente falha com diagnostico governado e sem estado silenciosamente divergente.",
+            "- Adversarial: rejeitar event bus, action router, transform dialect ou command string local quando core ja expressa a composicao.",
+            "",
+            "Validacao focal minima: specs de composition runtime, link executor/transform, nested ports, dynamic widget page e surface host afetados.",
+            "",
+        ]
+    return []
+
+
 def skill_description(skill_root: Path) -> str:
     for line in (skill_root / "SKILL.md").read_text().splitlines()[:20]:
         if line.startswith("description:"):
@@ -75,6 +220,13 @@ def draft_body(skill: dict[str, str]) -> str:
         f"- Caminho: {skill['path']}",
         f"- Descricao atual: {skill['description']}",
         "",
+        "## Classificacao inicial",
+        "",
+        f"- Projeto canonico: {canonical_project(skill)}",
+        f"- Area: {review_area(skill)}",
+        f"- Risco: {risk_level(skill)}",
+        "- Estado: backlog",
+        "",
         "## Foco da revisao",
         "",
         review_focus(skill["family"]),
@@ -89,10 +241,29 @@ def draft_body(skill: dict[str, str]) -> str:
         "- [ ] Identificar guidance obsoleto, ambiguo, duplicado, local demais ou contrario ao contrato canonico.",
         "- [ ] Confirmar interoperacao com skills relacionadas declaradas no manifesto.",
         "- [ ] Revisar exemplos, templates, comandos e checklists para garantir que um agente consiga executar a tarefa sem lacunas criticas.",
+        "- [ ] Mapear `AGENTS.md`, APIs publicas, implementacao, specs, docs, manifests, exemplos e consumidores diretamente relevantes.",
+        "- [ ] Classificar cada gap como `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente` ou `lacuna-real-de-contrato`.",
         "- [ ] Atualizar `skillMdSha256` e `treeSha256` no manifesto quando houver mudanca.",
         "- [ ] Rodar `python3 scripts/preflight-python-fallbacks.py` apos qualquer ajuste.",
         f"- [ ] Quando precisar de diagnostico focado, rodar `scripts/audit-praxis-skills.ps1 -Family {skill['family']}` ou `python3 scripts/audit-praxis-skills.py --family {skill['family']}`.",
         "",
+        "## Prova operacional obrigatoria",
+        "",
+        "- [ ] Executar um cenario feliz representativo usando a skill revisada.",
+        "- [ ] Executar um cenario de risco, ambiguidade ou edge case relevante para o escopo.",
+        "- [ ] Executar um cenario adversarial em que a skill deve rejeitar workaround local, contrato paralelo ou decisao fora do owner canonico.",
+        "- [ ] Rodar a menor validacao focal confiavel do codigo Praxis auditado e registrar comando e resultado.",
+        "- [ ] Comparar o resultado produzido com as decisoes canonicas esperadas, sem considerar apenas o preflight estrutural.",
+        "",
+        "## Evidencias para encerramento",
+        "",
+        "- [ ] Registrar arquivos-fonte e contratos inspecionados.",
+        "- [ ] Registrar alteracoes realizadas na skill, referencias, scripts ou metadata.",
+        "- [ ] Registrar comandos locais, resultados, limitacoes e validacoes nao executadas.",
+        "- [ ] Associar PR ou commit e publicar a auditoria final na issue.",
+        "- [ ] Declarar se a skill ficou `aprovada-com-evidencia`, `implementada-sem-auditoria-funcional`, `precisa-reabertura` ou `skill-desatualizada-por-drift`.",
+        "",
+        pilot_requirements(skill),
         "## Criterios de aceite",
         "",
         "- A skill orienta implementacao/revisao com alto nivel de qualidade e velocidade.",
@@ -100,6 +271,8 @@ def draft_body(skill: dict[str, str]) -> str:
         "- Os recursos ricos do Praxis relacionados ao escopo da skill estao mencionados e roteados corretamente.",
         "- O agente usuario da skill sabe quando aplicar, quando combinar com outra skill e quando abrir follow-up de plataforma.",
         "- O manifesto permanece consistente, com hashes atualizados.",
+        "- A prova operacional demonstra que a skill conduz pelo menos um fluxo real e rejeita um antipadrao relevante.",
+        "- A issue contem evidencia suficiente para que outra pessoa reproduza a auditoria local.",
     ]
 
     flattened: list[str] = []
