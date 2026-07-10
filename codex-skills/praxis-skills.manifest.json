@@ -463,8 +463,8 @@
                                             "praxis-charts-ai-handler-contracts",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "BE541E8A1286D53DE491502018F0D7937B665374BDF9B600C1876D9C09EBE14D",
-                       "treeSha256":  "1E723D76C9848CB0B80292F209D5A58D0220E5908A6582254AACEC067E5EF0F5"
+                       "skillMdSha256":  "C0CA189F13B3905B65D49D7950776DC1E7579E808A530DAB21890EEC79938C8F",
+                       "treeSha256":  "C36B9B64D6C1F4AD1CE07881FAEEE0419CC3D78061C52352576F27C0057A8473"
                    },
                    {
                        "name":  "praxis-component-minimums",
