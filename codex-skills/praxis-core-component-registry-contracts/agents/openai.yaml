@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Core Component Registry Contracts"
+  short_description: "Govern shared component registry metadata"
+  default_prompt: "Use $praxis-core-component-registry-contracts to audit or implement Praxis component metadata registry contracts."
+
+policy:
+  allow_implicit_invocation: true

@@ -79,7 +79,10 @@ For visual/editor flows, add screenshot or browser validation through the offici
 
 - Use `praxis-core-runtime-contracts` for public API, shared models, tokens, i18n, logging, and providers.
 - Use `praxis-core-widget-observations` for dynamic widget models, loader, widget events, dynamic widget page, runtime observations, observation registry, and redaction/serializability proof.
-- Use `praxis-core-global-actions-metadata` when widget events or composition links materialize global actions, surface opens, metadata registry entries, or resource/domain metadata services.
+- Use `praxis-core-global-action-payloads` when widget events or composition links execute structured global actions, payloadExpr, `surface.result`, or `dynamicPage.composition.dispatch`.
+- Use `praxis-core-surface-materialization` when composition opens resource-derived surfaces or materialized related-resource payloads.
+- Use `praxis-core-component-registry-contracts` when composition depends on component metadata registry entries, ports, insertion presets, or AI component context.
+- Use `praxis-core-global-actions-metadata` for the broader global action and metadata-services umbrella.
 - Use `praxis-core-providers-bootstrap` when composition runtime requires provider, token, or registry wiring.
 - Use `praxis-authoring-editors` for editor/runtime round-trip and Settings Panel behavior.
 - Use `praxis-page-builder-composition`, `praxis-page-builder-authoring`, and `praxis-page-builder-ai-agentic` when the shared runtime contract is being authored or exercised through `@praxisui/page-builder`.

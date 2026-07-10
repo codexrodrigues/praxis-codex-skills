@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Core Global Action Payloads"
+  short_description: "Validate structured global action refs"
+  default_prompt: "Use $praxis-core-global-action-payloads to migrate, validate, or implement structured Praxis GlobalActionRef payloads."
+
+policy:
+  allow_implicit_invocation: true
