@@ -66,6 +66,8 @@ Report whether runtime observations were checked for serializability and redacti
 ## Companion Skills
 
 - Use `praxis-core-composition-runtime` for composition links, widget events, surface hosts, and runtime observations.
+- Use `praxis-core-component-registry-contracts` when widget discovery depends on component metadata registry entries, editorial descriptors, ports, insertion presets, or AI component context.
+- Use `praxis-core-global-action-payloads` when widget events execute structured global actions or emit `surface.result`/composition dispatch payloads.
 - Use `praxis-page-builder-composition` for Page Builder authoring/runtime composition on top of core.
 - Use `praxis-core-providers-bootstrap` when widget loading requires provider/registry wiring.
 - Use `praxis-angular-public-api-governance` and `praxis-angular-validation-gates` for public exports and validation scope.

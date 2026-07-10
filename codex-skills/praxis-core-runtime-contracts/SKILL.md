@@ -89,13 +89,17 @@ core text, logging UX, resource-discovery copy, or shared localization changes. 
 
 ## Companion Skills
 
-- Use `praxis-core-resource-runtime` for resource discovery, schema, actions, surfaces, capabilities, HATEOAS, option sources, CRUD operation resolution, and analytics request contracts.
+- Use `praxis-core-resource-runtime` for resource discovery, schema, capabilities, HATEOAS, option sources, CRUD operation resolution, and analytics request contracts.
+- Use `praxis-core-surface-materialization` for focused resource action/surface adapter payloads, `surface.open` materialization, related-resource surfaces, and first-step local audits.
+- Use `praxis-core-global-action-payloads` for `GlobalActionRef`, payload schema/UI schema, validation, payloadExpr, onResult, and command-string cleanup.
+- Use `praxis-core-domain-governance-runtime` for domain catalog, knowledge, rules, simulations, publications, materializations, and config-starter semantic decision clients.
+- Use `praxis-core-component-registry-contracts` for `ComponentMetadataRegistry`, component docs/editorial metadata, ports, insertion presets, and builder/AI registry projection.
 - Use `praxis-core-composition-runtime` for composition runtime, widgets, dynamic widget pages, nested ports, connection/link execution, and surface hosts.
 - Use `praxis-core-providers-bootstrap` for shared providers, tokens, bootstrap, global config, loading, icon, field selector, collection export, and registry wiring.
 - Use `praxis-core-widget-observations` for dynamic widgets, widget pages, widget events, composition observations, runtime observation envelopes, and observation registry.
 - Use `praxis-core-logging-observability` for logging, telemetry sinks, error normalization, PII redaction, throttling, global error handling, and observability alerts.
 - Use `praxis-core-i18n-resource-copy` for `PraxisI18nService`, i18n providers, resource-discovery copy, value presentation, and shared framework text.
-- Use `praxis-core-global-actions-metadata` for `GlobalActionRef`, global action catalogs/providers, payload validation, surface open presets, component metadata registry, and metadata services.
+- Use `praxis-core-global-actions-metadata` for the broader global action and metadata-services umbrella.
 - Use `praxis-rich-content-runtime` and `praxis-rich-content-ai-security-validation` when shared rich-content models, validator assumptions, host-mediated actions, or public rich-content exports are involved.
 - Use `praxis-angular-host-project` when applying core contracts in a consuming host.
 - Use `praxis-component-minimums` when the question is the smallest runtime setup for a component.
