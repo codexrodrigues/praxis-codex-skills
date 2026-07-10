@@ -292,8 +292,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "A16C0467FFF42FAF354E64CA095D0B909E247AD68BAD85BE594D23E6E150B02B",
-                       "treeSha256":  "CD706A6828FA04217C6A02709CEC58C63BC0F363B82197B177D812D643944BC3"
+                       "skillMdSha256":  "4982848A4B971E1198962689F516C60AD3F28F30E63E22D72BD4CB239C68A48A",
+                       "treeSha256":  "54918D6DD9FBEBDEC8671B192A328BD17AAE3E60E411A816D5E3A1BD960CAA66"
                    },
                    {
                        "name":  "praxis-angular-i18n-governance",
@@ -568,8 +568,52 @@
                                             "praxis-core-i18n-resource-copy",
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "E91995408DDB8AC98E28993E30776B4E755C74EDA85E9B9D7ED2B40BAA39BA77",
-                       "treeSha256":  "D023FB66E9E826510FAAFEFD03D6EFD24C233322A550B6F6F9A0A86674F7F830"
+                       "skillMdSha256":  "7F80B3D3AC21FA0ECC7BBD6DCC94445FBC8AF654F4BB09D11FB592CA70F7DB1B",
+                       "treeSha256":  "91DB78654579FF9F519CFCC7C74C186931DB5185A178C4E21A6BBCE5035E7C9C"
+                   },
+                   {
+                       "name":  "praxis-metadata-schema-contracts",
+                       "sourcePath":  "codex-skills/praxis-metadata-schema-contracts",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  ">=0.0.0",
+                       "dependencies":  [
+                                        ],
+                       "skillMdSha256":  "26CEF06ACCFAD2EFE9D8B51106AB306D87DC5357730D873585DB317E15F40001",
+                       "treeSha256":  "E60C57154F4F9AAAAE81A762B11A0A41E23C8A4E5A456F8D28585E043E98DB5F"
+                   },
+                   {
+                       "name":  "praxis-metadata-resource-baseline",
+                       "sourcePath":  "codex-skills/praxis-metadata-resource-baseline",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  ">=0.0.0",
+                       "dependencies":  [
+                                        ],
+                       "skillMdSha256":  "8DF7F1CEAB46067CF284310B6C876AB37E73B9566C359E541D2AFE777B13D67E",
+                       "treeSha256":  "12C5F1D1AD2286A23AAF1709694FCDB2DE069A3C4AA0546BC9EBA7D5F692740A"
+                   },
+                   {
+                       "name":  "praxis-metadata-discovery-capabilities",
+                       "sourcePath":  "codex-skills/praxis-metadata-discovery-capabilities",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  ">=0.0.0",
+                       "dependencies":  [
+                                        ],
+                       "skillMdSha256":  "6A01E7348022F627F26E5BD1424FB2752A8353285446E2C19274F16D4E762CDC",
+                       "treeSha256":  "A881B377BA21C268473C63B615B70BAC7D2880596A492488C8A1BECD727CCE34"
+                   },
+                   {
+                       "name":  "praxis-metadata-domain-option-sources",
+                       "sourcePath":  "codex-skills/praxis-metadata-domain-option-sources",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  ">=0.0.0",
+                       "dependencies":  [
+                                        ],
+                       "skillMdSha256":  "D0119FED1CF8F985F3ADA7DE7950CFEC67694FC9471A99C968749885104D3B83",
+                       "treeSha256":  "5B18079595081CC534E11710D418107A6E7AE341B9EF12F542BA4314C2B895FA"
                    },
                    {
                        "name":  "praxis-core-runtime-contracts",
@@ -1005,8 +1049,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-fields-selection-lookup-controls"
                                         ],
-                       "skillMdSha256":  "EAA49CCA9D82A68513EDB80DB5ABB2A70AFB51A087C4AAA1465D5E09BAAB0B4F",
-                       "treeSha256":  "1ECC7463C9A64C22C85E14016B58D7B9E7E05338697475EBF2BCA5678E44FF83"
+                       "skillMdSha256":  "110EB0621C5F7953CAB35B28B877EBDCCD3A38368EE9B19DC06890C4E72498D6",
+                       "treeSha256":  "46621AB14BAE4441A5EAA11758E1E260AEF72720950B2D28594C59E671B3E1CC"
                    },
                    {
                        "name":  "praxis-fields-runtime-loader",
@@ -1182,8 +1226,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "474F0B1D0588CB2A1AEE8039C0C7FE52BB961BB9176117FC0B23B09249640A62",
-                       "treeSha256":  "C0E904AF7C10A57D74A9AF63ED065F6CAEEE8FCE8B386C5B2ED0AEDDD6E521AB"
+                       "skillMdSha256":  "1172EF4BC9A046D96B02DBF30AE8E4F245F5F91A2AD6F700C3904959271ACA0B",
+                       "treeSha256":  "DB09893EE2075C0AE33DAEF9CB47FAB943FBA0013D8E1306CE10F3A762353D75"
                    },
                    {
                        "name":  "praxis-form-submit-payload-pipeline",

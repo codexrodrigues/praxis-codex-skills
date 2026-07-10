@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Metadata Resources"
+  short_description: "Apply canonical resource backend"
+  default_prompt: "Use $skill-name to inspect metadata-starter resource controllers, services, ResourceMapper, RestApiResponse, HATEOAS, filters, export, and stats."
+
+policy:
+  allow_implicit_invocation: true

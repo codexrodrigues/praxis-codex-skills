@@ -49,6 +49,8 @@ For Ergon/Archon migrations, the orchestration skill still owns phase gating, bu
 
 When these disagree, prefer the canonical owner. Do not create local frontend conventions that bypass a missing backend/runtime contract.
 
+For backend metadata contract work, load the relevant `praxis-metadata-*` skill before adding host adapters, local schema aliases, fallback endpoint maps, or frontend-only semantic conventions. Angular hosts should prove and consume canonical metadata, not become a parallel metadata layer.
+
 ## Semantic Runtime Boundary
 
 Treat an Angular host as the cockpit and runtime for governed Praxis materializations, not as the primary source of business rules or semantic decisions. The host owns shell, routes, auth, tenant/locale/user headers, deployment, theme, and product layout decisions. It consumes canonical decisions and projections from `praxis-metadata-starter`, `praxis-config-starter`, and the published `@praxisui/*` runtime.
@@ -211,6 +213,10 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-angular-docs-playgrounds`: public docs, component docs manifests, examples, AI recipes, landing pages, playgrounds, sitemap, and docs validation.
 - `praxis-core-runtime-contracts`: core public API, tokens, providers, models, i18n, logging, and shared services.
 - `praxis-core-resource-runtime`: core schema/resource discovery, actions, surfaces, capabilities, option sources, related resources, and analytics materialization.
+- `praxis-metadata-schema-contracts`: backend `x-ui`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/domain`, schema refs, ETag, `X-Schema-Hash`, and operation-aware schema resolution.
+- `praxis-metadata-resource-baseline`: resource-oriented controllers/services, `ResourceMapper`, filters, HATEOAS envelopes, export, stats, and canonical CRUD baseline.
+- `praxis-metadata-discovery-capabilities`: backend surfaces, actions, capabilities, `_links`, availability, related-resource surfaces, export, stats, and cockpit discovery.
+- `praxis-metadata-domain-option-sources`: domain governance, field access, option sources, `RESOURCE_ENTITY`, lookup/by-ids contracts, and semantic metadata review.
 - `praxis-core-composition-runtime`: dynamic widget pages, composition links, widget events, surface hosts, and runtime observations.
 - `praxis-core-providers-bootstrap`: shared core providers, tokens, global config, API URL, loading, icons, field selectors, collection export, and registry bootstrap.
 - `praxis-core-widget-observations`: dynamic widget contracts, widget pages, widget events, runtime observations, observation registry, diagnostics, and redaction proof.

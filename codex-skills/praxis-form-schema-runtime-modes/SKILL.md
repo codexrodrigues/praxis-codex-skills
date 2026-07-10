@@ -75,3 +75,5 @@ State explicitly when live API/browser validation was skipped.
 - Use `praxis-fields-runtime-loader` when a schema-backed `controlType` does not render or hot metadata does not reach the field component.
 - Use `praxis-fields-option-sources` and `praxis-fields-selection-lookup-controls` when schema metadata materializes `optionSource`, async select, entity lookup, or selection controls.
 - Use `praxis-core-resource-runtime` for schema/resource discovery, capabilities, actions, and option sources.
+- Use `praxis-metadata-schema-contracts` when `/schemas/filtered`, `schemaUrl`, `schemaId`, `x-ui`, `idField`, `readOnly`, ETag, or `X-Schema-Hash` are missing, stale, or contradictory.
+- Use `praxis-metadata-domain-option-sources` when schema-backed option sources, field access, domain governance, entity lookup publication, or by-ids reload are missing or contradictory.

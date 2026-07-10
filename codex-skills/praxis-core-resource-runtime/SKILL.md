@@ -9,6 +9,8 @@ Use this skill for the `@praxisui/core` runtime path that turns canonical backen
 
 The backend remains the semantic owner. `@praxisui/core` should consume and materialize `praxis-metadata-starter` contracts such as `/schemas/filtered`, `/schemas/actions`, `/schemas/surfaces`, capabilities, HATEOAS links, `x-ui`, option sources, domain catalogs, and analytics projections. It must not invent local semantics to compensate for missing metadata.
 
+When a backend contract is missing, contradictory, or weakly materialized, load the relevant `praxis-metadata-*` skill before patching Angular. Treat the Angular runtime as the consumer/projection layer, not as the place to invent backend metadata semantics.
+
 ## Source Audit
 
 Inspect the affected source before changing guidance or code:
@@ -74,6 +76,10 @@ For public or cross-lib changes, also validate a direct consumer such as table, 
 
 ## Companion Skills
 
+- Use `praxis-metadata-schema-contracts` for backend `x-ui`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/domain`, schema refs, ETag, `X-Schema-Hash`, and OpenAPI operation resolution.
+- Use `praxis-metadata-discovery-capabilities` for backend `/schemas/surfaces`, `/schemas/actions`, capabilities, `_links`, availability, related resources, export, stats, and cockpit discovery.
+- Use `praxis-metadata-domain-option-sources` for `/schemas/domain`, `@DomainGovernance`, field access, `x-ui.optionSource`, entity lookup publication, and by-ids reload policy.
+- Use `praxis-metadata-resource-baseline` for resource controllers/services, `ResourceMapper`, filters, HATEOAS envelopes, export, and stats.
 - Use `praxis-core-runtime-contracts` for public API, tokens, providers, shared models, logging, and i18n.
 - Use `praxis-core-surface-materialization` for action/surface adapter payloads, `surface.open` materialization, readUrl/submitUrl wiring, related-resource surfaces, and first-step payload audits.
 - Use `praxis-core-global-action-payloads` for structured `GlobalActionRef`, payload validation, payloadExpr, UI schema, onResult, and command-string cleanup.

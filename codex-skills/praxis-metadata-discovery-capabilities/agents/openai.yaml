@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Metadata Discovery"
+  short_description: "Govern surfaces and capabilities"
+  default_prompt: "Use $skill-name to inspect metadata-starter surfaces, actions, capabilities, availability, related resources, export, stats, and cockpit discovery."
+
+policy:
+  allow_implicit_invocation: true
