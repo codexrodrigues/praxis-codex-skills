@@ -418,6 +418,7 @@
                                             "praxis-ai-authoring-manifests",
                                             "praxis-ai-registry-ingestion",
                                             "praxis-ai-semantic-intent",
+                                            "praxis-config-ai-registry-manifests",
                                             "praxis-charts-runtime-data",
                                             "praxis-charts-authoring-settings",
                                             "praxis-charts-ai-handler-contracts",
@@ -426,8 +427,8 @@
                                             "praxis-charts-echarts-engine-boundary",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "809C344EF3847E97B543BF9F8E4D6A75599B07F0C0489AE21B90727EF09500DF",
-                       "treeSha256":  "C590066EAEA4ABA0E8ADE4CD807B44CA6C803A174A3A654977CFB051622FBEE1"
+                       "skillMdSha256":  "69B798AAE796BF2D068A61D8044341679E88C499759B54E6740054086596A97E",
+                       "treeSha256":  "63DF646A1B1A69962DC757CD5A60478A02658F245406417CE01579296A7C5165"
                    },
                    {
                        "name":  "praxis-charts-authoring-settings",
