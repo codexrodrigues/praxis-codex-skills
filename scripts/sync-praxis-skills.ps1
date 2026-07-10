@@ -65,7 +65,18 @@ function Remove-ExtraManifestFiles {
         }
         else {
             Remove-Item -LiteralPath $resolvedTarget -Force
+            Write-Host "Removed extra file within managed skill: $resolvedTarget"
         }
+    }
+
+    if (-not $DryRun) {
+        Get-ChildItem -LiteralPath $DestinationDir -Directory -Recurse |
+            Sort-Object { $_.FullName.Length } -Descending |
+            ForEach-Object {
+                if ($null -eq (Get-ChildItem -LiteralPath $_.FullName -Force | Select-Object -First 1)) {
+                    Remove-Item -LiteralPath $_.FullName -Force
+                }
+            }
     }
 }
 
@@ -114,7 +125,7 @@ foreach ($skill in $manifest.skills) {
 
     Copy-SkillDirectory -SourceDir $sourceDir -DestinationDir $destinationDir
 
-    if ($DeleteExtraneousWithinManifest -and (Test-Path -LiteralPath $destinationDir -PathType Container)) {
+    if (($Force -or $DeleteExtraneousWithinManifest) -and (Test-Path -LiteralPath $destinationDir -PathType Container)) {
         Remove-ExtraManifestFiles -SourceDir $sourceDir -DestinationDir $destinationDir
     }
 
@@ -142,4 +153,3 @@ else {
 Write-Host "Family: $($manifest.family)"
 Write-Host "Manifest: $($manifestBundle.Path)"
 Write-Host "Destination: $resolvedSkillsRoot"
-

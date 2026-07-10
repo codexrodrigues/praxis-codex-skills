@@ -47,6 +47,14 @@ def remove_extra_files(source: Path, destination: Path, dry_run: bool) -> None:
             print(f"DRY-RUN remove extra file within managed skill: {resolved_target}")
         else:
             target.unlink()
+            print(f"Removed extra file within managed skill: {resolved_target}")
+            parent = target.parent
+            while parent != destination:
+                try:
+                    parent.rmdir()
+                except OSError:
+                    break
+                parent = parent.parent
 
 
 def sync(args: argparse.Namespace) -> int:
@@ -100,7 +108,7 @@ def sync(args: argparse.Namespace) -> int:
 
         copy_skill(source, destination, args.dry_run)
 
-        if args.delete_extraneous_within_manifest and destination.is_dir():
+        if (args.force or args.delete_extraneous_within_manifest) and destination.is_dir():
             remove_extra_files(source, destination, args.dry_run)
 
         if not args.dry_run:
@@ -135,7 +143,7 @@ def main() -> int:
         "--delete-extraneous-within-manifest",
         "--delete-extraneous",
         action="store_true",
-        help="Remove files under managed skill destinations that are absent from the canonical source skill.",
+        help="Compatibility option: remove files under managed skill destinations absent from source. --force does this automatically.",
     )
     return sync(parser.parse_args())
 
@@ -146,4 +154,3 @@ if __name__ == "__main__":
     except RuntimeError as error:
         print(f"ERROR: {error}")
         raise SystemExit(1)
-
