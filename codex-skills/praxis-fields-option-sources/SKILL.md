@@ -14,6 +14,8 @@ Use this skill for select-like fields backed by canonical Praxis option sources.
 - `@praxisui/dynamic-fields` materializes option loading in `SimpleBaseSelectComponent`, `MaterialAsyncSelectComponent`, inline select variants, `InlineEntityLookupComponent`, `OptionStore`, and `OptionDisplayResolverService`.
 - Backend `RESOURCE_ENTITY` semantics belong with `praxis-resource-entity-lookup-backend`; this skill owns the Angular runtime/editorial consumption.
 
+When backend metadata is wrong or incomplete, use `praxis-metadata-domain-option-sources` to audit `@DomainGovernance`, field access, `x-ui.optionSource`, entity lookup publication, selected reload policy, invalid sort policy, and filter/by-ids endpoints before adding Angular workarounds.
+
 Do not route field intent through keywords such as "customer" or "status". Use the semantic `optionSource` contract, declared resource, and resolved `controlType`.
 
 ## Required Inventory
