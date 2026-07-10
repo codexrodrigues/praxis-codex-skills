@@ -55,6 +55,9 @@ If these are missing or contradictory, classify the gap and return to the canoni
 - Treat capabilities and `_links` as availability gates for optional operations such as export, create, edit, delete, duplicate, workflow actions, and surface opens.
 - For related resources, prefer `RelatedResourceSurfaceResolverService` and the `surface.relatedResource` contract over local parent-child filters.
 - For selected rows or widget outputs, check `PraxisSurfaceHostComponent`, materializer output wiring, row events, and capabilities before declaring a platform gap.
+- Treat `x-ui.resource.identity` as the canonical structured identity of a record. `keyField`, `titleField`, ordered `metadataFields`, and `displayLabelField` come from `@ApiResource(identity = @ResourceIdentity(...))`; Angular must not infer these roles from property names or split a concatenated `displayLabel`.
+- For list/detail continuity, prefer the `resourceIdentity` already materialized on Praxis Table row/selection events and render it with `PraxisResourceIdentityComponent`. Re-fetching schema in the host, duplicating field-role config in CRUD metadata, or composing a screen-specific identifier header is a platform bypass.
+- Preserve field-level `x-ui.presentation` when materializing identity parts. A visual key may inherit prefix/appearance from its field while title and metadata remain structurally governed by `x-ui.resource.identity`.
 
 ## No Keyword Routing
 
@@ -66,6 +69,7 @@ Use focused specs for the touched service or model:
 
 - resource discovery: `resource-discovery.service.spec.ts`
 - schema metadata: `schema-metadata-client.spec.ts` and schema normalizer specs
+- record identity: `resource-identity.model.spec.ts`, `resource-identity.component.spec.ts`, `generic-crud.service.spec.ts`, and the Table event spec that proves `resourceIdentity` propagation
 - actions/surfaces: action/surface adapter and materializer specs
 - CRUD operation resolution: `crud-operation-resolution.service.spec.ts`
 - related resources: resolver and outlet specs
