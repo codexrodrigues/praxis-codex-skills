@@ -39,7 +39,16 @@ Follow-up live source audit:
 
 - `docs/praxis-angular-live-coverage-audit-2026-07.md`
 
-That audit confirms that 146 active skills are sufficient for strong canonical Angular coverage, while 180-200 remains a reasonable upper band for exhaustive Angular-only coverage. The next recommended work is not a broad skill-count wave, but focused curation for package-name discoverability, source parity, and validation gates in high-risk Angular surfaces.
+That audit confirmed that 146 active skills were sufficient for strong canonical Angular coverage, while 180-200 remained a reasonable upper band for exhaustive Angular-only coverage. The immediate follow-up work was not a broad skill-count wave, but focused curation for package-name discoverability, source parity, and validation gates in high-risk Angular surfaces.
+
+Post-audit curation status:
+
+| Issue | Result |
+| --- | --- |
+| #106 dynamic-form discoverability/source parity | Completed in PR #110 |
+| #107 dynamic-fields discoverability/editorial parity | Completed in PR #111 |
+| #108 page-builder agentic validation gates | Completed in PR #112 |
+| #109 package-name routing for table-rule-builder/settings-panel | Completed in PR #113 |
 
 The repository has moved past the minimum useful coverage tier and is now inside the strong canonical coverage band for the Angular side. The current 146-skill set is no longer just an initial foundation: it encodes substantial platform knowledge across runtime, authoring, AI, validation, docs, metadata, config, quickstart proof, HTTP examples, and landing/public docs.
 
@@ -243,19 +252,20 @@ Target: 25-35 additional skills.
 
 ## Immediate Backlog Recommendation
 
-Do not create another batch of broad skill-generation issues just to increase the count. The next backlog should be driven by audit findings, curation gaps, and observed implementation misses.
+Do not create another batch of broad skill-generation issues just to increase the count. The July 2026 curation backlog is complete, and there are no open roadmap issues.
 
-Use the July 2026 live audit as the current source for the next small backlog:
+The next backlog should now be created only from new evidence:
 
-1. Curate dynamic-form skill discoverability and source parity.
-2. Curate dynamic-fields skill discoverability and editorial chain parity.
-3. Curate page-builder agentic validation gates.
-4. Curate package-name aliases for table-rule-builder and settings-related routing.
+1. implementation misses observed while using the skills against real Praxis changes;
+2. source drift in `praxis-ui-angular`, `praxis-config-starter`, or `praxis-metadata-starter`;
+3. recurring validation gaps where a skill lets work close with too little local proof;
+4. package, docs, playground, or AI registry behavior that contradicts a skill;
+5. any remaining guidance that permits keyword-based intent routing, local adapters, duplicate contracts, or frontend-only semantics.
 
 Recommended near-term target:
 
 ```text
-146 -> 150-160 curated skills
+146 active curated skills
 ```
 
-That range leaves room for real gaps without turning the roadmap into a count-driven exercise. A move toward 180-200 skills should happen only after a new source audit proves that exhaustive Angular coverage is worth the maintenance cost.
+Keep the current 146-skill set stable until a real implementation miss proves that a new skill or deeper split is worth the maintenance cost. A move toward 180-200 skills should happen only after a new source audit proves that exhaustive Angular coverage is worth that cost.
