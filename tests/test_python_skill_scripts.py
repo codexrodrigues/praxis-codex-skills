@@ -107,7 +107,7 @@ def write_issue_draft_readme(repo_root: Path, skill_names: list[str]) -> None:
     readme = repo_root / "docs" / "issue-drafts" / "README.md"
     readme.parent.mkdir(parents=True, exist_ok=True)
     links = "\n".join(f"- [{name}](skill-reviews/{name}.md)" for name in sorted(skill_names))
-    readme.write_text(f"# Skill Review Issue Drafts\n\n{links}\n")
+    readme.write_text(f"# Skill Review Issue Drafts\n\n{ISSUE_DRAFTS_MODULE.README_VALIDATION_LINE}\n\n{links}\n")
 
 
 def audit_report(**summary_overrides):
@@ -290,6 +290,25 @@ class PythonSkillScriptTests(unittest.TestCase):
             self.assertTrue(any("missing required text: - Familia: praxis" in error for error in errors))
             self.assertTrue(
                 any("missing required text: python3 scripts/audit-praxis-skills.py --family praxis" in error for error in errors)
+            )
+
+    def test_validate_issue_drafts_requires_readme_validation_guidance(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+            write_manifest(root, "ergon-migration", [])
+            write_issue_draft(root, "praxis", "praxis-test")
+
+            readme = root / "docs" / "issue-drafts" / "README.md"
+            readme.parent.mkdir(parents=True, exist_ok=True)
+            readme.write_text("# Skill Review Issue Drafts\n\n- [praxis-test](skill-reviews/praxis-test.md)\n")
+
+            errors = ISSUE_DRAFTS_MODULE.validate_drafts(root, ["praxis", "ergon-migration"])
+
+            self.assertIn(
+                f"README missing local validation guidance: {ISSUE_DRAFTS_MODULE.README_VALIDATION_LINE}",
+                errors,
             )
 
     def test_preflight_audit_policy_allows_informational_counters(self) -> None:

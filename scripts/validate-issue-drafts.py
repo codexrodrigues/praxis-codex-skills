@@ -12,6 +12,7 @@ from codex_skills_common import MANIFEST_BY_FAMILY, load_manifest
 
 DRAFTS_ROOT = Path("docs/issue-drafts/skill-reviews")
 README_PATH = Path("docs/issue-drafts/README.md")
+README_VALIDATION_LINE = "Validacao local: `python3 scripts/validate-issue-drafts.py`"
 
 
 def manifest_skills(repo_root: Path, families: list[str]) -> dict[str, dict[str, str]]:
@@ -71,6 +72,10 @@ def validate_drafts(repo_root: Path, families: list[str]) -> list[str]:
                 errors.append(f"{draft_path.relative_to(repo_root)}: missing required text: {snippet}")
 
     linked = readme_links(readme_path)
+    readme_content = readme_path.read_text() if readme_path.exists() else ""
+    if README_VALIDATION_LINE not in readme_content:
+        errors.append(f"README missing local validation guidance: {README_VALIDATION_LINE}")
+
     missing_links = sorted(set(skills) - linked)
     extra_links = sorted(linked - set(skills))
     if missing_links:
