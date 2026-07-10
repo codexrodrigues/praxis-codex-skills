@@ -7,12 +7,15 @@ import argparse
 import re
 from pathlib import Path
 
-from codex_skills_common import MANIFEST_BY_FAMILY, load_manifest
+from codex_skills_common import (
+    ISSUE_DRAFTS_README_VALIDATION_LINE as README_VALIDATION_LINE,
+    MANIFEST_BY_FAMILY,
+    load_manifest,
+)
 
 
 DRAFTS_ROOT = Path("docs/issue-drafts/skill-reviews")
 README_PATH = Path("docs/issue-drafts/README.md")
-README_VALIDATION_LINE = "Validacao local: `python3 scripts/validate-issue-drafts.py`"
 
 
 def manifest_skills(repo_root: Path, families: list[str]) -> dict[str, dict[str, str]]:

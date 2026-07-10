@@ -7,13 +7,16 @@ import argparse
 from pathlib import Path
 from typing import Any
 
-from codex_skills_common import MANIFEST_BY_FAMILY, load_manifest
+from codex_skills_common import (
+    ISSUE_DRAFTS_README_VALIDATION_LINE as README_VALIDATION_LINE,
+    MANIFEST_BY_FAMILY,
+    load_manifest,
+)
 
 
 DEFAULT_REPOSITORY = "codexrodrigues/praxis-codex-skills"
 DEFAULT_DRAFT_ROOT = Path("docs/issue-drafts/skill-reviews")
 DEFAULT_README = Path("docs/issue-drafts/README.md")
-README_VALIDATION_LINE = "Validacao local: `python3 scripts/validate-issue-drafts.py`"
 
 
 def skill_description(skill_root: Path) -> str:
