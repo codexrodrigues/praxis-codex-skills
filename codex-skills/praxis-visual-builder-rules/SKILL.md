@@ -16,6 +16,7 @@ Pair it with:
 - `praxis-core-runtime-contracts` when shared JSON Logic, form-rule, metadata, or public model contracts change.
 - `praxis-ai-authoring-manifests` and `praxis-ai-registry-ingestion` when the visual builder AI manifest or generated assets change.
 - `praxis-authoring-editors` when the visual builder is hosted as a config editor in another component.
+- `praxis-page-builder-authoring` and `praxis-page-builder-ai-agentic` when Visual Builder is hosted inside Page Builder widget config or page agentic flows.
 - `praxis-form-ai-rules-validation` when form rules, field visibility, submit behavior, or dynamic-form rule materialization are involved.
 - `praxis-table-rule-effects-runtime`, `praxis-table-rule-table-integration`, and `praxis-table-rule-ai-validation` when the rule expression is specifically table visual conditional effects owned by `@praxisui/table-rule-builder`.
 
@@ -77,6 +78,8 @@ Every operation must validate graph integrity and JSON Logic round-trip where re
 
 `VisualBuilderAiAdapter` may apply governed `RuleBuilderConfig` patches, but it must not bypass the rule graph, registry integrity, or JSON Logic conversion checks for persisted rules.
 
+When Visual Builder is embedded in Page Builder, Dynamic Form, Table, or another component editor, keep Visual Builder as the owner of graph/JSON Logic semantics and the host as owner of placement, persistence, and child editor lifecycle. Do not serialize host-specific labels, widget keys, or CSS selectors into rule conditions unless the canonical target schema defines them.
+
 ## Validation
 
 Use focused local gates:
@@ -86,6 +89,7 @@ Use focused local gates:
 - services: `rule-builder.service.spec.ts`, `rule-validation.service` coverage, `rule-node-registry` coverage, and field schema service coverage.
 - AI: `praxis-visual-builder-authoring-manifest.spec.ts`, `visual-builder-ai.adapter.spec.ts`, and AI integration specs.
 - round-trip: any `round-trip-*.spec.ts` or validator round-trip specs present in the workspace; add focused round-trip coverage if a conversion path changes.
+- host integration: dynamic-form, table, page-builder, or manual-form focused specs only when the rule materialization path for that host changed.
 - build: `npm run build:praxis-visual-builder` when public API, models, templates, or language behavior changes.
 
 When validation is partial, state which visual, JSON Logic, service, AI, and build gates remain unexecuted.

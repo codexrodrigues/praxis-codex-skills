@@ -29,6 +29,7 @@ For child widget config:
 `ComponentDocMeta.configEditor or child ComponentAuthoringManifest -> child-owned document/input patch -> page.widgets[].definition.inputs`
 
 Page Builder hosts child editors; it does not redefine child component config documents.
+If the child editor is Visual Builder, Dynamic Form, Table, Chart, List, Rich Content, or another Praxis component, load that component's authoring skill and preserve its document/apply semantics inside `page.widgets[].definition.inputs`.
 
 ## Required Source Inventory
 
@@ -41,6 +42,7 @@ Before editing Page Builder authoring, inspect:
 - `projects/praxis-page-builder/src/lib/dynamic-page-config-editor.component.spec.ts`
 - `projects/praxis-page-builder/src/lib/editor/widget-shell-editor.component.ts`
 - `projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor.component.ts` when links or page state are editor-visible
+- `projects/praxis-page-builder/src/lib/editor/component-palette-dialog.component.ts` when insertion presets or child editor launch points change
 - `projects/praxis-page-builder/src/lib/i18n/page-builder.*.ts` when labels, helper text, errors, or empty states change
 - `projects/praxis-page-builder/src/lib/ai/praxis-page-builder-authoring-manifest.ts` when authorable paths change
 
@@ -67,6 +69,7 @@ Before calling a Page Builder editor ready, verify:
 - page context/state remain structured objects.
 - widget shell changes affect only `page.widgets[].shell`.
 - child widget settings open through the child `ComponentDocMeta.configEditor` or manifest path.
+- Visual Builder or rule editors hosted as child config preserve JSON Logic/graph round-trip and do not leak Page Builder-only rule state.
 - reset returns to the initial page/shell and updates dirty/valid/busy state.
 - runtime preview consumes the same document shape that persistence saves.
 - i18n covers user-visible editor text.

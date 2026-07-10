@@ -13,6 +13,7 @@ Pair it with:
 - `praxis-visual-builder-schemas-templates` when node configs depend on field schemas, target schemas, property schemas, collection validators, context variables, or templates.
 - `praxis-visual-builder-ai-validation` when an AI manifest operation edits nodes, edges, variables, conditions, effects, or validates round-trip.
 - `praxis-core-runtime-contracts` when shared `JsonLogicExpression`, `FormLayoutRule`, `RULE_PROPERTY_SCHEMA`, or exported public model contracts change.
+- `praxis-page-builder-authoring` when graph editing is hosted as a child widget config editor inside Page Builder.
 
 ## Source Audit
 
@@ -43,6 +44,7 @@ Also inspect component hosts such as `rule-editor.component.ts`, `rule-canvas.co
 - `RuleValidationService` tree validation for structure, dependency, business logic, performance, and custom rules.
 
 Consumers must not embed child node objects in `children`, derive node identity from labels, or keep a parallel local graph model. If a host needs visual rule authoring, it should host the visual builder or delegate to this graph contract.
+Hosts may store the resulting rule document in their own config, but graph state identity remains Visual Builder-owned and must be round-tripped before persistence.
 
 ## Inventory Before New Contract
 
@@ -72,6 +74,7 @@ Use the smallest reliable proof:
 - graph service changes: `rule-builder.service.spec.ts`, registry specs, and validation service specs;
 - editor state changes: `rule-editor.component.spec.ts`, `rule-canvas.component.spec.ts`, `rule-node.component.spec.ts`, and `rule-list.component.spec.ts`;
 - graph serialization side effects: add `praxis-visual-builder-jsonlogic-roundtrip` validation;
+- hosted editor side effects: add the host authoring validation when Page Builder, Dynamic Form, Table, or Manual Form persists the graph result;
 - public API or model changes: `npm run build:praxis-visual-builder` plus one focused consumer when exported contracts are touched.
 
 Report exactly which graph, UI, registry, round-trip, and build gates were executed or skipped.
