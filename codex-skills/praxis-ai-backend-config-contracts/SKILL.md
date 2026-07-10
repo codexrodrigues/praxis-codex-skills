@@ -50,6 +50,17 @@ When backend contract behavior is in scope, load the relevant config-starter ski
 - Stream connections must respect `withCredentials`, access tokens, probe endpoints, and explicit headers. Fetch fallback is required when EventSource cannot carry needed headers.
 - Risk confirmation policy is contract-owned. Frontend can display and require confirmation, but should not downgrade risk locally.
 
+## Client Invariants
+
+- `AI_BACKEND_ENDPOINTS` is an explicit gateway override, not a second contract family. If absent, derive both bases from the shared `API_URL.default.baseUrl`; use the `/api/...` fallbacks only when neither host configuration exists.
+- Tenant, user, and environment headers scope the request. Conversation/session and client turn IDs identify an interaction; do not substitute one for the other or move identity into ad hoc query parameters.
+- Local demo identity is permitted only through the explicit storage option. An empty or failing header factory must not silently inject demo credentials in a real host.
+- Normalize only the contract-supported UUID identities sent to backend turn endpoints. Omit noncanonical UI-only IDs instead of manufacturing server identity.
+- Send contract version and schema-hash headers for patch/start requests after normalizing them. A generated-contract mismatch, malformed SSE envelope, incompatible event schema version, failed probe, or unauthorized stream is a classified transport/contract failure, never a successful assistant result.
+- Preserve credentials and the same authorization scope for start, probe, connect, cancel, feedback, and replay. Signed access tokens may be carried only where the canonical stream contract allows them.
+- Fetch SSE is the transport fallback when EventSource is unavailable or required host headers cannot be carried; it does not justify a new endpoint, unauthenticated stream, or different envelope parser.
+- Feedback is write-only triage evidence. It cannot mutate config, risk policy, semantic decision, preview, or apply state.
+
 ## Inventory Before New Contracts
 
 Before adding a token, endpoint, DTO, or exported type, answer: what does the platform already know but this client, host, or UX is not materializing correctly?
@@ -74,3 +85,5 @@ Use focused checks:
 - backend endpoint behavior: focused `praxis-config-starter` tests when backend contracts change
 
 State explicitly when no `praxis-config-starter`, public docs, examples, registry, or generated contract artifacts need updates.
+
+Exercise endpoint precedence, absent versus explicit local identity, normalized turn identity, contract headers, typed manifest calls, credentials, signed-token cancel/probe, fetch fallback, invalid envelope/schema version, forbidden probe status, and write-only feedback. For a backend/public change, additionally prove the config-starter owner and downstream quickstart scope; do not present Angular mocks as HTTP/SSE authorization proof.
