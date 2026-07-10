@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Page Builder Composition"
   short_description: "Page builder runtime and composition graph"
-  default_prompt: "Use $praxis-page-builder-composition to review a Praxis page-builder composition change."
+  default_prompt: "Use $praxis-page-builder-composition to review an @praxisui/page-builder composition change and escalate to agentic gates when preview/apply or runtime observations are affected."

@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Page Builder Authoring"
   short_description: "Page config, shell, and Settings bridge"
-  default_prompt: "Use $praxis-page-builder-authoring to audit a Page Builder editor round-trip."
+  default_prompt: "Use $praxis-page-builder-authoring to audit an @praxisui/page-builder editor round-trip and identify whether agentic validation gates apply."
