@@ -47,6 +47,10 @@ Inspect:
 - Manual confirmation is required for risky or destructive patches when the contract marks them as such.
 - History persistence must respect tenant, env, userId, redaction, and local storage boundaries.
 - Public exports in `@praxisui/ai` must not become a transitive facade for `@praxisui/core`.
+- Treat the local runtime as a state machine: a clarification cannot expose apply, a review cannot apply without a pending governed patch, and retry/edit/resend/cancel must clear abandoned preview, diagnostics, quick replies, and clarification state before a new branch materializes.
+- Persist history only through `AssistantHistoryService` under the tenant/env/user scope. Respect storage unavailability, 30-day/session-count retention, redaction on write and legacy read, and never reuse a session across scopes.
+- Local confirmation may enforce stricter UI policy, but cannot downgrade backend risk or make a patch applicable. Manual patch editing/reapply remains an explicitly confirmed, auditable flow, not a generic JSON escape hatch.
+- Intermediate SSE status/thought/diagnostic events are progress evidence. Terminal result/error/cancelled transitions determine final materialized state; raw errors and diagnostics remain redacted and are never promoted to business semantics.
 
 ## Validation
 
@@ -59,3 +63,5 @@ Use focused checks:
 - public API changes: build `praxis-ai` and at least one direct consumer when feasible
 
 Review README and `docs/ai-deployment-flow.md` when endpoints, deployment, provider routing, or public behavior change.
+
+For a runtime-wide change, map the affected specialist surfaces first and run their focused gate rather than relying on an umbrella build: context/session, composer, turn/transport, backend contract, history, and legacy assistant UI. State why each unaffected surface is outside the change.
