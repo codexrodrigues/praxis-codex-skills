@@ -8,7 +8,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from codex_skills_common import load_manifest, sha256_file, skill_file_hashes, skill_tree_hash, skills_root
+from codex_skills_common import (
+    MANIFEST_BY_FAMILY,
+    load_manifest,
+    sha256_file,
+    skill_file_hashes,
+    skill_tree_hash,
+    skills_root,
+)
 
 
 def update_manifest_text(text: str, replacements: list[tuple[str, str]]) -> str:
@@ -21,6 +28,16 @@ def update_manifest_text(text: str, replacements: list[tuple[str, str]]) -> str:
             raise RuntimeError(f"Could not find hash in manifest text: {old}")
         updated = updated.replace(marker, f'"{new}"', 1)
     return updated
+
+
+def other_family_source_names(repo_root: Path, selected_family: str) -> set[str]:
+    names: set[str] = set()
+    for family in MANIFEST_BY_FAMILY:
+        if family == selected_family:
+            continue
+        _, manifest = load_manifest(repo_root, family)
+        names.update(skill["name"] for skill in manifest["skills"])
+    return names
 
 
 def audit(args: argparse.Namespace) -> int:
@@ -90,11 +107,18 @@ def audit(args: argparse.Namespace) -> int:
         results.append(result)
 
     source_names = {skill["name"] for skill in manifest["skills"]}
+    other_source_names = other_family_source_names(repo_root, args.family)
     source_root = repo_root / "codex-skills"
-    source_not_in_manifest = sorted(
+    source_dirs = sorted(
         p.name
         for p in source_root.iterdir()
-        if p.is_dir() and p.name not in source_names and p.name not in {"__pycache__"}
+        if p.is_dir() and p.name not in {"__pycache__"}
+    )
+    source_in_other_family_manifest = sorted(
+        name for name in source_dirs if name not in source_names and name in other_source_names
+    )
+    source_not_in_manifest = sorted(
+        name for name in source_dirs if name not in source_names and name not in other_source_names
     )
     installed_only = sorted(
         p.name for p in destination.iterdir() if destination.exists() and p.is_dir() and p.name not in source_names
@@ -108,6 +132,7 @@ def audit(args: argparse.Namespace) -> int:
         "sourceInvalid": sum(1 for r in results if r["status"].startswith("SOURCE_")),
         "installedOnly": len(installed_only),
         "sourceNotInManifest": len(source_not_in_manifest),
+        "sourceInOtherFamilyManifest": len(source_in_other_family_manifest),
     }
 
     if args.fix_manifest and replacements:
@@ -125,6 +150,7 @@ def audit(args: argparse.Namespace) -> int:
                     "results": results,
                     "installedOnly": installed_only,
                     "sourceNotInManifest": source_not_in_manifest,
+                    "sourceInOtherFamilyManifest": source_in_other_family_manifest,
                 },
                 indent=2,
             )
@@ -142,7 +168,8 @@ def audit(args: argparse.Namespace) -> int:
             f"MISSING={summary['missing']} "
             f"SOURCE_INVALID={summary['sourceInvalid']} "
             f"INSTALLED_ONLY={summary['installedOnly']} "
-            f"SOURCE_NOT_IN_MANIFEST={summary['sourceNotInManifest']}"
+            f"SOURCE_NOT_IN_MANIFEST={summary['sourceNotInManifest']} "
+            f"SOURCE_IN_OTHER_FAMILY_MANIFEST={summary['sourceInOtherFamilyManifest']}"
         )
         for item in results:
             if item["status"] == "OK":
@@ -160,6 +187,11 @@ def audit(args: argparse.Namespace) -> int:
             print(f"Installed-only directories outside family manifest: {', '.join(installed_only)}")
         if source_not_in_manifest:
             print(f"Source directories outside selected manifest: {', '.join(source_not_in_manifest)}")
+        if source_in_other_family_manifest:
+            print(
+                "Source directories tracked by another family manifest: "
+                f"{', '.join(source_in_other_family_manifest)}"
+            )
 
     return 1 if any(r["status"].startswith("SOURCE_") for r in results) else 0
 
