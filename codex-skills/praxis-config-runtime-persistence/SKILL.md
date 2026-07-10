@@ -69,5 +69,6 @@ For public persistence changes, review `README.md`, `docs/ai/**` when AI config 
 - Use `praxis-config-ai-registry-manifests` when persisted config interacts with AI registry templates or executable manifests.
 - Use `praxis-config-agentic-authoring-streaming` when config persistence is applied from agentic preview/apply or streamed turns.
 - Use `praxis-api-quickstart-security-config` and `praxis-api-quickstart-operational-proof` for downstream host proof of config endpoint exposure, headers, origin policy, and Maven version resolution.
+- Use `praxis-http-examples-contract-surfaces` when `/api/praxis/config/ui` examples, allowed Origin, tenant headers, or protected config corpus claims are affected.
 - Use `praxis-ai-backend-config-contracts` for Angular AI backend client endpoint/header behavior.
 - Use `praxis-settings-global-config` for Settings Panel global config UX over this backend.

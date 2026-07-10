@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis HTTP Contracts"
+  short_description: "Maintain HTTP contract examples"
+  default_prompt: "Use $skill-name to inspect praxisui-http-examples metadata/config HTTP examples, payloads, headers, Origin, ETag, schema surfaces, capabilities, and governed config/AI/domain-rule contracts."
+
+policy:
+  allow_implicit_invocation: true
