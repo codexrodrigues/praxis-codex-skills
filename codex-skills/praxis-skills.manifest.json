@@ -505,8 +505,8 @@
                                             "praxis-core-providers-bootstrap",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "63617B1AC9390BCF791C0EC36391C8CB4C19825BAA1A889AA5A9E551B8BCCBA4",
-                       "treeSha256":  "FF81E3EFADCD1C5F0F9A36A368C4E7A5BFC071C27FD382D81BD50EE52A1A34DF"
+                       "skillMdSha256":  "C5ECB247A96F292266559525FD62DBB7F6A1FDE0503C0134657E556658335EBC",
+                       "treeSha256":  "F011320D63116194F1672E48E7B0F122E76751A9ED4BFCC09439356D36F35F08"
                    },
                    {
                        "name":  "praxis-core-global-actions-metadata",
