@@ -30,7 +30,7 @@ Inspect:
 - `src/lib/components/praxis-micro-visualization/praxis-micro-visualization.component.ts`
 - focused adapter, option builder, component, and micro-visualization specs
 
-If `projects/praxis-charts/AGENTS.md` is absent, record that governance gap; do not invent local validation commands in a one-off patch.
+If `projects/praxis-charts/AGENTS.md` is absent, use `praxis-angular-agents-governance`, record that governance gap, and do not invent local validation commands in a one-off patch.
 
 ## Boundary Rules
 

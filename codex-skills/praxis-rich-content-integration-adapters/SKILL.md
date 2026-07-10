@@ -19,7 +19,7 @@ Inspect the owning consumer as well as rich-content:
 - `projects/praxis-dynamic-form/**` and `projects/praxis-dynamic-fields/**` when the task involves rich inputs or metadata-driven fields
 - docs manifests, examples, AI recipes, and landing pages that publish rich-content examples
 
-There is no local `projects/praxis-rich-content/AGENTS.md` in the audited checkout. Record that gap when changing this family.
+There is no local `projects/praxis-rich-content/AGENTS.md` in the audited checkout. Use `praxis-angular-agents-governance` and record that gap when changing this family.
 
 ## Integration Rules
 

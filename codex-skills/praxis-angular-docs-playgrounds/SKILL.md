@@ -23,7 +23,7 @@ When docs disagree with code or backend contracts, fix the canonical owner or ex
 Before editing docs or examples:
 
 1. Read `praxis-ui-angular/AGENTS.md`; for landing work also read `praxis-ui-landing-page/AGENTS.md`.
-2. Read the local `projects/<lib>/AGENTS.md` for the component family.
+2. Read the local `projects/<lib>/AGENTS.md` for the component family when present. If it is absent, use `praxis-angular-agents-governance`, record the local governance gap, and derive docs/validation impact from README, docs manifests, public API, metadata, examples, focused specs, and package scripts.
 3. Inspect the owning lib docs: `README.md`, `*.json-api.md`, host integration docs, patterns/editor docs, and `docs/praxis-docs.manifest.json`.
 4. For landing component pages, read `praxis-ui-angular/docs/templates/component-landing-template.md`, `docs/templates/README.md`, and landing registries such as `src/app/data/guides/component-docs.registry.ts`.
 5. For AI-authorable components, inspect manifests and registry tooling through `praxis-ai-registry-ingestion`.

@@ -27,7 +27,7 @@ If the request is ambiguous, default to audit/review mode for review wording and
 
 ## Governance Preflight
 
-Before editing in implementation mode, apply the active root, workspace, and subarea `AGENTS.md` files. Local AGENTS may narrow owner, validation, public artifacts, origins, and no-edit areas.
+Before editing in implementation mode, apply the active root, workspace, and subarea `AGENTS.md` files. Local AGENTS may narrow owner, validation, public artifacts, origins, and no-edit areas. If a Praxis Angular subarea lacks local AGENTS guidance, use `praxis-angular-agents-governance` before deriving validation or public artifact impact from memory.
 
 Explicitly classify the change:
 

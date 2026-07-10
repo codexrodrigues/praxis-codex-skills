@@ -22,6 +22,7 @@ Before editing code or guidance, inspect:
 - focused runtime, metadata, validator, and preset specs
 
 There is no local `projects/praxis-rich-content/AGENTS.md` in the audited checkout. Record that governance gap when working in the subarea until a local AGENTS file exists.
+Use `praxis-angular-agents-governance` to re-audit the gap and decide whether the correction belongs in `praxis-ui-angular` local guidance or only in skill routing.
 
 ## Canonical Boundary
 

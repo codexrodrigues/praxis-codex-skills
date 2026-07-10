@@ -29,6 +29,9 @@ Use narrower commands only when the change scope is narrower:
 Use `praxis-angular-docs-playgrounds` when registry extraction changes public component docs,
 examples, landing pages, or playground evidence. Use `praxis-angular-validation-gates` to decide
 whether full ingestion is required or a narrower registry validator is enough for the current scope.
+Use `praxis-angular-agents-governance` when registry work touches a component whose local
+`projects/<lib>/AGENTS.md` is absent or when a skill's governance claim may have drifted from the
+Angular platform source.
 Use `praxis-angular-public-api-governance` when the registry change is caused by package-facing
 exports or public component contracts.
 Use `praxis-list-ai-validation` for `@praxisui/list` manifest/capability/context-pack changes, and

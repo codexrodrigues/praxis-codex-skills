@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Angular AGENTS Governance"
+  short_description: "Audit Angular AGENTS coverage"
+  default_prompt: "Use $praxis-angular-agents-governance to audit Praxis Angular local AGENTS.md coverage, classify governance gaps, reconcile Codex skills with platform source, and decide whether fixes belong in praxis-ui-angular or codex-skills."

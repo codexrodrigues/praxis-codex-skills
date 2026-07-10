@@ -19,7 +19,7 @@ For shared core i18n, resource-discovery copy, value presentation, translator pr
 
 Before editing:
 
-1. Read `praxis-ui-angular/AGENTS.md` and the local `projects/<lib>/AGENTS.md`.
+1. Read `praxis-ui-angular/AGENTS.md` and the local `projects/<lib>/AGENTS.md` when present. If local AGENTS is absent, use `praxis-angular-agents-governance` and derive i18n expectations from README, i18n catalogs, metadata, docs, focused specs, and root governance.
 2. Inspect existing i18n files for the lib, commonly under `projects/<lib>/src/lib/i18n/**` or adjacent `*.i18n.ts`.
 3. Check `tools/i18n/reports/catalog-inventory.md`, `catalog-coverage.md`, `hardcoded-text-hotspots.md`, and `locale-formatting-map.md` when doing audits or broader cleanup.
 4. Separate framework chrome from domain text:
