@@ -423,13 +423,14 @@ class PythonSkillScriptTests(unittest.TestCase):
             root = Path(tmp)
             draft_root = root / "drafts"
             draft_root.mkdir()
-            (draft_root / "b.md").write_text("# Title B\n\nBody B\n")
-            (draft_root / "a.md").write_text("# Title A\n\nBody A\n")
+            (draft_root / "b.md").write_text("# Title B\n\n- Familia: praxis\n\nBody B\n")
+            (draft_root / "a.md").write_text("# Title A\n\n- Familia: ergon-migration\n\nBody A\n")
 
             payloads = CREATE_ISSUES_MODULE.issue_payloads(draft_root, limit=1)
 
             self.assertEqual(1, len(payloads))
             self.assertEqual("Title A", payloads[0]["title"])
+            self.assertEqual("ergon-migration", payloads[0]["family"])
             self.assertEqual((draft_root / "a.md").as_posix(), payloads[0]["path"])
 
     def test_create_issue_payloads_requires_h1_title(self) -> None:
@@ -440,6 +441,29 @@ class PythonSkillScriptTests(unittest.TestCase):
 
             with self.assertRaisesRegex(RuntimeError, "Draft has no H1 title"):
                 CREATE_ISSUES_MODULE.issue_payloads(draft_root)
+
+    def test_create_issue_payloads_requires_family(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            draft_root = Path(tmp) / "drafts"
+            draft_root.mkdir()
+            (draft_root / "missing-family.md").write_text("# Title\n\nNo family\n")
+
+            with self.assertRaisesRegex(RuntimeError, "Draft has no Familia field"):
+                CREATE_ISSUES_MODULE.issue_payloads(draft_root)
+
+    def test_create_issue_labels_include_defaults_and_extra_labels(self) -> None:
+        payload = {"title": "Review A", "body": "A", "path": "a.md", "family": "praxis"}
+
+        labels = CREATE_ISSUES_MODULE.issue_labels(payload, ["roadmap", "praxis"], True)
+
+        self.assertEqual(["skill-review", "praxis", "roadmap"], labels)
+
+    def test_create_issue_labels_can_disable_defaults(self) -> None:
+        payload = {"title": "Review A", "body": "A", "path": "a.md", "family": "praxis"}
+
+        labels = CREATE_ISSUES_MODULE.issue_labels(payload, ["roadmap"], False)
+
+        self.assertEqual(["roadmap"], labels)
 
     def test_create_issue_duplicate_reports_match_titles(self) -> None:
         payloads = [
