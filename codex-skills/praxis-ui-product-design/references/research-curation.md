@@ -2,6 +2,39 @@
 
 Use this file to ground Praxis UI design guidance in current product-design and enterprise-UX practices.
 
+## Agent Design Skill Benchmark
+
+The 2026-07-10 review assessed instructional mechanisms in public skills, not a controlled benchmark
+of their generated applications. Use the transferable mechanisms below; do not copy another skill's
+visual identity, framework assumptions, or landing-page patterns into Praxis.
+
+- OpenAI `frontend-skill`: starts from a visual thesis, content plan, and interaction thesis; composes before choosing components; asks for one dominant idea and a small number of memorable motions. Its app guidance correctly favors dense, card-light operational surfaces, but its image-led and hero rules belong primarily to public/marketing work.
+- Anthropic `frontend-design`: grounds choices in the subject's materials and vernacular, requires a compact color/type/layout/signature plan, spends boldness in one place, and critiques genericity before coding. Its strongest Praxis contribution is deliberate identity plus a justified aesthetic risk.
+- `frontend-design-principles`: requires domain vocabulary, a color world, one signature, and three defaults to reject, then applies swap, squint, signature, and token tests. This is the closest fit for making enterprise product UI specific without making it decorative.
+- `taste-skill`: makes brief inference explicit and calibrates layout variance, motion, and density. It explicitly excludes dashboards and multi-step product UI, so Praxis adopts only calibration and anti-default discipline, not its landing-page architecture or stack defaults.
+- UI/UX Pro Max: provides broad searchable catalogs of styles, palettes, typography, UX guidance, and chart patterns. Treat catalogs as discovery aids, not a roulette wheel for aesthetic styles; Praxis direction must still come from the operator, domain, and canonical design system.
+- Vercel `web-design-guidelines`: offers strong rule-based accessibility and UX auditing. It complements visual direction but does not replace it; an interface can pass a compliance audit and remain generic.
+
+Primary sources reviewed:
+
+- https://github.com/openai/skills/blob/main/skills/.curated/frontend-skill/SKILL.md
+- https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md
+- https://github.com/joshuadavidthomas/agent-skills/blob/main/frontend-design-principles/SKILL.md
+- https://github.com/joshuadavidthomas/agent-skills/blob/main/frontend-design-principles/app.md
+- https://github.com/Leonxlnx/taste-skill/blob/main/skills/taste-skill/SKILL.md
+- https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+- https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines
+
+Praxis synthesis:
+
+- define direction before implementation
+- derive visual character from domain and operator, not current fashion
+- create one product-specific signature and give it enough compositional weight
+- explicitly reject defaults instead of hoping to avoid them
+- calibrate distinction, motion, and density independently
+- critique screenshots for genericity and craft as well as correctness
+- preserve Material/Praxis tokens, accessibility, i18n, and canonical ownership throughout
+
 ## Design-System Operating Model
 
 The adopted Praxis principle is not magic aesthetics; it is a design-system operating model. Lovable is useful as one reference point because its documented design-system workflow emphasizes persistent knowledge, reusable component systems, adherence checks, setup verification, live preview, and browser testing.
@@ -105,3 +138,4 @@ When using this research in a task, report:
 - desktop and narrow/mobile screenshot coverage
 - validation run and validation skipped
 - derived docs/examples reviewed or explicitly not applicable
+

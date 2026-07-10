@@ -6,6 +6,7 @@ Use this rubric for screenshots, UI audits, and visual polish tasks.
 
 - Immediate Failures
 - Hierarchy
+- Product Specificity And Signature
 - Layout And Density
 - Themeability
 - Forms And Config Editors
@@ -34,6 +35,8 @@ Fail the UI if any item is true:
 - Visual settings such as alignment, display mode, density, direction, or placement are exposed only as text selects when a familiar icon/segmented control is available.
 - Compact controls are stranded in wide empty rows, or short visual choices are stretched to full-width fields without row-level purpose.
 - A metadata-driven editor uses a rigid equal-column grid without considering field archetype, expected content length, semantic grouping, and responsive task order.
+- A request for a modern, delightful, premium, or distinctive result is visually indistinguishable from an untouched Material sample or generic AI admin template.
+- The stated visual thesis or product-specific signature cannot be identified in the rendered result.
 
 ## Hierarchy
 
@@ -46,6 +49,20 @@ Pass when:
 - selected state is visible without heavy border noise
 - advanced controls do not dominate the default view
 - primary action is in the shell or active work region, not hidden in a secondary card
+
+## Product Specificity And Signature
+
+For redesigns and requests for modern, delightful, premium, polished, or distinctive UI, pass when:
+
+- the surface has a concrete visual thesis grounded in the operator and domain
+- one memorable spatial, informational, typographic, data, or interaction signature is visible
+- three likely generic defaults were named and replaced with intentional alternatives
+- the result cannot be reduced to default Material styling plus local spacing changes
+- the signature uses real workflow information and does not fabricate frontend-only semantics
+- typography, composition, shape, color, iconography, and motion reinforce one direction
+- boldness is concentrated in the signature while routine operational chrome remains quiet
+- the product character survives empty, selected, invalid, busy, readonly, and narrow states
+- the design remains host-themeable and accessible; distinction does not depend on hardcoded effects
 
 ## Layout And Density
 
@@ -146,3 +163,4 @@ When feasible, validate with representative content:
 - narrow viewport
 
 If the fixture is not available, report the missing state instead of claiming full visual coverage.
+
