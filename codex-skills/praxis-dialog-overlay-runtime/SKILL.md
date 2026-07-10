@@ -7,6 +7,8 @@ description: Use when implementing or auditing `@praxisui/dialog` runtime behavi
 
 Use this skill for canonical Praxis dialogs and overlays. `@praxisui/dialog` is the workspace owner for dialog service API, overlay container behavior, presets, tag mode, accessibility, and lifecycle semantics.
 
+Pair with `praxis-dialog-surface-global-actions` when dialog overlays are opened through `GLOBAL_DIALOG_SERVICE`, `GLOBAL_SURFACE_SERVICE`, component/template registries, or surface materialization.
+
 ## Required Source Audit
 
 Inspect:
@@ -27,6 +29,7 @@ Inspect:
 ## Runtime Rules
 
 - Use `PraxisDialog.open`, `confirm`, `alert`, `prompt`, `openByRegistry`, `openTemplateById`, or tag mode; do not add ad hoc overlay shells in consumers.
+- For metadata-driven surfaces, go through the global action/surface providers rather than opening ad hoc overlays from consumers.
 - Preserve lifecycle streams: `afterOpened`, `beforeClosed`, `afterClosed`, `backdropClick`, `keydownEvents`, `afterAllClosed`.
 - Preserve close policy: `disableClose`, `closeOnBackdropClick`, Escape handling, backdrop click handling, and close on navigation.
 - Preserve `autoFocus`, `autoFocusedElement`, `restoreFocus`, visible title or accessible label, and correct `ariaRole`.
