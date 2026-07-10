@@ -35,6 +35,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.ps1 -Family ergon-migration
 ```
 
+Se PowerShell não estiver disponível, use os fallbacks Python canônicos:
+
+```bash
+python3 scripts/audit-praxis-skills.py --family praxis
+python3 scripts/audit-praxis-skills.py --family ergon-migration
+```
+
 Quando `SKILL.md` for alterado, valide a skill com `quick_validate.py` se ele estiver disponível no ambiente Codex local. Se `quick_validate.py` estiver indisponível por dependência local, use `python3 scripts/validate-praxis-skills.py` no menor escopo suficiente.
 
 ## Separação Praxis x Ergon
