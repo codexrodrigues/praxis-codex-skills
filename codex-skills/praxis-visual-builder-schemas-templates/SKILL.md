@@ -14,6 +14,7 @@ Pair it with:
 - `praxis-visual-builder-ai-validation` when AI operations add variables, set effects, or validate target/schema constraints.
 - `praxis-fields-option-sources`, `praxis-fields-runtime-loader`, or `praxis-dynamic-fields-editorial` when field metadata originates in dynamic field surfaces.
 - `praxis-form-ai-rules-validation` when schemas and rules materialize into dynamic-form behavior.
+- `praxis-page-builder-composition` when schemas, targets, or templates are used to connect widgets through composition links or page state.
 
 ## Source Audit
 
@@ -42,6 +43,8 @@ Before editing schema/template behavior, inspect:
 - `RuleTemplate`, `RuleTemplateService`, template categories, search, import/export, validation, application, metadata, and statistics;
 - collection validator configs and docs for array/collection-oriented validation.
 
+When a host supplies schemas from widgets, form fields, table columns, or page state, preserve the origin and canonical id. Labels can help users choose targets, but the persisted rule must use schema identities that the host can resolve after reopen.
+
 Consumers should not create local operator catalogs, field search rules, target-property allowlists, or template persistence formats when these surfaces already exist.
 
 ## Inventory Before New Contract
@@ -63,6 +66,7 @@ Only real gaps justify new exported types or config fields. Prefer improving the
 - Treat context variables as governed scope/name entries. Do not smuggle them through string interpolation into persisted conditions unless the JSON Logic shape is canonical and tested.
 - Use `targetPropertySchemas` and `RULE_PROPERTY_SCHEMA` for property effects. Do not infer allowed effects from editor labels or CSS classes.
 - Keep templates as reusable `RuleNode[]` plus `rootNodes` with required fields and metadata; template application must validate missing fields and incompatible features.
+- Page/widget templates may reference page state or component ports only when those references are represented as governed field/context/target schemas.
 - Template search may use text matching only after the user’s semantic scope is known. It must not decide primary intent.
 
 ## Validation

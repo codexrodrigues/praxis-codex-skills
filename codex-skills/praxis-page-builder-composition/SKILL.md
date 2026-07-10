@@ -28,6 +28,8 @@ Page Builder owns:
 - stable `widget.key` identity and canvas items;
 - page-level shell, grouping, theme/layout presets, state, context, device layouts, and slot assignments;
 - `page.composition.links`, connection graph UX, diagnostics, nested component-port paths, state endpoints, and global-action endpoints.
+- surface handoff through shared core surface/global-action/composition contracts, not Page Builder-local commands.
+- runtime observations as frontend grounding evidence for authoring and diagnostics, not backend truth.
 
 Child components own their inputs, runtime behavior, config editors, authoring manifests, and validation. Page Builder may host or delegate those editors; it must not special-case table/form/chart/list semantics locally.
 
@@ -43,6 +45,9 @@ Before editing Page Builder composition, inspect:
 - `projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor.component.ts`
 - `projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor-graph.util.ts`
 - `projects/praxis-page-builder/src/lib/editor/connection-editor/*.{ts,spec.ts}` for graph, geometry, layout, port order, trace, and wire changes
+- `projects/praxis-page-builder/src/lib/connections-viewer-panel.component.ts`
+- `projects/praxis-page-builder/src/lib/connections-viewer.util.ts`
+- `projects/praxis-page-builder/src/lib/ai/page-builder-runtime-normalization.util.ts` when runtime observations or AI context depend on normalized page state
 - `projects/praxis-core/src/lib/composition/**`, `widgets/**`, and composition model files when runtime contracts are affected
 - focused specs called out by the local `AGENTS.md`
 
@@ -63,6 +68,10 @@ For nested widgets, preserve `nestedPath` and terminal child widget identity. Do
 
 For palette work, derive entries from `ComponentMetadataRegistry` and `ComponentDocMeta`. `ComponentDocMeta.configEditor`, actions, commands, insertion presets, tags, icon, and descriptions are owned by the component metadata source, not by a Page Builder hardcoded list.
 
+For surface handoff, prefer shared `GlobalActionRef`, `SurfaceOpenPayload`, `surface.result`, and `dynamicPage.composition.dispatch` paths from core. Do not encode open/edit/select behavior as string commands in page-builder links.
+
+For runtime observations, preserve the trust boundary: observations can explain selected widgets, visible runtime state, component ids, resource refs, and diagnostics, but they must remain serializable and redacted before being sent into agentic authoring.
+
 ## Public API
 
 Treat `projects/praxis-page-builder/src/public-api.ts` as public contract. Changes can affect hosts, AI registry ingestion, `@praxisui/core`, Settings Panel bridge, child component config editors, docs, and examples. Map those consumers before changing exports.
@@ -76,6 +85,7 @@ Use the smallest reliable gate:
 - composition graph/link changes: `connection-editor.component.spec.ts` plus relevant graph/layout/port-order/trace/wire util specs.
 - palette changes: `component-palette-dialog.component.spec.ts` and browser smoke when insertion UX changes.
 - runtime page shape changes: `dynamic-page-builder.component.spec.ts`, core composition runtime specs, and `ng build praxis-page-builder`.
+- runtime observations or surface handoff: pair Page Builder specs with `praxis-core-composition-runtime`, `praxis-core-widget-observations`, `praxis-core-global-action-payloads`, or `praxis-core-surface-materialization` validation as applicable.
 - public API changes: build `praxis-page-builder` and at least one direct consumer when feasible.
 - browser interaction changes: local Playwright lane for palette insertion or page-builder authoring, not GitHub Actions as the first diagnostic tool.
 

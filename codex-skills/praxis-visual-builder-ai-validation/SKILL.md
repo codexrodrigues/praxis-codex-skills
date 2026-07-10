@@ -15,6 +15,7 @@ Pair it with:
 - `praxis-visual-builder-graph-runtime` for graph state, node identity, edges, validation errors, and registry integrity.
 - `praxis-visual-builder-jsonlogic-roundtrip` for `condition.set`, JSON Logic parsing, and `dsl.roundTrip.validate`.
 - `praxis-visual-builder-schemas-templates` for `variable.add`, `effect.set`, target schemas, field schemas, and context variables.
+- `praxis-page-builder-ai-agentic` when visual-builder AI operations are delegated from Page Builder agentic authoring or child widget config flows.
 
 ## Source Audit
 
@@ -26,6 +27,7 @@ Before editing visual-builder AI behavior, inspect:
 - `projects/praxis-visual-builder/src/lib/ai/visual-builder-ai.adapter.ts`
 - `projects/praxis-visual-builder/src/lib/ai/visual-builder-ai-capabilities.ts`
 - `projects/praxis-visual-builder/src/lib/ai/visual-builder-ai.context.ts`
+- `projects/praxis-visual-builder/src/lib/ai/visual-builder-context-pack.ts`
 - `projects/praxis-visual-builder/src/lib/services/rule-builder.service.ts`
 - `projects/praxis-visual-builder/src/lib/services/rule-node-registry.service.ts`
 - `projects/praxis-visual-builder/src/lib/services/context/context-management.service.ts`
@@ -53,6 +55,7 @@ Also inspect core AI manifest/registry contracts if operation schema, validator 
 - `condition.set` must provide JSON Logic objects within the supported visual subset, not JavaScript strings.
 - `effect.set` must validate `targetType`, target IDs, governed properties, and property value types through target property schemas and `RULE_PROPERTY_SCHEMA`.
 - `variable.add` governs contextual/template flows; visual field-condition references to context variables remain unsupported until the canonical JSON Logic shape is defined.
+- Host-provided widget/page context must enter through declared context packs, field schemas, target schemas, or variables. Do not let Page Builder or another host inject arbitrary prompt context that becomes persisted rule state.
 - `dsl.roundTrip.validate` must prove export/import stability and reject semantic drift or unstable identity.
 
 ## Inventory Before New Contract
@@ -74,6 +77,7 @@ Use focused local gates:
 - `visual-builder-ai.adapter.spec.ts` for patch application, snapshot/restore, and failure behavior;
 - AI wizard/integration specs when user-facing AI authoring changes;
 - graph, JSON Logic, schema/template skills for operation-specific runtime validation;
+- host delegation specs when AI operations are invoked through Page Builder or another component authoring surface;
 - `praxis-ai-registry-ingestion` checks when generated registry assets or catalog ingestion changes;
 - `npm run build:praxis-visual-builder` when public AI exports change.
 

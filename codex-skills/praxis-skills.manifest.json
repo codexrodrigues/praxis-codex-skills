@@ -503,8 +503,8 @@
                                             "praxis-core-providers-bootstrap",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "D69A665555692D8D5555476915898ABE171FD86065A293AE588FDE0A04C5BA26",
-                       "treeSha256":  "175E72269C0017E5A7126EE2F18D658125A6D7E50033D31F472CBE0E6A07CCA5"
+                       "skillMdSha256":  "63617B1AC9390BCF791C0EC36391C8CB4C19825BAA1A889AA5A9E551B8BCCBA4",
+                       "treeSha256":  "B0E0C46BBFBBBAFC9920E78E073B4E9F32C7E36F2094B476BEF16B414F6C700F"
                    },
                    {
                        "name":  "praxis-core-global-actions-metadata",
@@ -1472,8 +1472,8 @@
                                             "praxis-ai-registry-ingestion",
                                             "praxis-ai-semantic-intent"
                                         ],
-                       "skillMdSha256":  "92A8B62F526DF63FE6286D9EEDCD854A82F41787FED7D49B322A4A3EE6F48C2E",
-                       "treeSha256":  "869DAB2B46162EBAF2DE57212972BF6D6DC9CF847458D623DAF333BE5FF1D640"
+                       "skillMdSha256":  "D4BA30C4A6097F61137C22EF92A4DA44E84BFE0C877FC71EF10F7415249D9967",
+                       "treeSha256":  "D900F975D3E90B3410764C2B72E287DDD4E975440D6DC80F0C3B7E131C27BEE2"
                    },
                    {
                        "name":  "praxis-page-builder-authoring",
@@ -1484,8 +1484,8 @@
                        "dependencies":  [
                                             "praxis-page-builder-composition"
                                         ],
-                       "skillMdSha256":  "97B37F4D554398728AF953170ED5B212C7321BE18D1C6CC8A90B047D6341D4AB",
-                       "treeSha256":  "273412988C81DAD782C00FFA3EF26FAE0D1B00143B043E3A459CF006B95D0D30"
+                       "skillMdSha256":  "4373CF5CF439C84149AFEC6D03AC75999767F06BFCE7BD7CABD7D9D9D244B8C6",
+                       "treeSha256":  "6233F14A2EF743C49ABFD80823B7B52F1CDCDDCA8DCBF1EA9E14692794CA4FBC"
                    },
                    {
                        "name":  "praxis-page-builder-composition",
@@ -1501,8 +1501,8 @@
                                             "praxis-rich-content-integration-adapters",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "6763389FEBD4FFDB16A53B72A5B47266A859425276AFE1C518CA166A9A09AD1E",
-                       "treeSha256":  "439DBF3ACF438ADC5810648376031DBE9FFB4AA79F3BFDF982B2D0E0DBEF5E84"
+                       "skillMdSha256":  "D46A18985271F9C6AC354C3E7369348F2CD0D7F73651BBDFD3FA3FBD11234AFA",
+                       "treeSha256":  "1C528D29F01FDBD1D3FEC19CF5117377003A674734993F87F31A368CF033E1AB"
                    },
                    {
                        "name":  "praxis-resource-entity-lookup-backend",
@@ -1823,8 +1823,8 @@
                                             "praxis-visual-builder-jsonlogic-roundtrip",
                                             "praxis-visual-builder-schemas-templates"
                                         ],
-                       "skillMdSha256":  "B8E6C7FDFDDE7CD9D96DB741123031B0CEA6E20FF579117DF6C64619937A61D4",
-                       "treeSha256":  "F0804E573F4223A4022359285CFAB30949E166302D267F73331A9DF9160248B3"
+                       "skillMdSha256":  "1395940BD5839179811DE37CCE8AF22558118D9FB2B4F30FB5A61CE513088FB6",
+                       "treeSha256":  "443D67F06939AC4B97BD847B3B6AC1EC6BF6808CAC941DB0A8DB247619FE59D1"
                    },
                    {
                        "name":  "praxis-visual-builder-graph-runtime",
@@ -1834,8 +1834,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "3573564ACEE96F68D9850A1A196FFD774B857578B321119B08A83049A7617C36",
-                       "treeSha256":  "4D8B916038AAB8CD85321B8AF45BA3745A2BFE712C721360B1B79371F22EF7B1"
+                       "skillMdSha256":  "B42C8E4AEA1A4BB6672D9D2B17087F5030319495871ACC90A616A49160010B86",
+                       "treeSha256":  "8DDD0D9A975EA78D63EAC9DFD329FD83C0A67984C39313F3C495EA7038901035"
                    },
                    {
                        "name":  "praxis-visual-builder-jsonlogic-roundtrip",
@@ -1868,8 +1868,8 @@
                                             "praxis-visual-builder-schemas-templates",
                                             "praxis-visual-builder-ai-validation"
                                         ],
-                       "skillMdSha256":  "41A28E2474BAC71096BEE150B5347EAE5F8E71E08E36B7C40BA82D8459409D03",
-                       "treeSha256":  "4FBCEFB8983113E6AAD1E589C89E924357D1C8F86B248133EC450C16590DED9C"
+                       "skillMdSha256":  "0F66417D954F167452FCF96F2CBC11E32C192C529D48EA0816D27FE1D62D9775",
+                       "treeSha256":  "60FC16BDF636743620514263B4BC96DA525FEC8D8EDC9B45544212380A2A3D86"
                    },
                    {
                        "name":  "praxis-visual-builder-schemas-templates",
@@ -1881,8 +1881,8 @@
                                             "praxis-visual-builder-graph-runtime",
                                             "praxis-visual-builder-jsonlogic-roundtrip"
                                         ],
-                       "skillMdSha256":  "0F33D8C6599A820CD37D34DA12490A223756463E7C3EC68D6041DBB7379BBB8B",
-                       "treeSha256":  "3B48C99DE0BAF9445A5AB14F85C771DA77BA74402A6CC6AE36050E49E503A693"
+                       "skillMdSha256":  "9CCA07FCF2581293F40985704207DF8399B94D8F63CFF5B21A5183F49407B508",
+                       "treeSha256":  "97DDEFFE4207B0949743E96478125B54AEFA5BF7B36596FD9C836D74736C6DB8"
                    },
                    {
                        "name":  "praxis-charts-echarts-engine-boundary",
