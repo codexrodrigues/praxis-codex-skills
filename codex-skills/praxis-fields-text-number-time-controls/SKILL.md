@@ -32,6 +32,7 @@ Inspect:
 - `src/lib/ai/time-range-ai-capabilities.ts`
 - `src/lib/ai/price-range-ai-capabilities.ts`
 - `src/lib/ai/brazil-inputs-ai-capabilities.ts`
+- wrapper-owner skills when the control delegates to another package, such as upload, rich content, or CRON/schedule fields
 - focused component and profile specs
 
 ## Canonical Families
@@ -40,6 +41,7 @@ Inspect:
 - Regional document: `cpfCnpjInput`, with mask and checksum semantics.
 - Numeric/currency: `numericTextBox`, `currency`, `slider`, `rangeSlider`, `priceRange`, `rating`, `inlineNumber`, `inlineCurrency`, `inlineCurrencyRange`, `inlineRange`, `inlineRating`, `inlineDistanceRadius`, and `inlineScorePriority`.
 - Temporal: `dateInput`, `date`, `dateRange`, `dateTimeLocal`, `month`, `week`, `year`, `time`, `timePicker`, `timeRange`, `inlineDate`, `inlineDateRange`, `inlineTime`, `inlineTimeRange`, `inlinePeriodRange`, `inlineYearRange`, `inlineMonthRange`, and `inlineRelativePeriod`.
+- Wrapper fields: upload, rich-content, and CRON/schedule controls may be registered or discovered through dynamic-fields, but their value shape, security, authoring model, and package runtime are owned by their specialized package skills.
 
 ## Runtime Rules
 
@@ -50,6 +52,7 @@ Inspect:
 - Date/time range controls require distinct start/end semantics and ordered values.
 - Visual numeric controls such as rating, score, and distance must keep text labels or accessible names; color/star/graphic affordance is never the only semantic channel.
 - Inline temporal/numeric controls use `inlineOverlay` where draft state exists.
+- Do not collapse wrapper field payloads into scalar text just because the host form submits through dynamic-form. Use the wrapper package contract and then verify dynamic-form payload projection.
 
 ## Inventory Before New Contract
 
@@ -70,5 +73,6 @@ Use focused gates:
 - profile/catalog specs when AI guidance changes;
 - form submit or filter payload tests when value shape changes;
 - Playwright for inline overlay/range/date/time visual interactions.
+- wrapper package tests plus dynamic-fields registration/discovery tests when a wrapper control is involved.
 
 State which runtime, metadata/editorial, value-shape, AI profile, and submit/filter checks were run.

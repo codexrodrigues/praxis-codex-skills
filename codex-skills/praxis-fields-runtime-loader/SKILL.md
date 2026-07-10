@@ -30,8 +30,13 @@ Inspect the affected files, not only docs:
 
 - `projects/praxis-dynamic-fields/AGENTS.md`
 - `src/public-api.ts`
+- `README.md`
+- `docs/dynamic-fields-inventory.md`
+- `docs/dynamic-fields-field-catalog.md`
+- `docs/dynamic-fields-field-selection-guide.md`
 - `src/lib/services/component-registry/component-registry.service.ts`
 - `src/lib/directives/dynamic-field-loader.directive.ts`
+- `src/lib/providers.ts`
 - relevant `src/lib/components/**` component, `*.metadata.ts`, and `*.json-api.md`
 - `src/lib/base/**` for shared input/select behavior
 - `projects/praxis-core/src/lib/**` when changing `FieldControlType`, aliases, selector defaults, inline controls, or shared metadata
@@ -45,6 +50,8 @@ Inspect the affected files, not only docs:
 - Preserve `DynamicFieldLoaderDirective` reentrancy, component disposal, shell lifecycle, subscriptions, `enableExternalControlBinding`, and render error event shape.
 - Require form compatibility: `ControlValueAccessor`, `[formControl]`, or `setExternalControl` must work with dynamic forms.
 - Require hot metadata compatibility for fields used in editors/builders: `setInputMetadata`, writable metadata signal, or equivalent documented refresh path.
+- Keep provider variants intentional: default packages should register package-owned controls, while no-defaults providers are for hosts that deliberately own registration boundaries.
+- For wrapper controls such as upload, rich content, and CRON, verify runtime registration here but route value-shape and package-specific semantics to the owning wrapper skill.
 
 ## Coverage Semantics
 
@@ -64,6 +71,7 @@ Use the smallest sufficient checks:
 - loader changes: `dynamic-field-loader*.spec.ts`
 - field component changes: the component spec plus loader smoke when binding behavior changed
 - inline/filter rendering: relevant `test-dev/e2e/*.playwright.spec.ts`
+- dynamic-form or metadata-editor materialization: consumer specs only when loader behavior or control metadata changed the downstream rendering path
 - public API or package-owned `controlType` changes: build `praxis-dynamic-fields` and at least one direct consumer when feasible
 
 Also update governed inventory/catalog docs when runtime registration, aliases, selectors, or coverage changes. Declare explicitly when no derived artifact needs updating.

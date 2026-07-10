@@ -37,6 +37,9 @@ runtime and metadata path. For ordinary controls this means the component, `.met
 selector mapping in `@praxisui/core`. For option-source controls, also inspect
 `OptionSourceMetadata`, `GenericCrudService.filterOptionSourceOptions`,
 `GenericCrudService.getOptionSourceOptionsByIds`, and the backend `x-ui.optionSource` projection.
+For wrapper controls, inspect the owning package skill first: files upload, rich content, and CRON
+field behavior belong to those package contracts; dynamic-fields owns only control registration,
+metadata discovery, selector mapping, catalogs, and downstream materialization.
 The goal is to encode working Praxis platform knowledge into the skill, not merely document a UI
 convention.
 
@@ -83,6 +86,10 @@ editor must mark the source as partial and point back to the backend/platform wa
 - Derived catalogs and inventories must stay aligned with the editorial source.
 - AI Registry component docs must remain extractable from either literal `ComponentDocMeta` metadata files or supported editorial factories such as `createWave1ComponentDocMeta(descriptor)`. If a package-owned field uses a metadata factory, verify the registry extractor still projects it before claiming catalog coverage.
 - `@praxisui/metadata-editor`, `@praxisui/dynamic-form`, `praxis-filter`, and related tooling consume this chain downstream.
+- `@praxisui/dynamic-form` materializes `FieldMetadata` through this chain; it should not carry a
+  private control map when the package registry/editorial catalog already owns the decision.
+- `@praxisui/metadata-editor` must expose the same package-owned metadata shape that runtime fields
+  consume; renderer coverage gaps should be fixed in the editor bridge, not hidden in docs.
 - Shared overlay infrastructure, layer tokens, and CDK stacking order belong to `@praxisui/core`. If an inline field renders but overlay clicks are blocked, verify the core layer scale before patching the field, filter host, or landing app.
 - Shared overlay color/contrast tokens also belong to `@praxisui/core`. If a dynamic field overlay opens with low contrast, first verify `@praxisui/core/theme-bridge.css` and the host `.cdk-overlay-container` mappings for `--pdx-overlay-surface` and `--pdx-overlay-on-surface`; only add a host override when the host intentionally uses an overlay surface that differs from the global Material theme.
 - Package-owned inline field and panel surface/contrast tokens belong to the inline components in `@praxisui/dynamic-fields` (`--pdx-inline-field-*` and `--pdx-inline-panel-*`). If host global `.mat-mdc-form-field`, `.mat-mdc-select-panel`, or Material option/select token styles break inline filters, fix or preserve these component tokens before adding host-only overrides.
@@ -146,6 +153,7 @@ Always verify:
 - package-owned controls projected into AI registry have an applicable authoring control profile when the task touches agentic authoring semantics
 - package-owned metadata factories are visible in `tools/ai-registry/component-docs.json` after `generate:registry:ingestion`
 - governed docs such as inventory, field catalog, field selection guide, and inline runtime contract still match the real behavior
+- derived surfaces such as docs, playground catalog, AI registry, metadata-editor coverage, and dynamic-form materialization are either updated or explicitly not affected
 
 If a field renders but becomes undiscoverable in editor/tooling, the change is incomplete.
 

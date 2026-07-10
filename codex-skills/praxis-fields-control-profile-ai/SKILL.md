@@ -30,6 +30,7 @@ Inspect:
 - `src/lib/catalog/dynamic-fields-playground.catalog.ts`
 - `src/lib/catalog/dynamic-fields-playground.recipes.ts`
 - `src/lib/canvas-integration/canvas-state.token.ts`
+- docs/inventory/catalog files when profiles claim public guidance or examples
 - manifest/profile/catalog/inline recipe specs
 
 ## Canonical Boundary
@@ -60,6 +61,7 @@ Only real gaps justify manifest/profile changes. Prefer profile correction over 
 - A profile claim is incomplete if the component renders but is missing from metadata/editorial discovery or AI registry extraction.
 - Profile `componentIds` must align with exported metadata, runtime registration, docs/catalog, and generated component docs.
 - Profile operations must produce canonical `FieldMetadata` paths; they must not invent canvas-only state.
+- Wrapper controls should be represented by the dynamic-fields profile only for control selection/discovery. Their deeper package semantics must be delegated to files upload, rich content, or CRON AI skills.
 
 ## Validation
 
@@ -72,4 +74,4 @@ Use focused gates:
 - `catalog-derivation.spec.ts` and playground catalog specs when profile materialization changes
 - `npm run generate:registry:ingestion` only when registry assets must update
 
-Report whether runtime, editorial, profile, canvas, and registry evidence were all validated or explicitly skipped.
+Report whether runtime, editorial, profile, canvas, registry, docs/playground, and downstream consumer evidence were all validated or explicitly skipped.
