@@ -1,9 +1,11 @@
 ---
 name: praxis-table-rule-ai-validation
-description: Use when Codex must change, audit, or validate AI-assisted authoring for `@praxisui/table-rule-builder`, including `PRAXIS_TABLE_RULE_BUILDER_AUTHORING_MANIFEST`, table-rule-builder AI adapter, capabilities, context packs, effect registry operations, `rule.add`, `rule.remove`, `condition.set`, `effect.add`, `effect.update`, `effect.remove`, `preset.apply`, `animation.set`, `tableIntegration.delegate`, diagnostics, docs, examples, or registry ingestion.
+description: Use when Codex must change, audit, or validate AI-assisted authoring for `@praxisui/table-rule-builder` or the praxis-table-rule-builder package, including `PRAXIS_TABLE_RULE_BUILDER_AUTHORING_MANIFEST`, table-rule-builder AI adapter, capabilities, context packs, effect registry operations, `rule.add`, `rule.remove`, `condition.set`, `effect.add`, `effect.update`, `effect.remove`, `preset.apply`, `animation.set`, `tableIntegration.delegate`, diagnostics, docs, examples, or registry ingestion.
 ---
 
 # Praxis Table Rule AI Validation
+
+The `praxis-table-rule-*` skill family is the canonical Codex skill surface for `@praxisui/table-rule-builder` and `projects/praxis-table-rule-builder`; do not create parallel `praxis-table-rule-builder-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for agentic authoring of table visual effects. AI should author governed table visual decisions, not raw CSS patches, local table config writes, or keyword-routed command strings.
 

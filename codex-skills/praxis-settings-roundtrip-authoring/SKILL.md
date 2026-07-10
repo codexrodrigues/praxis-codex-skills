@@ -1,9 +1,11 @@
 ---
 name: praxis-settings-roundtrip-authoring
-description: Use when implementing or auditing Praxis authoring editor round-trip through Settings Panel for table, form, list, charts, page-builder, tabs, stepper, expansion, manual-form, CRUD, metadata-editor, or widget config editors, especially apply/save/reset/reopen/persistence/runtime-consume behavior.
+description: Use when implementing or auditing @praxisui/settings-panel or praxis-settings-panel package authoring editor round-trip for table, form, list, charts, page-builder, tabs, stepper, expansion, manual-form, CRUD, metadata-editor, or widget config editors, especially apply/save/reset/reopen/persistence/runtime-consume behavior.
 ---
 
 # Praxis Settings Round-Trip Authoring
+
+The `praxis-settings-*` skill family is the canonical Codex skill surface for `@praxisui/settings-panel` and `projects/praxis-settings-panel`; do not create parallel `praxis-settings-panel-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill when a consumer editor is hosted by Settings Panel. The panel owns the shell protocol; the consumer lib owns the edited document semantics.
 

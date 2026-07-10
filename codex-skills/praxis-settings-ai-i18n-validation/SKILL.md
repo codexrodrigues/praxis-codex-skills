@@ -1,9 +1,11 @@
 ---
 name: praxis-settings-ai-i18n-validation
-description: Use when auditing or changing Praxis Settings Panel AI authoring manifest, settings-panel AI adapter/capabilities/context pack, AI-assisted settings edits, authoring scope, internal i18n catalogs, diagnostics text, button/status labels, or validation that Settings Panel behavior is available to AI-assisted authoring without local keyword routing.
+description: Use when auditing or changing @praxisui/settings-panel or praxis-settings-panel package AI authoring manifest, settings-panel AI adapter/capabilities/context pack, AI-assisted settings edits, authoring scope, internal i18n catalogs, diagnostics text, button/status labels, or validation that Settings Panel behavior is available to AI-assisted authoring without local keyword routing.
 ---
 
 # Praxis Settings AI I18n Validation
+
+The `praxis-settings-*` skill family is the canonical Codex skill surface for `@praxisui/settings-panel` and `projects/praxis-settings-panel`; do not create parallel `praxis-settings-panel-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill when Settings Panel behavior is exposed to AI authoring or internal authoring chrome changes. AI should reason over the canonical panel protocol and hosted editor contracts, not over local command strings or keyword routes.
 

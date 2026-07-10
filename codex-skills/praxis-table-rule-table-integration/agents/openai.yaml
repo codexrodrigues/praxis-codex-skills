@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Table Rule Table Integration"
   short_description: "Delegate table-owned rule placement"
-  default_prompt: "Use $praxis-table-rule-table-integration to wire table-rule-builder effects into Praxis table config."
+  default_prompt: "Use $praxis-table-rule-table-integration to wire @praxisui/table-rule-builder package effects into @praxisui/table config."

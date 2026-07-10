@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Settings Round-Trip"
   short_description: "Validate authoring apply save reset reopen"
-  default_prompt: "Use $praxis-settings-roundtrip-authoring to validate a Praxis authoring editor round-trip."
+  default_prompt: "Use $praxis-settings-roundtrip-authoring to validate an @praxisui/settings-panel hosted authoring editor round-trip."

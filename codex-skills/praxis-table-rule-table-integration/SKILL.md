@@ -1,9 +1,11 @@
 ---
 name: praxis-table-rule-table-integration
-description: Use when Codex must integrate `@praxisui/table-rule-builder` effects with `@praxisui/table`, including table config editor rule surfaces, `effects: RuleEffectDefinition[]`, singular-effect normalization, `rowConditionalRenderers`, `columns[].conditionalRenderers`, conditional style placement, renderer animation precedence, `tableIntegration.delegate`, Settings Panel round-trip, public API, docs, examples, or avoiding duplicated table-owned config writes.
+description: Use when Codex must integrate `@praxisui/table-rule-builder` or the praxis-table-rule-builder package effects with `@praxisui/table`, including table config editor rule surfaces, `effects: RuleEffectDefinition[]`, singular-effect normalization, `rowConditionalRenderers`, `columns[].conditionalRenderers`, conditional style placement, renderer animation precedence, `tableIntegration.delegate`, Settings Panel round-trip, public API, docs, examples, or avoiding duplicated table-owned config writes.
 ---
 
 # Praxis Table Rule Table Integration
+
+The `praxis-table-rule-*` skill family is the canonical Codex skill surface for `@praxisui/table-rule-builder` and `projects/praxis-table-rule-builder`; do not create parallel `praxis-table-rule-builder-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill when table visual effects cross the boundary between `@praxisui/table-rule-builder` and `@praxisui/table`. The key decision is ownership: table-rule-builder owns visual effect payloads; table owns where and how those payloads attach to table config.
 

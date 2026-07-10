@@ -1698,8 +1698,8 @@
                                             "praxis-authoring-editors",
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "B336B14B01A93DF4598D611F1A8291D2273266293B3679937B293B319DFC2775",
-                       "treeSha256":  "A781ED48010C528B9F26B5BCAFC07C6FB6ABD827A462CE45D3038559E49BD002"
+                       "skillMdSha256":  "56F6545BA8189AC1A9A501C43AB7C12856D1E4826E1841784E255A760AD0C0F6",
+                       "treeSha256":  "A550F808D55D3ECB4C32611A77BA1AED845F9E73AFCFCB90C8880D9BB428E6CA"
                    },
                    {
                        "name":  "praxis-settings-global-config",
@@ -1713,8 +1713,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "274EE481DB98F275D1F0C6170CE612450228F92D08279B27271A7370936817D7",
-                       "treeSha256":  "B684CB4F07340AD9A4617381EC5698802B364E6A27B4407C3D01BB5A76431C74"
+                       "skillMdSha256":  "E88D30DF35E555C51BAD888C02344868281D1A764615EFAF1DA4100623C17E2D",
+                       "treeSha256":  "297DA1DB50E58836A7AF3E6EF2B3DE9C234AF8594FDFD4F5A893D7C75A103B5D"
                    },
                    {
                        "name":  "praxis-settings-panel-shell",
@@ -1727,8 +1727,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "AD880EEA4E13EB4DA663C2FF7FD0EC7FCEF1A6F9E2E0357E62101FABEE8444AF",
-                       "treeSha256":  "8EA869960DDC6E633023BEF3F3ECC44FAEE3E1854A128EEE22DB5A2AC3F83F84"
+                       "skillMdSha256":  "EBF9260F0280E21C0E13DE642361213281A92EA66F7A129270FA3A87B112746A",
+                       "treeSha256":  "4977F2D80A40E969044738CEA2E168708CED6A27342E73D160BCD0A21450DE7E"
                    },
                    {
                        "name":  "praxis-settings-roundtrip-authoring",
@@ -1741,8 +1741,8 @@
                                             "praxis-authoring-editors",
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "059E14D0073D670887C43FF83FB97537F4F889B725054724AEFA83242338F253",
-                       "treeSha256":  "ED4D5930ED8C358F11A9C4A76D33B55C46799EF26B3E9F3793B367B77B23B1B0"
+                       "skillMdSha256":  "60BF12CBD70B183499A0617444F6D47ECB7FBB14F4ECF046C77F439B7488EAE1",
+                       "treeSha256":  "9A8AB4F604797A06A9036727A72441E29C3653C50C3F5D7C208DF2BBDCA16158"
                    },
                    {
                        "name":  "praxis-stepper-wizard-runtime",
@@ -1826,8 +1826,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-visual-builder-jsonlogic-roundtrip"
                                         ],
-                       "skillMdSha256":  "3164311BFA3BCC295BC8D93E75B13320A4A4097C65DE0B5F09C127F1A2A05BD9",
-                       "treeSha256":  "8F6E90691F8364A7DD2FD070F647734232DA09AFBD474FE4222216D6F3203903"
+                       "skillMdSha256":  "C19C66D4298AC204D473B0D7362FAE2696F676B5ECE5D1B1C4F3E48E32B15EAD",
+                       "treeSha256":  "6FD83D1A994E5516B0E51B0C8843EA80EA12D7EA2813E3D10C9EAE85E6FEB6DD"
                    },
                    {
                        "name":  "praxis-table-rule-animation-presets",
@@ -1838,8 +1838,8 @@
                        "dependencies":  [
                                             "praxis-table-rule-effects-runtime"
                                         ],
-                       "skillMdSha256":  "2D732C7FD3FFA688A8967EC89A59DACC8A806CADD5B6BE5DC4635AD4D446790D",
-                       "treeSha256":  "F18A0A7417D0C413BE8C17B77F54ECB5E39E361CA8B593F58A7B4F17E422E901"
+                       "skillMdSha256":  "766BF7CEA36B943A5966A03276B05E3CE3FB37BCC48410395B32426AD8E46E62",
+                       "treeSha256":  "0E17E5D68A733329A81192634AFB0E0869735D8CDC9187CF76EE7711152E1B64"
                    },
                    {
                        "name":  "praxis-table-rule-effects-runtime",
@@ -1850,8 +1850,8 @@
                        "dependencies":  [
                                             "praxis-visual-builder-jsonlogic-roundtrip"
                                         ],
-                       "skillMdSha256":  "E2A1C1CEA4F5991CD66D4986936A906AA14CEAE561BEB2E0ED3FA8FB6F4098DC",
-                       "treeSha256":  "D0E30E8DA8A5D95BDFB9D14EBA6991738384D4EBE9E2B5A4FBFB50DEE8DC7F3F"
+                       "skillMdSha256":  "2B70AC27B99E07519C3399F754BDF48E7103220C9B617951C18A51E780F716F2",
+                       "treeSha256":  "D227ABFDB539D03F9EC1799DC3321E2B1D385E3479984D5D2F1C622B584F6170"
                    },
                    {
                        "name":  "praxis-table-rule-table-integration",
@@ -1863,8 +1863,8 @@
                                             "praxis-table-rule-effects-runtime",
                                             "praxis-table-rule-animation-presets"
                                         ],
-                       "skillMdSha256":  "4E24F97713A190FD7F959B68AFF16D40ECFAAADA22271DDCBB8F08E8A4CC20F3",
-                       "treeSha256":  "3346D43267D286F7F0FC49B68D2A4D8E65DD7A93633AF2E8AF03C83378A532B1"
+                       "skillMdSha256":  "685AF0B23B2B8B01B817B39D8485804B300857ACCDF0F6D4918C1384343EF44F",
+                       "treeSha256":  "3F8399382E3BE8523C2498258A89DF479554D46F0BF63E630741CDB738254AC7"
                    },
                    {
                        "name":  "praxis-table-runtime-data",
