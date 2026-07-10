@@ -47,8 +47,12 @@ agentic turn flow, and registry projections. Pair with
 `praxis-manual-form-field-detection-instance`, `praxis-manual-form-autosave-persistence`, or
 `praxis-manual-form-toolbar-metadata-bridge` when generated docs derive from field detection,
 autosave/storage, toolbar, or metadata bridge behavior. Use
-`praxis-editorial-forms-adapters-ai` for `@praxisui/editorial-forms` manifest, adapter, dataCollection,
-field binding, fallback, presentation, and registry projections.
+`praxis-editorial-forms-adapters-ai` and `praxis-editorial-forms-agentic-authoring` for
+`@praxisui/editorial-forms` manifest, component metadata, adapter, dataCollection, field binding,
+fallback, presentation, and registry projections. Pair with
+`praxis-editorial-forms-journey-snapshot-runtime`, `praxis-editorial-forms-presentation-diagnostics`,
+or `praxis-editorial-forms-data-collection-adapters` when generated docs derive from snapshot,
+diagnostics/presentation, or adapter behavior.
 Use `praxis-crud-ai-authoring` for `@praxisui/crud` manifest, capabilities, context packs, metadata
 editor, and child-operation delegation. Use `praxis-dialog-global-actions-ai` for `@praxisui/dialog`
 global actions, registries, authoring manifest, and registry projections.
