@@ -2198,9 +2198,14 @@
                        "status":  "active",
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
+                                            "praxis-api-quickstart-operational-proof",
+                                            "praxis-api-quickstart-cockpit-http-validation",
+                                            "praxis-config-runtime-persistence",
+                                            "praxis-config-agentic-authoring-streaming",
+                                            "praxis-metadata-schema-contracts"
                                         ],
-                       "skillMdSha256":  "8A227819EE9AF0C2CA742ECF9BF6BC74D49A83EBB667BA1DCC2EF321A0140431",
-                       "treeSha256":  "F6485B4210106D0FA7C5F3C28870342B75F2FAE794C09390DC0CDE01738D2C65"
+                       "skillMdSha256":  "45C783C9610D433F3E8AEA8833FDE12FA3B436340903DADAC1B01D021E3523AB",
+                       "treeSha256":  "49E140B86853791B491B26A42A038DBCD2CC75E0C8FD48C5CD8F710C0999592C"
                    },
                    {
                        "name":  "praxis-api-quickstart-domain-pilots",
