@@ -71,5 +71,5 @@ For changes requiring a running host, use official documented local scripts/orig
 
 - Use `praxis-api-quickstart-operational-proof` to route root cause to quickstart, metadata starter, or config starter.
 - Use `praxis-api-quickstart-domain-pilots` when evidence fails because a pilot resource path/domain changed.
-- Use `praxisui-http-examples` skills, when available, for the external HTTP corpus after #95.
+- Use `praxis-http-examples-corpus-manifest`, `praxis-http-examples-contract-surfaces`, and `praxis-http-examples-llm-smoke` for the external HTTP corpus, manifest flags, LLM surface, and smoke validation.
 - Use `praxis-angular-docs-playgrounds` when public docs/playgrounds mirror this evidence.

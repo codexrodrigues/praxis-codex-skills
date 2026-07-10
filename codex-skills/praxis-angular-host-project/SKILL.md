@@ -226,6 +226,9 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-api-quickstart-security-config`: quickstart CORS/CSRF/origin/read-open policy for `/schemas/**`, `/api/praxis/config/**`, and runtime endpoints.
 - `praxis-api-quickstart-domain-pilots`: quickstart `ApiPaths`, pilot resources, DTOs, filters, option sources, stats, workflow actions, and example domains.
 - `praxis-api-quickstart-cockpit-http-validation`: cockpit docs, verification scripts, HTTP examples, domain catalog/rule/knowledge smokes, and published-host evidence.
+- `praxis-http-examples-corpus-manifest`: executable HTTP corpus manifest, flags, source-of-truth claims, payload references, and response-shape hints.
+- `praxis-http-examples-contract-surfaces`: HTTP examples for metadata/config contracts, headers, Origin, ETag, schemas, capabilities, AI/context, and domain decisions.
+- `praxis-http-examples-llm-smoke`: LLM-facing operational surface, safe-first lanes, bootstrap docs, and smoke validation.
 - `praxis-core-composition-runtime`: dynamic widget pages, composition links, widget events, surface hosts, and runtime observations.
 - `praxis-core-providers-bootstrap`: shared core providers, tokens, global config, API URL, loading, icons, field selectors, collection export, and registry bootstrap.
 - `praxis-core-widget-observations`: dynamic widget contracts, widget pages, widget events, runtime observations, observation registry, diagnostics, and redaction proof.

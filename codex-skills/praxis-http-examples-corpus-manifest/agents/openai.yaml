@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis HTTP Corpus"
+  short_description: "Govern HTTP example manifest"
+  default_prompt: "Use $skill-name to inspect praxisui-http-examples examples.manifest.json, HTTP files, payloads, status flags, source-of-truth claims, response shapes, and corpus validation."
+
+policy:
+  allow_implicit_invocation: true

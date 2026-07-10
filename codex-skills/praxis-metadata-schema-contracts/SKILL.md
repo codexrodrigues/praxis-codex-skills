@@ -71,4 +71,5 @@ Review `README.md`, `CHANGELOG.md`, `docs/index.md`, `docs/guides/**`, `docs/spe
 - Use `praxis-metadata-discovery-capabilities` for surfaces, actions, capabilities, `_links`, availability, stats, and export discovery.
 - Use `praxis-metadata-domain-option-sources` for `@DomainGovernance`, semantic domain catalog, option sources, field access, and entity lookup contracts.
 - Use `praxis-api-quickstart-operational-proof` and `praxis-api-quickstart-cockpit-http-validation` for downstream HTTP proof of schema contracts in the reference host.
+- Use `praxis-http-examples-contract-surfaces` when the public executable HTTP corpus for `/schemas/**`, headers, or schema examples is affected.
 - Use `praxis-core-resource-runtime` for Angular consumption of these contracts.

@@ -69,5 +69,6 @@ For config-starter authoring/SSE changes, prefer the quickstart HTTP/SSE smoke d
 - Use `praxis-api-quickstart-security-config` for CORS, CSRF, origin, read-open, rate-limit, and config exposure policy.
 - Use `praxis-api-quickstart-domain-pilots` for concrete domains, `ApiPaths`, controllers, DTOs, filters, mappers, services, and pilot resources.
 - Use `praxis-api-quickstart-cockpit-http-validation` for cockpit docs, verification scripts, HTTP examples, and published host evidence.
+- Use `praxis-http-examples-contract-surfaces` and `praxis-http-examples-llm-smoke` when the proof is maintained in the external executable HTTP corpus.
 - Use `praxis-metadata-*` skills when the quickstart proves a metadata-starter issue.
 - Use `praxis-config-*` skills when the quickstart proves a config-starter issue.
