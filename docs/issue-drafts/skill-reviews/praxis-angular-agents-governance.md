@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-angular-agents-governance/
-- Descricao atual: Use when Codex must audit or act on Praxis Angular local AGENTS.md governance: inventory projects/*/AGENTS.md coverage, handle absent subarea instructions, classify governance gaps, decide whether the fix belongs in praxis-ui-angular versus codex-skills, reconcile skill guidance with local platform source, and avoid relying on memory when component-local AGENTS files are missing.
+- Descricao atual: Use when Codex must discover, apply, audit, or repair Praxis Angular governance across repository AGENTS.md files, codex-rules.md, component-local instructions, tools/ai-registry, skills, or a suspected instruction/owner/validation/derived-artifact drift.
 
 ## Classificacao inicial
 
