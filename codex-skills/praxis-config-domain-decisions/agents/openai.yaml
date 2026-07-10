@@ -1,7 +1,7 @@
 interface:
   display_name: "Praxis Config Decisions"
   short_description: "Govern semantic decisions"
-  default_prompt: "Use $skill-name to inspect praxis-config-starter domain rules, domain knowledge, simulations, publications, materializations, decision diagnostics, explainability, timelines, and evidence lifecycle."
+  default_prompt: "Use $skill-name to implement or audit governed Praxis domain decisions, structural simulations, approvals, materializations, Domain Knowledge evidence changes, and safe catalog grounding."
 
 policy:
   allow_implicit_invocation: true
