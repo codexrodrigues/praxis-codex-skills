@@ -834,7 +834,7 @@
                        "name":  "praxis-dto-annotations",
                        "sourcePath":  "codex-skills/praxis-dto-annotations",
                        "version":  "0.1.0-beta.0",
-                       "status":  "active-needs-curation",
+                       "status":  "active",
                        "compatibility":  "0.x",
                        "dependencies":  [
                                             "praxis-java-host-project",
@@ -842,8 +842,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "FA35EF59E8973E18FE42CFFD56A1728663734B5371334049622DD5CA5D96F893",
-                       "treeSha256":  "AC70D22E4124D8AF5F412C487061B8F4B1CC9C099EC967FBDF1D33ADB2E5A0F1"
+                       "skillMdSha256":  "FEF9FEFF47DDADDB4317E537024F5C8B2429A2640F427D7175ACC83EFF68F8DF",
+                       "treeSha256":  "CD103A5EA8C4044F9B92DDE76D54152C6F73CE292D107D06DF7FF0AFF879377D"
                    },
                    {
                        "name":  "praxis-dynamic-fields-editorial",
