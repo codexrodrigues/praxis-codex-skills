@@ -72,5 +72,6 @@ Report which consumers were checked and whether command-string migration or alia
 
 - Use `praxis-core-resource-runtime` for schema/resource discovery, actions, surfaces, capabilities, option sources, related resources, and analytics materialization.
 - Use `praxis-dialog-global-actions-ai` when dialog global actions or presets are the vertical surface.
+- Use `praxis-dialog-surface-global-actions` when surface open payloads are materialized through dialog/drawer providers.
 - Use `praxis-authoring-editors` when global actions are edited through Settings Panel/config editors.
 - Use `praxis-angular-public-api-governance` and `praxis-angular-validation-gates` for exports and validation.

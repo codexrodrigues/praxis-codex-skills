@@ -7,6 +7,8 @@ description: Use when changing or validating `@praxisui/dialog` global actions, 
 
 Use this skill when dialogs are opened by metadata-driven/global-action flows or AI authoring. Dialog can host components and templates, but child semantics remain with the child component manifest.
 
+Pair with `praxis-dialog-surface-global-actions` when the work touches `GLOBAL_SURFACE_SERVICE`, `PraxisSurfaceHostComponent`, `SURFACE_DRAWER_BRIDGE`, surface materialization, selection result forwarding, or dialog surface runtime.
+
 ## Required Source Audit
 
 Inspect:
@@ -27,6 +29,7 @@ Inspect:
 - `dialog.open` requires `componentId`.
 - Resolve `componentId` through `ComponentMetadataRegistry` first, then dialog content registry.
 - Apply `inputs` after component creation and trigger change detection.
+- Surface actions must pass through core surface materialization before dialog/drawer projection.
 - Host/domain action after close remains host-owned; dialog does not own business authorization or persistence.
 - Global config can provide dialog presets through `provideDialogGlobalPresetsFromGlobalConfig()`.
 
