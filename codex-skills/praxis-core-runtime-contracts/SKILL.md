@@ -80,7 +80,10 @@ Prefer the smallest reliable validation:
 - schema flow, `GenericCrudService`, resource discovery, global actions, i18n, logging, or widgets: treat as transversal and include focused consumer specs
 - AI contract/manifest change: validate the relevant manifest spec and registry ingestion when applicable
 
-If PowerShell audit scripts are unavailable, run an equivalent local manifest/hash/frontmatter audit and state the limitation.
+If PowerShell audit scripts are unavailable, use the repository Python fallbacks:
+`python3 scripts/audit-praxis-skills.py --family praxis` for manifest/hash drift,
+`python3 scripts/validate-praxis-skills.py --family praxis` for structure/frontmatter,
+and `python3 scripts/sync-praxis-skills.py --family praxis` when local skill installation must be refreshed.
 
 Use `praxis-angular-validation-gates` for command selection and `praxis-angular-public-api-governance`
 before changing root exports or cross-lib public contracts. Use `praxis-angular-i18n-governance` when
