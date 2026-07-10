@@ -32,7 +32,7 @@ Inspect:
 - `src/lib/components/praxis-chart-drilldown-panel/**`
 - focused stats, analytics adapter, contract, drilldown, and component specs
 
-If `projects/praxis-charts/AGENTS.md` is absent, record the missing local governance for chart validation gates and backend/dashboard boundary.
+If `projects/praxis-charts/AGENTS.md` is absent, use `praxis-angular-agents-governance` and record the missing local governance for chart validation gates and backend/dashboard boundary.
 
 ## Canonical Boundary
 
