@@ -360,6 +360,51 @@ class PythonSkillScriptTests(unittest.TestCase):
 
             self.assertEqual([], errors)
 
+    def test_generate_issue_drafts_check_accepts_current_generated_outputs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            praxis_skill = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, praxis_skill)])
+            write_manifest(root, "ergon-migration", [])
+            draft_root = Path("docs/issue-drafts/skill-reviews")
+            readme_path = Path("docs/issue-drafts/README.md")
+
+            GENERATE_DRAFTS_MODULE.generate(root, "example/repo", draft_root, readme_path, ["praxis", "ergon-migration"])
+
+            errors = GENERATE_DRAFTS_MODULE.check_generated_outputs(
+                root,
+                "example/repo",
+                draft_root,
+                readme_path,
+                ["praxis", "ergon-migration"],
+            )
+
+            self.assertEqual([], errors)
+
+    def test_generate_issue_drafts_check_reports_stale_and_extra_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            praxis_skill = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, praxis_skill)])
+            write_manifest(root, "ergon-migration", [])
+            draft_root = Path("docs/issue-drafts/skill-reviews")
+            readme_path = Path("docs/issue-drafts/README.md")
+
+            GENERATE_DRAFTS_MODULE.generate(root, "example/repo", draft_root, readme_path, ["praxis", "ergon-migration"])
+            (root / draft_root / "praxis-test.md").write_text("stale\n")
+            (root / draft_root / "extra.md").write_text("extra\n")
+
+            errors = GENERATE_DRAFTS_MODULE.check_generated_outputs(
+                root,
+                "example/repo",
+                draft_root,
+                readme_path,
+                ["praxis", "ergon-migration"],
+            )
+
+            self.assertIn("Generated file is stale: docs/issue-drafts/skill-reviews/praxis-test.md", errors)
+            self.assertIn("Stale generated draft: docs/issue-drafts/skill-reviews/extra.md", errors)
+
     def test_generate_issue_drafts_uses_validator_readme_guidance(self) -> None:
         self.assertEqual(
             ISSUE_DRAFTS_MODULE.README_VALIDATION_LINE,
