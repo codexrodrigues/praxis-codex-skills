@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Landing Docs"
+  short_description: "Publish canonical platform contracts"
+  default_prompt: "Use $praxis-landing-public-docs-contracts to align Praxis landing pages and public guides with metadata, config, Angular runtime, quickstart, and HTTP evidence."
+
+policy:
+  allow_implicit_invocation: true

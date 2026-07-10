@@ -72,4 +72,6 @@ If network or published backend access is not used, state that only structural g
 - Use `praxis-http-examples-corpus-manifest` for manifest layer/flag changes.
 - Use `praxis-http-examples-contract-surfaces` for request/payload/header semantics.
 - Use `praxis-api-quickstart-cockpit-http-validation` for reference-host evidence and cockpit docs.
-- Use `praxis-angular-docs-playgrounds` when public docs/playgrounds mirror the LLM surface.
+- Use `praxis-landing-public-docs-contracts` when public docs claim platform meaning from the LLM surface.
+- Use `praxis-landing-registries-sitemap-playgrounds` when landing `llms.txt`, `llms-full.txt`, `llm-index.json`, sitemap, examples, or playgrounds mirror the LLM surface.
+- Use `praxis-angular-docs-playgrounds` when Angular component docs/playgrounds mirror the LLM surface.

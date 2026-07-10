@@ -73,3 +73,4 @@ Review `README.md`, `CHANGELOG.md`, `docs/index.md`, `docs/guides/**`, `docs/spe
 - Use `praxis-api-quickstart-operational-proof` and `praxis-api-quickstart-cockpit-http-validation` for downstream HTTP proof of schema contracts in the reference host.
 - Use `praxis-http-examples-contract-surfaces` when the public executable HTTP corpus for `/schemas/**`, headers, or schema examples is affected.
 - Use `praxis-core-resource-runtime` for Angular consumption of these contracts.
+- Use `praxis-landing-public-docs-contracts` and `praxis-landing-registries-sitemap-playgrounds` when public landing/docs, guides, sitemap, LLM files, examples, or playgrounds publish `/schemas/filtered`, `x-ui`, schema hash, or metadata grounding claims.
