@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Product Evolution"
+  short_description: "Turn repeated UX friction into platform evidence"
+  default_prompt: "Use $praxis-product-evolution to assess this enterprise screen for native Praxis support, a reusable platform gap, or a migration guidance gap."
