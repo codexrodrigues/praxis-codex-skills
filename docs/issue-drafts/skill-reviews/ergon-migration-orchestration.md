@@ -1,4 +1,4 @@
-﻿# Revisar skill ergon-migration: ergon-migration-orchestration
+# Revisar skill ergon-migration: ergon-migration-orchestration
 
 ## Objetivo
 
@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: ergon-migration
 - Caminho: codex-skills/ergon-migration-orchestration/
-- Descricao atual: Orchestrate complex Ergon/Archon legacy-to-Java migrations across ordered phases. Use when Codex must plan, audit, gate, or coordinate screen discovery, table rule audit, read API migration, write API migration, parity testing, handoff artifacts, or when the user asks what phase/skill should run next.
+- Descricao atual: Orchestrate complex Ergon/Archon legacy-to-Praxis migrations across ordered tracks. Use when Codex must plan, audit, gate, or coordinate screen discovery, table rule audit, read/write API migration, UI wiring readiness, dashboard or rule-migration routing, parity testing, handoff artifacts, or when the user asks what phase/skill should run next.
 
 ## Foco da revisao
 
@@ -29,7 +29,8 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 - [ ] Confirmar interoperacao com skills relacionadas declaradas no manifesto.
 - [ ] Revisar exemplos, templates, comandos e checklists para garantir que um agente consiga executar a tarefa sem lacunas criticas.
 - [ ] Atualizar `skillMdSha256` e `treeSha256` no manifesto quando houver mudanca.
-- [ ] Rodar scripts/audit-praxis-skills.ps1 -Family ergon-migration apos qualquer ajuste.
+- [ ] Rodar `python3 scripts/preflight-python-fallbacks.py` apos qualquer ajuste.
+- [ ] Quando precisar de diagnostico focado, rodar `scripts/audit-praxis-skills.ps1 -Family ergon-migration` ou `python3 scripts/audit-praxis-skills.py --family ergon-migration`.
 
 ## Criterios de aceite
 

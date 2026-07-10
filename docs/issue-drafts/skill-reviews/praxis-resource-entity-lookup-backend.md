@@ -1,4 +1,4 @@
-﻿# Revisar skill praxis: praxis-resource-entity-lookup-backend
+# Revisar skill praxis: praxis-resource-entity-lookup-backend
 
 ## Objetivo
 
@@ -29,7 +29,8 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 - [ ] Confirmar interoperacao com skills relacionadas declaradas no manifesto.
 - [ ] Revisar exemplos, templates, comandos e checklists para garantir que um agente consiga executar a tarefa sem lacunas criticas.
 - [ ] Atualizar `skillMdSha256` e `treeSha256` no manifesto quando houver mudanca.
-- [ ] Rodar scripts/audit-praxis-skills.ps1 -Family praxis apos qualquer ajuste.
+- [ ] Rodar `python3 scripts/preflight-python-fallbacks.py` apos qualquer ajuste.
+- [ ] Quando precisar de diagnostico focado, rodar `scripts/audit-praxis-skills.ps1 -Family praxis` ou `python3 scripts/audit-praxis-skills.py --family praxis`.
 
 ## Criterios de aceite
 
