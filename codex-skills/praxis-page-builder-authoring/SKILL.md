@@ -1,6 +1,6 @@
 ---
 name: praxis-page-builder-authoring
-description: Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors: PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, or page editor runtime parity.
+description: Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors: PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, page editor runtime parity, or authoring changes that may require Page Builder agentic validation gates.
 ---
 
 # Praxis Page Builder Authoring
@@ -84,4 +84,4 @@ Run focused validation:
 - composition-visible authoring: connection editor specs and `praxis-page-builder-composition`.
 - public behavior: `ng build praxis-page-builder`; browser validation when visible editor layout or page runtime changes.
 
-Report skipped E2E explicitly. The full agentic Playwright gate is only required when the change touches agentic authoring, SSE, manifests, backend tools, patch/apply, or LLM integration.
+Report skipped E2E explicitly. Build/spec validation is enough for non-agentic editor-only changes. Escalate to `praxis-page-builder-ai-agentic` and the full Playwright validation gate from `projects/praxis-page-builder/AGENTS.md` when the authoring change touches agentic authoring, SSE, manifests, backend tools, patch/apply, LLM integration, or Settings Panel bridge behavior used by agentic preview/apply.

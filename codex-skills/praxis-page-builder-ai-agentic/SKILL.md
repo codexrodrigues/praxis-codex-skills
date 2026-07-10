@@ -1,6 +1,6 @@
 ---
 name: praxis-page-builder-ai-agentic
-description: Use when Codex must create, update, or audit @praxisui/page-builder AI and agentic authoring: PRAXIS_PAGE_BUILDER_AUTHORING_MANIFEST, PageBuilderAiAdapter, PageBuilderAgenticAuthoringService, streaming turn flow, UI composition plans, component capability catalogs, context packs, runtime observations, project knowledge/domain rule handoff, quick replies, preview/apply, AI registry ingestion, or Page Builder E2E gates.
+description: Use when Codex must create, update, or audit @praxisui/page-builder AI and agentic authoring: PRAXIS_PAGE_BUILDER_AUTHORING_MANIFEST, PageBuilderAiAdapter, PageBuilderAgenticAuthoringService, streaming turn flow, backend/SSE/LLM validation gates, UI composition plans, component capability catalogs, context packs, runtime observations, project knowledge/domain rule handoff, quick replies, preview/apply, AI registry ingestion, or Page Builder E2E gates.
 ---
 
 # Praxis Page Builder AI Agentic
@@ -80,13 +80,17 @@ For shared-rule or project-knowledge continuation:
 
 ## Validation
 
-Use local-first gates:
+Use local-first gates and pick the gate that matches the risk:
 
 - manifest changes: `praxis-page-builder-authoring-manifest.spec.ts`.
 - adapter or composition plan changes: `page-builder-ai.adapter.spec.ts`, `page-builder-ui-composition-plan.spec.ts`, and runtime normalization specs.
 - capability catalogs: `page-builder-ai-catalog.spec.ts` and AI registry validation when generated assets change.
 - turn flow: `page-builder-agentic-authoring-turn-flow.spec.ts`, agentic authoring service specs, and dynamic page builder component specs.
 - runtime observation context: normalization specs plus core observation serializability/redaction checks when observation payloads or digests change.
-- full agentic/page-builder contract changes: the local Playwright gates named in `projects/praxis-page-builder/AGENTS.md`, using the official backend/UI origins and real provider configuration.
+- build/spec only: acceptable for local non-agentic refactors or manifest/catalog units that do not alter backend transport, streaming, preview/apply, or LLM integration.
+- quick Playwright smoke: use `cmd.exe /c npx.cmd playwright test --config=tools/e2e/playwright/praxis-page-builder-agentic-smoke.playwright.config.ts` for post-merge checks or incremental diagnosis.
+- full agentic validation gate: mandatory before closing relevant authoring agentic/page-builder/AI contract changes touching agentic flow, SSE, manifests, backend tools, patch/apply, or LLM integration. Run `cmd.exe /c npx.cmd playwright test --config=tools/e2e/playwright/praxis-page-builder-agentic-validation.playwright.config.ts`.
+
+The full gate must use the real local environment from `projects/praxis-page-builder/AGENTS.md`: `praxis-config-starter` installed locally, `praxis-api-quickstart` packaged against that local version, backend on `http://localhost:8088`, Angular on `http://localhost:4003` with `PAX_PROXY_TARGET=http://localhost:8088`, real provider LLM variables, and `PRAXIS_AI_STREAM_PROCESSING_TIMEOUT_SECONDS=180`. Do not replace this gate with the smoke when the change affects agentic flow, SSE, manifests, backend tools, patch/apply, or LLM integration.
 
 Report whether only the quick smoke ran or the complete agentic validation gate ran. Do not use GitHub Actions as the normal exploratory loop when local gates can prove the change.
