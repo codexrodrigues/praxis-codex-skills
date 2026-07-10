@@ -74,6 +74,48 @@ def duplicate_issue_reports(payloads: list[dict[str, str]], issues: list[dict[st
     return reports
 
 
+def issue_coverage_rows(payloads: list[dict[str, str]], issues: list[dict[str, str]]) -> list[dict[str, str]]:
+    issues_by_title = {issue["title"]: issue for issue in issues}
+    rows: list[dict[str, str]] = []
+    for payload in payloads:
+        issue = issues_by_title.get(payload["title"])
+        if issue:
+            rows.append(
+                {
+                    "status": "FOUND",
+                    "title": payload["title"],
+                    "path": payload["path"],
+                    "number": str(issue["number"]),
+                    "state": issue["state"],
+                    "url": issue["url"],
+                }
+            )
+        else:
+            rows.append(
+                {
+                    "status": "MISSING",
+                    "title": payload["title"],
+                    "path": payload["path"],
+                    "number": "",
+                    "state": "",
+                    "url": "",
+                }
+            )
+    return rows
+
+
+def print_issue_coverage(rows: list[dict[str, str]]) -> None:
+    for row in rows:
+        if row["status"] == "FOUND":
+            print(f"FOUND\t#{row['number']}\t{row['state']}\t{row['title']}\t{row['url']}")
+        else:
+            print(f"MISSING\t-\t-\t{row['title']}\t{row['path']}")
+
+    found = sum(1 for row in rows if row["status"] == "FOUND")
+    missing = sum(1 for row in rows if row["status"] == "MISSING")
+    print(f"Summary: total={len(rows)} found={found} missing={missing}")
+
+
 def create_issue(repository: str, title: str, body: str) -> None:
     with tempfile.NamedTemporaryFile("w", delete=False) as temporary:
         temporary.write(body)
@@ -94,6 +136,7 @@ def main() -> int:
     parser.add_argument("--draft-root", default=str(DEFAULT_DRAFT_ROOT))
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--check-existing", action="store_true", help="Fail before creating if a draft title already exists.")
+    parser.add_argument("--report-existing", action="store_true", help="Report draft coverage against existing issues.")
     parser.add_argument("--limit", type=int, help="Maximum number of drafts to process.")
     args = parser.parse_args()
 
@@ -103,6 +146,10 @@ def main() -> int:
 
     try:
         payloads = issue_payloads(Path(args.draft_root), args.limit)
+        if args.report_existing:
+            print_issue_coverage(issue_coverage_rows(payloads, existing_issues(args.repo)))
+            return 0
+
         if args.check_existing:
             duplicates = duplicate_issue_reports(payloads, existing_issues(args.repo))
             if duplicates:

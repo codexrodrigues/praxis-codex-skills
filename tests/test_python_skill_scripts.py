@@ -455,6 +455,29 @@ class PythonSkillScriptTests(unittest.TestCase):
 
         self.assertEqual(["Review B already exists as #10 (OPEN): https://example.test/issues/10"], reports)
 
+    def test_create_issue_coverage_reports_found_and_missing(self) -> None:
+        payloads = [
+            {"title": "Review A", "body": "A", "path": "a.md"},
+            {"title": "Review B", "body": "B", "path": "b.md"},
+        ]
+        issues = [
+            {"number": 10, "title": "Review B", "url": "https://example.test/issues/10", "state": "OPEN"},
+        ]
+
+        rows = CREATE_ISSUES_MODULE.issue_coverage_rows(payloads, issues)
+
+        self.assertEqual("MISSING", rows[0]["status"])
+        self.assertEqual("FOUND", rows[1]["status"])
+        self.assertEqual("10", rows[1]["number"])
+
+        output = io.StringIO()
+        with redirect_stdout(output):
+            CREATE_ISSUES_MODULE.print_issue_coverage(rows)
+
+        self.assertIn("MISSING\t-\t-\tReview A\ta.md", output.getvalue())
+        self.assertIn("FOUND\t#10\tOPEN\tReview B\thttps://example.test/issues/10", output.getvalue())
+        self.assertIn("Summary: total=2 found=1 missing=1", output.getvalue())
+
     def test_preflight_audit_policy_allows_informational_counters(self) -> None:
         report = audit_report(installedOnly=3, sourceInOtherFamilyManifest=2)
 
