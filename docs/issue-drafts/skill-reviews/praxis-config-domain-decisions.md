@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-config-domain-decisions/
-- Descricao atual: Use when Codex must work on praxis-config-starter governed semantic decisions: /api/praxis/config/domain-rules/**, /api/praxis/config/domain-knowledge/**, domain catalog/federation, DomainRuleService, DomainKnowledgeChangeSetService, intake, simulation, publication, materialization, decisionDiagnostics, explainability, approval policy, timelines, evidence lifecycle, Project Knowledge derived indexes, and runtime surfaces as derived projections.
+- Descricao atual: Use when Codex must implement, audit, or consume praxis-config-starter governed semantic decisions: domain-rule intake, structural simulation, publication and materialization; Domain Knowledge change sets and evidence lifecycle; Domain Catalog or Federation grounding; decision diagnostics, approvals, timelines, and Angular runtime projections.
 
 ## Classificacao inicial
 
