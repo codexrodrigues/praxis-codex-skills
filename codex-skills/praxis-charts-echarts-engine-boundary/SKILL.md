@@ -1,25 +1,37 @@
 ---
 name: praxis-charts-echarts-engine-boundary
-description: Use when Codex must implement, audit, or consume @praxisui/charts chart engine behavior: EChartsEngineAdapter, ChartEngineAdapter, CHART_ENGINE provider, providePraxisCharts, PraxisChartOptionBuilderService, ECharts option safety, renderer/module registration, resize/destroy lifecycle, pointClick/category click mapping, compact micro-visualization boundary, or raw ECharts option leakage.
+description: Use when Codex must implement, audit, or consume @praxisui/charts engine behavior: PraxisChartEngineAdapter, PRAXIS_CHART_ENGINE, providePraxisCharts, EChartsEngineAdapter, internal option compilation, module registration, host/resize/dispose lifecycle, point and category event mapping, micro-visualization separation, or ECharts type leakage through public APIs.
 ---
 
 # Praxis Charts ECharts Engine Boundary
 
-Use this skill for the adapter boundary between Praxis chart contracts and Apache ECharts. Hosts and AI authoring should depend on `PraxisXUiChartContract`/`PraxisChartConfig`; raw ECharts options are implementation detail behind `ChartEngineAdapter`, `CHART_ENGINE`, and `PraxisChartOptionBuilderService`.
+Use this skill for the boundary that materializes canonical Praxis chart decisions in Apache ECharts. Hosts, authoring flows, metadata, AI tools, and persisted documents depend on `PraxisXUiChartContract`, `PraxisChartConfig`, and renderer-neutral events. ECharts modules, instances, options, params, and timing heuristics remain adapter-owned implementation details.
 
 Pair it with:
 
-- `praxis-charts-runtime-data` for the broader chart runtime contract.
-- `praxis-charts-analytics-interactions` when point events feed query context, drilldown, cross-filter, or stats execution.
-- `praxis-charts-authoring-catalogs` when editor preview must render through the same runtime path.
-- `praxis-charts-ai-handler-contracts` when AI operations would otherwise patch raw ECharts options.
+- `praxis-charts-runtime-data` for config normalization, data resolution, transformation, and runtime states.
+- `praxis-charts-analytics-interactions` when point events become selection, drilldown, cross-filter, or query context.
+- `praxis-charts-authoring-settings` and `praxis-charts-authoring-catalogs` when editor previews must use the production materialization path.
+- `praxis-charts-ai-handler-contracts` and `praxis-charts-ai-validation` when AI operations could bypass canonical chart decisions.
+- `praxis-angular-public-api-governance` before exporting an adapter, token, provider, compiler, or engine-owned type.
+
+## Canonical Ownership
+
+Follow this direction of dependency:
+
+`x-ui.chart` -> normalizer/validator/mapper -> `PraxisChartConfig` plus resolved rows -> internal engine option compiler -> `PraxisChartEngineAdapter` -> ECharts instance
+
+- Add missing semantics to the canonical chart document, mapper, validator, or runtime config before changing ECharts options.
+- Treat `PraxisChartEngineAdapter`, `PRAXIS_CHART_ENGINE`, and `providePraxisCharts` as the renderer-neutral extension boundary when they are public.
+- Keep the option compiler adapter-owned. A service that returns `EChartsCoreOption` is not a renderer-neutral public Praxis service and must not be root-exported merely for convenience.
+- Never persist, accept from AI, or expose raw `EChartsCoreOption`, formatter functions, ECharts params, or module constructors as the primary host contract.
+- Keep `PraxisMicroVisualizationComponent` separate. It materializes compact core presentation contracts with lightweight HTML/CSS/SVG and does not share ECharts lifecycle or option semantics.
 
 ## Source Audit
 
-Inspect:
+Read `projects/praxis-charts/AGENTS.md` before editing. Inspect at least:
 
-- `projects/praxis-charts/README.md`
-- `projects/praxis-charts/src/public-api.ts`
+- `projects/praxis-charts/README.md` and `src/public-api.ts`
 - `src/lib/adapters/chart-engine.adapter.ts`
 - `src/lib/adapters/echarts/echarts-engine.adapter.ts`
 - `src/lib/tokens/chart-engine.token.ts`
@@ -28,37 +40,81 @@ Inspect:
 - `src/lib/services/chart-data-transformer.service.ts`
 - `src/lib/components/praxis-chart/praxis-chart.component.ts`
 - `src/lib/components/praxis-micro-visualization/praxis-micro-visualization.component.ts`
-- focused adapter, option builder, component, and micro-visualization specs
+- direct consumers, authoring manifests, README examples, and focused specs for all of the above
 
-Read `projects/praxis-charts/AGENTS.md` before editing chart engine boundaries. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
+Do not infer coverage from a spec filename. Read its assertions and compare them with the lifecycle and event matrix below.
 
-## Boundary Rules
+## Provider Boundary
 
-- Do not expose raw ECharts options as the primary public config, AI operation payload, or editor persistence format.
-- Add chart semantics to `PraxisXUiChartContract`, mappers, validators, or `PraxisChartConfig` before changing ECharts option building.
-- Keep ECharts module registration inside the adapter/provider path.
-- Preserve lifecycle: initialize once per host, update via `setOption`, remove old event handlers, resize, and dispose cleanly.
-- Point and category click events must emit structured `PraxisChartPointEvent` data, not ECharts params directly.
-- Grid/category fallback clicks must remain defensive: ignore invalid pixels, missing axes, or missing categories.
-- `PraxisMicroVisualizationComponent` is not an ECharts adapter; it renders core presentation visualizations for dense cells/list/form summaries.
+- `providePraxisCharts()` may install the default engine, but a host-supplied `PRAXIS_CHART_ENGINE` must be able to replace it through documented Angular provider precedence.
+- A component-level provider shadows environment/root providers. Do not provide the concrete ECharts adapter locally when the public contract promises host replacement through the token.
+- Preserve one mutable engine instance per chart component or host element. If the default is supplied above the component injector, use a factory or instance-creation contract that avoids sharing one stateful adapter across chart components.
+- Test the real public registration path. `TestBed.overrideComponent()` proves test substitution, not that `providePraxisCharts()` or a host provider is overridable in production.
+- Keep metadata registration and table inline-renderer registration in the provider bundle independent from the choice of chart engine.
+
+## Engine Lifecycle
+
+The mutable instance belongs to a specific host element:
+
+1. Initialize once for the current host after it has a renderable size.
+2. Re-render canonical config/data with replacement semantics appropriate to the full derived option; stale series or handlers must not survive.
+3. Remove prior ECharts, zrender, and DOM handlers before installing callbacks for the new payload.
+4. Resize from the observed current host without creating a second instance.
+5. If the host element changes, detach handlers, dispose the old instance, observe the new element, and initialize again.
+6. On loading, empty, error, or component destruction, cancel scheduled work, disconnect/reset observers, remove handlers, and dispose idempotently.
+
+Track host identity explicitly in the adapter or owning runtime. `if (!chart) init(host)` is insufficient if `render()` can receive another element. A cached `ResizeObserver` must likewise rebind when Angular recreates `#chartHost` after a state transition.
+
+Keep ECharts `use(...)`, renderer selection, and browser-only initialization centralized in the implementation path. Audit SSR/import safety separately from DOM-time safety; a browser guard around `render()` does not make module-level side effects automatically SSR-safe.
+
+## Event Materialization
+
+- Convert series clicks to `PraxisChartPointEvent`; never emit raw ECharts params.
+- Preserve the canonical chart id, semantic series identity, category, normalized value, and source data needed by governed interactions.
+- Grid/category fallback must reject non-finite coordinates, pixels outside the plot, unavailable axes, failed conversions, and out-of-range categories without emitting.
+- Do not silently assign a category click to the first series in a multi-series chart. First classify whether existing optional event fields can represent a category-only interaction; introduce a contract only if downstream selection/cross-filter semantics cannot be expressed correctly.
+- Audit vertical and horizontal category axes, multiple series, tuples, object values, primitive values, missing category data, and unsupported chart families.
+- Deduplicate ECharts, zrender, and captured DOM notifications deterministically where possible. A short wall-clock window is a heuristic, not proof that two callbacks represent the same user action.
+- Re-rendered callbacks must use the newest payload and must never retain stale config, rows, or handlers.
+
+## Option Safety
+
+- Compile only validated Praxis semantics into ECharts options. Engine defaults are derived materialization, not a second source of truth.
+- Preserve stable ids and replace removed series, axes, titles, legends, datasets, visual maps, and interaction state when config changes.
+- Keep formatters and callbacks library-owned; do not execute arbitrary functions supplied by metadata, persisted config, AI output, or host JSON.
+- Register only required ECharts modules and renderers, and update tests/build whenever a supported Praxis chart family needs another module.
+- Keep theme, accessibility, labels, sizing, and visual decisions aligned with canonical config. Do not add ECharts-shaped aliases when an existing Praxis field is merely under-materialized.
 
 ## Inventory Before New Contract
 
-- `ja-suportado-so-ux`: Praxis config already expresses the visual decision; option builder, sizing, labels, theme, or event wiring needs polish.
-- `ja-suportado-mal-nomeado-ou-mal-materializado`: callers pass ECharts-shaped names where chart document or runtime config already has semantic fields.
-- `suportado-parcialmente`: chart document/runtime supports the decision but option builder, adapter lifecycle, events, or tests are incomplete.
-- `lacuna-real-de-contrato`: no chart document field, runtime config model, mapper, validator, or engine adapter path can express the needed behavior.
+Classify each request before editing:
 
-Only real gaps justify public API or contract changes. Prefer adding semantic chart contracts over accepting engine-specific option blobs.
+- `ja-suportado-so-ux`: canonical config already expresses the decision; sizing, theme, label, state, or event presentation needs correction.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: an exported option compiler or ECharts-shaped name duplicates semantics already owned by Praxis contracts.
+- `suportado-parcialmente`: token/provider, host lifecycle, event model, option compiler, or observer exists but substitution, cleanup, mapping, or tests are incomplete.
+- `lacuna-real-de-contrato`: no canonical document field, runtime model, renderer-neutral event, or adapter operation can express required behavior.
 
-## Validation
+Only `lacuna-real-de-contrato` justifies a new public field or API. During beta, correct the canonical export/provider surface and update consumers in the same cycle instead of adding compatibility aliases.
 
-Use focused gates:
+## Validation Matrix
 
-- `echarts-engine.adapter.spec.ts` for adapter lifecycle/events;
-- `chart-option-builder.service.spec.ts` and `chart-data-transformer.service.spec.ts` for option safety;
-- `praxis-chart.component.spec.ts` for component wiring;
-- `praxis-micro-visualization.component.spec.ts` for compact visualization boundary;
-- build `praxis-charts` for public API/provider changes.
+Choose the smallest commands that prove the changed behavior, but require assertions for every affected row:
 
-Report exactly which adapter, option builder, event, micro-visualization, and build checks ran.
+- adapter instance: init once, update, current-host identity, host replacement, resize, idempotent destroy, and re-render after destroy;
+- handlers: ECharts `off/on`, zrender detach/attach, DOM capture detach/attach, latest payload, and deterministic duplicate suppression;
+- fallback events: invalid/outside pixels, vertical/horizontal categories, bounds, multi-series semantics, tuples, objects, and primitives;
+- component DI: default registration and a custom engine through the real host/provider path, with multiple chart components isolated;
+- component host: zero-size defer, ready -> non-ready -> ready host recreation, observer rebind, scheduled-frame cancellation, and final cleanup;
+- option compiler and transformer: supported chart families, replacement safety, canonical mapping, and no executable/raw option ingress;
+- micro visualization: remains functional without instantiating ECharts;
+- public API: focal library build plus a direct consumer build when exports or providers change.
+
+Typical focal gates are:
+
+```bash
+npx ng test praxis-charts --watch=false --progress=false --include='projects/praxis-charts/src/lib/adapters/echarts/echarts-engine.adapter.spec.ts' --include='projects/praxis-charts/src/lib/services/chart-option-builder.service.spec.ts' --include='projects/praxis-charts/src/lib/services/chart-data-transformer.service.spec.ts'
+npx ng test praxis-charts --watch=false --progress=false --include='projects/praxis-charts/src/lib/components/praxis-chart/praxis-chart.component.spec.ts' --include='projects/praxis-charts/src/lib/components/praxis-micro-visualization/praxis-micro-visualization.component.spec.ts'
+npm run build:praxis-charts
+```
+
+An existing helper-only adapter spec does not prove lifecycle or event wiring. Report exact assertions that ran, gaps left unproved, derived docs/examples/manifests reviewed, and whether a direct consumer build was required.

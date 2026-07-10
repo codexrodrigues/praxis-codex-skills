@@ -1990,8 +1990,8 @@
                        "dependencies":  [
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "76C8D568AC18C8CFD28252069C8A955DA8349BDA34A506B8CC1AEBC510300ED4",
-                       "treeSha256":  "C5678BC7D0FCD77DEC9C18514D0278B48EA3CB2C106825364726D71624CF1945"
+                       "skillMdSha256":  "E613771F87D63195F9FA5C907983D7A8919FC64AA37210AE35757EF6B5E51CD6",
+                       "treeSha256":  "06CA8942035024F9464BCD1BC59665C3A6B3901119CCEC9E9A5183813CDFC11B"
                    },
                    {
                        "name":  "praxis-charts-analytics-interactions",
