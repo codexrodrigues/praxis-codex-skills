@@ -76,6 +76,7 @@ Generate skill review issue drafts from the canonical manifests:
 python3 scripts/generate-skill-review-issue-drafts.py
 python3 scripts/generate-skill-review-issue-drafts.py --check
 python3 scripts/validate-issue-drafts.py
+python3 scripts/create-skill-review-issues.py --dry-run --limit 3
 ```
 
 The PowerShell generator delegates to the Python generator for compatibility.
