@@ -15,6 +15,7 @@ PYTHON_FILES = [
     "scripts/codex_skills_common.py",
     "scripts/audit-praxis-skills.py",
     "scripts/sync-praxis-skills.py",
+    "scripts/validate-issue-drafts.py",
     "scripts/validate-praxis-skills.py",
     "scripts/preflight-python-fallbacks.py",
     "tests/test_python_skill_scripts.py",
@@ -80,6 +81,7 @@ def main() -> int:
                 "ergon-migration",
             ]
         )
+        run([sys.executable, "scripts/validate-issue-drafts.py"])
         with tempfile.TemporaryDirectory() as temporary_skills_root:
             for family in FAMILIES:
                 run(

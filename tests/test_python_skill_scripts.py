@@ -30,6 +30,7 @@ def load_script_module(name: str, path: Path):
 AUDIT_MODULE = load_script_module("audit_praxis_skills", SCRIPTS_ROOT / "audit-praxis-skills.py")
 SYNC_MODULE = load_script_module("sync_praxis_skills", SCRIPTS_ROOT / "sync-praxis-skills.py")
 VALIDATE_MODULE = load_script_module("validate_praxis_skills", SCRIPTS_ROOT / "validate-praxis-skills.py")
+ISSUE_DRAFTS_MODULE = load_script_module("validate_issue_drafts", SCRIPTS_ROOT / "validate-issue-drafts.py")
 PREFLIGHT_MODULE = load_script_module("preflight_python_fallbacks", SCRIPTS_ROOT / "preflight-python-fallbacks.py")
 
 
@@ -84,6 +85,29 @@ def write_manifest(repo_root: Path, family: str, entries: list[dict[str, str]]) 
     path = repo_root / "codex-skills" / manifest_name
     path.write_text(json.dumps({"family": family, "version": "0.0.0-test", "skills": entries}, indent=2))
     return path
+
+
+def write_issue_draft(repo_root: Path, family: str, skill_name: str) -> None:
+    drafts_root = repo_root / "docs" / "issue-drafts" / "skill-reviews"
+    drafts_root.mkdir(parents=True, exist_ok=True)
+    (drafts_root / f"{skill_name}.md").write_text(
+        f"# Revisar skill {family}: {skill_name}\n\n"
+        "## Skill\n\n"
+        f"- Familia: {family}\n"
+        f"- Caminho: codex-skills/{skill_name}/\n\n"
+        "## Checklist minimo\n\n"
+        "- [ ] Rodar `python3 scripts/preflight-python-fallbacks.py` apos qualquer ajuste.\n"
+        "- [ ] Quando precisar de diagnostico focado, rodar "
+        f"`scripts/audit-praxis-skills.ps1 -Family {family}` ou "
+        f"`python3 scripts/audit-praxis-skills.py --family {family}`.\n"
+    )
+
+
+def write_issue_draft_readme(repo_root: Path, skill_names: list[str]) -> None:
+    readme = repo_root / "docs" / "issue-drafts" / "README.md"
+    readme.parent.mkdir(parents=True, exist_ok=True)
+    links = "\n".join(f"- [{name}](skill-reviews/{name}.md)" for name in sorted(skill_names))
+    readme.write_text(f"# Skill Review Issue Drafts\n\n{links}\n")
 
 
 def audit_report(**summary_overrides):
@@ -219,6 +243,54 @@ class PythonSkillScriptTests(unittest.TestCase):
             errors = VALIDATE_MODULE.validate_manifest(root, "praxis", None)
 
             self.assertEqual(["praxis-test: unknown dependency naming: custom-helper"], errors)
+
+    def test_validate_issue_drafts_accepts_manifest_aligned_drafts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            praxis_skill = write_skill(root, "praxis-test")
+            ergon_skill = write_skill(root, "ergon-test")
+            write_manifest(root, "praxis", [manifest_entry(root, praxis_skill)])
+            write_manifest(root, "ergon-migration", [manifest_entry(root, ergon_skill)])
+            write_issue_draft(root, "praxis", "praxis-test")
+            write_issue_draft(root, "ergon-migration", "ergon-test")
+            write_issue_draft_readme(root, ["praxis-test", "ergon-test"])
+
+            errors = ISSUE_DRAFTS_MODULE.validate_drafts(root, ["praxis", "ergon-migration"])
+
+            self.assertEqual([], errors)
+
+    def test_validate_issue_drafts_reports_missing_and_extra_drafts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            praxis_skill = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, praxis_skill)])
+            write_manifest(root, "ergon-migration", [])
+            write_issue_draft(root, "praxis", "praxis-extra")
+            write_issue_draft_readme(root, ["praxis-extra"])
+
+            errors = ISSUE_DRAFTS_MODULE.validate_drafts(root, ["praxis", "ergon-migration"])
+
+            self.assertIn("Missing skill review drafts: praxis-test", errors)
+            self.assertIn("Skill review drafts without manifest entry: praxis-extra", errors)
+            self.assertIn("README missing skill review draft links: praxis-test", errors)
+            self.assertIn("README links skill review drafts without manifest entry: praxis-extra", errors)
+
+    def test_validate_issue_drafts_reports_stale_draft_content(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+            write_manifest(root, "ergon-migration", [])
+            write_issue_draft(root, "ergon-migration", "praxis-test")
+            write_issue_draft_readme(root, ["praxis-test"])
+
+            errors = ISSUE_DRAFTS_MODULE.validate_drafts(root, ["praxis", "ergon-migration"])
+
+            self.assertTrue(any("missing required text: # Revisar skill praxis: praxis-test" in error for error in errors))
+            self.assertTrue(any("missing required text: - Familia: praxis" in error for error in errors))
+            self.assertTrue(
+                any("missing required text: python3 scripts/audit-praxis-skills.py --family praxis" in error for error in errors)
+            )
 
     def test_preflight_audit_policy_allows_informational_counters(self) -> None:
         report = audit_report(installedOnly=3, sourceInOtherFamilyManifest=2)

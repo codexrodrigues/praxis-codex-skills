@@ -4,6 +4,8 @@ A criacao direta de issues pelo conector falhou com `403 Resource not accessible
 
 Repo alvo: codexrodrigues/praxis-codex-skills
 
+Validacao local: `python3 scripts/validate-issue-drafts.py`
+
 - [ergon-angular-ui-screen-wiring](skill-reviews/ergon-angular-ui-screen-wiring.md)
 - [ergon-archon-read-api-migration](skill-reviews/ergon-archon-read-api-migration.md)
 - [ergon-archon-screen-discovery](skill-reviews/ergon-archon-screen-discovery.md)
