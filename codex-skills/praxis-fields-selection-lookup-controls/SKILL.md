@@ -1,9 +1,11 @@
 ---
 name: praxis-fields-selection-lookup-controls
-description: Use when Codex must implement, audit, or consume @praxisui/dynamic-fields selection controls: select, searchable-select, async-select, entityLookup, autoComplete, multiSelect, multiSelectTree, treeSelect, selectionList, transferList, chipInput, chipList, checkbox, radio, toggle/buttonToggle, inline select/autocomplete/async/entity/multi/tree controls, option identity, value/display fields, optionSource, selected-value reload, chips, and related AI profiles.
+description: Use when Codex must implement, audit, or consume @praxisui/dynamic-fields or praxis-dynamic-fields package selection controls: select, searchable-select, async-select, entityLookup, autoComplete, multiSelect, multiSelectTree, treeSelect, selectionList, transferList, chipInput, chipList, checkbox, radio, toggle/buttonToggle, inline select/autocomplete/async/entity/multi/tree controls, option identity, value/display fields, optionSource, selected-value reload, chips, and related AI profiles.
 ---
 
 # Praxis Fields Selection Lookup Controls
+
+This `praxis-fields-*` plus `praxis-dynamic-fields-editorial` skill family is the canonical Codex skill surface for `@praxisui/dynamic-fields` and `projects/praxis-dynamic-fields`; do not create parallel dynamic-fields guidance unless this family cannot express a proven contract gap.
 
 Use this skill for option-bearing and lookup controls in `@praxisui/dynamic-fields`. These controls are grounded by option identity and source semantics; they must not be reduced to labels, local arrays, or host-only search widgets.
 

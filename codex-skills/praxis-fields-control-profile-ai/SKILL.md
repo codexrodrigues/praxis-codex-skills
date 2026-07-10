@@ -1,9 +1,11 @@
 ---
 name: praxis-fields-control-profile-ai
-description: Use when Codex must implement, audit, or consume @praxisui/dynamic-fields AI control profiles: PRAXIS_DYNAMIC_FIELDS_AUTHORING_MANIFEST, PRAXIS_DYNAMIC_FIELDS_AUTHORING_PROFILES, control-type AI catalog, per-control family operations, validators, profile componentIds, runtime/editorial/canvas coverage, generated AI registry docs, inline recipes, or AI-assisted field selection/configuration.
+description: Use when Codex must implement, audit, or consume @praxisui/dynamic-fields or praxis-dynamic-fields package AI control profiles: PRAXIS_DYNAMIC_FIELDS_AUTHORING_MANIFEST, PRAXIS_DYNAMIC_FIELDS_AUTHORING_PROFILES, control-type AI catalog, per-control family operations, validators, profile componentIds, runtime/editorial/canvas coverage, generated AI registry docs, inline recipes, or AI-assisted field selection/configuration.
 ---
 
 # Praxis Fields Control Profile AI
+
+This `praxis-fields-*` plus `praxis-dynamic-fields-editorial` skill family is the canonical Codex skill surface for `@praxisui/dynamic-fields` and `projects/praxis-dynamic-fields`; do not create parallel dynamic-fields guidance unless this family cannot express a proven contract gap.
 
 Use this skill for AI-readable control-family knowledge in `@praxisui/dynamic-fields`. The family manifest owns shared `FieldMetadata`, registry, alias, selector, runtime coverage, and editor coverage semantics; component-level profiles own differences between text, numeric, currency, select, entity lookup, temporal, upload, collection, display, and shell controls.
 
