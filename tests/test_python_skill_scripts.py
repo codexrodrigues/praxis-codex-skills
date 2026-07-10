@@ -15,7 +15,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_ROOT = REPO_ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS_ROOT))
 
-from codex_skills_common import load_manifest, sha256_file, skill_tree_hash  # noqa: E402
+from codex_skills_common import (  # noqa: E402
+    ISSUE_DRAFTS_README_VALIDATION_LINE,
+    load_manifest,
+    sha256_file,
+    skill_tree_hash,
+)
 
 
 def load_script_module(name: str, path: Path):
@@ -407,9 +412,10 @@ class PythonSkillScriptTests(unittest.TestCase):
 
     def test_generate_issue_drafts_uses_validator_readme_guidance(self) -> None:
         self.assertEqual(
-            ISSUE_DRAFTS_MODULE.README_VALIDATION_LINE,
+            ISSUE_DRAFTS_README_VALIDATION_LINE,
             GENERATE_DRAFTS_MODULE.README_VALIDATION_LINE,
         )
+        self.assertEqual(ISSUE_DRAFTS_README_VALIDATION_LINE, ISSUE_DRAFTS_MODULE.README_VALIDATION_LINE)
 
     def test_preflight_audit_policy_allows_informational_counters(self) -> None:
         report = audit_report(installedOnly=3, sourceInOtherFamilyManifest=2)
