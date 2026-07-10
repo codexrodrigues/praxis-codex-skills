@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-angular-validation-gates/
-- Descricao atual: Use when choosing, planning, or auditing local validation for Praxis Angular changes in `praxis-ui-angular`, including focused lib builds/tests, consumer builds, Playwright/screenshot QA, AI registry gates, docs validators, release preflight, and deciding when GitHub Actions are or are not appropriate.
+- Descricao atual: Use when selecting, running, auditing, or reporting local validation for Praxis Angular changes in praxis-ui-angular: lib/public API builds and consumers, focused specs, authoring round trips, AI registry artifacts, i18n/docs/playgrounds, Playwright and local E2E lanes, package/release preflight, Node environment ownership, derived artifacts, or the decision to use GitHub Actions.
 
 ## Classificacao inicial
 

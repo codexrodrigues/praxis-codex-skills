@@ -1,72 +1,118 @@
 ---
 name: praxis-angular-validation-gates
-description: Use when choosing, planning, or auditing local validation for Praxis Angular changes in `praxis-ui-angular`, including focused lib builds/tests, consumer builds, Playwright/screenshot QA, AI registry gates, docs validators, release preflight, and deciding when GitHub Actions are or are not appropriate.
+description: Use when selecting, running, auditing, or reporting local validation for Praxis Angular changes in praxis-ui-angular: lib/public API builds and consumers, focused specs, authoring round trips, AI registry artifacts, i18n/docs/playgrounds, Playwright and local E2E lanes, package/release preflight, Node environment ownership, derived artifacts, or the decision to use GitHub Actions.
 ---
 
 # Praxis Angular Validation Gates
 
-Use this skill to choose the smallest reliable validation that proves a Praxis Angular change. Validation is part of the platform contract: a green build alone is not enough when the behavior is semantic, authoring-driven, visual, published, or derived into AI/docs artifacts.
+Use this skill to select the smallest reliable evidence for a Praxis Angular change. Validation proves a semantic, public, authoring, or visual contract; a green TypeScript build alone does not prove that a runtime, editor, metadata contract, or consumer remains coherent.
 
-## Canonical Rule
+## Preflight Before Commands
 
-Prefer local focused validation during development. Treat GitHub Actions as a phase, release, publication, or hosted-smoke gate, not as the default debugging tool.
+Before choosing a gate:
 
-Do not run broad suites reflexively. Pick the narrowest official command that proves the changed contract, then state exactly what remains unvalidated.
+1. Read `praxis-ui-angular/AGENTS.md`, `codex-rules.md`, and every applicable local `AGENTS.md` under the changed project or tool. Load the Angular MCP guidance when implementing Angular code, following the workspace's documented flow; do not claim framework guidance that was not retrieved.
+2. Classify `docs-apenas`, `local-pequena`, `transversal`, `contrato-publico`, or `arquitetural`.
+3. Identify the canonical owner and risk: `public-api`, shared core models/tokens/services, configuration/editor round trip, AI manifest/registry, i18n, metadata/schema/action/capability consumption, docs/playgrounds, visual UX, package/release, or cross-repository config integration.
+4. Inspect the current root `package.json`, project package, local AGENTS, focused specs, and documented E2E lane. Do not invent scripts from memory.
+5. Verify `node_modules` ownership before Node/Angular commands. On a Windows-owned install (Windows native packages or `.cmd` bins), invoke npm/npx/ng through `cmd.exe /c`; on a Unix install use its owning shell. Do not mix installations across environments.
+6. Check whether a consumer may resolve stale `node_modules/@praxisui/*` rather than current `dist/*`. For cross-lib type/export failures, run the canonical `npm run build:libs` synchronization before changing a public contract.
+7. List derived artifacts that may need review: `public-api.ts`, manifests, registry/corpus, docs, recipes/playgrounds, i18n catalogs, screenshots, landing content, package assets, and consumer builds.
 
-## Required Preflight
+## Evidence Selection
 
-Before choosing commands:
+Start with the narrowest applicable row. Add a row only when the changed contract crosses that boundary.
 
-1. Read `praxis-ui-angular/AGENTS.md` and any local `AGENTS.md` for the touched subarea. If the subarea lacks local guidance, use `praxis-angular-agents-governance` and derive gates from root AGENTS, `package.json`, README/docs, focused specs, and public API ownership instead of relying on memory.
-2. Classify the change: `local-pequena`, `transversal`, `arquitetural`, `contrato-publico`, or `docs-apenas`.
-3. Identify high-risk surfaces: `public-api`, `@praxisui/core`, `@praxisui/dynamic-form`, `@praxisui/table`, AI manifests, docs/playgrounds, i18n catalogs, release assets, or `/api/praxis/config/**` integrations.
-4. Inspect `praxis-ui-angular/package.json` for current commands instead of relying on old docs.
-5. If the task touches Angular/Node in a mixed OS workspace, verify whether `node_modules` belongs to Windows or Unix before running Node-sensitive commands.
-6. Decide whether derived artifacts must be updated or explicitly ruled out. Review docs, examples, playgrounds, recipes, public API exports, AI registry assets, i18n catalogs, screenshots, manifests, and landing pages according to the owning surface.
+| Changed surface | Minimum local evidence |
+| --- | --- |
+| one lib implementation, no public shape | focused `.spec.ts` then the owning lib build, such as `npm run build:praxis-table` |
+| shared core model/token/service/schema/runtime contract | focused core spec or `npm run test:core`, `npm run build:praxis-core`, and a real direct-consumer build/test |
+| public export or cross-lib contract | altered lib build, `public-api` audit with `praxis-angular-public-api-governance`, `npm run build:libs` if consumer packages need sync, and a direct consumer proof |
+| table/form/list behavior | owning build plus `npm run test:table`, `npm run test:form`, or focused `ng test <project> --watch=false --progress=false --include=<spec>` |
+| editable config, authoring editor, Settings Panel bridge | focused runtime/config/editor/round-trip specs; browser proof for open, edit, apply/save, reopen, and reset when visible/stateful |
+| AI component manifest, docs metadata, catalog tool | focused manifest/tool spec, `npm run generate:registry:ingestion`, then `npm run validate:catalog` and `npm run validate:authoring-contracts` when not already part of ingestion |
+| internal framework UI text | `praxis-angular-i18n-governance`, relevant specs, and both `pt-BR`/`en-US` catalog updates; preserve UTF-8 |
+| docs, recipes, examples, playgrounds | `praxis-angular-docs-playgrounds` and the owning changed-doc validator, such as `npm run docs:validate-frontmatter:changed` |
+| visual/product behavior | focused functional evidence plus browser/screenshot evidence at desktop and narrow viewport with `praxis-ui-product-design` |
+| config-starter/quickstart integration or semantic decision materialization | matching focused local E2E lane or documented cross-repository smoke, only after unit/build proof |
+| release/package/publication | documented local preflight from `RELEASE.md`; GitHub tag/workflows remain the only official publish path |
+| skills-only change | skill structure, manifest hashes, generated issue draft, local sync, and audit only; do not run Angular suites without code/generated/runtime change |
 
-## Validation Matrix
+Do not count a mock-only spec as browser, persistence, authoring, or cross-project proof. Conversely, do not run the complete workspace merely because a narrow contract is public; broaden based on actual consumers and risk.
 
-- Local code change in one lib: run the lib build script when present, such as `npm run build:praxis-table`, plus the focused spec or `ng test <project> --watch=false --progress=false --include=<spec>`.
-- Public export, shared model, token, provider, or cross-lib contract: run the altered lib build, one direct consumer build/test, and use `praxis-angular-public-api-governance`.
-- Authoring editor, Settings Panel, builder, or editable config: run the focused editor/round-trip spec when present and use `praxis-authoring-editors`; add browser validation for open/edit/apply/save/reopen when the behavior is visual or stateful.
-- AI manifest or authoring contract: run the focused manifest spec when present, then `npm run generate:registry:ingestion` unless the change is demonstrably narrower; use `praxis-ai-registry-ingestion`.
-- Internal UI text or authoring chrome: use `praxis-angular-i18n-governance` and validate catalog updates for both `pt-BR` and `en-US` where the lib has catalogs.
-- Public docs, examples, recipes, playgrounds, or landing content: use `praxis-angular-docs-playgrounds` and run the relevant docs validators from the owning project.
-- Visual/product UI: use `praxis-ui-product-design`; add screenshot/browser validation in desktop and narrow viewports when feasible.
-- Release or npm publication preflight: do not publish locally. Use local preflight commands only as evidence; official publication is through the documented tag/workflow path.
-- Skills-only guidance change: validate the touched skills, manifest hashes/count, `$skill` prompts, and sync availability. Do not run Angular suites unless platform code, generated assets, or runtime contracts changed.
+## Core Commands And Their Meaning
 
-## Common Commands
+Use exact current scripts from the workspace:
 
-From `praxis-ui-angular`, prefer current scripts:
+- `npm run build:praxis-core`, `build:praxis-table`, `build:praxis-dynamic-form`, `build:praxis-settings-panel`, or `build:praxis-charts`: focused packagable library builds.
+- `npm run build:libs`: builds the package graph and synchronizes built packages into `node_modules/@praxisui/*`; use it before treating consumer compilation against stale local packages as a true regression.
+- `npm run test:core`, `test:table`, `test:form`, `test:settings-panel`: focused project suites. For a precise spec, use the workspace Angular CLI form with `--include=<spec>`.
+- `npm run generate:registry:ingestion`: extracts component docs, generates AI metadata/ingestion, validates catalog governance, and validates authoring contracts. Do not edit derived registry output as a shortcut.
+- `npm run docs:validate-frontmatter:changed`: validates changed documentation frontmatter; use the owning docs/playground guidance for broader public claims.
+- `npm run e2e:platform:list`: discover available deterministic platform lanes before choosing one. It is discovery only, not E2E proof.
 
-- `npm run build:<lib>` for lib-specific builds, for example `build:praxis-core`, `build:praxis-table`, `build:praxis-dynamic-form`, `build:praxis-settings-panel`, `build:praxis-charts`.
-- `npm run build:libs` when package graph synchronization from `dist/` to `node_modules/@praxisui/*` matters.
-- `npm run test:core`, `npm run test:table`, `npm run test:form`, `npm run test:settings-panel`, or `ng test <project> --watch=false --progress=false --include=<spec>`.
-- `npm run generate:registry:ingestion`, `npm run validate:catalog`, and `npm run validate:authoring-contracts` for AI registry surfaces.
-- `npm run docs:validate-frontmatter:changed` for changed Angular docs frontmatter.
-- `npm run e2e:platform:list` to discover lanes before choosing an E2E lane.
-- Use documented local E2E runners under `tools/local-e2e/` only for the matching semantic flow.
+For a new public component behavior, a manifest or registry check does not replace a lib build. For a public API change, a lib build does not replace a consumer proof. Keep these distinctions explicit.
 
-For `praxis-ui-landing-page`, use its `package.json` and `AGENTS.md`; common gates include `npm run validate:published-guides`, `npm run validate:sitemap`, `npm run validate:table-manifests`, and `npm run check:integration`.
+## Public API And Consumer Proof
 
-## Release Boundary
+Changes to root `public-api.ts`, exported types, tokens, services, AI contracts, or shared models require a consumer map before edits. Validate the altered library and at least one direct real consumer. For `@praxisui/core` or `@praxisui/ai` public surfaces, include a focused consumer E2E lane where the contract is visually/runtime critical.
 
-For `@praxisui/*` publication:
+Never solve a stale consumer or circular dependency by reexporting another public library through a root barrel. First compare the dependency graph with `main`, confirm `dist`/`node_modules` synchronization, then correct the canonical owner or define a stable minimal contract.
 
-- Do not use `npm publish` local or present `npm run release --publish` as the official path.
-- Before release guidance, read `RELEASE.md`, `.github/workflows/build-libs.yml`, and `.github/workflows/publish-from-tag.yml`.
-- Use local commands such as `release:preflight:npm`, tarball validation, docs validation, and registry ingestion as preflight evidence only.
-- Use GitHub Actions only at the release/tag gate or for a hosted smoke that cannot be reproduced locally.
+## Authoring, Metadata, And AI Gates
 
-## Output Expectations
+An editable runtime/config change is incomplete until its canonical editor or builder can materialize and round-trip it. Validate runtime/config normalization plus the actual editor path. Include save/reopen behavior whenever persistence is part of the contract, and test invalid/no-result/blocked state where applicable.
 
-When reporting validation, include:
+For public functional components, inspect the AI authoring manifest, `ComponentDocMeta`, recipes, and registry surface. Run registry ingestion for functional, public, authoring, capability, operation, schema/path, or docs-meta changes; explain explicitly when no manifest/registry artifact applies.
 
-- why the selected validation is sufficient for the scope
-- exact commands run and result
-- commands intentionally skipped and why
-- unvalidated risks, especially browser, docs, registry, direct consumer, and release gates
-- derived artifacts updated, reviewed, or intentionally ruled out with the reason
+Do not treat frontend observations, labels, or prompt text as authoring authority. AI E2E must prove that backend-governed semantic decisions, actions, schemas, and materializations are consumed rather than recreated in Angular.
 
-Never claim full validation when only structural checks or a focused subset ran.
+## Browser And Local E2E Lanes
+
+Choose an existing lane by its semantic contract and prerequisites:
+
+- `e2e:platform:*` lanes cover deterministic persistence/connection labs; inspect the listed route/spec before execution.
+- `tools/local-e2e/run-page-builder-agentic-*.sh` cover real browser, backend SSE, provider, and managed config-starter/quickstart integration.
+- shared-rule, Domain Knowledge, and Dynamic Form domain-rules lanes prove governed decision materialization; they must not be replaced by frontend mocks or ad hoc Playwright commands.
+- quickstart remote metadata lab uses the official origin `http://localhost:4003`; do not substitute another host/port because CORS/config behavior is part of the evidence.
+
+Read `tools/local-e2e/README.md` first. Respect its required backend, database, stream-auth, provider credential, port, and cleanup rules. Do not run a live/mutating lane casually, against an unknown scope, or in parallel with another lane that shares ports or persistent fixtures. For visual changes, inspect desktop and narrow viewport screenshots; for lookup/search, test both a matching and no-result query.
+
+## Docs, Release, And Actions
+
+Review public docs, examples, recipes, playgrounds, landing claims, generated package assets, and i18n whenever a published surface changes. State why each reviewed artifact is unchanged when it was intentionally not updated.
+
+For release preparation, read `RELEASE.md`, `build-libs.yml`, and `publish-from-tag.yml`. The documented preflight includes package/audit/link/build/peer/docs/registry/tarball checks. Local `release:preflight:npm`, packing, or dry-runs are evidence only. Do not run local `npm publish` or present it as the official release route.
+
+GitHub Actions is for the final release/tag, publication, or hosted-only smoke. During development, prefer local focused tests, builds, local E2E, and package checks; do not spend remote runs to discover failures reproducible locally.
+
+## Failure Triage
+
+Classify a failure before broadening tests:
+
+1. Environment/tooling mismatch: Node ownership, missing browser, ports, credentials, or stale `dist`/`node_modules`.
+2. Focused implementation regression: fix the owning lib/spec.
+3. Public boundary regression: identify export/consumer/dependency owner and add direct-consumer proof.
+4. Editor/manifest/docs drift: correct the derived artifact or canonical materialization, not a local display workaround.
+5. Cross-project contract issue: reproduce locally, route to metadata/config/quickstart owner, and keep Angular as downstream proof.
+
+Never describe a skipped browser, consumer, registry, docs, release, or live E2E gate as validated.
+
+## Reporting Template
+
+Report:
+
+- classification, canonical owner, and changed contract;
+- commands executed with result and why they prove the scope;
+- direct consumers, derived artifacts, and visual/live lanes reviewed or updated;
+- gates intentionally skipped and why;
+- remaining risks and whether a hosted/release gate is still required.
+
+## Companion Skills
+
+- Use `praxis-angular-agents-governance` to locate and apply local workspace rules.
+- Use `praxis-angular-public-api-governance` for cross-lib exports and consumer maps.
+- Use `praxis-angular-i18n-governance` and `praxis-angular-docs-playgrounds` for their derived artifacts.
+- Use `praxis-authoring-editors` and `praxis-ui-product-design` for editable and visual surfaces.
+- Use `praxis-ai-authoring-manifests` and `praxis-ai-registry-ingestion` for AI component contracts and registry artifacts.
+- Use functional component skills, `praxis-config-*`, and quickstart skills for the canonical source behind cross-project validation.

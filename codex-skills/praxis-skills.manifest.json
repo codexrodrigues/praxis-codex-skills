@@ -342,10 +342,17 @@
                        "status":  "active",
                        "compatibility":  "0.x",
                        "dependencies":  [
-                                            "praxis-angular-agents-governance"
+                                            "praxis-angular-agents-governance",
+                                            "praxis-angular-public-api-governance",
+                                            "praxis-angular-i18n-governance",
+                                            "praxis-angular-docs-playgrounds",
+                                            "praxis-authoring-editors",
+                                            "praxis-ui-product-design",
+                                            "praxis-ai-authoring-manifests",
+                                            "praxis-ai-registry-ingestion"
                                         ],
-                       "skillMdSha256":  "2726FE5ACE006E172149AA392C67F484AA153AC96E4404CE1E0ADCACDC289CCC",
-                       "treeSha256":  "3243910CD28992D55DAF9933D6E487A6EDB75FE81BA7B514190E0093900842E9"
+                       "skillMdSha256":  "29E7AB24FB492172F34550A09B2E44D32CD6D727D11F31EB48B2BCC4B6F7D017",
+                       "treeSha256":  "B7FD2883384AE00BA391B312BFEC0B4C75C3B4242DA65D623CD04B1E5513BAF2"
                    },
                    {
                        "name":  "praxis-authoring-editors",
