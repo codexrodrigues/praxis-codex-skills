@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Editorial AI"
+  short_description: "Editorial Forms agentic authoring"
+  default_prompt: "Use $praxis-editorial-forms-agentic-authoring to audit PRAXIS_EDITORIAL_FORMS_AUTHORING_MANIFEST, component edit plans, snapshot/fallback/presentation operations, adapter binding, data blocks, field binding, and registry projection."

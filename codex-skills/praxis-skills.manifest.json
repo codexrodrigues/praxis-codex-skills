@@ -66,10 +66,14 @@
         "praxis-manual-form-rules-agentic",
         "praxis-manual-form-field-detection-instance",
         "praxis-manual-form-autosave-persistence",
-        "praxis-manual-form-toolbar-metadata-bridge"
+        "praxis-manual-form-toolbar-metadata-bridge",
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-presentation-diagnostics",
+        "praxis-editorial-forms-data-collection-adapters",
+        "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "A9185930ED02D032EB55A07A821DB1DDA0537F4A1B3687C9D490DD86EFCF3666",
-      "treeSha256": "ED27B3F1ADD9C1720D7D42A7868CE79780B70C8C635C535EE6FCB53422396E65"
+      "skillMdSha256": "E88ED94A93027C1752077EC556267031F6F0529040235AEEB0179CBAEFD1A786",
+      "treeSha256": "ACC508D613AAB1510388F0C7F00890A33278027C2611FBBDD85F176F2109E297"
     },
     {
       "name": "praxis-ai-semantic-intent",
@@ -132,10 +136,14 @@
         "praxis-manual-form-field-detection-instance",
         "praxis-manual-form-autosave-persistence",
         "praxis-manual-form-toolbar-metadata-bridge",
-        "praxis-manual-form-rules-agentic"
+        "praxis-manual-form-rules-agentic",
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-presentation-diagnostics",
+        "praxis-editorial-forms-data-collection-adapters",
+        "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "BB06F8861CC20C92A2BF1F82D8495DAB2AA0FB1771947837A61AF521AA41C634",
-      "treeSha256": "D7D555277884F9E17335FDFDFBC9903D97EE0F201D54195A05F2B35FAA5B5D30"
+      "skillMdSha256": "ADED127F1C64E9437846AF19875D47ED16E573D796700E3C7A1B072521686C91",
+      "treeSha256": "55A29BB72FB75C6388089727C430AD8BF71AD4F83B9299C5E4B7D7C76B2864EE"
     },
     {
       "name": "praxis-angular-host-project",
@@ -222,10 +230,14 @@
         "praxis-manual-form-field-detection-instance",
         "praxis-manual-form-autosave-persistence",
         "praxis-manual-form-toolbar-metadata-bridge",
-        "praxis-manual-form-rules-agentic"
+        "praxis-manual-form-rules-agentic",
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-presentation-diagnostics",
+        "praxis-editorial-forms-data-collection-adapters",
+        "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "66F77249169B23DBA1C6ACAABBE3BE0CB498F29550A767EFC0D5A59F5FAF0FB7",
-      "treeSha256": "46C680752C8F9CB01D3E898833FA037DA70B01EEC4FE55006D147252D47B09C1"
+      "skillMdSha256": "E1094D72820ECBFEBF17924A11C7592B003184FF472469AB04957A51E666FA6D",
+      "treeSha256": "03042F714347E5C9F8D60C30A31B493932564256C5F71DA9D094F7D9D448FEA7"
     },
     {
       "name": "praxis-angular-i18n-governance",
@@ -329,10 +341,14 @@
         "praxis-manual-form-field-detection-instance",
         "praxis-manual-form-autosave-persistence",
         "praxis-manual-form-toolbar-metadata-bridge",
-        "praxis-manual-form-rules-agentic"
+        "praxis-manual-form-rules-agentic",
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-presentation-diagnostics",
+        "praxis-editorial-forms-data-collection-adapters",
+        "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "2BF4202B98252D6931FB61C09BA84AB93DC7B03375C32BF6052368AA2E37228E",
-      "treeSha256": "90EC51FC846B892A393E2C409C3836DAACB45E8DD822443A6DDC1DFE81D11934"
+      "skillMdSha256": "03AA16145F5DFF11FBAA3D5CA910AB924DF8B6F270A76A5881EDCB10FFC55B7D",
+      "treeSha256": "A6FFFDC3BC9E3857E4BA3028CDF691F1BE7C83E5754EC3BE004DDFAE0CBA0D96"
     },
     {
       "name": "praxis-charts-ai-validation",
@@ -713,10 +729,63 @@
         "praxis-ai-registry-ingestion",
         "praxis-metadata-editor-ai-validation",
         "praxis-rich-content-integration-adapters",
-        "praxis-rich-content-ai-security-validation"
+        "praxis-rich-content-ai-security-validation",
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-presentation-diagnostics",
+        "praxis-editorial-forms-data-collection-adapters",
+        "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "14F0438262B3CF303227BABE4779B0986877B1BA4AFB0A44A90BB4CC07F8A961",
-      "treeSha256": "111FE885A8700240967716C678C4EEF107E54544F2427407E1C8AE24B8918B7E"
+      "skillMdSha256": "7DA9E5B0B646A94EA498334E1676FB9B908066244B2908E26B9D32B8C8C86A94",
+      "treeSha256": "F5E8038F95C85AF7971B795A314075B92B848B79D196EF45E82C5A1440F0B84D"
+    },
+    {
+      "name": "praxis-editorial-forms-agentic-authoring",
+      "sourcePath": "codex-skills/praxis-editorial-forms-agentic-authoring",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-presentation-diagnostics",
+        "praxis-editorial-forms-data-collection-adapters"
+      ],
+      "skillMdSha256": "C220968902D1FDBE1DB730E023AC7C1C08F7854F3806616881E2DBB189E14253",
+      "treeSha256": "7A8D6A5B1AC67C3F4021102F1062368F2EA8CBD70D1CA22A19BBDAC593AF8B23"
+    },
+    {
+      "name": "praxis-editorial-forms-data-collection-adapters",
+      "sourcePath": "codex-skills/praxis-editorial-forms-data-collection-adapters",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-presentation-diagnostics"
+      ],
+      "skillMdSha256": "48A27BF076A50C68BF7BCBBA6B5341699E09C0CD79219E634A2B6651B4BDF457",
+      "treeSha256": "4EFBFFE9231A19B150C160629AACD3E344B009C347ED507B3C7956D463481AC9"
+    },
+    {
+      "name": "praxis-editorial-forms-journey-snapshot-runtime",
+      "sourcePath": "codex-skills/praxis-editorial-forms-journey-snapshot-runtime",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [],
+      "skillMdSha256": "F112A771E158CCCF45C931EAE239C8D3713D3BE2A1B10C0AB1723DABBA7A26FC",
+      "treeSha256": "8601FA8A28F65E6005A13321AD54A12598772D9B176E2E80B0683204FFDEB811"
+    },
+    {
+      "name": "praxis-editorial-forms-presentation-diagnostics",
+      "sourcePath": "codex-skills/praxis-editorial-forms-presentation-diagnostics",
+      "version": "0.1.0-beta.0",
+      "status": "active",
+      "compatibility": "0.x",
+      "dependencies": [
+        "praxis-editorial-forms-journey-snapshot-runtime"
+      ],
+      "skillMdSha256": "2CC71E650A4E334AE006201D681155D1BFAEB472C99D81B84487227775570226",
+      "treeSha256": "25E9236608D4DEAF7B6D66A97D683666B02CA0E18DA7FA329924E8A240AE18C8"
     },
     {
       "name": "praxis-editorial-forms-runtime",
@@ -730,10 +799,14 @@
         "praxis-angular-i18n-governance",
         "praxis-angular-validation-gates",
         "praxis-rich-content-runtime",
-        "praxis-rich-content-integration-adapters"
+        "praxis-rich-content-integration-adapters",
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-presentation-diagnostics",
+        "praxis-editorial-forms-data-collection-adapters",
+        "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "2E75E326E9A006A16AF2D30ACB1C22E5EE5D825649CECE63E476A28FEDA5107D",
-      "treeSha256": "0822DACC83BB59654D64F3EF4C6CA50D1C73EF14DE0A1C02D11D25F3F11CC805"
+      "skillMdSha256": "612B30EA664455555F36523574C8F607A7FD22B94D1B5169F812EA874F76AA7E",
+      "treeSha256": "CB3B60BFA255B24D690A3C675B428DEEC0374E2CD7B34B7D0D9A1ADBE0435E13"
     },
     {
       "name": "praxis-expansion-runtime-panels",
@@ -949,10 +1022,13 @@
         "praxis-form-layout-canvas",
         "praxis-authoring-editors",
         "praxis-core-runtime-contracts",
-        "praxis-ui-product-design"
+        "praxis-ui-product-design",
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-presentation-diagnostics",
+        "praxis-editorial-forms-data-collection-adapters"
       ],
-      "skillMdSha256": "CB5A0CC3918C90E31085B81F00721189CBF4E3034E7E118DF1C63E3D48D887C1",
-      "treeSha256": "BC9D8B066222DE5F1A4C90465E9B8F6ADD7A46EDF098C20746C522D034A27E8A"
+      "skillMdSha256": "7A8F12397CD739507B937113E9E0C9FB11E174B24C3ED29DD279A3931B88EBF4",
+      "treeSha256": "35D302E76B1286AA1D0D5D0CE9F10E8C1C7065C3EBCBFD06CB7548021697C3B1"
     },
     {
       "name": "praxis-form-layout-canvas",
@@ -1322,10 +1398,13 @@
       "compatibility": "0.x",
       "dependencies": [
         "praxis-rich-content-runtime",
-        "praxis-angular-agents-governance"
+        "praxis-angular-agents-governance",
+        "praxis-editorial-forms-journey-snapshot-runtime",
+        "praxis-editorial-forms-data-collection-adapters",
+        "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "47242E65D578077D849C5A3C946A92F9525CEFCF293CE6F75DB66916AB10A959",
-      "treeSha256": "37087E88B673E030142FEE7B609A716C9F0FDFC2B0A49760EF01391BC417C848"
+      "skillMdSha256": "267BE5ECFE86DB651A808549BABC4E799D4F9FA62D58D3F8049578AAA0281F9B",
+      "treeSha256": "E2B660FC2ACF1CE1646816B7626143899DC0D0BCF8B1F7EB5E3E8883B651AF05"
     },
     {
       "name": "praxis-rich-content-runtime",

@@ -243,8 +243,12 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-manual-form-toolbar-metadata-bridge`: `enableCustomization`, floating field toolbar, `pdxManualEdit`, Settings Panel, lazy metadata-editor bridge, and JSON Merge Patch diagnostics.
 - `praxis-manual-form-ai-authoring`: manual-form authoring umbrella for config editor, Settings Panel, authoring manifest, AI capabilities, formRules, autosave/toolbar operations, and registry/docs validation.
 - `praxis-manual-form-rules-agentic`: manual-form component edit plans, `formRules`, `formRulesState`, JSON Logic, agentic turn flow, context packs, governed rule handoff, and registry projection.
-- `praxis-editorial-forms-runtime`: editorial-form journeys, snapshots, fallback, presentation, diagnostics, operational events, renderers, i18n, and labs.
-- `praxis-editorial-forms-adapters-ai`: editorial data block adapters, optional dynamic-form adapter, dataCollection binding, AI manifest, field binding, and registry validation.
+- `praxis-editorial-forms-runtime`: editorial-form runtime umbrella for journeys, snapshots, fallback, presentation, diagnostics, operational events, renderers, i18n, and labs.
+- `praxis-editorial-forms-journey-snapshot-runtime`: `EditorialRuntimeInput`, solution/instance/context merge, journey and step resolution, presets, overrides, block provenance, runtime snapshots, and `snapshotChange`.
+- `praxis-editorial-forms-presentation-diagnostics`: `solution.presentation`, fallback modes, diagnostics, operational events, theme CSS vars, stepper behavior, unsupported presentation keys, and runtime health.
+- `praxis-editorial-forms-data-collection-adapters`: `dataCollection` blocks, adapter registry, optional dynamic-form adapter, config lookup, readiness diagnostics, adapter events, and `runtimeContext.formData`.
+- `praxis-editorial-forms-adapters-ai`: editorial adapters/AI umbrella for data block adapters, optional dynamic-form adapter, AI manifest, field binding, and registry validation.
+- `praxis-editorial-forms-agentic-authoring`: `PRAXIS_EDITORIAL_FORMS_AUTHORING_MANIFEST`, component edit plans, snapshot/fallback/presentation operations, adapter binding, data block add/remove, component metadata, docs, labs, and registry projection.
 - `praxis-crud-runtime-openmodes`: CRUD runtime, `CrudLauncherService`, route/modal/drawer open modes, drawer adapter, dynamic-form dialog host, and table/form orchestration.
 - `praxis-crud-ai-authoring`: CRUD authoring document, metadata editor, widget config editor, authoring manifest, capabilities, permissions, and child-operation delegation.
 - `praxis-dialog-overlay-runtime`: Dialog service API, overlay lifecycle, tag mode, presets, focus, accessibility, sizing, positioning, and close policy.

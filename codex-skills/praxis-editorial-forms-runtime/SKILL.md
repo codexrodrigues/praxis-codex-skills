@@ -7,6 +7,13 @@ description: Use when implementing or auditing `@praxisui/editorial-forms` runti
 
 Use this skill when a form experience is an editorial journey rather than a flat schema-driven form. `@praxisui/editorial-forms` is the canonical runtime for solution, journey, step, block, snapshot, fallback, presentation, and operational diagnostics.
 
+For focused work, load the narrow companion first:
+
+- `praxis-editorial-forms-journey-snapshot-runtime` for `EditorialRuntimeInput`, solution/instance/context merge, journey and step resolution, presets, overrides, block provenance, and `snapshotChange`.
+- `praxis-editorial-forms-presentation-diagnostics` for fallback state, diagnostics, operational events, `solution.presentation`, theme tokens, stepper behavior, unsupported presentation keys, and i18n.
+- `praxis-editorial-forms-data-collection-adapters` for `dataCollection` readiness, adapter registry, dynamic-form adapter, config lookup, adapter events, and `runtimeContext.formData`.
+- `praxis-editorial-forms-agentic-authoring` for manifest-backed snapshot/fallback/presentation authoring, component metadata, registry, docs, and labs.
+
 ## Canonical Boundary
 
 `@praxisui/editorial-forms` owns:
@@ -57,6 +64,17 @@ Inspect:
 - Preserve block provenance and deterministic override operations: append, insertBefore, insertAfter, replace, and remove.
 - Keep `runtimeContext.formData` as governed runtime state shared by selection blocks, data collection adapters, review sections, and snapshots.
 - Use `PraxisI18nService` and package dictionaries for internal runtime text.
+
+## Inventory Before New Contract
+
+Before adding public fields, metadata ports, runtime types, diagnostics, or adapter contracts, classify the need:
+
+- `ja-suportado-so-ux`: snapshot, fallback, presentation, adapter, or event evidence exists but a host, lab, docs page, or renderer does not show it well.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: a consumer models editorial state as page-builder, dynamic-form, wizard, or host-local config while the editorial runtime already owns it.
+- `suportado-parcialmente`: the owner exists but snapshot merge, presentation coverage, adapter readiness, event forwarding, docs, or focused validation is incomplete.
+- `lacuna-real-de-contrato`: no existing solution/instance/context, snapshot, diagnostic, presentation key, adapter API, event payload, or component metadata port can express the requirement.
+
+Only `lacuna-real-de-contrato` justifies a new public contract. Otherwise correct the editorial runtime owner or its projection.
 
 ## When Not To Use Dynamic Form
 

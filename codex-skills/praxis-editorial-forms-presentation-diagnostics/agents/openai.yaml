@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Editorial Diagnostics"
+  short_description: "Editorial presentation and fallback"
+  default_prompt: "Use $praxis-editorial-forms-presentation-diagnostics to audit solution.presentation, fallback states, diagnostics, operational events, theme CSS vars, stepper behavior, and unsupported presentation keys."

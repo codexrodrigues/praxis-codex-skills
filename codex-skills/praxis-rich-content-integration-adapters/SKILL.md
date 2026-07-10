@@ -14,7 +14,7 @@ Inspect the owning consumer as well as rich-content:
 - `projects/praxis-rich-content/**`
 - `projects/praxis-core/src/lib/models/rich-content/**`
 - `projects/praxis-page-builder/**` for widget metadata and dynamic page materialization
-- `projects/praxis-editorial-forms/**` for editorial runtime/data collection adapters
+- `projects/praxis-editorial-forms/**` for editorial runtime, journey snapshots, presentation blocks, data collection adapters, and generated examples
 - `projects/praxis-stepper/src/lib/praxis-stepper.ts`, config editor, wizard adapter, and rich-content specs
 - `projects/praxis-dynamic-form/**` and `projects/praxis-dynamic-fields/**` when the task involves rich inputs or metadata-driven fields
 - docs manifests, examples, AI recipes, and landing pages that publish rich-content examples
@@ -48,4 +48,4 @@ Report which consumer owns the integration and which rich-content derived artifa
 
 - Use `praxis-rich-content-runtime` for document and renderer semantics.
 - Use `praxis-rich-content-authoring-settings` for editor and preset behavior.
-- Use `praxis-page-builder-composition`, `praxis-editorial-forms-runtime`, `praxis-editorial-forms-adapters-ai`, `praxis-stepper-wizard-runtime`, `praxis-form-runtime-submit`, and `praxis-dynamic-fields-editorial` according to the consumer surface.
+- Use `praxis-page-builder-composition`, `praxis-editorial-forms-runtime`, `praxis-editorial-forms-journey-snapshot-runtime`, `praxis-editorial-forms-data-collection-adapters`, `praxis-editorial-forms-agentic-authoring`, `praxis-stepper-wizard-runtime`, `praxis-form-runtime-submit`, and `praxis-dynamic-fields-editorial` according to the consumer surface.

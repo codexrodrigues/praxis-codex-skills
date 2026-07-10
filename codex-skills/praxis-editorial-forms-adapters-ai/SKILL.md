@@ -7,6 +7,13 @@ description: Use when changing or validating `@praxisui/editorial-forms` optiona
 
 Use this skill for optional data block adapters and AI-governed editorial authoring. Editorial Forms may bind to generic engines, but the editorial domain remains canonical.
 
+For focused work, load the narrow companion first:
+
+- `praxis-editorial-forms-data-collection-adapters` for adapter token/registry, `dataCollection` state, dynamic-form adapter, outlet rendering, config lookup, adapter events, and runtime form data.
+- `praxis-editorial-forms-agentic-authoring` for `PRAXIS_EDITORIAL_FORMS_AUTHORING_MANIFEST`, component edit plans, snapshot/fallback/presentation operations, adapter binding, data block add/remove, field binding, registry ingestion, and docs.
+- `praxis-editorial-forms-presentation-diagnostics` when adapter authoring changes fallback, diagnostics, or operational events.
+- `praxis-editorial-forms-journey-snapshot-runtime` when adapter or authoring changes affect resolved snapshots, journeys, blocks, or provenance.
+
 ## Required Source Audit
 
 Inspect:
@@ -47,6 +54,13 @@ Use `PRAXIS_EDITORIAL_FORMS_AUTHORING_MANIFEST` as the executable contract.
 
 Do not author `FieldMetadata` inside editorial-forms. Use `praxis-metadata-editor-ai-validation` and dynamic-fields discovery when the field shape changes. Use `praxis-form-ai-rules-validation` or dynamic-form skills when data collection form semantics change.
 Use `praxis-rich-content-integration-adapters` and `praxis-rich-content-ai-security-validation` when adapter or AI work materializes `RichContentDocument` in editorial blocks, previews, or generated examples.
+
+Classify gaps before extending the manifest or adapter API:
+
+- `ja-suportado-so-ux`: adapter/manifest evidence exists but docs, registry, lab, or outlet feedback is weak.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: a host models adapter binding as local dynamic-form setup while `EditorialDataBlockAdapterRegistry` already owns resolution.
+- `suportado-parcialmente`: operation, validator, adapter component input validation, fallback policy, or registry projection is incomplete.
+- `lacuna-real-de-contrato`: no adapter hook, manifest operation, validator, block state, or delegated owner can express the decision.
 
 ## AI And Registry
 

@@ -73,8 +73,12 @@ For `@praxisui/manual-form`, use `praxis-manual-form-runtime-bridge` and
 `praxis-manual-form-toolbar-metadata-bridge`, or `praxis-manual-form-rules-agentic` before updating
 integration guides, API references, toolbar docs, examples, docs manifests, or AI registry docs.
 For `@praxisui/editorial-forms`, use
-`praxis-editorial-forms-runtime` and `praxis-editorial-forms-adapters-ai` before updating
-architecture docs, authoring playbooks, labs, examples, docs manifests, or registry projections.
+`praxis-editorial-forms-runtime` and `praxis-editorial-forms-adapters-ai` as umbrellas, then narrow to
+`praxis-editorial-forms-journey-snapshot-runtime`,
+`praxis-editorial-forms-presentation-diagnostics`,
+`praxis-editorial-forms-data-collection-adapters`, or
+`praxis-editorial-forms-agentic-authoring` before updating architecture docs, authoring playbooks,
+labs, examples, docs manifests, or registry projections.
 For `@praxisui/crud`, use `praxis-crud-runtime-openmodes` and `praxis-crud-ai-authoring` before
 updating open-mode docs, drawer adapter ADRs, CRUD authoring docs, examples, docs manifests, or AI
 registry docs. For `@praxisui/dialog`, use `praxis-dialog-overlay-runtime` and

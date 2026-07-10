@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Editorial Snapshot"
+  short_description: "Editorial journeys and snapshots"
+  default_prompt: "Use $praxis-editorial-forms-journey-snapshot-runtime to audit EditorialRuntimeInput, journey resolution, context merge, presets, overrides, block provenance, snapshots, and snapshotChange."

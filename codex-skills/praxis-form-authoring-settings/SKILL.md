@@ -15,7 +15,9 @@ of patching Dynamic Form locally.
 When Dynamic Form appears inside `@praxisui/manual-form`, route manual host-template/autosave/toolbar
 concerns to `praxis-manual-form-runtime-bridge` or `praxis-manual-form-ai-authoring`. When Dynamic
 Form appears inside `@praxisui/editorial-forms`, keep editorial journey/snapshot/fallback concerns in
-`praxis-editorial-forms-runtime` and adapter binding in `praxis-editorial-forms-adapters-ai`.
+`praxis-editorial-forms-runtime` / `praxis-editorial-forms-journey-snapshot-runtime` /
+`praxis-editorial-forms-presentation-diagnostics` and adapter binding in
+`praxis-editorial-forms-adapters-ai` / `praxis-editorial-forms-data-collection-adapters`.
 
 ## Source Audit
 
@@ -87,4 +89,4 @@ If no visual editor is affected, state why.
 - Use `praxis-form-ai-rules-validation` for AI component edit plans, rules, diagnostics, and registry ingestion.
 - Use `praxis-dynamic-fields-editorial` for field component coverage and metadata editor chains.
 - Use `praxis-metadata-editor-consumer-bridges` for Dynamic Form bridge behavior around metadata-editor hosted editors.
-- Use `praxis-manual-form-ai-authoring` or `praxis-editorial-forms-adapters-ai` when Dynamic Form is delegated by those package owners.
+- Use `praxis-manual-form-ai-authoring`, `praxis-editorial-forms-adapters-ai`, or `praxis-editorial-forms-data-collection-adapters` when Dynamic Form is delegated by those package owners.
