@@ -30,6 +30,7 @@ def load_script_module(name: str, path: Path):
 AUDIT_MODULE = load_script_module("audit_praxis_skills", SCRIPTS_ROOT / "audit-praxis-skills.py")
 SYNC_MODULE = load_script_module("sync_praxis_skills", SCRIPTS_ROOT / "sync-praxis-skills.py")
 VALIDATE_MODULE = load_script_module("validate_praxis_skills", SCRIPTS_ROOT / "validate-praxis-skills.py")
+PREFLIGHT_MODULE = load_script_module("preflight_python_fallbacks", SCRIPTS_ROOT / "preflight-python-fallbacks.py")
 
 
 def write_skill(root: Path, name: str) -> Path:
@@ -83,6 +84,20 @@ def write_manifest(repo_root: Path, family: str, entries: list[dict[str, str]]) 
     path = repo_root / "codex-skills" / manifest_name
     path.write_text(json.dumps({"family": family, "version": "0.0.0-test", "skills": entries}, indent=2))
     return path
+
+
+def audit_report(**summary_overrides):
+    summary = {
+        "ok": 1,
+        "drift": 0,
+        "missing": 0,
+        "sourceInvalid": 0,
+        "sourceNotInManifest": 0,
+        "sourceInOtherFamilyManifest": 0,
+        "installedOnly": 0,
+    }
+    summary.update(summary_overrides)
+    return {"summary": summary}
 
 
 class PythonSkillScriptTests(unittest.TestCase):
@@ -179,6 +194,18 @@ class PythonSkillScriptTests(unittest.TestCase):
             errors = VALIDATE_MODULE.validate_manifest(root, "praxis", None)
 
             self.assertEqual(["praxis-test: unknown dependency naming: custom-helper"], errors)
+
+    def test_preflight_audit_policy_allows_informational_counters(self) -> None:
+        report = audit_report(installedOnly=3, sourceInOtherFamilyManifest=2)
+
+        with redirect_stdout(io.StringIO()):
+            PREFLIGHT_MODULE.assert_audit_clean("praxis", report)
+
+    def test_preflight_audit_policy_fails_on_real_audit_problems(self) -> None:
+        for key in ("drift", "missing", "sourceInvalid", "sourceNotInManifest"):
+            with self.subTest(key=key):
+                with self.assertRaisesRegex(RuntimeError, "audit is not clean"):
+                    PREFLIGHT_MODULE.assert_audit_clean("praxis", audit_report(**{key: 1}))
 
     def test_sync_installs_skill_and_metadata_into_temporary_root(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
