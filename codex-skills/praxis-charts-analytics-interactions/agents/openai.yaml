@@ -1,4 +1,4 @@
 interface:
   display_name: "Praxis Charts Analytics"
-  short_description: "Audit chart analytics interactions"
-  default_prompt: "Use $praxis-charts-analytics-interactions to implement or audit Praxis Charts analytics contracts, stats execution, queryContext, drilldown, cross-filter, and dashboard interactions."
+  short_description: "Govern chart analytics interactions"
+  default_prompt: "Use $praxis-charts-analytics-interactions to derive, execute, and validate Praxis chart analytics plans, runtime query context, structured interactions, and cross-widget composition from canonical metadata and capabilities."

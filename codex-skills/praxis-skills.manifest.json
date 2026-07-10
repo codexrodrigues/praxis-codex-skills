@@ -2003,8 +2003,8 @@
                                             "praxis-charts-echarts-engine-boundary",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "A47557A8AC6E38F040355A3B2D4DDE7849F514F1B7D676B2AEBBC2E6016944BF",
-                       "treeSha256":  "F185814BD83EEFCDF2005ED6CC4CB249E1176221283FCE3C6EB3A4BDC24E2BB4"
+                       "skillMdSha256":  "BE8D1F795EE6B3154F9482057CAC93906B09C58694AB526CC23D7D8332854483",
+                       "treeSha256":  "B7034F24133EB0829F81EFCE197240ADC00B81325D84B55D97B65A5687857BD4"
                    },
                    {
                        "name":  "praxis-charts-authoring-catalogs",
