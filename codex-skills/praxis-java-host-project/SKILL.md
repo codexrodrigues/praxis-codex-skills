@@ -11,6 +11,8 @@ Use this skill to create a new Java host that composes the Praxis platform corre
 
 Before changing this skill or implementing a Java host, audit the resolved starter or local platform source for the contract being used: `@ApiResource`, `AbstractResourceController`, `AbstractReadOnlyResourceController`, `AbstractBaseResourceService`, `AbstractReadOnlyResourceService`, `ResourceMapper`, schema/catalog controllers, capabilities, actions, surfaces, export, option sources, config headers/ETag, and a representative quickstart resource when available. The goal is to codify what Praxis already knows canonically before adding host-local endpoints, DTO fields, registries, or AI/config abstractions.
 
+When local source is available, start with `praxis-metadata-starter/AGENTS.md`, `praxis-config-starter/AGENTS.md`, and `praxis-api-quickstart/AGENTS.md` to confirm the current starter and reference-host boundaries. When source is absent, use released dependency metadata, generated docs, Maven artifacts, and HTTP behavior instead of requiring the monorepo.
+
 ## Required Classification
 
 Classify the request before editing:
@@ -103,6 +105,14 @@ This skill is sufficient for ordinary Java host API work with `praxis-metadata-s
 
 Use companion Praxis skills when the API needs a specialized platform surface:
 
+- Use `praxis-metadata-resource-baseline` when choosing resource-oriented controllers/services, `ResourceMapper`, filters, HATEOAS envelopes, export, stats, and canonical CRUD/read-only baselines.
+- Use `praxis-metadata-schema-contracts` for `x-ui`, `/schemas/filtered`, schema hashes, OpenAPI operation resolution, ETag, and Angular schema consumption.
+- Use `praxis-metadata-discovery-capabilities` for surfaces, actions, capabilities, `_links`, availability, related resources, stats, and export discovery.
+- Use `praxis-metadata-domain-option-sources` for domain governance, field access, option sources, entity lookup, lookup/by-ids contracts, and semantic metadata review.
+- Use `praxis-config-runtime-persistence`, `praxis-config-ai-registry-manifests`, `praxis-config-api-metadata-grounding`, `praxis-config-agentic-authoring-streaming`, or `praxis-config-domain-decisions` before adding `/api/praxis/config/**`, AI registry, RAG/API metadata, authoring, SSE, or governed decision surfaces.
+- Use `praxis-api-quickstart-operational-proof`, `praxis-api-quickstart-security-config`, `praxis-api-quickstart-domain-pilots`, and `praxis-api-quickstart-cockpit-http-validation` when a host should mirror or validate against the reference operational proof.
+- Use `praxis-http-examples-corpus-manifest`, `praxis-http-examples-contract-surfaces`, and `praxis-http-examples-llm-smoke` when a Java-host change must update executable HTTP examples, public corpus promises, or LLM-facing lanes.
+- Use `praxis-landing-public-docs-contracts` and `praxis-landing-registries-sitemap-playgrounds` when the host change affects public docs, guides, examples, sitemap, LLM files, or landing projections.
 - Use `praxis-dto-annotations` when filling or reviewing `@Schema`, `@UISchema`,
   `@Filterable`, `@DomainGovernance`, FieldControlType, PT-BR labels/help text, groups, icons,
   options, and DTO/OpenAPI documentation for hosts that consume `praxis-metadata-starter`.
