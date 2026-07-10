@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Core Surface Materialization"
+  short_description: "Materialize resource actions and surfaces"
+  default_prompt: "Use $praxis-core-surface-materialization to audit and implement canonical @praxisui/core resource action or surface.open materialization."
+
+policy:
+  allow_implicit_invocation: true

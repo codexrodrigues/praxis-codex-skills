@@ -75,7 +75,10 @@ For public or cross-lib changes, also validate a direct consumer such as table, 
 ## Companion Skills
 
 - Use `praxis-core-runtime-contracts` for public API, tokens, providers, shared models, logging, and i18n.
-- Use `praxis-core-global-actions-metadata` for global action refs, action catalogs/providers, payload validation, surface open presets, component metadata registry, and domain/resource metadata services.
+- Use `praxis-core-surface-materialization` for action/surface adapter payloads, `surface.open` materialization, readUrl/submitUrl wiring, related-resource surfaces, and first-step payload audits.
+- Use `praxis-core-global-action-payloads` for structured `GlobalActionRef`, payload validation, payloadExpr, UI schema, onResult, and command-string cleanup.
+- Use `praxis-core-domain-governance-runtime` for domain catalog, domain knowledge, domain rules, governed simulations/publications/materializations, and config-starter semantic decision clients.
+- Use `praxis-core-global-actions-metadata` for the broader global action and metadata-service umbrella.
 - Use `praxis-core-i18n-resource-copy` when resource discovery availability, row action menu copy, or value presentation text changes.
 - Use `praxis-core-providers-bootstrap` when resource runtime requires shared provider/token wiring.
 - Use `praxis-dto-annotations` and `praxis-resource-entity-lookup-backend` when the backend metadata contract is missing or wrong.

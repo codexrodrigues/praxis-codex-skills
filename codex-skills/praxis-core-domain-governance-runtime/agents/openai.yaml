@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Core Domain Governance Runtime"
+  short_description: "Consume governed domain decisions in Angular"
+  default_prompt: "Use $praxis-core-domain-governance-runtime to implement Angular runtime clients for governed Praxis domain catalog, knowledge, and rule decisions."
+
+policy:
+  allow_implicit_invocation: true
