@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Manual Toolbar"
+  short_description: "Manual form toolbar and metadata bridge"
+  default_prompt: "Use $praxis-manual-form-toolbar-metadata-bridge to audit enableCustomization, field toolbar toggles, pdxManualEdit, ManualFieldMetadataBridgeService, Settings Panel, and metadata-editor patches."

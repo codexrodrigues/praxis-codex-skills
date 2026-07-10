@@ -15,6 +15,11 @@ When a form rule is authored or previewed through `@praxisui/visual-builder`, pa
 variables, and template-compatible rules. Use `praxis-visual-builder-ai-validation` when the same
 rule path is exposed through visual-builder AI operations.
 
+When a rule is authored inside `@praxisui/manual-form`, pair with
+`praxis-manual-form-rules-agentic`. Manual-form persists authorable rules in `formRules`, treats
+`formRulesState` as visual-editor round-trip state, and must hand off shared business decisions to
+governed domain/shared rule authoring before local materialization.
+
 ## Source Audit
 
 Inspect the AI/rules surface:

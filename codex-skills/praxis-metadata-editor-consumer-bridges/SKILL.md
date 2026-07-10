@@ -26,7 +26,7 @@ Inspect the metadata-editor sources plus the affected consumer:
 - consumer `AGENTS.md`
 - dynamic-form: `praxis-dynamic-form.ts`, `layout-editor.component.ts`, `config-editor`, and related specs/E2E
 - table: `filter-settings.component.ts`, `praxis-filter.component.ts`, and focused specs
-- manual-form: `manual-field-metadata-bridge.service.ts`, plus `praxis-manual-form-runtime-bridge` for host runtime/autosave/toolbar behavior
+- manual-form: `manual-field-metadata-bridge.service.ts`, plus `praxis-manual-form-toolbar-metadata-bridge` for field toolbar, `pdxManualEdit`, Settings Panel, metadata-editor lazy loading, patch diagnostics, and draft persistence side effects
 - Page Builder: widget config editor hosting and component metadata resolution
 
 ## Bridge Rules
@@ -53,7 +53,7 @@ Choose the consumer proof:
 
 - dynamic-form field editor: focused `praxis-dynamic-form.spec.ts`, `editor-resolution.spec.ts`, `layout-editor.component.spec.ts`, or `test-dev/e2e/all-fields-metadata-editor.playwright.spec.ts`
 - table filters: focused `filter-settings` or `praxis-filter` specs
-- manual-form bridge: focused manual-form bridge/specs
+- manual-form bridge: focused manual-form bridge/specs with `praxis-manual-form-toolbar-metadata-bridge`
 - Page Builder hosting: component palette/config editor round-trip E2E when widget hosting changes
 
-Also run metadata-editor focused specs for the changed owner behavior. Use `praxis-manual-form-runtime-bridge` for manual-form side effects and `praxis-authoring-editors`/`praxis-settings-roundtrip-authoring` for shared round-trip expectations.
+Also run metadata-editor focused specs for the changed owner behavior. Use `praxis-manual-form-toolbar-metadata-bridge` for manual-form bridge side effects, `praxis-manual-form-field-detection-instance` for field resolution, and `praxis-authoring-editors`/`praxis-settings-roundtrip-authoring` for shared round-trip expectations.

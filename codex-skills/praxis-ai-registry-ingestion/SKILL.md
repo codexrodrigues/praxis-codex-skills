@@ -41,8 +41,12 @@ manifest/capability/context-pack changes. Pair it with
 `praxis-metadata-editor-renderer-coverage` or `praxis-metadata-editor-cascade-normalization` when
 registry docs derive from editor visual coverage, cascade behavior, option-source dependency
 preservation, or schema normalization.
-Use `praxis-manual-form-ai-authoring` for `@praxisui/manual-form` manifest, capability, context-pack,
-config editor, formRules, toolbar, autosave, and metadata bridge projections. Use
+Use `praxis-manual-form-ai-authoring` and `praxis-manual-form-rules-agentic` for
+`@praxisui/manual-form` manifest, capability, context-pack, config editor, formRules, JSON Logic,
+agentic turn flow, and registry projections. Pair with
+`praxis-manual-form-field-detection-instance`, `praxis-manual-form-autosave-persistence`, or
+`praxis-manual-form-toolbar-metadata-bridge` when generated docs derive from field detection,
+autosave/storage, toolbar, or metadata bridge behavior. Use
 `praxis-editorial-forms-adapters-ai` for `@praxisui/editorial-forms` manifest, adapter, dataCollection,
 field binding, fallback, presentation, and registry projections.
 Use `praxis-crud-ai-authoring` for `@praxisui/crud` manifest, capabilities, context packs, metadata
