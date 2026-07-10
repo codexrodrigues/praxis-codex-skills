@@ -40,6 +40,29 @@ Core owns:
 
 Page Builder, Visual Builder, component libraries, and host apps consume these contracts. They should not redefine the same config/event/link semantics locally.
 
+## Canonical Read And Execution Path
+
+- Persist new page composition in `WidgetPageDefinition.composition.links`. `page.connections` is legacy and `DynamicWidgetPageComponent` rejects it; do not save both shapes or reintroduce a compatibility branch in a host.
+- Use `WidgetPageCompositionFactory` to materialize widget order, indexed widgets, links, state, derived definitions, and context before bootstrapping `CompositionRuntimeEngine`.
+- Treat `CompositionRuntimeEngine.bootstrap()` as semantic validation plus state materialization. Blocking diagnostics produce a `degraded` snapshot with trace evidence; do not convert every diagnostic into an exception or silently mark the page ready.
+- Dispatch a `CompositionDispatchEvent` from an exact canonical endpoint. Matching includes owner widget, port, direction, and `nestedPath` when present. Let the engine execute condition, transform, policy, target delivery, state update, diagnostics, and trace as one cycle.
+- Consume the immutable `RuntimeSnapshot` from the facade/store as execution evidence. Do not maintain a second host state for link status, trace, or diagnostics.
+
+Legacy migration is an explicit ingress concern. Use `CompositionLinkLegacyMigrator` for supported legacy condition/policy shapes, then persist the canonical result. Unsupported legacy conditions fail explicitly; do not keep an open-ended legacy interpreter in runtime code.
+
+## Implemented Contract Limits
+
+Do not infer executable support from a public union or serialized field alone:
+
+- Link policy currently executes `missingValuePolicy`, `distinct`, `distinctBy`, and `debounceMs`.
+- `LinkPolicy.delivery` and `LinkPolicy.errorPolicy` are modeled, serialized, and authorable, but the core executor does not currently schedule `microtask`/`batched` delivery or apply `drop`/`halt-page`. Classify behavior that depends on them as `suportado-parcialmente` and open a core follow-up instead of simulating it in a host.
+- The stable transform catalog currently executes `identity`, `constant`, `pick-path`, `template`, `object-template`, `array-template`, `coalesce`, `merge-objects`, and `select-case`. Other `TransformKind` members are declared future surface and produce `RUNTIME_TRANSFORM_UNSUPPORTED`; never create a host transform dialect to bypass the catalog. For value formatting, first inventory the canonical derived-state `format-value` operator in `WidgetPageStateRuntimeService` instead of assuming the pipeline transform with the same name is executable.
+- A link-level `condition` is canonical Json Logic with explicit roots and no implicit root. A transform step `when` currently permits the implicit `source` root. Preserve this distinction when validating or migrating conditions.
+
+For nested component ports, resolve the child through `NestedPortCatalogService`, component metadata, and a `nestedPath` that terminates in a stable `childWidgetKey`. New nested endpoints must not use `bindingPath`; that field is only a migration bridge. `NestedWidgetConfigAccessor` currently materializes nested widget inputs for tabs/nav and expansion containers. Other path segment kinds in the model require concrete proof in the owning container runtime; the union alone does not prove that input patching works.
+
+Runtime component observations are redacted, time-bounded, untrusted grounding evidence. They may expose active page/widget refs, declared link ids, valid selected widget, surfaces, actions, warnings, and digests. They must omit business state values, full inputs, raw events, rendered DOM, and intent decisions. Never route intent or authorize an action from an observation.
+
 ## Decision Rules
 
 - If the task is about authoring a page/editor graph, use the builder skill as the functional owner and this skill for the runtime contract.
@@ -64,6 +87,40 @@ Before declaring composition complete, identify:
 - runtime observation evidence when behavior is user-visible
 - redaction/serializability proof when observations feed AI or diagnostics
 - public API and AI manifest impact when the component is public
+
+Classify gaps before adding contracts:
+
+- `ja-suportado-so-ux`: the link executes and trace/diagnostics exist, but the host does not present them.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: the page still saves `connections`, uses `bindingPath` for new nested links, or duplicates runtime snapshot state.
+- `suportado-parcialmente`: the public model contains a policy, transform, or nested segment that the executor/accessor does not yet materialize.
+- `lacuna-real-de-contrato`: no canonical endpoint, port metadata, transform, action, surface, or diagnostic can represent the required behavior.
+
+Only the last category justifies a new shared contract. Extend the canonical owner and its consumers together; do not add an event bus, command-string router, custom transform registry, or host-only nested path convention.
+
+## Operational Proof
+
+Before declaring composition guidance current, prove:
+
+1. Happy path: a widget output matches one `composition.links` source, passes a supported transform, delivers to a canonical port or writable state, and records link status plus trace phases.
+2. Risk path: a missing nested widget/port, incompatible semantic kind, invalid condition, unsupported transform, or derived-state write produces the expected structured diagnostic and a non-divergent snapshot.
+3. Adversarial path: reject `page.connections`, new `bindingPath` links, local event buses, command strings, raw callback transforms, and host implementations of unexecuted policy fields.
+
+Use a focused Angular gate from the `praxis-ui-angular` root:
+
+```bash
+npx ng test praxis-core --watch=false --progress=false \
+  --include=projects/praxis-core/src/lib/composition/composition-runtime.engine.spec.ts \
+  --include=projects/praxis-core/src/lib/composition/link-executor.service.spec.ts \
+  --include=projects/praxis-core/src/lib/composition/transform-runtime.service.spec.ts \
+  --include=projects/praxis-core/src/lib/composition/composition-validator.service.spec.ts \
+  --include=projects/praxis-core/src/lib/composition/nested-port-catalog.service.spec.ts \
+  --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page.component.spec.ts \
+  --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page-runtime-observation.spec.ts \
+  --include=projects/praxis-core/src/lib/surfaces/praxis-surface-host.component.spec.ts
+npx ng build praxis-core --configuration production
+```
+
+These gates prove the shared Angular runtime. Record Page Builder/Visual Builder authoring, owning-container nested paths, real global-action side effects, metadata-backed surface discovery, and browser UX as unverified unless their focused consumers were also exercised.
 
 ## Validation Guidance
 
