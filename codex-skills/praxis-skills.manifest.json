@@ -2017,8 +2017,8 @@
                                             "praxis-charts-echarts-engine-boundary",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "9FDB82B9AFDDA3C65F2DF69F11099DF399D7645D016216BA2B94CDDFF73EE2EB",
-                       "treeSha256":  "65FD426518799383DFFE489F09DED03DD694E90A6BEAD2FC6FA0FC50BF085738"
+                       "skillMdSha256":  "0FC88E9E2451953779CDC50D405CC23B69BCEE8C717B4AA2BEB20B470D12AC87",
+                       "treeSha256":  "65C2D82694E7F29F19ADF2EA6F2683D8D503E7C507B17CFB1D726B05DB46AAE7"
                    },
                    {
                        "name":  "praxis-charts-ai-handler-contracts",

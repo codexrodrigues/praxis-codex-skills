@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-charts-authoring-catalogs/
-- Descricao atual: Use when Codex must implement, audit, or consume @praxisui/charts visual authoring catalogs: PraxisChartConfigEditor, PraxisChartWidgetConfigEditor, ChartEditorResourceOption, ChartEditorFieldOption, ChartEditorTargetOption, availableResources, availableFields, availableTargets, chart editor defaults, preview mapper, SettingsValueProvider, Settings Panel round-trip, chart widget config editor, i18n, and docs/playground evidence.
+- Descricao atual: Use when Codex must implement or audit governed @praxisui/charts authoring catalogs: resource discovery, stats capabilities and field eligibility, x-ui.analytics projections, availableResources/availableFields/availableTargets, operation-dependent cascades, Page Builder target resolution, transient editor context, catalog validation, preview samples, i18n, or AI/editor grounding parity.
 
 ## Classificacao inicial
 
