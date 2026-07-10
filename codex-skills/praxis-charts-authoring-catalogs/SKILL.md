@@ -31,7 +31,7 @@ Inspect:
 - `src/lib/i18n/charts.*.ts`
 - relevant docs/playground/example files
 
-If `projects/praxis-charts/AGENTS.md` is absent, use `praxis-angular-agents-governance` and record that chart authoring lacks local validation/governance guidance.
+Read `projects/praxis-charts/AGENTS.md` before editing chart authoring catalogs. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
 
 ## Catalog Rules
 

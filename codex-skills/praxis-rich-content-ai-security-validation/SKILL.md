@@ -19,7 +19,7 @@ Before editing code or guidance, inspect:
 - `projects/praxis-rich-content/src/lib/praxis-rich-content-config-editor.ts`
 - `tools/ai-registry/**` when registry projection changes
 
-There is no local `projects/praxis-rich-content/AGENTS.md` in the audited checkout. Record that governance gap until the subarea has local instructions.
+Read `projects/praxis-rich-content/AGENTS.md` before editing rich-content AI, validation, or security behavior. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
 Use `praxis-angular-agents-governance` to re-audit the gap before planning manifest, registry, docs, or validation changes.
 
 ## Safety Rules

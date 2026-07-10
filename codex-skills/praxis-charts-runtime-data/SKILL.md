@@ -51,8 +51,7 @@ When local `praxis-ui-angular` source is available, inspect the focused files be
 - `projects/praxis-charts/src/lib/providers/charts.providers.ts`
 - focused specs beside the changed service/model/component
 
-If a local `projects/praxis-charts/AGENTS.md` still does not exist, apply the monorepo root `AGENTS.md` and record that a local AGENTS follow-up is appropriate for chart-specific commands, public API boundaries, and validation gates.
-Use `praxis-angular-agents-governance` to re-audit that gap and decide whether the correction belongs in `praxis-ui-angular` guidance or only in Codex skill routing.
+Read `projects/praxis-charts/AGENTS.md` before editing chart runtime or authoring-adjacent code. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
 
 ## Runtime Rules
 

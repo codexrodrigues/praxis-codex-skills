@@ -14,6 +14,7 @@ In the audited checkout, `praxis-ui-angular/projects` contains 23 top-level dire
 Local `AGENTS.md` exists for:
 
 - `praxis-ai`
+- `praxis-charts`
 - `praxis-core`
 - `praxis-cron-builder`
 - `praxis-crud`
@@ -27,6 +28,7 @@ Local `AGENTS.md` exists for:
 - `praxis-manual-form`
 - `praxis-metadata-editor`
 - `praxis-page-builder`
+- `praxis-rich-content`
 - `praxis-settings-panel`
 - `praxis-stepper`
 - `praxis-table`
@@ -36,8 +38,6 @@ Local `AGENTS.md` exists for:
 
 Local `AGENTS.md` is absent for:
 
-- `praxis-charts`: `governança-local-ausente`
-- `praxis-rich-content`: `governança-local-ausente`
 - `projects/tools`: `docs/guidance`; tooling guidance exists under `tools/ai-registry/AGENTS.md`, not at `projects/tools/AGENTS.md`
 
 Re-audit this inventory before using it as evidence. If the source changed, update this skill and the affected component skills in the same cycle.
@@ -82,8 +82,8 @@ Missing AGENTS guidance alone is not a runtime contract gap.
 
 ## Known Follow-Ups
 
-- `praxis-charts` needs a local `projects/praxis-charts/AGENTS.md` covering ECharts adapter boundaries, analytics/stats contracts, config editors, AI manifest/registry gates, public API, docs/playgrounds, and focused build/spec commands.
-- `praxis-rich-content` needs a local `projects/praxis-rich-content/AGENTS.md` covering core-owned `RichContentDocument`, renderer/editor/preset boundaries, safe URL/style policy, JsonLogic fail-safe behavior, AI manifest/registry gates, public API, docs/playgrounds, and focused build/spec commands.
+- `praxis-charts` now has local AGENTS guidance for ECharts adapter boundaries, analytics/stats contracts, config editors, AI manifest/registry gates, public API, docs/playgrounds, and focused build/spec commands. Re-audit if source guidance changes.
+- `praxis-rich-content` now has local AGENTS guidance for core-owned `RichContentDocument`, renderer/editor/preset boundaries, safe URL/style policy, JsonLogic fail-safe behavior, AI manifest/registry gates, public API, docs/playgrounds, and focused build/spec commands. Re-audit if source guidance changes.
 - `projects/tools` should not be treated as a missing component-lib AGENTS gap while `tools/ai-registry/AGENTS.md` governs the actual AI registry tooling.
 
 ## Validation

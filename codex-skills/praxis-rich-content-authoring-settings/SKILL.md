@@ -20,8 +20,7 @@ Before editing code or guidance, inspect:
 - `projects/praxis-rich-content/src/lib/i18n/**`
 - `projects/praxis-rich-content/src/lib/praxis-rich-content.metadata.ts`
 
-There is no local `projects/praxis-rich-content/AGENTS.md` in the audited checkout. State this governance gap when editing this subarea.
-Use `praxis-angular-agents-governance` to re-audit the gap before deriving validation or public artifact impact without local subarea instructions.
+Read `projects/praxis-rich-content/AGENTS.md` before editing rich-content authoring. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
 
 ## Canonical Editor Contract
 
