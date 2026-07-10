@@ -205,6 +205,7 @@ Use these alongside this skill when the task scope requires them:
 
 - `praxis-component-minimums`: minimum setup for table/form/list/CRUD, local vs remote metadata-driven modes, and `resourcePath` boundaries.
 - `praxis-angular-validation-gates`: focused local validation, consumer builds, Playwright/screenshot QA, registry/docs gates, release preflight, and GitHub Actions boundaries.
+- `praxis-angular-agents-governance`: `projects/*/AGENTS.md` inventory, missing local guidance, skill/platform drift, and follow-up routing for local governance gaps.
 - `praxis-angular-public-api-governance`: `@praxisui/*` public exports, barrel ownership, cross-lib edges, direct-consumer validation, and derived public API artifacts.
 - `praxis-angular-i18n-governance`: internal framework text, authoring chrome, locale catalogs, `PraxisI18nService`, hardcoded text audits, and PT-BR/en-US coverage.
 - `praxis-angular-docs-playgrounds`: public docs, component docs manifests, examples, AI recipes, landing pages, playgrounds, sitemap, and docs validation.

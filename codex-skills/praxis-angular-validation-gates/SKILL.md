@@ -17,7 +17,7 @@ Do not run broad suites reflexively. Pick the narrowest official command that pr
 
 Before choosing commands:
 
-1. Read `praxis-ui-angular/AGENTS.md` and any local `AGENTS.md` for the touched subarea.
+1. Read `praxis-ui-angular/AGENTS.md` and any local `AGENTS.md` for the touched subarea. If the subarea lacks local guidance, use `praxis-angular-agents-governance` and derive gates from root AGENTS, `package.json`, README/docs, focused specs, and public API ownership instead of relying on memory.
 2. Classify the change: `local-pequena`, `transversal`, `arquitetural`, `contrato-publico`, or `docs-apenas`.
 3. Identify high-risk surfaces: `public-api`, `@praxisui/core`, `@praxisui/dynamic-form`, `@praxisui/table`, AI manifests, docs/playgrounds, i18n catalogs, release assets, or `/api/praxis/config/**` integrations.
 4. Inspect `praxis-ui-angular/package.json` for current commands instead of relying on old docs.

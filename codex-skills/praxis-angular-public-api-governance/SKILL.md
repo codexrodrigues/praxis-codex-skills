@@ -17,7 +17,7 @@ Classify any changed `public-api.ts`, exported model, service, token, component,
 
 Before editing:
 
-1. Read `praxis-ui-angular/AGENTS.md` and the local `projects/<lib>/AGENTS.md`.
+1. Read `praxis-ui-angular/AGENTS.md` and the local `projects/<lib>/AGENTS.md` when present. If the local file is absent, use `praxis-angular-agents-governance`, record the governance gap, and derive the owner/public API evidence from README, `src/public-api.ts`, docs manifests, metadata, focused specs, and package scripts.
 2. Identify the owner of the contract. Shared runtime contracts normally belong in `@praxisui/core`; vertical semantics belong in the owning component lib.
 3. Search direct consumers in `projects/*`, examples, docs, recipes, tests, and landing docs.
 4. Check whether the new export would reexport a type owned by another public lib.

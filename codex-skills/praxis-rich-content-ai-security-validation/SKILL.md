@@ -20,6 +20,7 @@ Before editing code or guidance, inspect:
 - `tools/ai-registry/**` when registry projection changes
 
 There is no local `projects/praxis-rich-content/AGENTS.md` in the audited checkout. Record that governance gap until the subarea has local instructions.
+Use `praxis-angular-agents-governance` to re-audit the gap before planning manifest, registry, docs, or validation changes.
 
 ## Safety Rules
 
