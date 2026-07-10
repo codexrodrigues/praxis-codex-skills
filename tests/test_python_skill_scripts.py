@@ -33,6 +33,7 @@ def load_script_module(name: str, path: Path):
 
 
 AUDIT_MODULE = load_script_module("audit_praxis_skills", SCRIPTS_ROOT / "audit-praxis-skills.py")
+CREATE_ISSUES_MODULE = load_script_module("create_skill_review_issues", SCRIPTS_ROOT / "create-skill-review-issues.py")
 GENERATE_DRAFTS_MODULE = load_script_module(
     "generate_skill_review_issue_drafts", SCRIPTS_ROOT / "generate-skill-review-issue-drafts.py"
 )
@@ -416,6 +417,29 @@ class PythonSkillScriptTests(unittest.TestCase):
             GENERATE_DRAFTS_MODULE.README_VALIDATION_LINE,
         )
         self.assertEqual(ISSUE_DRAFTS_README_VALIDATION_LINE, ISSUE_DRAFTS_MODULE.README_VALIDATION_LINE)
+
+    def test_create_issue_payloads_reads_titles_in_stable_order_with_limit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            draft_root = root / "drafts"
+            draft_root.mkdir()
+            (draft_root / "b.md").write_text("# Title B\n\nBody B\n")
+            (draft_root / "a.md").write_text("# Title A\n\nBody A\n")
+
+            payloads = CREATE_ISSUES_MODULE.issue_payloads(draft_root, limit=1)
+
+            self.assertEqual(1, len(payloads))
+            self.assertEqual("Title A", payloads[0]["title"])
+            self.assertEqual((draft_root / "a.md").as_posix(), payloads[0]["path"])
+
+    def test_create_issue_payloads_requires_h1_title(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            draft_root = Path(tmp) / "drafts"
+            draft_root.mkdir()
+            (draft_root / "missing-title.md").write_text("No title\n")
+
+            with self.assertRaisesRegex(RuntimeError, "Draft has no H1 title"):
+                CREATE_ISSUES_MODULE.issue_payloads(draft_root)
 
     def test_preflight_audit_policy_allows_informational_counters(self) -> None:
         report = audit_report(installedOnly=3, sourceInOtherFamilyManifest=2)
