@@ -14,7 +14,7 @@ This skill is versioned from `codex-skills/praxis-dto-annotations`. If the insta
 
 Before changing this skill or annotating DTOs, inspect the resolved starter/source for the emitted
 contract: `@UISchema`, `FieldControlType`, `FieldDataType`, `NumericFormat`, `@Filterable`,
-`@DomainGovernance`, `AiUsagePolicy`, option-source descriptors, `CustomOpenApiResolver`,
+`UISchemaPreset`, `@DomainGovernance`, `AiUsagePolicy`, option-source descriptors, `CustomOpenApiResolver`,
 `/schemas/filtered`, `/schemas/domain`, and representative host DTOs/tests when available. The
 goal is to codify what the platform already publishes before adding annotation fields, local
 `extraProperties`, host renderers, or AI-facing prose.
@@ -53,6 +53,7 @@ Prefer these local sources when available:
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/FieldControlType.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/filter/annotation/Filterable.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/annotation/DomainGovernance.java`
+- `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/extension/annotation/UISchemaPreset.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/options/OptionSourceDescriptor.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/options/OptionSourceRegistry.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/options/EntityLookupDescriptor.java`
@@ -63,6 +64,7 @@ Prefer these local sources when available:
 - `praxis-metadata-starter/docs/spec/x-ui-option-source-rfc.md`
 - `praxis-metadata-starter/docs/spec/CONFORMANCE.md`
 - `praxis-metadata-starter/docs/guides/OPTIONS-ENDPOINT.md`
+- `praxis-metadata-starter/docs/guides/SEMANTIC-METADATA-AUTHORING.md`
 - `praxis-ui-angular/ICON-PREFIXES.md` and the target Angular host's icon/runtime
   configuration when the task affects iconography or UX.
 - The target host's own controllers, DTOs, entities, services, validation tests, and Angular host
@@ -95,6 +97,8 @@ focused host HTTP/schema smokes. Do not require local monorepo source to annotat
    transport representation (Java/OpenAPI type), UI control/presentation (`@UISchema`/`x-ui`), and
    executable validation (Bean Validation/service rule). Formatting is correct only when all four
    contracts agree.
+   `@UISchema(preset = ...)` may reduce repetitive presentation metadata, but it never writes the
+   domain description. A preset without verified `@Schema.description` is incomplete metadata.
    Also check derived eligibility surfaces such as filters, options, stats, analytics, export, and
    AI catalogs so identifiers and documents are not reintroduced as mathematical measures outside
    the DTO annotations.
@@ -300,6 +304,10 @@ Before considering a DTO property complete, verify:
 - Do not use `ENTITY_LOOKUP` against generic `/{resource}/options/filter` when governed entity
   metadata is required; use a named `/{resource}/option-sources/{sourceKey}/options/filter`
   backed by `OptionSourceRegistry`.
+- Do not use `@UISchema(preset = ...)` as semantic authorship. Presets only materialize
+  presentation/value handling such as enterprise code, monetary amount, legal document, tenant
+  label, boolean flag, or audit timestamp. They do not replace `@Schema.description`,
+  `@DomainGovernance`, validation, option source, or AI policy.
 - Do not expose technical IDs, `ROWID`, provider internals, SQL, package names, or private context in
   `@UISchema.extraProperties`, `x-ui.optionSource`, `OptionDTO.extra`, or public descriptions.
 - Do not add labels that expose operator suffixes such as `statusIn`, `statusNotIn`,

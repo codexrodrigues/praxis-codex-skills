@@ -29,13 +29,12 @@ Status after Wave 6, with `codex-skills/praxis-skills.manifest.json` at 146 skil
 | Metric | Count |
 | --- | ---: |
 | Praxis skills in manifest | 146 |
-| Active Praxis skills | 144 |
-| Active skills needing curation | 2 |
+| Active Praxis skills | 145 |
+| Active skills needing curation | 1 |
 | Open roadmap issues | 0 |
 
-The two entries still marked `active-needs-curation` are:
+The entry still marked `active-needs-curation` is:
 
-- `praxis-dto-annotations`
 - `praxis-java-host-project`
 
 The repository has moved past the minimum useful coverage tier and is now inside the strong canonical coverage band for the Angular side. The current 146-skill set is no longer just an initial foundation: it encodes substantial platform knowledge across runtime, authoring, AI, validation, docs, metadata, config, quickstart proof, HTTP examples, and landing/public docs.
@@ -244,11 +243,10 @@ Do not create another batch of broad skill-generation issues just to increase th
 
 Recommended next issues:
 
-1. Curate `praxis-dto-annotations` and decide whether it remains an independent Praxis skill or should be folded into metadata/resource/backend-host guidance.
-2. Curate `praxis-java-host-project` against current `praxis-metadata-starter`, `praxis-config-starter`, and `praxis-api-quickstart` guidance.
-3. Run a live monorepo coverage audit for the most complex Angular packages: `praxis-core`, `praxis-table`, `praxis-dynamic-form`, `praxis-dynamic-fields`, `praxis-page-builder`, `praxis-visual-builder`, `praxis-ai`, and `praxis-charts`.
-4. Verify whether the 146 current skills still match source reality after recent platform changes, especially public APIs, authoring manifests, AI contracts, docs registries, quickstart scripts, and HTTP examples.
-5. Create only focused follow-up issues where the audit finds one of these signals:
+1. Curate `praxis-java-host-project` against current `praxis-metadata-starter`, `praxis-config-starter`, and `praxis-api-quickstart` guidance.
+2. Run a live monorepo coverage audit for the most complex Angular packages: `praxis-core`, `praxis-table`, `praxis-dynamic-form`, `praxis-dynamic-fields`, `praxis-page-builder`, `praxis-visual-builder`, `praxis-ai`, and `praxis-charts`.
+3. Verify whether the 146 current skills still match source reality after recent platform changes, especially public APIs, authoring manifests, AI contracts, docs registries, quickstart scripts, and HTTP examples.
+4. Create only focused follow-up issues where the audit finds one of these signals:
    - recurring missing canonical guidance;
    - skill guidance drifting from source;
    - high-risk runtime/API surface not covered by a focused skill;
