@@ -17,7 +17,15 @@ ISSUE_DRAFTS_README_VALIDATION_LINE = "Validacao local: `python3 scripts/validat
 
 
 def sha256_file(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+    """Hash UTF-8 text with normalized line endings and binary files byte-for-byte."""
+    raw = path.read_bytes()
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        payload = raw
+    else:
+        payload = text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+    return hashlib.sha256(payload).hexdigest().upper()
 
 
 def skill_file_hashes(root: Path) -> dict[str, str]:
@@ -53,7 +61,7 @@ def skills_root() -> Path:
 
 def load_manifest(repo_root: Path, family: str, manifest_path: Path | None = None) -> tuple[Path, dict[str, Any]]:
     resolved = manifest_path.resolve() if manifest_path else manifest_for_family(repo_root, family)
-    manifest: dict[str, Any] = json.loads(resolved.read_text())
+    manifest: dict[str, Any] = json.loads(resolved.read_text(encoding="utf-8"))
     if manifest.get("family") != family:
         raise RuntimeError(f"Manifest family {manifest.get('family')!r} does not match {family!r}")
 
@@ -82,7 +90,7 @@ def validate_skill_structure(skill_root: Path, expected_name: str) -> list[str]:
     if not skill_md.is_file():
         return ["missing SKILL.md"]
 
-    head = skill_md.read_text().splitlines()[:20]
+    head = skill_md.read_text(encoding="utf-8").splitlines()[:20]
     if len(head) < 3 or head[0] != "---":
         return ["SKILL.md missing YAML frontmatter start"]
 
@@ -119,3 +127,4 @@ def install_metadata(manifest: dict[str, Any], skill: dict[str, Any], manifest_p
         "sourcePath": skill["sourcePath"],
         "sourceHash": source_hash,
     }
+

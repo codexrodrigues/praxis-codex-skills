@@ -106,7 +106,9 @@ def sync(args: argparse.Namespace) -> int:
         if not args.dry_run:
             metadata = install_metadata(manifest, skill, manifest_path, source_tree_hash)
             metadata["installedAt"] = datetime.now(timezone.utc).isoformat()
-            (destination / ".codex-skill-install.json").write_text(json.dumps(metadata, indent=2) + "\n")
+            (destination / ".codex-skill-install.json").write_text(
+                json.dumps(metadata, indent=2) + "\n", encoding="utf-8"
+            )
 
     if conflicts:
         print("Codex skills sync blocked by destination drift.")
@@ -144,3 +146,4 @@ if __name__ == "__main__":
     except RuntimeError as error:
         print(f"ERROR: {error}")
         raise SystemExit(1)
+

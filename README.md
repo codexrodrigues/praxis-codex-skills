@@ -39,8 +39,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.
 ```
 
 When PowerShell is unavailable, use the Python fallback. It computes `skillMdSha256`
-from `SKILL.md` bytes and `treeSha256` from sorted `SHA256  relative/path` entries,
-matching the manifest semantics used by the PowerShell scripts.
+from normalized UTF-8 text content (LF line endings; binary assets remain byte-for-byte) and
+`treeSha256` from sorted `SHA256  relative/path` entries, matching the manifest semantics used
+by the PowerShell scripts. This keeps audits stable across Windows and LF-based environments.
 
 ```bash
 python3 scripts/audit-praxis-skills.py --family praxis
@@ -117,3 +118,4 @@ Each family manifest lives in `codex-skills/` and records:
 When any file inside a skill changes, update the corresponding `treeSha256`; when `SKILL.md` changes, update both `skillMdSha256` and `treeSha256`.
 
 Migration workspaces should pin these manifests by hash instead of vendoring skill contents.
+

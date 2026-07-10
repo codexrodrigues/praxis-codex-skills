@@ -41,7 +41,7 @@ def readme_links(readme_path: Path) -> set[str]:
     if not readme_path.exists():
         return set()
 
-    content = readme_path.read_text()
+    content = readme_path.read_text(encoding="utf-8")
     return set(re.findall(r"\]\(skill-reviews/([^)]+)\.md\)", content))
 
 
@@ -62,7 +62,7 @@ def validate_drafts(repo_root: Path, families: list[str]) -> list[str]:
     for name in sorted(set(skills) & actual_drafts):
         expected = skills[name]
         draft_path = drafts_root / f"{name}.md"
-        content = draft_path.read_text()
+        content = draft_path.read_text(encoding="utf-8")
         required_snippets = [
             f"# Revisar skill {expected['family']}: {name}",
             f"- Familia: {expected['family']}",
@@ -83,7 +83,7 @@ def validate_drafts(repo_root: Path, families: list[str]) -> list[str]:
                 errors.append(f"{draft_path.relative_to(repo_root)}: missing required text: {snippet}")
 
     linked = readme_links(readme_path)
-    readme_content = readme_path.read_text() if readme_path.exists() else ""
+    readme_content = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     if README_VALIDATION_LINE not in readme_content:
         errors.append(f"README missing local validation guidance: {README_VALIDATION_LINE}")
 
@@ -123,3 +123,4 @@ if __name__ == "__main__":
     except RuntimeError as error:
         print(f"ERROR: {error}")
         raise SystemExit(1)
+

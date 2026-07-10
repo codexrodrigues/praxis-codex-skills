@@ -165,7 +165,7 @@ def pilot_requirements(skill: dict[str, str]) -> list[str]:
 
 
 def skill_description(skill_root: Path) -> str:
-    for line in (skill_root / "SKILL.md").read_text().splitlines()[:20]:
+    for line in (skill_root / "SKILL.md").read_text(encoding="utf-8").splitlines()[:20]:
         if line.startswith("description:"):
             return line.split(":", 1)[1].strip().strip("\"'")
     return ""
@@ -317,7 +317,7 @@ def check_generated_outputs(
         path = repo_root / relative_path
         if not path.exists():
             errors.append(f"Missing generated file: {relative_path.as_posix()}")
-        elif path.read_text() != expected:
+        elif path.read_text(encoding="utf-8") != expected:
             errors.append(f"Generated file is stale: {relative_path.as_posix()}")
 
     expected_drafts = {path.name for path in outputs if path.parent == draft_root}
@@ -343,7 +343,7 @@ def generate(repo_root: Path, repository: str, draft_root: Path, readme_path: Pa
             stale.unlink()
 
     for relative_path, content in outputs.items():
-        (repo_root / relative_path).write_text(content)
+        (repo_root / relative_path).write_text(content, encoding="utf-8")
 
     return len(expected_files)
 
@@ -384,3 +384,4 @@ if __name__ == "__main__":
     except RuntimeError as error:
         print(f"ERROR: {error}")
         raise SystemExit(1)
+

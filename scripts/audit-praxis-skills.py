@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -18,15 +19,26 @@ from codex_skills_common import (
 )
 
 
-def update_manifest_text(text: str, replacements: list[tuple[str, str]]) -> str:
+def update_manifest_text(text: str, updates: dict[str, dict[str, str]]) -> str:
     updated = text
-    for old, new in replacements:
-        if old == new:
-            continue
-        marker = f'"{old}"'
-        if marker not in updated:
-            raise RuntimeError(f"Could not find hash in manifest text: {old}")
-        updated = updated.replace(marker, f'"{new}"', 1)
+    for skill_name, hashes in updates.items():
+        name_match = re.search(rf'"name"\s*:\s*"{re.escape(skill_name)}"', updated)
+        if not name_match:
+            raise RuntimeError(f"Could not find manifest entry for skill: {skill_name}")
+
+        entry_start = updated.rfind("{", 0, name_match.start())
+        entry_end_match = re.search(r"\n[ \t]*\}", updated[name_match.end():])
+        if entry_start < 0 or entry_end_match is None:
+            raise RuntimeError(f"Could not isolate manifest entry for skill: {skill_name}")
+
+        entry_end = name_match.end() + entry_end_match.end()
+        entry = updated[entry_start:entry_end]
+        for key, value in hashes.items():
+            pattern = rf'("{re.escape(key)}"\s*:\s*")[A-F0-9]+(")'
+            entry, count = re.subn(pattern, rf'\g<1>{value}\g<2>', entry, count=1)
+            if count != 1:
+                raise RuntimeError(f"Could not update {key} for skill: {skill_name}")
+        updated = updated[:entry_start] + entry + updated[entry_end:]
     return updated
 
 
@@ -44,10 +56,10 @@ def audit(args: argparse.Namespace) -> int:
     repo_root = Path(args.repo_root).resolve()
     requested_manifest = Path(args.manifest).resolve() if args.manifest else None
     manifest_path, manifest = load_manifest(repo_root, args.family, requested_manifest)
-    manifest_text = manifest_path.read_text()
+    manifest_text = manifest_path.read_text(encoding="utf-8")
     destination = Path(args.skills_root).resolve() if args.skills_root else skills_root()
 
-    replacements: list[tuple[str, str]] = []
+    manifest_updates: dict[str, dict[str, str]] = {}
     results: list[dict[str, Any]] = []
 
     for skill in manifest["skills"]:
@@ -81,11 +93,11 @@ def audit(args: argparse.Namespace) -> int:
         if skill.get("skillMdSha256") and source_skill_hash != skill.get("skillMdSha256"):
             result["status"] = "SOURCE_DRIFT"
             result["errors"].append(f"SKILL.md hash differs from manifest: {source_skill_hash}")
-            replacements.append((skill["skillMdSha256"], source_skill_hash))
+            manifest_updates.setdefault(skill["name"], {})["skillMdSha256"] = source_skill_hash
         if skill.get("treeSha256") and source_tree_hash != skill.get("treeSha256"):
             result["status"] = "SOURCE_DRIFT"
             result["errors"].append(f"skill tree hash differs from manifest: {source_tree_hash}")
-            replacements.append((skill["treeSha256"], source_tree_hash))
+            manifest_updates.setdefault(skill["name"], {})["treeSha256"] = source_tree_hash
 
         if installed.is_dir():
             source_files = skill_file_hashes(source)
@@ -135,8 +147,8 @@ def audit(args: argparse.Namespace) -> int:
         "sourceInOtherFamilyManifest": len(source_in_other_family_manifest),
     }
 
-    if args.fix_manifest and replacements:
-        manifest_path.write_text(update_manifest_text(manifest_text, replacements))
+    if args.fix_manifest and manifest_updates:
+        manifest_path.write_text(update_manifest_text(manifest_text, manifest_updates), encoding="utf-8")
 
     if args.json:
         print(
@@ -213,3 +225,4 @@ if __name__ == "__main__":
     except RuntimeError as error:
         print(f"ERROR: {error}")
         raise SystemExit(1)
+
