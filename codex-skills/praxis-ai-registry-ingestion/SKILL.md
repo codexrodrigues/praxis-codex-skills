@@ -1,127 +1,68 @@
 ---
 name: praxis-ai-registry-ingestion
-description: Use when changing or validating Praxis AI registry tooling, `tools/ai-registry`, component docs extraction, registry ingestion generation, catalog governance, RAG/provider projections, packaged `ai/component-registry.json` assets, AI-ready docs, backend sync/upload scripts, or generated registry artifacts after component authoring manifest or metadata changes.
+description: Use when implementing, auditing, generating, packaging, or synchronizing Praxis AI registry artifacts: component docs extraction, AI metadata, ingestion corpus/chunks, catalog governance, authoring-contract acceptance, AI-ready docs, RAG/provider projections, package `ai/component-registry.json` assets, or official backend uploads.
 ---
 
 # Praxis AI Registry Ingestion
 
-Use this skill for the canonical AI registry pipeline in `tools/ai-registry`. Do not create ad hoc scripts or edit generated `dist/` artifacts as source of truth.
+`tools/ai-registry` is the canonical generator and governance boundary for AI-facing Angular artifacts. Registry output describes existing Praxis contracts for grounding; it does not invent component semantics, route intent, or replace source manifests, metadata, backend schemas, capabilities, actions, surfaces, or runtime code.
 
-## Canonical Pipeline
+## Provenance Pipeline
 
-The standard ingestion command is:
-
-```bash
-npm run generate:registry:ingestion
+```text
+component source, metadata, README/docs, authoring manifests, capability/context packs
+  -> extract-component-docs.js + generate:ai-metadata
+  -> dist/praxis-component-registry.json
+  -> generate-registry-ingestion.ts
+  -> dist/praxis-component-registry-ingestion.json (canonical aggregate corpus)
+  -> catalog + authoring-contract validation
+  -> optional RAG/provider/AI-ready/package/upload projections
 ```
 
-It includes component docs extraction, AI metadata generation, ingestion registry generation, catalog governance validation, and authoring contract validation where configured.
+The ingestion corpus with `components[].chunks` is canonical for aggregate analysis. `praxis-component-registry-rag.json`, provider projections, AI-ready docs, reports, npm package assets, and backend uploads are derived read models. Never hand-edit `dist/**`, package assets, projections, or reports to repair a source/contract problem.
 
-Use narrower commands only when the change scope is narrower:
+Read `tools/ai-registry/AGENTS.md`, its README, workspace AGENTS, and the affected library's AGENTS before editing. Inspect the actual owner source: public API, component metadata, docs manifest, authoring manifest, capabilities/context pack, focused specs, and consumer docs.
 
-- `npm run validate:catalog` for catalog governance only
-- `npm run validate:authoring-contracts` for completed authoring contracts
-- focused Node specs for registry tooling self-tests
-- `npm run validate:ai` when planning/RAG/template artifacts must be checked
-- `npm run package:ai-assets` when package-scoped `ai/component-registry.json` assets must be refreshed
-- `npm run ai:sync-backend` only when backend synchronization is explicitly required
+## Decide The Smallest Canonical Operation
 
-Use `praxis-angular-docs-playgrounds` when registry extraction changes public component docs,
-examples, landing pages, or playground evidence. Use `praxis-angular-validation-gates` to decide
-whether full ingestion is required or a narrower registry validator is enough for the current scope.
-Use `praxis-angular-agents-governance` when registry work touches a component whose local
-`projects/<lib>/AGENTS.md` is absent or when a skill's governance claim may have drifted from the
-Angular platform source.
-Use `praxis-angular-public-api-governance` when the registry change is caused by package-facing
-exports or public component contracts.
-Use `praxis-ai-shell-session-context`, `praxis-ai-composer-attachments-quick-replies`,
-`praxis-ai-turn-orchestration-transport`, or `praxis-ai-backend-config-contracts` when registry or
-AI-ready docs derive from assistant context snapshots, quick reply/clarification payloads, turn
-stream materialization, backend AI endpoints, or AI config tokens.
-Use `praxis-list-ai-validation` for `@praxisui/list` manifest/capability/context-pack changes, and
-`praxis-list-docs-evidence` when list docs or living examples feed the registry projection.
-Use `praxis-metadata-editor-ai-validation` for `@praxisui/metadata-editor`
-manifest/capability/context-pack changes. Pair it with
-`praxis-metadata-editor-renderer-coverage` or `praxis-metadata-editor-cascade-normalization` when
-registry docs derive from editor visual coverage, cascade behavior, option-source dependency
-preservation, or schema normalization.
-Use `praxis-manual-form-ai-authoring` and `praxis-manual-form-rules-agentic` for
-`@praxisui/manual-form` manifest, capability, context-pack, config editor, formRules, JSON Logic,
-agentic turn flow, and registry projections. Pair with
-`praxis-manual-form-field-detection-instance`, `praxis-manual-form-autosave-persistence`, or
-`praxis-manual-form-toolbar-metadata-bridge` when generated docs derive from field detection,
-autosave/storage, toolbar, or metadata bridge behavior. Use
-`praxis-editorial-forms-adapters-ai` and `praxis-editorial-forms-agentic-authoring` for
-`@praxisui/editorial-forms` manifest, component metadata, adapter, dataCollection, field binding,
-fallback, presentation, and registry projections. Pair with
-`praxis-editorial-forms-journey-snapshot-runtime`, `praxis-editorial-forms-presentation-diagnostics`,
-or `praxis-editorial-forms-data-collection-adapters` when generated docs derive from snapshot,
-diagnostics/presentation, or adapter behavior.
-Use `praxis-crud-ai-authoring` for `@praxisui/crud` manifest, capabilities, context packs, metadata
-editor, and child-operation delegation. Use `praxis-dialog-global-actions-ai` for `@praxisui/dialog`
-global actions, registries, authoring manifest, and registry projections.
-Use `praxis-navigation-containers-ai-validation` for `@praxisui/tabs`, `@praxisui/stepper`,
-`PraxisWizardFormComponent`, and `@praxisui/expansion` manifests, capabilities, context packs,
-AI adapters, component docs, and registry projection.
-Pair it with `praxis-navigation-agentic-registry`,
-`praxis-navigation-container-composition-events`, or `praxis-stepper-wizard-orchestration` when
-generated docs derive from agentic turn flows, nested widget composition, dynamic page events,
-wizard submit/validation, or cross-container authoring consistency.
-Use `praxis-files-upload-ai-validation` for `@praxisui/files-upload` manifests, capabilities,
-context packs, AI adapters, component docs, backend endpoint/security operations, and registry
-projection.
-Use `praxis-rich-content-ai-security-validation` for `@praxisui/rich-content` manifests,
-capabilities, recipes, document validator, sanitization policy, component docs, and registry
-projection.
-Use `praxis-cron-builder-ai-validation` for `@praxisui/cron-builder` manifests, capabilities,
-context packs, AI adapters, component docs, schedule operation validators, preview/diagnostics, and
-registry projection.
-Use `praxis-table-rule-ai-validation` for `@praxisui/table-rule-builder` manifests, capabilities,
-context packs, AI adapters, component docs, effect registry operations, semantic animation
-validators, table delegation, and registry projection.
-Use `praxis-fields-control-profile-ai` for `@praxisui/dynamic-fields` per-control AI profiles,
-capability catalogs, registry component docs, and family-specific profile validation. Pair it with
-`praxis-fields-inline-overlay-runtime`, `praxis-fields-text-number-time-controls`, or
-`praxis-fields-selection-lookup-controls` when generated docs derive from inline overlay behavior or
-specific control-family semantics.
-Use `praxis-visual-builder-ai-validation` for `@praxisui/visual-builder` authoring manifest,
-capabilities, context packs, AI adapter, editable targets, operation validators, JSON Logic
-round-trip validation, and registry projection. Pair it with
-`praxis-visual-builder-graph-runtime`, `praxis-visual-builder-jsonlogic-roundtrip`, or
-`praxis-visual-builder-schemas-templates` when generated docs derive from graph, JSON Logic, schema,
-context, property-effect, collection-validator, or template behavior.
-Use `praxis-charts-ai-validation` for `@praxisui/charts` authoring manifest, editable targets,
-validators, handler contracts, component metadata, and generated AI assets. Pair it with
-`praxis-charts-ai-handler-contracts`, `praxis-charts-authoring-catalogs`,
-`praxis-charts-analytics-interactions`, or `praxis-charts-echarts-engine-boundary` when registry docs
-derive from handler contracts, resource/field/target catalogs, analytics interactions, or
-engine-boundary behavior.
+| Change | Owner and minimum action |
+| --- | --- |
+| component docs extraction or AI metadata | source docs/metadata first, then `npm run generate:registry:ingestion` |
+| ingestion generator/schema/chunks/governance | `generate:registry:ingestion`; validate catalog and authoring contracts |
+| catalog validation only | `npm run validate:catalog` |
+| completed authoring contract acceptance | `npm run validate:authoring-contracts` |
+| AI planning/RAG/templates | `npm run validate:ai` |
+| package-scoped asset after ingestion and library builds | `npm run package:ai-assets`, then package/tarball validation if release scope requires it |
+| provider projection | regenerate from the canonical ingestion corpus for the explicit release; never upload secrets/external IDs into it |
+| backend upload | use `tools/ai-registry/run-all.sh` or `npm run ai:sync-backend` only when a real backend state change is required |
 
-## Required Inventory
+`npm run generate:registry:ingestion` is the standard local pipeline: extract component docs, generate AI metadata, generate ingestion corpus, validate catalog governance, and validate authoring contracts. It is the correct response to a source/manifest/capability/context-pack change; it is not required merely to edit a derived report or inspect a package asset.
 
-Inspect:
+## Canonical Content Rules
 
-- `tools/ai-registry/AGENTS.md`
-- `tools/ai-registry/README.md`
-- `extract-component-docs.js`
-- `generate-registry-ingestion.ts`
-- `generate-registry-rag.ts`
-- `validate-catalog-governance.js`
-- `validate-authoring-contracts-acceptance.js`
-- `package-ai-assets.mjs`
-- `config.ts`
-- relevant schemas under `tools/ai-registry/schemas`
+- Keep component docs extractable from supported literal metadata/factories. If extraction cannot represent a semantic feature, improve the source metadata or official extractor, not a consumer-side registry patch.
+- A manifest, capability, target, validator, effect, profile, context pack, and docs chunk must point to the source owner and remain mutually consistent. Do not make a generated registry the primary definition of an operation.
+- Registry grounding is evidence for LLM semantic resolution. Do not encode primary intent as keyword, regex, alias, fuzzy match, display-label parsing, or a registry-only command dialect.
+- Quick replies/actions must retain structured canonical action, semantic decision, target, context, risk, and presentation. Labels are not authority.
+- Preserve the runtime observation contract chunk and its `untrusted_frontend_observation` boundary. Observations require backend grounding into canonical context before they influence an answer; registry text cannot grant read/tool/apply authority.
+- Catalog governance must reject duplicate IDs/selectors, invalid paths, incomplete target/validator/effect evidence, unconfirmed destructive work, ambiguous targets without policy, inconsistent control profiles, and lost trust boundaries. Repair the source owner or validator, never weaken the gate to pass a local artifact.
+- Use aggregate corpus for cross-package/release analysis and `@praxisui/<package>/ai/component-registry.json` only for source-less package consumers. Package assets remain filtered projections of their owning package.
 
-## Registry Rules
+## Before New Contracts Or Scripts
 
-- Canonical aggregate corpus: `dist/praxis-component-registry-ingestion.json`.
-- Deprecated compatibility projection: `dist/praxis-component-registry-rag.json`.
-- Package consumers without source should use `@praxisui/<package>/ai/component-registry.json`.
-- Component docs must remain extractable from literal metadata or supported factories.
-- Runtime observation contract chunks must preserve the untrusted frontend observation boundary and backend grounding requirement.
-- Provider projections are derived read models; delete and regenerate them from the ingestion registry.
-- Respect official env/origins for backend upload flows: `BACKEND_URL`, `CONFIG_ORIGIN`, `APP_SECURITY_READ_OPEN`, `APP_SECURITY_WRITE_OPEN`.
+Inventory the existing metadata, `x-ui`, schemas, actions, surfaces, capabilities, option sources, manifests, registry chunks, diagnostics, context packs, docs, and backend API catalog. Classify the need as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`.
 
-## Validation
+Only a real contract gap justifies a schema, chunk, generator, endpoint, or script change. Map source owner, generated outputs, Angular/package consumers, backend ingestion, security/origin requirements, docs/playgrounds, compatibility, and focused validation first. Do not add ad hoc upload, extraction, or sync scripts outside this tool owner.
 
-Run the smallest official command compatible with the change and report exactly what was run. If tooling cannot run because Node modules or platform binaries are unavailable, still perform a structural audit and say what remains unvalidated.
+## Remote And Release Boundaries
+
+- Local generation and validation come first. GitHub Actions are release/final gates, not discovery tooling.
+- Backend uploads use the documented environment and official scripts: `BACKEND_URL`, `CONFIG_ORIGIN`, `APP_SECURITY_READ_OPEN`, and `APP_SECURITY_WRITE_OPEN`. Do not invent endpoints, origins, ports, or upload ordering.
+- `run-all.sh --with-api-catalog` is the canonical combined registry/templates/API-catalog flow. Do not additionally invoke individual upload scripts in the same operation.
+- `package:ai-assets` needs the generated ingestion corpus and built `dist/<package>` folders. It writes the scoped asset plus package export; validate local tarballs when package publication is in scope.
+
+## Evidence And Companion Skills
+
+Run the smallest compatible command and report it exactly. For changes to tooling itself, add its focused Node self-test; for a source component, add that component's build/spec/authoring proof. State whether docs, recipes, manifests, landing, package assets, RAG/provider projections, backend sync, and release validation were affected.
+
+Use `praxis-ai-authoring-manifests` for executable authoring contracts; `praxis-angular-docs-playgrounds` for public documentation; `praxis-angular-public-api-governance` for exports; `praxis-angular-validation-gates` for local proof; and the functional component skill for the changed source. Use `praxis-config-agentic-authoring-streaming` or `praxis-ai-turn-orchestration-transport` when registry chunks derive from governed turns, tools, observations, quick replies, or backend transport.
