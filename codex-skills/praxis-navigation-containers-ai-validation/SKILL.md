@@ -44,6 +44,9 @@ Text matching may rank a tab, step, link, or panel only after the semantic opera
 - Use `praxis-tabs-runtime-authoring` for group/nav mode, `renderBody`, quick setup, tab/link selection, and tabs persistence.
 - Use `praxis-stepper-wizard-runtime` for workflow validation, dynamic-form steps, wizard config normalization, and submit/completed/custom action flows.
 - Use `praxis-expansion-runtime-panels` for accordion defaults, provider registration, panel events, lazy panel content, and imperative panel methods.
+- Use `praxis-navigation-container-composition-events` when AI operations affect nested widgets, lazy content, dynamic page embedding, widget events, external body ownership, or composition links.
+- Use `praxis-stepper-wizard-orchestration` when AI operations affect dynamic-form steps, resource paths, validation, wizard adapter behavior, submit/completed/customAction, or host workflow boundaries.
+- Use `praxis-navigation-agentic-registry` for AI adapters, agentic turn flows, context packs, registry projection, generated docs, and cross-container authoring consistency.
 - Use `praxis-ai-authoring-manifests` for manifest schema, operation safety, target resolution, apply plans, and declared authoring contracts.
 - Use `praxis-ai-registry-ingestion` when component docs, manifests, capabilities, context packs, or registry assets change.
 

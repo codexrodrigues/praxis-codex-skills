@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Stepper Wizard Orchestration"
+  short_description: "Audit stepper wizard orchestration"
+  default_prompt: "Use $praxis-stepper-wizard-orchestration to implement or audit Praxis Stepper and Wizard orchestration, dynamic-form steps, validation, submit flows, wizard adapters, and host boundaries."

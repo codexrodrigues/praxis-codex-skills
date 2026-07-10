@@ -84,5 +84,6 @@ For visual/editor flows, add screenshot or browser validation through the offici
 - Use `praxis-authoring-editors` for editor/runtime round-trip and Settings Panel behavior.
 - Use `praxis-page-builder-composition`, `praxis-page-builder-authoring`, and `praxis-page-builder-ai-agentic` when the shared runtime contract is being authored or exercised through `@praxisui/page-builder`.
 - Use `praxis-tabs-runtime-authoring`, `praxis-stepper-wizard-runtime`, and `praxis-expansion-runtime-panels` when composition flows through those container widgets; use `praxis-navigation-containers-ai-validation` when their AI manifests, capabilities, context packs, or registry projection are involved.
+- Use `praxis-navigation-container-composition-events` for cross-container nested widget event paths, dynamic page embedding, lazy container materialization, and composition-link proof across tabs, stepper/wizard, and expansion.
 - Use `praxis-rich-content-runtime`, `praxis-rich-content-integration-adapters`, and `praxis-rich-content-ai-security-validation` when composition flows through structured rich-content documents or rich-content widgets.
 - Use `praxis-ui-product-design` for visual hierarchy, accessibility, and screenshot QA.

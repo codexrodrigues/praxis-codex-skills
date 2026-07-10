@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Navigation Composition"
+  short_description: "Audit container composition events"
+  default_prompt: "Use $praxis-navigation-container-composition-events to implement or audit Praxis navigation container composition, nested widgets, dynamic page embedding, widget events, lazy content, and composition links."

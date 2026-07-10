@@ -71,6 +71,8 @@ Report exactly what was validated and what remained unvalidated.
 ## Companion Skills
 
 - Use `praxis-navigation-containers-ai-validation` for tabs AI manifests, registry projection, context packs, assistant turns, and cross-container validation.
+- Use `praxis-navigation-container-composition-events` for nested widgets, `WidgetEventEnvelope` path enrichment, lazy tab bodies, external `renderBody=false` panels, dynamic page embedding, and composition links.
+- Use `praxis-navigation-agentic-registry` for tabs AI adapters, agentic turn flows, context packs, registry projection, and cross-container authoring consistency.
 - Use `praxis-authoring-editors` for Settings Panel editor round-trip.
 - Use `praxis-core-composition-runtime` for nested widgets, widget events, composition links, and dynamic page materialization.
 - Use `praxis-angular-i18n-governance`, `praxis-angular-public-api-governance`, `praxis-angular-docs-playgrounds`, and `praxis-angular-validation-gates` when the change touches their governed areas.

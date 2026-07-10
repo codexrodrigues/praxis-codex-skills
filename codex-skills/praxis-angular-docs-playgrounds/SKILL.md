@@ -79,7 +79,9 @@ registry docs. For `@praxisui/dialog`, use `praxis-dialog-overlay-runtime` and
 global actions, docs manifests, or registry projections.
 For `@praxisui/tabs`, `@praxisui/stepper`, `PraxisWizardFormComponent`, or `@praxisui/expansion`,
 use `praxis-tabs-runtime-authoring`, `praxis-stepper-wizard-runtime`,
-`praxis-expansion-runtime-panels`, and `praxis-navigation-containers-ai-validation` as applicable
+`praxis-expansion-runtime-panels`, `praxis-navigation-containers-ai-validation`,
+`praxis-navigation-container-composition-events`, `praxis-stepper-wizard-orchestration`, and
+`praxis-navigation-agentic-registry` as applicable
 before updating component guides, API references, examples, docs manifests, playgrounds, or AI
 registry docs for navigation and disclosure containers.
 For `@praxisui/files-upload`, use `praxis-files-upload-runtime`,

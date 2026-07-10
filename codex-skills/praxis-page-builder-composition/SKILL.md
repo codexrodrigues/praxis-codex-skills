@@ -10,6 +10,7 @@ Use this skill for the Page Builder runtime/composition surface. `@praxisui/page
 Pair it with:
 
 - `praxis-core-composition-runtime` for shared `WidgetPageDefinition`, widget events, widget shell, composition links, transforms, runtime observations, and dynamic page materialization.
+- `praxis-navigation-container-composition-events` when Page Builder pages embed tabs, stepper/wizard, or expansion containers with nested widgets, lazy content, event paths, or composition links.
 - `praxis-page-builder-authoring` for page config editors, shell editor, Settings Panel bridge, and visual round-trip.
 - `praxis-page-builder-ai-agentic` for agentic page composition, AI catalogs, manifests, streaming authoring, and preview/apply flows.
 - the owning child component skill, such as charts, table, form, fields, or CRUD, when a widget input/config document changes.

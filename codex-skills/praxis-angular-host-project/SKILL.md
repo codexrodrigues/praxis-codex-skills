@@ -248,6 +248,9 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-stepper-wizard-runtime`: `@praxisui/stepper` and `PraxisWizardFormComponent` runtime, `stepperId`, dynamic-form steps, canonical `resourcePath`, validation, wizard adapter, and widget events.
 - `praxis-expansion-runtime-panels`: `@praxisui/expansion` metadata-first panels, defaults providers, `expansionId`, lazy content, panel events, registry metadata, and widget events.
 - `praxis-navigation-containers-ai-validation`: AI authoring, manifests, context packs, registry projection, docs, and validation for tabs, stepper, wizard, and expansion containers.
+- `praxis-navigation-container-composition-events`: nested widget event paths, dynamic page embedding, external tab bodies, lazy container materialization, and composition links across navigation containers.
+- `praxis-stepper-wizard-orchestration`: dynamic-form steps, validation, server validation, wizard adapter, submit/completed/customAction outputs, preferences, and host workflow boundaries.
+- `praxis-navigation-agentic-registry`: AI adapters, agentic turn flows, context packs, registry ingestion, generated docs, and cross-container authoring consistency.
 - `praxis-files-upload-runtime`: `@praxisui/files-upload` direct/presign/auto runtime, `filesUploadId`, `baseUrl`, full/compact UX, validators, upload states, i18n, and events.
 - `praxis-files-upload-backend-contract`: files API base URL, direct/bulk/presign endpoints, multipart fields, backend envelopes, quotas, rate limits, headers, and error codes.
 - `praxis-files-upload-form-field`: `pdx-material-files-upload`, ControlValueAccessor behavior, `valueMode`, dynamic-form field integration, and submit payload shape.
