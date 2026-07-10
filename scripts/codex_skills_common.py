@@ -13,6 +13,7 @@ MANIFEST_BY_FAMILY = {
     "praxis": "praxis-skills.manifest.json",
     "ergon-migration": "ergon-migration-skills.manifest.json",
 }
+ISSUE_DRAFTS_README_VALIDATION_LINE = "Validacao local: `python3 scripts/validate-issue-drafts.py`"
 
 
 def sha256_file(path: Path) -> str:
