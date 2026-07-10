@@ -130,6 +130,7 @@ Validacao local: `python3 scripts/validate-issue-drafts.py`
 - [praxis-page-builder-ai-agentic](skill-reviews/praxis-page-builder-ai-agentic.md)
 - [praxis-page-builder-authoring](skill-reviews/praxis-page-builder-authoring.md)
 - [praxis-page-builder-composition](skill-reviews/praxis-page-builder-composition.md)
+- [praxis-product-evolution](skill-reviews/praxis-product-evolution.md)
 - [praxis-resource-entity-lookup-backend](skill-reviews/praxis-resource-entity-lookup-backend.md)
 - [praxis-rich-content-ai-security-validation](skill-reviews/praxis-rich-content-ai-security-validation.md)
 - [praxis-rich-content-authoring-settings](skill-reviews/praxis-rich-content-authoring-settings.md)
