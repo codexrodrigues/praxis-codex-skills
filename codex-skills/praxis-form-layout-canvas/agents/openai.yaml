@@ -1,7 +1,7 @@
 interface:
   display_name: "Praxis Form Layout Canvas"
   short_description: "Govern form layout and canvas"
-  default_prompt: "Use $praxis-form-layout-canvas to inspect Praxis dynamic-form layout policies, schema-driven materialization, visual blocks, canvas editors, and layout validation."
+  default_prompt: "Use $praxis-form-layout-canvas to inspect @praxisui/dynamic-form package layout policies, schema-driven materialization, visual blocks, canvas editors, and layout validation."
 
 policy:
   allow_implicit_invocation: true

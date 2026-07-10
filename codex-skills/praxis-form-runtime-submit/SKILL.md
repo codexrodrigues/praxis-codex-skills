@@ -1,9 +1,11 @@
 ---
 name: praxis-form-runtime-submit
-description: Use when Codex must inspect, change, or scaffold @praxisui/dynamic-form runtime behavior: FormConfig, schema-driven field metadata, resourcePath/schemaUrl/readUrl/submitUrl, create/edit/view modes, local versus backend metadata-driven forms, submit payload normalization, local/transient fields, entity lookup payloads, hooks, form actions, and runtime validation.
+description: Use when Codex must inspect, change, or scaffold @praxisui/dynamic-form or praxis-dynamic-form package runtime behavior: FormConfig, schema-driven field metadata, resourcePath/schemaUrl/readUrl/submitUrl, create/edit/view modes, local versus backend metadata-driven forms, submit payload normalization, local/transient fields, entity lookup payloads, hooks, form actions, and runtime validation.
 ---
 
 # Praxis Form Runtime Submit
+
+This `praxis-form-*` skill family is the canonical Codex skill surface for `@praxisui/dynamic-form` and `projects/praxis-dynamic-form`; do not create parallel `praxis-dynamic-form-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for the `@praxisui/dynamic-form` runtime and submit contract. Dynamic Form is the canonical Angular runtime for schema-driven forms and configuration editing, but backend resource semantics remain owned by `praxis-metadata-starter`. Shared form models and services often belong to `@praxisui/core`.
 

@@ -1,7 +1,7 @@
 interface:
   display_name: "Praxis Form Schema Runtime"
   short_description: "Govern schema-driven form modes"
-  default_prompt: "Use $praxis-form-schema-runtime-modes to inspect dynamic-form schema URLs, resourcePath, create/edit/view modes, initialValue, metadata updates, and runtime reconciliation."
+  default_prompt: "Use $praxis-form-schema-runtime-modes to inspect @praxisui/dynamic-form package schema URLs, resourcePath, create/edit/view modes, initialValue, metadata updates, and runtime reconciliation."
 
 policy:
   allow_implicit_invocation: true

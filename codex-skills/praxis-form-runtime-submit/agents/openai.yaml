@@ -1,7 +1,7 @@
 interface:
   display_name: "Praxis Form Runtime Submit"
   short_description: "Govern dynamic form runtime submit"
-  default_prompt: "Use $praxis-form-runtime-submit to inspect @praxisui/dynamic-form runtime, schema metadata, FormConfig, submit payload, local/transient fields, and validation."
+  default_prompt: "Use $praxis-form-runtime-submit to inspect @praxisui/dynamic-form package runtime, schema metadata, FormConfig, submit payload, local/transient fields, and validation."
 
 policy:
   allow_implicit_invocation: true

@@ -1,7 +1,7 @@
 interface:
   display_name: "Praxis Form AI Rules Validation"
   short_description: "Validate form AI and rule contracts"
-  default_prompt: "Use $praxis-form-ai-rules-validation to inspect Praxis dynamic-form AI manifests, component edit plans, rules, diagnostics, context packs, registry ingestion, and assistant E2E."
+  default_prompt: "Use $praxis-form-ai-rules-validation to inspect @praxisui/dynamic-form package AI manifests, component edit plans, rules, diagnostics, context packs, registry ingestion, and assistant E2E."
 
 policy:
   allow_implicit_invocation: true

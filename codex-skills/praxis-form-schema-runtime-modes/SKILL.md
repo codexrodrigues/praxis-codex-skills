@@ -1,9 +1,11 @@
 ---
 name: praxis-form-schema-runtime-modes
-description: Use when Codex must work on @praxisui/dynamic-form schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view modes, initialValue hydration, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
+description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view modes, initialValue hydration, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
 ---
 
 # Praxis Form Schema Runtime Modes
+
+This `praxis-form-*` skill family is the canonical Codex skill surface for `@praxisui/dynamic-form` and `projects/praxis-dynamic-form`; do not create parallel `praxis-dynamic-form-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for the runtime contract that turns backend metadata and host inputs into a live `PraxisDynamicForm`. The form runtime is the Angular materialization owner; backend schema semantics remain canonical in `praxis-metadata-starter`, and config persistence remains canonical in `praxis-config-starter`.
 
