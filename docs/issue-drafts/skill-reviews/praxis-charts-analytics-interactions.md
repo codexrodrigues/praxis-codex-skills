@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-charts-analytics-interactions/
-- Descricao atual: Use when Codex must implement, audit, or consume @praxisui/charts analytics contracts: praxis.stats chart sources, ChartStatsApiService, AnalyticsChartContractService, AnalyticsChartConfigAdapterService, queryContext, statsRequest, group-by/timeseries/distribution, drilldown, cross-filter, point selection, event mappings, dashboard widget charts, analytics projections, and dashboard/backend boundary.
+- Descricao atual: Use when Codex must implement or audit governed @praxisui/charts analytics execution and interactions: x-ui.analytics projections, praxis.stats plans, capabilities, queryContext precedence, remote request lifecycle, group-by/timeseries/distribution response mapping, point selection, cross-filter, drill-down, declarative event actions, Page Builder composition links, or chart/table dashboard coordination.
 
 ## Classificacao inicial
 
