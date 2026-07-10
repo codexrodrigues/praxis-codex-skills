@@ -70,3 +70,5 @@ For public API changes, run `npm run build:praxis-dynamic-form` plus the direct 
 - Use `praxis-form-actions-hooks-runtime` when submit is triggered, intercepted, or decorated by form actions or hooks.
 - Use `praxis-form-authoring-settings` when editors expose `submitPolicy`, local fields, or entity lookup payload configuration.
 - Use `praxis-dynamic-fields-editorial` for field-level control metadata and entity lookup editor behavior.
+- Use `praxis-fields-option-sources` for `optionSource`, selected-value reload, dependency filters, and by-ids option hydration.
+- Use `praxis-fields-selection-lookup-controls` when select, async select, entity lookup, chips, list, or tree value identity affects submit semantics.

@@ -22,11 +22,16 @@ Before editing, inspect:
 
 - `src/lib/base/simple-base-select.component.ts`
 - `src/lib/base/option-store.ts`
+- `src/lib/components/inline-async-select/**`
+- `src/lib/components/inline-entity-lookup/**`
+- `src/lib/components/material-async-select/**`
 - `src/lib/services/option-display-resolver.service.ts`
 - affected `material-select`, `material-searchable-select`, `material-async-select`, `inline-*select`, or `inline-entity-lookup` component and spec
 - `src/lib/components/**/pdx-*.json-api.md` for public runtime claims
 - `src/lib/editorial/**` when the option-source field must be discoverable
 - `@praxisui/core` option-source and `GenericCrudService` contracts
+- `@praxisui/dynamic-form` submit/runtime skills when selected value shape enters form payloads
+- `@praxisui/metadata-editor` cascade normalization skills when the editor authoring surface changes dependencies
 - backend `x-ui.optionSource` producer when the Angular runtime lacks required data
 
 ## Option Source Rules
@@ -39,6 +44,7 @@ Before editing, inspect:
 - For selected-value hydration, prefer `getOptionSourceOptionsByIds(optionSource.key, ids, options)` for option sources and `getOptionsByIds(ids)` only for generic resource options.
 - Preserve `selectedReloadPolicy`, `invalidSortPolicy`, and backend waivers in UX/tooling claims. If by-ids reload is not supported, mark the scenario partial instead of pretending edit/reopen is fully supported.
 - Keep categorical buckets distinct: when the source is `CATEGORICAL_BUCKET`, default loading/search behavior may intentionally differ from free-text remote search.
+- Keep dynamic-form and table/filter consumers aligned: the same `optionSource` decision should drive form controls, inline filters, metadata-editor authoring, and CRUD/table lookup displays without host-local duplication.
 
 ## Entity Lookup
 
@@ -61,5 +67,6 @@ Minimum focused checks:
 - entity lookup: `inline-entity-lookup.component.spec.ts`
 - display/hydration: `option-display-resolver.service` behavior or focused coverage where present
 - editor/tooling discovery when metadata/editorial claims changed
+- downstream materialization: dynamic-form, metadata-editor, table/filter, or CRUD smoke only when the option-source contract changed for that consumer
 
 Always audit reopen/edit and presentation mode for selected values. A filter request that loads a page is not proof that a saved selected ID can be displayed later.

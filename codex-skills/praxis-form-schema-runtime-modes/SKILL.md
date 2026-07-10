@@ -72,4 +72,6 @@ State explicitly when live API/browser validation was skipped.
 - Use `praxis-form-submit-payload-pipeline` for payload normalization and local/transient submit semantics.
 - Use `praxis-form-layout-canvas` for `layoutPolicy`, visual blocks, generated presets, and canvas/editor placement.
 - Use `praxis-form-editor-document-roundtrip` when runtime inputs are exposed through Settings Panel or authoring documents.
+- Use `praxis-fields-runtime-loader` when a schema-backed `controlType` does not render or hot metadata does not reach the field component.
+- Use `praxis-fields-option-sources` and `praxis-fields-selection-lookup-controls` when schema metadata materializes `optionSource`, async select, entity lookup, or selection controls.
 - Use `praxis-core-resource-runtime` for schema/resource discovery, capabilities, actions, and option sources.
