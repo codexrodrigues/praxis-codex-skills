@@ -24,14 +24,53 @@ This estimate covers `praxis-ui-angular` only. A full-platform skill program tha
 
 ## Current Repository Coverage
 
-The `praxis-codex-skills` repository currently has 19 skills total:
+Status after Wave 6, with `codex-skills/praxis-skills.manifest.json` at 146 skills:
 
-- 10 Praxis platform skills
-- 9 Ergon migration skills
+| Metric | Count |
+| --- | ---: |
+| Praxis skills in manifest | 146 |
+| Active Praxis skills | 144 |
+| Active skills needing curation | 2 |
+| Open roadmap issues | 0 |
 
-Only part of those 10 Praxis skills directly cover Angular behavior. The current merged scope should be treated as an initial foundation, not broad platform coverage.
+The two entries still marked `active-needs-curation` are:
 
-Practical estimate: the existing skills cover roughly 6-8% of the Angular platform knowledge needed for strong future acceleration.
+- `praxis-dto-annotations`
+- `praxis-java-host-project`
+
+The repository has moved past the minimum useful coverage tier and is now inside the strong canonical coverage band for the Angular side. The current 146-skill set is no longer just an initial foundation: it encodes substantial platform knowledge across runtime, authoring, AI, validation, docs, metadata, config, quickstart proof, HTTP examples, and landing/public docs.
+
+It should still not be treated as exhaustive coverage. The largest remaining risk is not raw skill count, but whether each high-complexity Praxis surface has enough canonical guidance to prevent local workarounds, keyword-based routing, duplicated contracts, or weak validation choices during future implementation.
+
+### Current Coverage By Area
+
+This distribution is based on skill names in the manifest and is meant as planning evidence, not as a strict ownership taxonomy.
+
+| Area | Skills |
+| --- | ---: |
+| `praxis-core*` | 12 |
+| `praxis-table*` | 12 |
+| `praxis-form*` | 8 |
+| `praxis-fields*` plus `praxis-dynamic-fields-editorial` | 9 |
+| `praxis-ai*` | 8 |
+| `praxis-metadata*` including metadata editor | 8 |
+| `praxis-config*` | 5 |
+| `praxis-charts*` | 7 |
+| `praxis-page-builder*` | 3 |
+| `praxis-visual-builder*` | 5 |
+| `praxis-settings*` | 4 |
+| `praxis-crud*` | 4 |
+| `praxis-list*` | 4 |
+| `praxis-api-quickstart*` | 4 |
+| `praxis-http-examples*` | 3 |
+| `praxis-landing*` | 2 |
+
+Coverage added through the completed roadmap waves now includes:
+
+- Angular runtime and host integration, public API, validation, i18n, docs/playgrounds, and design guidance.
+- Core metadata/resource/action/surface materialization, global actions, widget observations, providers, logging, and component registry contracts.
+- Table, dynamic form, dynamic fields, charts, CRUD, list, settings, navigation, files upload, rich content, cron, table rule builder, metadata editor, manual form, editorial forms, page builder, visual builder, and AI authoring families.
+- Backend-adjacent platform skills for `praxis-metadata-starter`, `praxis-config-starter`, `praxis-api-quickstart`, `praxisui-http-examples`, and `praxis-ui-landing-page`.
 
 ## Angular Workspace Inventory
 
@@ -92,11 +131,11 @@ This tier gives Codex reliable behavior for common Praxis work:
 - shared skills for Angular host setup, authoring editors, metadata contracts, visual product design, validation, i18n, public API, and AI manifests;
 - enough guidance to avoid common local workarounds.
 
-This tier is not enough for deep platform acceleration. It would still leave table, dynamic form, dynamic fields, page builder, AI, charts, and settings panel with large blind spots.
+This tier is now complete and should be treated as surpassed.
 
 ### Strong canonical Angular coverage: 140-170 skills
 
-This is the recommended planning target.
+This is the recommended planning target. The current 146-skill manifest is inside this band.
 
 It allows each complex library to have several focused skills for:
 
@@ -110,7 +149,7 @@ It allows each complex library to have several focused skills for:
 - validation and E2E gates;
 - public API and cross-lib dependency rules.
 
-At this tier, Codex can encode Praxis platform knowledge instead of merely remembering docs.
+At this tier, Codex can encode Praxis platform knowledge instead of merely remembering docs. The current repository is now in this tier, with the caveat that some areas still need deeper audit against the live monorepo before being called exhaustive.
 
 ### Exhaustive Angular coverage: 180-200 skills
 
@@ -121,7 +160,7 @@ This tier covers:
 - component-specific authoring/E2E/manifest/playground guidance;
 - specialist skills for uncommon but high-risk surfaces.
 
-198 skills is enough for this Angular-only exhaustive tier, but it should be treated as an upper bound, not an initial target.
+198 skills is enough for this Angular-only exhaustive tier, but it should be treated as an upper bound, not an automatic target. The next decisions should be driven by source audit and implementation failures, not by filling a number.
 
 ## Recommended Target
 
@@ -143,8 +182,11 @@ Therefore:
 - 198 skills is enough for `praxis-ui-angular` if the goal is exhaustive Angular coverage.
 - 198 skills is probably higher than necessary for a strong first canonical roadmap.
 - 198 skills is not enough for the entire Praxis platform if config and metadata starters are included with the same depth.
+- 146 skills is enough to operate as strong canonical Angular coverage, but not enough to declare the whole Praxis platform exhaustively covered.
 
 ## Proposed Waves
+
+The waves below are retained as the original sizing model. Waves 1-6 have effectively been executed through the closed roadmap issues. Future waves should now be smaller, evidence-driven refinement cycles.
 
 ### Wave 1 - Foundation
 
@@ -198,16 +240,26 @@ Target: 25-35 additional skills.
 
 ## Immediate Backlog Recommendation
 
-Create the next set of GitHub issues in groups rather than as 198 individual issues at once:
+Do not create another batch of broad skill-generation issues just to increase the count. The next backlog should be driven by audit findings, curation gaps, and observed implementation misses.
 
-1. `praxis-core` canonical runtime and metadata skills.
-2. `praxis-table` deep skill family.
-3. `praxis-dynamic-form` deep skill family.
-4. `praxis-dynamic-fields` editorial/runtime skill family.
-5. `praxis-settings-panel` and authoring round-trip skill family.
-6. `praxis-ai` and AI registry skill family.
-7. `praxis-charts` and dashboard analytics skill family.
-8. `praxis-page-builder` and visual builder skill family.
-9. validation/public API/i18n/docs/playground transversal skills.
+Recommended next issues:
 
-This backlog should produce roughly 35-45 near-term issues. Each issue should create or upgrade one small family of skills, not a single export.
+1. Curate `praxis-dto-annotations` and decide whether it remains an independent Praxis skill or should be folded into metadata/resource/backend-host guidance.
+2. Curate `praxis-java-host-project` against current `praxis-metadata-starter`, `praxis-config-starter`, and `praxis-api-quickstart` guidance.
+3. Run a live monorepo coverage audit for the most complex Angular packages: `praxis-core`, `praxis-table`, `praxis-dynamic-form`, `praxis-dynamic-fields`, `praxis-page-builder`, `praxis-visual-builder`, `praxis-ai`, and `praxis-charts`.
+4. Verify whether the 146 current skills still match source reality after recent platform changes, especially public APIs, authoring manifests, AI contracts, docs registries, quickstart scripts, and HTTP examples.
+5. Create only focused follow-up issues where the audit finds one of these signals:
+   - recurring missing canonical guidance;
+   - skill guidance drifting from source;
+   - high-risk runtime/API surface not covered by a focused skill;
+   - validation gates missing or too broad;
+   - a public docs/example/playground projection that can mislead future implementation;
+   - any guidance that still encourages local adapters, keyword routing, duplicate contracts, or frontend-only semantics.
+
+Recommended near-term target:
+
+```text
+146 -> 150-160 curated skills
+```
+
+That range leaves room for real gaps without turning the roadmap into a count-driven exercise. A move toward 180-200 skills should happen only after a new source audit proves that exhaustive Angular coverage is worth the maintenance cost.
