@@ -79,3 +79,4 @@ For release or end-to-end authoring changes, use the quickstart HTTP/SSE smoke f
 - Use `praxis-http-examples-contract-surfaces` and `praxis-http-examples-llm-smoke` when authoring, patch, SSE, AI context, or registry examples affect the executable corpus.
 - Use `praxis-ai-turn-orchestration-transport` for Angular stream transport and assistant state.
 - Use `praxis-page-builder-ai-agentic` for Page Builder cockpit consumption.
+- Use `praxis-landing-public-docs-contracts` and `praxis-landing-registries-sitemap-playgrounds` when public landing/docs, guides, LLM files, decision playground, or examples publish agentic authoring or governed decision claims.

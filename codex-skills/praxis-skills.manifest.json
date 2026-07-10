@@ -152,6 +152,8 @@
                        "dependencies":  [
                                             "praxis-angular-validation-gates",
                                             "praxis-ai-registry-ingestion",
+                                            "praxis-landing-public-docs-contracts",
+                                            "praxis-landing-registries-sitemap-playgrounds",
                                             "praxis-tabs-runtime-authoring",
                                             "praxis-stepper-wizard-runtime",
                                             "praxis-expansion-runtime-panels",
@@ -198,8 +200,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "0B07C56402579CF74C3F8768087FBD56DA44D50A7124CCDB6D494C235E9D3158",
-                       "treeSha256":  "4CBC2AE089D0D911EFE6BAA5599555F181B092337BC022775FC17E3547B0453F"
+                       "skillMdSha256":  "BCC0BAE89A3448AAE4BB4BB284028E3BA64DD399DBEDEFAC875458E5E92E327E",
+                       "treeSha256":  "7C1E85ECB796545BE1D880F82694F23F3ADF3E6340956757D1CB02CAB2B917DD"
                    },
                    {
                        "name":  "praxis-angular-host-project",
@@ -292,8 +294,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "4A08E10872743142DAFB810F84B004E0B1449FB1CF845840BA399C5937E2B3D7",
-                       "treeSha256":  "991980C6B109D9F44332836A58087BDEEB3423EB4099821287C2EB267097D054"
+                       "skillMdSha256":  "A97BC8D7639E0F22CD086B21B70151A1D29B08B6B9550C5E32F5392B594C685F",
+                       "treeSha256":  "FCE0FD5B55D2B806DA00961410AAD2A795AA86F16915145655E881BF18F2F2E1"
                    },
                    {
                        "name":  "praxis-angular-i18n-governance",
@@ -579,8 +581,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "83DD2BB774E32C94B7A68615F44A907088E0E432AA48DB04F0B5CD7A9DE07C18",
-                       "treeSha256":  "E23FAE21E0E3753299651DB7F5193D5F78187A78FA61F5EFCFA931C9699D4E96"
+                       "skillMdSha256":  "8D1DF89B2011C75E1AD25DD293D0B3B33362A6261FFA1FAC0994EBCAF22202B3",
+                       "treeSha256":  "599A456081DAFDE9A90F4F5EC8A91146FF3722B0311E3536690A26D2C8C9C4F1"
                    },
                    {
                        "name":  "praxis-metadata-resource-baseline",
@@ -1277,6 +1279,39 @@
                                         ],
                        "skillMdSha256":  "7D1AD464D4412EAE4D78089760FC6D09DDC7BE859C40E2992A737F080FC6A359",
                        "treeSha256":  "D211219BF71B1529222D3F9370434E199B086F14FBA474DE5C01D38540E2D533"
+                   },
+                   {
+                       "name":  "praxis-landing-public-docs-contracts",
+                       "sourcePath":  "codex-skills/praxis-landing-public-docs-contracts",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-angular-docs-playgrounds",
+                                            "praxis-metadata-schema-contracts",
+                                            "praxis-metadata-discovery-capabilities",
+                                            "praxis-config-agentic-authoring-streaming",
+                                            "praxis-config-ai-registry-manifests",
+                                            "praxis-api-quickstart-cockpit-http-validation",
+                                            "praxis-http-examples-llm-smoke"
+                                        ],
+                       "skillMdSha256":  "03897F100BCA94B0AF7C5E9CDD4F0FF900B73A0236BE90BA64E9CD76BC1442E0",
+                       "treeSha256":  "7FCA5AF865317E256EB6B34A71C66CDD7E31CC161D809492BB323BD5CCDA8116"
+                   },
+                   {
+                       "name":  "praxis-landing-registries-sitemap-playgrounds",
+                       "sourcePath":  "codex-skills/praxis-landing-registries-sitemap-playgrounds",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-landing-public-docs-contracts",
+                                            "praxis-angular-docs-playgrounds",
+                                            "praxis-api-quickstart-cockpit-http-validation",
+                                            "praxis-http-examples-llm-smoke"
+                                        ],
+                       "skillMdSha256":  "62E649A344A1A02ECC4ACAD0358607A0216034488AA9E42DB6F8791138BFBB2C",
+                       "treeSha256":  "6951B8BFC0FA75BF6433DEDCC53040F5B816B864BB86533CDAE88CF53CA21274"
                    },
                    {
                        "name":  "praxis-list-ai-validation",
@@ -2107,8 +2142,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "55DD80FCD77650125F522CCFCBBB2D2AF858321010DF9DE8155902E954280F7D",
-                       "treeSha256":  "D3AAD83D627956E95311E02345443CD7F8B247049AABD98EBD337CE4DD573153"
+                       "skillMdSha256":  "D8D7DA556959286D27E6D7FFB7B1E5ECF155A9769AE8278AB1E2E1823913676A",
+                       "treeSha256":  "47305755670C88B75AE460AC106999DC9A6893115B5F35B9F05A9AAA9809434F"
                    },
                    {
                        "name":  "praxis-config-domain-decisions",
@@ -2162,8 +2197,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "FA33C2B5A2B4E42DAB356ABE203CF9254CF9C14ABFA13F06FF2CB00CA0C91A3E",
-                       "treeSha256":  "DAD7512698C16A4011574CF9BEA4D8B993AD3C31479E6B7CE34B2ECB7E6192FF"
+                       "skillMdSha256":  "7D02C925BF821C99F07E01C663871B7AA374A4F4F33C52AB70AB9D3994EE30F8",
+                       "treeSha256":  "91CE69F15DFAB8CF140ADCCF7DCA805F3D051E4AF9BC1EEEBE03208036F6C187"
                    },
                    {
                        "name":  "praxis-http-examples-corpus-manifest",
@@ -2195,8 +2230,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "DD89C3BF04C672552A041CEFFF715FA28D8E2BFD6B32C3D5DA18CE0A94FBDCA5",
-                       "treeSha256":  "95AA475E3F48B3310668EE055027837CEF32EA7D7DD6BCD0D9B291CE8FB822F8"
+                       "skillMdSha256":  "35582E52F6E9FF009911494AA694039EE00A543AB772004F385F88CFC5222BD2",
+                       "treeSha256":  "4D97FF9881540903792FF21F882C08FD2EC6FE559A12F9578B7A140FE9A71A58"
                    },
                    {
                        "name":  "praxis-core-component-registry-contracts",

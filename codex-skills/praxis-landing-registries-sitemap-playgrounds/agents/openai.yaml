@@ -1,0 +1,7 @@
+interface:
+  display_name: "Praxis Landing Publishing"
+  short_description: "Validate guides, sitemap, and examples"
+  default_prompt: "Use $praxis-landing-registries-sitemap-playgrounds to update Praxis public guide registries, sitemap, LLM files, examples, and playground validation."
+
+policy:
+  allow_implicit_invocation: true

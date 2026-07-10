@@ -211,6 +211,8 @@ Use these alongside this skill when the task scope requires them:
 - `praxis-angular-public-api-governance`: `@praxisui/*` public exports, barrel ownership, cross-lib edges, direct-consumer validation, and derived public API artifacts.
 - `praxis-angular-i18n-governance`: internal framework text, authoring chrome, locale catalogs, `PraxisI18nService`, hardcoded text audits, and PT-BR/en-US coverage.
 - `praxis-angular-docs-playgrounds`: public docs, component docs manifests, examples, AI recipes, landing pages, playgrounds, sitemap, and docs validation.
+- `praxis-landing-public-docs-contracts`: public landing/docs narrative that projects metadata, config, Angular runtime, quickstart, and HTTP evidence without redefining canonical contracts.
+- `praxis-landing-registries-sitemap-playgrounds`: landing guide registries, sitemap, LLM files, dynamic examples, playgrounds, generated docs, and publication validation.
 - `praxis-core-runtime-contracts`: core public API, tokens, providers, models, i18n, logging, and shared services.
 - `praxis-core-resource-runtime`: core schema/resource discovery, actions, surfaces, capabilities, option sources, related resources, and analytics materialization.
 - `praxis-metadata-schema-contracts`: backend `x-ui`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/domain`, schema refs, ETag, `X-Schema-Hash`, and operation-aware schema resolution.
