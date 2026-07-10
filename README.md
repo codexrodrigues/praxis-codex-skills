@@ -46,9 +46,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\sync-praxis-skills.p
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\sync-praxis-skills.ps1 -Family ergon-migration
 ```
 
+Python fallback:
+
+```bash
+python3 scripts/sync-praxis-skills.py --family praxis
+python3 scripts/sync-praxis-skills.py --family ergon-migration
+```
+
 The sync only manages skills listed in the selected manifest. It does not remove unrelated local skills from `$CODEX_HOME/skills`.
 
-Use `-Force` only when intentionally replacing a locally modified managed skill with the canonical version from this repository.
+Use `-Force` / `--force` only when intentionally replacing a locally modified managed skill with the canonical version from this repository.
 
 ## Manifests
 

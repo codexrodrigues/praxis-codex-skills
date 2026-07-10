@@ -4,50 +4,11 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
-import os
 from pathlib import Path
 from typing import Any
 
-
-def sha256_file(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
-
-
-def skill_file_hashes(root: Path) -> dict[str, str]:
-    hashes: dict[str, str] = {}
-    if not root.exists():
-        return hashes
-
-    for path in sorted(p for p in root.rglob("*") if p.is_file()):
-        if path.name == ".codex-skill-install.json":
-            continue
-        relative = path.relative_to(root).as_posix()
-        hashes[relative] = sha256_file(path)
-
-    return hashes
-
-
-def skill_tree_hash(root: Path) -> str:
-    hashes = skill_file_hashes(root)
-    payload = "\n".join(f"{hashes[name]}  {name}" for name in sorted(hashes))
-    return hashlib.sha256(payload.encode("utf-8")).hexdigest().upper()
-
-
-def manifest_for_family(repo_root: Path, family: str) -> Path:
-    name = {
-        "praxis": "praxis-skills.manifest.json",
-        "ergon-migration": "ergon-migration-skills.manifest.json",
-    }[family]
-    return repo_root / "codex-skills" / name
-
-
-def skills_root() -> Path:
-    codex_home = os.environ.get("CODEX_HOME")
-    if codex_home:
-        return Path(codex_home) / "skills"
-    return Path.home() / ".codex" / "skills"
+from codex_skills_common import load_manifest, sha256_file, skill_file_hashes, skill_tree_hash, skills_root
 
 
 def update_manifest_text(text: str, replacements: list[tuple[str, str]]) -> str:
@@ -64,13 +25,10 @@ def update_manifest_text(text: str, replacements: list[tuple[str, str]]) -> str:
 
 def audit(args: argparse.Namespace) -> int:
     repo_root = Path(args.repo_root).resolve()
-    manifest_path = Path(args.manifest).resolve() if args.manifest else manifest_for_family(repo_root, args.family)
+    requested_manifest = Path(args.manifest).resolve() if args.manifest else None
+    manifest_path, manifest = load_manifest(repo_root, args.family, requested_manifest)
     manifest_text = manifest_path.read_text()
-    manifest: dict[str, Any] = json.loads(manifest_text)
     destination = Path(args.skills_root).resolve() if args.skills_root else skills_root()
-
-    if manifest.get("family") != args.family:
-        raise RuntimeError(f"Manifest family {manifest.get('family')!r} does not match {args.family!r}")
 
     replacements: list[tuple[str, str]] = []
     results: list[dict[str, Any]] = []
@@ -218,4 +176,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except RuntimeError as error:
+        print(f"ERROR: {error}")
+        raise SystemExit(1)
