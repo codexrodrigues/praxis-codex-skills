@@ -16,6 +16,9 @@ Pair it with:
 - `praxis-ai-composer-attachments-quick-replies` for quick replies, clarifications, and composer actions that select Page Builder targets or operations.
 - `praxis-page-builder-composition` for `WidgetPageDefinition`, `UiCompositionPlan`, composition links, and runtime page materialization.
 - `praxis-page-builder-authoring` for Settings Panel and visual editor round-trip.
+- `praxis-core-widget-observations` for runtime observation envelopes, serializability, redaction, and trust boundary proof.
+- `praxis-core-surface-materialization` and `praxis-core-global-action-payloads` when plans open surfaces, dispatch composition links, or consume `surface.result`.
+- `praxis-visual-builder-rules` when Page Builder agentic flows host or modify visual-builder rules.
 
 ## Canonical AI Boundary
 
@@ -40,6 +43,8 @@ Before editing Page Builder AI, inspect:
 - `projects/praxis-page-builder/src/lib/ai/page-builder-ui-composition-plan.ts`
 - `projects/praxis-page-builder/src/lib/ai/page-builder-agentic-authoring.service.ts`
 - `projects/praxis-page-builder/src/lib/ai/page-builder-agentic-authoring-turn-flow.ts`
+- `projects/praxis-page-builder/src/lib/ai/page-builder-runtime-normalization.util.ts`
+- `projects/praxis-page-builder/src/lib/ai/page-builder-governed-continuation.model.ts`
 - `projects/praxis-page-builder/src/lib/dynamic-page-builder.component.ts`
 - `projects/praxis-page-builder/docs/page-builder-governed-continuity-inventory.md`
 - `projects/praxis-page-builder/docs/component-palette-browser-validation-roadmap.md`
@@ -61,6 +66,7 @@ For page persistence, keep `pageIdentity`, scope, and ETag policy out of the pag
 Streaming turn behavior must show intermediate reasoning/state in the assistant UI before the terminal preview/result. Clarifications, quick replies, diagnostics, attachments, component capabilities, runtime observations, and selected widget context must remain visible enough for enterprise users to understand why the assistant is blocked or proposing a change.
 
 Runtime observations are untrusted frontend evidence. Use them as grounding signals, not as backend truth. When sent to the backend, preserve the trust-boundary marker.
+Normalize observations and current page state before digesting them into AI context. Do not send raw widget payloads, secrets, or unbounded table/form data when a component/resource/schema/action reference or digest is enough.
 
 For shared-rule or project-knowledge continuation:
 
@@ -77,6 +83,7 @@ Use local-first gates:
 - adapter or composition plan changes: `page-builder-ai.adapter.spec.ts`, `page-builder-ui-composition-plan.spec.ts`, and runtime normalization specs.
 - capability catalogs: `page-builder-ai-catalog.spec.ts` and AI registry validation when generated assets change.
 - turn flow: `page-builder-agentic-authoring-turn-flow.spec.ts`, agentic authoring service specs, and dynamic page builder component specs.
+- runtime observation context: normalization specs plus core observation serializability/redaction checks when observation payloads or digests change.
 - full agentic/page-builder contract changes: the local Playwright gates named in `projects/praxis-page-builder/AGENTS.md`, using the official backend/UI origins and real provider configuration.
 
 Report whether only the quick smoke ran or the complete agentic validation gate ran. Do not use GitHub Actions as the normal exploratory loop when local gates can prove the change.

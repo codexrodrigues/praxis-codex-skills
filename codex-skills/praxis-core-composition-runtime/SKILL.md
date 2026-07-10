@@ -36,12 +36,14 @@ Core owns:
 - composition link model, transform pipeline, diagnostics, runtime traces, link execution, nested ports
 - surface host and related-resource outlet runtime
 - runtime component observation and event propagation
+- bridge points used by Page Builder agentic authoring, including observations, surface handoff, and component-port grounding
 
 Page Builder, Visual Builder, component libraries, and host apps consume these contracts. They should not redefine the same config/event/link semantics locally.
 
 ## Decision Rules
 
 - If the task is about authoring a page/editor graph, use the builder skill as the functional owner and this skill for the runtime contract.
+- If the task is about Page Builder surface handoff or runtime observation evidence, keep Page Builder as the authoring owner and core as the execution/trust-boundary owner.
 - If the task is specifically about `@praxisui/page-builder`, pair with `praxis-page-builder-composition` for palette, canvas, graph, connection editor, and page-builder-owned authoring semantics.
 - If the task is about rich-content widgets, presets, host-mediated actions, or `RichContentDocument` materialization inside dynamic pages, pair with `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters`.
 - If the task is about container widgets such as `@praxisui/tabs`, `@praxisui/stepper`, or `@praxisui/expansion`, pair with the owning runtime skill before changing widget event paths, nested widgets, registry metadata, or dynamic page materialization.
@@ -60,6 +62,7 @@ Before declaring composition complete, identify:
 - link or transform that moves data between widgets
 - diagnostics when a target, port, or transform cannot resolve
 - runtime observation evidence when behavior is user-visible
+- redaction/serializability proof when observations feed AI or diagnostics
 - public API and AI manifest impact when the component is public
 
 ## Validation Guidance
