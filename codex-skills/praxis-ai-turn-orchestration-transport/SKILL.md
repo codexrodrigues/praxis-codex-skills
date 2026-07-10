@@ -29,6 +29,8 @@ Inspect:
 
 Use `praxis-ai-composer-attachments-quick-replies` for composer-originated actions. Use `praxis-ai-backend-config-contracts` for endpoint/header/token changes.
 
+Use `praxis-config-agentic-authoring-streaming` when backend stream semantics, `AiTurnEventEnvelope`, quick replies, diagnostics, terminal events, replay, cancel, or semantic intent resolution are in scope. Use `praxis-config-domain-decisions` when a quick reply or continuation represents a governed semantic decision rather than a local assistant option.
+
 ## Orchestration Rules
 
 - Generate and preserve `sessionId` and `clientTurnId` so stale async results cannot overwrite newer turns.
