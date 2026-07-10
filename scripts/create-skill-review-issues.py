@@ -42,10 +42,10 @@ def draft_family(content: str, path: Path) -> str:
 def issue_payloads(draft_root: Path, limit: int | None = None) -> list[dict[str, str]]:
     payloads: list[dict[str, str]] = []
     for path in draft_files(draft_root):
-        content = path.read_text()
+        content = path.read_text(encoding="utf-8")
         payloads.append(
             {
-                "path": str(path),
+                "path": path.as_posix(),
                 "title": draft_title(content, path),
                 "family": draft_family(content, path),
                 "body": content,
@@ -222,3 +222,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

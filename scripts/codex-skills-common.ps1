@@ -121,18 +121,62 @@ function Get-CodexSkillFileHashMap {
         $_.Name -ne '.codex-skill-install.json'
     } | ForEach-Object {
         $relative = $_.FullName.Substring($Root.Length).TrimStart('\')
-        $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
+        $hash = Get-CodexSkillContentHash -Path $_.FullName
         $map[$relative] = $hash
     }
 
     return $map
 }
 
+function Get-CodexSkillContentHash {
+    param([string]$Path)
+
+    $bytes = [System.IO.File]::ReadAllBytes($Path)
+    $hashBytes = $bytes
+
+    try {
+        $utf8 = [System.Text.UTF8Encoding]::new($false, $true)
+        $text = $utf8.GetString($bytes)
+        $roundTrip = $utf8.GetBytes($text)
+
+        if ($roundTrip.Length -eq $bytes.Length) {
+            $sameBytes = $true
+            for ($index = 0; $index -lt $bytes.Length; $index++) {
+                if ($roundTrip[$index] -ne $bytes[$index]) {
+                    $sameBytes = $false
+                    break
+                }
+            }
+
+            if ($sameBytes) {
+                $hashBytes = $utf8.GetBytes($text.Replace("`r`n", "`n").Replace("`r", "`n"))
+            }
+        }
+    }
+    catch [System.Text.DecoderFallbackException] {
+        # Preserve binary files byte-for-byte in the skill tree hash.
+    }
+
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        return [System.BitConverter]::ToString($sha.ComputeHash($hashBytes)).Replace('-', '')
+    }
+    finally {
+        $sha.Dispose()
+    }
+}
+
 function Get-CodexSkillTreeHash {
     param([string]$Root)
 
     $map = Get-CodexSkillFileHashMap -Root $Root
-    $lines = @($map.Keys | Sort-Object | ForEach-Object { "$($map[$_])  $_" })
+    $normalizedMap = @{}
+    foreach ($path in $map.Keys) {
+        $normalizedMap[$path.Replace('\', '/')] = $map[$path]
+    }
+    [string[]]$paths = @($normalizedMap.Keys)
+    [Array]::Sort($paths, [System.StringComparer]::Ordinal)
+    $lines = @($paths | ForEach-Object { "$($normalizedMap[$_])  $_" })
     $payload = [string]::Join("`n", $lines)
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($payload)
     $sha = [System.Security.Cryptography.SHA256]::Create()
@@ -218,3 +262,4 @@ function New-CodexSkillInstallMetadata {
         installedAt = (Get-Date).ToString('o')
     }
 }
+
