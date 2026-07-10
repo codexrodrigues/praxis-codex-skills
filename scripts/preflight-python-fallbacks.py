@@ -82,6 +82,7 @@ def main() -> int:
                 "ergon-migration",
             ]
         )
+        run([sys.executable, "scripts/generate-skill-review-issue-drafts.py", "--check"])
         run([sys.executable, "scripts/validate-issue-drafts.py"])
         with tempfile.TemporaryDirectory() as temporary_skills_root:
             for family in FAMILIES:
