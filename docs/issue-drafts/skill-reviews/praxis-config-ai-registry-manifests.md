@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-config-ai-registry-manifests/
-- Descricao atual: Use when Codex must work on praxis-config-starter AI registry contracts: ai_registry, /api/praxis/config/ai-registry/**, component definitions, registry snapshot ingestion, templates, authoringManifest projection, editableTargets, operations, validators, effect compilers, presentation affordances, manifest validation, and compile-patch endpoints.
+- Descricao atual: Use when implementing, reviewing, debugging, or validating praxis-config-starter AI registry persistence, component registry ingestion, bootstrap snapshots, templates, semantic search, RAG publication, executable authoring manifest projection, target resolution, validators, effect compilers, presentation affordances, or /api/praxis/config/ai-registry/** and /api/praxis/config/ai/authoring/manifests/** contracts.
 
 ## Classificacao inicial
 
