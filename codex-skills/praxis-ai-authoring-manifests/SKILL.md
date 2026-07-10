@@ -45,6 +45,11 @@ For component-specific manifest work, use the focused skill when available: `pra
 - Destructive operations require confirmation.
 - Family-level manifests need an aggregate registry entry addressable by `componentId`, not only child copies.
 - Declared-only fields may be authorable for round-trip, but docs/validators must not imply active runtime behavior.
+- Every non-global operation declares `target.kind`, resolver, ambiguity policy, preconditions, supported `submissionImpact`, validators, effects, and affected paths. The deprecated `targetKind`, when retained, must equal `target.kind`.
+- Every global validator is used by an operation. Effect paths must overlap affected paths; collection effects declare identity keys; `compile-domain-patch` declares reads, writes, identity keys, input schema, failure modes, and a meaningful handler description.
+- Manifest examples are executable grounding/eval evidence: include positive examples and at least one explicit negative example. Do not encode lexical routing as an example substitute.
+- Remote-binding operations must prove input-schema and path/effect evidence, use a pertinent binding validator, and declare `affects-remote-binding`; do not label an unrelated operation as remote merely to satisfy a gate.
+- Family `controlProfiles` repeat the same operation metadata and applicability evidence. Presentation affordances must identify their source, default target, and compatible options; they are consultative constraints, not edit permission.
 
 ## Synchronization Triggers
 
@@ -62,3 +67,5 @@ If no manifest update is required after a public change, state why.
 ## Validation
 
 Run the focused manifest spec first. Use `npm run validate:authoring-contracts` or the direct validator when the manifest is complete/public. Use `praxis-ai-registry-ingestion` when generated registry/catalog artifacts must be updated or verified.
+
+For a public manifest, prove the owning runtime/editor round-trip and inspect the generated registry entry, public export, README claim, and required implementation/semantic reports. A passing TypeScript literal is insufficient when targets, effects, validators, profile projection, or runtime coverage disagree.
