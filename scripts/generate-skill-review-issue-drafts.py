@@ -35,10 +35,25 @@ def canonical_project(skill: dict[str, str]) -> str:
         return "praxis-metadata-starter"
     if name in {
         "praxis-dto-annotations",
+        "praxis-java-availability-discovery-authoring",
+        "praxis-java-autoconfiguration-starter-maintenance",
+        "praxis-java-command-concurrency-authoring",
+        "praxis-java-config-boundary-integration",
+        "praxis-java-contract-conformance",
+        "praxis-java-domain-governance-field-access",
+        "praxis-java-error-response-contracts",
+        "praxis-java-filter-query-authoring",
         "praxis-java-host-project",
+        "praxis-java-http-corpus-publication",
+        "praxis-java-option-source-provider-authoring",
+        "praxis-java-quickstart-proof",
+        "praxis-java-resource-authoring",
+        "praxis-java-stats-export-authoring",
         "praxis-resource-entity-lookup-backend",
     }:
         return "praxis-metadata-starter"
+    if name == "praxis-skill-authoring-governance":
+        return "transversal"
     if name in {"praxis-ai-backend-config-contracts", "praxis-files-upload-backend-contract"}:
         return "transversal"
     return "praxis-ui-angular"
@@ -384,4 +399,3 @@ if __name__ == "__main__":
     except RuntimeError as error:
         print(f"ERROR: {error}")
         raise SystemExit(1)
-

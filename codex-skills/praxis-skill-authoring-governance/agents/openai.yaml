@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Skill Governance"
+  short_description: "Govern skills from evidence to release"
+  default_prompt: "Use $praxis-skill-authoring-governance to plan or review a canonical Praxis Codex skill."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Java Contract Conformance"
+  short_description: "Audit complete API runtime readiness"
+  default_prompt: "Use $praxis-java-contract-conformance to audit a Praxis Java resource before migration handoff."

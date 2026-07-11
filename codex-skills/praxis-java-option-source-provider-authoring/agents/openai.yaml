@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Java Option Providers"
+  short_description: "Author governed external option providers"
+  default_prompt: "Use $praxis-java-option-source-provider-authoring to implement or audit a Praxis option-source provider."

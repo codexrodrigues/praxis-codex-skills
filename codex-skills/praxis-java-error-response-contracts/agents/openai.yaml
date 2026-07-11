@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Java Error Contracts"
+  short_description: "Author safe structured API errors"
+  default_prompt: "Use $praxis-java-error-response-contracts to implement or audit a Praxis API error contract."

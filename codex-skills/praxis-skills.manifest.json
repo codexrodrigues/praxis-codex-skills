@@ -23,6 +23,232 @@
                        "treeSha256":  "99053239BD66EE13C25A12B0CFC9B27CF715475764695FE713F887526CCA9525"
                    },
                    {
+                       "name":  "praxis-skill-authoring-governance",
+                       "sourcePath":  "codex-skills/praxis-skill-authoring-governance",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-product-evolution",
+                                            "praxis-angular-agents-governance",
+                                            "praxis-metadata-resource-baseline",
+                                            "praxis-java-host-project",
+                                            "praxis-dto-annotations"
+                                        ],
+                       "skillMdSha256":  "C4292402C682ECB09DF328668A680F46ED6847A3E600B8D03141D480E717384F",
+                       "treeSha256":  "82B85001411FFEBB5ACCC51A38481C65BE4D16456CA9C026E1EFB482F7812B69"
+                   },
+                   {
+                       "name":  "praxis-java-resource-authoring",
+                       "sourcePath":  "codex-skills/praxis-java-resource-authoring",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-host-project",
+                                            "praxis-metadata-resource-baseline",
+                                            "praxis-dto-annotations",
+                                            "praxis-metadata-schema-contracts",
+                                            "praxis-metadata-discovery-capabilities",
+                                            "praxis-metadata-domain-option-sources",
+                                            "praxis-resource-entity-lookup-backend"
+                                        ],
+                       "skillMdSha256":  "F73178E9BF720747F148DFE2BFE5250DF8C0BEE9AE45528F17A882238104A3B0",
+                       "treeSha256":  "C5DE9B0359C0ED99FA10C68EA508B5FFBBECF2F7665F25A595B3439F57C40F1F"
+                   },
+                   {
+                       "name":  "praxis-java-filter-query-authoring",
+                       "sourcePath":  "codex-skills/praxis-java-filter-query-authoring",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-resource-authoring",
+                                            "praxis-dto-annotations",
+                                            "praxis-metadata-resource-baseline",
+                                            "praxis-metadata-schema-contracts",
+                                            "praxis-metadata-domain-option-sources",
+                                            "praxis-resource-entity-lookup-backend"
+                                        ],
+                       "skillMdSha256":  "6EF9F20DFB1D9DCDD0AD3E5D77C273ED4F2F131824B03D94D0395F0088B01ABF",
+                       "treeSha256":  "8981E2F1B261CBEFFEB23D8607074EADC7E4142F26F218F801E6F594C412EE0F"
+                   },
+                   {
+                       "name":  "praxis-java-option-source-provider-authoring",
+                       "sourcePath":  "codex-skills/praxis-java-option-source-provider-authoring",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-resource-entity-lookup-backend",
+                                            "praxis-metadata-domain-option-sources",
+                                            "praxis-java-filter-query-authoring",
+                                            "praxis-java-resource-authoring"
+                                        ],
+                       "skillMdSha256":  "EF348D7AC8E92ADA643B3357F594834178CB414B4F2DDA1EFE84A72EF4FEB110",
+                       "treeSha256":  "8C7599EAF9744269842E5EBCAD194B34C06375C9383676893B9B5DAF293F7133"
+                   },
+                   {
+                       "name":  "praxis-java-availability-discovery-authoring",
+                       "sourcePath":  "codex-skills/praxis-java-availability-discovery-authoring",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-resource-authoring",
+                                            "praxis-metadata-discovery-capabilities",
+                                            "praxis-metadata-schema-contracts",
+                                            "praxis-metadata-resource-baseline",
+                                            "praxis-api-quickstart-cockpit-http-validation"
+                                        ],
+                       "skillMdSha256":  "45881880866F9D6FB7975A3F209B126478E1621FA59A281F27CF561FA8265176",
+                       "treeSha256":  "4638094BF82439011B5262A27DD21B966CC2249935FB02AA33480967A88FB071"
+                   },
+                   {
+                       "name":  "praxis-java-contract-conformance",
+                       "sourcePath":  "codex-skills/praxis-java-contract-conformance",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-resource-authoring",
+                                            "praxis-java-filter-query-authoring",
+                                            "praxis-java-option-source-provider-authoring",
+                                            "praxis-java-availability-discovery-authoring",
+                                            "praxis-metadata-schema-contracts",
+                                            "praxis-api-quickstart-cockpit-http-validation",
+                                            "praxis-core-resource-runtime"
+                                        ],
+                       "skillMdSha256":  "EB7DCCF1F43A41EF60F7377791B053EE294CED7895686F4C0C289DB8351F5E6F",
+                       "treeSha256":  "11E578A337E5049A4D61B73B740314432B9DA42F544ADBDDC5D875122E9066AF"
+                   },
+                   {
+                       "name":  "praxis-java-command-concurrency-authoring",
+                       "sourcePath":  "codex-skills/praxis-java-command-concurrency-authoring",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-availability-discovery-authoring",
+                                            "praxis-java-resource-authoring",
+                                            "praxis-metadata-discovery-capabilities",
+                                            "praxis-metadata-schema-contracts",
+                                            "praxis-java-contract-conformance"
+                                        ],
+                       "skillMdSha256":  "7DAC6F76B77A673E14939401EFCEE5FD47163B6A19B78224911782F385676579",
+                       "treeSha256":  "2A02954F65F2DC780FE21827A1CC9D31F9B31DC48D7267C98687D15EC1E77DFC"
+                   },
+                   {
+                       "name":  "praxis-java-error-response-contracts",
+                       "sourcePath":  "codex-skills/praxis-java-error-response-contracts",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-command-concurrency-authoring",
+                                            "praxis-java-filter-query-authoring",
+                                            "praxis-java-option-source-provider-authoring",
+                                            "praxis-java-contract-conformance",
+                                            "praxis-metadata-schema-contracts"
+                                        ],
+                       "skillMdSha256":  "C8C159688320F3396CF3DD26D008CD95C0EB0AEA29A870B74838B1A751B97AC1",
+                       "treeSha256":  "5DBD3A30CA84C3B56A4E9641D2DA22506EC1605956D7FC4A126B28AF376E73D9"
+                   },
+                   {
+                       "name":  "praxis-java-stats-export-authoring",
+                       "sourcePath":  "codex-skills/praxis-java-stats-export-authoring",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-resource-authoring",
+                                            "praxis-java-filter-query-authoring",
+                                            "praxis-metadata-discovery-capabilities",
+                                            "praxis-java-error-response-contracts",
+                                            "praxis-java-contract-conformance"
+                                        ],
+                       "skillMdSha256":  "C302AD3BB60530F66F983317FDFB1E75AFC461D1303C7E1B43D683EDC2A9DEB2",
+                       "treeSha256":  "FC594696DC3E18537F391908A302D598500946D88C6B82946774D4CFBB83BD8C"
+                   },
+                   {
+                       "name":  "praxis-java-domain-governance-field-access",
+                       "sourcePath":  "codex-skills/praxis-java-domain-governance-field-access",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-dto-annotations",
+                                            "praxis-java-stats-export-authoring",
+                                            "praxis-java-option-source-provider-authoring",
+                                            "praxis-java-error-response-contracts",
+                                            "praxis-java-contract-conformance"
+                                        ],
+                       "skillMdSha256":  "0DB8853E340634DA8AE9D6E7D1889A2BC6D66949278DDA02312E2085747F735A",
+                       "treeSha256":  "E0F7FDC3A4DFA7884038AE0BB9DDBA2DB9FA4184A1E9BA16C8A918756DF68656"
+                   },
+                   {
+                       "name":  "praxis-java-autoconfiguration-starter-maintenance",
+                       "sourcePath":  "codex-skills/praxis-java-autoconfiguration-starter-maintenance",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-host-project",
+                                            "praxis-java-option-source-provider-authoring",
+                                            "praxis-metadata-schema-contracts",
+                                            "praxis-java-contract-conformance"
+                                        ],
+                       "skillMdSha256":  "618EB6BE1600864F013A26250A7DCBFFC2E88A267271E58CCC472E4EA494909B",
+                       "treeSha256":  "BBE4F3007803410187938FB6860494C53FA94E3A06C986231B5C3C0819CFE61B"
+                   },
+                   {
+                       "name":  "praxis-java-quickstart-proof",
+                       "sourcePath":  "codex-skills/praxis-java-quickstart-proof",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-api-quickstart-operational-proof",
+                                            "praxis-api-quickstart-domain-pilots",
+                                            "praxis-api-quickstart-cockpit-http-validation",
+                                            "praxis-java-contract-conformance"
+                                        ],
+                       "skillMdSha256":  "7EA67538BF7A808AB82F8A93E43C71C9C93F7ECA51CEFCEEB153C2E3E2059FEC",
+                       "treeSha256":  "DCC96A12753C2F4DF75517BEE187BC267A5DE2E15ACA8F7512B42E7371263359"
+                   },
+                   {
+                       "name":  "praxis-java-http-corpus-publication",
+                       "sourcePath":  "codex-skills/praxis-java-http-corpus-publication",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-quickstart-proof",
+                                            "praxis-http-examples-corpus-manifest",
+                                            "praxis-http-examples-contract-surfaces",
+                                            "praxis-http-examples-llm-smoke"
+                                        ],
+                       "skillMdSha256":  "4EA5F29726E90EEBEDD068AD6199B66F8F1272AED81C8FD00A767E6792ACE8D5",
+                       "treeSha256":  "B5753627B6E30B4B049B6B5CE54ACFA467C0734CC32B30A3CD6839B839A808C0"
+                   },
+                   {
+                       "name":  "praxis-java-config-boundary-integration",
+                       "sourcePath":  "codex-skills/praxis-java-config-boundary-integration",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "praxis-java-resource-authoring",
+                                            "praxis-java-contract-conformance",
+                                            "praxis-config-runtime-persistence",
+                                            "praxis-config-domain-decisions",
+                                            "praxis-config-api-metadata-grounding",
+                                            "praxis-api-quickstart-security-config"
+                                        ],
+                       "skillMdSha256":  "71C3F6578EED0DDD749B3206476BD72A1A3E96F13177D30B743C8110D9776F16",
+                       "treeSha256":  "B187D446DE31EFD241686BF70D9D66A1FBBB7D0BB29D0DF14F2C87B2C22F8A92"
+                   },
+                   {
                        "name":  "praxis-ai-assistant-runtime",
                        "sourcePath":  "codex-skills/praxis-ai-assistant-runtime",
                        "version":  "0.1.0-beta.0",
