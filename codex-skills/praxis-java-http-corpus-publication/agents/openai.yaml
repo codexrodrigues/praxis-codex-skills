@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Java HTTP Corpus"
+  short_description: "Publish governed HTTP proof corpus"
+  default_prompt: "Use $praxis-java-http-corpus-publication to publish a Praxis Java API proof in the HTTP corpus."

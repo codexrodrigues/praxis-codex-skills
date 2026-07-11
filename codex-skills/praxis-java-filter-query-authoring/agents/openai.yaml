@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Java Filter Queries"
+  short_description: "Author governed resource query contracts"
+  default_prompt: "Use $praxis-java-filter-query-authoring to implement or audit a Praxis Java filter and query contract."

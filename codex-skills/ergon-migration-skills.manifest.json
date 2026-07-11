@@ -129,6 +129,24 @@
                        "treeSha256":  "50E386241481A364692A81BF62DC82D5EBBB142BB13A8F05571CCF3D68C915D9"
                    },
                    {
+                       "name":  "ergon-migration-scaffold",
+                       "sourcePath":  "codex-skills/ergon-migration-scaffold",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "ergon-migration-orchestration",
+                                            "ergon-archon-screen-discovery",
+                                            "ergon-archon-read-api-migration",
+                                            "ergon-table-rule-audit",
+                                            "ergon-archon-write-api-migration",
+                                            "praxis-java-resource-authoring",
+                                            "praxis-dto-annotations"
+                                        ],
+                       "skillMdSha256":  "D882F230059B577501134017037B459829A490B1F249CE1DB2D1358E553A1C0F",
+                       "treeSha256":  "E66A997C5E4DBDBFB916649696A30FFE6F5ABB19FF6DDD504155A30D4C8C1813"
+                   },
+                   {
                        "name":  "ergon-rule-migration-orchestration",
                        "sourcePath":  "codex-skills/ergon-rule-migration-orchestration",
                        "version":  "0.1.0-beta.0",

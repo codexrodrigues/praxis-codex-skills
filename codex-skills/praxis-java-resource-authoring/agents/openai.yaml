@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Java Resource Authoring"
+  short_description: "Build complete governed Praxis resources"
+  default_prompt: "Use $praxis-java-resource-authoring to implement or audit a complete Java Praxis resource."

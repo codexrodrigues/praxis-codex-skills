@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Java Availability Discovery"
+  short_description: "Author governed actions and availability"
+  default_prompt: "Use $praxis-java-availability-discovery-authoring to implement or audit Praxis actions, surfaces, capabilities, and contextual availability."

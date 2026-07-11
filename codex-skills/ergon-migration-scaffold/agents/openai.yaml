@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Migration Scaffold"
+  short_description: "Scaffold evidence-led Praxis APIs"
+  default_prompt: "Use $ergon-migration-scaffold to turn a closed Ergon screen discovery package into a governed Praxis API scaffold."

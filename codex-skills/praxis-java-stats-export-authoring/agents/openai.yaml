@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Java Stats Export"
+  short_description: "Author governed analytics and exports"
+  default_prompt: "Use $praxis-java-stats-export-authoring to implement or audit Praxis stats and collection export."
