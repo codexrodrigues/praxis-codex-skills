@@ -1,6 +1,6 @@
 ---
 name: ergon-migration-scaffold
-description: Use when turning a closed Ergon/Archon screen-discovery package into a repeatable Praxis API implementation packet: operation inventory, resource key, read/options/write route decisions, metadata contract outline, phase gates, code-ready tasks, and a deterministic migration scaffold.
+description: Use when turning a closed Ergon/Archon screen-discovery package into a repeatable Praxis API-first implementation: operation inventory, manifest/profile/blueprint generation, read-only Java dry run, resource key, phase gates, evidence packet, and deterministic elapsed-time measurement.
 ---
 
 # Ergon Migration Scaffold
@@ -42,6 +42,26 @@ existing packet without `--force`. Read
 [scaffold-contract.md](references/scaffold-contract.md) when choosing
 operations or interpreting generated states.
 
+## Prefer The API-First Factory
+
+When `tools/migration-factory/export-api-first-manifest.ps1` exists and the
+screen has its required Phase 1/2 factory inputs, it is the implementation path
+for the smallest read slice. Run its checked chain in order:
+
+```powershell
+pwsh -File tools/migration-factory/export-api-first-manifest.ps1 -Screen <SCREEN>
+pwsh -File tools/migration-factory/check-api-first-manifest.ps1 -ManifestPath docs/migracao/<SCREEN>/factory/api-first-manifest.json
+pwsh -File tools/migration-factory/new-api-first-read-profile.ps1 -ManifestPath docs/migracao/<SCREEN>/factory/api-first-manifest.json
+pwsh -File tools/migration-factory/check-api-first-read-profile.ps1 -ProfilePath docs/migracao/<SCREEN>/factory/api-first-read-profile.prelim.json
+pwsh -File tools/migration-factory/java-read-scaffold.ps1 -ProfilePath docs/migracao/<SCREEN>/factory/api-first-read-profile.prelim.json
+```
+
+The last command is a dry run by default. Fill every `REVIEW_REQUIRED` item
+from confirmed screen/Oracle/host evidence, validate again, then permit output
+files only in the canonical module. Read
+[api-first-factory-integration.md](references/api-first-factory-integration.md)
+before selecting this path.
+
 ## Measure The First Slice
 
 The generated `factory-timing.json` starts the prospective clock. Record an
@@ -81,6 +101,10 @@ The scaffold may prefill standard operation states and Praxis endpoint shapes,
 but a resource contract is not complete until its real DTO and host conventions
 are inspected. Keep `ROWID`, Oracle session/HADES state, company/user context,
 and SQL private to the legacy bridge.
+
+The generic `create_api_scaffold.py` packet records entry evidence and elapsed
+time. It does not replace the API-first manifest, profile, SQL blueprint, or
+Java dry run when those official factory tools apply.
 
 ## Mutation And Evidence
 
