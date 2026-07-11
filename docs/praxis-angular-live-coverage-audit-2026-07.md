@@ -24,6 +24,19 @@ This audit covers `praxis-ui-angular` only. It does not claim exhaustive coverag
 
 ## Current Answer
 
+### Reconciliation - 2026-07-11
+
+The current skill source contains 147 `praxis-*` skills. The Angular workspace
+contains 22 package roots and 24 `public-api.ts` surfaces when the public CRUD
+and Table adapters are counted separately. This does not change the coverage
+conclusion below: package roots remain the useful ownership measure, while
+adapter APIs are separate public contracts to include in validation and routing
+guidance.
+
+The live recommendation remains evidence-driven curation, not creating skills
+to reach a numeric target. The next formal audit should regenerate the package
+metrics and check source drift against this reconciliation.
+
 The current 146 active Praxis skills are sufficient for strong canonical coverage of the Angular platform, but not for exhaustive Angular coverage.
 
 The earlier 198-skill estimate remains a reasonable upper bound for exhaustive Angular-only coverage. It is not the next recommended target. The live source audit indicates that the next work should refine discoverability, routing, validation gates, and source-aligned guidance in existing skill families before creating another broad wave of new skills.
