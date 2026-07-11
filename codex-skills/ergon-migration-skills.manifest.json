@@ -72,8 +72,8 @@
                                             "praxis-java-host-project",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "197BC676B5CAF395D91C0ABD5BAC645B047EB1F5CA1F268859BCAB563D34CC14",
-                       "treeSha256":  "EA4F1E96C4D16CED1DCD10CAD082D2ADF15A700133AE41D291B49EBFAC521144"
+                       "skillMdSha256":  "061C76E1D817F08D523AA3B316A952EE05AE06E2119B8C6C15C4B3B5F9A2992B",
+                       "treeSha256":  "F805D3A22D903580499A1F6A2CD1CD02BD0A2CAC0F3FE108C3580191706670F1"
                    },
                    {
                        "name":  "ergon-dashboard-praxis-charts",
@@ -125,8 +125,8 @@
                                             "praxis-angular-host-project",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "C132E60786603CAF78D74F8D4661D3920E14FD46ADD5E77F04EA01EC00DDFEB0",
-                       "treeSha256":  "5F475758FBBB7701B2B315BEC18B2C5673B6C26D7BF3DE076A5FE317AD2066B1"
+                       "skillMdSha256":  "1E94CA99B54B338B1E9B6780D84CB9F4E19919EC557EF347280FD015062850C5",
+                       "treeSha256":  "50E386241481A364692A81BF62DC82D5EBBB142BB13A8F05571CCF3D68C915D9"
                    },
                    {
                        "name":  "ergon-rule-migration-orchestration",
