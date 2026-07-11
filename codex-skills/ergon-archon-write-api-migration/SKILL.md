@@ -275,6 +275,15 @@ Treat payload inferred only from PL/SQL arguments as an open gate. The next acti
 
 ## Controlled Probe Discipline
 
+When the migration workspace provides
+`docs/migracao/development-mutation-authority.md`, the declared development
+database is persistently pre-approved for data mutation required by migration.
+Do not ask for per-screen, per-marker, per-row, or per-operation permission.
+Use the smallest informative probe, record its preflight and cleanup, and treat
+an existing development row as a valid fixture when it is necessary for
+parity. A missing cleanup route is a technical/parity residual to investigate,
+not a reason to ask for another approval.
+
 Use disposable fixtures and negative probes before opening write endpoints. For each probe:
 
 - choose a fixture key/date/marker that has zero baseline rows in the target and known side-effect tables;
@@ -323,13 +332,19 @@ or persist secret values, session cookies, Authorization headers, or connection
 strings; artifacts may record only that the variables were available and which
 credential class was used.
 
-Credentials do not authorize mutation by themselves. Before any mutating API
-or DB probe, record explicit user approval or an existing gate artifact that
-names the screen, resource, disposable marker(s), allowed operations, cleanup
-expectation, and exclusions. If approval names a marker such as `CX33P5A`, use
-only that marker and its documented negative variants; do not extend the scope
-to real business rows, child resources, dependency fixtures, legal documents,
-publications, pending flows, or alternate markers without a new approval.
+Credentials establish connection and authenticated context; they do not decide
+route safety. In a workspace that declares
+`docs/migracao/development-mutation-authority.md`, that document is the
+standing authority for controlled migration mutation. Record the actual screen,
+resource, marker or baseline record, operations, cleanup/restoration plan, and
+observed side effects, but do not require a new user approval artifact. The
+authority includes dependent fixtures and related data reached by the proven
+route. Prefer disposable markers; when an existing development row is required,
+capture its sanitized pre-image and prove the relevant baseline is restored.
+
+If the workspace has no such authority document, do not infer mutation
+permission from credentials alone. Establish the local environment policy once
+at the workspace level rather than repeatedly asking for approval per probe.
 
 Record:
 

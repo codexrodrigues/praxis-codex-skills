@@ -49,6 +49,24 @@ Endpoint readiness is not a static-test decision. Do not call an endpoint `Verif
 
 For write operations, classify the route per operation instead of assuming either generic CRUD or DB-backed by default. The conservative default is: unknown rule, context, route, side effect, or error behavior means `WRITE_DB_BACKED_REQUIRED` or `WRITE_BLOCKED`. Direct table/Praxis CRUD can be approved only as `WRITE_TABLE_DIRECT_SAFE` when Phase 4/5 evidence proves it preserves required behavior, errors, session context, side effects, and parity.
 
+## Development Migration Mutation Authority
+
+When the migration workspace provides
+`docs/migracao/development-mutation-authority.md`, treat its declared
+development database as persistently pre-approved for data mutation required by
+migration. Do not ask for a new human confirmation per screen, API call,
+marker, fixture, existing development row, cleanup, or retry. Execute the
+technical preflight, use a disposable fixture where practical, restore the
+baseline when an existing row is required, and record sanitized evidence.
+
+This authority is not a shortcut around the write gates. `WRITE_DB_BACKED_REQUIRED`,
+`WRITE_TABLE_DIRECT_SAFE`, `WRITE_BLOCKED`, and `WRITE_DEFERRED` still decide
+which API route can be implemented or handed off. They must never be confused
+with permission to run the controlled probe that produces the missing evidence.
+Only an environment mismatch, unavailable connection/credential, unknown route,
+or legacy/HADES rejection is a mutation blocker; record that technical fact
+instead of asking whether mutation is allowed.
+
 ## Track Boundaries
 
 This skill coordinates tracks; it does not make local substitutes for canonical Praxis skills or runtimes.
