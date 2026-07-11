@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: ergon-migration
 - Caminho: codex-skills/ergon-migration-scaffold/
-- Descricao atual: Use when turning a closed Ergon/Archon screen-discovery package into a repeatable Praxis API implementation packet: operation inventory, resource key, read/options/write route decisions, metadata contract outline, phase gates, code-ready tasks, and a deterministic migration scaffold.
+- Descricao atual: Use when turning a closed Ergon/Archon screen-discovery package into a repeatable Praxis API-first implementation: operation inventory, manifest/profile/blueprint generation, read-only Java dry run, resource key, phase gates, evidence packet, and deterministic elapsed-time measurement.
 
 ## Classificacao inicial
 
