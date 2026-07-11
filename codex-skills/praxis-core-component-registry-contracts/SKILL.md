@@ -40,12 +40,12 @@ Vertical packages own their component-specific metadata entries. Page Builder an
 ## Registration And Lookup Semantics
 
 - Register vertical metadata through the owning package provider such as `providePraxisRichContentMetadata()`. Importing a component class does not populate `ComponentMetadataRegistry`; the host must install the provider so its `ENVIRONMENT_INITIALIZER` runs.
-- Treat the registry as an in-memory, injector-scoped catalog. Registration order matters and there is no duplicate/collision diagnostic: normalized metadata ids are last-write-wins, editorial control type entries are last-write-wins, and the legacy component-type index keeps its first mapping.
+- Treat the registry as an in-memory, injector-scoped governed catalog. Duplicate normalized metadata ids, duplicate legacy `componentType` indexes for different metadata ids, duplicate editorial `componentMetaId`, and duplicate editorial `controlType` registrations fail closed instead of relying on provider order.
 - `get(id)` resolves a normalized metadata id plus the fixed exact aliases `table`, `chart`, `form`, `crud`, `tabs`, `stepper`, `list`, and `expansion`. It does not perform arbitrary selector, component class, fuzzy, case-insensitive, or general `componentType` lookup.
 - `resolveEditorial()` uses a different precedence: editorial descriptor by id/control type first, then raw legacy `ComponentDocMeta` by normalized id or legacy `componentType`. Do not assume its result is the same normalized object returned by `get()`.
 - Use aliases only after the component scope is already known. The alias map is compatibility lookup, not extensible vocabulary or semantic intent routing.
 
-`register()` clones ports and insertion-preset inputs at ingress, but `get()` and `getAll()` return registry object references rather than immutable snapshots. Consumers must treat results as read-only and clone preset/config payloads before materializing or editing them. Never mutate registry metadata to store builder state.
+`register()` clones ports and insertion-preset inputs at ingress, and registry reads (`get()`, `getAll()`, `getEditorial()` and `getAllEditorial()`) return defensive snapshots. Consumers must still treat results as read-only projections and clone preset/config payloads before materializing or editing them. Never mutate registry metadata to store builder state.
 
 ## Metadata And I18n Boundaries
 
@@ -78,7 +78,7 @@ Classify a missing fact in a projection as `suportado-parcialmente` until the ca
 - Preserve port and insertion preset semantics when copying or projecting metadata; do not strip inputs, outputs, cardinality, semantic kinds, or diagnostics.
 - Use the target consumer's explicit registry projection, component AI capabilities, and authoring manifest when an agent needs grounding; inspect their schemas instead of scraping rendered controls or assuming `component-context.schema` contains `ComponentDocMeta`.
 - If metadata looks missing in a builder, first check whether the owning package registered it before adding fallback local registry data.
-- Treat duplicate normalized ids or control types as a governance error. Since the current runtime registry does not diagnose collisions, detect them in source/catalog validation or open a core follow-up; generated catalog governance can reject duplicate component ids/selectors, but that does not make runtime overwrite order safe.
+- Treat duplicate normalized ids, legacy component types or editorial control types as a governance error. Runtime registration now rejects these collisions, and generated catalog governance should continue rejecting duplicate component ids/selectors before runtime bootstrap.
 
 ## Aderence Inventory
 
@@ -106,7 +106,7 @@ For first-step issue resolution, audit a concrete registry entry: raw registrati
 Prove three scenarios:
 
 1. Happy path: an owning provider registers metadata; `get()` preserves normalized inputs/outputs, cloned ports and presets; palette/loader consume the intended subset.
-2. Risk path: missing provider and unknown bindings emit their expected loader diagnostics; duplicate id/control type and lossy AI projection are identified by source/catalog audit instead of being accepted as safe runtime behavior.
+2. Risk path: missing provider and unknown bindings emit their expected loader diagnostics; duplicate id/control type registrations fail closed; lossy AI projection is identified by source/catalog audit instead of being accepted as complete runtime behavior.
 3. Adversarial path: reject keyword/label routing, selector switches, mutable host overlays, prompt-only catalogs, and assumptions that every projection contains ports/presets/actions.
 
 Use focused gates from the `praxis-ui-angular` root:
