@@ -125,8 +125,8 @@
                                             "praxis-angular-host-project",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "F9D523714312B784CF96ED765DCA2F978FE7C3631DDFEA31DD65D2A20B111DDE",
-                       "treeSha256":  "2430102E14972411529ABF6B30955CFFC550F01A4246918DC0310F86CE7EA287"
+                       "skillMdSha256":  "C132E60786603CAF78D74F8D4661D3920E14FD46ADD5E77F04EA01EC00DDFEB0",
+                       "treeSha256":  "5F475758FBBB7701B2B315BEC18B2C5673B6C26D7BF3DE076A5FE317AD2066B1"
                    },
                    {
                        "name":  "ergon-rule-migration-orchestration",
