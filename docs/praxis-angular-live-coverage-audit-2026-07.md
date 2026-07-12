@@ -26,18 +26,27 @@ This audit covers `praxis-ui-angular` only. It does not claim exhaustive coverag
 
 ### Reconciliation - 2026-07-11
 
-The current skill source contains 147 `praxis-*` skills. The Angular workspace
+At this audit point, the skill source contained 147 `praxis-*` skills. The Angular workspace
 contains 22 package roots and 24 `public-api.ts` surfaces when the public CRUD
 and Table adapters are counted separately. This does not change the coverage
 conclusion below: package roots remain the useful ownership measure, while
 adapter APIs are separate public contracts to include in validation and routing
 guidance.
 
+### Reconciliation - 2026-07-12
+
+After the retrospective review and Wave 3 backend/HTTP proof work, the canonical
+`codex-skills/praxis-skills.manifest.json` contains 161 active Praxis skills.
+The conclusion remains the same: this is strong canonical coverage, not a reason
+to chase the 180-200 exhaustive Angular-only upper band without new source
+evidence.
+
 The live recommendation remains evidence-driven curation, not creating skills
 to reach a numeric target. The next formal audit should regenerate the package
 metrics and check source drift against this reconciliation.
 
-The current 146 active Praxis skills are sufficient for strong canonical coverage of the Angular platform, but not for exhaustive Angular coverage.
+The current 161 active Praxis skills are sufficient for strong canonical
+coverage of the Angular platform, but not for exhaustive Angular coverage.
 
 The earlier 198-skill estimate remains a reasonable upper bound for exhaustive Angular-only coverage. It is not the next recommended target. The live source audit indicates that the next work should refine discoverability, routing, validation gates, and source-aligned guidance in existing skill families before creating another broad wave of new skills.
 
@@ -45,7 +54,7 @@ Recommended position:
 
 | Coverage goal | Skill count interpretation |
 | --- | --- |
-| Strong Angular coverage | Current 146 skills are enough to operate effectively. |
+| Strong Angular coverage | Current 161 skills are enough to operate effectively. |
 | Exhaustive Angular coverage | 180-200 skills remains a reasonable upper band. |
 | Whole Praxis platform coverage | 198 skills is not enough if config, metadata, quickstart, examples, and landing are covered with the same depth. |
 
@@ -103,7 +112,7 @@ These are the highest-risk packages for future skill drift because they combine 
 
 | Finding | Classification | Interpretation |
 | --- | --- | --- |
-| 146 active skills cover the major Angular semantic boundaries. | `ja-suportado-so-ux` | The repository already has enough skill families to guide normal Angular implementation. The user-facing planning question needs this evidence projected clearly. |
+| 161 active skills cover the major Angular semantic boundaries and backend-adjacent Praxis surfaces. | `ja-suportado-so-ux` | The repository already has enough skill families to guide normal Angular implementation and current platform proof work. The user-facing planning question needs this evidence projected clearly. |
 | `praxis-dynamic-form` has 42 exports, 20 components, 58 specs, 7 docs, an authoring manifest, and 8 relevant `praxis-form-*` skills, but no direct `praxis-dynamic-form-*` skill names. | `ja-suportado-mal-nomeado-ou-mal-materializado` | Coverage exists, but skill discovery can under-route tasks that mention the package name exactly. |
 | `praxis-dynamic-fields` has 191 exports, 79 components, 104 specs, 72 JSON API docs, and 9 relevant skills, but most use `praxis-fields-*` rather than `praxis-dynamic-fields-*`. | `ja-suportado-mal-nomeado-ou-mal-materializado` | Coverage exists, but naming creates the same discovery risk in the largest Angular field surface. |
 | `praxis-page-builder` local guidance now includes heavy agentic validation gates and environment assumptions. | `suportado-parcialmente` | Existing skills cover authoring/composition/AI, but should be checked for parity with the current `AGENTS.md` validation model. |
@@ -150,7 +159,9 @@ Status as of the post-audit curation pass: all four follow-up issues below were 
 
 ## Post-Curation Recommendation
 
-Do not create new Angular skill-count issues immediately. The current next step is to use the curated 146 active skills during real Praxis implementation and record only evidence-backed misses:
+Do not create new Angular skill-count issues immediately. The current next step
+is to use the curated 161 active skills during real Praxis implementation and
+record only evidence-backed misses:
 
 - a skill routes to the wrong canonical owner;
 - a skill misses a validation gate that the source requires;
@@ -172,7 +183,7 @@ Do not solve package-name discovery by creating duplicated parallel skills unles
 This audit used local source inspection only:
 
 - GitHub issues check: no open issues in `praxis-codex-skills`.
-- Skill manifest check: 146 skills, all active.
+- Skill manifest check: 161 Praxis skills, all active, after the 2026-07-12 reconciliation.
 - Angular source inventory across `praxis-ui-angular/projects/*`.
 - Local `AGENTS.md` review for `praxis-ui-angular`, `praxis-dynamic-form`, `praxis-dynamic-fields`, `praxis-table`, `praxis-page-builder`, and `praxis-ai`.
 - Package scripts review for focal Angular build/test/e2e gates.
