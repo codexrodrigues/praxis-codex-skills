@@ -5,6 +5,21 @@ description: Orchestrate complex Ergon/Archon legacy-to-Praxis migrations across
 
 # Ergon Migration Orchestration
 
+## Derived Discovery Matrix
+
+Before prioritizing a screen, selecting a reusable pilot, or resuming a screen
+whose gate predates the current migration cut, run
+`tools/migration-factory/export-praxis-screen-discovery-matrix.ps1` when it is
+available and inspect the record for that screen. Use it only as a derived
+operational index for resource candidates, gates, read/write state, Angular
+runtime shape and next-action candidates. The phase gate, versioned contracts,
+Praxis annotations and live canonical surfaces remain the sources of truth.
+
+After a material phase closure, regenerate the matrix before changing portfolio
+priority or promoting a screen as reference. Do not infer primary intent from
+matrix labels or text; resolve the canonical resource, operation, action or
+surface in its owner artifact first.
+
 Use this skill as the top-level conductor for Ergon/Archon migrations. It does not replace the specialized skills; it decides the order, required artifacts, phase gates, and next action. When a phase enters a domain owned by another skill, route to that skill and preserve its gates instead of restating or weakening them here.
 
 ## Core Rule

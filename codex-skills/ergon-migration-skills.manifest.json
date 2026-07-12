@@ -27,8 +27,8 @@
                                             "praxis-dto-annotations",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "F752A863EC03EF03B7032AF1E7ED12F7B89F79E7E5CE7FA8A06032E60A24D639",
-                       "treeSha256":  "428BDD290B3E662BEB598E5E24DC23C2AFB1F45267060E9129ADAE59A810FB2C"
+                       "skillMdSha256":  "D6436CA40CDF20DDDC597E9C68A118DD8333BEF515825F5A0EF265F350DE6B9E",
+                       "treeSha256":  "C2C7BED21D9C0D6BAB31538BA3B1164000831AD89E3B9AF33FF044EBD49590EE"
                    },
                    {
                        "name":  "ergon-archon-read-api-migration",
@@ -54,8 +54,8 @@
                        "dependencies":  [
 
                                         ],
-                       "skillMdSha256":  "5CFBFE3FC512D6FCB833C0467E4CB6C5F42C58F44ADB0BB9074393DBD5CCA87D",
-                       "treeSha256":  "F68572673C194DAF6FBECA59FF0A01D929C60444DBE7C35A41D609A0C5BF793E"
+                       "skillMdSha256":  "A7815F35B8FB829DA6A0B179E1EF01C5C2E25D7605D16ECA86AF91470ABBDD3E",
+                       "treeSha256":  "D6E516C26E493E9D20AE0DCBAE9FC15CD3E538EC8126BF6F350654EE127B043F"
                    },
                    {
                        "name":  "ergon-archon-write-api-migration",
@@ -125,8 +125,8 @@
                                             "praxis-angular-host-project",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "1E94CA99B54B338B1E9B6780D84CB9F4E19919EC557EF347280FD015062850C5",
-                       "treeSha256":  "50E386241481A364692A81BF62DC82D5EBBB142BB13A8F05571CCF3D68C915D9"
+                       "skillMdSha256":  "EA2949BB4ADE2B0DC7EA2B0A548046A049278C2BF0C1D3F9C5A6092A71A37D96",
+                       "treeSha256":  "F27CB2BC674A9FFEC55D38AFD65F6C8EC7CC2E541E96E417A0FF15BD5F8C11A9"
                    },
                    {
                        "name":  "ergon-migration-scaffold",
