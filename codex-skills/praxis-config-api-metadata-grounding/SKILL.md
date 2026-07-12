@@ -57,16 +57,16 @@ Keep the sources distinct: `praxis-metadata-starter` owns current resource struc
 
 For API and component-definition search, preserve this order and diagnostics:
 
-1. Resolve a release id and query the vector store with `resourceType`, tenant/environment when provided, release, and method filters.
+1. Resolve a release id and query the vector store with `resourceType`, tenant/environment when provided, release, method, and supported tag filters.
 2. Apply default-release fallback only when `praxis.ai.rag.release.fallback.default-enabled=true`; legacy `version` metadata fallback is a separate compatibility setting.
 3. When the vector store is available but the scoped release has no result, return no candidates instead of silently using the global structured table.
 4. When vector search is unavailable, legacy pgvector repository retrieval is allowed only for an unscoped request. Tenant/environment-scoped requests fail closed.
 
-`tags` filtering is supported by the legacy repository query but not by the current vector path. Treat tag-filtered retrieval with RAG enabled as `suportado-parcialmente`; do not promise it works until the vector metadata/filter contract is implemented and tested.
+`tags` filtering is supported on the vector path by over-fetching the scoped/method-filtered vector results and applying normalized tag matching before the effective limit. Legacy repository retrieval also receives normalized tags when vector search is unavailable and the request is unscoped. Keep tag evidence in focused `ContextRetrievalServiceTest` coverage when changing this path.
 
 Semantic retrieval is candidate grounding, not primary intent resolution. `AgenticAuthoringApiMetadataCandidateCatalog` prefers semantic evidence, may supplement it with explicit or weak lexical evidence, and marks provenance such as `semantic-retrieval`, `lexical-fallback`, `weak-evidence`, and semantic role. Weak candidates may explain search but must not become executable selection or strong quick replies without governed confirmation.
 
-The current candidate catalog retries a failed scoped semantic search with an unscoped vector query. Do not interpret unscoped as “global-only”: without an explicit global-scope filter it can include documents from other tenants. Treat this as a platform gap and never reproduce it in new retrieval code.
+Scoped semantic retrieval must not retry without tenant/environment scope. `AgenticAuthoringApiMetadataCandidateCatalog` may fall back to scoped structured metadata when semantic retrieval returns no candidates, but it must not issue an unscoped vector query to recover scoped results.
 
 ## Context And Schema
 
