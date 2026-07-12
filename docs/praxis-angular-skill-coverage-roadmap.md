@@ -24,12 +24,13 @@ This estimate covers `praxis-ui-angular` only. A full-platform skill program tha
 
 ## Current Repository Coverage
 
-Status after Wave 6, with `codex-skills/praxis-skills.manifest.json` at 146 skills:
+Status after the July 2026 curation and Wave 3 backend/HTTP proof closure, with
+`codex-skills/praxis-skills.manifest.json` at 161 Praxis skills:
 
 | Metric | Count |
 | --- | ---: |
-| Praxis skills in manifest | 146 |
-| Active Praxis skills | 146 |
+| Praxis skills in manifest | 161 |
+| Active Praxis skills | 161 |
 | Active skills needing curation | 0 |
 | Open roadmap issues | 0 |
 
@@ -39,7 +40,13 @@ Follow-up live source audit:
 
 - `docs/praxis-angular-live-coverage-audit-2026-07.md`
 
-That audit confirmed that 146 active skills were sufficient for strong canonical Angular coverage, while 180-200 remained a reasonable upper band for exhaustive Angular-only coverage. The immediate follow-up work was not a broad skill-count wave, but focused curation for package-name discoverability, source parity, and validation gates in high-risk Angular surfaces.
+That audit confirmed that the earlier 146 active skills were already sufficient
+for strong canonical Angular coverage, while 180-200 remained a reasonable upper
+band for exhaustive Angular-only coverage. Since then, the manifest has grown to
+161 Praxis skills through evidence-driven additions for config, metadata,
+quickstart, HTTP examples, landing/public docs, and platform operations. The
+immediate follow-up work remains focused curation from real evidence, not a
+broad skill-count wave.
 
 Post-audit curation status:
 
@@ -50,7 +57,11 @@ Post-audit curation status:
 | #108 page-builder agentic validation gates | Completed in PR #112 |
 | #109 package-name routing for table-rule-builder/settings-panel | Completed in PR #113 |
 
-The repository has moved past the minimum useful coverage tier and is now inside the strong canonical coverage band for the Angular side. The current 146-skill set is no longer just an initial foundation: it encodes substantial platform knowledge across runtime, authoring, AI, validation, docs, metadata, config, quickstart proof, HTTP examples, and landing/public docs.
+The repository has moved past the minimum useful coverage tier and is now inside
+the strong canonical coverage band for the Angular side. The current 161-skill
+set is no longer just an initial foundation: it encodes substantial platform
+knowledge across runtime, authoring, AI, validation, docs, metadata, config,
+quickstart proof, HTTP examples, and landing/public docs.
 
 It should still not be treated as exhaustive coverage. The largest remaining risk is not raw skill count, but whether each high-complexity Praxis surface has enough canonical guidance to prevent local workarounds, keyword-based routing, duplicated contracts, or weak validation choices during future implementation.
 
@@ -147,7 +158,8 @@ This tier is now complete and should be treated as surpassed.
 
 ### Strong canonical Angular coverage: 140-170 skills
 
-This is the recommended planning target. The current 146-skill manifest is inside this band.
+This is the recommended planning target. The current 161-skill manifest is
+inside this band.
 
 It allows each complex library to have several focused skills for:
 
@@ -194,7 +206,7 @@ Therefore:
 - 198 skills is enough for `praxis-ui-angular` if the goal is exhaustive Angular coverage.
 - 198 skills is probably higher than necessary for a strong first canonical roadmap.
 - 198 skills is not enough for the entire Praxis platform if config and metadata starters are included with the same depth.
-- 146 skills is enough to operate as strong canonical Angular coverage, but not enough to declare the whole Praxis platform exhaustively covered.
+- 161 skills is enough to operate as strong canonical Angular coverage, but not enough to declare the whole Praxis platform exhaustively covered.
 
 ## Proposed Waves
 
@@ -265,7 +277,10 @@ The next backlog should now be created only from new evidence:
 Recommended near-term target:
 
 ```text
-146 active curated skills
+161 active curated skills
 ```
 
-Keep the current 146-skill set stable until a real implementation miss proves that a new skill or deeper split is worth the maintenance cost. A move toward 180-200 skills should happen only after a new source audit proves that exhaustive Angular coverage is worth that cost.
+Keep the current 161-skill set stable until a real implementation miss proves
+that a new skill or deeper split is worth the maintenance cost. A move toward
+180-200 Angular-only skills should happen only after a new source audit proves
+that exhaustive Angular coverage is worth that cost.
