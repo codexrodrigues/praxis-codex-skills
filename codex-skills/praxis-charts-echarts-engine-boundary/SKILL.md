@@ -1,6 +1,6 @@
 ---
 name: praxis-charts-echarts-engine-boundary
-description: Use when Codex must implement, audit, or consume @praxisui/charts engine behavior: PraxisChartEngineAdapter, PRAXIS_CHART_ENGINE, providePraxisCharts, EChartsEngineAdapter, internal option compilation, module registration, host/resize/dispose lifecycle, point and category event mapping, micro-visualization separation, or ECharts type leakage through public APIs.
+description: Use when Codex must implement, audit, or consume @praxisui/charts engine behavior: PraxisChartEngineAdapter, PRAXIS_CHART_ENGINE_FACTORY, providePraxisCharts, EChartsEngineAdapter, internal option compilation, module registration, host/resize/dispose lifecycle, point and category event mapping, micro-visualization separation, or ECharts type leakage through public APIs.
 ---
 
 # Praxis Charts ECharts Engine Boundary
@@ -22,7 +22,7 @@ Follow this direction of dependency:
 `x-ui.chart` -> normalizer/validator/mapper -> `PraxisChartConfig` plus resolved rows -> internal engine option compiler -> `PraxisChartEngineAdapter` -> ECharts instance
 
 - Add missing semantics to the canonical chart document, mapper, validator, or runtime config before changing ECharts options.
-- Treat `PraxisChartEngineAdapter`, `PRAXIS_CHART_ENGINE`, and `providePraxisCharts` as the renderer-neutral extension boundary when they are public.
+- Treat `PraxisChartEngineAdapter`, `PRAXIS_CHART_ENGINE_FACTORY`, and `providePraxisCharts({ engineFactory })` as the renderer-neutral extension boundary when they are public.
 - Keep the option compiler adapter-owned. A service that returns `EChartsCoreOption` is not a renderer-neutral public Praxis service and must not be root-exported merely for convenience.
 - Never persist, accept from AI, or expose raw `EChartsCoreOption`, formatter functions, ECharts params, or module constructors as the primary host contract.
 - Keep `PraxisMicroVisualizationComponent` separate. It materializes compact core presentation contracts with lightweight HTML/CSS/SVG and does not share ECharts lifecycle or option semantics.
@@ -46,10 +46,10 @@ Do not infer coverage from a spec filename. Read its assertions and compare them
 
 ## Provider Boundary
 
-- `providePraxisCharts()` may install the default engine, but a host-supplied `PRAXIS_CHART_ENGINE` must be able to replace it through documented Angular provider precedence.
-- A component-level provider shadows environment/root providers. Do not provide the concrete ECharts adapter locally when the public contract promises host replacement through the token.
-- Preserve one mutable engine instance per chart component or host element. If the default is supplied above the component injector, use a factory or instance-creation contract that avoids sharing one stateful adapter across chart components.
-- Test the real public registration path. `TestBed.overrideComponent()` proves test substitution, not that `providePraxisCharts()` or a host provider is overridable in production.
+- `providePraxisCharts()` installs the default ECharts renderer through `PRAXIS_CHART_ENGINE_FACTORY`. Hosts replace the renderer through the documented `providePraxisCharts({ engineFactory })` path, or by intentionally providing the factory token from the same canonical owner.
+- A component-level provider shadows environment/root providers. Do not provide the concrete ECharts adapter locally when the public contract promises host replacement through the provider bundle.
+- Preserve one mutable engine instance per chart component or host element. The factory may be shared by DI, but the component must call it to obtain a fresh adapter instance for that chart.
+- Test the real public registration path. `TestBed.overrideComponent()` proves test substitution, not that `providePraxisCharts({ engineFactory })` is replaceable in production.
 - Keep metadata registration and table inline-renderer registration in the provider bundle independent from the choice of chart engine.
 
 ## Engine Lifecycle
