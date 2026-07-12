@@ -70,6 +70,7 @@ Only real gaps in the owning contract justify new canonical fields or route sema
 - When adding a published guide, wire registry, route visibility, sitemap, related docs, LLM files, and validation together.
 - When changing examples in `site.data.ts`, review table/list/crud/dynamic-page manifests and run the matching manifest gate.
 - When changing playground behavior, validate the focused adapter/spec/E2E path and capture browser evidence if visual/product quality changed.
+- Public playgrounds must not auto-call protected config, AI, or domain evidence endpoints unless the endpoint has repeatable public proof, allowed origin/header coverage, and a console-clean fallback. Prefer curated fixtures or prompt examples for public-first UX when the canonical endpoint is protected or has no published release for the scope.
 - When public docs mirror quickstart or HTTP examples, verify the referenced evidence still exists; do not cite stale smoke output.
 - Exclude `dist/`, `artifacts/`, `output/`, `tmp/`, `.angular/`, and `node_modules/` from source audits unless debugging generated output.
 
