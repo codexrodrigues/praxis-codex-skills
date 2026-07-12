@@ -31,7 +31,7 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/rag/RagDocumentIdentity.java`
 - `src/main/java/org/praxisplatform/config/rag/RagFilters.java`
 - `src/main/java/org/praxisplatform/config/rag/**`
-- `src/main/resources/db/migration/V4__create_api_metadata.sql`, `V8__create_api_metadata_embedding_index.sql`, and vector-store migrations.
+- `src/main/resources/db/migration/V4__create_api_metadata.sql`, `V28__scope_api_metadata_identity.sql`, `V8__create_api_metadata_embedding_index.sql`, and vector-store migrations.
 - `praxis-ui-angular/projects/praxis-ai/src/lib/core/services/ai-backend-api.service.ts`
 - focused API metadata, context, RAG, project knowledge, and resource discovery tests.
 
@@ -46,8 +46,9 @@ Keep the sources distinct: `praxis-metadata-starter` owns current resource struc
 ## Ingestion Contract
 
 - `POST /api/praxis/config/api-catalog/ingest` accepts endpoint snapshots with path, method, tags, summary, description, operation id, request/response schemas, parameters, release id, version, and generated timestamp. An empty endpoint list is a no-op.
-- The structured `api_metadata` row currently stores full schemas, parameters, raw endpoint JSON, and embedding, and upserts first by `path + method`, then by stable `operationId + method` to reconcile a moved endpoint.
-- Do not claim tenant, environment, or release isolation for the current `api_metadata` table: V4 has a global `path + method` unique key and no scope/release columns. Tenant, environment, release, version, content hash, and deterministic document id are attached to the derived RAG document.
+- The structured `api_metadata` row currently stores tenant, environment, service key, release id/version, generated time, full schemas, parameters, raw endpoint JSON, and embedding.
+- Current scoped identity is canonical: V28 adds `tenant_id`, `environment`, `service_key`, and `release_id`, replaces the legacy global `path + method` unique key, and enforces `tenant_id + environment + service_key + release_id + path + method`.
+- Upsert first by scoped `path + method`, then by scoped stable `operationId + method` to reconcile a moved endpoint without crossing tenant, environment, service, or release boundaries.
 - Release identity resolves from `releaseId`, then version/generated time according to `RagDocumentIdentity`. Preserve that identity and the content hash; do not publish anonymous chunks that cannot be replayed or purged by scope.
 - The controller returns `202 Accepted`, but the current service performs structured upsert and attempted vector publication during the request. `202` is not proof that an optional vector store exists or that the derived corpus is reconciled.
 - Vector publication is derived and optional. A disabled/unavailable vector store must not invalidate the canonical structured metadata, and a vector row must never become authority over a later canonical schema response.
