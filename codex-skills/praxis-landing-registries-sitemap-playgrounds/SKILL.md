@@ -68,6 +68,7 @@ Only real gaps in the owning contract justify new canonical fields or route sema
 - Keep generated or synchronized artifacts generated. Do not hand-edit sitemap/vendor/generated docs when a sync script owns them.
 - Preserve guide `slug`, `related_docs`, publication status, internal markdown links, and route validity.
 - When adding a published guide, wire registry, route visibility, sitemap, related docs, LLM files, and validation together.
+- Flow-oriented published guides should use fenced Mermaid diagrams when they explain runtime, integration, request/response, sequence, state, or runbook flows. Treat `validate:published-guides` Mermaid warnings in the changed/publication scope as editorial drift to resolve or explicitly justify from the landing rendering policy; do not let recurring warnings become background noise.
 - When changing examples in `site.data.ts`, review table/list/crud/dynamic-page manifests and run the matching manifest gate.
 - When changing playground behavior, validate the focused adapter/spec/E2E path and capture browser evidence if visual/product quality changed.
 - Public playgrounds must not auto-call protected config, AI, or domain evidence endpoints unless the endpoint has repeatable public proof, allowed origin/header coverage, and a console-clean fallback. Prefer curated fixtures or prompt examples for public-first UX when the canonical endpoint is protected or has no published release for the scope.
