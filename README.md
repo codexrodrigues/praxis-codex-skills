@@ -7,6 +7,23 @@ Canonical repository for Codex skills used by the Praxis platform and Ergon/Arch
 - `praxis`: general Praxis platform skills.
 - `ergon-migration`: Ergon/Archon migration skills. These may depend on `praxis` skills, but `praxis` skills must not depend on `ergon-*` skills.
 
+## Program Status
+
+The broad July 2026 skill-review backlog is closed. The canonical Praxis
+manifest currently has 161 active Praxis skills and 10 Ergon migration skills.
+New work should come from evidence, not from a skill-count target.
+
+Current planning references:
+
+- `docs/praxis-skill-review-program.md`
+- `docs/praxis-angular-skill-coverage-roadmap.md`
+- `docs/praxis-angular-live-coverage-audit-2026-07.md`
+- `docs/praxis-java-skill-coverage-reconciliation-2026-07.md`
+
+Use GitHub issue #254 as the active evidence ledger for real implementation
+misses, source drift, weak validation gates, or repeated Praxis/Ergon friction
+that may justify a focused follow-up.
+
 ## Discovery And Routing
 
 Do not assume migration roadmaps, host docs, or one orchestration skill will enumerate every `praxis-*` skill by name.
