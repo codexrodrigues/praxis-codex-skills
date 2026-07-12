@@ -108,6 +108,9 @@ Treat URL encoding as a public security contract, not a convenience setting.
 
 - Inventory the exact canonical config identifier/path behavior that requires encoded input before enabling encoded slash, double slash, percent, or semicolon support.
 - Allow the minimum set of encodings proven necessary. A global `StrictHttpFirewall` relaxation affects docs, schemas, runtime, and business routes too.
+- Current quickstart policy allows `%2F` only under `/api/praxis/config/**`, because some `praxis-config-starter` routes still receive `componentId` as `@PathVariable` and canonical refs can contain `/`. Keep schemas, actuator, docs, runtime, and business routes on strict firewall behavior.
+- Do not re-enable global encoded double slash, encoded percent, or semicolon support. `%2F%2F`, `%25`, path parameters, and `%2F` outside config must remain rejected unless a new source-audited canonical contract proves otherwise.
+- Prefer the query-string variants of UI config endpoints (`componentType` + `componentId`) when a client can choose identifier transport; the host exception exists to preserve existing config path-variable compatibility, not to encourage new encoded-path designs.
 - Reject malformed, ambiguous, double-slash, semicolon, and path-parameter variants unless an explicitly documented canonical route requires them.
 - If the firewall cannot scope an exception safely, redesign identifier transport at the canonical config boundary rather than leaving a broad host bypass.
 - Verify allowed canonical config identifiers and adversarial normalized paths in focused firewall/security tests.
@@ -126,7 +129,7 @@ Keep `application*.properties`, deployment variables, README, security docs, HTT
 Run the smallest security gate that proves the changed matrix.
 
 ```bash
-mvn "-Dtest=SecurityConfigActuatorPolicyTest,SecurityConfigAiPatchPolicyTest,SecurityConfigReadOpenStatsPolicyTest,SecurityConfigSpaCsrfPolicyTest,SecurityConfigCorsTest,ConfigOriginRestrictionFilterTest,PublicApiRateLimitFilterTest" test
+mvn "-Dtest=SecurityConfigHttpFirewallTest,SecurityConfigActuatorPolicyTest,SecurityConfigAiPatchPolicyTest,SecurityConfigReadOpenStatsPolicyTest,SecurityConfigSpaCsrfPolicyTest,SecurityConfigCorsTest,ConfigOriginRestrictionFilterTest,PublicApiRateLimitFilterTest" test
 ```
 
 For config/schema browser contract changes, add focused downstream proof:
