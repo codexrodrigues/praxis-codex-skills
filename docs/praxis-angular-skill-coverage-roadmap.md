@@ -40,6 +40,7 @@ There are no Praxis skills currently marked `active-needs-curation`.
 Follow-up live source audit:
 
 - `docs/praxis-angular-live-coverage-audit-2026-07.md`
+- `docs/praxis-java-skill-coverage-reconciliation-2026-07.md`
 
 That audit confirmed that the earlier 146 active skills were already sufficient
 for strong canonical Angular coverage, while 180-200 remained a reasonable upper
@@ -48,6 +49,11 @@ band for exhaustive Angular-only coverage. Since then, the manifest has grown to
 quickstart, HTTP examples, landing/public docs, and platform operations. The
 immediate follow-up work is tracked in #254 as a focused evidence ledger, not as
 a broad skill-count wave.
+
+The Java/Praxis reconciliation confirms that the canonical repository already
+contains the core `praxis-java-*` skill family. That means backend Java coverage
+should be refined from implementation evidence, not by replaying an older plan
+that treated Java/Praxis skills as absent.
 
 Post-audit curation status:
 
