@@ -31,6 +31,30 @@ Angular-only exhaustive estimate remains 180-200 skills, but new skills must be
 created from source evidence or repeated implementation misses rather than a
 numeric target.
 
+## Current Status
+
+Status reconciled on 2026-07-12 after the quickstart security/firewall skill
+follow-up.
+
+| Metric | Count |
+| --- | ---: |
+| Versioned skills | 171 |
+| Praxis skills | 161 |
+| Ergon migration skills | 10 |
+| Open skill-review issues | 0 |
+| Closed Praxis skill-review issues | 31 |
+| Open roadmap issues | 0 |
+
+The backlog is intentionally empty. The next phase is not another broad issue
+generation wave. Create new issues only from source drift, repeated
+implementation misses, missing operational proof, or a real platform gap found
+while using the skills against Praxis changes.
+
+The immediate program work is a retrospective audit of the closed Praxis
+skill-review issues, starting with the pilot skills and then sampling the
+highest-risk families. The audit should preserve valid completed work and open a
+focused follow-up only when the missing proof or source drift is material.
+
 ## Coverage Model
 
 Track each skill through five independent levels:
@@ -116,7 +140,7 @@ required evidence is practical and sufficient.
 
 ## Retrospective Audit
 
-Audit the ten closed Praxis review issues after the pilots. A closed issue is not
+Audit the closed Praxis review issues after the pilots. A closed issue is not
 automatically approved when it lacks linked PR, commands, results, or operational
 evidence. Preserve valid implementation and create a focused follow-up only when
 the missing proof or source drift is material.
