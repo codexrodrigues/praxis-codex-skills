@@ -53,7 +53,7 @@ Keep the two metadata paths distinct:
 
 - `ComponentDocMeta` is the runtime/catalog contract for component refs, inputs, outputs, actions, commands, ports, config editor, authoring manifest ref, insertion presets, layout hints, tags, and owner lib. Its labels/descriptions are plain strings.
 - `ComponentMetadataEditorialDescriptor` is the localized editorial projection. Its `PraxisTextValue` fields are resolved by `PraxisI18nService` through `resolveEditorial()`.
-- Legacy common input/output defaults injected by `normalizeMeta()` are hardcoded fallback strings, not localized editorial resources. Do not present this normalization as complete i18n support or add more business text to that table.
+- Common input/output defaults injected by `normalizeMeta()` are resolved from the core `componentMetadataRegistry` i18n namespace, with built-in `pt-BR` and `en-US` catalog entries and clean textual fallback. Keep explicit component labels/descriptions authoritative over these defaults, and do not add component-specific business copy to the shared registry catalog.
 
 When a localized builder/editor experience is required, register and resolve the editorial descriptor with its namespace. Do not copy localized labels into host palettes or reinterpret a raw `ComponentDocMeta` string as an i18n key.
 
