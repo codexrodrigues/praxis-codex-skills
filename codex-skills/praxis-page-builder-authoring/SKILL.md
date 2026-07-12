@@ -29,6 +29,7 @@ For child widget config:
 `ComponentDocMeta.configEditor or child ComponentAuthoringManifest -> child-owned document/input patch -> page.widgets[].definition.inputs`
 
 Page Builder hosts child editors; it does not redefine child component config documents.
+When a child editor needs schemas, capabilities, resource catalogs, page targets, ports, or diagnostics only for authoring, provide them through `ComponentDocMeta.configEditor.contextResolver` as transient `context/contextDiagnostics`. Do not persist those values in `page.widgets[].definition.inputs`; only the editor's explicit settings result may update child inputs.
 If the child editor is Visual Builder, Dynamic Form, Table, Chart, List, Rich Content, or another Praxis component, load that component's authoring skill and preserve its document/apply semantics inside `page.widgets[].definition.inputs`.
 
 ## Required Source Inventory
@@ -69,6 +70,7 @@ Before calling a Page Builder editor ready, verify:
 - page context/state remain structured objects.
 - widget shell changes affect only `page.widgets[].shell`.
 - child widget settings open through the child `ComponentDocMeta.configEditor` or manifest path.
+- transient child editor context from `configEditor.contextResolver` is separated from persisted inputs and is not saved back to `page.widgets[].definition.inputs`.
 - Visual Builder or rule editors hosted as child config preserve JSON Logic/graph round-trip and do not leak Page Builder-only rule state.
 - reset returns to the initial page/shell and updates dirty/valid/busy state.
 - runtime preview consumes the same document shape that persistence saves.
