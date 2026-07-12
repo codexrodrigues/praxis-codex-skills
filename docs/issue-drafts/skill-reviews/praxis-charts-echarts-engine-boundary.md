@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-charts-echarts-engine-boundary/
-- Descricao atual: Use when Codex must implement, audit, or consume @praxisui/charts engine behavior: PraxisChartEngineAdapter, PRAXIS_CHART_ENGINE, providePraxisCharts, EChartsEngineAdapter, internal option compilation, module registration, host/resize/dispose lifecycle, point and category event mapping, micro-visualization separation, or ECharts type leakage through public APIs.
+- Descricao atual: Use when Codex must implement, audit, or consume @praxisui/charts engine behavior: PraxisChartEngineAdapter, PRAXIS_CHART_ENGINE_FACTORY, providePraxisCharts, EChartsEngineAdapter, internal option compilation, module registration, host/resize/dispose lifecycle, point and category event mapping, micro-visualization separation, or ECharts type leakage through public APIs.
 
 ## Classificacao inicial
 
