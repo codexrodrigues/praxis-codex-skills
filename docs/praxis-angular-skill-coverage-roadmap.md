@@ -33,6 +33,7 @@ Status after the July 2026 curation and Wave 3 backend/HTTP proof closure, with
 | Active Praxis skills | 161 |
 | Active skills needing curation | 0 |
 | Open roadmap issues | 0 |
+| Open evidence follow-up issues | 1 |
 
 There are no Praxis skills currently marked `active-needs-curation`.
 
@@ -45,8 +46,8 @@ for strong canonical Angular coverage, while 180-200 remained a reasonable upper
 band for exhaustive Angular-only coverage. Since then, the manifest has grown to
 161 Praxis skills through evidence-driven additions for config, metadata,
 quickstart, HTTP examples, landing/public docs, and platform operations. The
-immediate follow-up work remains focused curation from real evidence, not a
-broad skill-count wave.
+immediate follow-up work is tracked in #254 as a focused evidence ledger, not as
+a broad skill-count wave.
 
 Post-audit curation status:
 
@@ -264,7 +265,10 @@ Target: 25-35 additional skills.
 
 ## Immediate Backlog Recommendation
 
-Do not create another batch of broad skill-generation issues just to increase the count. The July 2026 curation backlog is complete, and there are no open roadmap issues.
+Do not create another batch of broad skill-generation issues just to increase
+the count. The July 2026 curation backlog is complete, and there are no open
+roadmap issues. The only open follow-up is #254, which is an evidence ledger for
+real implementation misses rather than a new roadmap batch.
 
 The next backlog should now be created only from new evidence:
 

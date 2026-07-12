@@ -42,8 +42,11 @@ to chase the 180-200 exhaustive Angular-only upper band without new source
 evidence.
 
 The live recommendation remains evidence-driven curation, not creating skills
-to reach a numeric target. The next formal audit should regenerate the package
-metrics and check source drift against this reconciliation.
+to reach a numeric target. As of the follow-up ledger #254, real misses should
+be recorded there first and promoted to focused PRs only when source drift,
+missing proof, or repeated implementation friction is material. The next formal
+audit should regenerate the package metrics and check source drift against this
+reconciliation.
 
 The current 161 active Praxis skills are sufficient for strong canonical
 coverage of the Angular platform, but not for exhaustive Angular coverage.
@@ -161,7 +164,7 @@ Status as of the post-audit curation pass: all four follow-up issues below were 
 
 Do not create new Angular skill-count issues immediately. The current next step
 is to use the curated 161 active skills during real Praxis implementation and
-record only evidence-backed misses:
+record only evidence-backed misses in #254:
 
 - a skill routes to the wrong canonical owner;
 - a skill misses a validation gate that the source requires;
