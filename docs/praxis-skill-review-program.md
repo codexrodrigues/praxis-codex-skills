@@ -34,7 +34,7 @@ numeric target.
 ## Current Status
 
 Status reconciled on 2026-07-12 after the quickstart security/firewall skill
-follow-up.
+follow-up and the first evidence-driven follow-up loop.
 
 | Metric | Count |
 | --- | ---: |
@@ -44,16 +44,25 @@ follow-up.
 | Open skill-review issues | 0 |
 | Closed Praxis skill-review issues | 31 |
 | Open roadmap issues | 0 |
+| Open evidence follow-up issues | 1 |
+| Evidence follow-up PRs merged | 2 |
 
-The backlog is intentionally empty. The next phase is not another broad issue
-generation wave. Create new issues only from source drift, repeated
+The broad review backlog is intentionally empty. The next phase is not another
+issue generation wave. New work is tracked through focused evidence follow-ups,
+starting with #254, and should only come from source drift, repeated
 implementation misses, missing operational proof, or a real platform gap found
 while using the skills against Praxis changes.
 
-The immediate program work is a retrospective audit of the closed Praxis
-skill-review issues, starting with the pilot skills and then sampling the
-highest-risk families. The audit should preserve valid completed work and open a
-focused follow-up only when the missing proof or source drift is material.
+The first two evidence follow-ups were merged in PR #255 and PR #256. Both came
+from Wave 3 landing/publication evidence and updated
+`praxis-landing-registries-sitemap-playgrounds` without creating new skills:
+protected public playground endpoints must have public proof and console-clean
+fallbacks, and flow-oriented published guide Mermaid warnings must be resolved
+or explicitly justified in scope.
+
+The immediate program work is now a lightweight evidence ledger: preserve valid
+completed work, keep #254 open while real misses are still being discovered, and
+open a focused PR only when the missing proof or source drift is material.
 
 ## Coverage Model
 
