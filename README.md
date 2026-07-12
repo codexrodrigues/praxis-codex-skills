@@ -24,6 +24,11 @@ Use GitHub issue #254 as the active evidence ledger for real implementation
 misses, source drift, weak validation gates, or repeated Praxis/Ergon friction
 that may justify a focused follow-up.
 
+Current ledger outputs include two direct skill-guidance PRs, six
+program/reconciliation PRs in this repository, and two closed owner-repository
+follow-ups in `praxis-metadata-starter` for generated artifact cleanup and
+Java/Praxis roadmap reconciliation.
+
 ## Discovery And Routing
 
 Do not assume migration roadmaps, host docs, or one orchestration skill will enumerate every `praxis-*` skill by name.
