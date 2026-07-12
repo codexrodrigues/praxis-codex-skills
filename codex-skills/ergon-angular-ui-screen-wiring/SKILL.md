@@ -60,6 +60,7 @@ Only `lacuna-real-de-contrato` may justify a new platform contract. Do not add a
 ## Workflow
 
 1. Identify the screen and legacy source.
+   - When `docs/migracao/praxis-screen-discovery-matrix.md` exists, use the screen record to select a comparable native Angular reference and identify any manual-runtime residual. Confirm its conclusions in the UI gate and canonical Praxis surfaces before coding.
    - In the ErgonX migration workspace, read `docs/migracao/angular-ui-praxis-migration-roadmap.md` before creating or reviewing a new UI slice. It records the reusable ERGadm00034 lessons and the Cronos rendering model.
    - Also read `docs/migracao/native-praxis-first-guide.md` when it exists. It is the short operational gate for current post-`@praxisui/* 9.0.0-beta.33` Angular work and takes precedence over older pilot patterns.
    - Prefer runtime XML under `docs/migracao/<SCREEN>/runtime`.
