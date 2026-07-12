@@ -47,6 +47,8 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 - Treat `CompositionRuntimeEngine.bootstrap()` as semantic validation plus state materialization. Blocking diagnostics produce a `degraded` snapshot with trace evidence; do not convert every diagnostic into an exception or silently mark the page ready.
 - Dispatch a `CompositionDispatchEvent` from an exact canonical endpoint. Matching includes owner widget, port, direction, and `nestedPath` when present. Let the engine execute condition, transform, policy, target delivery, state update, diagnostics, and trace as one cycle.
 - Consume the immutable `RuntimeSnapshot` from the facade/store as execution evidence. Do not maintain a second host state for link status, trace, or diagnostics.
+- Treat feedback-cycle detection as part of semantic validation and runtime safety, not as an editor-only lint. Unguarded cycles produce `SEMANTIC_FEEDBACK_CYCLE_UNGUARDED`, degrade bootstrap, and cause involved matched links to be skipped during dispatch with `RUNTIME_FEEDBACK_CYCLE_BLOCKED`; unrelated matched links may still execute.
+- An intentional feedback loop must be explicit and guarded on every link in the cycle: use `metadata.tags: ['intentional-feedback']` plus at least one canonical guard per link (`condition`, `policy.distinct`, `policy.distinctBy`, or `policy.debounceMs`). Guarded intentional cycles produce `SEMANTIC_FEEDBACK_CYCLE_GUARDED` warnings, not blocking errors. Do not suppress cycle diagnostics or invent host-local loop breakers.
 
 Legacy migration is an explicit ingress concern. Use `CompositionLinkLegacyMigrator` for supported legacy condition/policy shapes, then persist the canonical result. Unsupported legacy conditions fail explicitly; do not keep an open-ended legacy interpreter in runtime code.
 
@@ -91,7 +93,7 @@ Before declaring composition complete, identify:
 Classify gaps before adding contracts:
 
 - `ja-suportado-so-ux`: the link executes and trace/diagnostics exist, but the host does not present them.
-- `ja-suportado-mal-nomeado-ou-mal-materializado`: the page still saves `connections`, uses `bindingPath` for new nested links, or duplicates runtime snapshot state.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: the page still saves `connections`, uses `bindingPath` for new nested links, hides feedback-cycle diagnostics, or duplicates runtime snapshot state.
 - `suportado-parcialmente`: the public model contains a policy, transform, or nested segment that the executor/accessor does not yet materialize.
 - `lacuna-real-de-contrato`: no canonical endpoint, port metadata, transform, action, surface, or diagnostic can represent the required behavior.
 
@@ -102,8 +104,9 @@ Only the last category justifies a new shared contract. Extend the canonical own
 Before declaring composition guidance current, prove:
 
 1. Happy path: a widget output matches one `composition.links` source, passes a supported transform, delivers to a canonical port or writable state, and records link status plus trace phases.
-2. Risk path: a missing nested widget/port, incompatible semantic kind, invalid condition, unsupported transform, or derived-state write produces the expected structured diagnostic and a non-divergent snapshot.
-3. Adversarial path: reject `page.connections`, new `bindingPath` links, local event buses, command strings, raw callback transforms, and host implementations of unexecuted policy fields.
+2. Risk path: a missing nested widget/port, incompatible semantic kind, invalid condition, unsupported transform, derived-state write, or unguarded feedback cycle produces the expected structured diagnostic and a non-divergent snapshot.
+3. Feedback path: prove an unguarded component/component or component/state/component cycle degrades bootstrap and skips involved matched links with `RUNTIME_FEEDBACK_CYCLE_BLOCKED`; prove an intentional guarded cycle remains a warning by using `intentional-feedback` plus canonical guards.
+4. Adversarial path: reject `page.connections`, new `bindingPath` links, local event buses, command strings, raw callback transforms, host-local loop breakers, and host implementations of unexecuted policy fields.
 
 Use a focused Angular gate from the `praxis-ui-angular` root:
 
@@ -127,6 +130,7 @@ These gates prove the shared Angular runtime. Record Page Builder/Visual Builder
 Prefer focused specs:
 
 - composition runtime engine/facade/store specs
+- composition validator specs for semantic compatibility, nested endpoints, and feedback-cycle diagnostics
 - link executor and transform runtime specs
 - nested port catalog specs
 - dynamic widget loader and dynamic widget page specs
