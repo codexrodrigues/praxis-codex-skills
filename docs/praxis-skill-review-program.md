@@ -45,7 +45,9 @@ follow-up and the first evidence-driven follow-up loop.
 | Closed Praxis skill-review issues | 31 |
 | Open roadmap issues | 0 |
 | Open evidence follow-up issues | 1 |
-| Evidence follow-up PRs merged | 2 |
+| Skill-guidance PRs from evidence ledger | 2 |
+| Program/reconciliation PRs from evidence ledger | 6 |
+| Owner-repository follow-up PRs closed | 2 |
 
 The broad review backlog is intentionally empty. The next phase is not another
 issue generation wave. New work is tracked through focused evidence follow-ups,
@@ -53,12 +55,17 @@ starting with #254, and should only come from source drift, repeated
 implementation misses, missing operational proof, or a real platform gap found
 while using the skills against Praxis changes.
 
-The first two evidence follow-ups were merged in PR #255 and PR #256. Both came
-from Wave 3 landing/publication evidence and updated
+The first two skill-guidance follow-ups were merged in PR #255 and PR #256.
+Both came from Wave 3 landing/publication evidence and updated
 `praxis-landing-registries-sitemap-playgrounds` without creating new skills:
 protected public playground endpoints must have public proof and console-clean
 fallbacks, and flow-oriented published guide Mermaid warnings must be resolved
 or explicitly justified in scope.
+
+The ledger also produced program/reconciliation PRs #257 through #262 in this
+repository and owner-repository follow-ups in `praxis-metadata-starter`: #93
+stopped tracking generated `target/**` artifacts, and #94 promoted the
+reconciled Java/Praxis roadmap into the starter technical docs.
 
 The Java/Praxis roadmap reconciliation is recorded in
 `docs/praxis-java-skill-coverage-reconciliation-2026-07.md`. It confirms that
