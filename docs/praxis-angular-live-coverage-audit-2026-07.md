@@ -185,7 +185,8 @@ Do not solve package-name discovery by creating duplicated parallel skills unles
 
 This audit used local source inspection only:
 
-- GitHub issues check: no open issues in `praxis-codex-skills`.
+- GitHub issues check: no open roadmap/review issues at the original audit
+  point; #254 is now the active evidence ledger, not a broad backlog issue.
 - Skill manifest check: 161 Praxis skills, all active, after the 2026-07-12 reconciliation.
 - Angular source inventory across `praxis-ui-angular/projects/*`.
 - Local `AGENTS.md` review for `praxis-ui-angular`, `praxis-dynamic-form`, `praxis-dynamic-fields`, `praxis-table`, `praxis-page-builder`, and `praxis-ai`.
