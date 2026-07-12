@@ -34,9 +34,9 @@ Read `projects/praxis-charts/AGENTS.md` before editing. Inspect at least:
 - `projects/praxis-charts/README.md` and `src/public-api.ts`
 - `src/lib/adapters/chart-engine.adapter.ts`
 - `src/lib/adapters/echarts/echarts-engine.adapter.ts`
+- `src/lib/adapters/echarts/echarts-option-builder.service.ts`
 - `src/lib/tokens/chart-engine.token.ts`
 - `src/lib/providers/charts.providers.ts`
-- `src/lib/services/chart-option-builder.service.ts`
 - `src/lib/services/chart-data-transformer.service.ts`
 - `src/lib/components/praxis-chart/praxis-chart.component.ts`
 - `src/lib/components/praxis-micro-visualization/praxis-micro-visualization.component.ts`
@@ -112,7 +112,7 @@ Choose the smallest commands that prove the changed behavior, but require assert
 Typical focal gates are:
 
 ```bash
-npx ng test praxis-charts --watch=false --progress=false --include='projects/praxis-charts/src/lib/adapters/echarts/echarts-engine.adapter.spec.ts' --include='projects/praxis-charts/src/lib/services/chart-option-builder.service.spec.ts' --include='projects/praxis-charts/src/lib/services/chart-data-transformer.service.spec.ts'
+npx ng test praxis-charts --watch=false --progress=false --include='projects/praxis-charts/src/lib/adapters/echarts/echarts-engine.adapter.spec.ts' --include='projects/praxis-charts/src/lib/adapters/echarts/echarts-option-builder.service.spec.ts' --include='projects/praxis-charts/src/lib/services/chart-data-transformer.service.spec.ts'
 npx ng test praxis-charts --watch=false --progress=false --include='projects/praxis-charts/src/lib/components/praxis-chart/praxis-chart.component.spec.ts' --include='projects/praxis-charts/src/lib/components/praxis-micro-visualization/praxis-micro-visualization.component.spec.ts'
 npm run build:praxis-charts
 ```
