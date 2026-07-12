@@ -60,6 +60,12 @@ protected public playground endpoints must have public proof and console-clean
 fallbacks, and flow-oriented published guide Mermaid warnings must be resolved
 or explicitly justified in scope.
 
+The Java/Praxis roadmap reconciliation is recorded in
+`docs/praxis-java-skill-coverage-reconciliation-2026-07.md`. It confirms that
+the canonical repository already contains the core `praxis-java-*` family and
+that new Java follow-ups should also come from #254 evidence, not stale
+skill-count planning.
+
 The immediate program work is now a lightweight evidence ledger: preserve valid
 completed work, keep #254 open while real misses are still being discovered, and
 open a focused PR only when the missing proof or source drift is material.
