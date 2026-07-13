@@ -71,11 +71,19 @@ Keep these runtime rules explicit:
 - `schemaUrl` can initialize schema-backed runtime without `resourcePath`, but command/read/submit behavior still needs the correct operation URLs and resource identity when applicable.
 - `readUrl` replaces `crud.getById(...)` for item read surfaces and read projections; when absent, entity hydration falls back to `resourcePath` + `resourceId`; when both are absent, `initialValue` may hydrate local entity state.
 - `initialValue` is a runtime value seed or materialized read-projection payload. It must not be used to define fields, validators, option sources, actions, layout ownership, or backend semantics.
+- `domainRules` is a runtime materialization input. It may combine governed `form_config`
+  projections with `config.formRules`, but it must not be treated as authored local config or
+  serialized into the editor document during schema/mode reconciliation.
 - External `config` updates must rebuild/reconcile with server schema without erasing canonical schema-backed metadata. Preserve explicit local fields, but refresh server-backed field semantics from schema.
 - Schema status, server hash, ETag, `X-Schema-Hash`, and outdated warnings are diagnostics/governance for drift; do not turn them into local schema forks.
 - Runtime/discovery values such as `schemaUrl`, `submitUrl`, and `submitMethod` may be displayed in authoring as read-only diagnostics, but must not be persisted into `DynamicFormAuthoringDocument` bindings or context snapshots.
 - Core `ResourceSurfaceOpenAdapterService` and `ResourceActionOpenAdapterService` should materialize widget inputs for schema/read/submit URLs, API origin, mode, form id, and resource id/bindings. Fix these adapters or metadata discovery when surfaces open with incorrect runtime inputs.
 - Core `SurfaceOpenMaterializerService` may materialize read projections into Dynamic Form `initialValue` plus transient schema layout policy; this is a runtime projection, not authored local config.
+- When a surface/action materializes `schemaUrl`, `readUrl`, `submitUrl`, `submitMethod`,
+  `apiEndpointKey`, `apiUrlEntry`, `mode`, `resourceId`, `initialValue`, `domainRules`, or
+  transient `layoutPolicy`, prove the adapter/materializer produced the right runtime inputs before
+  adding host-side defaults. Do not patch a migrated screen by hardcoding operation URLs or copying
+  generated layout into `FormConfig.sections`.
 
 ## Mode And Presentation Rules
 
@@ -87,6 +95,11 @@ Keep these runtime rules explicit:
 - Command forms must use request schema metadata. Rendering create/edit from response/detail schema is a contract defect, because derived/read-only fields can become editable.
 - Detail/read-only summaries should use response schema metadata and may request presentation through `layoutPolicy.intent="detail"` or `preset="compactPresentation"` while keeping `presentationModeGlobal=false` available for traditional readonly controls.
 - `layoutPolicy.persistence="transient"` prevents generated schema layout from being persisted as authored local sections. Prefer this for schema-driven command/detail materialization unless the user explicitly detaches/authorizes a layout.
+- In Ergon-style migrations, choose the schema mode from the operation contract first: detail/view
+  uses response schema and read URL; create/edit commands use request schema plus the explicit
+  submit URL/method. If a command form needs local field filtering, label correction, option mapping,
+  or disabled/read-only fixes, treat that as metadata/request-schema debt before adding Dynamic Form
+  aliases or local `sections`.
 - External `config` or metadata updates must rebuild or reconcile the runtime without erasing canonical schema-backed metadata.
 
 Do not create `FormConfig.sections` or `sections: []` merely to make a schema-driven form initialize. If generated layout is weak, classify the gap and fix metadata/runtime materialization.
