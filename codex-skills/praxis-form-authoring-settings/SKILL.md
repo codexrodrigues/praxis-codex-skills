@@ -98,6 +98,39 @@ shared decisions. Those decisions belong to governed semantic authoring such as 
 state. Keep `componentEditPlan` and `rule.visualBlockGuidance.add` scoped to component/page authoring
 or optional UI projection, not primary rule authoring.
 
+## Settings Panel Boundary
+
+`SettingsPanelService` is the canonical authoring drawer for editors that implement
+`SettingsValueProvider`. `providePraxisSurfaceDrawerBridge()` is the runtime drawer bridge for
+`surface.open`. They may share visual tokens, but they must not share semantics by accident.
+
+- Use `SettingsPanelService` only when the hosted editor owns `Apply`, `Save`, `Reset`, `Cancel`,
+  dirty/valid/busy state and `SettingsValueProvider`.
+- Use `providePraxisSurfaceDrawerBridge()` for runtime `surface.open`; it must not display authoring
+  chrome, status, or footer actions unless a governed runtime contract explicitly asks for it.
+- `SettingsPanelConfig.diagnostics` controls status visibility, disabled-reason visibility, busy
+  visibility, and validation exposure in the shell. It does not decide whether `Apply` or `Save` are
+  enabled; those gates come from the hosted editor's `isDirty$`, `isValid$`, and `isBusy$`.
+- `Apply` is preview without closing the panel; `Save` is the final persisted value through
+  `saved$`. A host that subscribes only to `applied$`, only to `saved$`, or persists a partial value
+  outside the canonical editor document is incomplete.
+- Do not move `Apply`/`Save` gating, confirmation, replacement, or overlay lifecycle into an Ergon
+  host or component-specific wrapper when the structural behavior belongs to
+  `@praxisui/settings-panel`.
+
+For `PraxisDynamicFormWidgetConfigEditor`, the hosted editor must serialize/parse
+`DynamicFormAuthoringDocument`, then project it back to widget `inputs` (`config`, `mode`,
+`backConfig`, `notifyIfOutdated`, `snoozeMs`, `autoOpenSettingsOnOutdated`). Treat that projection as
+a compatibility boundary for hosts, not as a second source of truth. When the document omits a
+binding or context snapshot block, follow the canonical replace-all semantics instead of preserving
+stale host inputs silently.
+
+For Ergon migration work, if a screen needs an authoring drawer only to tweak runtime URLs,
+operation URLs, submit method, resolved metadata, or drawer appearance, classify that as a diagnostic
+or host-integration concern first. Promote it to Dynamic Form or Settings Panel authoring only when an
+existing `FormConfig`, `bindings`, `contextSnapshot`, metadata bridge, or Settings Panel provider
+cannot represent the desired stable platform behavior.
+
 ## Editor Round-Trip Checklist
 
 For every config or context change, prove or inspect:

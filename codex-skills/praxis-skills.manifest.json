@@ -1451,8 +1451,8 @@
                                             "praxis-editorial-forms-presentation-diagnostics",
                                             "praxis-editorial-forms-data-collection-adapters"
                                         ],
-                       "skillMdSha256":  "D5D9A1CE69E4B5C2F75F3C94F9DC8FAF7BD12801CAA867134D156C19A9065DAB",
-                       "treeSha256":  "4777B1E29D786890C20DA0429F9EC50BD3B11DD5DE1AFEE311D652509BB1FDC8"
+                       "skillMdSha256":  "303B6B2D05E3C0F35BD574598CE0E7C8FB7F6D180C4F63CAC9E6AA845C0AC68A",
+                       "treeSha256":  "9803942D8835211E9551B9D0183F0E9559E86E62F0E1D2E19F4612ED720F8BBC"
                    },
                    {
                        "name":  "praxis-form-layout-canvas",
