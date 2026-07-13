@@ -2444,9 +2444,10 @@
                        "status":  "active",
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
+                                            "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "1EF3A6D64375C2DE5B51237E612E91EBA8E5E57F52AF32BBE6234952A5289D23",
-                       "treeSha256":  "06FF0E631492669100C913F6CE2837764BE85A6A7967691E4B97BE912250EC05"
+                       "skillMdSha256":  "875FE6DD04FACFF165D0FEDDB91D8639DD86C48FAF0265E584A2F034A09756B6",
+                       "treeSha256":  "6B46AC030D038FDC7EB4C5C30B983F565A993B863086E95F3D51DB15247C0829"
                    },
                    {
                        "name":  "praxis-api-quickstart-operational-proof",
@@ -2501,10 +2502,11 @@
                                             "praxis-metadata-schema-contracts",
                                             "praxis-metadata-discovery-capabilities",
                                             "praxis-metadata-domain-option-sources",
-                                            "praxis-config-domain-decisions"
+                                            "praxis-config-domain-decisions",
+                                            "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "6D197F43722EFEB6D0222831CF15E4DEA66C8EDB0963CF1E58FF4A630B716111",
-                       "treeSha256":  "84CEFA668D0FD219E3CAF6A6BD4B08E4D2D8742FE4E64E1C22619463E86EEE68"
+                       "skillMdSha256":  "4F31BD195F95A4E8973B0AF112C968E0CD8C490429604999E2B56090986C1AA4",
+                       "treeSha256":  "4057EC13CBF58EB0520D177500F060725922CA7BEB9AFE8636284540ADB4A6D3"
                    },
                    {
                        "name":  "praxis-api-quickstart-cockpit-http-validation",
@@ -2639,8 +2641,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-angular-validation-gates"
                                         ],
-                       "skillMdSha256":  "79A1E04EE2247C45F637CF317E35BE7BC740EC4DCC42CF84752F3B5D406032E3",
-                       "treeSha256":  "8A11D5DB10AB67F6E36E124A50D1CBC24371647A1FA1FCED9077F23206884898"
+                       "skillMdSha256":  "E88640A0CA806B83D9A9913ED4E429CA988957938D6030E7EDD1464EFC2E238B",
+                       "treeSha256":  "F2A9A7ECCA5B1131D87E2CFBF4ABB4F9FC719FFEFB5B71BDC91A4BDE5C17CF6C"
                    }
                ]
 }
