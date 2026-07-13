@@ -19,6 +19,9 @@ Before editing code or guidance, inspect:
 - `projects/praxis-core/src/lib/composition/**`
 - `projects/praxis-core/src/lib/models/runtime-component-observation.model.ts`
 - `projects/praxis-core/src/lib/services/runtime-component-observation-registry.service.ts`
+- `projects/praxis-core/src/lib/widgets/widget-event-path-normalizer.ts`
+- `projects/praxis-core/src/lib/widgets/nested-widget-config-accessor.ts`
+- `projects/praxis-core/src/lib/widgets/widget-page-state-runtime.service.ts`
 - focused widget, composition, observation, and dynamic page specs
 
 ## Canonical Boundary
@@ -53,13 +56,32 @@ For real gaps, update core models/specs and at least one direct consumer proof.
 
 Use the smallest reliable proof:
 
-- `dynamic-widget-loader.directive.spec.ts`
-- `dynamic-widget-page.component.spec.ts`
-- widget event/path normalizer specs
-- widget page model/presets/state runtime specs
-- composition runtime facade/engine/store/validator specs
-- runtime component observation registry/model specs
-- `npm run build:praxis-core` plus a Page Builder or direct widget consumer build when public contracts change
+- widget loader, shell, event paths, nested widget access, page models, presets, and state runtime:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/widgets/dynamic-widget-loader.directive.spec.ts --include=projects/praxis-core/src/lib/widgets/widget-shell.component.spec.ts --include=projects/praxis-core/src/lib/widgets/widget-event-path-normalizer.spec.ts --include=projects/praxis-core/src/lib/widgets/nested-widget-config-accessor.spec.ts --include=projects/praxis-core/src/lib/widgets/widget-page.model.spec.ts --include=projects/praxis-core/src/lib/widgets/widget-page-presets.spec.ts --include=projects/praxis-core/src/lib/widgets/widget-page-state-runtime.service.spec.ts
+```
+
+- dynamic widget page, composition serialization/factory, and record surface/open recipes:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page.component.spec.ts --include=projects/praxis-core/src/lib/widgets/widget-page-composition.serialization.spec.ts --include=projects/praxis-core/src/lib/widgets/widget-page-composition.factory.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page-record-surface-open.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-page-rich-table-recipe.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-page-actions-workspace-recipe.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-page-nested-path-recipe.spec.ts
+```
+
+- composition runtime evidence consumed by observations:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/composition/composition-runtime.engine.spec.ts --include=projects/praxis-core/src/lib/composition/composition-runtime.facade.spec.ts --include=projects/praxis-core/src/lib/composition/composition-runtime-store.spec.ts --include=projects/praxis-core/src/lib/composition/composition-validator.service.spec.ts
+```
+
+- runtime observation envelopes, registry, serializability, redaction, and Page Builder collection integration:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/runtime-component-observation-registry.service.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page-runtime-observation.spec.ts
+npm run ng -- test praxis-page-builder --watch=false --progress=false --include=projects/praxis-page-builder/src/lib/dynamic-page-builder.component.spec.ts --include=projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor-graph.util.spec.ts
+```
+
+- `npm run build:praxis-core` plus a Page Builder or direct widget consumer build when public contracts change.
 
 Report whether runtime observations were checked for serializability and redaction.
 
