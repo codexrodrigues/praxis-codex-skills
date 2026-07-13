@@ -31,6 +31,10 @@ Inspect the owner before editing:
 
 `x-ui.optionSource` and option-source runtime contracts own remote lookup semantics: source key, type, resource path, display/value fields, dependency filters, `includeIds`, `filterEndpoint`, `byIdsEndpoint`, `selectedReloadPolicy`, and `invalidSortPolicy`.
 
+`RESOURCE_ENTITY` option sources must publish enough governed lookup evidence for agents and runtimes to preserve entity identity: `entityKey`, value/label/status paths, dependency filter map, selection policy, filtering contract, canonical `filterEndpoint`, and canonical `byIdsEndpoint`. Do not substitute this with frontend autocomplete URLs, label parsing, or inferred entity names.
+
+Selected-value reload is part of the backend contract. Use GET `/by-ids` only when ids are self-contained; use POST `/by-ids` with the same structural filter context when dependencies or provider-required context affect visibility. If the contract cannot reload selected ids safely, publish an explicit partial/waived policy instead of letting Angular silently drop or guess selected values.
+
 ## Decision Rules
 
 - Do not create local Angular lookup routes when `OptionSourceRuntimeContract` can publish canonical filter/by-ids endpoints.
