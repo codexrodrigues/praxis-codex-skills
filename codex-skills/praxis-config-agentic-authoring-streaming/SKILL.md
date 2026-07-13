@@ -172,9 +172,9 @@ Use the smallest local gate that proves the boundary:
 - turn engine, runtime grounding, preview/repair/apply, and stream lifecycle:
   `mvn "-Dtest=AgenticAuthoringTurnEngineTest,AgenticAuthoringTurnStreamServiceTest,AgenticAuthoringRuntimeComponentGroundingServiceTest,AgenticAuthoringPreviewServiceTest,AgenticAuthoringApplyServiceTest,AiTurnEventServiceTest" test`
 - HTTP/SSE/security and legacy compatibility:
-  `mvn "-Dtest=AgenticAuthoringControllerTest,AiPatchStreamControllerTest,AiProviderStreamingFallbackAndCancelIntegrationTest,AiOrchestratorControllerTest,AiOrchestratorService*Test" test`
+  `mvn "-Dtest=AgenticAuthoringControllerTest,AgenticAuthoringTurnStreamHttpSseIntegrationTest,AgenticAuthoringTurnStreamSecurityChainIntegrationTest,AgenticAuthoringTurnStreamSignedTokenIntegrationTest,AiStreamAccessTokenServiceTest,AiPatchStreamControllerTest,AiProviderStreamingFallbackAndCancelIntegrationTest,AiOrchestratorControllerTest,AiOrchestratorService*Test" test`
 - persisted HTTP/SSE and security-chain integration, when the owner context is healthy:
-  `mvn "-Dtest=AiPatchStreamHttpSseIntegrationTest,AiPatchStreamSecurityChainIntegrationTest" test`;
+  `mvn "-Dtest=AgenticAuthoringTurnStreamHttpSseIntegrationTest,AgenticAuthoringTurnStreamSecurityChainIntegrationTest,AgenticAuthoringTurnStreamSignedTokenIntegrationTest,AiPatchStreamHttpSseIntegrationTest,AiPatchStreamSecurityChainIntegrationTest" test`;
   if unrelated auto-configuration prevents startup, record the owner test-infrastructure gap instead
   of presenting controller/unit tests as end-to-end security proof;
 - public contract changes:
