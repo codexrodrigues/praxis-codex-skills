@@ -37,6 +37,8 @@ Ground edit decisions in:
 - runtime/editor support status from README and json-api docs
 - backend/domain metadata when the list is resource-bound
 
+Treat `visual-only` list operations such as `item.primaryText.set`, `item.secondaryText.set`, `item.avatar.configure`, `item.badge.configure`, row layout, layout density, i18n, and a11y presentation as list rendering materialization only. They may bind fields, expressions, labels, badges, chips, avatars, spacing, density, and accessibility hints, but they must not classify records, synthesize status/eligibility patches, create `domain-rules`, infer `backend_validation`, or become item authorization/business policy. Treat `events.map` as declarative host event wiring, not as proof that an event handler, workflow, or backend side effect exists.
+
 ## Declared-Only Protection
 
 The manifest and context pack must not imply full authorability for fields that are only declared or partially runtime-proven. Maintain warnings for:
