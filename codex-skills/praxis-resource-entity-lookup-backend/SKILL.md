@@ -86,6 +86,11 @@ self-contained for the provider. If reload needs the same public dependencies us
 the backend must prove the contextual `POST /option-sources/{sourceKey}/options/by-ids` path sends
 the effective filter/dependency payload to the provider and still preserves requested ID order.
 Do not claim a dependent source is reusable or Angular-ready from a passing filter smoke alone.
+For dependent sources, prove both sides of the dependency contract: `OptionSourceRequestValidator`
+must reject any `dependencyFilterMap` key not declared in `dependsOn`, and the contextual by-ids
+request must use the same public dependency names and mapped backend filter fields as filter
+requests. This is backend `x-ui.optionSource` grounding, not metadata-editor root-level cascade
+patching.
 
 Use `OptionSourceContextResolver` as the internal extension point for host execution context.
 Provider context attributes can carry tenant, datasource, user, or other private host state, but
@@ -319,6 +324,9 @@ Cover:
 - For dependent or context-sensitive sources, `POST /option-sources/{sourceKey}/options/by-ids`
   rehydrates selected IDs with the declared dependency/filter payload and preserves the requested
   order.
+- For sources publishing `dependsOn`/`dependencyFilterMap`, tests prove invalid dependency maps fail
+  before provider dispatch and contextual by-ids receives the translated dependency payload, not only
+  the filter endpoint.
 - Blocked/inactive records are rehydratable but not selectable when the policy says so.
 - Search excludes sensitive fields.
 
