@@ -38,6 +38,7 @@ Inspect the source and its focused specs together:
 - `agentic-authoring-turn-client.service.ts` and `.spec.ts`;
 - `ai-backend-api.service.ts` and `.spec.ts`;
 - affected flow/controller, `assistant-shell` types/spec, and `ai-assistant` stream consumer when the older surface is involved;
+- when backend turn transport, event lineage, replay, security, or terminal semantics are involved, inspect `praxis-config-starter/AGENTS.md`, `AiTurn`, `AiTurnEvent`, `AiTurnStatus`, `AiTurnService`, `AiTurnEventService`, `AiStreamService`, `AiStreamExecutionContextHolder`, `AiStreamAccessTokenService`, `AiTurnEventEnvelope`, `AgenticAuthoringTurnStreamStartResponse`, `AgenticAuthoringTurnStreamService`, `AgenticAuthoringTurnStreamRequest`, `AgenticAuthoringTurnEngine`, `AgenticAuthoringTurnEventSink`, `AgenticAuthoringConversationTurnOrchestrator`, and the relevant tool-loop classes;
 - `README.md`, `docs/ai-deployment-flow.md`, `src/public-api.ts`, manifests, recipes, and direct consumers when the change is public.
 
 Before proposing a field, event, endpoint, local state, or fallback, inventory the existing request, generated contract, backend event, diagnostics, preview, pending clarification, quick reply, runtime observation, and flow state. Classify the need as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`. Only the last can justify a cross-boundary contract change.
@@ -92,6 +93,20 @@ npm exec -- ng test praxis-ai --watch=false --progress=false \
 ```
 
 Add `assistant-shell.component.spec.ts` for shell state; use `npm run test:praxis-ai:assistant` for the legacy assistant view. Public `@praxisui/ai` changes require the library build, a direct consumer, and the focused E2E evidence required by local AGENTS. Backend semantics require the focused config-starter gates; cross-project/release proof may add quickstart HTTP/SSE, Page Builder, registry, and public docs checks.
+
+For backend authoring-turn transport, persisted event lineage, transaction, signed-token, access-token, or security-chain changes, prefer the focused config-starter gate:
+
+```sh
+mvn "-Dtest=AiTurnEventServiceTest,AiTurnRepositoryContractTest,AiStreamTransactionContractTest,AiStreamRuntimeTransactionManagerIntegrationTest,AgenticAuthoringTurnStreamServiceTest,AgenticAuthoringTurnStreamHttpSseIntegrationTest,AgenticAuthoringTurnStreamSignedTokenIntegrationTest,AgenticAuthoringTurnStreamSecurityChainIntegrationTest,AiStreamAccessTokenServiceTest" test
+```
+
+For changes that alter tool progress, engine continuation, or conversation orchestration carried by the turn stream, add:
+
+```sh
+mvn "-Dtest=AgenticAuthoringTurnEngineTest,AgenticAuthoringConversationTurnOrchestratorTest,AgenticAuthoringToolLoopExecutorTest,AgenticAuthoringToolRegistryTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest" test
+```
+
+Treat `AiPatchStream*` tests as legacy compatibility evidence only when the older patch stream is intentionally touched. The canonical authoring-turn transport remains `/api/praxis/config/ai/authoring/turn/stream/**`.
 
 Exercise: normal clarification-to-review/apply; stale result after a newer turn; cancel/reset; malformed envelope; EventSource unavailable or explicit headers; silent/no-terminal stream; timeout/result and cancel/result race; untrusted observation; structured quick reply; and a consultative answer with no apply authorization.
 
