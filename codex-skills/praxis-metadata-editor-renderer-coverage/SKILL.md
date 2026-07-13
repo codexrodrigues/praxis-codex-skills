@@ -66,6 +66,12 @@ Inspect before editing:
 - `ConfigRegistryService` and `EditorProperty[]` arrays are the visual coverage catalog for metadata
   editing. They should expose canonical paths with typed editor controls; advanced JSON textareas are
   acceptable only for genuinely structured/legacy escape hatches and should be documented as such.
+- Renderer coverage proves that metadata can be authored and round-tripped visually; it does not prove
+  that the owning dynamic-field, option-source provider, backend endpoint, entity lookup runtime,
+  inline overlay, or AI authoring profile executes that behavior. When adding paths such as
+  `optionSource.*`, `payloadMode`, selection policy, detail/create actions, or inline control
+  properties, also point to the owning runtime/profile evidence before documenting the capability as
+  active.
 - AI-assisted metadata editing must use declared manifest operations such as `controlType.set`,
   `renderer.configure`, and inline/presentation operations. The adapter must reject free-form
   `seed`/`controlType` patches and JSON-only coverage for required visual authoring.
@@ -81,8 +87,11 @@ When adding an editor property:
 3. Ensure `SchemaNormalizerService` hydrates seed defaults correctly for complex values.
 4. Ensure `DynamicFormFactoryService` creates the control at the correct dot path.
 5. Add/update focused coverage specs.
-6. Update AI manifest/context-pack/capabilities if the visual coverage is AI-authorable.
-7. Update docs/checklists if coverage status changed.
+6. If the property claims runtime behavior beyond visual round-trip, verify the owning
+   dynamic-fields/runtime/option-source skill evidence and keep unsupported paths marked as partial,
+   declared-only, or JSON-only.
+7. Update AI manifest/context-pack/capabilities if the visual coverage is AI-authorable.
+8. Update docs/checklists if coverage status changed.
 
 ## Validation
 
@@ -91,6 +100,8 @@ Use focused gates:
 - renderer layout or grouping: `components/dynamic-editor-renderer/dynamic-editor-renderer.component.spec.ts`
 - field host/control-type resolution: `components/field-metadata-editor/field-metadata-editor.component.spec.ts`
 - inline/dynamic-fields parity: `config/inline-editor-coverage.spec.ts`
+- remote option/entity lookup visual coverage: `config/configs-remote-source.spec.ts` plus the owning
+  dynamic-fields option-source/runtime evidence when behavior, not only editor materialization, changed
 - form factory dot-path/control creation: `testing/dynamic-form-factory.service.spec.ts`
 - schema normalization for defaults/complex values: `testing/schema-normalizer.service.spec.ts`
 - i18n catalog behavior: `i18n/metadata-editor.i18n.spec.ts`
