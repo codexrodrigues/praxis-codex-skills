@@ -68,6 +68,14 @@ When backend contract behavior is in scope, load the relevant config-starter ski
 - Fetch SSE is the transport fallback when EventSource is unavailable or required host headers cannot be carried; it does not justify a new endpoint, unauthenticated stream, or different envelope parser.
 - Agentic authoring `intent.resolved` is replay-safe and non-terminal. UI clients must keep processing until `result`, `error`, or `cancelled`; do not treat early user-facing understanding as completion.
 - Feedback is write-only triage evidence. It cannot mutate config, risk policy, semantic decision, preview, or apply state.
+- `getHeaderContext()` exposes request scope for display, diagnostics, and host wiring checks only. Missing
+  tenant/user/env headers must surface as integration scope evidence, not as permission to fabricate demo identity,
+  reuse a UI session id, or move tenant/user/environment into turn ids, prompts, query params, local history, or
+  semantic decisions.
+- Observation feedback responses (`feedbackId`, `observationId`, `rating`, reason/comment echoes) are audit/triage
+  acknowledgements. They must not reopen a turn, change assistant history content, revise a quick reply, update
+  `canApply`, or become grounding evidence for a later request unless a separate backend contract explicitly returns
+  governed remediation context.
 
 ## Inventory Before New Contracts
 
