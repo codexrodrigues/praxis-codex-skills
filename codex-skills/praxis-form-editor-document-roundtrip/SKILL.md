@@ -18,6 +18,10 @@ Inspect these files before editing:
 - `projects/praxis-dynamic-form/src/lib/dynamic-form-editor-capability.ts`
 - `projects/praxis-dynamic-form/src/lib/settings-panel.providers.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form-widget-config-editor.ts`
+- `projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form-widget-config-editor.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form-authoring-protocol.spec.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.first-config-hydration.spec.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.external-config-hydration.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/config-editor/**`
 - `projects/praxis-dynamic-form/src/lib/behavior-editor/**`
 - `projects/praxis-dynamic-form/src/lib/rules-editor/**`
@@ -25,7 +29,12 @@ Inspect these files before editing:
 - `projects/praxis-dynamic-form/src/lib/hooks-editor/**`
 - `projects/praxis-dynamic-form/src/lib/actions-editor/**`
 - `projects/praxis-dynamic-form/src/lib/json-config-editor/**`
+- `projects/praxis-dynamic-form/src/lib/ai/praxis-dynamic-form-authoring-manifest.ts`
+- `projects/praxis-dynamic-form/src/lib/ai/dynamic-form-agentic-authoring-turn-flow.ts`
+- `projects/praxis-dynamic-form/src/lib/ai/dynamic-form-rule-authoring-context.ts`
+- `projects/praxis-dynamic-form/src/lib/utils/rule-authoring-diagnostics.ts`
 - `projects/praxis-dynamic-form/docs/dynamic-form-authoring-document-semantics.md`
+- related JSON API docs for editor surfaces when public docs or generated docs can change
 
 Inspect `projects/praxis-settings-panel/AGENTS.md` when changing Settings Panel providers, drawer values, `apply`, `save`, `reset`, ETag, or persistence behavior.
 
@@ -50,6 +59,10 @@ Canonical apply/save is replace-all:
 
 Legacy editor payloads may be normalized into the canonical document, but new code should author the document shape directly.
 
+`DynamicFormAuthoringDocument` owns authoring state only. `FormConfig` owns form config. `bindings` owns persistible runtime mode preferences. `contextSnapshot` owns persistible authoring context such as `backConfig`, presentation, and schema preferences. Host discovery values, resolved schema URLs, submit endpoints, HTTP methods, and current resource metadata are read-only diagnostics and may appear in editor UI only as evidence.
+
+Filter form and dynamic form widget editors must follow the same document semantics. Do not create a separate filter-form authoring document unless the shared contract cannot represent a proven gap.
+
 ## Apply Plan Rules
 
 The editor capability should produce an apply plan that names what changes:
@@ -63,6 +76,10 @@ The editor capability should produce an apply plan that names what changes:
 - diagnostics for invalid document kind/version, config shape, mode, schema prefs, presentation, and command rules
 
 Do not silently merge partial editor state when the canonical document requires replacement semantics.
+
+When `replaceContext` is active, absence is intentional: absent `bindings.mode`, `contextSnapshot.presentation`, `contextSnapshot.schemaPrefs`, or `contextSnapshot.backConfig` should emit clear flags/patches that remove previously persisted values. A partial editor form that does not own a block must either preserve it explicitly or declare why replacement is correct.
+
+AI-generated edit plans must target the canonical document/apply-plan surface. Do not let AI output ad hoc config patches, prompt-only field moves, or local editor state when the existing capability can express the change.
 
 ## Round-Trip Checklist
 
@@ -78,6 +95,14 @@ For every editor change, prove or inspect:
 
 If the change has no visual editor impact, state why.
 
+Also identify which path owns the proof:
+
+- Settings Panel provider lifecycle: drawer value, apply, save, reset, ETag/persistence integration.
+- Widget config editor: dynamic form and filter form document creation, serialization, and reopen.
+- Config editor tabs: layout, behavior, rules, messages, hooks, actions, JSON, and cascades.
+- Runtime hydration: first config hydration, external config hydration, mode/presentation/schema refresh, and back navigation.
+- AI authoring: manifest operation, turn flow, diagnostics, and generated apply plan.
+
 ## Aderence Inventory
 
 Classify editor gaps before adding a contract:
@@ -89,13 +114,19 @@ Classify editor gaps before adding a contract:
 
 Only `lacuna-real-de-contrato` justifies a new public document field.
 
+Treat a value that works in one editor tab but fails in another path as `suportado-parcialmente`, not a new contract. First repair the missing editor, JSON, Settings Panel, apply-plan, or reopen projection.
+
 ## Validation
 
-- document normalization/validation: `dynamic-form-editor-capability.spec.ts`
-- Settings Panel: provider and widget config editor specs
-- config/editor paths: focused specs under `config-editor`, `behavior-editor`, `rules-editor`, `messages-editor`, `hooks-editor`, `actions-editor`, and `json-config-editor`
-- browser authoring: focused Playwright for apply/save/reset/reopen when visible editor behavior changes
-- public API changes: `npm run build:praxis-dynamic-form`
+- Document normalization/apply plan: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/dynamic-form-editor-capability.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form-authoring-protocol.spec.ts`
+- Widget editor round-trip: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form-widget-config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form-widget-config-editor.spec.ts`
+- Runtime hydration/context: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.first-config-hydration.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.external-config-hydration.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.layout-policy.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.compact-presentation-dom.spec.ts`
+- Config/editor paths: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form-config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/json-config-editor/json-config-editor.component.spec.ts`
+- Tab-specific editor paths: add the focused specs under `behavior-editor`, `rules-editor`, `messages-editor`, `hooks-editor`, `actions-editor`, and `config-editor/rule-properties-panel.component.spec.ts` when those blocks change.
+- AI/rule authoring: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/ai/praxis-dynamic-form-authoring-manifest.spec.ts --include=projects/praxis-dynamic-form/src/lib/ai/dynamic-form-agentic-authoring-turn-flow.spec.ts --include=projects/praxis-dynamic-form/src/lib/ai/dynamic-form-rule-authoring-context.spec.ts --include=projects/praxis-dynamic-form/src/lib/utils/rule-authoring-diagnostics.spec.ts`
+- Browser authoring: focused Playwright such as `form-config-editor-smoke`, `form-config-editor-json`, `form-config-editor-layout`, `form-config-editor-behavior`, `form-config-editor-rules`, `form-config-editor-messages`, `form-config-editor-hooks`, `form-config-editor-actions`, `form-config-editor-cascades`, and apply/save/reset/reopen flows when visible behavior changes.
+- `npm run build:praxis-dynamic-form` when public document models, capability exports, Settings Panel providers, or editor public APIs change.
+- `npm run validate:published-doc-assets` and `npm run generate:registry:ingestion` when JSON API docs, generated docs, AI manifests, or registry surfaces change.
 
 ## Companion Skills
 
