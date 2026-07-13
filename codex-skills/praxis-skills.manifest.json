@@ -2527,8 +2527,8 @@
                                             "praxis-landing-registries-sitemap-playgrounds",
                                             "praxis-angular-docs-playgrounds"
                                         ],
-                       "skillMdSha256":  "8EF19082ECAEA82D7C54A42500744ED8258355BB43E979BB1DDF226108CE4481",
-                       "treeSha256":  "212FC5A4FBE39DC90601EBE454F914119B5CB925D4625314016010A3113621B3"
+                       "skillMdSha256":  "E02E1492649FA2793BB796C598E3E59CF1169C59F15F2F7F33981C91AC928C2D",
+                       "treeSha256":  "989C11325EA0C98F1F91D38E64EE6F45560DB313D48F2483A326C5E67EA7C854"
                    },
                    {
                        "name":  "praxis-http-examples-corpus-manifest",
