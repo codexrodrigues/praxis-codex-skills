@@ -2010,8 +2010,8 @@
                                             "praxis-authoring-editors",
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "FA58F853B920DD26260FD827EE9D918856207D7A70B1984A6FE390FE31000B9B",
-                       "treeSha256":  "3E3D62BB042376BF4BBC3D7FF56AC4D9967AB8839EB5A1C8EBD8717378522CF6"
+                       "skillMdSha256":  "73922E82606EF0C70587EF7E244A71CB2DA97412404760E28648168F97F68386",
+                       "treeSha256":  "F6B0C7238F54B3249D46FDCC416FFE1E2E53A91E361C75C5AE0E030B8D178FDA"
                    },
                    {
                        "name":  "praxis-stepper-wizard-runtime",

@@ -68,6 +68,10 @@ For each editable path, prove or inspect:
 6. `reset()` returns only the intended scope to baseline.
 7. Reopen reloads the value without silent normalization drift.
 8. Runtime consumes the saved/applied value without hidden adapters.
+9. Missing optional blocks in a canonical document are treated according to the owning editor's
+   semantics. For replace-all documents, omission may mean "clear this persisted block"; do not
+   silently restore stale widget inputs or host defaults unless the owning contract declares merge
+   behavior.
 
 ## Settings Panel Protocol
 
@@ -119,6 +123,11 @@ For Page Builder/component widget config editors, the canonical pattern is:
 - preserve stable widget identity such as `widgetKey`, `componentInstanceId`, form/table/list ids, and binding context.
 
 Do not persist editor-only authoring documents directly from a widget wrapper unless that document is the runtime input contract.
+When a widget wrapper projects an owning editor document back into `{ inputs: ... }`, treat the
+projection as host compatibility, not a second source of truth. If the child editor intentionally
+clears a binding, context snapshot, action, layout block, query context, or other optional document
+section, the wrapper must not rehydrate it from the original inputs by fallback unless that exact
+fallback is part of the canonical owner contract.
 
 ## Diagnostics, Layout, And Runtime Separation
 
@@ -128,6 +137,10 @@ Do not persist editor-only authoring documents directly from a widget wrapper un
 - Use `.praxis-settings-panel-pane` and `.praxis-settings-panel-backdrop` for authoring shell styling.
 - Use `providePraxisSettingsPanelBridge()` for authoring through `SETTINGS_PANEL_BRIDGE`.
 - Use the runtime surface drawer bridge for `surface.open` drawer presentation. Do not leak authoring footer/status semantics into runtime drawers.
+- Runtime drawer values such as `context.surfaceRuntime`, `result$`, row selection envelopes,
+  resolved surface state, or diagnostics visibility are not authoring round-trip payloads. If a user
+  needs to author a connection to a runtime drawer, route that through the owning action/composition
+  editor contract and persist that canonical action/composition shape, not Settings Panel shell state.
 
 ## Anti-Patterns
 
@@ -138,6 +151,9 @@ Do not persist editor-only authoring documents directly from a widget wrapper un
 - Accepting JSON-only support for fields that enterprise users need in visual authoring.
 - Subscribing only to `saved$` when the product promises live preview through `applied$`.
 - Treating diagnostics visibility as permission to save invalid or busy editor state.
+- Persisting runtime drawer context, `surfaceRuntime`, `result$` envelopes, or diagnostics output as
+  component config.
+- Rehydrating a cleared canonical document block from stale widget inputs after apply/save.
 - Replacing an open panel without honoring `onBeforeClose` and dirty discard confirmation.
 - Persisting transient expanded width as the user's preferred collapsed width.
 
