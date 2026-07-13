@@ -16,14 +16,26 @@ Before editing code or guidance, inspect:
 - `projects/praxis-core/src/lib/i18n/i18n.models.ts`
 - `projects/praxis-core/src/lib/i18n/i18n.tokens.ts`
 - `projects/praxis-core/src/lib/i18n/i18n.providers.ts`
+- `projects/praxis-core/src/lib/i18n/i18n.utils.ts`
 - `projects/praxis-core/src/lib/i18n/i18n.service.ts`
+- `projects/praxis-core/src/lib/i18n/component-metadata-registry.i18n.ts`
 - `projects/praxis-core/src/lib/i18n/resource-discovery.i18n.ts`
+- `projects/praxis-core/src/lib/i18n/value-presentation.models.ts`
 - `projects/praxis-core/src/lib/i18n/value-presentation.resolver.ts`
+- `projects/praxis-core/src/lib/actions/surface-open.i18n.ts`
+- `projects/praxis-core/src/lib/surfaces/praxis-related-resource-outlet.i18n.ts`
+- `projects/praxis-core/src/lib/widgets/dynamic-widget-page.i18n.ts`
+- `projects/praxis-core/src/lib/widgets/widget-shell.i18n.ts`
+- `projects/praxis-core/src/lib/services/component-metadata-registry.service.ts`
+- `tools/i18n/i18n-conformance.manifest.json`
+- `tools/i18n/validate-i18n-conformance.js`
+- `tools/i18n/reports/catalog-coverage.md`
+- `tools/i18n/reports/hardcoded-text-hotspots.md`
 - focused i18n, resource discovery, and value presentation specs
 
 ## Canonical Boundary
 
-`@praxisui/core` owns shared i18n models, translator token, config multi-provider, `PraxisI18nService`, fallback behavior, resource discovery namespace, resource availability reason mapping, unavailable workflow copy, and value presentation helpers.
+`@praxisui/core` owns shared i18n models, translator token, config multi-provider, config merge semantics, `PraxisI18nService`, fallback behavior, component metadata registry defaults, resource discovery namespace, resource availability reason mapping, unavailable workflow copy, surface/related-resource chrome copy, widget shell copy, and value presentation helpers.
 
 Vertical packages own package-specific namespaces and catalogs. Backend metadata/config owns domain labels, business names, option labels, resource names, and user-authored content.
 
@@ -32,6 +44,7 @@ Vertical packages own package-specific namespaces and catalogs. Backend metadata
 - Use `providePraxisI18nConfig(...)` for namespace catalogs and keep it multi-provider.
 - Use `providePraxisI18nTranslator(...)` only for a real external translator bridge.
 - Keep at least `pt-BR` and `en-US` coverage for shared core framework text.
+- Keep `componentMetadataRegistry`, `resourceDiscovery`, `surfaceOpen`, `relatedResourceOutlet`, `dynamicWidgetPage`, and `widgetShell` namespaces centralized in core when the text is framework chrome.
 - Keep `resourceDiscovery` keys stable for workflow unavailable messages, row action menu copy, and availability reasons.
 - Normalize resource availability reason codes before translating.
 - Do not persist translated text as business data.
@@ -53,12 +66,20 @@ For real gaps, update catalogs, specs, public API if needed, and affected consum
 
 Use the smallest reliable proof:
 
-- `i18n.service.spec.ts`
-- `resource-discovery.i18n.spec.ts`
-- `value-presentation.resolver.spec.ts`
-- direct consumer specs when a package adopts shared copy
-- hardcoded-text audit or report review for broad cleanup
-- `npm run build:praxis-core` when exports/providers change
+- Core service/catalog/value presentation changes:
+  - `npm run test:core -- --include=projects/praxis-core/src/lib/i18n/i18n.service.spec.ts --include=projects/praxis-core/src/lib/i18n/resource-discovery.i18n.spec.ts --include=projects/praxis-core/src/lib/i18n/value-presentation.resolver.spec.ts`
+- Component metadata registry defaults or fallback names:
+  - `npm run test:core -- --include=projects/praxis-core/src/lib/services/component-metadata-registry.service.spec.ts`
+- Resource discovery, related-resource, or unavailable workflow copy:
+  - `npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page.component.spec.ts`
+- Workspace-wide i18n conformance or hardcoded framework text cleanup:
+  - `node tools/i18n/validate-i18n-conformance.js`
+  - `node --test tools/i18n/validate-i18n-conformance.spec.js`
+  - Review `tools/i18n/reports/catalog-coverage.md` and `tools/i18n/reports/hardcoded-text-hotspots.md` for the affected packages.
+- Direct consumer specs when a package adopts shared copy, for example:
+  - `npm run test:core -- --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page.component.spec.ts`
+  - package-specific i18n specs such as `projects/praxis-manual-form/src/lib/i18n/manual-form.i18n.spec.ts`, `projects/praxis-metadata-editor/src/lib/i18n/metadata-editor.i18n.spec.ts`, `projects/praxis-page-builder/src/lib/i18n/page-builder-agentic-i18n.spec.ts`, or `projects/praxis-dynamic-fields/src/lib/editorial/metadata-i18n-contract.spec.ts` when those catalogs change.
+- `npm run build:praxis-core` when exports, providers, tokens, or public value-presentation models change.
 
 Report which text is framework chrome versus domain content and which locales were covered.
 
