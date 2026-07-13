@@ -12,7 +12,11 @@ Pair with `praxis-ai-composer-attachments-quick-replies` when quick replies, rec
 ## Canonical Boundary
 
 - `@praxisui/ai` may carry context, display state, ask clarifications, and materialize resolved decisions.
-- Backend/LLM/tool contracts decide the primary authoring intent.
+- `praxis-config-starter` owns the backend semantic intent resolver, LLM fast intent pass,
+  pre-intent tool planning, governed resource discovery evidence, Domain Catalog grounding,
+  semantic decision policy, repair classification, and turn-level quick reply payloads.
+- Backend/LLM/tool contracts decide the primary authoring intent; Angular may only send
+  structured context and render/materialize the returned semantic decision.
 - Local text matching may rank candidates only after semantic scope is resolved and must not decide intent.
 - When a needed tool or contract is missing, model or create the canonical tool/contract; do not replace it with local keyword heuristics.
 
@@ -27,6 +31,19 @@ Inspect:
 - assistant quick reply utilities and turn models
 - AI adapters/context packs in the affected component lib
 - the component authoring manifest that should govern the intent
+- `praxis-config-starter/AGENTS.md`
+- `AgenticAuthoringIntentResolverService`
+- `AgenticAuthoringLlmIntentResolverService`
+- `AgenticAuthoringLlmPreIntentToolPlanningService`
+- `AgenticAuthoringSemanticDecisionPolicy`
+- `AgenticAuthoringCandidateProvenancePolicy`
+- `AgenticAuthoringRepairClassificationPolicy`
+- `AgenticAuthoringDomainCatalogCandidateEnhancer`
+- `AgenticAuthoringDomainCatalogHints`
+- `AgenticAuthoringQuickReply`
+- focused backend tests for intent resolver, LLM intent, pre-intent tool planning,
+  semantic decision policy, Domain Catalog grounding, provenance, repair classification,
+  and quick reply canonicalization.
 
 Also inspect direct consumers of the shared policy when the change can alter
 cross-library routing. Current consumers include manual form, list, table,
@@ -54,6 +71,15 @@ falls back from explicit `adapter.componentId` to text matching on
 `adapter.componentName`. This does not classify the prompt, but it is weak
 materialization of canonical identity. Prefer explicit `componentId` and
 `componentType`; do not extend the name-based fallback to new components.
+
+Treat backend lexical checks with the same care. Residual `contains`, prompt
+shape checks, provider-error string classification, and artifact-name matching
+may support diagnostics, provider failure classification, post-resolution
+candidate ranking, or guarded compatibility only when semantic scope/evidence
+already exists. They must not become a new primary intent route. When auditing,
+record which semantic evidence enables each lexical branch, such as LLM-authored
+resource focus, Domain Catalog grounding, semantic retrieval, quick-reply
+context, selected candidate evidence, or authoring scope policy.
 
 Clarification display text must not be promoted back into executable semantics.
 Preserve structured `contextHints` returned with an option. Do not infer an
@@ -108,3 +134,16 @@ Include a regression case that passes the deprecated `localCompositionTerms`
 option and proves matching terms still cannot authorize the handoff. Treat
 `normalizeAuthoringPrompt` as display/search support only; its presence in the
 public routing module is not permission to classify intent locally.
+
+For backend semantic intent changes, run the smallest focused gate:
+
+```bash
+mvn "-Dtest=AgenticAuthoringIntentResolverServiceTest,AgenticAuthoringLlmIntentResolverServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest,AgenticAuthoringSemanticDecisionPolicyTest,AgenticAuthoringIntentResolverDomainCatalogGroundingTest,AgenticAuthoringCandidateProvenancePolicyTest,AgenticAuthoringRepairClassificationPolicyTest,AgenticAuthoringDomainCatalogCandidateEnhancerTest,AgenticAuthoringDomainCatalogHintsTest" test
+```
+
+When the change touches provider payload parsing, quick replies, or fast intent
+fallback, include a case proving incomplete LLM intent payloads fail closed and
+structured quick reply/context hints remain authoritative over display labels.
+When the change touches pre-intent shortcuts, include a case proving governed
+tool evidence can satisfy an open narrative without keyword fallback and another
+case where weak lexical evidence cannot override stronger semantic grounding.
