@@ -1,6 +1,6 @@
 ---
 name: praxis-config-domain-decisions
-description: Use when Codex must implement, audit, or consume praxis-config-starter governed semantic decisions: domain-rule intake, structural simulation, publication and materialization; Domain Knowledge change sets and evidence lifecycle; Domain Catalog or Federation grounding; decision diagnostics, approvals, timelines, and Angular runtime projections.
+description: "Use when Codex must implement, audit, or consume praxis-config-starter governed semantic decisions: domain-rule intake, structural simulation, publication and materialization; Domain Knowledge change sets and evidence lifecycle; Domain Catalog or Federation grounding; decision diagnostics, approvals, timelines, and Angular runtime projections."
 ---
 
 # Praxis Config Domain Decisions
@@ -21,6 +21,11 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/controller/DomainCatalogController.java`
 - `src/main/java/org/praxisplatform/config/controller/DomainFederationController.java`
 - `src/main/java/org/praxisplatform/config/service/DomainRuleService.java`
+- `src/main/java/org/praxisplatform/config/service/DomainRuleSnapshotService.java`
+- `src/main/java/org/praxisplatform/config/controller/DomainRuleSnapshotController.java`
+- `src/main/java/org/praxisplatform/config/domain/DomainRuleSnapshot.java`
+- `src/main/java/org/praxisplatform/config/domain/DomainRuleSnapshotHead.java`
+- `src/main/java/org/praxisplatform/config/domain/DomainRuleSnapshotEvent.java`
 - `src/main/java/org/praxisplatform/config/service/DomainKnowledgeChangeSetService.java`
 - `src/main/java/org/praxisplatform/config/service/DomainKnowledgeChangeSetValidator.java`
 - `src/main/java/org/praxisplatform/config/service/DomainFederationQueryService.java`
@@ -40,6 +45,8 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/domain/DomainRuleMaterialization.java`
 - `src/main/java/org/praxisplatform/config/domain/DomainKnowledgeChangeSet.java`
 - `src/main/resources/db/migration/V18__create_domain_knowledge_layer.sql` through `V26__add_domain_knowledge_evidence_lifecycle.sql`
+- `src/main/resources/db/migration/V30__create_domain_rule_snapshot_control_plane.sql`
+- `docs/domain-rules/snapshot-control-plane-v1.md`
 - `praxis-ui-angular/projects/praxis-core/src/lib/services/domain-rule.service.ts`
 - `praxis-ui-angular/projects/praxis-core/src/lib/services/domain-knowledge.service.ts`
 - `praxis-ui-angular/projects/praxis-core/src/lib/services/domain-catalog.service.ts`
@@ -48,7 +55,7 @@ Inspect the owner before editing:
 
 ## Canonical Boundary
 
-`/api/praxis/config/domain-rules/**` owns intake, definitions, status transitions, simulations, publications, materializations, timelines, explainability, and `decisionDiagnostics`.
+`/api/praxis/config/domain-rules/**` owns intake, definitions, status transitions, simulations, publications, materializations, timelines, explainability, `decisionDiagnostics`, immutable snapshot persistence, active RuleSet heads and rollback.
 
 `/api/praxis/config/domain-knowledge/change-sets/**` owns governed knowledge patch creation, validation, review, apply, timeline, evidence lifecycle, and derived Project Knowledge indexing.
 
@@ -72,7 +79,7 @@ Keep these owners and lifecycles distinct:
 2. `POST /domain-rules/intake` persists a `draft` definition and returns grounding plus `decisionDiagnostics`. Do not treat the prompt or assistant text copied into the definition as durable Domain Knowledge evidence.
 3. `POST /domain-rules/simulations` may use a persisted definition or an ad hoc request. The current simulation detects approved/active overlapping coverage, predicts target materializations, derives required approvals and publication readiness; it does **not** execute the rule condition against business records or prove business outcomes.
 4. Review `existingCoverage`, `predictedMaterializations`, `requiredApprovals`, warnings, explainability, and timeline evidence before publication. Existing approved/active coverage and declared approvals block publication.
-5. `POST /domain-rules/publications` requires a persisted definition. In the current contract, `draft`, `proposed`, `approved`, and `active` are publishable when readiness is otherwise clear, and publication promotes the definition to `active`. Therefore, encode required human review in governance and enforce caller authorization at the host; do not assume status alone guarantees prior approval.
+5. `POST /domain-rules/publications` requires a persisted definition. Only `approved` or `active` satisfies the publication approval gate; `draft` and `proposed` return `approval_required`, while terminal/inactive states are blocked. Governed definitions must be created as `draft` or `proposed` and pass explicit authorized transitions before publication. Do not relax this lifecycle to repair an outdated smoke fixture.
 6. Publish or create target materializations and preserve stable key, target identity, `sourceHash`, validation result, status, and materialization outcome diagnostics. A stable-key collision with another definition or changed derived source hash must fail instead of silently overwriting a projection.
 
 The current auto-derived publication targets are:
@@ -83,6 +90,20 @@ The current auto-derived publication targets are:
 - `approval_policy` -> `approval_policy/resource-action-approval`
 
 Other predicted targets, including form guidance, may require an explicit materialization. Never infer that a predicted target was persisted; inspect `materializations` and `publicationDiagnostics.materializationOutcomes`.
+
+## Runtime Snapshot Control Plane
+
+Treat a runtime snapshot as a governed aggregate, not as an opaque `DomainRuleMaterialization` payload. The public runtime-neutral snapshot record and compiler belong to `praxis-rules-engine`; Config Starter owns the append-only JPA store, publication transaction, active head, event history, HTTP concurrency and rollback.
+
+- Require source provenance, approved definitions, and at least two distinct approvers before snapshot publication.
+- Validate Java bindings with a planning-only exact-coordinate registry. Config Starter must not instantiate or execute host Java implementations.
+- Use `If-None-Match: *` for initial head creation and a strong `If-Match` validator for every later publication or rollback. Never fall back to last-write-wins.
+- Keep `snapshotContentHash` separate from `headEtag`: the content hash identifies immutable canonical snapshot content, while the opaque head ETag rotates with every activation. A rollback to old content keeps its content hash but receives a new head ETag and activation revision, preventing ABA.
+- Persist snapshot, activation event and head mutation in one transaction. Snapshot records are immutable; rollback selects a compatible prior snapshot rather than editing current content.
+- Expose immutable snapshot reads with private revalidation by content hash and head reads with no-cache/revalidation semantics. A public in-process reader may expose the same immutable contract to a colocated host without transferring persistence ownership.
+- Keep evaluation out of Config Starter. The consuming host validates scope/compatibility/vigency/hash, compiles with its executable registry, and atomically activates only a complete candidate.
+
+For control-plane changes, add focused tests for initial publication, stale `If-Match`, concurrent publication, approval/provenance failure, immutable reads, v1 → v2 → v1 rollback, anti-ABA head rotation, transaction rollback, and cross-tenant/environment rejection.
 
 Use only canonical status endpoints. Definition transitions allow review paths including `deprecated -> active`, but `rejected` and `retired` are terminal. Materializations may recover from `failed`, `superseded`, or `reverted` only through `draft` or `pending_review`; they cannot jump directly back to `applied`.
 
@@ -142,6 +163,7 @@ Only real gaps justify new decision contracts. Identify which UX/behavior cannot
 Use focused local gates:
 
 - domain rules: `mvn "-Dtest=DomainRuleControllerTest,DomainRuleServiceTest,DomainRuleMigrationConstraintTest" test`
+- runtime snapshots: `mvn "-Dtest=DomainRuleSnapshotControllerTest,DomainRuleSnapshotServiceTest,DomainRuleSnapshotAutoConfigurationTest" test`
 - shared-rule authoring handoff and LLM routing:
   `mvn "-Dtest=AgenticAuthoringLlmIntentResolverServiceTest,AgenticAuthoringIntentResolverServiceTest,AgenticAuthoringTurnEngineTest" test`
 - agentic semantic decisions and domain catalog grounding:

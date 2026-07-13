@@ -1,6 +1,6 @@
 ---
 name: praxis-api-quickstart-domain-pilots
-description: Use when Codex must implement, audit, or extend Praxis API Quickstart pilot domains: ApiPaths, resource-oriented controllers and services, DTO/filter meaning, @UISchema, @DomainGovernance, option sources and entity lookup, stats/export, surfaces/actions, demo data, operational migrations, cockpit evidence, or governed domain-decision materializations across HR, operations, assets, procurement, and risk intelligence.
+description: "Use when Codex must implement, audit, or extend Praxis API Quickstart pilot domains: ApiPaths, resource-oriented controllers and services, DTO/filter meaning, @UISchema, @DomainGovernance, option sources and entity lookup, stats/export, surfaces/actions, demo data, operational migrations, cockpit evidence, or governed domain-decision materializations across HR, operations, assets, procurement, and risk intelligence."
 ---
 
 # Praxis API Quickstart Domain Pilots
@@ -49,6 +49,7 @@ The quickstart owns concrete example resources, host composition, paths, demo pe
 
 - `praxis-metadata-starter` owns `x-ui`, `/schemas/filtered`, schema resolution and headers, surfaces, actions, capabilities, HATEOAS, resource bases, option-source runtime contracts, and metadata discovery.
 - `praxis-config-starter` owns governed Domain Catalog/Federation/Knowledge, domain-rule intake, simulation, approval, publication, diagnostics, and materialization lifecycle.
+- `praxis-rules-engine` owns runtime-neutral RuleSet/snapshot contracts, deterministic planning and evaluation; Config Starter owns their governed snapshot store/head, while the quickstart owns only the executable host registry and activation adapter.
 - `praxis-ui-angular` consumes materialized contracts and decisions; it must not become an alternative owner of backend semantics.
 - The quickstart proves all of the above with real resources, HTTP contracts, and focused tests.
 
@@ -122,6 +123,19 @@ When a pilot consumes a shared domain decision:
 
 The quickstart may demonstrate a materialization, but no pilot may route rules through command words, local keyword rules, or copied assistant text. Governed semantic resolution remains the primary path.
 
+## Governed Snapshot Consumption
+
+When a pilot consumes an active runtime snapshot, keep it as a downstream data-plane proof:
+
+1. Load only the configured tenant, environment, owner, RuleSet and host-contract identity from the Config Starter head/read boundary.
+2. Revalidate immutable content hash, validity interval and strictly monotonic activation revision. Cache hits may use the same head ETag; stale or reordered activations must be rejected.
+3. Compile the complete candidate with the host's executable Java registry before exposing it. The authoring/config boundary uses only planning coordinates and must never receive host executor instances.
+4. Swap the compiled plan atomically. Network failure, invalid content, incompatibility or missing executor preserves the last-known-good; do not rebuild a bootstrap-local fallback as a parallel authority.
+5. Prove rollback v1 → v2 → v1: v1's content hash repeats, but the opaque head ETag and activation revision must advance so ABA is rejected.
+6. Make polling/startup loading operationally opt-in where the host profile does not provide the snapshot tables. Publish health as unavailable/out-of-service until an effective plan exists, without leaking snapshot payloads, facts or approval evidence.
+
+The loader changes which governed plan is evaluated; it does not authorize business effects. Keep business endpoints, persistence, idempotency, shadow, effect execution and authority behind their own pilot gates.
+
 ## Persistence And Demo Data
 
 Operational migrations and deterministic demo data support proof; they do not define canonical platform semantics. Preserve resource relationships, lifecycle states, and representative data needed for filters, lookups, actions, analytics, governance, and negative paths. Update `docs/DEMO-DATABASE.md` when the operational model or seed assumptions change.
@@ -152,6 +166,7 @@ Choose the smallest focused proof that covers the changed contract:
 | analytical option-source dependency mapping | `mvn "-Dtest=StatsSchemaSmokeHttpTest,VwStatsSmokeHttpTest,VwAnalyticsFolhaPagamentoServiceStatsTest" test` |
 | stats, analytics, or export | `mvn "-Dtest=StatsSchemaSmokeHttpTest,FuncionarioExportSmokeHttpTest" test` plus the affected pilot test |
 | Domain Knowledge/config host wiring | `mvn "-Dtest=DomainKnowledgeProjectionWiringIntegrationTest" test`; use the config-starter smoke for authoring/publication lifecycle |
+| governed snapshot loader/hot reload | focused runtime/health tests proving scope, hash, compatibility, monotonic activation, atomic last-known-good, invalid-candidate rejection and v1 → v2 → v1 rollback; then package/verify against released engine and Config Starter coordinates |
 | one pilot implementation | its focused `*PilotIntegrationTest` plus any directly affected lookup/action/stats/export proof |
 | `ApiPaths` or cross-domain public identity | focused proofs above and cockpit verification scripts; use `mvn test` only if those cannot cover the resulting identity graph |
 

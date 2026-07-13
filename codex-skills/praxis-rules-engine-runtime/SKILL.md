@@ -9,7 +9,7 @@ description: Implement, review, debug, or extend the deterministic Praxis rules 
 
 Treat `@praxisui/core` RFC, models, descriptors and shared corpus as the current normative dialect owner. Treat `praxis-rules-engine` as the owner of the pure Java runtime. Change RFC, TypeScript, Java and corpus in the same cycle when semantics change.
 
-Keep the engine stateless, thread-safe, embeddable and free of Spring, I/O, persistence, endpoints, tenant stores, snapshots, workflow, effects, database access and domain-specific rules. Keep authoring/publication/snapshots in `praxis-config-starter`; keep facts, security, transactions, algorithms and effects in domain hosts; keep metadata projection in `praxis-metadata-starter`.
+Keep the engine stateless, thread-safe, embeddable and free of Spring, I/O, persistence, endpoints, tenant stores, mutable snapshot heads, workflow, effects, database access and domain-specific rules. The engine owns the immutable runtime-neutral snapshot contract and compiler; `praxis-config-starter` owns authoring, publication, append-only snapshot persistence, active heads and rollback; domain hosts own facts, executable Java registries, security, transactions, algorithms and effects; `praxis-metadata-starter` owns metadata projection.
 
 Treat RuleSet identity, slots, bindings, closed aggregation policies, deterministic plans, compatibility coordinates, results, and executor registry contracts as owned by `praxis-rules-engine`. A host may adapt these contracts but must not redefine their semantics.
 
@@ -46,6 +46,8 @@ Classify semantic changes as `arquitetural`, `contrato-publico` and `transversal
 - Return stable code, path and operator diagnostics.
 - Pin every RuleSet to the exact engine contract, JSON Logic dialect, and normative corpus SHA-256 accepted by the runtime.
 - Require exact namespaced key and version for Java executors; reject missing or incompatible implementations during planning.
+- Keep Java executor discovery split by boundary: publication uses a planning-only coordinate registry that proves an exact key/version is allowed without instantiating host code; the consuming host supplies the executable registry and must compile the complete candidate before activation. Never put host executors in Config Starter.
+- Distinguish immutable snapshot content identity from mutable activation identity. `snapshotContentHash` is stable for canonical content; an opaque strong head ETag and monotonic activation revision must change on every activation, including rollback to previously active content, to prevent ABA.
 - Represent slot cardinality and aggregation explicitly. Customer composition must respect product-owned override policy; protected guards cannot be customized.
 - Compile dependencies as a bounded DAG with deterministic stage/order/key tie-breaking. Reject cycles, later-stage references, excessive edges, and excessive fan-out.
 - Preserve `ALLOW`, `DENY`, `NOT_APPLICABLE`, `INCONCLUSIVE`, and `TECHNICAL_ERROR`; never convert technical failure into business denial.
@@ -77,6 +79,8 @@ Do not accept "works in the Angular preview" as proof of rule-platform parity. P
 3. Keep public records immutable and defensively copy mutable JSON values.
 4. Add positive and negative tests for identity, compatibility, composition, DAG ordering, missing/null, decision precedence, effect gating, limits, and thread safety.
 5. Run the complete engine gate, including Javadocs, then consume only an officially published Maven coordinate in downstream repositories.
+
+For snapshot work, prove the full ownership chain: the engine compiles the runtime-neutral candidate, Config Starter persists and advances the governed head transactionally, and a host compiles with its executable registry before an atomic last-known-good swap. A v1 → v2 → v1 rollback must preserve v1's content hash while issuing a new head ETag and activation revision.
 
 Do not use `mvn install`, file repositories, or local version overrides as downstream release proof. While the public beta line is active, compatible additive work stays on the next beta unless release governance establishes a breaking change.
 
