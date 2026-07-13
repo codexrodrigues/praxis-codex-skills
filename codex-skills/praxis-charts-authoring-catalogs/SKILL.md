@@ -96,6 +96,8 @@ Resolve targets after the structured event action is known:
 
 Use stable widget keys, state paths, action ids, surface ids, route ids, and port contracts. Labels may rank already-scoped candidates only after semantic scope is resolved; they never decide intent or compatibility. Revalidate target existence and mapping compatibility on reopen because page composition can change.
 
+Treat a chart interaction target as governed compatibility evidence, not as proof that the target workflow, permission, backend side effect, or business policy exists. `pointClick`, `drillDown`, `crossFilter`, and `selection` may persist canonical action, target, and field mapping, but execution must still be grounded in the target widget/port/surface/global-action contract; when that grounding is absent, fail closed with catalog diagnostics or open the owning composition/platform follow-up instead of encoding host-local event behavior in `x-ui.chart`.
+
 ## Transient Editor Context
 
 Classify every value passed to an editor:
