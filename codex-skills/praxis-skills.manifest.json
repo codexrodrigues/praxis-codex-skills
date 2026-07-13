@@ -1982,8 +1982,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "E88D30DF35E555C51BAD888C02344868281D1A764615EFAF1DA4100623C17E2D",
-                       "treeSha256":  "297DA1DB50E58836A7AF3E6EF2B3DE9C234AF8594FDFD4F5A893D7C75A103B5D"
+                       "skillMdSha256":  "34E73564AD0ACED42081E85A6C595226D31799C77639B5CA0AFE12F20E94692E",
+                       "treeSha256":  "163F2084904E4F3AE3FBB19FA1E2D130AE65BBD8FF97ACD2737F2C100A8853B1"
                    },
                    {
                        "name":  "praxis-settings-panel-shell",
