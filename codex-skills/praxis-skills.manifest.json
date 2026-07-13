@@ -1274,8 +1274,8 @@
                                             "praxis-fields-text-number-time-controls",
                                             "praxis-fields-selection-lookup-controls"
                                         ],
-                       "skillMdSha256":  "227FF74EF30A2D61C22AF93764A92C2F66CD703BDF818812883A3ED111900BF1",
-                       "treeSha256":  "1B38925F46A6DD8F2D81518071C7B8ED53E190B60748CE9BE3D0ADC8A4F86C3E"
+                       "skillMdSha256":  "1FA58C1018FC8139E907610940DC4E8C44CB5B6EF1BE870B41D4DCF7A6308D87",
+                       "treeSha256":  "1C5DF58E714348FA40EA363981F2AC66FEAB302DE836D01A94A2FC897ADBC383"
                    },
                    {
                        "name":  "praxis-fields-editorial-discovery",
