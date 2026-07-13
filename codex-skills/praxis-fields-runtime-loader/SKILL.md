@@ -20,9 +20,10 @@ Audit this chain before editing:
 
 1. `@praxisui/core` owns `FieldControlType`, aliases, inline control utilities, selector registry tokens, and shared `FieldMetadata`.
 2. `ComponentRegistryService` owns runtime `controlType -> lazy component` resolution and default package registrations.
-3. `DynamicFieldLoaderDirective` owns rendering, `FormGroup` binding, shell wrapping, lifecycle cleanup, hot metadata refresh, and render error events.
-4. The field component owns CVA/form-control behavior and `setInputMetadata` or signal-based metadata updates.
-5. Host custom fields use `ComponentRegistryService.register(...)`; package-owned fields must be fixed in the package-owned registry path.
+3. `ComponentPreloaderService` owns optional preloading over the same registry contract; it must not introduce a second field discovery source.
+4. `DynamicFieldLoaderDirective` owns rendering, `FormGroup` binding, shell wrapping, lifecycle cleanup, hot metadata refresh, presentation/global states, select rebinding, and render error events.
+5. The field component owns CVA/form-control behavior and `setInputMetadata`, `setExternalControl`, or signal-based metadata updates.
+6. Host custom fields use `ComponentRegistryService.register(...)`; package-owned fields must be fixed in the package-owned registry path.
 
 If a field can render only because a host imports or maps it manually, classify that as a registry gap unless the field is intentionally host custom.
 
@@ -37,10 +38,18 @@ Inspect the affected files, not only docs:
 - `docs/dynamic-fields-field-catalog.md`
 - `docs/dynamic-fields-field-selection-guide.md`
 - `src/lib/services/component-registry/component-registry.service.ts`
+- `src/lib/services/component-registry/component-registry.interface.ts`
+- `src/lib/services/component-preloader.service.ts`
 - `src/lib/directives/dynamic-field-loader.directive.ts`
 - `src/lib/providers.ts`
+- `src/lib/catalog/**`
+- `src/lib/ai/control-type-ai-catalog.spec.ts`
+- `src/lib/ai/praxis-dynamic-fields-authoring-manifest.spec.ts`
 - relevant `src/lib/components/**` component, `*.metadata.ts`, and `*.json-api.md`
 - `src/lib/base/**` for shared input/select behavior
+- `src/lib/editorial/metadata-contract.spec.ts`
+- `src/lib/editorial/metadata-i18n-contract.spec.ts`
+- `projects/praxis-core/src/lib/services/field-selector-registry.service.ts` and spec when changing selector defaults or overrides
 - `projects/praxis-core/src/lib/**` when changing `FieldControlType`, aliases, selector defaults, inline controls, or shared metadata
 - docs/inventory/catalog files when a runtime claim changes
 
@@ -48,6 +57,7 @@ Inspect the affected files, not only docs:
 
 - Prefer a canonical `FieldControlType` from `@praxisui/core`; add aliases only when they normalize deterministically to one existing type and the alias belongs in core.
 - Register package-owned fields in `ComponentRegistryService.initializeDefaultComponents()` with lazy imports; do not solve package-owned fields through host bootstrap code.
+- Keep `ComponentPreloaderService` aligned with registry semantics. Preload should exercise registrations, caching, and failures, not become a side catalog.
 - Keep selector resolution in `FieldSelectorRegistry`, `DEFAULT_FIELD_SELECTOR_CONTROL_TYPE_MAP`, or explicit host override. Disable defaults only at the intended root provider boundary.
 - Preserve `DynamicFieldLoaderDirective` reentrancy, component disposal, shell lifecycle, subscriptions, `enableExternalControlBinding`, and render error event shape.
 - Require form compatibility: `ControlValueAccessor`, `[formControl]`, or `setExternalControl` must work with dynamic forms.
@@ -62,6 +72,7 @@ Do not say "supported" unless the correct layer is true:
 - `runtime coverage`: `ComponentRegistryService.isRegistered(controlType)` resolves the component and loader renders it.
 - `schema/type coverage`: `FieldMetadata`, `FieldControlType`, aliases, selector mapping, and public exports support the type.
 - `editor/tooling coverage`: metadata/editorial registries, catalogs, AI profiles, and downstream builders can discover it.
+- `preload coverage`: `ComponentPreloaderService` can preload the same package-owned field through registry resolution without duplicate discovery data.
 
 Runtime-only support is valid for some host custom fields, but package-owned fields should normally progress through all three layers.
 
@@ -69,11 +80,21 @@ Runtime-only support is valid for some host custom fields, but package-owned fie
 
 Use the smallest sufficient checks:
 
-- registry changes: `component-registry.service.spec.ts`
-- loader changes: `dynamic-field-loader*.spec.ts`
-- field component changes: the component spec plus loader smoke when binding behavior changed
-- inline/filter rendering: relevant `test-dev/e2e/*.playwright.spec.ts`
-- dynamic-form or metadata-editor materialization: consumer specs only when loader behavior or control metadata changed the downstream rendering path
-- public API or package-owned `controlType` changes: build `praxis-dynamic-fields` and at least one direct consumer when feasible
+- Registry/default registration/selector/preload changes:
+  - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/services/component-registry/component-registry.service.spec.ts`
+  - `npx ng test praxis-core --watch=false --progress=false --include=projects/praxis-core/src/lib/services/field-selector-registry.service.spec.ts` when selector defaults or aliases change.
+- Loader lifecycle, hot metadata, global state, presentation mode, skip snapshot, or select rebind changes:
+  - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/directives/dynamic-field-loader.directive.spec.ts --include=projects/praxis-dynamic-fields/src/lib/directives/dynamic-field-loader.metadata-refresh.spec.ts --include=projects/praxis-dynamic-fields/src/lib/directives/dynamic-field-loader-global-states.spec.ts --include=projects/praxis-dynamic-fields/src/lib/directives/dynamic-field-loader.presentation-mode.spec.ts --include=projects/praxis-dynamic-fields/src/lib/directives/dynamic-field-loader.skip-snapshot.spec.ts --include=projects/praxis-dynamic-fields/src/lib/directives/dynamic-field-loader.select-rebind.spec.ts`
+- Field component changes:
+  - Run the component spec plus the loader smoke above when CVA, `[formControl]`, `setExternalControl`, shell wrapping, or metadata refresh behavior changed.
+- Catalog/editorial/AI coverage changes:
+  - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/catalog/catalog-derivation.spec.ts --include=projects/praxis-dynamic-fields/src/lib/catalog/dynamic-fields-playground.catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/control-type-ai-catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/praxis-dynamic-fields-authoring-manifest.spec.ts --include=projects/praxis-dynamic-fields/src/lib/editorial/metadata-contract.spec.ts --include=projects/praxis-dynamic-fields/src/lib/editorial/metadata-i18n-contract.spec.ts`
+- Inline/filter rendering:
+  - Select the relevant `projects/praxis-dynamic-fields/test-dev/e2e/*.playwright.spec.ts`; use `inline-all-components-smoke.playwright.spec.ts` when the change affects broad runtime registration or loader behavior.
+- Dynamic-form or metadata-editor materialization:
+  - Run consumer specs only when loader behavior, control metadata, or public control type coverage changes the downstream rendering path.
+- Public API or package-owned `controlType` changes:
+  - `npm run build:praxis-dynamic-fields`
+  - Build at least one direct consumer when feasible.
 
 Also update governed inventory/catalog docs when runtime registration, aliases, selectors, or coverage changes. Declare explicitly when no derived artifact needs updating.
