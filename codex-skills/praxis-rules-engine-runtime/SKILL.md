@@ -13,6 +13,10 @@ Keep the engine stateless, thread-safe, embeddable and free of Spring, I/O, pers
 
 Treat RuleSet identity, slots, bindings, closed aggregation policies, deterministic plans, compatibility coordinates, results, and executor registry contracts as owned by `praxis-rules-engine`. A host may adapt these contracts but must not redefine their semantics.
 
+In the platform monorepo, the accepted Angular evidence currently points to the Java runtime as the external `praxis-rules-engine` repository. If that repository is not present locally, do not infer Java behavior from Angular code or create a host-local backend evaluator. Record the missing repository as a validation blocker for Java parity and keep Angular/core, corpus, and domain-rule materialization changes honest about their actual proof boundary.
+
+For business-rule, policy, eligibility, compliance, validation, or shared migration decisions, treat `/api/praxis/config/domain-rules/**` as the governed authoring/publication source and treat `form_config`, `option_source`, `backend_validation`, `workflow_action`, `approval_policy`, table effects, and other runtime targets as materializations. `formRules`, `formRulesState`, component edit plans, visual guidance, table config, and host callbacks may consume or preview a projection, but they must not become the primary owner of the decision.
+
 ## Required source audit
 
 Read applicable `AGENTS.md`, then inspect:
@@ -22,6 +26,7 @@ Read applicable `AGENTS.md`, then inspect:
 - `praxis-ui-angular/docs/json-logic-conformance/conformance-fixtures.json`
 - all Java production/tests and engine documentation
 - `docs/operator-conformance-matrix.md` and `docs/architecture.md`
+- if the task touches governed decisions or runtime materialization, inspect `DomainRuleService`, `DomainRuleMaterialization`, `DomainRuleFormRulesService`, and the relevant quickstart smoke before changing a runtime target
 
 Classify semantic changes as `arquitetural`, `contrato-publico` and `transversal`; map direct consumers and derived artifacts before editing.
 
@@ -49,6 +54,7 @@ Classify semantic changes as `arquitetural`, `contrato-publico` and `transversal
 - Require every effect-intent binding to declare an explicit decision dependency, and never execute it while any prior branch is inconclusive.
 - Apply deterministic structural limits to host-resolved facts and Java executor outputs, not only to JSON Logic expressions.
 - Include stable plan/facts digests and exact runtime/implementation coordinates in evaluation results. Keep wall-clock duration and observation infrastructure outside the deterministic core.
+- Dynamic-form, table, page-builder, rich-content, and workflow targets may translate a governed decision into visible or executable effects, but this translation is a projection. Do not repair a missing governed decision by adding local `formRules`, `formRulesState`, JSON snippets, component-edit-plan operations, table-only predicates, or host callbacks.
 
 ## Changing semantics or operators
 
@@ -62,6 +68,8 @@ Classify semantic changes as `arquitetural`, `contrato-publico` and `transversal
 
 Do not create textual DSL fallbacks, parallel V1/V2 contracts, permissive JSONPath, unrestricted regex, implicit process time, or runtime database access.
 
+Do not accept "works in the Angular preview" as proof of rule-platform parity. Preview/runtime projection proves only that a target consumed a materialization. Parity requires the normative RFC, TypeScript runtime, shared corpus, Java runtime, descriptors, and host operator availability to agree.
+
 ## Changing RuleSet contracts or planning
 
 1. Read the accepted Rule Platform ADRs and classify the change as public-contract and architectural.
@@ -71,6 +79,8 @@ Do not create textual DSL fallbacks, parallel V1/V2 contracts, permissive JSONPa
 5. Run the complete engine gate, including Javadocs, then consume only an officially published Maven coordinate in downstream repositories.
 
 Do not use `mvn install`, file repositories, or local version overrides as downstream release proof. While the public beta line is active, compatible additive work stays on the next beta unless release governance establishes a breaking change.
+
+When migrating Ergon or another host, use the engine skill to remove cognitive load from migrators by routing questions to the canonical layer: missing facts or algorithms belong to the host/domain contract, shared decisions belong to `domain-rules`, deterministic expression semantics belong to the JSON Logic dialect/engine, and UI behavior belongs to materialized target adapters. Avoid screen-local rule transforms that make one migrated screen pass while leaving the platform unable to explain, simulate, publish, or replay the decision.
 
 ## Gates
 
