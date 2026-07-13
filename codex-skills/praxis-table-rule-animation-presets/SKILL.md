@@ -37,6 +37,7 @@ Do not persist preview-only classes or raw animation CSS as the canonical schedu
 - Normalize animation payloads with `resolveRuleAnimationConfig`.
 - Empty overrides must not erase preset defaults. Preserve fail-closed behavior for blank `type`, `repeat`, `trigger`, `intensity`, or duration values.
 - Unsupported animation types must resolve to no animation instead of leaking unknown classes.
+- Treat aliases such as `sla-breach`, `risk-critical`, `audit-warning`, and `sync-warning` as governed visual-feedback compatibility names only. They may help select an existing animation preset, but they must not classify the row, infer regulatory severity, authorize a workflow, create a domain rule, or replace backend validation/effect decisions.
 - Respect reduced-motion behavior in preview. Do not force motion when the runtime suppresses animation classes.
 - Keep runtime precedence aligned with table: `rule.animation` overrides `rule.renderer.animation`, and first-match applies only when there is a real effect.
 
