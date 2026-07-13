@@ -30,6 +30,7 @@ Inspect `@praxisui/core` collection export models/services and global action pay
 - Use canonical outputs: `rowClick`, `selectionChange`, `widgetEvent`, `resourceEvent`, and `recordSurfaceOpen` as applicable.
 - Preserve `selectionChange` shape with trigger, selectedRows, selectedCount, optional row, and tableId.
 - Use selected row snapshots and sanitized selected-record context for AI; do not expose raw internal fields unless explicitly required.
+- Treat `selectedRecordsContext` as governed read-only grounding for analysis of the current selection. Questions to understand, summarize, compare, inspect, rank, or explain selected records should answer with `info` grounded in sanitized `sampleRows`; do not convert them into `componentEditPlan`, `table.filter.apply`, export, row action, navigation, or backend mutation unless the user explicitly asks to apply/configure/create/open/export.
 - Bulk actions are disabled when no rows are selected unless a governed action says otherwise.
 - Reconcile selection after data refresh by stable row identity, not visual index.
 - For related resource or surface actions, separate row-selection transport from authorization. Availability comes from capabilities, surfaces, actions, or `_links`.
