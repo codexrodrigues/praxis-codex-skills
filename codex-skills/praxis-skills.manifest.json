@@ -2366,8 +2366,8 @@
                                             "praxis-core-resource-runtime",
                                             "praxis-core-global-action-payloads"
                                         ],
-                       "skillMdSha256":  "D3AFE221E241BCAE3042E730F434A646AAA82A508A44A1C34E11174F4051DFB5",
-                       "treeSha256":  "FEEEC49ED0AC98A162D715B5C1BC841BA8C308E74B19C6149E8DED4ABFD11D9E"
+                       "skillMdSha256":  "E6299250FDD0BA2822D85451C0185C59B8A3F3F023FA1CA0E119BC11E01F2D9C",
+                       "treeSha256":  "AE068364CD0BD842235694DB90C5A19AD05E75CCBF77A47B3FE86CFB9D76ADCF"
                    },
                    {
                        "name":  "praxis-core-global-action-payloads",
