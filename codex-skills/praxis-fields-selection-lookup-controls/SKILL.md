@@ -20,6 +20,11 @@ Pair it with:
 
 ## Source Audit
 
+First resolve the Angular workspace root. In the platform monorepo the files may live under
+`praxis-ui-angular/projects/...`; in a standalone Angular checkout they may live directly under
+`projects/...`. Audit the active `praxis-ui-angular` workspace, not stale issue worktrees such as
+`praxis-ui-angular-issue*`, unless the user explicitly targets one of those worktrees.
+
 Inspect:
 
 - `projects/praxis-dynamic-fields/AGENTS.md`
@@ -63,6 +68,8 @@ Inspect:
 - `src/lib/catalog/dynamic-fields-playground.catalog.ts` and catalog specs
 - `projects/praxis-core/src/lib/helpers/field-definition-mapper.ts` and spec when optionSource metadata is normalized from backend/schema
 - `projects/praxis-core/src/lib/services/schema-normalizer.service.ts` and spec when `x-ui` optionSource, value/display fields, cascades, or entity lookup contracts change
+- `projects/praxis-metadata-editor/src/lib/config/entity-lookup.config.ts`
+- `projects/praxis-metadata-editor/src/lib/config/inline-editor-coverage.spec.ts` when entity lookup, tree/list, selection policy, display, detail, or create affordance coverage changes
 - option-source and component specs
 
 ## Canonical Families
@@ -79,6 +86,11 @@ Inspect:
 - `entityLookup` should use canonical `RESOURCE_ENTITY` semantics, stable value/display paths, by-ids rehydration when required, dependency maps, and selection policy.
 - Selected-value reload must use by-ids/display paths when the source requires it; do not fake hydration with generic filter calls.
 - Selected display outside the open panel should route through `OptionDisplayResolverService`, `OptionStore`, or the owning select component path; do not persist labels as a shortcut for display.
+- For dependent option sources, selected display/reopen must preserve the same structural filter
+  context used by the option-source runtime. If the component uses `filterCriteria` for loading,
+  verify the by-ids path also receives that contextual filter.
+- A visible option while the panel is open is not proof of selected identity support. Prove closed
+  display, presentation/read-only mode, edit/reopen, missing-ID behavior, and requested ID order.
 - Legacy `valueField`/`displayField` must be normalized toward canonical option identity/display keys through the core mapper/normalizer; do not create a second alias layer in the component.
 - `searchable-select`, `async-select`, and autocomplete need explicit search/load policy and clear value shape.
 - Tree controls require stable node identity and parent/children semantics.
@@ -125,6 +137,10 @@ Use focused gates:
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-searchable-select-panel-ux.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-all-components-smoke.playwright.spec.ts`
 - Direct consumer checks when a selection control is exposed through dynamic-form, metadata-editor, table filter, CRUD, or a host example.
+- Metadata-editor coverage for entity lookup/selection controls:
+  - Add or run `projects/praxis-metadata-editor/src/lib/config/inline-editor-coverage.spec.ts`
+    when metadata for `optionSource.display.*`, `selectionPolicy.*`, `capabilities.*`, `detail.*`,
+    `create.*`, `payloadMode`, `multiple`, or max-selection behavior changes.
 - `npm run build:praxis-dynamic-fields` when public exports, metadata contracts, AI profiles, or package-owned control coverage changes.
 
 State which runtime, option identity, selected reload, editor/tooling, AI profile, and overlay checks were run.
