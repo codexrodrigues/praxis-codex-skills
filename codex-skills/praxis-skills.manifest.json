@@ -914,8 +914,8 @@
                                             "praxis-core-providers-bootstrap",
                                             "praxis-core-global-actions-metadata"
                                         ],
-                       "skillMdSha256":  "6DBE971745F2983A87C42CF327F165975DD9F1C97ECF3632E998F7B0575A9F70",
-                       "treeSha256":  "949AC2354EFF8508888444657726CD1064EF6126DFBC8357CC7A636AB722F109"
+                       "skillMdSha256":  "5789484BFEE9400E4DEB8A7767BAB8BB852DC06BB98E60445FCEAF084051AC5B",
+                       "treeSha256":  "7AECEC13426F24DA58D83A47ECCE98C54F7DAC05F08786D16819FF03CF98A5F4"
                    },
                    {
                        "name":  "praxis-cron-builder-ai-validation",

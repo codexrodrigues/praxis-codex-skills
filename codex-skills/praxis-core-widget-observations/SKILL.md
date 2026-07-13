@@ -43,6 +43,10 @@ Before editing code or guidance, inspect:
 - Treat runtime observations as `untrusted_frontend_observation` grounding only. They may rank, explain, or disambiguate visible component/page/surface/action context after semantic intent is resolved, but they must not choose the primary intent route, authorize preview/apply, mutate composition state, or replace backend/domain/catalog evidence.
 - Observation claims must remain evidence pointers with stable ids, manifest/resource refs, digest/ref, redaction status, freshness/TTL, and source owner. Do not encode prompt labels, DOM text, raw payload values, or user-visible copy as executable semantics.
 - If an observation is stale, redacted, invalid, or missing required identity/refs, fail closed to clarification or diagnostics and fetch canonical backend, registry, or composition evidence instead of repairing by local guesses.
+- Treat absence from `listActive()` or `getByInstance(...)` as missing or filtered frontend evidence, not proof that a component,
+  capability, surface, action, resource, or permission does not exist. The registry intentionally drops inactive, expired,
+  non-serializable, or failing provider observations. Resolve existence and authority from component metadata, manifests,
+  resource/action/surface discovery, composition definitions, or backend/domain contracts before making a decision.
 
 ## Inventory Before New Contract
 
