@@ -43,6 +43,8 @@ Put the fix in `@praxisui/core` when the concern is shared across libraries or a
 - reconcilers and config normalization shared by multiple libs
 
 Do not move shared semantics into `praxis-table`, `praxis-dynamic-form`, `praxis-list`, host apps, examples, or migration code when the contract belongs in core.
+Core runtime contracts should stabilize Angular materialization boundaries, not promote consumer convenience into semantic authority. If a vertical package, host, recipe, or migration needs a shared model only because it is compensating for missing backend metadata, config-starter state, AI manifest data, action/surface discovery, capability discovery, or provider bootstrap, fix the canonical source or projection first.
+When a core contract represents a projection of backend/config/AI evidence, preserve source refs, operation ids, resource/action/surface ids, diagnostics, freshness, and ownership. Do not collapse that evidence into display labels, enum aliases, command strings, or local booleans that later agents could mistake for primary authorization.
 
 ## Public API Guardrails
 
@@ -57,6 +59,7 @@ Before editing:
 5. Plan at least a focal build/test for `praxis-core` and one direct consumer when the export is used outside core.
 
 Do not add a root export merely to make a local import easier. `public-api.ts` must remain an intentional, packageable contract.
+Do not use `@praxisui/core` as a transitively convenient facade for contracts owned by another public package. If another lib owns the runtime behavior, either import from that owner, move the shared contract into core with an explicit consumer map, or define a narrow structural adapter at the consumer boundary.
 
 ## Platform Aderence Inventory
 

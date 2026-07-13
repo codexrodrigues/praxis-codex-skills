@@ -901,8 +901,8 @@
                                             "praxis-core-global-actions-metadata",
                                             "praxis-core-widget-observations"
                                         ],
-                       "skillMdSha256":  "F045A7D70EC8877252C6A301E245228D989DCDEE364934D685774160641A0C29",
-                       "treeSha256":  "193A20A5D06D990CF7ACD2604F67853A8BC40A433831BE8387AF8A78FD6EC54D"
+                       "skillMdSha256":  "780CF39D43336F81CF2268CEAC4CD40BC80154340A402721AE13F7E7890B0B3E",
+                       "treeSha256":  "C270DACD03E9078FD222C2F669A3C612E7CDCBABAE123FBE1FBFB1CB63E9BC02"
                    },
                    {
                        "name":  "praxis-core-widget-observations",
