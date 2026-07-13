@@ -35,23 +35,28 @@ Also inspect `projects/praxis-core/src/lib/ai/authoring-manifest.types.ts` when 
 
 When backend registry projection, validation, compilation, or `/api/praxis/config/ai/authoring/manifests/**` endpoints are in scope, inspect `praxis-config-starter/AGENTS.md`, `AgenticAuthoringManifestController`, `AgenticAuthoringManifestService`, `AgenticAuthoringManifestContractValidator`, `AgenticAuthoringManifestEditPlanRequest`, `AgenticAuthoringManifestValidationResult`, `AgenticAuthoringManifestCompileResult`, and their focused tests. The backend is the runtime authority for resolving registry manifests, validating edit plans, compiling patches, and returning controlled configuration errors.
 
+When ingestion/projection is in scope, inspect `praxis-ai-registry-ingestion`: `extract-component-docs.js` preserves `authoringManifestRef`, `generate-registry-ingestion.ts` projects `authoringManifest`, `authoringManifestProfiles`, and authoring-only entries, and `validate-authoring-contracts-acceptance.js` verifies the generated registry entry. Do not treat a source manifest as public until its registry projection is proven.
+
 For component-specific manifest work, use the focused skill when available: `praxis-page-builder-ai-agentic` for `PRAXIS_PAGE_BUILDER_AUTHORING_MANIFEST`, `UiCompositionPlan`, child operation delegation, streaming authoring, and Page Builder registry gates; `praxis-visual-builder-rules` for `PRAXIS_VISUAL_BUILDER_AUTHORING_MANIFEST`, rule graph operations, JSON Logic round-trip, and visual-builder AI adapter behavior.
 
 ## Manifest Rules
 
 - Separate `consult/answer` from `edit/componentEditPlan`; factual questions must not fabricate patches.
 - Every operation target must resolve through an editable target with explicit ambiguity policy.
+- `scope=global` operations must use `target.required=false`; all non-global operations must provide a structured `target` with `kind`, `resolver`, `ambiguityPolicy`, and `required=true` unless the type or source owner documents a safe exception. Do not use the reserved `scope='target'`.
 - Operation input schemas must be concrete enough for backend tooling; broad objects require a resolvable downstream schema or explicit blocker.
 - `compile-domain-patch` effects need deterministic handler contracts: reads, writes, stable identity keys, input schema, failure modes, and operational description.
+- A new `compile-domain-patch.handler` is only an Angular declaration until `AgenticAuthoringEffectCompilerRegistry.supportsDomainPatchHandler(handler)` and focused backend compiler tests prove it. Classify it as `suportado-parcialmente` until then.
 - Effects must overlap affected paths and validators must be used by pertinent operations.
 - Destructive operations require confirmation.
 - Family-level manifests need an aggregate registry entry addressable by `componentId`, not only child copies.
 - Declared-only fields may be authorable for round-trip, but docs/validators must not imply active runtime behavior.
-- Every non-global operation declares `target.kind`, resolver, ambiguity policy, preconditions, supported `submissionImpact`, validators, effects, and affected paths. The deprecated `targetKind`, when retained, must equal `target.kind`.
+- Every non-global operation declares `target.kind`, resolver, ambiguity policy, preconditions, supported string `submissionImpact`, validators, effects, and affected paths. The deprecated `targetKind`, when retained, must equal `target.kind`; boolean `submissionImpact` is legacy only and should not be introduced in semantically validated manifests.
 - Every global validator is used by an operation. Effect paths must overlap affected paths; collection effects declare identity keys; `compile-domain-patch` declares reads, writes, identity keys, input schema, failure modes, and a meaningful handler description.
 - Manifest examples are executable grounding/eval evidence: include positive examples and at least one explicit negative example. Do not encode lexical routing as an example substitute.
 - Remote-binding operations must prove input-schema and path/effect evidence, use a pertinent binding validator, and declare `affects-remote-binding`; do not label an unrelated operation as remote merely to satisfy a gate.
-- Family `controlProfiles` repeat the same operation metadata and applicability evidence. Presentation affordances must identify their source, default target, and compatible options; they are consultative constraints, not edit permission.
+- Family `controlProfiles` repeat the same operation metadata and applicability evidence. The generated registry must expose the aggregate family entry, `projectedComponentIds`, child `authoringManifestProfiles`, and preserved operation metadata.
+- Presentation affordances must identify their source, default target, and compatible options; they are consultative constraints, not edit permission.
 
 ## Synchronization Triggers
 
@@ -80,6 +85,13 @@ For Angular public manifest corpus changes, run:
 
 ```sh
 npm run validate:authoring-contracts
+```
+
+For manifest changes that add or rename operation ids, target resolvers, validator ids, effect kinds, `compile-domain-patch` handlers, presentation affordance catalogs, or family profiles consumed by the config backend, pair Angular and backend proof:
+
+```sh
+npm run generate:registry:ingestion
+mvn "-Dtest=AgenticAuthoringManifestServiceTest,AgenticAuthoringManifestControllerTest,AgenticAuthoringManifestContractValidatorTest,AgenticAuthoringTargetResolverRegistryTest,AgenticAuthoringValidatorRegistryTest,AgenticAuthoringEffectCompilerRegistryTest" test
 ```
 
 For a public manifest, prove the owning runtime/editor round-trip and inspect the generated registry entry, public export, README claim, and required implementation/semantic reports. A passing TypeScript literal is insufficient when targets, effects, validators, profile projection, or runtime coverage disagree.
