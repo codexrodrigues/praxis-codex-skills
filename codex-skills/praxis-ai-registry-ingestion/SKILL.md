@@ -52,6 +52,11 @@ When backend registry persistence, bootstrap, classpath snapshot, template searc
 - Registry grounding is evidence for LLM semantic resolution. Do not encode primary intent as keyword, regex, alias, fuzzy match, display-label parsing, or a registry-only command dialect.
 - Quick replies/actions must retain structured canonical action, semantic decision, target, context, risk, and presentation. Labels are not authority.
 - If quick replies, semantic decisions, or component edit plans cite registry/RAG/provider projections, they must reference projected manifest operations and targets by stable ids. A projection that loses those ids is derived-artifact drift to repair at the source, not permission for backend, UI, or agents to fall back to text matching.
+- Treat missing fields, components, manifests, operations, ports, presets, or chunks in generated registry artifacts as projection
+  loss or source/extractor drift until proven otherwise. Absence from `component-docs.json`, the ingestion corpus, RAG/provider
+  projections, package assets, or backend snapshots is not proof that the component, capability, authoring manifest, or backend
+  support does not exist. Re-audit the owner source, provider registration, extractor support, generated artifact lineage, and
+  backend snapshot before declaring a platform contract gap.
 - Preserve the runtime observation contract chunk and its `untrusted_frontend_observation` boundary. Observations require backend grounding into canonical context before they influence an answer; registry text cannot grant read/tool/apply authority.
 - Catalog governance must reject duplicate IDs/selectors, invalid paths, incomplete target/validator/effect evidence, unconfirmed destructive work, ambiguous targets without policy, inconsistent control profiles, and lost trust boundaries. Repair the source owner or validator, never weaken the gate to pass a local artifact.
 - Use aggregate corpus for cross-package/release analysis and `@praxisui/<package>/ai/component-registry.json` only for source-less package consumers. Package assets remain filtered projections of their owning package.
