@@ -59,6 +59,10 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
   relevant. Do not infer component mutation from `surface.result.type`, selected row shape, or returned
   payload fields.
 - Consume the immutable `RuntimeSnapshot` from the facade/store as execution evidence. Do not maintain a second host state for link status, trace, or diagnostics.
+- Treat trace payloads, `inputSnapshot`, `outputSnapshot`, link delivered values, and diagnostics as runtime evidence for audit,
+  debugging, AI grounding, and UX feedback. They are not persistence state, business authorization, or a source for choosing
+  another action/link after the fact. If a value needs to affect business state or another component, model that effect as a
+  declared composition link, writable state endpoint, global-action continuation, or backend-confirmed command.
 - Treat feedback-cycle detection as part of semantic validation and runtime safety, not as an editor-only lint. Unguarded cycles produce `SEMANTIC_FEEDBACK_CYCLE_UNGUARDED`, degrade bootstrap, and cause involved matched links to be skipped during dispatch with `RUNTIME_FEEDBACK_CYCLE_BLOCKED`; unrelated matched links may still execute.
 - An intentional feedback loop must be explicit and guarded on every link in the cycle: use `metadata.tags: ['intentional-feedback']` plus at least one canonical guard per link (`condition`, `policy.distinct`, `policy.distinctBy`, or `policy.debounceMs`). Guarded intentional cycles produce `SEMANTIC_FEEDBACK_CYCLE_GUARDED` warnings, not blocking errors. Do not suppress cycle diagnostics or invent host-local loop breakers.
 
