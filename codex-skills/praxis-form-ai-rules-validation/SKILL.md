@@ -24,6 +24,11 @@ governed domain/shared rule authoring before local materialization.
 
 ## Source Audit
 
+First resolve the Angular workspace root. In the platform monorepo the files may live under
+`praxis-ui-angular/projects/...`; in a standalone Angular checkout they may live directly under
+`projects/...`. Audit the active `praxis-ui-angular` workspace, not stale issue worktrees such as
+`praxis-ui-angular-issue*`, unless the user explicitly targets one of those worktrees.
+
 Inspect the AI/rules surface:
 
 - `projects/praxis-dynamic-form/AGENTS.md`
@@ -57,10 +62,24 @@ Inspect the AI/rules surface:
 
 Inspect `tools/ai-registry/AGENTS.md` when registry ingestion or component authoring catalog output changes.
 
+When the platform monorepo is available, also inspect the decision-authoring readiness docs before
+changing manifest, adapter, recipe, registry, or public docs involving `componentEditPlan`,
+`formRulesState`, `visualBlockGuidance`, or `rule.visualBlockGuidance.add`:
+
+- `docs/2026-04-final-surface-scan-readiness.md`
+- `docs/2026-04-release-readiness-decision-authoring-surface-cleanup.md`
+- `docs/2026-04-form-rules-state-despromocao-backlog.md`
+- `docs/2026-04-form-rules-state-inventario-superficies.md`
+- `docs/2026-04-routing-canonico-intencao-backlog.md`
+
 ## AI Contract Rules
 
 - Use component edit plans only for Dynamic Form component authoring.
 - Route business-rule, policy, eligibility, validation, compliance, and shared decision authoring to governed domain/shared rule authoring before projecting local form config.
+- Treat `componentEditPlan` as valid only for component/page authoring. If the prompt asks for
+  business rules, policy, eligibility, validation, compliance, or shared decisions, the correct
+  response is a governed `domain-rules` / `shared_rule_authoring` handoff or materialization path,
+  not a local Dynamic Form edit plan.
 - `field.local.add` is for local form-only fields. Do not create backend DTO fields for local/transient UI needs.
 - Never write `formRulesState` directly; write `formRules` and let internals derive builder state.
 - Use Json Logic only; do not generate JavaScript handlers or arbitrary functions.
@@ -70,6 +89,9 @@ Inspect `tools/ai-registry/AGENTS.md` when registry ingestion or component autho
 - Use allowed targets from rule authoring context: fields, sections, rows, columns, actions, messages, visual blocks.
 - Use `RULE_PROPERTY_SCHEMA`/diagnostics as the allowed property source.
 - Visual block guidance writes only visual rules or `columns[].items[]`; it must not create `FormControl`, `fieldMetadata`, or submit payload.
+- `rule.visualBlockGuidance.add` and `visualBlockGuidance` may remain as optional visual
+  materialization/projection of an already governed decision or a local visual request. Do not
+  promote them as the recommended operation for primary business-rule authoring.
 - Mark LLM-authored rules for human review when the workflow expects review.
 - `formCommandRules` is the command/side-effect channel. Keep it separate from property `formRules`, validate `GlobalActionRef`, preserve structured `payload`, and treat `payloadExpr` as an advanced JSON escape hatch.
 - `domainRules` materializations are shared/governed rule projections. Do not collapse them into local `formRules` as if the form were the primary business-rule owner.
@@ -82,6 +104,11 @@ Inspect `tools/ai-registry/AGENTS.md` when registry ingestion or component autho
 Do not add keyword, regex, alias, or fuzzy matching as the primary intent router. Text matching is allowed only after a canonical intent/operation scope exists, for ranking declared fields/actions/targets or asking clarification.
 
 When a required operation is missing, model or extend the canonical AI/tool contract. Do not replace the missing operation with local prompt parsing inside the form component.
+
+Before accepting a manifest/adapter/registry change, ask whether it reduces the chance that a
+business-rule prompt falls back to `componentEditPlan`, `formRulesState`, or
+`rule.visualBlockGuidance.add`. If it only creates another local component route for a shared
+decision, it is probably the wrong platform cut.
 
 ## Inventory Before New Contract
 
@@ -101,6 +128,11 @@ Only `lacuna-real-de-contrato` justifies new AI/rule contract work. Otherwise, r
 - Actions/command rules: add `action-authoring/global-action-authoring.util.spec.ts`, `actions-editor/actions-editor.component.spec.ts`, `components/praxis-form-actions/praxis-form-actions.component.spec.ts`, and command-rule editor specs when global actions or command rules change.
 - Visual block rules: add `visual-block-rule-content-overrides.util.spec.ts` and layout visual-block specs when AI/rules affect `targetType: "visualBlock"` or `columns[].items[]`.
 - Registry: `npm run generate:registry:ingestion`, `npm run validate:catalog`, and `npm run validate:authoring-contracts` when manifest/catalog/capability/context-pack surfaces change.
+- Decision-authoring cleanup regression: run a focused textual scan for
+  `formRulesState|componentEditPlan|recommendedOperation|rule\\.visualBlockGuidance\\.add|visualBlockGuidance`
+  across Dynamic Form manifests/docs/recipes and generated registry surfaces when changing AI
+  authoring guidance. Classify each hit as component authoring, visual materialization, internal
+  runtime state, historical doc, or canonical drift.
 - Browser AI/rules: focused Playwrights for `form-ai-assistant-live`, `form-config-editor-rules`, `form-config-editor-command-rules`, `business-rules-form-demo`, `funcionarios-form-demo-rules`, and `funcionarios-form-demo-domain-rules` when visible AI/rule behavior changes.
 - `npm run build:praxis-dynamic-form` when public AI/rule exports, services, docs-facing contracts, or editor APIs change.
 
