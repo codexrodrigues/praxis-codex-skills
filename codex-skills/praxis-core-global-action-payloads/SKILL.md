@@ -54,6 +54,14 @@ Treat `payloadExpr` and `SurfaceBinding` as projection mechanisms over the decla
 - Use `GLOBAL_ACTION_CATALOG` entries and `payloadSchema` for discoverability, validation, AI authoring, and editor projection.
 - Use `surface.open` with `SurfaceOpenPayload` for modal/drawer widget targets; do not revive `showAlert:...`, `openUrl:...`, `navigate:...`, `apiCall:...`, or `surface.open:{...}` strings.
 - Use `onResult` plus `surface.result` or `dynamicPage.composition.dispatch` for surface outcomes. Do not patch parent widgets directly from the visual host.
+- Treat `surface.result` as emission into the active surface runtime and
+  `dynamicPage.composition.dispatch` as delivery into the page composition runtime. They are not
+  config mutation APIs. Drawer result envelopes, row selections, and runtime payload snapshots should
+  flow through declared composition/state/action links; do not persist them into widget
+  `definition.inputs`, form config, table config, or host-local state as a shortcut.
+- If a surface outcome needs to update a component, author the target as a composition link or an
+  explicit component-owned action/input contract and validate feedback-cycle guards. Do not infer
+  component mutation from the existence of a returned drawer result.
 - `meta` is execution/display context. It may carry labels, icons, confirmation hints, authoring breadcrumbs, or the normalized action ref metadata copied into `context.meta.actionRef`; it must not be the only place where payload schema, resource identity, permission, operation id, or semantic decision is stored.
 - Missing handlers or providers are explicit runtime failures such as "Global action not registered" or "Surface service not available". Do not catch these by selecting another action, parsing labels, guessing a route, or silently mutating local state; repair the catalog/provider registration or fail closed with a user-visible diagnostic.
 - Built-in handlers are shared runtime capabilities. Host-specific handlers may be registered, but their action ids and payloads should still be cataloged and validated.
