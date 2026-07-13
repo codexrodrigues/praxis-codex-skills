@@ -44,6 +44,12 @@ Inspect the metadata-editor sources plus the affected consumer:
 - Receive delta patch from `hostBridge`, `applied$`, or Settings Panel save and apply JSON Merge Patch semantics, including `null` removal where the consumer stores metadata overrides.
 - Do not copy metadata-editor configs into consumers.
 - Do not add consumer-only fields for metadata that belongs to `FieldMetadata`, dynamic-fields descriptors, or backend `x-ui`.
+- Do not reinterpret cascade patches in consumers. If metadata-editor emits
+  `dependencyFields`, `dependencyFilterMap`, `dependencyValuePath`, `dependencyMergeStrategy`,
+  `dependencyDebounceMs`, `dependencyLoadOnChange`, `enableDependencyCascade`, or
+  `resetOnDependentChange`, apply those paths as metadata-editor/runtime cascade semantics. Do not
+  translate them into `optionSource.dependsOn` or `optionSource.dependencyFilterMap` unless the
+  consumer task is explicitly an option-source migration/configuration flow.
 - Preserve host/product responsibility: consumers may choose when to open the editor and where to persist accepted patches, but the edited semantics belong to metadata-editor/core/dynamic-fields.
 - Preserve immutable identity in consumers. Field edits may change metadata properties, but field lookup identity such as `name` must be kept unless the task is explicitly a rename flow with downstream layout/rule/reference migration.
 - Keep consumer transforms narrow and evidence-backed. For example, dynamic-form may map rating-specific metadata, and table may sanitize override values, but neither may redefine the metadata-editor schema.
@@ -79,6 +85,10 @@ Consumer patch application must respect the consumer storage model without chang
 - Manual-form owners patch the `ManualFormInstance` and persist draft after accepted patch.
 - If a consumer cannot represent `null` removal correctly, fix the bridge/helper before changing metadata-editor output.
 - Do not treat `undefined` and `null` as equivalent without checking the local helper contract. In metadata-editor patch semantics, `null` is explicit removal.
+- Preserve the cascade/option-source boundary from `praxis-metadata-editor-cascade-normalization`:
+  `optionSource.dependsOn` and `optionSource.dependencyFilterMap` may appear in seeds or option-source
+  authoring patches, while ordinary cascade edits should persist root-level cascade paths. Consumers
+  must not silently promote hydrated backend `x-ui` dependencies into local override semantics.
 
 ## Consumer Validation
 
@@ -87,6 +97,7 @@ Choose the consumer proof:
 - dynamic-form field editor:
   - `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.spec.ts`
   - `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/layout-editor/layout-editor.component.spec.ts`
+  - cascade bridge proof when cascade patches cross into form config: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form.config-editor.cascade.integration.spec.ts`
   - E2E when visual editor coverage changes: `projects/praxis-dynamic-form/test-dev/e2e/all-fields-metadata-editor.playwright.spec.ts`
 - table filters:
   - focused `filter-settings` or `praxis-filter` specs
