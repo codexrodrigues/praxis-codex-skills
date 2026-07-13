@@ -291,8 +291,8 @@
                                             "praxis-ai-shell-session-context",
                                             "praxis-ai-semantic-intent"
                                         ],
-                       "skillMdSha256":  "5FC103ADDD48CDEBF68E635FD8BB89CB3779B6F5ED7FA34228EB21F2C31BAB41",
-                       "treeSha256":  "9138183BDC5F3117B59B8661A3FCC15FEBCF49912E56D529C96D0C2D2FAB8603"
+                       "skillMdSha256":  "19B2255527BDFCFC09D50B6A38CB9F96C3E88B9B46CB857731A9C6FA7939567E",
+                       "treeSha256":  "77CE1CD638787F4E775E2151ABDB22A751B217FCF084A0A1D0F36B86CA58C128"
                    },
                    {
                        "name":  "praxis-ai-turn-orchestration-transport",
