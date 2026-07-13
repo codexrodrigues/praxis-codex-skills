@@ -1880,8 +1880,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-component-minimums"
                                         ],
-                       "skillMdSha256":  "B4003E6C359149E5F0A4C4E0B34F48ED6641269E7FA52B94C5E035B7E3B1111A",
-                       "treeSha256":  "23C8634A3242791EE6D83D04D687376C88836369F7E7DC67285480670CBBBEC1"
+                       "skillMdSha256":  "484A11CC47B6C4E44EB776D340CE921B3EDE3D014CE75CD2D8A86E6630787BCE",
+                       "treeSha256":  "043B3E122AF19482DE9DDDEE4B5813DD1C44E8838557ADFCDF3888F851F315B9"
                    },
                    {
                        "name":  "praxis-rich-content-ai-security-validation",
