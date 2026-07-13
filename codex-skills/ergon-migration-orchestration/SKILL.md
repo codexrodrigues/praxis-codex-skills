@@ -32,9 +32,11 @@ root migration `AGENTS.md` platform governance. Classify the change as
 `arquitetural`; identify the canonical owner; and record the impact map when
 the change touches public contract, multiple consumers, or architecture.
 
-Before editing Java, Angular, docs, migration artifacts, or tests for a target
-module, run the duplicate-module-root guard when a module name/artifactId is
-known:
+Before editing Java, Angular, module-owned docs/tests, or running a generator
+against a target module, run the duplicate-module-root guard when a module
+name/artifactId is known. Do not use this guard as a Phase 0 prerequisite for
+creating workspace-owned screen artifacts under `docs/migracao/<SCREEN>`; run
+it before the first module-owned edit instead:
 
 ```bash
 python3 codex-skills/ergon-migration-orchestration/scripts/check_duplicate_module_roots.py \
@@ -43,13 +45,36 @@ python3 codex-skills/ergon-migration-orchestration/scripts/check_duplicate_modul
   --current-root <intended-edit-root>
 ```
 
-If it returns `MIGRATION_MODULE_ROOT_GUARD_BLOCKED`, stop before editing. Use
-the canonical root from `AGENTS.md` or require an explicit human choice. This
-guard catches duplicated roots such as `migracao/<module>` and
-`migracao-package/<module>`, current directories outside the canonical
-workspace, and canonical module roots outside a git checkout. Its message must
-remain sanitized: no credentials, users, company identifiers, headers, cookies,
-or environment secret values.
+If the current root is the canonical module under the canonical workspace,
+duplicates outside that workspace (for example historical clones or issue
+worktrees such as `m79/<module>`) are advisory: continue in the canonical root
+without asking for human confirmation. The guard must still block when the
+current root is noncanonical, when another matching root exists inside the
+canonical workspace, or when the canonical root is outside a git checkout. If
+it returns `MIGRATION_MODULE_ROOT_GUARD_BLOCKED`, stop before the module-owned
+edit and use the canonical root from `AGENTS.md` or require an explicit human
+choice. Its message must remain sanitized: no credentials, users, company
+identifiers, headers, cookies, or environment secret values.
+
+## Skill Lock Drift Triage
+
+When the migration workspace lock audit reports only a source commit mismatch,
+do not spend the intake turn re-reading every installed copy or block creation
+of the Phase 0 screen package automatically. Audit the selected canonical skill
+family and its installed projection first:
+
+- if source hashes match the family manifest and the selected installed skill
+  matches the canonical tree, record `CODEX_SKILLS_LOCK_DRIFT` as a non-blocking
+  tooling residual and continue workspace-owned Phase 0 work;
+- if the selected source is invalid or its installed projection differs, repair
+  the canonical manifest/sync before relying on the skill, and keep
+  module-owned edits blocked until that reconciliation passes;
+- never update a workspace lock to represent uncommitted source changes. Refresh
+  the pin only after the canonical skill changes are committed.
+
+A commit-only lock mismatch is still relevant before versioning or handoff, but
+it must not cause a new-screen intake to end without its Phase 0 artifacts when
+the selected skill tree itself is proven current.
 
 Do not solve Praxis platform gaps by inventing Ergon-local semantics. If the
 issue belongs to `praxis-ui-angular`, `praxis-metadata-starter`, or

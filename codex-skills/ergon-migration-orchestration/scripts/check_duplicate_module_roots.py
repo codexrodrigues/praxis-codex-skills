@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Detect duplicate Ergon migration module roots before code edits."""
+"""Detect ambiguous Ergon migration module roots before module-owned edits."""
 
 from __future__ import annotations
 
@@ -139,14 +139,15 @@ def build_block_message(
     canonical_root: Path,
     current_root: Path,
     candidates: list[Candidate],
-    duplicate_candidates: list[Candidate],
+    blocking_duplicate_candidates: list[Candidate],
+    external_duplicate_candidates: list[Candidate],
     current_inside_canonical: bool,
     canonical_git_root: Path | None,
     allow_non_git: bool,
 ) -> str | None:
     problems: list[str] = []
-    if duplicate_candidates:
-        problems.append("duplicate module roots were found")
+    if blocking_duplicate_candidates:
+        problems.append("duplicate module roots were found inside the canonical workspace")
     if not current_inside_canonical:
         problems.append("current root is not inside the canonical module root")
     if canonical_git_root is None and not allow_non_git:
@@ -167,8 +168,10 @@ def build_block_message(
             markers.append("canonical")
         if is_relative_to(current_root, candidate.path):
             markers.append("current")
-        if candidate.path in {c.path for c in duplicate_candidates}:
-            markers.append("duplicate")
+        if candidate.path in {c.path for c in blocking_duplicate_candidates}:
+            markers.append("duplicate-blocking")
+        if candidate.path in {c.path for c in external_duplicate_candidates}:
+            markers.append("duplicate-external")
         if candidate.git_root is None:
             markers.append("no-git")
         reason = []
@@ -181,8 +184,34 @@ def build_block_message(
         lines.append(f"- {sanitize(candidate.path)} ({detail}){suffix}")
     lines.extend(
         [
-            "action: switch to the canonical root from AGENTS.md or require an explicit human choice before editing code, docs, or migration artifacts.",
+            "action: switch to the canonical root from AGENTS.md or require an explicit human choice before a module-owned edit.",
             "safety: message intentionally omits credentials, headers, cookies, users, companies, and environment secret values.",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def build_external_duplicate_advisory(
+    *,
+    canonical_root: Path,
+    external_duplicate_candidates: list[Candidate],
+) -> str:
+    lines = [
+        f"MIGRATION_MODULE_ROOT_GUARD_OK_WITH_EXTERNAL_DUPLICATES: {sanitize(canonical_root)}",
+        "external_duplicates:",
+    ]
+    for candidate in external_duplicate_candidates:
+        reason = []
+        if candidate.directory_match:
+            reason.append("dir")
+        if candidate.artifact_id:
+            reason.append(f"artifactId={candidate.artifact_id}")
+        detail = ", ".join(reason) if reason else "matched"
+        lines.append(f"- {sanitize(candidate.path)} ({detail}) [advisory]")
+    lines.extend(
+        [
+            "action: continue only in canonical_root; do not edit the external duplicate roots.",
+            "safety: canonical current root was proven, so external worktrees or historical clones are advisory rather than blocking.",
         ]
     )
     return "\n".join(lines)
@@ -197,6 +226,8 @@ def main(argv: list[str]) -> int:
     canonical_root = resolve(args.canonical_root) if args.canonical_root else workspace_root / module
     candidates = discover_candidates(workspace_root, module, artifact_id, args.max_depth)
     duplicate_candidates = [c for c in candidates if c.path != canonical_root]
+    blocking_duplicate_candidates = [c for c in duplicate_candidates if is_relative_to(c.path, workspace_root)]
+    external_duplicate_candidates = [c for c in duplicate_candidates if not is_relative_to(c.path, workspace_root)]
     current_inside_canonical = is_relative_to(current_root, canonical_root)
     canonical_git_root = find_git_root(canonical_root)
     message = build_block_message(
@@ -204,7 +235,8 @@ def main(argv: list[str]) -> int:
         canonical_root=canonical_root,
         current_root=current_root,
         candidates=candidates,
-        duplicate_candidates=duplicate_candidates,
+        blocking_duplicate_candidates=blocking_duplicate_candidates,
+        external_duplicate_candidates=external_duplicate_candidates,
         current_inside_canonical=current_inside_canonical,
         canonical_git_root=canonical_git_root,
         allow_non_git=args.allow_non_git,
@@ -212,6 +244,14 @@ def main(argv: list[str]) -> int:
     if message:
         print(message, file=sys.stderr)
         return BLOCK_EXIT
+    if external_duplicate_candidates:
+        print(
+            build_external_duplicate_advisory(
+                canonical_root=canonical_root,
+                external_duplicate_candidates=external_duplicate_candidates,
+            )
+        )
+        return 0
     print(f"MIGRATION_MODULE_ROOT_GUARD_OK: {sanitize(canonical_root)}")
     return 0
 

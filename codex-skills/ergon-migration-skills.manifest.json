@@ -125,8 +125,8 @@
                                             "praxis-angular-host-project",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "EA2949BB4ADE2B0DC7EA2B0A548046A049278C2BF0C1D3F9C5A6092A71A37D96",
-                       "treeSha256":  "F27CB2BC674A9FFEC55D38AFD65F6C8EC7CC2E541E96E417A0FF15BD5F8C11A9"
+                       "skillMdSha256":  "1A4D1B9E79D346016B87B9F91A1CD83CCA8CA40781DF1A02B9B5EF801E6C4924",
+                       "treeSha256":  "5395D253BAA8C2242DD26A6246241DF17BF55D3298BE7F3A4232A7436A1A39F6"
                    },
                    {
                        "name":  "ergon-migration-scaffold",
