@@ -15,6 +15,7 @@ Pair with `praxis-ai-composer-attachments-quick-replies` when quick replies, rec
 - `praxis-config-starter` owns the backend semantic intent resolver, LLM fast intent pass,
   pre-intent tool planning, governed resource discovery evidence, Domain Catalog grounding,
   semantic decision policy, repair classification, and turn-level quick reply payloads.
+- The backend intent resolver currently has a fast LLM pass and a full LLM pass. The fast pass is valid only when it returns a complete route/resource/visualization decision; otherwise the resolver must fall back to the full semantic pass or a safe unresolved/provider-error result, never to a materializing lexical route.
 - Backend/LLM/tool contracts decide the primary authoring intent; Angular may only send
   structured context and render/materialize the returned semantic decision.
 - Local text matching may rank candidates only after semantic scope is resolved and must not decide intent.
@@ -41,6 +42,7 @@ Inspect:
 - `AgenticAuthoringDomainCatalogCandidateEnhancer`
 - `AgenticAuthoringDomainCatalogHints`
 - `AgenticAuthoringQuickReply`
+- `praxis-api-quickstart/docs/AGENTIC-AUTHORING-SEVEN-STEP-REVIEW-PROMPT.md`
 - focused backend tests for intent resolver, LLM intent, pre-intent tool planning,
   semantic decision policy, Domain Catalog grounding, provenance, repair classification,
   and quick reply canonicalization.
@@ -76,10 +78,21 @@ Treat backend lexical checks with the same care. Residual `contains`, prompt
 shape checks, provider-error string classification, and artifact-name matching
 may support diagnostics, provider failure classification, post-resolution
 candidate ranking, or guarded compatibility only when semantic scope/evidence
-already exists. They must not become a new primary intent route. When auditing,
-record which semantic evidence enables each lexical branch, such as LLM-authored
-resource focus, Domain Catalog grounding, semantic retrieval, quick-reply
-context, selected candidate evidence, or authoring scope policy.
+already exists. `AgenticAuthoringSemanticDecisionPolicy` still inspects prompt
+shape for materialization nuance, optional data source hints, broad discovery,
+and artifact-kind repair; those branches are acceptable only when combined with
+LLM resolution, selected/context-hint candidates, governed resource confirmation,
+or explicit clarification/resource-choice evidence. They must not become a new
+primary intent route. When auditing, record which semantic evidence enables each
+lexical branch, such as LLM-authored resource focus, Domain Catalog grounding,
+semantic retrieval, quick-reply context, selected candidate evidence, or
+authoring scope policy.
+
+Provider failures, invalid or partial LLM JSON, unsupported route classes, and
+low confidence must fail closed: unresolved decision, `provider_error` or
+equivalent safe follow-up, user-facing clarification, sanitized warnings, and
+`canApply=false`. Do not leak provider bodies, API keys, quota details, stack
+traces, or internal diagnostics into assistant text or quick replies.
 
 Clarification display text must not be promoted back into executable semantics.
 Preserve structured `contextHints` returned with an option. Do not infer an
@@ -96,6 +109,7 @@ already explicit structured value; it must not create the semantic payload.
 - Quick replies may carry canonical action/context hints returned by the contract; they must not be local command strings disguised as natural language.
 - Clarification options and quick replies must preserve `contextHints`, `canonicalAction`, and `semanticDecision`; labels and prompts are display material, not intent authority.
 - Normalization helpers are allowed for display/search support, not intent classification.
+- Domain Catalog `recommendedAuthoringFlow=shared_rule_authoring` can require the shared-rule route only when the request is not explicit local/editorial UI composition. Stale Domain Catalog hints must not override a semantically local composition request.
 
 The shared `shouldRoutePromptToGovernedDecision` implementation must ignore
 prompt wording and may honor only explicit canonical context such as
