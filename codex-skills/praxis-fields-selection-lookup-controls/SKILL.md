@@ -84,6 +84,9 @@ Inspect:
 - Preserve value identity. Display labels are not persisted identity unless the canonical option contract says so.
 - Prefer `optionSource` for remote/entity-backed data and local `options` only for genuinely local lists.
 - `entityLookup` should use canonical `RESOURCE_ENTITY` semantics, stable value/display paths, by-ids rehydration when required, dependency maps, and selection policy.
+- For entity lookup, keep selection state (`selectable`, `blocked`, `legacy`) distinct from generic disabled UI state. `blocked` prevents new selection; `legacy` may preserve an already selected invalid value only when `selectionPolicy.allowRetainInvalidExistingValue` or equivalent backend evidence allows it.
+- Do not collapse `OptionDTO.extra.selectable`, `disabledReason`, `status`, `statusTone`, `badges`, `richFields`, detail/create affordances, or `selectionPolicy` into a plain `{label,value,disabled}` option unless the target control truly cannot express entity lookup semantics. Loss of those fields is a governance regression.
+- Payload shape is canonical. Use `payloadMode` plus single/multiple semantics (`id`, `ids`, `entityRef`, `entityRefs`) consistently through display, edit, form submit, chips, dialogs, and table/filter consumers; do not infer payload shape from the current JavaScript value alone.
 - Selected-value reload must use by-ids/display paths when the source requires it; do not fake hydration with generic filter calls.
 - Selected display outside the open panel should route through `OptionDisplayResolverService`, `OptionStore`, or the owning select component path; do not persist labels as a shortcut for display.
 - For dependent option sources, selected display/reopen must preserve the same structural filter
@@ -94,7 +97,8 @@ Inspect:
 - Legacy `valueField`/`displayField` must be normalized toward canonical option identity/display keys through the core mapper/normalizer; do not create a second alias layer in the component.
 - `searchable-select`, `async-select`, and autocomplete need explicit search/load policy and clear value shape.
 - Tree controls require stable node identity and parent/children semantics.
-- Chips/list/transfer controls must preserve array value shape, order policy, and max-selection rules.
+- Chips/list/transfer controls must preserve array value shape, order policy, and max-selection rules. For remote/entity-backed chips, render labels from the canonical selected-display/by-ids path and preserve option identity even when the option is not present in the currently filtered page.
+- Multi-select and chip removal must operate on canonical identity, not label text or object reference equality. If values can be `EntityRef`, normalize comparison through the same identity extraction used by the payload serializer.
 - Toggle/radio/checkbox/button-toggle controls are still option-bearing when labels, values, disabled states, or i18n are derived from metadata; do not treat them as plain booleans unless the control contract is boolean.
 - Inline selection overlays use `inlineOverlay` when selections are drafted before commit.
 - Dynamic Form, metadata-editor, table filters, CRUD dialogs, and host projects should consume the same identity/source contract. Do not fork lookup behavior per consumer.
