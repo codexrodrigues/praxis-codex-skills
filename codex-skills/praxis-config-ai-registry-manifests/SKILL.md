@@ -25,6 +25,10 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/service/AiRegistryTemplateService.java`
 - `src/main/java/org/praxisplatform/config/controller/AgenticAuthoringManifestController.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringManifestService.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringToolRegistry.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringTargetResolverRegistry.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringValidatorRegistry.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringEffectCompilerRegistry.java`
 - manifest contract validator, target resolver, validator, effect compiler, capability catalog, and
   presentation-affordance services under `src/main/java/org/praxisplatform/config/ai/authoring/`
 - `src/main/resources/ai-registry/registry-snapshot.json`
@@ -96,6 +100,20 @@ For an authorable component, preserve the complete chain:
 `editableTargets -> operationId -> target resolver -> input schema -> validators -> effects/handler`
 `-> affected paths -> destructive confirmation -> compiledOperations/patchOperations/proposedConfig`
 
+The executable HTTP surface is:
+
+- `GET /api/praxis/config/ai/authoring/manifests/{componentId}`
+- `GET /api/praxis/config/ai/authoring/manifests/{componentId}/editable-targets`
+- `GET /api/praxis/config/ai/authoring/manifests/{componentId}/operations`
+- `GET /api/praxis/config/ai/authoring/manifests/{componentId}/presentation-affordances`
+- `POST /api/praxis/config/ai/authoring/manifests/{componentId}/resolve-target`
+- `POST /api/praxis/config/ai/authoring/manifests/{componentId}/validate-plan`
+- `POST /api/praxis/config/ai/authoring/manifests/{componentId}/compile-patch`
+
+These endpoints return configuration-invalid responses for missing manifests, undeclared operations,
+contract failures, unresolved targets, unsupported validators, or unsupported effects. Do not convert
+those failures into local patch generation.
+
 Apply these rules:
 
 - Resolve only operations declared by the selected component manifest.
@@ -105,6 +123,13 @@ Apply these rules:
   business authorization or an effect compiler.
 - Treat runtime observations, chunks, examples, labels, aliases, and templates as grounding evidence,
   never as permissions.
+- Treat `AgenticAuthoringToolRegistry` tools as phase-scoped, route-scoped read-only grounding unless
+  their `AgenticAuthoringToolDefinition` declares otherwise. Tool execution without an explicit phase
+  must fail with `tool-phase-required`; an unregistered tool must fail with `tool-not-found`.
+- Treat manifest-declared resolvers, validators, and effect handlers as executable only when the
+  backend registry implements them. `AgenticAuthoringTargetResolverRegistry`,
+  `AgenticAuthoringValidatorRegistry`, and `AgenticAuthoringEffectCompilerRegistry` are the execution
+  boundary, not the generated manifest text by itself.
 - Fail closed when a referenced validator, target resolver, or domain effect handler has no backend
   implementation. A warning is not sufficient evidence for executable compile/apply.
 - Keep `compiledOperations` as normalized audit output, `patchOperations` as applicable materialization,
@@ -112,6 +137,11 @@ Apply these rules:
   decision governance.
 - Templates may seed or rank a configuration candidate; they cannot override component manifests,
   backend resource semantics, metadata capabilities, or domain decisions.
+
+`compile-domain-patch` effects are only safe when `supportsDomainPatchHandler(handler)` is true and the
+focused compiler tests prove the handler updates `proposedConfig`, `compiledOperations`, and
+`patchOperations` as intended. A manifest that names a new handler without backend compiler support is
+`suportado-parcialmente` at most.
 
 ## Semantic Routing
 
