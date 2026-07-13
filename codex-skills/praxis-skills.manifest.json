@@ -2353,8 +2353,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "A688C902985329B1C7965439C6DDD479E5E5CDDF7F4BE6830E3095C78CBD0BB3",
-                       "treeSha256":  "086E2D63C2330780CEFA97E5DB626B73A4DBC1467BCA2F47F4AD44C81F8913B2"
+                       "skillMdSha256":  "32B29A084670ADEF6973156F4C5446E3B0FCCCC969C69AE07FDE743882BED8C2",
+                       "treeSha256":  "45FC41C0EBAF5530BE6E9D2020204414FE29B11B9F9D047CEE0CE8DF7FA51B59"
                    },
                    {
                        "name":  "praxis-core-surface-materialization",
