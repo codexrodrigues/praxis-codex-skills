@@ -20,6 +20,11 @@ Pair it with:
 
 ## Source Audit
 
+First resolve the Angular workspace root. In the platform monorepo the files may live under
+`praxis-ui-angular/projects/...`; in a standalone Angular checkout they may live directly under
+`projects/...`. Audit the active `praxis-ui-angular` workspace, not stale issue worktrees such as
+`praxis-ui-angular-issue*`, unless the user explicitly targets one of those worktrees.
+
 Inspect:
 
 - `projects/praxis-dynamic-fields/AGENTS.md`
@@ -51,6 +56,12 @@ Inspect:
 - `src/lib/directives/dynamic-field-loader.select-rebind.spec.ts`
 - `src/lib/directives/dynamic-field-loader.skip-snapshot.spec.ts`
 - `projects/praxis-core/src/lib/utils/inline-filter-controls.util.ts`
+- `projects/praxis-core/src/lib/tokens/layer-scale.token.ts`
+- `projects/praxis-core/src/lib/tokens/layer-scale.token.spec.ts`
+- `projects/praxis-metadata-editor/src/lib/ai/praxis-metadata-editor-authoring-manifest.ts`
+- `projects/praxis-metadata-editor/src/lib/ai/praxis-metadata-editor-authoring-manifest.spec.ts`
+- affected `projects/praxis-metadata-editor/src/lib/config/*.config.ts` files when
+  `inlineOverlay.applyMode`, `inlineOverlay.actions.*`, or `clearButton.*` metadata changes
 - focused inline component specs and `test-dev/e2e/*.playwright.spec.ts` when visual overlay behavior changes
 
 ## Canonical Boundary
@@ -77,6 +88,12 @@ Dynamic Fields owns:
 - Presentation mode, skip snapshot, metadata refresh, select rebind, and global disabled/readonly/loading states must remain compatible with inline overlays.
 - Do not document component internal value shape as the final HTTP DTO; range normalization may happen later in host/backend contracts.
 - Fix blocked overlays through shared layer/token contracts before adding host-only z-index or color overrides.
+- CDK stacking is owned by `@praxisui/core` layer scale tokens. Connected overlay panes must remain
+  above CDK backdrops through `PRAXIS_LAYER_SCALE_*`; do not patch individual inline components with
+  one-off z-index values unless the shared layer contract is already correct and the issue is truly local.
+- Metadata-editor authoring for `inlineOverlay.applyMode` and `inlineOverlay.actions.*` is part of
+  the same contract. When runtime overlay behavior changes, verify the metadata-editor config and AI
+  manifest can still author the same shared metadata instead of introducing component-local flags.
 
 ## Inventory Before New Contract
 
@@ -103,6 +120,12 @@ Use focused gates:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/ai/inline-filter-recipes.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/control-type-ai-catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/catalog/catalog-derivation.spec.ts --include=projects/praxis-dynamic-fields/src/lib/catalog/dynamic-fields-playground.catalog.spec.ts`
 - I18n/action label changes:
   - Pair affected inline component specs with `metadata-i18n-contract.spec.ts` when catalog/editorial text changes.
+- Core layer scale changes:
+  - Add `projects/praxis-core/src/lib/tokens/layer-scale.token.spec.ts` when overlay clickability,
+    backdrop ordering, or CDK z-index behavior changes.
+- Metadata-editor authoring changes:
+  - Add focused metadata-editor config/manifest specs when `inlineOverlay.applyMode`,
+    `inlineOverlay.actions.*`, or `clearButton.*` metadata is added, renamed, or reinterpreted.
 - Playwright/e2e for overlay clickability, close behavior, Apply/Cancel/Clear, responsive layout, and theme contrast:
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-all-components-smoke.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-date-range-visual.playwright.spec.ts`
