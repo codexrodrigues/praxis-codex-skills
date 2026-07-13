@@ -1304,8 +1304,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "BE3A751DD3F812A03DADF902E0524B82084043452F67A0C5B3C2BBE47A0DD85D",
-                       "treeSha256":  "591D912A9F4841D2328148942D90C8C339069B6A21ED2881847214215A68D9D3"
+                       "skillMdSha256":  "471071E495321BD06327FFAF85A4FDD1D00895D0679D2FF446ED4ADA7665C04F",
+                       "treeSha256":  "3F398F32BE1AD6525D234D5797C3A34E544F2C3908E90BC047314E4DB9F97C99"
                    },
                    {
                        "name":  "praxis-fields-option-sources",
