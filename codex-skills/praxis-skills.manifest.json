@@ -2132,8 +2132,8 @@
                                             "praxis-table-rule-effects-runtime",
                                             "praxis-table-rule-animation-presets"
                                         ],
-                       "skillMdSha256":  "685AF0B23B2B8B01B817B39D8485804B300857ACCDF0F6D4918C1384343EF44F",
-                       "treeSha256":  "3F8399382E3BE8523C2498258A89DF479554D46F0BF63E630741CDB738254AC7"
+                       "skillMdSha256":  "AB1980C6B84F5635973CFB38148D23E9221CE98788FEAA95FE534C453ABBA6DF",
+                       "treeSha256":  "EDA1A951923B83BB0F8A8D77E1445FC17D16B08D3358B0175485E048483CF07D"
                    },
                    {
                        "name":  "praxis-table-runtime-data",
