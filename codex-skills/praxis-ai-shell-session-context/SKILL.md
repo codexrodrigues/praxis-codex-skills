@@ -32,6 +32,10 @@ The required identity is the stable tuple `sessionId`, `ownerId`, and `ownerType
 - Target metadata accepts scalar values only and excludes raw `file`, `blob`, `bytes`, `base64`, `previewUrl`, `currentState`, `runtimeState`, form values, rows, pending patch, diagnostics, payload, and config keys. Keep the blacklist protective rather than copying raw data to a differently named field.
 - Attachments in the snapshot are serializable summaries only: identity/name, kind, MIME type, size, source, and preview availability. `File`, bytes, base64, blob URLs, and rich payloads stay on the composer/upload path.
 - Digests are summaries, hashes, sources, fields, and counts. A digest is evidence, not a serialized runtime object.
+- Turn runtime state is not snapshot context. Do not copy heartbeat, replay diagnostics, watchdog progress,
+  stream lifecycle checkpoints, assistant messages, quick replies, pending clarification, preview, pending patch,
+  `canApply`, or turn diagnostics into `PraxisAssistantContextSnapshot` or session descriptors as restorable facts.
+  Carry only bounded, redacted evidence that helps the next turn ground the UI safely.
 - Treat `AiContextBuilderService` as a specialized rule-prompt builder over minified schemas and allowed JSON Logic operators. Do not route new shell/session integrations through that service when the requirement is to carry cockpit/session context, governance hints, actions, attachments, or runtime evidence. Promote reusable assistant evidence through `PraxisAssistantContextSnapshot` instead.
 
 Before adding a snapshot field, inventory existing metadata schemas, `x-ui`, actions, surfaces, capabilities, option sources, manifests, runtime observations, diagnostics, and context hints. Classify the need as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`. Only a real missing canonical evidence path warrants a new public field.
@@ -47,6 +51,9 @@ Use `PraxisAssistantSessionRegistryService` rather than host-local arrays, servi
 - The session host renders minimized sessions by default and omits origin-anchored ones unless explicitly asked. Filter by owner only for presentation; never use a dock filter as an authorization boundary.
 - Open, minimize, remove, and lookup context sessions by the canonical session identity. Do not derive a new ID from a title, target label, route string, or prompt text.
 - The registry is an Angular in-memory interaction registry. Do not add local persistence, cross-user reuse, or server synchronization as a convenience. A persistence requirement belongs to the canonical backend/config owner and must preserve tenant, user, environment, retention, redaction, and authorization semantics.
+- Registry summaries, badges, icons, visibility, and dock ordering are presentation projections. They must not preserve
+  transient stream evidence or recreate a turn after reload; reopened sessions should start from normalized context,
+  not from the previous turn's heartbeat/progress/diagnostics trail.
 
 ## Shell And Dock Materialization
 
