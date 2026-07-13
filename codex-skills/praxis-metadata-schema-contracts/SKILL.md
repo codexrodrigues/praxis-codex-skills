@@ -32,6 +32,10 @@ Inspect the owner before editing:
 
 Use canonical operation resolution from OpenAPI before inventing endpoint maps. `path + operation + schemaType` should resolve through `CanonicalOperationResolver`, `OpenApiDocumentService`, and `SchemaReferenceResolver`.
 
+`schemaId`, `schemaUrl`, `ETag`, and `X-Schema-Hash` are one structural evidence chain. Any new structural dimension such as `includeInternalSchemas`, `idField`, `readOnly`, `operation`, or `schemaType` must be reflected consistently in `FilteredSchemaReferenceResolver`, `ApiDocsController`, schema hash calculation, conditional request handling, docs/spec examples, and Angular cache consumption.
+
+Surfaces/actions/capabilities should reference canonical `schemaUrl`/`requestSchemaUrl`/`responseSchemaUrl` values produced by the resolver. They must not reconstruct schema URLs by concatenating paths, copy inline schema fragments, or treat a `schemaId` from another structural variant as equivalent.
+
 ## Decision Rules
 
 - Do not fix missing schema semantics in Angular, quickstart, HTTP examples, or docs when the canonical source is the starter.
