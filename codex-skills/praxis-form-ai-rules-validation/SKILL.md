@@ -80,6 +80,10 @@ changing manifest, adapter, recipe, registry, or public docs involving `componen
   business rules, policy, eligibility, validation, compliance, or shared decisions, the correct
   response is a governed `domain-rules` / `shared_rule_authoring` handoff or materialization path,
   not a local Dynamic Form edit plan.
+- In agentic flows, a shared business-rule prompt must reach the backend semantic resolver with
+  governed context hints instead of being short-circuited by the Dynamic Form adapter. The local
+  adapter may compile a returned `componentEditPlan` only after the resolver has selected a
+  component-authoring operation; it must not decide primary business intent from words in the form.
 - `field.local.add` is for local form-only fields. Do not create backend DTO fields for local/transient UI needs.
 - Never write `formRulesState` directly; write `formRules` and let internals derive builder state.
 - Use Json Logic only; do not generate JavaScript handlers or arbitrary functions.
@@ -95,6 +99,11 @@ changing manifest, adapter, recipe, registry, or public docs involving `componen
 - Mark LLM-authored rules for human review when the workflow expects review.
 - `formCommandRules` is the command/side-effect channel. Keep it separate from property `formRules`, validate `GlobalActionRef`, preserve structured `payload`, and treat `payloadExpr` as an advanced JSON escape hatch.
 - `domainRules` materializations are shared/governed rule projections. Do not collapse them into local `formRules` as if the form were the primary business-rule owner.
+- When a governed decision materializes to `form_config`, preserve `DomainRuleMaterialization`
+  provenance (`ruleDefinitionId`, `materializationKey`, `sourceHash`, `status`,
+  `decisionDiagnostics`, target layer/type/key/pointer) through `DomainRuleFormRulesService`.
+  Do not re-author the same rule locally just because the visual effect is representable as
+  `FormLayoutRule`.
 - Context packs are grounding artifacts. Keep dynamic-form and filter-form context packs aligned with allowed targets, diagnostics, existing rules, actions, fields, visual blocks, and runtime/read-only evidence.
 - Computed field values must use the canonical closed envelope when authoring structured values: exactly `{ "expression": <JSON Logic> }` or exactly `{ "literal": <value> }`.
 - The visual property panel is a guided projection of the JSON/rule contract. Unsupported or JSON-only rule capabilities must remain visible as advanced/diagnostic state rather than being silently dropped.
@@ -109,6 +118,13 @@ Before accepting a manifest/adapter/registry change, ask whether it reduces the 
 business-rule prompt falls back to `componentEditPlan`, `formRulesState`, or
 `rule.visualBlockGuidance.add`. If it only creates another local component route for a shared
 decision, it is probably the wrong platform cut.
+
+For Ergon-style migrations, treat a request such as "make CPF required when regime is X",
+"block payment when status is Y", "show LGPD guidance for sensitive fields", or "validate a legal
+command before submit" as a classification problem first: component-only presentation may stay in
+Dynamic Form, but reusable policy, legal command, eligibility, validation, or compliance belongs to
+`domain-rules` and only then projects into `form_config`, backend validation, workflow/action, or
+another target. Do not turn the first migrated screen into the canonical rule owner.
 
 ## Inventory Before New Contract
 
