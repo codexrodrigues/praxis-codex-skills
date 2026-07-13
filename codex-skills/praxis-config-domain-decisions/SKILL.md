@@ -23,6 +23,12 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/service/DomainRuleService.java`
 - `src/main/java/org/praxisplatform/config/service/DomainKnowledgeChangeSetService.java`
 - `src/main/java/org/praxisplatform/config/service/DomainKnowledgeChangeSetValidator.java`
+- `src/main/java/org/praxisplatform/config/service/DomainFederationQueryService.java`
+- `src/main/java/org/praxisplatform/config/service/DomainFederationRetrievalPolicyService.java`
+- `src/main/java/org/praxisplatform/config/service/DomainFederationIngestDryRunService.java`
+- `src/main/java/org/praxisplatform/config/service/DomainFederationIngestPersistenceService.java`
+- `src/main/java/org/praxisplatform/config/service/DomainFederationReleaseService.java`
+- `src/main/java/org/praxisplatform/config/service/RagProjectKnowledgeDerivedIndexService.java`
 - `src/main/java/org/praxisplatform/config/domain/DomainRuleDefinition.java`
 - `src/main/java/org/praxisplatform/config/domain/DomainRuleMaterialization.java`
 - `src/main/java/org/praxisplatform/config/domain/DomainKnowledgeChangeSet.java`
@@ -117,8 +123,10 @@ Only real gaps justify new decision contracts. Identify which UX/behavior cannot
 Use focused local gates:
 
 - domain rules: `mvn "-Dtest=DomainRuleControllerTest,DomainRuleServiceTest,DomainRuleMigrationConstraintTest" test`
-- domain knowledge: `mvn "-Dtest=DomainKnowledgeChangeSetControllerTest,DomainKnowledgeChangeSetServiceTest,DomainKnowledgeChangeSetValidatorTest,DomainKnowledgeEntityLifecycleTest,DomainKnowledgeProjectionServiceTest" test`
-- catalog/federation: `mvn "-Dtest=Domain360CatalogControllerTest,Domain360CatalogServiceTest,DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,DomainFederation*Test" test`
+- domain knowledge and derived Project Knowledge indexing:
+  `mvn "-Dtest=DomainKnowledgeChangeSetControllerTest,DomainKnowledgeChangeSetServiceTest,DomainKnowledgeChangeSetValidatorTest,DomainKnowledgeEntityLifecycleTest,DomainKnowledgeProjectionServiceTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
+- catalog/federation read, policy, ingest, releases, activation, and 360 projection:
+  `mvn "-Dtest=Domain360CatalogControllerTest,Domain360CatalogServiceTest,DomainCatalogControllerTest,DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,DomainFederationControllerTest,DomainFederationContractValidatorTest,DomainFederationRetrievalPolicyServiceTest,DomainFederationQueryServiceTest,DomainFederationIngestDryRunServiceTest,DomainFederationIngestPersistenceServiceTest,DomainFederationReleaseServiceTest" test`
 - Angular consumers: `npm run test:core -- --include=projects/praxis-core/src/lib/services/domain-rule.service.spec.ts --include=projects/praxis-core/src/lib/services/domain-knowledge.service.spec.ts --include=projects/praxis-core/src/lib/services/domain-catalog.service.spec.ts`
 
 For public decision/materialization changes, review `docs/ai/**`, `docs/domain-catalog/**`, quickstart smokes, Angular core domain services, Page Builder handoff, and public docs/examples.
