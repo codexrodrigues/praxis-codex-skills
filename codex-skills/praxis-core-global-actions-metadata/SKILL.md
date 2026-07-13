@@ -23,7 +23,12 @@ Before editing code or guidance, inspect:
 - `projects/praxis-core/src/lib/actions/surface-open-presets.ts`
 - `projects/praxis-core/src/lib/services/component-metadata-registry.service.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.ts`
+- `projects/praxis-core/src/lib/schema/schema-metadata-client.ts`
+- `projects/praxis-core/src/lib/services/schema-normalizer.service.ts`
 - `projects/praxis-core/src/lib/services/domain-catalog.service.ts`
+- `projects/praxis-core/src/lib/services/domain-knowledge.service.ts`
+- `projects/praxis-core/src/lib/services/domain-rule.service.ts`
+- `projects/praxis-core/src/lib/ai/domain-catalog-context-pack.ts`
 - focused global action, surface open, metadata registry, schema/resource, and consumer specs
 
 ## Canonical Boundary
@@ -58,15 +63,47 @@ For real gaps, update core contract, public API, specs, docs, and at least one d
 
 Use the smallest reliable proof:
 
-- `global-action-ref.utils.spec.ts`
-- surface open preset/editor specs
-- `GlobalActionService` or provider/catalog specs
-- component metadata registry specs
-- resource discovery/domain service/schema flow specs
-- direct consumer specs where actions or metadata are materialized
-- `npm run build:praxis-core` plus direct consumer build when public exports change
+- global action refs, execution, UI schema, and `surface.open` editor/presets:
 
-Report which consumers were checked and whether command-string migration or alias cleanup remains.
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/actions/global-action-ref.utils.spec.ts --include=projects/praxis-core/src/lib/services/global-action.service.spec.ts --include=projects/praxis-core/src/lib/actions/editors/surface-open-action-editor.component.spec.ts --include=projects/praxis-core/src/lib/actions/surface-open-presets.spec.ts
+```
+
+- component metadata registry and dynamic widget consumption:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/component-metadata-registry.service.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page.component.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page-runtime-observation.spec.ts
+```
+
+- resource discovery, schema metadata, and schema normalization:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/schema/schema-metadata-client.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer-array.service.spec.ts
+```
+
+- domain catalog, knowledge, rules, and safe timeline projections:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/domain-catalog.service.spec.ts --include=projects/praxis-core/src/lib/services/domain-knowledge.service.spec.ts --include=projects/praxis-core/src/lib/services/domain-rule.service.spec.ts --include=projects/praxis-core/src/lib/models/domain-knowledge-timeline.rich-content.spec.ts --include=projects/praxis-core/src/lib/models/domain-rule-timeline.rich-content.spec.ts
+```
+
+- direct consumer specs where actions or metadata are materialized:
+
+```sh
+npm run test:form -- --include=projects/praxis-dynamic-form/src/lib/action-authoring/global-action-authoring.util.spec.ts --include=projects/praxis-dynamic-form/src/lib/services/domain-rule-form-rules.service.spec.ts
+npm run test:table -- --include=projects/praxis-table/src/lib/table-global-action-adapter.spec.ts --include=projects/praxis-table/src/lib/praxis-table-config-editor.global-actions.spec.ts
+npm run ng -- test praxis-page-builder --watch=false --progress=false --include=projects/praxis-page-builder/src/lib/editor/component-palette-dialog.component.spec.ts --include=projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor.component.spec.ts --include=projects/praxis-page-builder/src/lib/ai/page-builder-ai.adapter.spec.ts
+```
+
+- package authoring manifests only when metadata/action catalog changes must be projected to AI authoring:
+
+```sh
+npm run test:table -- --include=projects/praxis-table/src/lib/ai/praxis-table-authoring-manifest.spec.ts
+npm run test:form -- --include=projects/praxis-dynamic-form/src/lib/ai/praxis-dynamic-form-authoring-manifest.spec.ts
+npm run ng -- test praxis-page-builder --watch=false --progress=false --include=projects/praxis-page-builder/src/lib/ai/praxis-page-builder-authoring-manifest.spec.ts
+```
+
+For public export changes, run `npm run build:praxis-core` plus a direct consumer build selected by actual imports. Report which consumers were checked and whether command-string migration, alias cleanup, metadata registry projection, or AI manifest projection remains.
 
 ## Companion Skills
 
