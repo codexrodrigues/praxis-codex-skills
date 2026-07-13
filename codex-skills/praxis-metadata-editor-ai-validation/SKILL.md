@@ -62,6 +62,12 @@ For each changed authorable path:
 - verify the path has visual renderer coverage when visual coverage is required
 - verify operation validators include round-trip and canonical shape checks
 - verify option-source and cascade operations preserve backend `x-ui.optionSource` semantics
+- verify cascade operations keep backend `x-ui.optionSource.dependsOn` and
+  `x-ui.optionSource.dependencyFilterMap` as read/hydration/grounding inputs unless the operation is
+  explicitly an option-source migration/configuration operation. Ordinary `cascade.configure`
+  operations should write the metadata-editor runtime cascade paths produced by
+  `CascadeRulesService.dehydratePatch()` / `clearPatch()`, not silently promote backend grounding paths
+  into AI writes.
 - verify control type changes require dynamic-fields discovery and metadata-editor coverage
 - verify `affectedPaths` and handler writes stay within canonical metadata-editor paths such as
   `fieldMetadata.*`, `properties`, `editorCoverage`, `normalizedSeed`, or `form`
@@ -93,5 +99,9 @@ Minimum gates:
 - metadata component projection: focused metadata specs if present
 - registry projection: `npm run generate:registry:ingestion` when AI registry artifacts are affected
 - renderer/cascade operation changes: also run the focused renderer/cascade specs named by the companion skills
+- cascade AI boundary changes: pair manifest/adapter specs with `praxis-metadata-editor-cascade-normalization`
+  expectations, including a focused assertion that `cascade.configure` writes root-level cascade paths
+  and treats `optionSource.*` dependency paths as preserved/read-only unless the operation is explicitly
+  option-source migration/configuration
 
 Use `praxis-angular-validation-gates` to select the smallest proof and state clearly if registry ingestion, consumer E2E, or backend sync was not run.
