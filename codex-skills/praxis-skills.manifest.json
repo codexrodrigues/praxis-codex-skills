@@ -2538,8 +2538,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "8B5EE0F04E3EF399A6B7CCF87736CE2C419F6F5F48A89673131709731051C163",
-                       "treeSha256":  "F8898DB318E00934D6C45C49C722892F007A6D9F121A3DF26C933D328755662D"
+                       "skillMdSha256":  "D28BEEB3881E1E420402A2A28FCC7D694EDF7E2C77DBECE5E8E185A7055AF67D",
+                       "treeSha256":  "E231155885F47F0DE18E731C86790AAEE9C43AFD3112A17F440BB001192D2603"
                    },
                    {
                        "name":  "praxis-http-examples-contract-surfaces",
