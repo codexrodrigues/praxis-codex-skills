@@ -49,6 +49,15 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 - Treat `CompositionRuntimeEngine.bootstrap()` as semantic validation plus state materialization. Blocking diagnostics produce a `degraded` snapshot with trace evidence; do not convert every diagnostic into an exception or silently mark the page ready.
 - Dispatch a `CompositionDispatchEvent` from an exact canonical endpoint. Matching includes owner widget, port, direction, and `nestedPath` when present. Let the engine execute condition, transform, policy, target delivery, state update, diagnostics, and trace as one cycle.
 - When dispatch originates from `surface.result`, `SurfaceOpenPayload.onResult`, or `dynamicPage.composition.dispatch`, preserve the `EndpointRef` source as the authority for matching. For global-action continuations this means `source: { kind: 'global-action', ref: { actionId, payload?, payloadExpr?, meta? } }`; do not replace it with action labels, result type strings, widget names, route ids, or host-local event names. The event payload may carry data, but it does not choose the link source or target.
+- Treat `surface.result` and `dynamicPage.composition.dispatch` as runtime event delivery into the
+  composition engine, not config mutation APIs. Drawer result envelopes, row selections, and returned
+  surface payloads must move through declared links, transforms, state endpoints, or global-action
+  continuations; do not write them directly into widget `definition.inputs`, form/table config, page
+  JSON, or host-local state.
+- If a drawer outcome should update a component, author that update as a canonical composition link
+  with a concrete source endpoint, target endpoint, supported transform, and feedback-cycle guard when
+  relevant. Do not infer component mutation from `surface.result.type`, selected row shape, or returned
+  payload fields.
 - Consume the immutable `RuntimeSnapshot` from the facade/store as execution evidence. Do not maintain a second host state for link status, trace, or diagnostics.
 - Treat feedback-cycle detection as part of semantic validation and runtime safety, not as an editor-only lint. Unguarded cycles produce `SEMANTIC_FEEDBACK_CYCLE_UNGUARDED`, degrade bootstrap, and cause involved matched links to be skipped during dispatch with `RUNTIME_FEEDBACK_CYCLE_BLOCKED`; unrelated matched links may still execute.
 - An intentional feedback loop must be explicit and guarded on every link in the cycle: use `metadata.tags: ['intentional-feedback']` plus at least one canonical guard per link (`condition`, `policy.distinct`, `policy.distinctBy`, or `policy.debounceMs`). Guarded intentional cycles produce `SEMANTIC_FEEDBACK_CYCLE_GUARDED` warnings, not blocking errors. Do not suppress cycle diagnostics or invent host-local loop breakers.
