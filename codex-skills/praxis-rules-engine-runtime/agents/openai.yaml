@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Rules Engine Runtime"
+  short_description: "Govern deterministic Praxis JSON Logic runtime changes"
+  default_prompt: "Use $praxis-rules-engine-runtime to implement or review a deterministic Java or TypeScript JSON Logic runtime change."
