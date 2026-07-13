@@ -31,6 +31,11 @@ Inspect:
 - Apply `inputs` after component creation and trigger change detection.
 - Surface actions must pass through core surface materialization before dialog/drawer projection.
 - Host/domain action after close remains host-owned; dialog does not own business authorization or persistence.
+- Treat the resolved value from `alert`, `confirm`, `prompt`, and `open` as the `afterClosed()` lifecycle result of the opened dialog.
+  It may confirm user interaction, carry a prompt value, or forward a child payload, but it is not by itself a governed business decision,
+  persistence command, authorization check, or metadata mutation. If a close result should trigger domain work, route that continuation
+  through the owning global action/composition contract or backend-confirmed action instead of parsing dialog labels, messages, or result
+  payloads in the consumer.
 - Global config can provide dialog presets through `provideDialogGlobalPresetsFromGlobalConfig()`.
 
 ## Authoring Manifest Rules
