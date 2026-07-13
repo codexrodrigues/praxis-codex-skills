@@ -58,6 +58,12 @@ Do not reconstruct resource keys, schema URLs, submit URLs, read URLs, or action
 - Preserve the materialization provenance carried in `payload.context.resource`, `payload.context.surface`, and `payload.context.action`. Consumers may display titles, subtitles, icons, shell state, and hydrated widget inputs, but must not replace the context with labels, generated ids, component names, selected row text, or host-local route state.
 - `SurfaceOpenPayload.onResult` and `surface.result` are declarative continuation hooks for a governed result. They do not make the surface the primary owner of business state, resource identity, permission, or semantic decision. Route returned results through `GlobalActionRef`, composition links, or backend-confirmed actions; do not mutate host state from a surface result by local command parsing.
 - `SurfaceOpenMaterializerService` may hydrate read projections and add materialization diagnostics such as `readUrl`, `dataShape`, `recordCount`, and presentation mode. Treat those as derived runtime evidence. Do not use a successful hydration, fallback form projection, or unavailable data diagnostic as proof that the backend authorized an edit, action, or alternate resource target.
+- Treat materialized `widget.inputs`, `bindingOrder`, hydrated rows, fallback projections, and
+  diagnostics as derived runtime payload for the opened surface. They are not a Page Builder
+  `definition.inputs` authoring source, not a child component config editor result, and not a
+  replacement for metadata/HATEOAS/capability catalogs. If a consumer wants to persist a reusable page
+  or widget configuration, persist only the owning component's canonical config or the authored
+  `GlobalActionRef`/composition link that can rematerialize the surface from canonical metadata.
 
 ## Aderence Inventory
 
