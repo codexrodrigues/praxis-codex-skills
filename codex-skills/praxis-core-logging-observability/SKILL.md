@@ -13,14 +13,37 @@ Before editing code or guidance, inspect:
 
 - `projects/praxis-core/AGENTS.md`
 - `projects/praxis-core/src/public-api.ts`
-- `projects/praxis-core/src/lib/logging/**`
+- `projects/praxis-core/src/lib/logging/index.ts`
+- `projects/praxis-core/src/lib/logging/logging.types.ts`
+- `projects/praxis-core/src/lib/logging/logging.defaults.ts`
+- `projects/praxis-core/src/lib/logging/logging.tokens.ts`
+- `projects/praxis-core/src/lib/logging/logger.service.ts`
+- `projects/praxis-core/src/lib/logging/provide-praxis-logging.ts`
+- `projects/praxis-core/src/lib/logging/praxis-global-error-handler.ts`
+- `projects/praxis-core/src/lib/logging/helpers/error-normalizer.helper.ts`
+- `projects/praxis-core/src/lib/logging/helpers/throttle.helper.ts`
+- `projects/praxis-core/src/lib/logging/helpers/warn-once.helper.ts`
+- `projects/praxis-core/src/lib/logging/sinks/console-logger.sink.ts`
+- `projects/praxis-core/src/lib/logging/sinks/telemetry-logger.sink.ts`
+- `projects/praxis-core/src/lib/logging/observability/observability.types.ts`
+- `projects/praxis-core/src/lib/logging/observability/observability.defaults.ts`
+- `projects/praxis-core/src/lib/logging/observability/observability.tokens.ts`
+- `projects/praxis-core/src/lib/logging/observability/observability-dashboard.service.ts`
 - `projects/praxis-core/src/lib/services/telemetry.service.ts`
-- focused `logger.service`, `provide-praxis-logging`, telemetry sink, global error handler, production contract, and observability specs
+- `projects/praxis-core/src/lib/hooks/defaults/reportTelemetry.hook.ts`
+- `projects/praxis-core/src/lib/hooks/defaults/logOnError.hook.ts`
+- `projects/praxis-core/src/lib/providers/global-action-analytics.provider.ts`
+- `projects/praxis-core/src/lib/providers/global-action-toast.provider.ts`
+- `projects/praxis-core/src/lib/models/composition-diagnostics.model.ts`
+- `tools/lint/no-console-runtime.js`
+- `tools/lint/console-governance.js`
+- `tools/lint/no-console-allowlist.json`
+- focused `logger.service`, `provide-praxis-logging`, telemetry sink, global error handler, production contract, observability dashboard, and composition diagnostics specs
 - direct consumers that emit logs, telemetry, or normalized errors
 
 ## Canonical Boundary
 
-`@praxisui/core` owns `providePraxisLogging`, logger config tokens, logger levels, sinks, redaction policy, throttling, warn-once, normalized error shape, telemetry payload shape, global error handler integration, observability dashboard options, metrics snapshots, and alert rules.
+`@praxisui/core` owns `providePraxisLogging`, logger config tokens, logger levels, sinks, redaction policy, throttling, warn-once, normalized error shape, telemetry payload shape, global error handler integration, observability dashboard options, metrics snapshots, alert rules, console governance, telemetry hooks, and shared diagnostic model shapes.
 
 Vertical packages own their domain context fields and event timing, but should emit through core logger/telemetry contracts. Hosts own environment-level provider choices and whether console, telemetry, global error handler, or custom sinks are enabled.
 
@@ -34,6 +57,9 @@ Vertical packages own their domain context fields and event timing, but should e
 - Keep production defaults aligned with `logging-prod-contract.spec.ts`.
 - Add custom sinks through `PraxisLoggingOptions.sinks` only when they preserve `LoggerEvent` semantics.
 - Observability alerts should group by declared dimensions: `global`, `lib`, `component`, or `actionId`.
+- Treat direct runtime `console.*` as governed exception. Any residual console usage must be covered by `tools/lint/no-console-allowlist.json` and justified as compatibility, dev-only fallback, or intentionally host-facing output.
+- Prefer `LoggerService` plus `TelemetryLoggerSink` for framework events that need auditability; use `TelemetryService` directly only for legacy hooks or explicit telemetry contracts.
+- When moving an existing console diagnostic into logging, preserve the useful dimensions in `LoggerContext` instead of flattening them into message strings.
 
 ## Inventory Before New Contract
 
@@ -50,14 +76,19 @@ For real gaps, update logging types, defaults, specs, public API, and direct con
 
 Use the smallest reliable proof:
 
-- `logger.service.spec.ts`
-- `provide-praxis-logging.spec.ts`
-- `praxis-global-error-handler.spec.ts`
-- `telemetry-logger.sink.spec.ts`
-- `logging-prod-contract.spec.ts`
-- observability dashboard service/integration specs
-- direct consumer specs when a lib changes log emission
-- `npm run build:praxis-core` when exported contracts change
+- Core logger/provider/error/telemetry sink changes:
+  - `npm run test:core -- --include=projects/praxis-core/src/lib/logging/logger.service.spec.ts --include=projects/praxis-core/src/lib/logging/provide-praxis-logging.spec.ts --include=projects/praxis-core/src/lib/logging/praxis-global-error-handler.spec.ts --include=projects/praxis-core/src/lib/logging/sinks/telemetry-logger.sink.spec.ts --include=projects/praxis-core/src/lib/logging/logging-prod-contract.spec.ts`
+- Observability dashboard, alert rules, metrics snapshots, or tokens/defaults:
+  - `npm run test:core -- --include=projects/praxis-core/src/lib/logging/observability/observability-dashboard.service.spec.ts --include=projects/praxis-core/src/lib/logging/observability/observability-dashboard.integration.spec.ts`
+- Shared diagnostic model changes:
+  - `npm run test:core -- --include=projects/praxis-core/src/lib/models/composition-diagnostics.model.spec.ts`
+- Runtime console cleanup or new console exception:
+  - `npm run lint:no-console`
+  - Review `tools/lint/no-console-allowlist.json` and keep entries tight to the residual runtime files.
+- Direct consumer specs when a lib changes log/telemetry emission, for example:
+  - `npm run test:core -- --include=projects/praxis-core/src/lib/widgets/dynamic-widget-loader.directive.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page.component.spec.ts`
+  - package-specific diagnostics specs such as `projects/praxis-dynamic-form/src/lib/utils/rule-authoring-diagnostics.spec.ts` or `projects/praxis-dynamic-fields/src/lib/utils/logger.spec.ts` when those packages adopt core logging.
+- `npm run build:praxis-core` when exported contracts, tokens, defaults, sinks, or observability public API change.
 
 Report whether redaction, throttling, global error handling, and telemetry sink behavior were validated or skipped.
 

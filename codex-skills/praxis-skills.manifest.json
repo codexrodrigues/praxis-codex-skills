@@ -811,8 +811,8 @@
                        "dependencies":  [
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "EC9E63DD320E3DDCF37363AD28DB091B7AB0F329A12FE47FED6AF807096E5173",
-                       "treeSha256":  "E3065A57467824CB8353425356565B62CB9B73D3394717AC96BE811969E54EDA"
+                       "skillMdSha256":  "9DFA961B55A7F9B263FD336449BF25049CDA2BEC8076717113D561093446F165",
+                       "treeSha256":  "D303F50A36866F89FFE688F04511F7D17963D7BE9932636DDC9DC261683608D5"
                    },
                    {
                        "name":  "praxis-core-providers-bootstrap",
