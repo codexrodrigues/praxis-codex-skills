@@ -142,6 +142,14 @@ Use only canonical status endpoints. Definition transitions allow review paths i
 - Domain Knowledge apply is separate from approval and must validate scope, validation result, lifecycle, and evidence state.
 - Project Knowledge used in authoring is derived from governed active evidence, not raw prompts or stale chat history.
 - Agentic semantic decision/materialization policies are the boundary that prevents prompts, context hints, or weak candidates from becoming executable domain/materialization decisions. Preserve tests that distinguish consultative API/domain catalog answers, governed exploration, resource-choice clarification, explicit materialization, and dashboard/chart/table classification before allowing preview/apply.
+- Treat semantic materialization failures such as `semantic-preview-primary-component-required`,
+  `semantic-preview-chart-required`, `semantic-preview-resource-binding-mismatch`,
+  `semantic-preview-axis-schema-verification-required`, or
+  `semantic-decision-review-required:*` as blocking validation evidence for the current
+  materialization candidate. They do not authorize retrying with a different local UI artifact,
+  changing the selected resource, downgrading a governed decision to a component preview, or
+  bypassing `/domain-rules/intake`/simulation/review. Re-ground or clarify through the canonical
+  semantic decision flow instead.
 
 ## No Keyword Routing
 
