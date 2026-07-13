@@ -33,6 +33,7 @@ Inspect `tools/ai-registry/AGENTS.md` when registry ingestion or component autho
 
 - Component edit plans are for authoring config changes, not for executing runtime operations.
 - Runtime operations are for declared immediate actions such as applying filters, exporting data, or opening related surfaces.
+- Use `table.export.run` only when the user asks to run an export now. Its available formats must come from the runtime export configuration and normalized supported formats; enabling/configuring export belongs to `export.configure` in a component edit plan, and ambiguous export requests should ask for scope/format clarification instead of fabricating a download operation.
 - Filter questions must be grounded in `filterFieldCatalog`, resource metadata, and runtime operations.
 - Column visibility, public/private presentation, format, renderer, style, value mapping, computed columns, toolbar, row, bulk, and export authoring must use declared edit plan change kinds and operation ids.
 - Treat `visual-only` operations such as `column.conditionalRenderer.add`, `column.conditionalStyle.add`, row conditional renderers, badges, chips, icons, animations, and `effects` as table presentation materialization only. They may explain how a row or cell is displayed when a JSON Logic condition matches, but they must not classify the record, synthesize boolean status patches, create `domain-rules`, infer `backend_validation`, or become row authorization/business policy.
