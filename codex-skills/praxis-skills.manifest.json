@@ -1867,8 +1867,8 @@
                                             "praxis-rich-content-integration-adapters",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "D053499ED5A062AB831D09BB92E6838FDA7250AC5BEDC1594641126362987C72",
-                       "treeSha256":  "12493404B11F4DEC48694E62785276CE6BB33CD61F9D9439E50B3BA3B7B532B7"
+                       "skillMdSha256":  "8FE696E29BB1A1C7AE721533AD53D6F309C35C32994AD6A0015004AC48CE4EAB",
+                       "treeSha256":  "F720BAE363016AB3C1943487868BC22E7916E3FACB0878D6167B207A802AC5B0"
                    },
                    {
                        "name":  "praxis-resource-entity-lookup-backend",
