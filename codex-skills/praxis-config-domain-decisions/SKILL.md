@@ -31,6 +31,9 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/service/RagProjectKnowledgeDerivedIndexService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringSemanticDecisionPolicy.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringSemanticMaterializationPolicy.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringLlmIntentResolverService.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringIntentResolverService.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringTurnEngine.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringDomainCatalogCandidateEnhancer.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringDomainCatalogHints.java`
 - `src/main/java/org/praxisplatform/config/domain/DomainRuleDefinition.java`
@@ -50,6 +53,8 @@ Inspect the owner before editing:
 `/api/praxis/config/domain-knowledge/change-sets/**` owns governed knowledge patch creation, validation, review, apply, timeline, evidence lifecycle, and derived Project Knowledge indexing.
 
 Domain catalog/federation publishes semantic graph context and relationships for AI grounding. It must not be reduced to labels.
+
+Agentic authoring is a routing surface for these decisions, not the owner of the business rule. When the LLM resolver sets `requiresGovernedAuthoring=true`, the canonical route is `changeKind=route_shared_rule_authoring` with no `visualizationDecision`; the turn must not continue as a dashboard, chart, table, form, page preview, or local component apply.
 
 ## Layer Model
 
@@ -81,6 +86,14 @@ Other predicted targets, including form guidance, may require an explicit materi
 
 Use only canonical status endpoints. Definition transitions allow review paths including `deprecated -> active`, but `rejected` and `retired` are terminal. Materializations may recover from `failed`, `superseded`, or `reverted` only through `draft` or `pending_review`; they cannot jump directly back to `applied`.
 
+## Agentic Handoff
+
+- Shared-rule turns must be resolved semantically by `AgenticAuthoringLlmIntentResolverService` or governed evidence, then converted by `AgenticAuthoringIntentResolverService` into a route that carries `shared-rule-authoring-required`.
+- `AgenticAuthoringTurnEngine` should surface the handoff and diagnostics, not fabricate a component preview, dry-run patch, page plan, or applyable artifact. `canApply` must remain false until a governed decision/materialization contract exists.
+- A consultative catalog question such as "which governed data can I use?" remains read-only and uses `artifactKind=api_catalog` plus `answer_api_catalog_question`; it must not be escalated to shared-rule authoring unless the user actually asks to define or change a reusable business decision.
+- A local UI request such as formatting, masks, labels, component layout, columns, filters, or badges is not a domain decision unless the semantic intent includes reusable policy, eligibility, approval, compliance, privacy, access, validation, or enforcement.
+- When a route is blocked by `shared-rule-authoring-required`, the correct next implementation step is to connect the assistant handoff to `/domain-rules/intake`, simulation, review, and publication. Do not bypass the gap with keyword routing or local preview heuristics.
+
 ## Domain Knowledge Workflow
 
 - LLM-authored change sets must begin as `proposed`, include stable operation ids, reasons, evidence refs, confidence in `[0,1]`, and a target within the request tenant/environment. Raw prompts, transcripts, or chat memory are not canonical evidence.
@@ -101,6 +114,7 @@ Use only canonical status endpoints. Definition transitions allow review paths i
 
 - If a request is about a shared business rule, validation, eligibility, compliance, approval, or policy over a resolved resource, route to domain decisions before component preview/apply.
 - UI, option sources, backend validation, workflow actions, and approval policies should be materializations of the governed decision when possible.
+- Treat `requiresGovernedAuthoring=true`, `route_shared_rule_authoring`, and `shared-rule-authoring-required` as blocking signals for ordinary UI materialization. They are not warnings that can be ignored by the preview/apply pipeline.
 - Preserve `decisionDiagnostics`, `explainability`, publication diagnostics, materialization outcomes, timeline events, statuses, source hashes, and canonical owner fields.
 - Do not report `simulation.result=pass` as a successful evaluation of business data; it currently describes authoring/coverage diagnostics.
 - Status transitions are directional; use the canonical transition endpoints and never mutate status fields or projection records directly.
@@ -128,6 +142,8 @@ Only real gaps justify new decision contracts. Identify which UX/behavior cannot
 Use focused local gates:
 
 - domain rules: `mvn "-Dtest=DomainRuleControllerTest,DomainRuleServiceTest,DomainRuleMigrationConstraintTest" test`
+- shared-rule authoring handoff and LLM routing:
+  `mvn "-Dtest=AgenticAuthoringLlmIntentResolverServiceTest,AgenticAuthoringIntentResolverServiceTest,AgenticAuthoringTurnEngineTest" test`
 - agentic semantic decisions and domain catalog grounding:
   `mvn "-Dtest=AgenticAuthoringSemanticDecisionPolicyTest,AgenticAuthoringDomainCatalogCandidateEnhancerTest,AgenticAuthoringDomainCatalogHintsTest" test`
 - domain knowledge and derived Project Knowledge indexing:
