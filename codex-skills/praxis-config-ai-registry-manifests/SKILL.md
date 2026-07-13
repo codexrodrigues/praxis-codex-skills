@@ -143,9 +143,12 @@ artifacts, docs/OpenAPI impact, compatibility risk, and minimum proof before edi
 Run the smallest local gate that proves the changed boundary:
 
 - ingestion identity, invalid manifests, chunk/RAG publication, bootstrap refresh/prune, and snapshot:
-  `mvn "-Dtest=RegistryIngestionServiceIdentityTest,AiRegistryBootstrapServiceTest,AiRegistrySnapshotContractTest" test`
+  `mvn "-Dtest=RegistryIngestionServiceTest,RegistryIngestionServiceIdentityTest,AiRegistryRevisionPolicyTest,AiRegistryBootstrapServiceTest,AiRegistrySnapshotContractTest" test`
 - executable manifests, target resolution, validators, compilers, and HTTP projection:
   `mvn "-Dtest=AgenticAuthoringManifestServiceTest,AgenticAuthoringManifestControllerTest,AgenticAuthoringManifestContractValidatorTest,AgenticAuthoringTargetResolverRegistryTest,AgenticAuthoringValidatorRegistryTest,AgenticAuthoringEffectCompilerRegistryTest" test`
+- templates object validation, default description, identity-preserving upsert, semantic search,
+  bulk partial failure, delete/not-found, and HTTP mapping:
+  `mvn "-Dtest=AiRegistryTemplateServiceTest,AiRegistryTemplateControllerTest" test`
 - public AI contract changes:
   `mvn "-Dtest=AiApiContractOpenApiTest,AiContractSpecConsistencyTest,AiContractV11RetroCompatibilityTest" test`
 - Angular producer changes: focused tool specs, then `npm run validate:catalog` and
@@ -153,9 +156,9 @@ Run the smallest local gate that proves the changed boundary:
   publication must be regenerated.
 
 For templates, prove object validation, default description, identity-preserving upsert, semantic
-search scoping/limits, payload mapping, bulk partial failure, delete/not-found, and HTTP/security
-behavior. If the owner has no focal template tests, record that as a platform test gap instead of
-presenting unrelated registry tests as proof.
+search scoping/limits, payload mapping, bulk partial failure, delete/not-found, and HTTP behavior.
+If the owner has no focal template tests for the changed behavior, record that as a platform test
+gap instead of presenting unrelated registry tests as proof.
 
 Audit one happy path and these adversarial paths:
 
