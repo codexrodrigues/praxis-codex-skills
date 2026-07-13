@@ -88,6 +88,23 @@ lexical branch, such as LLM-authored resource focus, Domain Catalog grounding,
 semantic retrieval, quick-reply context, selected candidate evidence, or
 authoring scope policy.
 
+Audit intent overrides through candidate provenance, not only through the route
+label. `domainCatalog.recommendedAuthoringFlow`, pre-intent tool plans, repair
+classification, deterministic overrides, and quick-reply continuations must be
+backed by explicit semantic evidence such as `domain_catalog`,
+`semantic_retrieval`, `context_hint`, `deterministic_override` with prior LLM/tool
+failure, selected candidate evidence, governed resource confirmation, or
+structured `semanticDecision`. `lexical_fallback`, `unknown`, `none`, stale
+Domain Catalog hints, or copied display labels cannot by themselves authorize a
+shared-rule route, component edit, preview, apply, or repair retry.
+
+When `recommendedAuthoringFlow=shared_rule_authoring` conflicts with an explicit
+local/editorial UI composition request, the backend semantic resolver must decide
+the conflict using the current prompt, selected candidate, and provenance. Angular
+may honor the returned structured hint only as already-governed context; it must
+not use the hint as a browser-side shortcut that bypasses the backend decision,
+manifest operation evidence, or clarification flow.
+
 Provider failures, invalid or partial LLM JSON, unsupported route classes, and
 low confidence must fail closed: unresolved decision, `provider_error` or
 equivalent safe follow-up, user-facing clarification, sanitized warnings, and
