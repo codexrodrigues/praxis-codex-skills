@@ -14,6 +14,10 @@ compact filter semantics, use `praxis-fields-inline-overlay-runtime`. For family
 semantics, use `praxis-fields-text-number-time-controls` or
 `praxis-fields-selection-lookup-controls` before updating AI catalogs or registry projections.
 
+When locating files, first resolve the Angular workspace root. Paths below are relative to
+`praxis-ui-angular/projects/praxis-dynamic-fields` unless they explicitly start with `tools/`,
+`examples/`, `dist/`, or another package path.
+
 ## Canonical AI/Canvas Surfaces
 
 Inspect the actual sources:
@@ -38,11 +42,20 @@ Inspect the actual sources:
 - `tools/ai-registry/generate-registry-ingestion.ts`
 - `tools/ai-registry/validate-catalog-governance.js`
 - `tools/ai-registry/validate-authoring-contracts-acceptance.js`
+- `tools/ai-registry/component-docs.json`
+- `dist/praxis-component-registry-ingestion.json` when present or generated for the task
+- `dist/ai-registry-catalog-validation-report.json` and `.md` when catalog governance is validated
+- `dist/authoring-contracts-acceptance-gate-report.json` and `.md` when authoring acceptance is validated
+- `examples/ai-recipes/praxis-dynamic-fields/*.json` when recipe projection changes
 - generated AI registry artifacts when the task requires registry ingestion proof
 
 The family manifest should capture shared `FieldMetadata`, registry, and editorial semantics. Component profiles should express per-control differences such as text, numeric, option, temporal, upload, display, and entity-lookup behavior.
 
 The playable catalog is the canonical host/canvas projection for discovery and preview. Hosts, landing pages, playgrounds, and canvas surfaces should derive menus, cards, preview recipes, icons, snippets, and doc links from the exported catalog instead of maintaining manual lists. Markdown docs explain the contract; they must not be parsed as the runtime source of truth.
+
+`CANVAS_STATE_SERVICE` is intentionally a projection boundary. It stores hovered/selected
+`CanvasElementData`, the DOM element, canonical `FieldMetadata`, and a field path. It must not own
+control semantics, aliases, option-source contracts, runtime registration, or profile behavior.
 
 ## Required Reasoning
 
@@ -62,9 +75,11 @@ Do not use keyword routing as the primary way to pick a field. AI authoring shou
 - Do not duplicate a full manifest per runtime control when a family manifest plus component-level profile is enough.
 - Do not claim AI coverage for a package-owned field unless the registry extractor can see either literal `ComponentDocMeta` or a supported editorial factory such as `createWave1ComponentDocMeta(descriptor)`.
 - Keep runtime coverage, editorial discovery, AI profile coverage, canvas/playground coverage, generated registry coverage, and docs coverage as separate statuses.
+- Registry extraction must prove component docs shape, unique component ids/selectors, expected source metadata, generated ingestion schema, capability chunks, and authoring manifest chunks. Do not treat generated JSON as trusted unless the governance validators pass.
+- Authoring acceptance must keep `praxis-dynamic-fields` as a family component with the expected manifest terms, minimum operations/editable targets/validators/examples/control profiles, report sections, and semantic validation evidence.
 - Validate option-source and entity lookup controls with `praxis-fields-option-sources`; AI should understand by-ids reload, dependencies, and partial backend waivers instead of authoring a local select workaround.
 - Keep canvas integration as a projection of field metadata/editorial state. Do not create a second concept layer for canvas-only field behavior when the canonical registry already knows it.
-- Canvas state may store selection, draft, focus, validation, or preview state, but it must not become the canonical owner of control semantics, metadata shape, aliases, option-source rules, or runtime registration.
+- Canvas state may store selection, hover, focus, draft validation, preview state, DOM reference, and field path, but it must not become the canonical owner of control semantics, metadata shape, aliases, option-source rules, or runtime registration.
 - A playable catalog entry is incomplete if its `controlType` is not resolvable by the default `ComponentRegistryService`, unless it is explicitly marked as experimental or host-owned.
 - A preview recipe is incomplete if it demonstrates a control with metadata paths or value shapes not supported by the profile, capability, runtime component, or metadata editor contract.
 - Docs and inventories should reference the exported catalog and registry chain. If a host needs custom fields, it may register its own runtime and metadata entries, but it must not override the platform catalog to redefine package-owned semantics.
@@ -89,6 +104,8 @@ Prefer focused checks:
 - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/services/component-registry/component-registry.service.spec.ts --include=projects/praxis-dynamic-fields/src/lib/directives/dynamic-field-loader.directive.spec.ts` when runtime registration, loader, or preview resolution changes.
 - Add the focused dynamic-field loader specs for metadata refresh, presentation mode, select rebind, skip snapshot, or global states when the canvas/preview workflow depends on those paths.
 - `npm run generate:registry:ingestion` when generated component docs, AI metadata, catalog governance, authoring contracts, or registry ingestion can change.
+- `node tools/ai-registry/validate-catalog-governance.js` when component docs or ingestion artifacts are generated or consumed as evidence.
+- `node tools/ai-registry/validate-authoring-contracts-acceptance.js` when authoring manifest acceptance, semantic reports, or registry ingestion acceptance is in scope.
 - `npm run validate:published-doc-assets` when public docs or generated docs assets reflect the changed AI/canvas surface.
 - `npm run build:praxis-dynamic-fields` when public exports, catalog exports, profile constants, registry metadata, or runtime registration change.
 
