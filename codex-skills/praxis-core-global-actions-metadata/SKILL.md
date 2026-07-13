@@ -45,6 +45,10 @@ Consumers may declare package-specific actions and metadata entries, but should 
 - Validate required payload keys and payload type with `validateGlobalActionRef(s)`.
 - Use `getGlobalActionUiSchema(...)` when authoring structured payload fields.
 - Use surface open presets and editors for canonical surface open actions.
+- Treat `GlobalActionResult.data` as the result produced by the executed action handler, not as a business authorization,
+  persistence guarantee, or metadata mutation. Built-in dialog and surface actions may place close/result payloads in `data`,
+  but domain continuation must still be modeled by the owning global action, composition dispatch, governed domain decision,
+  or backend-confirmed command instead of consumers parsing `data` locally.
 - Use component metadata registry for component docs/discovery; do not create package-local registries for shared metadata semantics.
 - Use resource/domain services for resource discovery, domain catalog, knowledge, and rules. Do not copy metadata service logic into table/form/list/page-builder consumers.
 
