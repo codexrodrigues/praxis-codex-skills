@@ -102,6 +102,9 @@ Inspect:
 - Toggle/radio/checkbox/button-toggle controls are still option-bearing when labels, values, disabled states, or i18n are derived from metadata; do not treat them as plain booleans unless the control contract is boolean.
 - Inline selection overlays use `inlineOverlay` when selections are drafted before commit.
 - Dynamic Form, metadata-editor, table filters, CRUD dialogs, and host projects should consume the same identity/source contract. Do not fork lookup behavior per consumer.
+- Treat Cockpit verifiers, HTTP examples, and LLM smokes as external evidence that lookup endpoints are reachable, not as proof that a generic select can replace `entityLookup`. If the backend publishes `RESOURCE_ENTITY`, the Angular control must preserve `entityKey`, `selectionPolicy`, `capabilities`, `selectable`, `disabledReason`, `status`, `statusTone`, rich display fields, detail/create affordances, and retained-invalid-value semantics through open panel, closed display, edit/reopen, and presentation mode.
+- Do not use LLM operational examples or published HTTP payloads as a local shape contract for Ergon or another host. They can help diagnose the backend response, but the runtime shape must still flow through `OptionSourceMetadata`, `OptionDTO.extra`, `OptionDisplayResolverService`, `OptionStore`, and the entity lookup component's view model. If those fields are not reaching the control, fix mapper/normalizer/runtime wiring before inventing a consumer adapter.
+- For dependent entity lookup, verify both the search path and selected-display path. A successful dependent filter example proves the lookup can search; it does not prove that already selected blocked/legacy values render correctly after reopen unless by-ids hydration also receives the mapped dependency context and preserves disabled reason/order.
 
 ## Inventory Before New Contract
 
