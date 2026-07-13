@@ -15,14 +15,27 @@ Inspect the affected owner before editing:
 
 - `projects/praxis-dynamic-form/AGENTS.md`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.html`
 - `projects/praxis-dynamic-form/src/lib/components/praxis-form-actions/praxis-form-actions.component.ts`
+- `projects/praxis-dynamic-form/src/lib/components/praxis-form-actions/praxis-form-actions.json-api.md`
 - `projects/praxis-dynamic-form/src/lib/action-authoring/global-action-authoring.util.ts`
 - `projects/praxis-dynamic-form/src/lib/actions-editor/**`
 - `projects/praxis-dynamic-form/src/lib/hooks-editor/**`
+- `projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form-config-editor.ts`
+- `projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form-config-editor.json-api.md`
 - `projects/praxis-dynamic-form/src/lib/services/form-rules.service.ts`
 - `projects/praxis-dynamic-form/src/lib/dynamic-form-editor-capability.ts`
+- `projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.ts`
+- `projects/praxis-dynamic-form/src/lib/utils/normalize-submit-payload.ts`
+- `projects/praxis-dynamic-form/docs/dynamic-form-visual-builder-parity-audit.md`
+- `projects/praxis-dynamic-form/test-dev/e2e/form-config-editor-actions.playwright.spec.ts`
+- `projects/praxis-dynamic-form/test-dev/e2e/form-config-editor-actions-custom.playwright.spec.ts`
+- `projects/praxis-dynamic-form/test-dev/e2e/form-config-editor-command-rules.playwright.spec.ts`
+- `projects/praxis-dynamic-form/test-dev/e2e/form-config-editor-hooks.playwright.spec.ts`
+- `projects/praxis-dynamic-form/test-dev/e2e/surface-open-form-demo.playwright.spec.ts`
 
 Inspect `@praxisui/core` for `GlobalActionRef`, global action catalogs, payload validation helpers, `SurfaceOpenPayload`, action metadata, and effect policies.
+In core, check `global-action-ref.utils.ts`, `global-action.service.ts`, `global-action.catalog.ts`, `surface-open-action-editor.component.ts`, `surface-open-presets.ts`, `surface-action.model.ts`, and surface materializer/runtime specs when `surface.open` payloads or global action behavior change.
 
 ## Runtime Rules
 
@@ -33,6 +46,11 @@ Inspect `@praxisui/core` for `GlobalActionRef`, global action catalogs, payload 
 - Global actions must be represented as declared action refs with validated payloads.
 - Surface open payloads should use the canonical `SurfaceOpenPayload` shape, including presentation, widget, bindings, and context.
 - Hooks should execute through the registered hook contract and declared stages, not through arbitrary host callbacks hidden in config.
+- `formCommandRules` is the conditional command/side-effect channel. Keep it separate from `formRules` property effects and execute global actions through `GlobalActionService.executeRef(...)`.
+- `payload` is the structured authoring path for global actions; `payloadExpr` is an advanced JSON/expression escape hatch and must be preserved when structured payload is absent.
+- `surface.open` authoring should reuse the canonical core surface-open editor/presets/schema. Dynamic Form must not invent a parallel payload DSL for opening forms, dialogs, drawers, or related-resource surfaces.
+- Action rule overrides may affect action UI state, but they must not bypass submit validation, `formIsValid`, invalid-submit hints, or the submit payload pipeline.
+- Hook stages are declared lifecycle extension points. If a workflow needs business orchestration, prefer governed actions/domain rules over hidden host callbacks.
 
 When a required command is missing, extend the canonical action/hook/global action contract. Do not add regex, aliases, or local prompt parsing as the primary decision path.
 
@@ -43,6 +61,9 @@ When a required command is missing, extend the canonical action/hook/global acti
 - Required action params must be validated with the core helper.
 - Actions editor, hooks editor, JSON editor, and Settings Panel must round-trip the same config shape.
 - Put framework-owned visible text in dynamic-form i18n, not hardcoded component copy.
+- Keep shortcut semantics stable: `PraxisFormActionsComponent` owns registration/disposal and emits `PraxisFormActionEvent`; the host decides how to handle `submit`, `cancel`, `reset`, and custom action IDs.
+- In command-rule authoring, preserve structured `GlobalActionRef` data and fail closed when required payload/params are invalid. Do not downgrade failed mutable actions to `customAction`.
+- For AI-authored actions/hooks, route through the Dynamic Form authoring manifest/edit-plan surface and the core global-action catalog. Do not generate ad hoc click handlers, host callbacks, or prompt-only action strings.
 
 ## Aderence Inventory
 
@@ -57,13 +78,17 @@ Only `lacuna-real-de-contrato` should create a new public action or hook contrac
 
 ## Validation
 
-- action rendering: `praxis-form-actions.component.spec.ts` or focused component specs
-- action authoring: `actions-editor` specs and `global-action-authoring.util.spec.ts` when present
-- hooks: `hooks-editor` specs and focused runtime hook specs
-- command/rule effects: `form-rules.service.spec.ts` and `praxis-dynamic-form.spec.ts`
-- browser validation when action placement, mobile collapse, shortcuts, or visible command behavior changes
+- Action rendering/runtime: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/components/praxis-form-actions/praxis-form-actions.component.spec.ts`
+- Action authoring: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/actions-editor/actions-editor.component.spec.ts --include=projects/praxis-dynamic-form/src/lib/action-authoring/global-action-authoring.util.spec.ts`
+- Submit boundary: add `prepare-submit-payload.spec.ts` and `normalize-submit-payload.spec.ts` when actions, hooks, or rules affect submit data.
+- Command/rule effects: add `form-rules.service.spec.ts`, `rule-converters.spec.ts`, `rule-properties-panel.component.spec.ts`, and config-editor command-rule specs when `formCommandRules`, action targets, or `surface.open` payload authoring changes.
+- Hooks: use focused hooks-editor specs when present; if no dedicated spec exists, validate through config editor, JSON editor, and browser hooks flows.
+- Core global actions: run focused `@praxisui/core` specs for `global-action-ref.utils`, `global-action.service`, `surface-open-action-editor`, `surface-open-materializer`, and surface binding/runtime when shared global action behavior changes.
+- Browser validation: focused Playwrights for `form-config-editor-actions`, `form-config-editor-actions-custom`, `form-config-editor-command-rules`, `form-config-editor-hooks`, and `surface-open-form-demo` when visible action/hook behavior changes.
+- Docs/registry: validate JSON API docs and generated AI/registry surfaces when action/hook public contracts or authoring catalogs change.
 
 Run `npm run build:praxis-dynamic-form` for exported action/hook API changes.
+Run core build/focused tests too when the canonical global-action or surface-open contract changes.
 
 ## Companion Skills
 
