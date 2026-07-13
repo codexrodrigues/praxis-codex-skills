@@ -11,6 +11,7 @@ Use this skill for the Angular client boundary to Praxis Config AI services. The
 
 - `praxis-config-starter` is the canonical backend boundary for AI registry, provider/model execution, persisted AI config, templates, headers, and governed AI endpoints under `/api/praxis/config/**`.
 - `AiBackendApiService` is the official Angular HTTP client for `/praxis/config/ai/**` and `/praxis/config/ai-context/**` materialized through configured base URLs.
+- `PraxisAiService` and browser-provider helpers are legacy/local convenience surfaces. Do not route new governed authoring, provider catalog, status, streaming, or apply flows through browser-side provider execution.
 - `AI_BACKEND_CONFIG_STORE` bridges host-owned AI config snapshots and save operations.
 - `AI_BACKEND_STORAGE_OPTIONS` supplies tenant/env/user headers and optional local demo identity fallback.
 - `AI_BACKEND_ENDPOINTS` may override AI and AI-context base URLs only when AI orchestration is served by a distinct gateway.
@@ -24,6 +25,7 @@ Inspect:
 - `projects/praxis-ai/README.md`
 - `src/lib/core/services/ai-backend-api.service.ts`
 - `src/lib/core/services/ai-backend-api.service.spec.ts`
+- `src/lib/core/services/praxis-ai.service.ts` when a change risks browser-side provider execution or legacy fallback behavior
 - `src/lib/core/contracts/ai-contract.generated.ts`
 - `praxis-config-starter/docs/ai/contracts/praxis-ai-api-contract-v1.1.openapi.yaml`
 - `praxis-config-starter/docs/ai/contracts/README.md`
@@ -52,6 +54,7 @@ When backend contract behavior is in scope, load the relevant config-starter ski
 - Treat `praxis-config-starter/docs/ai/contracts/praxis-ai-api-contract-v1.1.openapi.yaml` as the canonical AI HTTP/SSE contract source. Do not hand-edit `ai-contract.generated.ts` or Java contract constants; update the OpenAPI source, run `node tools/contracts/generate-ai-contract-bindings.js` from `praxis-config-starter`, and commit the generated Java/TypeScript outputs together.
 - Preserve tenant/user/env headers from `AI_BACKEND_STORAGE_OPTIONS`. Local identity fallback is for demos/local hosts and must be explicit.
 - Stream connections must respect `withCredentials`, access tokens, probe endpoints, and explicit headers. Fetch fallback is required when EventSource cannot carry needed headers.
+- Stream connection failures are classified as `unsupported`, `http_status`, `transport`, `parse`, or `schema`. Preserve those categories so callers can distinguish host capability, auth/probe failure, transport loss, malformed payload, and contract drift.
 - Risk confirmation policy is contract-owned. Frontend can display and require confirmation, but should not downgrade risk locally.
 
 ## Client Invariants
@@ -61,8 +64,9 @@ When backend contract behavior is in scope, load the relevant config-starter ski
 - Local demo identity is permitted only through the explicit storage option. An empty or failing header factory must not silently inject demo credentials in a real host.
 - Normalize only the contract-supported UUID identities sent to backend turn endpoints. Omit noncanonical UI-only IDs instead of manufacturing server identity.
 - Send contract version and schema-hash headers for patch/start requests after normalizing them. A generated-contract mismatch, malformed SSE envelope, incompatible event schema version, failed probe, or unauthorized stream is a classified transport/contract failure, never a successful assistant result.
-- Preserve credentials and the same authorization scope for start, probe, connect, cancel, feedback, and replay. Signed access tokens may be carried only where the canonical stream contract allows them.
+- Preserve credentials and the same authorization scope for start, probe, connect, cancel, feedback, and replay. Signed access tokens may be carried only where the canonical stream contract allows them, and must travel consistently in probe/stream/cancel URLs or headers according to that contract.
 - Fetch SSE is the transport fallback when EventSource is unavailable or required host headers cannot be carried; it does not justify a new endpoint, unauthenticated stream, or different envelope parser.
+- Agentic authoring `intent.resolved` is replay-safe and non-terminal. UI clients must keep processing until `result`, `error`, or `cancelled`; do not treat early user-facing understanding as completion.
 - Feedback is write-only triage evidence. It cannot mutate config, risk policy, semantic decision, preview, or apply state.
 
 ## Inventory Before New Contracts
