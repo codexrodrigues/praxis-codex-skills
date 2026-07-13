@@ -799,8 +799,8 @@
                        "dependencies":  [
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "99A61B7181D41F44FBA1E5763AC03AD6C8B82BC58049E3C9FD492751ACDBD2C3",
-                       "treeSha256":  "EDC9792E39FAC4BB4A0FE0F494E60DBF3548CA9DE4252C31AF459163A27253F8"
+                       "skillMdSha256":  "D2E1E72885FF16A4E66D4D0D818ADC9882D5C8F21B4FD20BD7B50F042E4CD4BE",
+                       "treeSha256":  "BEFE12C1F6097151DA4ED039C977C2A6DDFE75841B91385386805BBEC6C8F0DE"
                    },
                    {
                        "name":  "praxis-core-logging-observability",
