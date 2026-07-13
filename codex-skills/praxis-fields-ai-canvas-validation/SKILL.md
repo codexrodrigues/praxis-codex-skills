@@ -66,6 +66,7 @@ For each AI/canvas change, answer:
 - Which profile or capability tells AI how to choose, configure, or avoid the field?
 - Which materialization is derived: catalog, recipe, component docs, metadata editor, canvas state, or runtime preview?
 - What would fail if the AI only emitted JSON without grounding in the registry/catalog?
+- Which evidence is only a projection? A selected canvas element, playable catalog card, generated ingestion chunk, or preview recipe can point to canonical metadata, but none of them independently author control semantics, option-source contracts, selector aliases, or runtime registration.
 - Which evidence statuses are complete, partial, or intentionally skipped: runtime registry, metadata registry, profile/capability, playable catalog, canvas state, registry ingestion, docs, and downstream consumers?
 
 Do not use keyword routing as the primary way to pick a field. AI authoring should ground the user intent into canonical control types, option-source contracts, component profiles, and declared tools/catalogs.
@@ -78,10 +79,12 @@ Do not use keyword routing as the primary way to pick a field. AI authoring shou
 - Registry extraction must prove component docs shape, unique component ids/selectors, expected source metadata, generated ingestion schema, capability chunks, and authoring manifest chunks. Do not treat generated JSON as trusted unless the governance validators pass.
 - Authoring acceptance must keep `praxis-dynamic-fields` as a family component with the expected manifest terms, minimum operations/editable targets/validators/examples/control profiles, report sections, and semantic validation evidence.
 - Validate option-source and entity lookup controls with `praxis-fields-option-sources`; AI should understand by-ids reload, dependencies, and partial backend waivers instead of authoring a local select workaround.
+- Validate AI profile claims with `praxis-fields-control-profile-ai`; canvas/registry evidence is incomplete when runtime coverage depends on fallback normalization, when select/entity examples omit governed by-ids/reload evidence, or when inline explicit overlays omit draft/apply/cancel semantics.
 - Keep canvas integration as a projection of field metadata/editorial state. Do not create a second concept layer for canvas-only field behavior when the canonical registry already knows it.
 - Canvas state may store selection, hover, focus, draft validation, preview state, DOM reference, and field path, but it must not become the canonical owner of control semantics, metadata shape, aliases, option-source rules, or runtime registration.
 - A playable catalog entry is incomplete if its `controlType` is not resolvable by the default `ComponentRegistryService`, unless it is explicitly marked as experimental or host-owned.
-- A preview recipe is incomplete if it demonstrates a control with metadata paths or value shapes not supported by the profile, capability, runtime component, or metadata editor contract.
+- A playable catalog entry is discovery evidence only after it aligns with runtime registration, editorial descriptor/component metadata, profile/capability coverage, and preview recipe. Catalog parity tests are necessary but do not replace option-source, loader, or profile-family validation.
+- A preview recipe is incomplete if it demonstrates a control with metadata paths or value shapes not supported by the profile, capability, runtime component, or metadata editor contract. For remote lookup and inline controls, also prove selected-value hydration/by-ids or explicit Apply/Cancel/Clear semantics when those are part of the canonical behavior.
 - Docs and inventories should reference the exported catalog and registry chain. If a host needs custom fields, it may register its own runtime and metadata entries, but it must not override the platform catalog to redefine package-owned semantics.
 - For wrapper controls, AI/canvas may choose and place the field through dynamic-fields, but package-specific policy must come from the owning package AI/runtime skill.
 
