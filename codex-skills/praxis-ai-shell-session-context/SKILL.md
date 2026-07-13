@@ -13,6 +13,7 @@ Use this skill for the canonical Angular assistant context and session surfaces.
 | --- | --- |
 | component lib or host | produces domain-safe context, manifests, metadata/capability references, and a snapshot candidate |
 | `assistant-context.models.ts` | validates, redacts, bounds, and normalizes `PraxisAssistantContextSnapshot` |
+| `AiContextBuilderService` | builds focused/minified rule-prompt context for the existing rule assistant flow; it is not the canonical session envelope |
 | `PraxisAssistantSessionRegistryService` | in-memory canonical session registry, identity consistency, visibility, presence, ordering, and session lookup |
 | assistant shell, dock, and session host | accessible presentation and interaction over normalized state; no backend policy or primary intent routing |
 | `praxis-config-starter` | provider execution, semantic intent, authorization, persisted AI configuration, tool evidence, and apply policy |
@@ -26,11 +27,12 @@ Create or accept context through `normalizePraxisAssistantContextSnapshot`; do n
 The required identity is the stable tuple `sessionId`, `ownerId`, and `ownerType`. A target, component/route identity, tenant/environment/user scope, mode, manifest reference, resource path, schema fields, safe digests, capabilities, governance/risk hints, attachment summaries, and declared actions are optional evidence.
 
 - A session descriptor that carries a snapshot must match all three identity values exactly. Reject mismatches instead of silently merging owners or sessions.
-- Context text is sanitized, redacted, whitespace-normalized, and bounded. Preserve those limits; do not bypass them for a convenient label, diagnostic, or preview.
-- The current normalizer bounds context items, schema fields, attachments, capabilities, hints, actions, digest fields, and text length. Expand a limit only with a measured privacy/performance reason and a focused spec.
+- Context text is sanitized, redacted, whitespace-normalized, and bounded. The current public budgets are text `160`, context items `12`, schema fields `40`, and attachments `8`; capability/action lists and governance hints are also capped internally. Preserve those limits; do not bypass them for a convenient label, diagnostic, or preview.
+- The normalizer bounds context items, schema fields, attachments, capabilities, hints, actions, digest fields, and text length. Expand a limit only with a measured privacy/performance reason and a focused spec.
 - Target metadata accepts scalar values only and excludes raw `file`, `blob`, `bytes`, `base64`, `previewUrl`, `currentState`, `runtimeState`, form values, rows, pending patch, diagnostics, payload, and config keys. Keep the blacklist protective rather than copying raw data to a differently named field.
 - Attachments in the snapshot are serializable summaries only: identity/name, kind, MIME type, size, source, and preview availability. `File`, bytes, base64, blob URLs, and rich payloads stay on the composer/upload path.
 - Digests are summaries, hashes, sources, fields, and counts. A digest is evidence, not a serialized runtime object.
+- Treat `AiContextBuilderService` as a specialized rule-prompt builder over minified schemas and allowed JSON Logic operators. Do not route new shell/session integrations through that service when the requirement is to carry cockpit/session context, governance hints, actions, attachments, or runtime evidence. Promote reusable assistant evidence through `PraxisAssistantContextSnapshot` instead.
 
 Before adding a snapshot field, inventory existing metadata schemas, `x-ui`, actions, surfaces, capabilities, option sources, manifests, runtime observations, diagnostics, and context hints. Classify the need as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`. Only a real missing canonical evidence path warrants a new public field.
 
@@ -39,6 +41,7 @@ Before adding a snapshot field, inventory existing metadata schemas, `x-ui`, act
 Use `PraxisAssistantSessionRegistryService` rather than host-local arrays, service clones, or dock-only state.
 
 - `upsertContextSession` normalizes the snapshot, derives identity and default title/mode, and stores the normalized result.
+- `openContextSession`, `minimizeContextSession`, `removeContextSession`, and `getContextSession` resolve through the canonical session identity. Preserve those helpers for snapshot-driven flows instead of duplicating owner-local session lookup code.
 - The registry has at most one active session. Opening or upserting one as active minimizes every other session, then sorts sessions by `updatedAt`.
 - Visibility is `active` or `minimized`; presence is `global-dock` or `origin-anchor`. Presence describes where an affordance belongs, not who owns semantic authority.
 - The session host renders minimized sessions by default and omits origin-anchored ones unless explicitly asked. Filter by owner only for presentation; never use a dock filter as an authorization boundary.
