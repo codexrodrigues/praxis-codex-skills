@@ -102,6 +102,9 @@ adding Angular fallbacks:
 - Keep legacy top-level `valueField`, `displayField`, `dependencyFields`, and `dependencyFilterMap` as compatibility inputs only. Canonical backend-driven flows should normalize through `OptionSourceMetadata`, mapper/normalizer specs, and runtime option-source filters.
 - Do not infer `dependencyLoadOnChange`, reset policy, or reload policy from `dependsOn` unless the canonical contract declares it.
 - Keep dynamic-form and table/filter consumers aligned: the same `optionSource` decision should drive form controls, inline filters, metadata-editor authoring, and CRUD/table lookup displays without host-local duplication.
+- Treat Cockpit verifiers, HTTP examples, and LLM smokes as external evidence that a backend contract is reachable, not as permission to duplicate lookup semantics in Angular. If a published example demonstrates `dependencyFilterMap`, by-ids order, invalid-value display, provider-backed lookup, or governed materialization, the Angular runtime still must consume the canonical `OptionSourceMetadata`/`GenericCrudService` pipeline rather than copying the example payload or translating fields locally per screen.
+- When debugging an Ergon migration or another consumer, first prove whether Angular received `optionSource.dependsOn`, `dependencyFilterMap`, `filterEndpoint`, `byIdsEndpoint`, `selectedReloadPolicy`, and `invalidSortPolicy` from `/schemas/filtered`. If the metadata is present but the UI does not materialize it, fix the Angular mapper/runtime. If it is absent, route to metadata/config ownership; do not add a screen-specific workaround.
+- For dependent selected-value hydration, preserve the same mapped dependency context used by the filter request when calling `getOptionSourceOptionsByIds`. A working `smoke:llm-surface` example or Cockpit reachability check does not prove edit/reopen correctness unless the Angular by-ids path also receives the contextual filter.
 
 ## Entity Lookup
 
