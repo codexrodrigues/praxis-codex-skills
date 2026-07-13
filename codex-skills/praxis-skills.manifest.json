@@ -1790,8 +1790,8 @@
                                             "praxis-manual-form-toolbar-metadata-bridge",
                                             "praxis-manual-form-field-detection-instance"
                                         ],
-                       "skillMdSha256":  "5E2F84BD3561030BED28BE2C93D48D78426095EAD34012325A4C0A2358638136",
-                       "treeSha256":  "24537796B8D1B1B4743675631446311625919D3451FADE35A4FA361BF98C4B20"
+                       "skillMdSha256":  "FAAD1B52A0A958D121FC7F9AB0A33D5373E50D816EFA19ADE31795A792EBBA80",
+                       "treeSha256":  "BB771BFFE071726726234973D1AFDAB80222A3323F2FB722125ACDA5A7DF4611"
                    },
                    {
                        "name":  "praxis-metadata-editor-renderer-coverage",
