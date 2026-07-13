@@ -56,6 +56,7 @@ Do not write table config directly from a rule-builder operation. Use explicit d
 - Preserve documented animation precedence: `rule.animation > rule.renderer.animation`.
 - Use `toCellClassAndStyle(effect, { includeAnimationPreview: false })` for persisted renderer style/class mapping.
 - Do not let preview classes, panel labels, or transient editor state leak into table config.
+- Treat missing, empty, or non-compilable `effects` as absence of table visual materialization for that rule, not as a business-negative branch. The table runtime may ignore the empty effect, keep direct renderer/style fields, or surface diagnostics, but it must not synthesize authorization, backend validation, row filtering, or domain-rule decisions from an omitted `RuleEffectDefinition`.
 - If table config editor, Settings Panel, or docs claim support, prove open/edit/apply/save/reopen/runtime reflection.
 
 ## Inventory Before New Contract
