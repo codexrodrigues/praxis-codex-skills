@@ -25,6 +25,9 @@ Inspect:
 - `src/lib/core/services/ai-backend-api.service.ts`
 - `src/lib/core/services/ai-backend-api.service.spec.ts`
 - `src/lib/core/contracts/ai-contract.generated.ts`
+- `praxis-config-starter/docs/ai/contracts/praxis-ai-api-contract-v1.1.openapi.yaml`
+- `praxis-config-starter/docs/ai/contracts/README.md`
+- `praxis-config-starter/tools/contracts/generate-ai-contract-bindings.js`
 - `src/lib/core/models/ai-models.ts`
 - `src/public-api.ts`
 - host provider setup for `API_URL` and `AI_BACKEND_*` tokens
@@ -46,6 +49,7 @@ When backend contract behavior is in scope, load the relevant config-starter ski
 - Resolve AI context base URL in this order: explicit `AI_BACKEND_ENDPOINTS.aiContextBaseUrl`, derived `API_URL.default.baseUrl + praxis/config/ai-context`, fallback `/api/praxis/config/ai-context`.
 - Do not hardcode external provider URLs in `@praxisui/ai`. Provider catalog, model listing, status, test calls, suggestions, patches, stream start/connect/cancel, observation feedback, and authoring manifest operations go through the Praxis Config boundary.
 - Preserve generated contract version and schema hash headers for patch/orchestrator contracts.
+- Treat `praxis-config-starter/docs/ai/contracts/praxis-ai-api-contract-v1.1.openapi.yaml` as the canonical AI HTTP/SSE contract source. Do not hand-edit `ai-contract.generated.ts` or Java contract constants; update the OpenAPI source, run `node tools/contracts/generate-ai-contract-bindings.js` from `praxis-config-starter`, and commit the generated Java/TypeScript outputs together.
 - Preserve tenant/user/env headers from `AI_BACKEND_STORAGE_OPTIONS`. Local identity fallback is for demos/local hosts and must be explicit.
 - Stream connections must respect `withCredentials`, access tokens, probe endpoints, and explicit headers. Fetch fallback is required when EventSource cannot carry needed headers.
 - Risk confirmation policy is contract-owned. Frontend can display and require confirmation, but should not downgrade risk locally.
@@ -83,6 +87,20 @@ Use focused checks:
 - generated AI contracts: contract generation/validator specs when schema changes
 - public exports: build `praxis-ai` and a direct consumer when `public-api.ts` changes
 - backend endpoint behavior: focused `praxis-config-starter` tests when backend contracts change
+
+For AI HTTP/SSE contract source, generated binding, schema hash, or retro-compatibility changes, use the backend contract gate:
+
+```sh
+mvn "-Dtest=AiApiContractOpenApiTest,AiContractSpecConsistencyTest,AiContractV11RetroCompatibilityTest" test
+```
+
+Then run the Angular generated-contract spec:
+
+```sh
+npm exec -- ng test praxis-ai --watch=false --progress=false \
+  --include='projects/praxis-ai/src/lib/core/contracts/ai-contract.generated.spec.ts' \
+  --include='projects/praxis-ai/src/lib/core/services/ai-backend-api.service.spec.ts'
+```
 
 State explicitly when no `praxis-config-starter`, public docs, examples, registry, or generated contract artifacts need updates.
 
