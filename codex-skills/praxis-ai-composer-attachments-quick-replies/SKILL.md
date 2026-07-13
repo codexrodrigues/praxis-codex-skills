@@ -9,23 +9,25 @@ The composer captures local interaction and renders backend-authored choices. It
 
 ## Owner Flow
 
-`PraxisAiAssistantShellComponent` owns accessible input, display, file/paste events, object-URL cleanup, optional voice UX, and emits typed actions. `assistant-quick-reply.utils` preserves a reply's canonical value and structured metadata. `PraxisAssistantTurnOrchestratorService` owns submit/clarification/edit/resend/retry/cancel state and stale-artifact reset. Backend contracts own semantic intent, canonical actions, decisions, risk, clarification authority, upload references, and apply authorization.
+`PraxisAiAssistantShellComponent` owns accessible input, display, file/paste events, object-URL cleanup, optional voice UX, and emits typed actions. `assistant-quick-reply.utils` preserves a reply's canonical value and structured metadata. `AgenticAuthoringTurnClientService` maps backend stream quick replies, pending clarification, preview, patch, diagnostics, and consultative catalog answers into shell turn results. `PraxisAssistantTurnOrchestratorService` owns submit/clarification/edit/resend/retry/cancel state and stale-artifact reset. Backend contracts own semantic intent, canonical actions, decisions, risk, clarification authority, upload references, and apply authorization.
 
 Read `projects/praxis-ai/AGENTS.md`, shell types/component, quick-reply utility, turn models/orchestrator, context snapshot models, speech service, and focused specs. Use `praxis-ai-turn-orchestration-transport` for turn/stream state and `praxis-ai-shell-session-context` for snapshots or serializable attachment summaries.
 
 ## Structured Continuations
 
+- Streamed quick replies are accepted only when they have stable `id` and `label`, then mapped into shell types with `kind`, `prompt`, description, icon/tone, `presentation`, `contextHints`, `canonicalAction`, `semanticDecision`, and `value`. Do not fabricate missing identity or infer a route from display text.
 - A quick reply preserves `id`, `value`, `rawValue`, `displayPrompt`, `contextHints`, `canonicalAction`, `semanticDecision`, description, and presentation. Clone structured objects before handing them between UI/turn state so later mutation cannot change a submitted continuation.
 - Its canonical submitted prompt is the nonempty string `value`, falling back to `prompt`; the visible label is only display text. Never route by label, translated copy, regex, aliases, `includes`, resource-path fragments, or hidden commands.
 - In clarification state call the canonical clarification path and preserve the pending clarification lineage. Outside it, submit a typed action carrying structured context. A free prompt must not inherit a quick reply's semantic decision.
-- Recommended intents are governed opportunities, not local permissions. They may open guidance or submit structured input, but preview/apply still requires backend semantic resolution and contract gates.
+- Recommended intents are governed opportunities, not local permissions. Their current action kinds are `submit-prompt`, `start-review`, `open-guidance`, or an explicit custom kind; preview/apply still requires backend semantic resolution and contract gates.
+- Consultative catalog answers may include quick replies without forcing clarification. Preserve the backend's consultative/clarification distinction instead of treating every quick-reply list as a required user decision.
 - Presentation helpers may format server-provided details, icons, tone, resource labels, and evidence. They cannot turn hints into authorization, canonical target selection, or a new semantic route.
 
 ## Attachments, Messages, And Voice
 
-- Shell attachments may temporarily hold `File` and owned `previewUrl` for local UX. Emit them to a host adapter; do not upload, persist, or put raw handles, bytes, base64, blob URLs, or file payloads into assistant context or backend turns.
+- Shell attachments may temporarily hold `File`, `source` (`paste`, `file-picker`, or `host`), `status`, and owned `previewUrl` for local UX. Emit them to a host adapter; do not upload, persist, or put raw handles, bytes, base64, blob URLs, or file payloads into assistant context or backend turns.
 - Backend-facing context uses only serializable safe summaries or a contract-owned upload reference. A new upload requirement belongs to the canonical backend/files contract, not a composer workaround.
-- Revoke owned preview URLs when attachments are removed or inputs change. Preserve host-owned URLs and do not revoke an URL still used by active attachments.
+- Image attachments created by paste or file picker receive an owned object URL. Revoke owned preview URLs when attachments are removed, detached, or the shell is destroyed. Preserve host-owned URLs and do not revoke an URL still used by active attachments.
 - Edit/resend branches from the selected user message and clears stale quick replies, preview, pending patch, diagnostics, clarification, and apply state before the replacement turn. Retry/cancel follow the orchestrator's same reset authority.
 - Feedback is write-only evidence linked to assistant/status/error observation IDs; it cannot mutate a semantic decision or applied result without backend acknowledgement.
 - Browser speech is explicit opt-in and local transcription convenience. Keep it disabled by default, append a valid transcript without auto-submitting, handle unsupported/permission/no-speech outcomes, and invalidate late captures through the capture sequence when mode changes or capture stops. Voice text still goes through normal backend semantic resolution.
