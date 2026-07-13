@@ -11,7 +11,7 @@ The composer captures local interaction and renders backend-authored choices. It
 
 `PraxisAiAssistantShellComponent` owns accessible input, display, file/paste events, object-URL cleanup, optional voice UX, and emits typed actions. `assistant-quick-reply.utils` preserves a reply's canonical value and structured metadata. `PraxisAssistantTurnOrchestratorService` owns submit/clarification/edit/resend/retry/cancel state and stale-artifact reset. Backend contracts own semantic intent, canonical actions, decisions, risk, clarification authority, upload references, and apply authorization.
 
-Read `projects/praxis-ai/AGENTS.md`, shell types/component, quick-reply utility, turn models/orchestrator, speech service, and focused specs. Use `praxis-ai-turn-orchestration-transport` for turn/stream state and `praxis-ai-shell-session-context` for snapshots or serializable attachment summaries.
+Read `projects/praxis-ai/AGENTS.md`, shell types/component, quick-reply utility, turn models/orchestrator, context snapshot models, speech service, and focused specs. Use `praxis-ai-turn-orchestration-transport` for turn/stream state and `praxis-ai-shell-session-context` for snapshots or serializable attachment summaries.
 
 ## Structured Continuations
 
@@ -41,10 +41,13 @@ Public shell/type changes require the AI build, direct consumer and local-AGENTS
 ```sh
 npm exec -- ng test praxis-ai --watch=false --progress=false \
   --include='projects/praxis-ai/src/lib/ui/assistant-shell/assistant-shell.component.spec.ts' \
+  --include='projects/praxis-ai/src/lib/core/models/assistant-context.models.spec.ts' \
   --include='projects/praxis-ai/src/lib/core/services/assistant-turn-orchestrator.service.spec.ts' \
   --include='projects/praxis-ai/src/lib/core/services/browser-speech-transcription.service.spec.ts'
 ```
 
-Exercise: structured clarification; direct prompt after clarification; edit/resend cleanup; pasted and selected attachment with preview cleanup; hostile label that must not route intent; stale speech transcript; and a requested upload with no contract that must be rejected/escalated.
+`assistant-context.models.spec.ts` is the focused proof that attachment summaries remain serializable, redact unsafe text, and drop raw `File`, blob/preview URL, runtime state, config payload, diagnostics, or pending patch details before entering assistant context.
+
+Exercise: structured clarification; direct prompt after clarification; edit/resend cleanup; pasted and selected attachment with preview cleanup; hostile label that must not route intent; stale speech transcript; serializable attachment summaries with no local file/blob leakage; and a requested upload with no contract that must be rejected/escalated.
 
 Use `praxis-ai-semantic-intent` for routing, `praxis-files-upload-backend-contract` for uploads, `praxis-ai-backend-config-contracts` for endpoint changes, and `praxis-angular-i18n-governance` for framework copy.
