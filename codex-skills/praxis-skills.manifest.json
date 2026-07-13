@@ -2641,8 +2641,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-angular-validation-gates"
                                         ],
-                       "skillMdSha256":  "E88640A0CA806B83D9A9913ED4E429CA988957938D6030E7EDD1464EFC2E238B",
-                       "treeSha256":  "F2A9A7ECCA5B1131D87E2CFBF4ABB4F9FC719FFEFB5B71BDC91A4BDE5C17CF6C"
+                       "skillMdSha256":  "41C65F418F68CD079A00E2CA2B4F57566DED469CA030F5F6187CA4A23FA5B738",
+                       "treeSha256":  "A8CABEA04C969609629BC4A79F53C305321D527D65AC93BFCA9F742E70845416"
                    }
                ]
 }
