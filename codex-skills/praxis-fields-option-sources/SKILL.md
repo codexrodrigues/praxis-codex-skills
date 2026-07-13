@@ -22,6 +22,11 @@ Do not route field intent through keywords such as "customer" or "status". Use t
 
 ## Required Inventory
 
+First resolve the Angular workspace root. In the platform monorepo the files may live under
+`praxis-ui-angular/projects/...`; in a standalone Angular checkout they may live directly under
+`projects/...`. Audit the active `praxis-ui-angular` workspace, not stale issue worktrees such as
+`praxis-ui-angular-issue*`, unless the user explicitly targets one of those worktrees.
+
 Before editing, inspect:
 
 - `src/lib/base/simple-base-select.component.ts`
@@ -58,6 +63,15 @@ Before editing, inspect:
 - `@praxisui/metadata-editor` cascade normalization skills when the editor authoring surface changes dependencies
 - backend `x-ui.optionSource` producer when the Angular runtime lacks required data
 
+When the platform monorepo is available, inspect the backend option-source contract docs before
+adding Angular fallbacks:
+
+- `praxis-metadata-starter/README.md`, especially the `/option-sources/{sourceKey}/options/filter`
+  and `/options/by-ids` checklist
+- `praxis-metadata-starter/docs/guides/OPTION-SOURCE-PROVIDER-SPI.md`
+- `praxis-metadata-starter/docs/concepts/ui-schema.md` when `dependsOn`,
+  `dependencyFilterMap`, or `x-ui.optionSource` publication changes
+
 ## Option Source Rules
 
 - Prefer `optionSource.key` plus `filterOptionSourceOptions(...)` over ad hoc endpoints when the backend publishes an option source.
@@ -66,6 +80,16 @@ Before editing, inspect:
 - Convert dependency criteria to lookup filters through the existing option-source filter pipeline; do not encode dependency routing with local text matching.
 - Honor `optionSource.includeIds`. Send `includeIds` in filter requests only when the contract allows it.
 - For selected-value hydration, prefer `getOptionSourceOptionsByIds(optionSource.key, ids, options)` for option sources and `getOptionsByIds(ids)` only for generic resource options.
+- For contextual selected-value reload, use the option-source by-ids endpoint with the same
+  structural filter context published by the backend. Do not rehydrate dependent selected IDs with
+  a generic unfiltered resource lookup when `selectedReloadPolicy` says context matters.
+- When the host `FilterDTO` has fields named `search`, `sort`, `filters`, or `includeIds`, use the
+  explicit option-source request envelope (`filter`, `filters`, `search`, `sort`, `includeIds`) so
+  structural resource filters do not collide with option-source execution metadata.
+- `byIds` responses should contain concrete options only; missing IDs are omitted, and runtime/UI
+  code must not manufacture `null` options as if the backend selected value still existed.
+- Preserve the requested ID order when displaying by-ids results. Backend and executor should already
+  normalize this, but Angular code should not reshuffle selected-value reloads by page/search order.
 - Presentation/read-only mode still needs selected display proof. Use by-ids/display resolver coverage; a working open panel does not prove saved values render after reopen.
 - Preserve `selectedReloadPolicy`, `invalidSortPolicy`, and backend waivers in UX/tooling claims. If by-ids reload is not supported, mark the scenario partial instead of pretending edit/reopen is fully supported.
 - Keep categorical buckets distinct: when the source is `CATEGORICAL_BUCKET`, default loading/search behavior may intentionally differ from free-text remote search.
@@ -111,3 +135,7 @@ Minimum focused checks:
 - Build/test the direct consumer when option-source normalization changes a public core contract.
 
 Always audit reopen/edit and presentation mode for selected values. A filter request that loads a page is not proof that a saved selected ID can be displayed later.
+
+For backend-aligned option-source work, include a negative check for fields named `search`, `sort`,
+`filters`, or `includeIds` and a by-ids check that verifies missing IDs are omitted and returned
+options preserve requested order.
