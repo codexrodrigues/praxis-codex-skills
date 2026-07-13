@@ -374,8 +374,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "2F0E669716567E6591A1D7828837549978F01994A03E7C6219BFFB9399BDF4C1",
-                       "treeSha256":  "B6E9E6A1E8C040234398CD8F44E924F489A3DA37F44B05AF72A85F00F648D0AE"
+                       "skillMdSha256":  "BA401F1882E49ED4D583242B1B5A1E637F1BEB863ADEBB3633560796E0FAC2BA",
+                       "treeSha256":  "C7C327A6021E3DE6DCD92480E76C1794BCEB1E1F95BBE190D8454EDE593601BA"
                    },
                    {
                        "name":  "praxis-ai-semantic-intent",
