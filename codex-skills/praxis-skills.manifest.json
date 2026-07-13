@@ -1320,8 +1320,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-fields-selection-lookup-controls"
                                         ],
-                       "skillMdSha256":  "FE82058FE08B6865DA01DF53BAD15F61928C9B7652FB3002D78AD91E80056A63",
-                       "treeSha256":  "83C8908D1952828B93E08060E9C736855D47744F00F75950C6754F9A371F8260"
+                       "skillMdSha256":  "0B17429E323E274F0B875E464F4FE069768E9A46844EA3411B38A51A4528222A",
+                       "treeSha256":  "308C99FC424BC988462FE2871890585673358654B2E2B8C2A1AE88657BF5F0EA"
                    },
                    {
                        "name":  "praxis-fields-runtime-loader",

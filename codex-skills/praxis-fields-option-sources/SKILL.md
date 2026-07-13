@@ -75,7 +75,9 @@ adding Angular fallbacks:
 ## Option Source Rules
 
 - Prefer `optionSource.key` plus `filterOptionSourceOptions(...)` over ad hoc endpoints when the backend publishes an option source.
-- Use `optionSource.resourcePath` or the canonical resource path to configure the CRUD service; do not invent local routes.
+- Treat `optionSource.filterEndpoint` and `optionSource.byIdsEndpoint`, when present in backend metadata, as execution evidence for the published contract. Angular code may route through `GenericCrudService`, but it must preserve the same source key, resource path, endpoint intent, and request envelope instead of synthesizing a different lookup route.
+- Use `optionSource.resourcePath` or the canonical resource path to configure the CRUD service; do not invent local routes or derive a path from label/value names.
+- If Angular can only execute a deterministic legacy route because old metadata lacks endpoint publication, mark the path as compatibility and keep a diagnostic or test proving that backend publication is the desired fix. Do not normalize missing endpoints into a new local convention.
 - Honor `optionSource.dependsOn` and `optionSource.dependencyFilterMap`. Legacy `dependencyFields` and `dependencyFilterMap` may be runtime/manual metadata, but canonical backend-driven flows should come from `optionSource`.
 - Convert dependency criteria to lookup filters through the existing option-source filter pipeline; do not encode dependency routing with local text matching.
 - Honor `optionSource.includeIds`. Send `includeIds` in filter requests only when the contract allows it.
@@ -83,6 +85,8 @@ adding Angular fallbacks:
 - For contextual selected-value reload, use the option-source by-ids endpoint with the same
   structural filter context published by the backend. Do not rehydrate dependent selected IDs with
   a generic unfiltered resource lookup when `selectedReloadPolicy` says context matters.
+- When `selectedReloadPolicy` is `required` or `supported`, by-ids is part of the canonical proof for reopen/edit/presentation mode. A failure in by-ids should surface as an option-source contract or execution diagnostic, not silently degrade to a broad `filter` request that can display stale or unauthorized labels.
+- When `selectedReloadPolicy` is `unsupported-with-waiver` or the source lacks `capabilities.byIds`, the UI may preserve already available object labels/local options, but must label the scenario partial and avoid claiming full edit/reopen support.
 - When the host `FilterDTO` has fields named `search`, `sort`, `filters`, or `includeIds`, use the
   explicit option-source request envelope (`filter`, `filters`, `search`, `sort`, `includeIds`) so
   structural resource filters do not collide with option-source execution metadata.
@@ -90,8 +94,10 @@ adding Angular fallbacks:
   code must not manufacture `null` options as if the backend selected value still existed.
 - Preserve the requested ID order when displaying by-ids results. Backend and executor should already
   normalize this, but Angular code should not reshuffle selected-value reloads by page/search order.
+- Preserve `entityKey`, `selectionPolicy`, `capabilities`, display property paths, status/disabled fields, and rich display fields when mapping backend lookup results to select/display DTOs. Those fields are governance evidence, not optional decoration for entity lookup.
 - Presentation/read-only mode still needs selected display proof. Use by-ids/display resolver coverage; a working open panel does not prove saved values render after reopen.
 - Preserve `selectedReloadPolicy`, `invalidSortPolicy`, and backend waivers in UX/tooling claims. If by-ids reload is not supported, mark the scenario partial instead of pretending edit/reopen is fully supported.
+- Respect `invalidSortPolicy`: with `reject`, do not send arbitrary UI sort keys or fallback to client-side resorting as if the backend had accepted the request; with `ignore` or `unsupported`, explain the degraded sort behavior in diagnostics/tooling.
 - Keep categorical buckets distinct: when the source is `CATEGORICAL_BUCKET`, default loading/search behavior may intentionally differ from free-text remote search.
 - Keep legacy top-level `valueField`, `displayField`, `dependencyFields`, and `dependencyFilterMap` as compatibility inputs only. Canonical backend-driven flows should normalize through `OptionSourceMetadata`, mapper/normalizer specs, and runtime option-source filters.
 - Do not infer `dependencyLoadOnChange`, reset policy, or reload policy from `dependsOn` unless the canonical contract declares it.
