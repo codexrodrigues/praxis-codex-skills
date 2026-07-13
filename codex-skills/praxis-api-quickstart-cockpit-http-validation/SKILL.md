@@ -75,6 +75,10 @@ The `verify-cockpit-*` scripts are read-only and derive their resource inventory
 - `verify-cockpit-option-source-contracts.sh`: `x-ui.optionSource` resolves to filter/by-ids endpoints and governed lookup behavior.
 - `verify-cockpit-structural-ui-contracts.sh`: list, filter, create, update, and detail schemas provide a coherent structural UI contract.
 
+For option-source evidence, distinguish reachability from full runtime semantics. `verify-cockpit-option-source-contracts.sh` discovers `x-ui.optionSource` in filtered schemas, normalizes named `/option-sources/{sourceKey}` routes against OpenAPI, executes filter endpoints with an empty payload, and checks by-ids shape for `RESOURCE_ENTITY` sources. That proves the published host exposes materializable lookup routes. It does not, by itself, prove a dependent lookup's mapped payload, selected-value reload policy, invalid-selection policy, ordering guarantees, provider-backed dependency execution, or domain-specific selectable/disabled semantics. For those, pair the Cockpit verifier with the focused quickstart tests named by `praxis-api-quickstart-domain-pilots` and `praxis-api-quickstart-operational-proof`.
+
+When documenting a published option-source result, preserve this boundary: say whether the evidence is read-only discovery/reachability, focused Java runtime proof, or a mutating governed materialization smoke. Do not let a green Cockpit verifier become permission to hand-code `dependencyFilterMap`, rehydration, or invalid-selection handling in Angular or Ergon consumers; those decisions must remain in the canonical backend descriptors/materializations.
+
 Run only the verifier for the changed semantic surface during development. For a release/published cut, run relevant scripts serially against the intended host. They can make many requests; do not run the full suite concurrently or mistake `429`/transport throttling for a schema defect. Wait for recovery, rerun the affected script serially, and record the status before deciding whether there is a platform gap.
 
 ### 3. Read-Only Domain Grounding And Authoring Evidence
@@ -139,6 +143,7 @@ Use the smallest reliable validation:
 | starter Cockpit hosting/build identity | `mvn "-Dtest=PraxisCockpitStarterConsumptionIntegrationTest,ActuatorInfoBuildContractIntegrationTest" test` |
 | inventory or Cockpit docs | `scripts/verify-cockpit-inventory-doc.sh` |
 | actions/surfaces/relationships/stats/options/structural UI | the corresponding single `scripts/verify-cockpit-*.sh` verifier |
+| option-source dependency, reload, or invalid-selection semantics | `scripts/verify-cockpit-option-source-contracts.sh` plus the focused quickstart option-source tests from `praxis-api-quickstart-domain-pilots` |
 | persisted domain context/authoring context | `scripts/verify-domain-catalog-context.sh` or `scripts/verify-domain-catalog-authoring-runtime.sh` against an approved scope |
 | rules, knowledge, or federation lifecycle | the specific mutating script in an isolated scope; use the config-starter focused suite for canonical implementation changes |
 | public release proof | focused serial verifier(s), `/actuator/info`, and the relevant published evidence only after local proof is green |
