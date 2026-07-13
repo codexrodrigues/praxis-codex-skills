@@ -66,6 +66,12 @@ Concrete `@praxisui/core` files to inspect for layout ownership and schema mater
 - Use `getFormColumnFieldNames(...)`/layout item helpers instead of reading `column.fields` directly when code must understand current field order.
 - Surface materialization can project read data into Dynamic Form `initialValue` and a transient schema `layoutPolicy`; that is runtime materialization, not authored local `FormConfig.sections`.
 - Dynamic widget loading must pass `layoutPolicy` and related runtime inputs through to Dynamic Form instead of flattening them into host-specific config.
+- "Add API field" means place an existing `fieldMetadata[].name` into canonical `items[]`
+  (`kind: "field"`) and preserve `fieldMetadata[]`. It is not permission to create DTO/schema
+  fields, clone metadata, or patch backend semantics from the canvas.
+- Local fields are a separate authoring path and must carry safe local semantics such as
+  `source: "local"`, `transient: true`, and `submitPolicy: "omit"` unless a submit contract
+  explicitly owns them. Do not use a local field to stand in for missing backend metadata.
 
 Do not represent visual guidance as local fields, transient fields, DTO fields, or backend metadata unless it is genuinely domain data.
 
@@ -81,6 +87,10 @@ Treat schema-driven layout as opt-in and explicit:
 - non-layout config, such as actions, messages, hooks, behavior, submit behavior, and hints, can still come from authored config.
 - `DynamicFormLayoutPolicy.schemaType` and `schemaOperation` must agree with the schema URL when declared. Detail/read-only surfaces use response schema; create/edit command surfaces use request schema.
 - `SurfaceOpenMaterializerService` may default read projections to `compactPresentation` + `schemaType: "response"` and related command forms to `groupedCommand` + `schemaType: "request"`. Fix this materializer or discovery metadata before copying local sections into consumers.
+- With `layoutPolicy.source="schema"` and `persistence="transient"`, generated sections, rows,
+  columns, `items[]`, spans, and section order are runtime projections. Opening the editor or
+  Settings Panel must not convert them into authored config unless an explicit detach/authorable
+  flow is chosen.
 
 Classify repeated local section configs as `ja-suportado-mal-nomeado-ou-mal-materializado` or `suportado-parcialmente` before proposing backend metadata changes. The backend may already publish `group`, `order`, `width`, labels, help text, read-only hints, and presentation metadata.
 
@@ -101,6 +111,10 @@ Only `lacuna-real-de-contrato` justifies a new public layout contract. Otherwise
 - When schema owns layout, generated sections are transient. Do not persist generated schema sections back into authored config unless the product explicitly supports an authoring conversion flow.
 - When authored config owns layout, schema metadata can enrich labels, help, width, group, and read-only hints, but it must not silently overwrite authored structure.
 - For Ergon or other migration consumers, treat repeated hand-authored sections as transitional debt when DTO/schema metadata can own grouping/order. Document consumer work separately instead of hardcoding Ergon-specific shortcuts into Praxis.
+- For Ergon-style operational screens, prefer schema-owned grouping/order/width for scalable
+  detail and command surfaces. If the layout only looks correct after local sections, local labels,
+  duplicated visual seeds, or fake hidden fields, route the gap to metadata/schema materialization
+  or consumer follow-up instead of institutionalizing that screen as a Praxis layout pattern.
 
 ## Validation
 
