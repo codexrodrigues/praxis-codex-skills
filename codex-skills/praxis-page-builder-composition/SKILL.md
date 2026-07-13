@@ -69,6 +69,14 @@ For nested widgets, preserve `nestedPath` and terminal child widget identity. Do
 For palette work, derive entries from `ComponentMetadataRegistry` and `ComponentDocMeta`. `ComponentDocMeta.configEditor`, actions, commands, insertion presets, tags, icon, and descriptions are owned by the component metadata source, not by a Page Builder hardcoded list.
 
 For surface handoff, prefer shared `GlobalActionRef`, `SurfaceOpenPayload`, `surface.result`, and `dynamicPage.composition.dispatch` paths from core. Do not encode open/edit/select behavior as string commands in page-builder links.
+`surface.open` should be authored as a `global-action` endpoint with structured `ref` payload,
+`payloadExpr`, or `meta` when needed. Row selections, drawer results, and returned surface payloads
+should re-enter the page through canonical composition/state/action paths such as `surface.result` or
+`dynamicPage.composition.dispatch`; do not persist runtime drawer envelopes, `result$` values, or
+selection payload snapshots into `definition.inputs` as a shortcut.
+When a `surface.open` flow writes back into page state or another component, validate it like any
+other composition link, including feedback-cycle diagnostics and guards. A drawer result is runtime
+event data, not proof that the target widget's config/input document should be mutated.
 
 For runtime observations, preserve the trust boundary: observations can explain selected widgets, visible runtime state, component ids, resource refs, and diagnostics, but they must remain serializable and redacted before being sent into agentic authoring.
 
