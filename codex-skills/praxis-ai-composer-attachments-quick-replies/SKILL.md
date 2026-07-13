@@ -22,6 +22,13 @@ Read `projects/praxis-ai/AGENTS.md`, shell types/component, quick-reply utility,
 - Recommended intents are governed opportunities, not local permissions. Their current action kinds are `submit-prompt`, `start-review`, `open-guidance`, or an explicit custom kind; preview/apply still requires backend semantic resolution and contract gates.
 - Consultative catalog answers may include quick replies without forcing clarification. Preserve the backend's consultative/clarification distinction instead of treating every quick-reply list as a required user decision.
 - Presentation helpers may format server-provided details, icons, tone, resource labels, and evidence. They cannot turn hints into authorization, canonical target selection, or a new semantic route.
+- Prefer `presentation.kind`, `canonicalAction`, `semanticDecision`, `value`, and explicit `contextHints`
+  when classifying quick-reply UX. Any residual `id`/`label`/`prompt` matching must remain a display-only
+  compatibility fallback for icon, tone, badge, chip, or description, never the source of continuation intent,
+  selected resource, capability, apply authority, or backend route.
+- `displayPrompt` is conversation copy only. The canonical continuation is the structured action plus the
+  submitted `value`/`prompt`; do not persist or replay `displayPrompt`, label text, ARIA text, or tooltip details
+  as semantic evidence in history, context snapshots, or a later turn.
 
 ## Attachments, Messages, And Voice
 
