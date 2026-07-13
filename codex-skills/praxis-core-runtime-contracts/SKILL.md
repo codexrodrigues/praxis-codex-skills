@@ -14,9 +14,11 @@ This skill is about the Angular runtime contract. It does not make Angular the s
 Before changing a core-facing skill or implementation, inspect the real source for the affected area:
 
 - `projects/praxis-core/AGENTS.md`
+- `projects/praxis-core/README.md` when package usage, setup, public contracts, or consumer guidance changes
 - `projects/praxis-core/src/public-api.ts`
 - `projects/praxis-core/docs/schema-flow.md` when schema or metadata flow changes
 - `projects/praxis-core/docs/connection-editor.md` when connection, widget wiring, or actions change
+- `projects/praxis-core/docs/rfc-dynamic-page-canvas-runtime.md` when dynamic page runtime, `WidgetDefinition`, dynamic widget loading, or page composition contracts change
 - `projects/praxis-core/src/lib/models/**`
 - `projects/praxis-core/src/lib/services/**`
 - `projects/praxis-core/src/lib/tokens/**`
@@ -79,6 +81,48 @@ Prefer the smallest reliable validation:
 - exported contract or public API change: `npm run build:praxis-core` plus at least one consumer build/test
 - schema flow, `GenericCrudService`, resource discovery, global actions, i18n, logging, or widgets: treat as transversal and include focused consumer specs
 - AI contract/manifest change: validate the relevant manifest spec and registry ingestion when applicable
+
+Use concrete focused gates from `praxis-ui-angular` before broadening:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/generic-crud.service.spec.ts --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts
+```
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/config-storage.service.spec.ts --include=projects/praxis-core/src/lib/services/global-action.service.spec.ts --include=projects/praxis-core/src/lib/actions/global-action-ref.utils.spec.ts
+```
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/i18n/i18n.service.spec.ts --include=projects/praxis-core/src/lib/i18n/resource-discovery.i18n.spec.ts --include=projects/praxis-core/src/lib/i18n/value-presentation.resolver.spec.ts
+```
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/logging/logger.service.spec.ts --include=projects/praxis-core/src/lib/logging/provide-praxis-logging.spec.ts --include=projects/praxis-core/src/lib/logging/praxis-global-error-handler.spec.ts
+```
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/reconcilers/filter-config-reconciler.spec.ts --include=projects/praxis-core/src/lib/reconcilers/form-config-reconciler.spec.ts --include=projects/praxis-core/src/lib/services/table-config-reconciler.spec.ts
+```
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/component-metadata-registry.service.spec.ts --include=projects/praxis-core/src/lib/services/runtime-component-observation-registry.service.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page-record-surface-open.spec.ts
+```
+
+For root barrel, exported model, token, provider, or shared service changes, run:
+
+```sh
+npm run build:praxis-core
+```
+
+Then validate at least one direct consumer that imports the changed contract, commonly:
+
+```sh
+npm run build:praxis-dynamic-form
+npm run build:praxis-table
+npm run build:praxis-dynamic-fields
+```
+
+Pick the consumer by actual imports rather than running all builds reflexively. If the change touches table-facing contracts, `npm run test:table` is the usual first consumer test gate.
 
 If PowerShell audit scripts are unavailable, use the repository Python fallbacks:
 `python3 scripts/audit-praxis-skills.py --family praxis` for manifest/hash drift,
