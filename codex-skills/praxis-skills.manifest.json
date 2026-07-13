@@ -2503,8 +2503,8 @@
                                             "praxis-metadata-domain-option-sources",
                                             "praxis-config-domain-decisions"
                                         ],
-                       "skillMdSha256":  "2D15E0139CEDF331A9D34F7798601E7E12FE37D413A3858981CFBE64477CDC63",
-                       "treeSha256":  "4D188830D7B1EF7E934B08D8975FC400BF97635ED47911A57D4382EAD6F308DF"
+                       "skillMdSha256":  "6D197F43722EFEB6D0222831CF15E4DEA66C8EDB0963CF1E58FF4A630B716111",
+                       "treeSha256":  "84CEFA668D0FD219E3CAF6A6BD4B08E4D2D8742FE4E64E1C22619463E86EEE68"
                    },
                    {
                        "name":  "praxis-api-quickstart-cockpit-http-validation",
