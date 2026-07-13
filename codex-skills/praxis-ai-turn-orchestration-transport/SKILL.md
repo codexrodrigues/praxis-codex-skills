@@ -68,10 +68,12 @@ The canonical authoring-turn API is start, stream, probe, and cancel beneath `/a
 
 - Validate received payloads at runtime before materializing them. Invalid JSON, wrong schema version/type, malformed envelope, and transport failures are transport/schema failures, not semantic assistant answers.
 - Only `result`, `error`, and `cancelled` are terminal. `status`, `thought.step`, `heartbeat`, and `intent.resolved` are progress/evidence; they can update phase, status, or diagnostics but cannot authorize apply or complete the turn.
+- `heartbeat` is out-of-band liveness evidence. It may have no `eventId` and may carry `seq=-1`; do not treat it as a persisted cursor, execution step, semantic phase, or proof that a tool ran. It may reset idle timers and update transient diagnostics/status only.
+- Preserve backend `streamEventDiagnostics` from progress, heartbeat, and replayed envelopes inside structured diagnostics. Consumers should group by `dedupeKey` or `eventUniquenessKey` and respect `technicalDuplicate`, `replaySafe`, and `duplicatesDoNotIndicateExecution` instead of counting repeated phases as additional work.
 - On a terminal event, complete the observable and close EventSource or abort fetch. Never append a late event after terminal completion.
 - Use EventSource with credentialed cookies when no explicit headers are required. Its stream path performs the canonical probe before connecting. Use the fetch SSE fallback when explicit headers are required or EventSource is unavailable; preserve cancellation through `AbortController` and do not claim that the EventSource probe ran on that fallback path.
 - The fetch SSE fallback must parse the same generated envelope and preserve the same terminal semantics as EventSource. Its lifecycle diagnostics should identify `transport=fetch`; absence of probe evidence on this path is expected, not a failed probe.
-- Surface lifecycle evidence such as probe readiness, transport opening, and first event as non-terminal diagnostics. Apply silence, result, and whole-turn timeouts as recoverable transport failures; do not fabricate a backend result.
+- Surface lifecycle evidence such as probe readiness, transport opening, and first event as non-terminal diagnostics. If the first event is a heartbeat, `firstEventSeq=-1` is a liveness marker, not replay position. Apply silence, result, and whole-turn timeouts as recoverable transport failures; do not fabricate a backend result.
 - `Last-Event-ID`, access token, tenant/user/environment headers, and normalized session/client IDs are backend contract/security inputs. Do not invent alternate query parameters, origins, or unauthenticated reconnect paths.
 
 ## Prohibited Shortcuts
