@@ -822,8 +822,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "84236F5F0E3212496BD4D345BF020A59607795A3CB95EBB11A129FFAB19E2C44",
-                       "treeSha256":  "86D7C406A48E378624A29E95D1DFE389F4F6A5731A8ECF95ED2765DEDAEE9D6A"
+                       "skillMdSha256":  "9C6BC9B2927DB76CA527231EF7DA407687A39640B22134160CAA0851585F4FE9",
+                       "treeSha256":  "47E4760D0D16361E604A35D00ABCDC63BAE0A4328EEDA43301E92E61273E2BAA"
                    },
                    {
                        "name":  "praxis-core-resource-runtime",
