@@ -2445,8 +2445,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "9F17C1063920EADB40B1C616AFAC69F4BFC73D2B69C56F46F87DE209BA7E346A",
-                       "treeSha256":  "FE93DAF22E5CBC9645B51BE8006CA7FF73BAABC252DF788473BEB9B861D10102"
+                       "skillMdSha256":  "AA4D526379A250C1FA55970DC327D44DE00184E4053682E61A6F9E1A8650DD49",
+                       "treeSha256":  "E6E4EA4653A3425AFEA987D0EE0EEE58BDA1F472F5AB66C5F76F225BBC455E53"
                    },
                    {
                        "name":  "praxis-api-quickstart-operational-proof",

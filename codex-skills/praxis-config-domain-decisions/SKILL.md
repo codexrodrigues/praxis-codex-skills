@@ -29,6 +29,10 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/service/DomainFederationIngestPersistenceService.java`
 - `src/main/java/org/praxisplatform/config/service/DomainFederationReleaseService.java`
 - `src/main/java/org/praxisplatform/config/service/RagProjectKnowledgeDerivedIndexService.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringSemanticDecisionPolicy.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringSemanticMaterializationPolicy.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringDomainCatalogCandidateEnhancer.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringDomainCatalogHints.java`
 - `src/main/java/org/praxisplatform/config/domain/DomainRuleDefinition.java`
 - `src/main/java/org/praxisplatform/config/domain/DomainRuleMaterialization.java`
 - `src/main/java/org/praxisplatform/config/domain/DomainKnowledgeChangeSet.java`
@@ -102,6 +106,7 @@ Use only canonical status endpoints. Definition transitions allow review paths i
 - Status transitions are directional; use the canonical transition endpoints and never mutate status fields or projection records directly.
 - Domain Knowledge apply is separate from approval and must validate scope, validation result, lifecycle, and evidence state.
 - Project Knowledge used in authoring is derived from governed active evidence, not raw prompts or stale chat history.
+- Agentic semantic decision/materialization policies are the boundary that prevents prompts, context hints, or weak candidates from becoming executable domain/materialization decisions. Preserve tests that distinguish consultative API/domain catalog answers, governed exploration, resource-choice clarification, explicit materialization, and dashboard/chart/table classification before allowing preview/apply.
 
 ## No Keyword Routing
 
@@ -123,6 +128,8 @@ Only real gaps justify new decision contracts. Identify which UX/behavior cannot
 Use focused local gates:
 
 - domain rules: `mvn "-Dtest=DomainRuleControllerTest,DomainRuleServiceTest,DomainRuleMigrationConstraintTest" test`
+- agentic semantic decisions and domain catalog grounding:
+  `mvn "-Dtest=AgenticAuthoringSemanticDecisionPolicyTest,AgenticAuthoringDomainCatalogCandidateEnhancerTest,AgenticAuthoringDomainCatalogHintsTest" test`
 - domain knowledge and derived Project Knowledge indexing:
   `mvn "-Dtest=DomainKnowledgeChangeSetControllerTest,DomainKnowledgeChangeSetServiceTest,DomainKnowledgeChangeSetValidatorTest,DomainKnowledgeEntityLifecycleTest,DomainKnowledgeProjectionServiceTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
 - catalog/federation read, policy, ingest, releases, activation, and 360 projection:
