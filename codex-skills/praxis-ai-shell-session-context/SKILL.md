@@ -17,7 +17,7 @@ Use this skill for the canonical Angular assistant context and session surfaces.
 | assistant shell, dock, and session host | accessible presentation and interaction over normalized state; no backend policy or primary intent routing |
 | `praxis-config-starter` | provider execution, semantic intent, authorization, persisted AI configuration, tool evidence, and apply policy |
 
-Read `projects/praxis-ai/AGENTS.md`, workspace governance, and `codex-rules.md` before editing. Read the producer's local AGENTS, manifest, adapter, README, and focused specs when the change starts outside `@praxisui/ai`.
+Read `projects/praxis-ai/AGENTS.md`, workspace governance, `codex-rules.md`, `src/public-api.ts`, `README.md`, and the focused context/session/shell specs before editing. Read the producer's local AGENTS, manifest, adapter, README, and focused specs when the change starts outside `@praxisui/ai`.
 
 ## Snapshot Is The Only Context Envelope
 
@@ -57,7 +57,7 @@ Use `PraxisAssistantSessionRegistryService` rather than host-local arrays, servi
 
 For `transversal`, `arquitetural`, or `contrato-publico` work, map the snapshot owner, session/shell consumers, backend/config effects, public exports, manifests/registry, docs/recipes/playgrounds, data sensitivity, and breaking risk before editing.
 
-- Snapshot/model or public export change: review `src/public-api.ts`, direct consumers, docs, generated AI artifacts, and backend contract implications with `praxis-angular-public-api-governance`.
+- Snapshot/model or public export change: review `src/public-api.ts`, `README.md`, direct consumers, docs, generated AI artifacts, and backend contract implications with `praxis-angular-public-api-governance`.
 - Producer/manifest change: use `praxis-ai-authoring-manifests` and `praxis-ai-registry-ingestion`; a manifest/registry should refer to canonical evidence rather than copy it into UI state.
 - Turn, quick-reply, clarification, or backend context change: use `praxis-ai-turn-orchestration-transport`, `praxis-ai-composer-attachments-quick-replies`, and the config streaming skill.
 - UI-only layout or accessibility change: retain the same snapshot and registry ownership; validate the actual shell/dock/host surface and state explicitly why public docs or registry output is unchanged.
@@ -75,7 +75,7 @@ npm exec -- ng test praxis-ai --watch=false --progress=false \
   --include='projects/praxis-ai/src/lib/ui/assistant-shell/assistant-shell.component.spec.ts'
 ```
 
-Exercise normal context session creation; sensitive/raw input redaction; missing or mismatched identity; active-to-minimized transition; origin-anchor filtering; structured action/quick-reply rendering; and a hostile label or context hint that must not create authority. Public API changes also require an AI library build, a direct consumer, and the local-AGENTS E2E evidence. State when docs, examples, manifests, or registry artifacts are unaffected.
+Exercise normal context session creation; sensitive/raw input redaction; missing or mismatched identity; active-to-minimized transition; origin-anchor filtering; structured action/quick-reply rendering; public export/README alignment for consumed shell/session/context APIs; and a hostile label or context hint that must not create authority. Public API changes also require an AI library build, a direct consumer, and the local-AGENTS E2E evidence. State when docs, examples, manifests, or registry artifacts are unaffected.
 
 ## Companion Skills
 
