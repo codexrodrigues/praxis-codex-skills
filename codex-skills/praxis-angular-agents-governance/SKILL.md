@@ -72,6 +72,7 @@ A missing `AGENTS.md` is a governance gap, not automatically a new runtime or me
 - Praxis Angular is a runtime and cockpit for AI-authored semantic decisions; it does not become the primary source of business rules.
 - Before proposing a contract, inventory existing metadata, schemas, `x-ui`, surfaces, actions, capabilities, option sources, registries, manifests, editor state, diagnostics, previews, and runtime adapters. Correct canonical materialization before adding parallel UI state.
 - User intent is semantically resolved by AI/LLM with governed grounding. Keyword or regex matching can only assist after a canonical scope has been resolved; it cannot decide primary intent.
+- Angular assistant, agent, builder, editor, or quick-reply code may materialize `semanticDecision`, `contextHints`, manifests, selected candidates, and backend quick replies; it must not downgrade those returned structures into prompt text, labels, local aliases, or component-specific command strings. When the change touches consult/edit routing, quick replies, clarification options, agentic turns, candidate selection, preview/apply enablement, or repair/retry UX, load `praxis-ai-semantic-intent` and preserve backend provenance before changing the Angular consumer.
 - Keep root `public-api.ts` intentional. Do not create a transitively exported facade for another public library; use `praxis-angular-public-api-governance` for cross-lib edges and direct-consumer proof.
 - Framework-owned text follows `PraxisI18nService` and the owning locale catalogs; schema and host business copy remain external. Use `praxis-angular-i18n-governance` for catalog and hardcoded-chrome work.
 - Runtime/config changes must be checked against their canonical visual authoring round-trip. For fields, include editorial discovery and tooling coverage, not just runtime rendering.
@@ -101,6 +102,7 @@ Use the affected local `AGENTS.md` first, then select the narrowest command with
 - config, editors, Settings Panel, or field discovery: `praxis-authoring-editors` and the actual runtime-to-editor round trip;
 - docs, examples, playgrounds, registries, or site routes: `praxis-angular-docs-playgrounds`;
 - AI manifest, catalog, ingestion, generated AI docs, or backend sync: `praxis-ai-registry-ingestion` and `tools/ai-registry/AGENTS.md`.
+- assistant intent, quick replies, clarifications, turn transport, preview/apply enablement, or agentic repair UX: `praxis-ai-semantic-intent`, `praxis-ai-composer-attachments-quick-replies`, and the relevant transport/runtime skill before treating the issue as local Angular governance.
 
 For a skills-only change, update `codex-skills/`, its manifest hashes/dependencies, and generated issue draft; run `python3 scripts/preflight-python-fallbacks.py`, `python3 scripts/audit-praxis-skills.py --family praxis`, `git diff --check`, then `python3 scripts/sync-praxis-skills.py --family praxis --force` and re-audit. State exact validation and omissions.
 
