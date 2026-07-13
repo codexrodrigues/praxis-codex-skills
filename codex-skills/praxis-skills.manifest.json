@@ -1759,8 +1759,8 @@
                                             "praxis-ai-authoring-manifests",
                                             "praxis-ai-registry-ingestion"
                                         ],
-                       "skillMdSha256":  "EFAE4DA804942A7C00601CABB533C9AC120D9E78781C816CFC27E4472A8DC264",
-                       "treeSha256":  "68727EE90DD18E46D9398C378D1B3C96201AFDCF57F7F90C331E4C5B8803DEB4"
+                       "skillMdSha256":  "F28181F0E8D774D4B78C45797C637DD453E4888CD45DD1D6B1E71FFF016A6BC9",
+                       "treeSha256":  "24C5239CBF056E5AE0398D2376E35739FDB0C0376F10C7DED81137732EC1B577"
                    },
                    {
                        "name":  "praxis-metadata-editor-cascade-normalization",
