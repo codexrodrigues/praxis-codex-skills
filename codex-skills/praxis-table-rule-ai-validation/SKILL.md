@@ -41,6 +41,7 @@ It does not own table columns, datasource, renderer placement, table ordering, `
 - Require confirmation for destructive `rule.remove` and `effect.remove`.
 - Preserve validators, affected paths, submission impact, preconditions, and failure modes when adding operations.
 - Do not persist a local `ruleEffects.rules` tree as the canonical table config. Visual effect payloads must become `RuleEffectDefinition` or delegated table authoring operations.
+- Treat `visual-only`, preview classes/styles, `RuleEffectDefinition`, and `columns[].conditionalRenderers` materialization as table presentation evidence, not as canonical business policy. If an effect is unsupported, unsafe, preview-only, or cannot compile through the registry/runtime mapping, fail closed with diagnostics or delegate to the owning surface; do not convert the visual rule into `domain-rules`, `backend_validation`, row authorization, or a local table-specific policy engine.
 
 ## Validation Rules
 
