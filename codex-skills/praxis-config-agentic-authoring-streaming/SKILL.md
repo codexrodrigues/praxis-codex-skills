@@ -132,6 +132,13 @@ Preserve these invariants:
 - `status`, `thought.step`, tool progress, and `intent.resolved` are non-terminal and replay-safe.
 - Only persisted `result`, `error`, or `cancelled` events terminate the turn. Heartbeats are transient
   liveness signals and cannot advance the persisted cursor.
+- `heartbeat` is out-of-band keep-alive: it may use `seq=-1` and no `eventId`, derives `phase` and
+  user-facing `summary` from the latest known event, and must not be counted as execution evidence.
+- Long-running progress is persisted as `status` from the backend processing watchdog only when the
+  observed tail is still latest. Preserve `streamEventDiagnostics` (`schemaVersion`,
+  `dedupeKey`, `eventUniquenessKey`, `technicalDuplicate`, `replaySafe`,
+  `duplicatesDoNotIndicateExecution`) so clients can group technical duplicates without inferring
+  extra tool calls or semantic phases.
 - `Last-Event-ID` replays only later events from the same stream and authorized principal scope.
 - Ownership includes tenant, user, environment, thread, and turn. Cookie and signed-URL token modes
   must enforce the same scope on connect, probe, cancel, and replay.
