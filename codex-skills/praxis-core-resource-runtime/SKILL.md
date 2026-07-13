@@ -15,6 +15,8 @@ When a backend contract is missing, contradictory, or weakly materialized, load 
 
 Inspect the affected source before changing guidance or code:
 
+- `projects/praxis-core/AGENTS.md`
+- `projects/praxis-core/src/public-api.ts` when resource runtime models, services, components, tokens, or helpers are exported or public consumption changes
 - `projects/praxis-core/src/lib/services/generic-crud.service.ts`
 - `projects/praxis-core/src/lib/schema/schema-metadata-client.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.ts`
@@ -67,14 +69,45 @@ Do not route user intent, action selection, surface opening, tab selection, look
 
 Use focused specs for the touched service or model:
 
-- resource discovery: `resource-discovery.service.spec.ts`
-- schema metadata: `schema-metadata-client.spec.ts` and schema normalizer specs
-- record identity: `resource-identity.model.spec.ts`, `resource-identity.component.spec.ts`, `generic-crud.service.spec.ts`, and the Table event spec that proves `resourceIdentity` propagation
-- actions/surfaces: action/surface adapter and materializer specs
-- CRUD operation resolution: `crud-operation-resolution.service.spec.ts`
-- related resources: resolver and outlet specs
-- analytics: analytics schema/request builder specs
-- option sources: option-source model and `GenericCrudService` option tests
+- resource discovery, schema metadata, and schema normalization:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/schema/schema-metadata-client.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer-array.service.spec.ts
+```
+
+- CRUD runtime, option sources, and selected-value rehydration:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/generic-crud.service.spec.ts --include=projects/praxis-core/src/lib/models/option-source.model.spec.ts
+```
+
+- record identity and list/detail continuity:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/models/resource-identity.model.spec.ts --include=projects/praxis-core/src/lib/components/resource-identity/resource-identity.component.spec.ts --include=projects/praxis-core/src/lib/services/generic-crud.service.spec.ts
+```
+
+```sh
+npm run test:table -- --include=projects/praxis-table/src/lib/praxis-table.events.spec.ts
+```
+
+- action/surface opening, related resources, and outlet registration:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-action-open-adapter.service.spec.ts --include=projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.spec.ts --include=projects/praxis-core/src/lib/services/surface-open-materializer.service.spec.ts --include=projects/praxis-core/src/lib/services/related-resource-surface-resolver.service.spec.ts --include=projects/praxis-core/src/lib/services/surface-outlet-registry.service.spec.ts
+```
+
+- CRUD operation resolution:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/crud-operation-resolution.service.spec.ts
+```
+
+- analytics schema and stats request materialization:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/analytics-schema-contract.service.spec.ts --include=projects/praxis-core/src/lib/services/analytics-stats-request-builder.service.spec.ts
+```
 
 For public or cross-lib changes, also validate a direct consumer such as table, CRUD, dynamic-form, list, or charts.
 
