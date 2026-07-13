@@ -32,6 +32,18 @@ For dynamic-fields subdomains, route further to `praxis-fields-inline-overlay-ru
 `praxis-fields-control-profile-ai` before changing metadata-editor coverage, Settings Panel
 authoring, or generated docs for those controls.
 
+When the editor is a consumer of `@praxisui/dynamic-fields`, first determine whether the gap is
+runtime/discovery/profile/canvas ownership or only editor materialization:
+
+- runtime/registry/selector gaps belong to `praxis-fields-runtime-loader`;
+- descriptor/catalog/discovery gaps belong to `praxis-fields-editorial-discovery`;
+- profile/capability/AI authoring gaps belong to `praxis-fields-control-profile-ai`;
+- AI/canvas/registry-ingestion evidence gaps belong to `praxis-fields-ai-canvas-validation`;
+- metadata-editor visual renderer/property coverage belongs to `praxis-metadata-editor-renderer-coverage`.
+
+Only change an authoring editor after the owning dynamic-fields layer is correct. Do not add a
+consumer-local list, alias map, or JSON fallback to compensate for missing package-owned coverage.
+
 This skill is not a generic frontend-design workflow. For Praxis, the canonical contract and the authoring round-trip matter more than local UI polish. The main question is not "can the user edit it?" but "does the editor express the canonical document correctly, persist it correctly, and survive reopen/reset without drift?"
 
 Before changing this skill or implementing an authoring editor, inspect the current source for the
@@ -66,6 +78,23 @@ Use the real component family of the task, not a generic "editor changed" label.
 - `@praxisui/visual-builder`: visual rule graph, JSON Logic round-trip, schemas/context/templates, property effects, collection validators, and AI authoring manifest
 
 If the problem is structural and spans several editors, bias toward the canonical lib contract instead of patching a consumer editor locally.
+
+For `@praxisui/metadata-editor` as a dynamic-fields consumer, audit these concrete surfaces before
+patching local editor code:
+
+- `components/field-metadata-editor/field-metadata-editor.component.ts`
+- `components/dynamic-editor-renderer/dynamic-editor-renderer.component.ts`
+- `config/inline-filter-control-properties.map.ts`
+- `config/inline-editor-coverage.spec.ts`
+- the affected `config/*.config.ts` file
+- `services/schema-normalizer.service.ts`
+- `services/dynamic-form-factory.service.ts`
+- `registry/config-registry.service.ts`
+- related metadata-editor AI manifest/context-pack files when the change is AI-authorable
+
+The editor may keep advanced JSON fields for genuinely structured or legacy escape-hatch values,
+but JSON-only coverage is not enough when the platform already exposes canonical property editors,
+catalog entries, AI profiles, or metadata-editor config arrays for that control family.
 
 ## Canonical Goal
 
@@ -110,6 +139,15 @@ For `@praxisui/dynamic-form` field metadata, local/transient submit semantics ar
   operations, component capabilities, and config editor specs aligned. The visual editor is not a
   substitute for the manifest, and the manifest is not proof that the visual round-trip works.
 - `@praxisui/metadata-editor` owns structural metadata authoring concerns such as dynamic renderer coverage, schema normalization, contextual hints, and cascade flows.
+- `@praxisui/metadata-editor` is a consumer of dynamic-fields control semantics, not the source of truth
+  for package-owned `FieldControlType`, selector mappings, runtime registration, editorial descriptors,
+  catalog entries, or AI profiles. Its local `config/*.config.ts` arrays should materialize canonical
+  properties and preserve round-trip, while the owning dynamic-fields/core layer owns the semantic
+  identity.
+- Inline filter editor coverage must stay aligned with `INLINE_FILTER_CONTROL_TYPE_VALUES` and
+  `INLINE_FILTER_EDITOR_PROPERTIES_BY_CONTROL_TYPE`. Unknown inline aliases should not cause the editor
+  to invent a config; they should resolve through the canonical inline map or remain unsupported until
+  the owning dynamic-fields/core layer is fixed.
 - For option-source cascades, treat `x-ui.optionSource.dependsOn` and `x-ui.optionSource.dependencyFilterMap` as the canonical backend/editor shape, and `dependencyFields`/`dependencyFilterMap` as runtime/manual metadata. Do not silently migrate persistence between those shapes unless the task explicitly includes an authoring migration; a form cascade editor may hydrate from the canonical shape while preserving its existing save contract.
 - For global app actions in authored configs, the canonical persisted shape is `globalAction: { actionId, payload?, payloadExpr?, meta? }` and execution goes through `GlobalActionService.executeRef(...)`. Keep `action` for local component/host events only. Do not persist or reintroduce command strings such as `showAlert:...`, `openUrl:...`, `navigate:...`, `apiCall:...`, or `surface.open:{...}`.
 - When visual authoring edits a `globalAction` payload, reuse the canonical `GlobalActionUiSchema`/`getGlobalActionUiSchema(...)` field model and shared global-action authoring helpers where available. Do not leave required payloads as JSON-only fields when the platform already exposes structured fields such as `dialog.alert.message`; the editor may keep an advanced JSON escape hatch, but the primary path must produce the canonical `GlobalActionRef` shape and validate required payloads before apply/save.
@@ -267,6 +305,10 @@ Treat these as canonical risks:
 - `Reset` clears too much or too little
 - internal authoring text fixed functionally but left hardcoded outside the canonical i18n path
 - editor renderer coverage diverges from what the metadata editor claims to support
+- metadata-editor adds a local `controlType` option or config to compensate for missing dynamic-fields
+  runtime/editorial/profile coverage
+- dynamic-fields catalog says a control is publishable but the metadata editor cannot configure its
+  critical paths or only exposes them as unvalidated JSON
 - schema normalization or cascade flow mutates adjacent config silently
 - public authoring docs describe a path or field that the editor no longer exposes
 - component behavior changes while the AI manifest still advertises stale inputs, paths, operations or capability semantics
