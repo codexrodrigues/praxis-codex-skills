@@ -1432,8 +1432,8 @@
                                             "praxis-visual-builder-ai-validation",
                                             "praxis-manual-form-rules-agentic"
                                         ],
-                       "skillMdSha256":  "EECD9DCEC9666DBF32AB7EF8AB0596318B0109EF475CCDE2CE93EE8C160669C9",
-                       "treeSha256":  "F2E153A4D6A8F8F6C570D2C0C37C1CE30AA3F1BCB5846C57D88F39990BA85E5A"
+                       "skillMdSha256":  "EAC7196DA986666E0F35BDE69FC83CD33DD85869F0462F8F36979560F2B93C6F",
+                       "treeSha256":  "A240769D25828DBB76DB6FE31F0CDEC409029553CF1B28E03699A747E83C2D98"
                    },
                    {
                        "name":  "praxis-form-authoring-settings",
