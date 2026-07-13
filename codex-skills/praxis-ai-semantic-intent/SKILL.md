@@ -98,6 +98,14 @@ structured `semanticDecision`. `lexical_fallback`, `unknown`, `none`, stale
 Domain Catalog hints, or copied display labels cannot by themselves authorize a
 shared-rule route, component edit, preview, apply, or repair retry.
 
+Treat missing registry/RAG/provider projection evidence as unresolved grounding,
+not as semantic absence. If component registry, ingestion corpus, backend snapshot,
+runtime observation, or package AI asset evidence is missing or lossy, the resolver
+must re-ground through the canonical source/provider/backend contract or ask a
+clarification. Do not use the missing projection to infer that a component,
+capability, manifest operation, resource, surface, action, or permission does not
+exist, and do not recover by keyword-routing the prompt.
+
 When `recommendedAuthoringFlow=shared_rule_authoring` conflicts with an explicit
 local/editorial UI composition request, the backend semantic resolver must decide
 the conflict using the current prompt, selected candidate, and provenance. Angular
