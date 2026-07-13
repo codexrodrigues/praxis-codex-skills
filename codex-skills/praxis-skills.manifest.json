@@ -1096,8 +1096,8 @@
                                             "praxis-angular-i18n-governance",
                                             "praxis-angular-validation-gates"
                                         ],
-                       "skillMdSha256":  "724CF711407A0D769A4212C7B6DC8A123623744E268D7529B9BD8967417452A8",
-                       "treeSha256":  "B030A192A61460A387DBF4F5C2019C3232E29B403574CC3EE89C864284C2F88D"
+                       "skillMdSha256":  "2BB2591666DA8964B1964D26E4457FC54C71B6B5FE252DD980DA10B1907FDDF3",
+                       "treeSha256":  "6FF7DAAC10ECF1A0A21687DE57C347B603A67572B72C30B27EA40C8DAD10CE8C"
                    },
                    {
                        "name":  "praxis-dto-annotations",
