@@ -673,8 +673,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "775AE33E54E5580D1093793A162AE277777D39163D2D05589CC536F74FC0CC8C",
-                       "treeSha256":  "4A5A58B4BED7CEFBAF15C18674AD181679EC7149CEE37536BCBE4275560BD088"
+                       "skillMdSha256":  "D606435D5F708103F98BDFBBE97F50DE1F8E342788A9916A203DD3048E771782",
+                       "treeSha256":  "4C7779F39E3998E673A3D8E716D54FAE20221FA2AB87D2F4AD111E778FB03B6C"
                    },
                    {
                        "name":  "praxis-charts-ai-validation",
