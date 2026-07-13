@@ -82,6 +82,8 @@ For each resource, verify:
 
 Never use a generic PATCH or ordinary CRUD update to conceal an explicit business transition. A command such as approval, triage, activation, custody resolution, cancellation, or payment must be a documented workflow action with its own request/response schema, state checks, outcome, and discovery metadata.
 
+For a real collection-level command that has no queryable or persisted collection, extend the metadata starter's `AbstractCollectionCommandResourceController`. Publish the action, capabilities, schemas, and governed command response without fabricating a repository, query service, CRUD endpoints, or decorative surface. Move that pilot to the resource-oriented persistent baseline only when the domain gains real item identity, persistence, and read operations; update host proof, discovery evidence, and consumers in the same change.
+
 ## Metadata, Governance, And Lookup
 
 Use the published contract rather than local UI knowledge:

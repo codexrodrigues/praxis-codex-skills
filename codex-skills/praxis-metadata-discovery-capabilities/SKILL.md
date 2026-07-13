@@ -1,6 +1,6 @@
 ---
 name: praxis-metadata-discovery-capabilities
-description: Use when Codex must work on praxis-metadata-starter semantic discovery: /schemas/surfaces, /schemas/actions, resource/item capabilities, @UiSurface, @WorkflowAction, availability contexts, ResourceStateSnapshot, relatedResource surfaces, collection export, stats capabilities, HATEOAS operation availability, or cockpit discovery.
+description: "Use when Codex must work on praxis-metadata-starter semantic discovery: /schemas/surfaces, /schemas/actions, resource/item capabilities, @UiSurface, @WorkflowAction, availability contexts, ResourceStateSnapshot, relatedResource surfaces, collection export, stats capabilities, HATEOAS operation availability, or cockpit discovery."
 ---
 
 # Praxis Metadata Discovery Capabilities
@@ -37,6 +37,8 @@ Availability should use contextual resolvers and shared `ResourceStateSnapshot` 
 ## Decision Rules
 
 - Surfaces/actions reference real operations and canonical schemas; they do not define inline payloads.
+- Use `AbstractCollectionCommandResourceController` for an `@ApiResource` whose only real operations are collection-level `@WorkflowAction` commands. It owns canonical `/actions`, `/capabilities`, governed execution, and schema links without advertising query or CRUD operations.
+- Do not add a fake `BaseResourceQueryService`, in-memory collection, CRUD controller, or `@UiSurface` merely to make a command-only resource discoverable. Such a resource remains outside the surface registry, so a resource-filtered `/schemas/surfaces` lookup may return `404`, until it exposes a real semantic surface.
 - Absence in `actions` and absence in `capabilities` do not mean the same thing. Preserve the distinction.
 - Related-resource surfaces must publish child binding and supported child operations only when backed by canonical child capabilities.
 - Collection export is a collection operation with scope, selection, filters, sort, fields, limits, and capability proof.
