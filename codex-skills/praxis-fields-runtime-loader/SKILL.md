@@ -14,16 +14,21 @@ Pair it with `praxis-fields-inline-overlay-runtime` for compact inline overlay b
 `praxis-fields-selection-lookup-controls` for option-bearing controls, and
 `praxis-fields-control-profile-ai` when runtime coverage must be reflected in AI profiles or generated registry docs.
 
+When locating files, first resolve the Angular workspace root. Paths below are relative to
+`praxis-ui-angular/projects/praxis-dynamic-fields` unless they explicitly start with
+`projects/praxis-core/`.
+
 ## Canonical Runtime Chain
 
 Audit this chain before editing:
 
-1. `@praxisui/core` owns `FieldControlType`, aliases, inline control utilities, selector registry tokens, and shared `FieldMetadata`.
-2. `ComponentRegistryService` owns runtime `controlType -> lazy component` resolution and default package registrations.
-3. `ComponentPreloaderService` owns optional preloading over the same registry contract; it must not introduce a second field discovery source.
-4. `DynamicFieldLoaderDirective` owns rendering, `FormGroup` binding, shell wrapping, lifecycle cleanup, hot metadata refresh, presentation/global states, select rebinding, and render error events.
-5. The field component owns CVA/form-control behavior and `setInputMetadata`, `setExternalControl`, or signal-based metadata updates.
-6. Host custom fields use `ComponentRegistryService.register(...)`; package-owned fields must be fixed in the package-owned registry path.
+1. `@praxisui/core` owns `FieldControlType`, aliases, inline control utilities, selector registry tokens/providers, `DEFAULT_FIELD_SELECTOR_CONTROL_TYPE_MAP`, and shared `FieldMetadata`.
+2. `FieldSelectorRegistry` owns selector-to-`FieldControlType` resolution. It normalizes selector keys, applies base and override maps, and is the canonical place for package selector defaults or intentional host overrides.
+3. `ComponentRegistryService` owns runtime `controlType -> lazy component` resolution, default package registrations, control type normalization, and registration of default selectors into `FieldSelectorRegistry`.
+4. `ComponentPreloaderService` owns optional preloading over the same registry contract; it must not introduce a second field discovery source.
+5. `DynamicFieldLoaderDirective` owns rendering, `FormGroup` binding, shell wrapping, lifecycle cleanup, hot metadata refresh, presentation/global states, select rebinding, and render error events.
+6. The field component owns CVA/form-control behavior and `setInputMetadata`, `setExternalControl`, or signal-based metadata updates.
+7. Host custom fields use `ComponentRegistryService.register(...)`; package-owned fields must be fixed in the package-owned registry path.
 
 If a field can render only because a host imports or maps it manually, classify that as a registry gap unless the field is intentionally host custom.
 
@@ -50,6 +55,9 @@ Inspect the affected files, not only docs:
 - `src/lib/editorial/metadata-contract.spec.ts`
 - `src/lib/editorial/metadata-i18n-contract.spec.ts`
 - `projects/praxis-core/src/lib/services/field-selector-registry.service.ts` and spec when changing selector defaults or overrides
+- `projects/praxis-core/src/lib/metadata/field-selector-control-type.constants.ts`
+- `projects/praxis-core/src/lib/providers/field-selector-registry.providers.ts`
+- `projects/praxis-core/src/lib/tokens/field-selector-registry.token.ts`
 - `projects/praxis-core/src/lib/**` when changing `FieldControlType`, aliases, selector defaults, inline controls, or shared metadata
 - docs/inventory/catalog files when a runtime claim changes
 
@@ -58,8 +66,11 @@ Inspect the affected files, not only docs:
 - Prefer a canonical `FieldControlType` from `@praxisui/core`; add aliases only when they normalize deterministically to one existing type and the alias belongs in core.
 - Register package-owned fields in `ComponentRegistryService.initializeDefaultComponents()` with lazy imports; do not solve package-owned fields through host bootstrap code.
 - Keep `ComponentPreloaderService` aligned with registry semantics. Preload should exercise registrations, caching, and failures, not become a side catalog.
-- Keep selector resolution in `FieldSelectorRegistry`, `DEFAULT_FIELD_SELECTOR_CONTROL_TYPE_MAP`, or explicit host override. Disable defaults only at the intended root provider boundary.
+- Keep selector resolution in `FieldSelectorRegistry`, `DEFAULT_FIELD_SELECTOR_CONTROL_TYPE_MAP`, `provideFieldSelectorRegistryBase(...)`, `provideFieldSelectorRegistryOverride(...)`, or explicit runtime registration through `provideFieldSelectorRegistryRuntime(...)`. Disable defaults only at the intended root provider boundary.
+- Do not add consumer-local selector maps to compensate for missing package-owned selectors. Add the selector default in core when it is canonical, or use an override only when the host intentionally owns that selector.
+- Keep the registry boundary two-step: selector resolution produces a `FieldControlType`; component resolution maps that `FieldControlType` to a lazy component. Do not collapse this into a direct selector-to-component lookup.
 - Preserve `DynamicFieldLoaderDirective` reentrancy, component disposal, shell lifecycle, subscriptions, `enableExternalControlBinding`, and render error event shape.
+- Preserve in-place metadata updates for same render shape, `FormGroup` rebind without component recreation, and explicit skip-snapshot behavior for metadata changes that should not reset existing value/control state.
 - Require form compatibility: `ControlValueAccessor`, `[formControl]`, or `setExternalControl` must work with dynamic forms.
 - Require hot metadata compatibility for fields used in editors/builders: `setInputMetadata`, writable metadata signal, or equivalent documented refresh path.
 - Keep provider variants intentional: default packages should register package-owned controls, while no-defaults providers are for hosts that deliberately own registration boundaries.
@@ -70,7 +81,7 @@ Inspect the affected files, not only docs:
 Do not say "supported" unless the correct layer is true:
 
 - `runtime coverage`: `ComponentRegistryService.isRegistered(controlType)` resolves the component and loader renders it.
-- `schema/type coverage`: `FieldMetadata`, `FieldControlType`, aliases, selector mapping, and public exports support the type.
+- `schema/type coverage`: `FieldMetadata`, `FieldControlType`, aliases, selector mapping, selector providers/tokens, and public exports support the type.
 - `editor/tooling coverage`: metadata/editorial registries, catalogs, AI profiles, and downstream builders can discover it.
 - `preload coverage`: `ComponentPreloaderService` can preload the same package-owned field through registry resolution without duplicate discovery data.
 
