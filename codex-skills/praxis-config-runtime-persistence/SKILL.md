@@ -18,6 +18,9 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/domain/UiUserConfig.java`
 - `src/main/java/org/praxisplatform/config/dto/UserConfigResponse.java`
 - `src/main/java/org/praxisplatform/config/dto/UpsertUserConfigRequest.java`
+- `src/main/java/org/praxisplatform/config/http/HttpEntityTagCondition.java`
+- `src/main/java/org/praxisplatform/config/service/UiConfigWriteAuthorizer.java`
+- `src/main/java/org/praxisplatform/config/autoconfig/UiConfigWriteAuthorizationAutoConfiguration.java`
 - `src/main/java/org/praxisplatform/config/controller/EnterpriseRuntimeContextController.java`
 - `src/main/java/org/praxisplatform/config/service/AiPrincipalContextResolver.java`
 - `src/main/java/org/praxisplatform/config/service/DefaultEnterpriseRuntimeContextProvider.java`
@@ -48,11 +51,13 @@ Keep these boundaries separate: `ui_user_config` persists component runtime stat
 ## Conditional Persistence
 
 - Successful GET and PUT responses expose a quoted HTTP `ETag`; the JSON response carries the raw UUID value. Cache the response header and quote it when sending `If-Match` or `If-None-Match`.
-- `If-None-Match` enables `304 Not Modified` reuse after a cached read. Do not assume wildcard or comma-separated validator support unless the controller is extended and tested for it.
+- `If-None-Match` enables `304 Not Modified` reuse after a cached read. The canonical parser supports `*`, quoted validators, and comma-separated validators; weak validators may match reads because GET uses weak comparison.
 - `If-Match` is optional. With a cached ETag, send it to prevent overwriting a newer exact-scope record. A stale or missing target returns `412 Precondition Failed`.
+- `If-Match` uses strong comparison. Weak validators such as `W/"etag"` and malformed unquoted values are rejected before persistence.
 - `If-Match: *` means that the exact target must already exist; it is not create-only behavior. With no `If-Match`, PUT uses the PostgreSQL atomic upsert path and is last-write-wins.
 - PUT returns `200 OK` with the persisted payload and new ETag. DELETE returns `204 No Content`; it may also be conditional with the cached ETag.
 - The backend increments `version` and rotates the UUID ETag on each write. Do not synthesize either value in a client.
+- `UiConfigWriteAuthorizer` is the host-owned write policy hook. The starter ships a permissive compatibility default, but corporate hosts should replace it with server-principal based authorization before governed config writes are accepted.
 
 ## Payload And Client Rules
 
@@ -68,6 +73,7 @@ Keep these boundaries separate: `ui_user_config` persists component runtime stat
 - Do not promote browser local storage or host-local singleton state to the canonical source for shared Praxis config.
 - Preserve exact scope and environment semantics; do not invent environment fallback or merge user and tenant documents client-side.
 - Preserve ETag and conditional read/write semantics. A first save can legitimately have no validator, but an edit based on a cached version should use `If-Match`.
+- Preserve the host write-authorization hook. Do not treat caller-supplied capabilities, component payload flags, or frontend state as authority to mutate governed config.
 - Do not put page identity, ETag policy, tenant, user, or environment inside component documents when they belong to the config boundary.
 - Keep secret/API-key sanitization in `UserConfigService` and `AiApiKeyProtectionService`; do not duplicate redaction only in UI.
 - In corporate mode, resolve tenant and user from the authenticated server principal. Caller headers are hints only in explicitly configured local mode; host authorization and context-switch validation remain host-owned.
