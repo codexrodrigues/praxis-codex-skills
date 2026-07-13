@@ -41,6 +41,13 @@ Use `praxis-core-global-actions-metadata` for shared action contracts and `praxi
 - Surface open payloads must pass through the core `SurfaceOpenMaterializerService` before dialog/drawer projection.
 - Dialog surface runtime may expose `closed$`, `result$`, `emitResult`, `close`, and `updateSize`; it must not become a business workflow engine.
 - Forward row/selection outputs from `PraxisSurfaceHostComponent` as surface results when the hosted component emits them.
+- Treat forwarded row/selection envelopes and `surfaceRuntime.result$` emissions as runtime event
+  forwarding. They are not persisted widget inputs, not child config-editor results, and not permission
+  to patch host/page/form/table state directly from the dialog provider.
+- If a surface result should update a page, component, or domain state, route it through the authored
+  `GlobalActionRef`, `surface.result`, `dynamicPage.composition.dispatch`, composition link, or
+  backend-confirmed domain action that owns that mutation. The dialog provider should emit/close; it
+  should not decide the business continuation by parsing result type, row text, or localized labels.
 - Drawer presentation requires `SURFACE_DRAWER_BRIDGE`; do not silently fall back to a different drawer contract.
 - Host/domain side effects after `afterClosed` or `result$` remain host-owned.
 
@@ -52,6 +59,8 @@ Refactor or reject:
 - dialog providers that bypass core payload validation or materialization
 - unregistered component ids invented by AI or host code
 - surface drawer implementations that skip `SURFACE_DRAWER_BRIDGE`
+- providers that persist `surfaceRuntime`, `result$` envelopes, row selections, or materialized
+  widget inputs as component/page config
 - child widget config patched through dialog shell contracts instead of delegated child manifests
 
 ## Validation
