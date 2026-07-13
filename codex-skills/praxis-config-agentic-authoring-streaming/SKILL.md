@@ -24,7 +24,8 @@ Inspect `praxis-config-starter/AGENTS.md`, then the boundary being changed:
   route classification, conversation continuation, and materialization policy;
 - tools and evidence: `AgenticAuthoringLlmPreIntentToolPlanningService`,
   `AgenticAuthoringToolRegistry`, `AgenticAuthoringToolLoopExecutor`, API metadata/domain catalogs,
-  Project Knowledge, manifest slices, presentation affordances, and runtime component grounding;
+  Project Knowledge, manifest slices, presentation affordances, runtime component grounding, and
+  `AgenticAuthoringConsultativeAnswerService` runtime-related surface planning;
 - materialization: plan, preview, repair classification, compiler, apply service, and ETag-backed
   `UserConfigService` persistence;
 - legacy paths: `AiOrchestratorService`, `AiOrchestratorController`, `AiStreamService`, and patch SSE.
@@ -118,6 +119,16 @@ Preserve these invariants:
 
 - `clientTurnId` provides idempotent start identity. Reuse is valid only when the canonical request
   fingerprint matches; a different request with the same ID must conflict rather than replay stale work.
+- The request fingerprint is a backend hash over material authoring inputs: prompt, target, route,
+  current page, conversation/clarification/attachments, context hints, capabilities, safe diagnostics,
+  and active semantic decision. It must exclude `apiKey`, raw runtime observations, and
+  `requestBaseUrl`; runtime observations influence the hash only after backend grounding into safe
+  `contextHints.groundedRuntimeComponentContext`.
+- On start, the backend may reuse an explicit `activeSemanticDecision` from the request or the latest
+  authorized result event on the same thread. Reconcile that decision into the effective request before
+  hashing and processing; do not trust a frontend-only continuation without backend lineage.
+- New starts reserve capacity before processing and append the first persisted `status` event with
+  phase `context.bundle`, `requestHash`, `expiresAt`, and the active semantic decision id when present.
 - `status`, `thought.step`, tool progress, and `intent.resolved` are non-terminal and replay-safe.
 - Only persisted `result`, `error`, or `cancelled` events terminate the turn. Heartbeats are transient
   liveness signals and cannot advance the persisted cursor.
@@ -131,10 +142,51 @@ Preserve these invariants:
   heartbeat tasks, processing timeout, payload size, and event retention.
 - Error/timeout payloads expose stable public codes and safe user-facing text, not stack traces,
   provider secrets, prompts, or unsanitized exception content.
+- Signed URL stream mode issues encrypted `enc1.*` tokens scoped to stream id, tenant, user,
+  optional environment, and effective expiry. The token secret must be at least 32 bytes, legacy
+  signed token parsing stays disabled unless explicitly enabled, and connect/probe/cancel must enforce
+  the same scope as cookie mode.
 
 Treat `/ai/patch/stream/**` and `AiOrchestratorService` as legacy migration surfaces. Preserve
 contract compatibility while consumers move to authoring turns, but do not add new agentic semantics
 there or make one legacy barrel define the canonical behavior.
+
+## Runtime Related Surface Grounding
+
+Runtime related surface features are consultative grounding over backend-reconciled runtime context,
+not a shortcut around semantic intent or authorization.
+
+- `runtimeComponentObservations` are accepted only through the
+  `untrusted_frontend_observation` boundary and become safe
+  `groundedRuntimeComponentContext`; raw rows, sample rows, data sources, secrets, and frontend
+  action decisions must not be copied into turn authority.
+- `runtimeToolPlan` must publish `schemaVersion=praxis-runtime-tool-plan.v1`, backend-owned planner
+  metadata, step budget, projection/redaction policy refs, and
+  `multiToolAuthorization.source=backend_policy`.
+- Keep `steps[]`, `candidateSteps[]`, and `blockedSteps[]` as sibling arrays. `candidateSteps[]`
+  ranks possible reads without authorizing execution; `blockedSteps[]` explains fail-closed cases.
+- Default beta policy is conservative: read-free availability/disambiguation, or a single governed
+  read only when backend policy and target reconciliation allow it. Multi-read execution requires an
+  explicit backend policy such as `runtime-tool-policy:multi-tool-readonly-beta`.
+- Targeted detail/list/summary must be driven by semantic decision fields
+  `DETAIL_TARGET_SURFACE_REF`, `LIST_TARGET_SURFACE_REF`, or `SUMMARY_TARGET_SURFACE_REF`, then
+  reconciled against accepted runtime candidates before any HTTP read.
+- `runtimeRelatedSurfaceResolution.*Target` should declare `source=semantic_decision`,
+  `provenance=backend_reconciled`, read mode, aggregation policy, candidate refs, and failure
+  diagnostics. Forged, missing, ambiguous, stale, or divergent targets block before backend reads.
+- Backend target-candidate resolution may rank sanitized `surfaceRef`, `candidateRef`,
+  `runtimeSurfaceInstanceRef`, labels, and semantic aliases only after a targetable intent has been
+  semantically resolved. It must not decide the primary intent from prompt text.
+- Disambiguation quick replies must carry a backend-issued `semanticDecision.constraints`
+  `runtimeRelatedSurfaceDisambiguationSelection` with `optionRef`, `candidateRef`, and `surfaceRef`.
+  Clients resend that decision as `activeSemanticDecision`; they must not reconstruct refs from labels
+  or treat diagnostic context as authority.
+- Historical `runtimeRelatedSurfaceDisambiguationContext` is read-free grounding only. It must carry
+  session/page/source turn/TTL metadata and be discarded when expired, cross-session, same-client-turn,
+  or no longer reconcilable against current candidates.
+- Terminal evidence may include sanitized `runtimeConsultableContext`,
+  `runtimeRelatedSurfaceReads[]`, runtime summary/detail/list resolution, and runtime tool diagnostics.
+  It must preserve `rawRuntimeValuesCopied=false` when records are projected by allowlist.
 
 ## Quick Replies And Diagnostics
 
