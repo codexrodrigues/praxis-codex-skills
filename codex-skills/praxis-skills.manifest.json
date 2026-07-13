@@ -1068,8 +1068,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-dialog-surface-global-actions"
                                         ],
-                       "skillMdSha256":  "73DD1623422B6F0B318AB1EEA1C3288CDFCBDDC137D50D9FF2B122EA6BB4464C",
-                       "treeSha256":  "EBBF6AB20F75EBE38C0193707DB7E0B7D7597B28A0E572176BAB522E1E98162F"
+                       "skillMdSha256":  "E17940DAB367E922AB110CCD40E24949E1154BA15CF281C2DF06489FE4964848",
+                       "treeSha256":  "4516AB92ECED8F7AA424E1670E95BAFA3B0F8F8E40C18FAD4CB1EA4073F42956"
                    },
                    {
                        "name":  "praxis-dialog-surface-global-actions",
