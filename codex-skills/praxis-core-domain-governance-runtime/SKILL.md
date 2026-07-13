@@ -20,7 +20,10 @@ Inspect before editing:
 - `projects/praxis-core/src/lib/models/domain-catalog.model.ts`
 - `projects/praxis-core/src/lib/models/domain-knowledge.model.ts`
 - `projects/praxis-core/src/lib/models/domain-rule.model.ts`
+- `projects/praxis-core/src/lib/models/domain-knowledge-timeline.rich-content.ts`
+- `projects/praxis-core/src/lib/models/domain-rule-timeline.rich-content.ts`
 - `projects/praxis-core/src/lib/ai/domain-catalog-context-pack.ts`
+- `projects/praxis-core/src/public-api.ts` when services, models, timelines, or context packs are exported or public consumption changes.
 - focused specs for the touched service/model/context pack.
 
 When behavior depends on backend semantics, also inspect the corresponding `praxis-config-starter` endpoint/contract instead of inferring it from the Angular caller.
@@ -58,10 +61,21 @@ Only real gaps justify new contracts. For them, identify source owner, affected 
 
 Use focused proof:
 
-- domain service specs for URL, headers, params, and response mapping.
-- model/context-pack specs when AI grounding or registry projections change.
-- a direct consumer smoke when UX, authoring, or runtime materialization changes.
-- HTTP-level proof against `praxis-api-quickstart` only when endpoint semantics are the change.
+- domain service specs for URL, headers, params, response mapping, status transitions, semantic filters, simulation, publication, materialization, timeline reads, and service/resource/release/context propagation:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/domain-catalog.service.spec.ts --include=projects/praxis-core/src/lib/services/domain-knowledge.service.spec.ts --include=projects/praxis-core/src/lib/services/domain-rule.service.spec.ts
+```
+
+- rich-content timeline specs when timeline evidence, safe visibility, or prompt/payload redaction changes:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/models/domain-knowledge-timeline.rich-content.spec.ts --include=projects/praxis-core/src/lib/models/domain-rule-timeline.rich-content.spec.ts
+```
+
+- context-pack/model specs when AI grounding, registry projections, catalog schema, or public model shapes change.
+- `npm run build:praxis-core` when exports, public models, services, or context packs change; add a direct consumer smoke when UX, authoring, or runtime materialization changes.
+- Angular HTTP mocks prove client URL/header/body mapping only. When endpoint semantics, status lifecycle, publication/materialization behavior, evidence lifecycle, diagnostics, catalog retrieval policy, or backend grounding changes, also run the focused backend gates from `praxis-config-domain-decisions` or `praxis-config-api-metadata-grounding`.
 
 For first-step issue resolution, audit that the flow preserves service key, resource key, release key/context key, headers, semantic decision id, status/timeline evidence, and failure diagnostics.
 

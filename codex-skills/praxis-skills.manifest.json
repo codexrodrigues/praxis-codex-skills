@@ -2390,8 +2390,8 @@
                        "dependencies":  [
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "AEE8824ABB787EABD84F2DED78209F1DA2542F6410F42C1043AD9158367648C5",
-                       "treeSha256":  "9EB4D45336EE3A78AA22FDB6D1ED9EFFAA9550AFE10570CC31AFE79815552204"
+                       "skillMdSha256":  "216856A1CEFAFCDE03A5944CC02480C698E934D35B8DCD2F54B2E4CBD73BE002",
+                       "treeSha256":  "BD59B480501757D27807219C3384AFC710F3441FFF2DE68075787DE5D9AC95D3"
                    },
                    {
                        "name":  "praxis-config-runtime-persistence",
