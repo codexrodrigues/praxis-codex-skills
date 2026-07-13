@@ -33,6 +33,14 @@ Inspect the owner before editing:
 
 `RESOURCE_ENTITY` option sources must publish enough governed lookup evidence for agents and runtimes to preserve entity identity: `entityKey`, value/label/status paths, dependency filter map, selection policy, filtering contract, canonical `filterEndpoint`, and canonical `byIdsEndpoint`. Do not substitute this with frontend autocomplete URLs, label parsing, or inferred entity names.
 
+Keep backend option-source dependencies distinct from metadata-editor cascade edits. In
+`praxis-metadata-starter`, `dependsOn` and `dependencyFilterMap` are published as
+`x-ui.optionSource.dependsOn` and `x-ui.optionSource.dependencyFilterMap` for backend discovery,
+provider filtering, selected reload, and AI grounding. Angular metadata-editor cascade authoring may
+hydrate from those paths, but ordinary cascade edits persist root-level metadata-editor/runtime paths
+such as `dependencyFields` and `dependencyFilterMap`. Do not redefine the backend contract to match a
+consumer patch shape, and do not treat a consumer cascade patch as a backend option-source migration.
+
 Selected-value reload is part of the backend contract. Use GET `/by-ids` only when ids are self-contained; use POST `/by-ids` with the same structural filter context when dependencies or provider-required context affect visibility. If the contract cannot reload selected ids safely, publish an explicit partial/waived policy instead of letting Angular silently drop or guess selected values.
 
 ## Decision Rules
@@ -43,6 +51,9 @@ Selected-value reload is part of the backend contract. Use GET `/by-ids` only wh
 - Field access hints guide runtimes and assistants, but host services/security still enforce access.
 - Entity lookup, async select, and selected-value reload should be solved through `RESOURCE_ENTITY` option-source semantics, not host-local autocomplete conventions.
 - If selected IDs are not self-contained, by-ids reload needs contextual contract or an explicit partial/waived policy.
+- If an Angular/editor flow needs to change cascade rules, first determine whether the task is
+  backend option-source publication/migration or metadata-editor runtime cascade authoring. Only the
+  former should write `x-ui.optionSource.dependsOn` / `x-ui.optionSource.dependencyFilterMap`.
 
 ## No Keyword Routing
 
