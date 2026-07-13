@@ -30,6 +30,10 @@ Inspect the owner before editing:
 
 Availability should use contextual resolvers and shared `ResourceStateSnapshot` rather than repeated N+1 resource loads.
 
+`resourceKey` is the stable semantic resource identity for discovery aggregation; `resourcePath`, action/surface `path`, HTTP method, schema URLs, and `_links` are operational execution evidence. Do not make URL shape the semantic identity, and do not hide a missing `resourceKey` with host-local aliases.
+
+`capabilities.operations` governs whether an operation exists and is currently available; `_links` expose the executable hypermedia target. They must remain coherent. If a capability is denied, stale, missing, or contradicted by `_links`, treat it as a contract defect to fix in metadata/capability/HATEOAS generation, not as permission for Angular or agents to infer availability from labels, buttons, or route patterns.
+
 ## Decision Rules
 
 - Surfaces/actions reference real operations and canonical schemas; they do not define inline payloads.
