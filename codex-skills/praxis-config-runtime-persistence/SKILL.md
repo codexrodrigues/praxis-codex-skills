@@ -42,11 +42,19 @@ Keep these boundaries separate: `ui_user_config` persists component runtime stat
 ## Scope And Resolution
 
 - `X-Tenant-ID` is required for config requests. `X-User-ID`, `X-Env`, and `X-Updated-By` are optional according to the operation.
+- `tenantId`, `componentType`, and `componentId` are trimmed and required. `X-User-ID`, `X-Env`, and `X-Updated-By` are trimmed and blank values are treated as absent.
+- A blank environment targets the global environment scope (`environment IS NULL`); it must not create a separate empty-string environment.
+- Identity lengths are enforced before repository or atomic-upsert paths: tenant, user, updater, and component id are limited to 255 characters; component type and environment are limited to 64 characters. Preserve deterministic `400 Bad Request` behavior for invalid identity input.
 - With no `scope` query parameter, a read resolves the exact user record first when `X-User-ID` is present, then the exact tenant record. The same requested environment is used for both lookups; there is no environment-to-global fallback.
 - `scope=user` performs only the exact user lookup and requires `X-User-ID`. `scope=tenant` performs only the exact tenant lookup and ignores user identity for persistence. Explicit scope disables user-to-tenant fallback.
 - Writes and deletes target one exact scope. Presence of `X-User-ID` selects user scope only when `scope` is omitted; do not rely on incidental headers when ownership must be explicit.
 - Use canonical selector-based `componentType` values such as `praxis-table`, `praxis-dynamic-form`, and `praxis-tabs`. Do not reintroduce V7 legacy aliases or invent host-local aliases.
-- Treat `(tenant, user-or-null, componentType, componentId, environment-or-null)` as the logical identity. PostgreSQL partial unique indexes from V9 and the service conflict targets enforce the four null/non-null user/environment combinations.
+- Treat `(tenant, user-or-null, componentType, componentId, environment-or-null)` as the logical identity. PostgreSQL partial unique indexes from V9 and the service conflict targets enforce the four null/non-null user/environment combinations:
+  - tenant + component type + component id, when both user and environment are absent;
+  - tenant + component type + component id + user, when user is present and environment is absent;
+  - tenant + component type + component id + environment, when environment is present and user is absent;
+  - tenant + user + component type + component id + environment, when both user and environment are present.
+- `V7__migrate_ui_user_config_component_type_selectors.sql` maps legacy `table`, `form`, `tabs`, and `page` values to selector-based component types only when that does not collide with an existing selector-based row. New code must not revive the legacy values.
 
 ## Conditional Persistence
 
@@ -58,15 +66,20 @@ Keep these boundaries separate: `ui_user_config` persists component runtime stat
 - PUT returns `200 OK` with the persisted payload and new ETag. DELETE returns `204 No Content`; it may also be conditional with the cached ETag.
 - The backend increments `version` and rotates the UUID ETag on each write. Do not synthesize either value in a client.
 - `UiConfigWriteAuthorizer` is the host-owned write policy hook. The starter ships a permissive compatibility default, but corporate hosts should replace it with server-principal based authorization before governed config writes are accepted.
+- `UserConfigController` calls `UiConfigWriteAuthorizer` before `UserConfigService.upsert` or `delete`. A denied write must not reach persistence or secret sanitization side effects.
 
 ## Payload And Client Rules
 
 - `AiApiKeyProtectionService.sanitizeForStorage(payload, existingPayload)` protects and merges supported secrets before persistence; `sanitizeForResponse` redacts the returned payload. Preserve both stages instead of adding UI-only redaction.
-- The 256 KiB limit applies to the sanitized payload. `tags` are separate metadata and are not secret-sanitized; never place credentials or private payload fragments in tags.
+- The 256 KiB limit applies to the sanitized payload. `tags` are separate metadata, are passed to the write authorizer, and are persisted separately, but they are not secret-sanitized; never place credentials or private payload fragments in tags.
 - For governed shared or cross-device state, configure Angular `ApiConfigStorage` through `ASYNC_CONFIG_STORAGE` and provide host-derived headers. Its ETag cache drives conditional reads, saves, and clears.
+- `ApiConfigStorage` maps storage keys to canonical component types. In particular, `praxis:global-config*` maps to `praxis-global-config-editor`, `table-config:*` maps to `praxis-table`, and dynamic form/page prefixes map to their corresponding Praxis selectors. Prefer `componentTypeResolver` only for explicit host-owned custom keys.
+- `ApiConfigStorage` sends `componentType` and `componentId` as query parameters; `componentId` remains the full storage key.
+- `ApiConfigStorage` default headers are demo/local defaults (`X-Tenant-ID=demo`, stable demo `X-User-ID`, `X-Env=local`). Corporate hosts must provide real headers through the headers factory or enterprise runtime context projection.
 - `LocalStorageConfigService` and the default local adapter are valid only for explicit local/offline or development state. `RemoteConfigStorage` is a synchronous compatibility bridge that returns local cache immediately and refreshes remotely; do not mistake that first local value for authoritative persisted state.
 - Respect the `AsyncConfigStorage` acknowledgement contract: success emits at least one value before completion; soft failure may complete without emission; hard failure errors. Do not report a soft completion as a confirmed save.
-- `ApiConfigStorage` can soft-fail noncritical keys under the default error policy. Use `errorPolicy: 'fail'` where the workflow requires a hard persistence guarantee and handle `412` as a conflict requiring reload/reconciliation, not blind retry.
+- `ApiConfigStorage` can soft-fail noncritical keys under the default error policy. Critical keys such as `praxis:global-config*` and `table-config:*` should propagate save/clear failures. Use `errorPolicy: 'fail'` where the workflow requires a hard persistence guarantee and handle `412` as a conflict requiring reload/reconciliation, not blind retry.
+- `ApiConfigStorage` treats `404` loads as missing config and must release its availability probe so later keys still load. A missing global config key must not block subsequent table or page config reads.
 
 ## Decision Rules
 
@@ -78,6 +91,16 @@ Keep these boundaries separate: `ui_user_config` persists component runtime stat
 - Keep secret/API-key sanitization in `UserConfigService` and `AiApiKeyProtectionService`; do not duplicate redaction only in UI.
 - In corporate mode, resolve tenant and user from the authenticated server principal. Caller headers are hints only in explicitly configured local mode; host authorization and context-switch validation remain host-owned.
 - Treat default runtime providers as safe baselines: the default context provider exposes minimal context, the default tenant provider only the active tenant, and default navigation/security-event providers empty projections. Rich corporate data requires host-owned providers, not fabricated client data.
+
+## Enterprise Runtime Context Rules
+
+- `EnterpriseRuntimeContextService.ready()` loads `/api/praxis/runtime/context` and stores the safe snapshot used to derive propagation headers.
+- Runtime context endpoints are configurable per surface, but the default root is `/api/praxis/runtime` under the configured Praxis API root.
+- `EnterpriseRuntimeContextService.headers(fallback)` should merge fallback headers with snapshot-derived headers, with the snapshot winning for tenant, user, environment, locale, timezone, profile, and module when present.
+- `tenants()`, `navigation()`, `securityEvents()`, and `switchContext()` send snapshot-derived headers after context is loaded.
+- `switchContext()` updates the local snapshot only from the server-returned `effectiveContext`; do not accept the requested target tenant/profile as effective until the host provider confirms it.
+- `EnterpriseRuntimeContextController` normalizes locale, timezone, profile, and module headers and delegates tenant/user/environment resolution to `AiPrincipalContextResolver`.
+- Default runtime providers are intentionally minimal. A corporate shell must plug host-owned providers for tenant lists, navigation, context switching, and security events instead of fabricating rich data in Angular.
 
 ## No Keyword Routing
 
