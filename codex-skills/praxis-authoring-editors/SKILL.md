@@ -129,6 +129,18 @@ For `@praxisui/dynamic-form` field metadata, local/transient submit semantics ar
 
 - `@praxisui/settings-panel` owns the canonical shell for runtime authoring UX.
 - `SettingsPanelBridge`, `SettingsValueProvider`, and `Apply` / `Save` / `Reset` / `Cancel` are part of the contract.
+- `SettingsPanelService` is the authoring drawer. Runtime `surface.open` drawers belong to the
+  surface drawer bridge, such as `providePraxisSurfaceDrawerBridge()`. Do not move runtime drawer
+  behavior into an authoring editor, and do not display authoring chrome in runtime surfaces unless a
+  governed runtime contract explicitly declares that behavior.
+- `SettingsPanelConfig.diagnostics` and component diagnostics are observability/protocol status, not
+  persistence or action-gating semantics. `Apply`/`Save` gates come from the hosted
+  `SettingsValueProvider` state (`isDirty$`, `isValid$`, `isBusy$`) and the owning editor document,
+  not from shell visibility flags or host-local diagnostics.
+- Treat `applied$` as preview and `saved$` as final persistence. Hosts must subscribe to and persist
+  the canonical output shape from the owning editor; subscribing only to one stream, wrapping the
+  value in a host-local envelope, or persisting diagnostics/runtime context as config is an incomplete
+  authoring integration.
 - Consumer libs own the semantics of the config document they edit.
 - Component input editors for dynamic widgets must be published by the owning lib through `ComponentDocMeta.configEditor`. Hosts such as `@praxisui/page-builder` should discover and open that editor via metadata instead of creating local editors for another lib's semantics.
 - Widget config editors opened by a host should emit the owning component's canonical input patch or
