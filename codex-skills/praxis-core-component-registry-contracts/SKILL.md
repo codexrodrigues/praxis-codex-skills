@@ -14,6 +14,7 @@ The registry is a shared Angular catalog for materialized components. It is not 
 Inspect before editing:
 
 - `projects/praxis-core/AGENTS.md`
+- `projects/praxis-core/src/public-api.ts` when registry models, services, widget metadata contracts, ports, presets, or AI context contracts are exported or public consumption changes.
 - `projects/praxis-core/docs/connection-editor.md`
 - `projects/praxis-core/docs/rfc-dynamic-page-canvas-runtime.md`
 - `projects/praxis-core/src/lib/services/component-metadata-registry.service.ts`
@@ -21,6 +22,8 @@ Inspect before editing:
 - `projects/praxis-core/src/lib/models/component-editorial-metadata.model.ts`
 - `projects/praxis-core/src/lib/models/port-contract.model.ts`
 - `projects/praxis-core/src/lib/ai/component-context.schema.ts`
+- `projects/praxis-core/src/lib/helpers/metadata-normalizer.ts`
+- `tools/ai-registry/component-docs.json` and `tools/ai-registry/schemas/*.json` when registry facts are projected to AI ingestion.
 - component metadata files in the owning vertical package.
 - focused specs for registry, metadata model, AI context, and the direct builder/runtime consumer.
 
@@ -112,20 +115,40 @@ Prove three scenarios:
 Use focused gates from the `praxis-ui-angular` root:
 
 ```bash
-npx ng test praxis-core --watch=false --progress=false \
+npm run test:core -- \
   --include=projects/praxis-core/src/lib/services/component-metadata-registry.service.spec.ts \
+  --include=projects/praxis-core/src/lib/models/component-editorial-metadata.model.spec.ts \
+  --include=projects/praxis-core/src/lib/helpers/metadata-normalizer.spec.ts \
   --include=projects/praxis-core/src/lib/widgets/dynamic-widget-loader.directive.spec.ts \
   --include=projects/praxis-core/src/lib/composition/nested-port-catalog.service.spec.ts
-npx ng test praxis-page-builder --watch=false --progress=false \
+npm run ng -- test praxis-page-builder --watch=false --progress=false \
   --include=projects/praxis-page-builder/src/lib/editor/component-palette-dialog.component.spec.ts \
   --include=projects/praxis-page-builder/src/lib/ai/page-builder-ai.adapter.spec.ts
-npx ng test praxis-rich-content --watch=false --progress=false \
+npm run ng -- test praxis-rich-content --watch=false --progress=false \
   --include=projects/praxis-rich-content/src/lib/praxis-rich-content.metadata.spec.ts
-npx ng build praxis-core --configuration production
-npx ng build praxis-page-builder --configuration production
+npm run build:praxis-core
+npm run ng -- build praxis-page-builder --configuration production
 ```
 
 These gates prove representative runtime, builder, and owner-package paths. Record registry ingestion generation, Visual Builder, a real host bootstrap, browser palette UX, and metadata from other vertical packages as unverified unless they were also exercised.
+
+When changing registry extraction or AI ingestion artifacts, add the generated-artifact proof:
+
+```bash
+npm run generate:registry:ingestion
+node tools/ai-registry/extract-component-docs.spec.js
+node tools/ai-registry/validate-catalog-governance.spec.js
+node tools/ai-registry/generate-registry.spec.js
+node tools/ai-registry/generate-registry-rag.spec.js
+```
+
+When the owning package is not Rich Content, replace the owner-package gate with that package's metadata spec, for example:
+
+```bash
+npm run test:table -- --include=projects/praxis-table/src/lib/praxis-table.metadata.spec.ts --include=projects/praxis-table/src/lib/components/praxis-filter/praxis-filter.metadata.spec.ts
+npm run test:form -- --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.spec.ts --include=projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form.metadata.spec.ts
+npm run ng -- test praxis-crud --watch=false --progress=false --include=projects/praxis-crud/src/lib/praxis-crud.metadata.spec.ts
+```
 
 ## Companion Skills
 
