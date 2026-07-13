@@ -73,11 +73,21 @@ In core, check these concrete files when `surface.open` payloads or global actio
 - Hooks should execute through the registered hook contract and declared stages, not through arbitrary host callbacks hidden in config.
 - `formCommandRules` is the conditional command/side-effect channel. Keep it separate from `formRules` property effects and execute global actions through `GlobalActionService.executeRef(...)`.
 - `payload` is the structured authoring path for global actions; `payloadExpr` is an advanced JSON/expression escape hatch and must be preserved when structured payload is absent.
+- Treat `payloadExpr` as an advanced projection of runtime context, not as a scripting or policy
+  engine. If a command needs legal/compliance policy, approval, or transactional guardrails, route
+  the decision to governed `domain-rules` materializations such as `workflow_action`,
+  `approval_policy`, or `backend_validation`; do not encode that policy in a Dynamic Form
+  expression or hook callback.
 - `surface.open` authoring should reuse the canonical core surface-open editor/presets/schema. Dynamic Form must not invent a parallel payload DSL for opening forms, dialogs, drawers, or related-resource surfaces.
 - `surface.open` is horizontal platform capability owned by `@praxisui/core`, not a Dynamic
   Form feature. Dynamic Form may host or configure it, but contract changes belong in core first.
 - Action rule overrides may affect action UI state, but they must not bypass submit validation, `formIsValid`, invalid-submit hints, or the submit payload pipeline.
 - Hook stages are declared lifecycle extension points. If a workflow needs business orchestration, prefer governed actions/domain rules over hidden host callbacks.
+- In Ergon-style migrations, legal write commands, payment/approval gates, status transitions, and
+  auditable side effects should be classified before implementation: UI-only affordances can remain
+  Dynamic Form actions, but reusable or regulated command policy belongs to `domain-rules` and a
+  materialized runtime target. Dynamic Form should consume the resulting action availability,
+  validation, approval, or workflow policy; it should not become the canonical command engine.
 
 When a required command is missing, extend the canonical action/hook/global action contract. Do not add regex, aliases, or local prompt parsing as the primary decision path.
 
@@ -90,6 +100,10 @@ When a required command is missing, extend the canonical action/hook/global acti
 - Put framework-owned visible text in dynamic-form i18n, not hardcoded component copy.
 - Keep shortcut semantics stable: `PraxisFormActionsComponent` owns registration/disposal and emits `PraxisFormActionEvent`; the host decides how to handle `submit`, `cancel`, `reset`, and custom action IDs.
 - In command-rule authoring, preserve structured `GlobalActionRef` data and fail closed when required payload/params are invalid. Do not downgrade failed mutable actions to `customAction`.
+- For command rules produced by AI or migration tooling, require an explicit `GlobalActionRef`
+  backed by the catalog and keep `payload`, `payloadExpr`, and `meta` intact through editor
+  round-trip. If the catalog cannot express the command, add or extend the canonical catalog/action
+  contract; do not store a host command name in a custom action label.
 - When editing `surface.open`, verify that Dynamic Form wrapper utilities preserve core-owned
   fields rather than reducing the payload to only the fields currently visible in the form editor.
 - For AI-authored actions/hooks, route through the Dynamic Form authoring manifest/edit-plan surface and the core global-action catalog. Do not generate ad hoc click handlers, host callbacks, or prompt-only action strings.
