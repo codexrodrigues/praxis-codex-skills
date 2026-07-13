@@ -83,6 +83,10 @@ Classify a missing fact in a projection as `suportado-parcialmente` until the ca
 - Preserve port and insertion preset semantics when copying or projecting metadata; do not strip inputs, outputs, cardinality, semantic kinds, or diagnostics.
 - Use the target consumer's explicit registry projection, component AI capabilities, and authoring manifest when an agent needs grounding; inspect their schemas instead of scraping rendered controls or assuming `component-context.schema` contains `ComponentDocMeta`.
 - If metadata looks missing in a builder, first check whether the owning package registered it before adding fallback local registry data.
+- Treat `registry.get(...)` returning `undefined`, missing palette entries, or absent AI registry projection as missing bootstrap/projection
+  evidence, not proof that the component, package capability, authoring manifest, or backend/domain support does not exist.
+  Verify the owning package provider, normalized component id, fixed alias scope, generated registry artifact, and direct consumer
+  projection before declaring a platform contract gap.
 - Treat duplicate normalized ids, legacy component types or editorial control types as a governance error. Runtime registration now rejects these collisions, and generated catalog governance should continue rejecting duplicate component ids/selectors before runtime bootstrap.
 
 ## Aderence Inventory
