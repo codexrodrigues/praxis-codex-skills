@@ -1260,8 +1260,8 @@
                                             "praxis-fields-selection-lookup-controls",
                                             "praxis-fields-control-profile-ai"
                                         ],
-                       "skillMdSha256":  "34C70F0916C451350A35788AB46B0BCB3620AB1512EF8D108994CAAC35F24D3E",
-                       "treeSha256":  "CC6FEDCB62695E981E44837CB08B1EB1E4A1DF80D8BCDEC142384C6B65A1EB8D"
+                       "skillMdSha256":  "7587ECC2435D758CB0D337EDA199DBA73DBDDF5162D9BBED478931B9E7BEFCD1",
+                       "treeSha256":  "969C1DE61CDF5C172714B8656F151B0F58303B3240F48477133EE61F8280DE6B"
                    },
                    {
                        "name":  "praxis-fields-control-profile-ai",
