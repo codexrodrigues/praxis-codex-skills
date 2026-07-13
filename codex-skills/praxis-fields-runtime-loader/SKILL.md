@@ -64,13 +64,16 @@ Inspect the affected files, not only docs:
 ## Runtime Decision Rules
 
 - Prefer a canonical `FieldControlType` from `@praxisui/core`; add aliases only when they normalize deterministically to one existing type and the alias belongs in core.
+- Treat control-type normalization fallback as a compatibility warning, not support. A control is canonically supported only when the requested selector/control type resolves through `FieldSelectorRegistry` or `FieldControlType` aliases to a registered package component without relying on the registry returning the raw unknown string.
 - Register package-owned fields in `ComponentRegistryService.initializeDefaultComponents()` with lazy imports; do not solve package-owned fields through host bootstrap code.
 - Keep `ComponentPreloaderService` aligned with registry semantics. Preload should exercise registrations, caching, and failures, not become a side catalog.
 - Keep selector resolution in `FieldSelectorRegistry`, `DEFAULT_FIELD_SELECTOR_CONTROL_TYPE_MAP`, `provideFieldSelectorRegistryBase(...)`, `provideFieldSelectorRegistryOverride(...)`, or explicit runtime registration through `provideFieldSelectorRegistryRuntime(...)`. Disable defaults only at the intended root provider boundary.
+- If selector defaults are disabled or a base selector map replaces package defaults, the host now owns that registration boundary. Do not silently recreate package defaults locally; document the provider boundary and prove the host override still resolves every required package-owned selector.
 - Do not add consumer-local selector maps to compensate for missing package-owned selectors. Add the selector default in core when it is canonical, or use an override only when the host intentionally owns that selector.
 - Keep the registry boundary two-step: selector resolution produces a `FieldControlType`; component resolution maps that `FieldControlType` to a lazy component. Do not collapse this into a direct selector-to-component lookup.
+- Missing component resolution must surface through `renderError`/diagnostics with the requested and normalized `controlType`; do not replace an unregistered package-owned component with a visually similar fallback just to keep the form rendering.
 - Preserve `DynamicFieldLoaderDirective` reentrancy, component disposal, shell lifecycle, subscriptions, `enableExternalControlBinding`, and render error event shape.
-- Preserve in-place metadata updates for same render shape, `FormGroup` rebind without component recreation, and explicit skip-snapshot behavior for metadata changes that should not reset existing value/control state.
+- Preserve in-place metadata updates for same render shape, `FormGroup` rebind without component recreation, and explicit skip-snapshot behavior for metadata changes that should not reset existing value/control state. If a component lacks `setInputMetadata`, writable metadata signal, or compatible external control binding, classify it as partial loader coverage until the refresh/rebind path is implemented or explicitly documented as unsupported.
 - Require form compatibility: `ControlValueAccessor`, `[formControl]`, or `setExternalControl` must work with dynamic forms.
 - Require hot metadata compatibility for fields used in editors/builders: `setInputMetadata`, writable metadata signal, or equivalent documented refresh path.
 - Keep provider variants intentional: default packages should register package-owned controls, while no-defaults providers are for hosts that deliberately own registration boundaries.
