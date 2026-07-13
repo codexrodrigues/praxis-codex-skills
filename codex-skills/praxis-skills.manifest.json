@@ -2095,8 +2095,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-visual-builder-jsonlogic-roundtrip"
                                         ],
-                       "skillMdSha256":  "C19C66D4298AC204D473B0D7362FAE2696F676B5ECE5D1B1C4F3E48E32B15EAD",
-                       "treeSha256":  "6FD83D1A994E5516B0E51B0C8843EA80EA12D7EA2813E3D10C9EAE85E6FEB6DD"
+                       "skillMdSha256":  "62B8FD8A317E9112F73FA9BABFE16757739F6B0E35FDD49A49875E20659A11F4",
+                       "treeSha256":  "29872137559C31707A9DDBCB6A6B9ABE424547546DECE87EF332C6AB02E99757"
                    },
                    {
                        "name":  "praxis-table-rule-animation-presets",
