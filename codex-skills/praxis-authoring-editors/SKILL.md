@@ -135,6 +135,11 @@ For `@praxisui/dynamic-form` field metadata, local/transient submit semantics ar
   authoring document shape. When the component metadata exposes `inputPatch`, `configPatchChange`,
   `savedPatch`, or similar host-facing outputs, preserve that shape through
   `SettingsValueProvider.getSettingsValue()`/`onSave()` instead of inventing a host-local wrapper.
+- A visual editor can preserve a config path without proving active runtime support. When a path is
+  schema-only, declared-only, partially implemented, or preserved mainly for round-trip/backward
+  compatibility, keep that status explicit in the editor, manifest validators, docs, and tests. Do not
+  promote it to an enabled primary control or AI-authorable promise until the owning runtime proves the
+  behavior.
 - If the component has `ComponentDocMeta.authoringManifestRef`, keep the visual editor, manifest
   operations, component capabilities, and config editor specs aligned. The visual editor is not a
   substitute for the manifest, and the manifest is not proof that the visual round-trip works.
@@ -283,6 +288,9 @@ When the authoring surface is an executable AI manifest, treat the manifest as a
 - If no manifest update is required after a functional component change, state why. Do not edit manifests mechanically when the public authoring surface did not change.
 - If a public component still has no AI manifest, note whether the change raises manifest priority or should be recorded in the component-authoring-contract docs.
 - When a component participates in agentic authoring, review whether its `authoringContext` still declares the correct response modes (`consult/answer`, `edit/componentEditPlan`), safe consultative facts, and scope policy application before assuming the manifest alone is sufficient.
+- If an editor preserves schema-only or declared-only config, require a manifest validator/warning
+  such as a declared-only-runtime warning before exposing it through AI authoring. A persisted path,
+  broad `affectedPaths`, or JSON editor coverage is not evidence of active runtime behavior.
 - Do not count a parent `affectedPaths` entry as proof that every descendant capability is authorable. If a catalog publishes nested paths, focused specs must verify that each published path is covered by an operation whose input schema can actually express and validate that path.
 - Keep operation schemas concrete for published enum and structured fields. Broad `type: object` payloads are acceptable only when paired with an explicit blocker or a downstream schema reference that backend tools can resolve deterministically.
 - For operations that use `compile-domain-patch`, require a deterministic handler contract in the manifest. The contract should name read paths, write paths, stable identity keys, handler input schema when applicable, failure modes, and a concise operational description.
@@ -299,6 +307,8 @@ Treat these as canonical risks:
 - config supported in JSON but hidden in the editor
 - field visible but not persisted
 - field persisted but ignored by runtime
+- schema-only or declared-only fields shown as normal enabled controls without warning, coercion,
+  manifest validator, or runtime proof
 - assistant stream treated as a terminal-only promise, causing progress, clarification, diagnostics, attachments, or quick replies to be hidden until the final response
 - `Apply` works but `Save` does not
 - `Save` works but reopen rewrites the value
