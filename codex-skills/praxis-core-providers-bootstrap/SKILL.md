@@ -16,10 +16,21 @@ Before editing code or guidance, inspect:
 - `projects/praxis-core/src/public-api.ts`
 - `projects/praxis-core/src/lib/tokens/**`
 - `projects/praxis-core/src/lib/providers/**`
+- `projects/praxis-core/src/lib/tokens/api-url.token.ts`
+- `projects/praxis-core/src/lib/tokens/global-config.providers.ts`
+- `projects/praxis-core/src/lib/tokens/global-config.token.ts`
+- `projects/praxis-core/src/lib/tokens/enterprise-runtime-context.token.ts`
+- `projects/praxis-core/src/lib/tokens/collection-export.token.ts`
+- `projects/praxis-core/src/lib/tokens/field-selector-registry.token.ts`
+- `projects/praxis-core/src/lib/tokens/loading-renderer.token.ts`
+- `projects/praxis-core/src/lib/tokens/loading-context.token.ts`
 - `projects/praxis-core/src/lib/services/global-config.service.ts`
+- `projects/praxis-core/src/lib/services/config-storage.service.ts`
 - `projects/praxis-core/src/lib/services/component-metadata-registry.service.ts`
 - `projects/praxis-core/src/lib/services/field-selector-registry.service.ts`
 - `projects/praxis-core/src/lib/services/loading-orchestrator.service.ts`
+- `projects/praxis-core/src/lib/services/collection-export.service.ts`
+- `projects/praxis-core/src/lib/services/enterprise-runtime-context.service.ts`
 - focused provider/token/service specs and direct consumer imports
 
 ## Canonical Boundary
@@ -42,7 +53,32 @@ Vertical packages may register their package metadata or package defaults throug
 
 Use the smallest reliable proof:
 
-- focused provider/token specs such as icon, loading, collection export, global config, or registry specs
+- global config, config storage, and global config provider defaults:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/global-config.service.spec.ts --include=projects/praxis-core/src/lib/services/config-storage.service.spec.ts --include=projects/praxis-core/src/lib/tokens/global-config.providers.spec.ts
+```
+
+- loading providers/orchestrator/renderer and visual tokens:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/providers/loading.providers.spec.ts --include=projects/praxis-core/src/lib/services/default-loading-renderer.service.spec.ts --include=projects/praxis-core/src/lib/tokens/layer-scale.token.spec.ts --include=projects/praxis-core/src/lib/tokens/theme-surface.token.spec.ts
+```
+
+- icon providers, field selector registry, collection export, enterprise runtime context, and component metadata registry:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/providers/icon.providers.spec.ts --include=projects/praxis-core/src/lib/components/icon-picker/icon-picker.component.spec.ts --include=projects/praxis-core/src/lib/services/field-selector-registry.service.spec.ts --include=projects/praxis-core/src/lib/services/collection-export.service.spec.ts --include=projects/praxis-core/src/lib/services/http-collection-export.provider.spec.ts --include=projects/praxis-core/src/lib/models/collection-export.model.spec.ts --include=projects/praxis-core/src/lib/services/enterprise-runtime-context.service.spec.ts --include=projects/praxis-core/src/lib/services/component-metadata-registry.service.spec.ts
+```
+
+- `API_URL` or fetch/header contract changes require at least one direct consumer proof selected by actual imports, commonly:
+
+```sh
+npm run ng -- test praxis-charts --watch=false --progress=false --include=projects/praxis-charts/src/lib/services/chart-stats-api.service.spec.ts
+npm run test:form -- --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.external-config-hydration.spec.ts
+npm run ng -- test praxis-ai --watch=false --progress=false --include=projects/praxis-ai/src/lib/core/services/ai-backend-api.service.spec.ts
+```
+
 - `npm run build:praxis-core` when exports or provider contracts change
 - direct consumer build for at least one package that imports the provider/token
 - `praxis-angular-public-api-governance` checks when `src/public-api.ts` changes
