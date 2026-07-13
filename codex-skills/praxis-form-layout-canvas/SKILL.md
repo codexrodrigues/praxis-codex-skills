@@ -37,6 +37,20 @@ Inspect the affected source:
 
 Inspect `@praxisui/core` form layout models when changing `FormConfig`, `FormLayout`, `FormColumn.items`, visual block rules, or `DynamicFormLayoutPolicy`.
 
+Concrete `@praxisui/core` files to inspect for layout ownership and schema materialization:
+
+- `projects/praxis-core/src/lib/models/form/form-config.model.ts`
+- `projects/praxis-core/src/lib/models/form/form-config.model.spec.ts`
+- `projects/praxis-core/src/lib/models/form/form-layout-items.model.ts`
+- `projects/praxis-core/src/lib/helpers/ensure-ids.helper.ts`
+- `projects/praxis-core/src/lib/helpers/ensure-ids.helper.spec.ts`
+- `projects/praxis-core/src/lib/helpers/form-layout-materializer.ts`
+- `projects/praxis-core/src/lib/helpers/form-layout-materializer.spec.ts`
+- `projects/praxis-core/src/lib/services/surface-open-materializer.service.ts`
+- `projects/praxis-core/src/lib/services/surface-open-materializer.service.spec.ts`
+- `projects/praxis-core/src/lib/widgets/dynamic-widget-loader.directive.ts`
+- `projects/praxis-core/src/lib/widgets/dynamic-widget-loader.directive.spec.ts`
+
 ## Canonical Layout Rules
 
 - `FormColumn.items[]` is the canonical order for fields and visual blocks inside a column.
@@ -48,6 +62,10 @@ Inspect `@praxisui/core` form layout models when changing `FormConfig`, `FormLay
 - `DynamicFormAuthoringDocument` is the complete authoring snapshot. Do not persist runtime/discovery-only values such as host `schemaUrl`, `submitUrl`, or `submitMethod` inside authoring bindings.
 - Layout editor, canvas editor, config editor, JSON editor, and AI authoring must round-trip the same `FormConfig.sections[].rows[].columns[].items[]` semantics.
 - Rule targets may include visual blocks, sections, rows, columns, actions, and fields, but visual-block rules remain visual-only and must not mutate domain payload semantics.
+- Normalize IDs and legacy layout shape through the shared core helpers. `ensureIds(...)` must preserve rich content items, normalize legacy `fields[]` into canonical `items[]`, and keep `fields[]` synchronized as a field-only projection.
+- Use `getFormColumnFieldNames(...)`/layout item helpers instead of reading `column.fields` directly when code must understand current field order.
+- Surface materialization can project read data into Dynamic Form `initialValue` and a transient schema `layoutPolicy`; that is runtime materialization, not authored local `FormConfig.sections`.
+- Dynamic widget loading must pass `layoutPolicy` and related runtime inputs through to Dynamic Form instead of flattening them into host-specific config.
 
 Do not represent visual guidance as local fields, transient fields, DTO fields, or backend metadata unless it is genuinely domain data.
 
@@ -61,6 +79,8 @@ Treat schema-driven layout as opt-in and explicit:
 - `groupedCommand` is for create/edit command forms.
 - authored `FormConfig.sections` must not be silently overwritten unless policy says schema owns layout.
 - non-layout config, such as actions, messages, hooks, behavior, submit behavior, and hints, can still come from authored config.
+- `DynamicFormLayoutPolicy.schemaType` and `schemaOperation` must agree with the schema URL when declared. Detail/read-only surfaces use response schema; create/edit command surfaces use request schema.
+- `SurfaceOpenMaterializerService` may default read projections to `compactPresentation` + `schemaType: "response"` and related command forms to `groupedCommand` + `schemaType: "request"`. Fix this materializer or discovery metadata before copying local sections into consumers.
 
 Classify repeated local section configs as `ja-suportado-mal-nomeado-ou-mal-materializado` or `suportado-parcialmente` before proposing backend metadata changes. The backend may already publish `group`, `order`, `width`, labels, help text, read-only hints, and presentation metadata.
 
@@ -87,6 +107,8 @@ Only `lacuna-real-de-contrato` justifies a new public layout contract. Otherwise
 - Layout editor: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/layout-editor/layout-editor.component.spec.ts --include=projects/praxis-dynamic-form/src/lib/layout-editor/field-configurator.component.spec.ts --include=projects/praxis-dynamic-form/src/lib/layout-editor/row-configurator.component.spec.ts --include=projects/praxis-dynamic-form/src/lib/layout-editor/section-configurator.component.spec.ts --include=projects/praxis-dynamic-form/src/lib/layout-editor/apply-section-preset.util.spec.ts --include=projects/praxis-dynamic-form/src/lib/layout-editor/visual-block-presets.spec.ts`
 - Canvas editor: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/canvas/components/section-editor/section-editor.component.spec.ts --include=projects/praxis-dynamic-form/src/lib/canvas/components/row-editor/row-editor.component.spec.ts --include=projects/praxis-dynamic-form/src/lib/canvas/components/column-editor/column-editor.component.spec.ts --include=projects/praxis-dynamic-form/src/lib/canvas/components/canvas-toolbar/canvas-toolbar.component.spec.ts`
 - Schema/layout services: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/services/dynamic-form-layout.service.spec.ts --include=projects/praxis-dynamic-form/src/lib/services/form-layout.service.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.layout-policy.spec.ts`
+- Core layout contracts: `npx ng test praxis-core --watch=false --progress=false --include=projects/praxis-core/src/lib/models/form/form-config.model.spec.ts --include=projects/praxis-core/src/lib/helpers/ensure-ids.helper.spec.ts --include=projects/praxis-core/src/lib/helpers/form-layout-materializer.spec.ts`
+- Surface materialization: `npx ng test praxis-core --watch=false --progress=false --include=projects/praxis-core/src/lib/services/surface-open-materializer.service.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-loader.directive.spec.ts`
 - Authoring document/config editor: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form-authoring-protocol.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form-widget-config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form-config-editor.spec.ts`
 - AI/rule layout authoring: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/ai/praxis-dynamic-form-authoring-manifest.spec.ts --include=projects/praxis-dynamic-form/src/lib/ai/dynamic-form-rule-authoring-context.spec.ts --include=projects/praxis-dynamic-form/src/lib/ai/dynamic-form-agentic-authoring-turn-flow.spec.ts --include=projects/praxis-dynamic-form/src/lib/utils/rule-authoring-diagnostics.spec.ts`
 - Visual blocks: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/utils/visual-block-rule-content-overrides.util.spec.ts --include=projects/praxis-dynamic-form/src/lib/utils/rule-converters.spec.ts`
