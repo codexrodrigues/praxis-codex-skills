@@ -54,6 +54,9 @@ Inspect:
 - Persist history only through `AssistantHistoryService` under the tenant/env/user scope. Respect storage unavailability, 30-day/session-count retention, redaction on write and legacy read, and never reuse a session across scopes.
 - Local confirmation may enforce stricter UI policy, but cannot downgrade backend risk or make a patch applicable. Manual patch editing/reapply in the legacy assistant remains an explicitly confirmed, auditable compatibility flow gated by `allowManualPatchEdit`; do not present it as the canonical route for governed decisions or manifest-backed edits.
 - Intermediate SSE status/thought/diagnostic events are progress evidence. Terminal result/error/cancelled transitions determine final materialized state; raw errors and diagnostics remain redacted and are never promoted to business semantics.
+- `heartbeat`, replay diagnostics, watchdog progress, and lifecycle checkpoints may update visible status or structured diagnostics, but they must not create assistant messages, history facts, quick replies, apply buttons, pending patches, or semantic decisions by themselves.
+- Treat duplicate progress as a UX/status concern. Preserve diagnostic evidence such as `streamEventDiagnostics`, but do not count duplicate phases, `technicalDuplicate`, `replaySafe`, or `duplicatesDoNotIndicateExecution` events as extra work, extra tool calls, or additional governed decisions.
+- The shell may render quick-reply labels, descriptions, badges, and details, but only structured quick-reply payloads (`value`, `canonicalAction`, `semanticDecision`, `contextHints`, diagnostics) may continue a turn. Never parse rendered labels, status text, or diagnostic text back into intent.
 
 ## Validation
 
