@@ -57,6 +57,13 @@ For component-specific manifest work, use the focused skill when available: `pra
 - Remote-binding operations must prove input-schema and path/effect evidence, use a pertinent binding validator, and declare `affects-remote-binding`; do not label an unrelated operation as remote merely to satisfy a gate.
 - Family `controlProfiles` repeat the same operation metadata and applicability evidence. The generated registry must expose the aggregate family entry, `projectedComponentIds`, child `authoringManifestProfiles`, and preserved operation metadata.
 - Presentation affordances must identify their source, default target, and compatible options; they are consultative constraints, not edit permission.
+- Quick replies, clarification options, feedback, stream diagnostics, and transport lifecycle events may select or carry
+  a backend-issued semantic decision, but they cannot invent `operationId`, target resolver, validator, effect, handler,
+  affected path, `submissionImpact`, or apply permission. Those must resolve back to the projected manifest and backend
+  validation/compilation contract.
+- A `semanticDecision` or `componentEditPlan` is only executable when every referenced operation, target, validator,
+  effect, and presentation affordance can be traced to the current registry-projected manifest for the component/profile.
+  Treat untraceable references as contract drift or clarification, not as a reason to patch UI state locally.
 
 ## Synchronization Triggers
 

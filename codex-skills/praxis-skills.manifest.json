@@ -333,8 +333,8 @@
                                             "praxis-authoring-editors",
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "1EBDD395F278DC0F160A983BD078A487AE01EFC1DD91D3D1957F73FCF1A7C317",
-                       "treeSha256":  "C5255ACBC1C4A8C9E83375ABF9B1D8079835AA176F4A09AA50308055F22DC555"
+                       "skillMdSha256":  "5A1D0105A5FBE123141CB9E1EA87C3A6882058D5089703E67E910E0C99FD3463",
+                       "treeSha256":  "87D8669DD4D78937B2716F869F29EB91C30CF9406BC4E55EDF1DA8DC0A430737"
                    },
                    {
                        "name":  "praxis-ai-registry-ingestion",
