@@ -18,6 +18,10 @@ Pair it with:
 - `praxis-fields-text-number-time-controls` or `praxis-fields-selection-lookup-controls` for family-specific runtime semantics.
 - `praxis-ai-registry-ingestion` when profile/catalog changes must appear in generated AI registry assets.
 
+When locating files, first resolve the Angular workspace root. Paths below are relative to
+`praxis-ui-angular/projects/praxis-dynamic-fields` unless another package or examples path is
+explicitly named.
+
 ## Source Audit
 
 Inspect:
@@ -26,9 +30,13 @@ Inspect:
 - `projects/praxis-dynamic-fields/README.md`
 - `src/public-api.ts`
 - `src/lib/ai/praxis-dynamic-fields-authoring-manifest.ts`
+- `src/lib/ai/praxis-dynamic-fields-authoring-manifest.spec.ts`
 - `src/lib/ai/praxis-dynamic-fields-authoring-profiles.ts`
 - `src/lib/ai/control-type-ai-catalog.ts`
+- `src/lib/ai/control-type-ai-catalog.spec.ts`
+- `src/lib/ai/inline-filter-recipes.spec.ts`
 - relevant capability families in `src/lib/ai/*-ai-capabilities.ts`, including text, numeric, price range, select, tree, list, chips, date, time range, year, toggle, color, Brazil documents, file upload, and display action controls
+- `examples/ai-recipes/praxis-dynamic-fields/*.json` when inline recipe projection changes
 - `src/lib/catalog/dynamic-fields-playground.catalog.ts`
 - `src/lib/catalog/dynamic-fields-playground.recipes.ts`
 - `src/lib/canvas-integration/canvas-state.token.ts`
@@ -52,6 +60,11 @@ Treat `PRAXIS_DYNAMIC_FIELDS_AUTHORING_MANIFEST` as the shared contract for targ
 
 Component IDs are not decorative labels. When a profile lists `componentIds`, each ID must remain coherent with runtime registration, exported metadata, editorial discovery, playground catalog entries, generated registry assets, and the public docs surface. If one of those projections is missing, classify the change as partial coverage instead of claiming the control family is fully AI-ready.
 
+The manifest spec keeps a projected dynamic-fields component list. If a component ID is added,
+removed, or renamed, update profile coverage and evidence together: runtime registration,
+metadata/editorial discovery, catalog/docs, inline recipe if applicable, and registry ingestion
+assets. Do not hide a missing profile by dropping the component from the projected list.
+
 ## Inventory Before New Contract
 
 - `ja-suportado-so-ux`: the profile/capability exists but assistant UI, canvas, docs, or examples do not expose it clearly.
@@ -68,10 +81,15 @@ Only real gaps justify manifest/profile changes. Prefer profile correction over 
 - Runtime coverage, editorial discovery, AI profile coverage, canvas coverage, and registry projection are separate evidence statuses.
 - A profile claim is incomplete if the component renders but is missing from metadata/editorial discovery or AI registry extraction.
 - Profile `componentIds` must align with exported metadata, runtime registration, docs/catalog, and generated component docs.
-- Profile operations must produce canonical `FieldMetadata` paths; they must not invent canvas-only state.
+- Profile operations must produce canonical `FieldMetadata` paths. Operation `affectedPaths` for component profiles must start with `fieldMetadata.` and must not invent canvas-only, assistant-only, prompt-only, or local UI state.
+- Profile validators must be declared either in the base manifest validators or in the profile's own validators. Every operation validator should be traceable to one of those declarations.
+- Profile operations must remain executable and schema-addressable: `operationId` starts with `field.`, target resolver is `field-metadata-json-path`, ambiguity policy is `fail`, examples exist, and destructive profile operations are not introduced without a reviewed manifest-level contract.
 - Keep profile `affectedPaths` aligned with the actual `FieldMetadata` paths read by runtime/editorial code. Do not add canvas, assistant, or prompt-only paths as substitutes for platform metadata.
+- Keep `submissionImpact` honest. For example, avatar display metadata can be `visual-only`; option sources, entity lookup, collection, file upload, and schema-backed field decisions must not be mislabeled as visual-only convenience changes.
 - For option-bearing controls, delegate option source semantics to `praxis-fields-option-sources` and preserve canonical `optionSource`, identity fields, dependency maps, and value/display shape instead of inventing local select metadata.
 - For inline filter or compact authoring behavior, delegate overlay commit and inline value-shape checks to `praxis-fields-inline-overlay-runtime`.
+- Inline recipe projection must keep `templateMeta.registryKey` aligned with `fieldMetadata.controlType`; tags must keep `dynamic-fields` plus `inline` or `inline-filter`.
+- `getControlTypeCatalog(...)` may resolve direct `FieldControlType` values and declared inline aliases, but unknown aliases must fall back to `FIELD_METADATA_CAPABILITIES` rather than silently selecting a specialized family.
 - For text, numeric, temporal, selection, upload, rich content, and CRON wrappers, keep the dynamic-fields profile focused on selection, metadata wiring, and capability exposure; use the specialized package skill for deeper behavior.
 - If a new profile operation or validator is needed, update manifest/profile source plus the specs that prove operation identity, affected paths, examples, validators, catalog derivation, and registry extraction. Do not ship prompt-only guidance as the source of truth.
 - Wrapper controls should be represented by the dynamic-fields profile only for control selection/discovery. Their deeper package semantics must be delegated to files upload, rich content, or CRON AI skills.
