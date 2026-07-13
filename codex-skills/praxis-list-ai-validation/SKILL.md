@@ -39,6 +39,8 @@ Ground edit decisions in:
 
 Treat `visual-only` list operations such as `item.primaryText.set`, `item.secondaryText.set`, `item.avatar.configure`, `item.badge.configure`, row layout, layout density, i18n, and a11y presentation as list rendering materialization only. They may bind fields, expressions, labels, badges, chips, avatars, spacing, density, and accessibility hints, but they must not classify records, synthesize status/eligibility patches, create `domain-rules`, infer `backend_validation`, or become item authorization/business policy. Treat `events.map` as declarative host event wiring, not as proof that an event handler, workflow, or backend side effect exists.
 
+Keep list data-source authoring explicit. `data.local.set` creates inline/local data for examples, previews, or intentionally local lists, and `dataSource.data` takes precedence over `dataSource.resourcePath` at runtime. `data.resource.bind` is the canonical remote binding operation and must account for local data via `clearLocalData`/`local-remote-precedence-safe`; do not leave sample rows in the config as proof of a remote API contract, and do not replace a requested remote resource with fabricated local rows unless the user explicitly asked for local example content.
+
 ## Declared-Only Protection
 
 The manifest and context pack must not imply full authorability for fields that are only declared or partially runtime-proven. Maintain warnings for:
