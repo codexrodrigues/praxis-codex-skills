@@ -58,11 +58,13 @@ Inspect:
 - Keep `ComponentDocMeta.id`, `componentType`, descriptor `controlType`, selector, descriptor component reference, icon, lib, inputs, outputs, and runtime registration aligned.
 - Keep `PRAXIS_DYNAMIC_FIELDS_WAVE_1_COMPONENT_METADATA` and `PRAXIS_DYNAMIC_FIELDS_EDITORIAL_WAVE_1` in the same semantic order unless you deliberately update the contract spec.
 - Catalog entries should derive canonical friendly name, description, and descriptor icon from the editorial registry. Keep showcase-only data local to the catalog: recommended/avoid guidance, preview seeds, presets, snippets, interaction pattern overrides, and docs slugs.
+- Editorial/catalog parity proves discoverability, not full behavior. If the descriptor or catalog advertises remote options, entity lookup, inline explicit overlays, runtime hot metadata, selected reload, or AI authoring readiness, also prove the owning runtime/profile/option-source skill evidence instead of treating catalog presence as support.
 - Keep i18n coverage in sync when editorial copy changes; do not add English-only copy for a package-owned control unless the package already treats it as technical-only.
 - Preserve the distinction between primary form controls and specialized inline filter controls. Inline controls should not appear as default corporate form choices unless the authoring context is filter-focused.
 - Do not publish compatibility aliases as primary authoring choices. Aliases may support ingestion or migration, but catalog choices should be canonical `FieldControlType` values.
 - Keep public docs and exported catalog aligned with runtime and editorial truth. Markdown explains; the package catalog should drive official host/playground discovery.
 - When a control becomes AI-discoverable, align `CONTROL_TYPE_AI_CATALOGS`, authoring profiles, and `PRAXIS_DYNAMIC_FIELDS_AUTHORING_MANIFEST` validators/targets so AI authoring resolves the same canonical control identity as runtime/editorial discovery.
+- If a package-owned field is only discoverable through host-local metadata, manual docs, or downstream editor config, classify it as partial discovery and fix the canonical descriptor/metadata registry path before updating public guidance.
 
 ## Integration With Other Skills
 
@@ -88,5 +90,6 @@ Prefer focused checks:
 - AI authoring discovery:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/ai/control-type-ai-catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/praxis-dynamic-fields-authoring-manifest.spec.ts`
 - downstream discovery: metadata-editor or dynamic-form specs only when the consumer behavior changed
+- Add runtime/profile/option-source/inline overlay focused checks when the discovery change claims those behaviors; editorial/catalog specs alone only prove the field can be found and described.
 
 The change is incomplete if a package-owned field renders but cannot be found with the right name, icon, tags, inputs, and usage guidance in authoring tooling.
