@@ -1996,8 +1996,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "EBF9260F0280E21C0E13DE642361213281A92EA66F7A129270FA3A87B112746A",
-                       "treeSha256":  "4977F2D80A40E969044738CEA2E168708CED6A27342E73D160BCD0A21450DE7E"
+                       "skillMdSha256":  "433322CB883B4D235D847E2413A72720F6FACB2EB634E3DD4813E17B5975E639",
+                       "treeSha256":  "C8FA846FC21F5397ED56EE041A7F525272E6D1EFD9048B0CA9CA272A6AE8CEB4"
                    },
                    {
                        "name":  "praxis-settings-roundtrip-authoring",
