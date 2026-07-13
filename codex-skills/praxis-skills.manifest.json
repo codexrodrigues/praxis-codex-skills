@@ -2560,8 +2560,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "35582E52F6E9FF009911494AA694039EE00A543AB772004F385F88CFC5222BD2",
-                       "treeSha256":  "4D97FF9881540903792FF21F882C08FD2EC6FE559A12F9578B7A140FE9A71A58"
+                       "skillMdSha256":  "CB92C8A330FCF0305EE20DD0076B9C288BC54BB940DEB00C37066117ECB99F9E",
+                       "treeSha256":  "59F0DCDB60D48CD0AB6AECC22DFE7DF29455BF2647A5506D40507462016EB1A6"
                    },
                    {
                        "name":  "praxis-core-component-registry-contracts",

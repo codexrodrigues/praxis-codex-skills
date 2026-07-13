@@ -25,12 +25,15 @@ Inspect the owner before editing:
 - `smoke/smoke-domain-rules-publication.mjs`
 - `.github/workflows/http-examples-ci.yml`
 - `examples.manifest.json`
+- `ENTITY_LOOKUP_PUBLICATION_RUNBOOK.md` when promoting entity lookup, provider-backed option-source, `dependencyFilterMap`, or governed materialization examples into the LLM surface
 
 ## Canonical Boundary
 
 `LLM_SURFACE.md` is generated from `examples.manifest.json`. It should contain only examples useful for LLM-driven discovery and currently operational against the published backend.
 
 Safe-first order is: health/OpenAPI/catalog/filtered schemas, then auth-light options/views/filters/stats, then read-only governed decision proof, then protected contract reading when explicitly needed.
+
+`smoke:llm-surface` executes every `llmOperational` example against the published backend. Passing it proves the selected HTTP examples are reachable with their documented headers and payloads; it does not prove every canonical runtime semantic behind the endpoint. For option sources, use the LLM smoke as operational evidence only after the canonical descriptor, dependency mapping, by-ids ordering, selected reload, invalid-selection policy, provider SPI, or governed materialization semantics have been proven by quickstart/starter tests or runbooks.
 
 ## Decision Rules
 
@@ -39,6 +42,8 @@ Safe-first order is: health/OpenAPI/catalog/filtered schemas, then auth-light op
 - Keep `llm_bootstrap.json` and `LLM_BOOTSTRAP.md` aligned with accepted-now and recommended-stable header lanes.
 - When smoke fails, classify whether runtime, corpus claim, published backend, or canonical contract is wrong before editing examples.
 - CI baseline currently emphasizes `verify:manifest`, `smoke:llm-surface`, `smoke:corpus-promises`, and `smoke:bootstrap-minimums`.
+- Promote option-source examples to `llmOperational` only when they are read-only or auth-light, deterministic, safe for repeated execution, and explicitly classified as discovery/reachability, runtime lookup evidence, or governed materialization readback. Do not let one successful published request imply that LLM consumers may invent local `dependencyFilterMap`, rehydration, invalid-selection, or materialization behavior.
+- If an example demonstrates `dependencyFilterMap`, the LLM-facing docs should show the backend payload accepted by the endpoint and point to the filtered schema/manifest/runbook evidence. The smoke should confirm the request is usable; the schema/starter/quickstart evidence remains the authority for the mapping.
 
 ## No Keyword Routing
 
@@ -63,6 +68,7 @@ Use focused local gates:
 - LLM runtime lane: `npm run smoke:llm-surface`
 - bootstrap minimums: `npm run smoke:bootstrap-minimums`
 - promise consistency: `npm run smoke:corpus-promises`
+- option-source LLM promotion: `npm run smoke:llm-surface`, `npm run smoke:corpus-promises`, `npm run smoke:bootstrap-minimums`, plus the focused quickstart/starter proof named by the relevant option-source skill
 - domain-rule published proof: `npm run smoke:domain-rules-publication`
 
 If network or published backend access is not used, state that only structural generation/manifest checks were run.
