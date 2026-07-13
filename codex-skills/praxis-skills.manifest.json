@@ -319,8 +319,8 @@
                        "dependencies":  [
                                             "praxis-ai-turn-orchestration-transport"
                                         ],
-                       "skillMdSha256":  "40D7EFCFCCA0CEFA4AD8964A4D7F47B5C9C3C75FE9BBE8A940FEAAD6EC6DB3F6",
-                       "treeSha256":  "29FC6C0573FE76A20026DECB5433F18977DA16E24C96E3E5530139F21F76A0F8"
+                       "skillMdSha256":  "C8C7B807F6FEAE9FEA4BD9EBB752D10A30DFD648674B6DFDC97B1F9992AA9D41",
+                       "treeSha256":  "257265C6442E26C74313B7A2C53141647EF13883898B2FAC3336FAED49A56414"
                    },
                    {
                        "name":  "praxis-ai-authoring-manifests",
