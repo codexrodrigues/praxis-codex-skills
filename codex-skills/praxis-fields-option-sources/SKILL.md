@@ -26,14 +26,34 @@ Before editing, inspect:
 
 - `src/lib/base/simple-base-select.component.ts`
 - `src/lib/base/option-store.ts`
+- `src/lib/services/option-display-resolver.service.ts`
 - `src/lib/components/inline-async-select/**`
 - `src/lib/components/inline-entity-lookup/**`
 - `src/lib/components/material-async-select/**`
-- `src/lib/services/option-display-resolver.service.ts`
+- `src/lib/components/material-searchable-select/**`
+- `src/lib/components/material-autocomplete/**`
+- `src/lib/components/material-select/**`
+- `src/lib/directives/dynamic-field-loader.presentation-mode.spec.ts`
+- `src/lib/directives/dynamic-field-loader.select-rebind.spec.ts`
+- `src/lib/base/pdx-base-select-runtime-contract.json-api.md`
+- `src/lib/ai/praxis-dynamic-fields-authoring-profiles.ts`
+- `src/lib/ai/praxis-dynamic-fields-authoring-manifest.ts` and spec
+- `src/lib/ai/inline-filter-recipes.spec.ts`
+- `src/lib/catalog/dynamic-fields-playground.catalog.ts` and catalog specs
+- `src/lib/editorial/wave1/entity-lookup.editorial.ts`
+- `src/lib/editorial/wave1/material-select.editorial.ts`
+- `src/lib/editorial/metadata-contract.spec.ts`
+- `src/lib/editorial/metadata-i18n-contract.spec.ts`
 - affected `material-select`, `material-searchable-select`, `material-async-select`, `inline-*select`, or `inline-entity-lookup` component and spec
 - `src/lib/components/**/pdx-*.json-api.md` for public runtime claims
 - `src/lib/editorial/**` when the option-source field must be discoverable
-- `@praxisui/core` option-source and `GenericCrudService` contracts
+- `projects/praxis-core/src/lib/models/option-source.model.ts` and spec
+- `projects/praxis-core/src/lib/services/types/options.ts`
+- `projects/praxis-core/src/lib/services/generic-crud.service.ts` and spec
+- `projects/praxis-core/src/lib/helpers/field-definition-mapper.ts` and spec
+- `projects/praxis-core/src/lib/helpers/metadata-normalizer.ts` and spec
+- `projects/praxis-core/src/lib/services/schema-normalizer.service.ts` and spec
+- `projects/praxis-core/src/lib/services/schema-normalizer-array.service.spec.ts`
 - `@praxisui/dynamic-form` submit/runtime skills when selected value shape enters form payloads
 - `@praxisui/metadata-editor` cascade normalization skills when the editor authoring surface changes dependencies
 - backend `x-ui.optionSource` producer when the Angular runtime lacks required data
@@ -46,8 +66,11 @@ Before editing, inspect:
 - Convert dependency criteria to lookup filters through the existing option-source filter pipeline; do not encode dependency routing with local text matching.
 - Honor `optionSource.includeIds`. Send `includeIds` in filter requests only when the contract allows it.
 - For selected-value hydration, prefer `getOptionSourceOptionsByIds(optionSource.key, ids, options)` for option sources and `getOptionsByIds(ids)` only for generic resource options.
+- Presentation/read-only mode still needs selected display proof. Use by-ids/display resolver coverage; a working open panel does not prove saved values render after reopen.
 - Preserve `selectedReloadPolicy`, `invalidSortPolicy`, and backend waivers in UX/tooling claims. If by-ids reload is not supported, mark the scenario partial instead of pretending edit/reopen is fully supported.
 - Keep categorical buckets distinct: when the source is `CATEGORICAL_BUCKET`, default loading/search behavior may intentionally differ from free-text remote search.
+- Keep legacy top-level `valueField`, `displayField`, `dependencyFields`, and `dependencyFilterMap` as compatibility inputs only. Canonical backend-driven flows should normalize through `OptionSourceMetadata`, mapper/normalizer specs, and runtime option-source filters.
+- Do not infer `dependencyLoadOnChange`, reset policy, or reload policy from `dependsOn` unless the canonical contract declares it.
 - Keep dynamic-form and table/filter consumers aligned: the same `optionSource` decision should drive form controls, inline filters, metadata-editor authoring, and CRUD/table lookup displays without host-local duplication.
 
 ## Entity Lookup
@@ -65,12 +88,26 @@ Do not replace entity lookup with a plain async select unless the canonical meta
 
 Minimum focused checks:
 
-- select base behavior: `simple-base-select.component.spec.ts` and `option-store.spec.ts`
-- async select: `material-async-select.component.spec.ts`
-- inline variants: affected `inline-*select.component.spec.ts`
-- entity lookup: `inline-entity-lookup.component.spec.ts`
-- display/hydration: `option-display-resolver.service` behavior or focused coverage where present
-- editor/tooling discovery when metadata/editorial claims changed
-- downstream materialization: dynamic-form, metadata-editor, table/filter, or CRUD smoke only when the option-source contract changed for that consumer
+- Core option-source contracts and metadata normalization:
+  - `npx ng test praxis-core --watch=false --progress=false --include=projects/praxis-core/src/lib/models/option-source.model.spec.ts --include=projects/praxis-core/src/lib/services/generic-crud.service.spec.ts --include=projects/praxis-core/src/lib/helpers/field-definition-mapper.spec.ts --include=projects/praxis-core/src/lib/helpers/metadata-normalizer.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer-array.service.spec.ts`
+- Base option-source behavior, dependency filters, `includeIds`, and selected reload:
+  - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/base/simple-base-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/base/option-store.spec.ts`
+- Display/hydration and presentation mode:
+  - Add or run focused `OptionDisplayResolverService` coverage for by-ids/display path behavior.
+  - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/directives/dynamic-field-loader.presentation-mode.spec.ts --include=projects/praxis-dynamic-fields/src/lib/directives/dynamic-field-loader.select-rebind.spec.ts`
+- Async/searchable/autocomplete controls:
+  - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/components/material-async-select/material-async-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-async-select/inline-async-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-searchable-select/material-searchable-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-searchable-select/inline-searchable-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-autocomplete/material-autocomplete.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-autocomplete/inline-autocomplete.component.spec.ts`
+- Entity lookup and `RESOURCE_ENTITY` semantics:
+  - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/components/inline-entity-lookup/inline-entity-lookup.component.spec.ts`
+- Editor/tooling/catalog/AI discovery when metadata/editorial claims change:
+  - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/catalog/catalog-derivation.spec.ts --include=projects/praxis-dynamic-fields/src/lib/catalog/dynamic-fields-playground.catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/editorial/metadata-contract.spec.ts --include=projects/praxis-dynamic-fields/src/lib/editorial/metadata-i18n-contract.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/control-type-ai-catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/praxis-dynamic-fields-authoring-manifest.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/inline-filter-recipes.spec.ts`
+- Downstream materialization: dynamic-form, metadata-editor, table/filter, or CRUD smoke only when the option-source contract changed for that consumer. Useful focused examples include:
+  - `projects/praxis-dynamic-form/test-dev/e2e/funcionarios-form-demo-select-interaction.playwright.spec.ts`
+  - `projects/praxis-dynamic-form/test-dev/e2e/form-config-editor-cascades.playwright.spec.ts`
+  - `projects/praxis-crud/test-dev/e2e/funcionarios-edit-hydration-gap.playwright.spec.ts`
+  - `projects/praxis-crud/test-dev/e2e/funcionarios-modal-select-overlay.playwright.spec.ts`
+  - `projects/praxis-table/test-dev/e2e/filter-inline-metadata-editor.playwright.spec.ts`
+- `npm run build:praxis-dynamic-fields` when public dynamic-fields contracts or metadata claims change.
+- Build/test the direct consumer when option-source normalization changes a public core contract.
 
 Always audit reopen/edit and presentation mode for selected values. A filter request that loads a page is not proof that a saved selected ID can be displayed later.
