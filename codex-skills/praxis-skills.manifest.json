@@ -839,8 +839,8 @@
                                             "praxis-core-i18n-resource-copy",
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "117B5166FDF0CDE8698FC27200D0C7D51E0B6D3E420647233E639E757C03A6C1",
-                       "treeSha256":  "09B411D407178B712CC4B741EF60AB8FD75290A9ED9F688CA3518D94EC67CD1D"
+                       "skillMdSha256":  "FED18166665EC3B29E68D309BDF93FCC90EF400EE2BE48E9D8A839DFA20DAF7B",
+                       "treeSha256":  "82A9C60252FF915685F09C081AD981F15A50AA852ABD69C34CE6F4CDBE847D9E"
                    },
                    {
                        "name":  "praxis-metadata-schema-contracts",

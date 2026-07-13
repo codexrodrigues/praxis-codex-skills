@@ -46,6 +46,8 @@ Use canonical metadata as the source:
 - option-source descriptors and `/by-ids`: remote select, entity lookup, dependency filters, and selected-value rehydration
 - domain catalog/knowledge/rules: AI grounding and explanation, not local routing by labels
 - analytics metadata: stats/projection materialization, not chart-local metric vocabulary
+- Preserve the distinction between semantic identity and operational address. `resourceKey` is the stable backend semantic identity for surfaces/actions/capabilities; `resourcePath`, `path`, `method`, `schemaUrl`, `_links`, and resolved hrefs are operational evidence. Do not collapse them into a single route string or local endpoint map.
+- Treat operation resolution source as evidence quality. `explicit`, `capability`, `surface`, and `link` resolutions carry declared contracts; `convention` is a compatibility fallback that must emit/keep diagnostics and should trigger a backend metadata audit before agents treat the operation as canonical.
 
 If these are missing or contradictory, classify the gap and return to the canonical backend/config owner. Do not patch with host-only aliases, label matching, local endpoint maps, or Angular-only action routers.
 
@@ -55,6 +57,7 @@ If these are missing or contradictory, classify the gap and return to the canoni
 - Do not add `/api`, `/filter`, `/{id}`, query strings, schema paths, or submit endpoints to `resourcePath` when `GenericCrudService` can resolve them.
 - Use operation-specific `schemaUrl`, `submitUrl`, and `submitMethod` only when a real action/surface/command contract requires them.
 - Treat capabilities and `_links` as availability gates for optional operations such as export, create, edit, delete, duplicate, workflow actions, and surface opens.
+- `availability.allowed=false`, missing rels, missing schema URLs, stale capability snapshots, or denied actions must fail closed to disabled UI, clarification, or diagnostics. Do not infer permission from button visibility, route patterns, component presence, or matching action labels.
 - For related resources, prefer `RelatedResourceSurfaceResolverService` and the `surface.relatedResource` contract over local parent-child filters.
 - For selected rows or widget outputs, check `PraxisSurfaceHostComponent`, materializer output wiring, row events, and capabilities before declaring a platform gap.
 - Treat `x-ui.resource.identity` as the canonical structured identity of a record. `keyField`, `titleField`, ordered `metadataFields`, and `displayLabelField` come from `@ApiResource(identity = @ResourceIdentity(...))`; Angular must not infer these roles from property names or split a concatenated `displayLabel`.
