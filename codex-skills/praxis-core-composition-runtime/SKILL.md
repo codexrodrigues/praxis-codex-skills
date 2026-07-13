@@ -13,6 +13,8 @@ This area materializes governed component and page decisions. It should not beco
 
 Inspect the affected source before changing guidance or code:
 
+- `projects/praxis-core/AGENTS.md`
+- `projects/praxis-core/src/public-api.ts` when composition models, widget contracts, ports, surface hosts, runtime observations, or composition services are exported or public consumption changes
 - `projects/praxis-core/docs/connection-editor.md`
 - `projects/praxis-core/docs/rfc-dynamic-page-canvas-runtime.md`
 - `projects/praxis-core/src/lib/composition/**`
@@ -111,19 +113,45 @@ Before declaring composition guidance current, prove:
 Use a focused Angular gate from the `praxis-ui-angular` root:
 
 ```bash
-npx ng test praxis-core --watch=false --progress=false \
+npm run test:core -- \
   --include=projects/praxis-core/src/lib/composition/composition-runtime.engine.spec.ts \
+  --include=projects/praxis-core/src/lib/composition/composition-runtime.facade.spec.ts \
   --include=projects/praxis-core/src/lib/composition/link-executor.service.spec.ts \
   --include=projects/praxis-core/src/lib/composition/transform-runtime.service.spec.ts \
   --include=projects/praxis-core/src/lib/composition/composition-validator.service.spec.ts \
+  --include=projects/praxis-core/src/lib/composition/composition-link-legacy-migrator.spec.ts \
   --include=projects/praxis-core/src/lib/composition/nested-port-catalog.service.spec.ts \
+  --include=projects/praxis-core/src/lib/services/surface-binding-runtime.service.spec.ts \
   --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page.component.spec.ts \
+  --include=projects/praxis-core/src/lib/widgets/dynamic-widget-loader.directive.spec.ts \
   --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page-runtime-observation.spec.ts \
-  --include=projects/praxis-core/src/lib/surfaces/praxis-surface-host.component.spec.ts
-npx ng build praxis-core --configuration production
+  --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page-record-surface-open.spec.ts \
+  --include=projects/praxis-core/src/lib/services/runtime-component-observation-registry.service.spec.ts \
+  --include=projects/praxis-core/src/lib/surfaces/praxis-surface-host.component.spec.ts \
+  --include=projects/praxis-core/src/lib/surfaces/praxis-related-resource-outlet.component.spec.ts
+npm run build:praxis-core
 ```
 
 These gates prove the shared Angular runtime. Record Page Builder/Visual Builder authoring, owning-container nested paths, real global-action side effects, metadata-backed surface discovery, and browser UX as unverified unless their focused consumers were also exercised.
+
+When the change is authored or exercised through Page Builder, add the focused authoring proof:
+
+```bash
+npm run ng -- test praxis-page-builder --watch=false --progress=false \
+  --include=projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor.component.spec.ts \
+  --include=projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor-graph.util.spec.ts \
+  --include=projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor-trace.util.spec.ts \
+  --include=projects/praxis-page-builder/src/lib/ai/page-builder-ui-composition-plan.spec.ts \
+  --include=projects/praxis-page-builder/src/lib/ai/page-builder-agentic-authoring-turn-flow.spec.ts
+```
+
+When nested composition flows through container widgets, add the owning-container proof instead of inferring from the core union alone:
+
+```bash
+npm run ng -- test praxis-tabs --watch=false --progress=false --include=projects/praxis-tabs/src/lib/praxis-tabs-widget-event.spec.ts --include=projects/praxis-tabs/src/lib/praxis-tabs-widget-config-editor.spec.ts
+npm run ng -- test praxis-stepper --watch=false --progress=false --include=projects/praxis-stepper/src/lib/praxis-stepper-widget-config-editor.spec.ts
+npm run ng -- test praxis-expansion --watch=false --progress=false --include=projects/praxis-expansion/src/lib/praxis-expansion-widget-config-editor.spec.ts
+```
 
 ## Validation Guidance
 
