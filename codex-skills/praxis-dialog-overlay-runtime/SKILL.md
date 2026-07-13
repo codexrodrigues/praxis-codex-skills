@@ -31,6 +31,11 @@ Inspect:
 - Use `PraxisDialog.open`, `confirm`, `alert`, `prompt`, `openByRegistry`, `openTemplateById`, or tag mode; do not add ad hoc overlay shells in consumers.
 - For metadata-driven surfaces, go through the global action/surface providers rather than opening ad hoc overlays from consumers.
 - Preserve lifecycle streams: `afterOpened`, `beforeClosed`, `afterClosed`, `backdropClick`, `keydownEvents`, `afterAllClosed`.
+- Treat the value passed to `close(...)` and emitted by `afterClosed()` as overlay lifecycle result.
+  It is not, by itself, a governed business decision, persisted component config, or composition
+  dispatch. When dialog results need domain or page effects, route them through the owning
+  `GlobalActionRef`, surface/global-action provider, composition link, or backend-confirmed action
+  instead of parsing dialog result payloads in a host.
 - Preserve close policy: `disableClose`, `closeOnBackdropClick`, Escape handling, backdrop click handling, and close on navigation.
 - Preserve `autoFocus`, `autoFocusedElement`, `restoreFocus`, visible title or accessible label, and correct `ariaRole`.
 - Use `alertdialog` for destructive/blocking confirmations.
