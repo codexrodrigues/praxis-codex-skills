@@ -20,6 +20,13 @@ The editor may hydrate from backend `x-ui` shape, but ordinary cascade-editor sa
 
 When both shapes are present, root-level `dependencyFields`/`dependencyFilterMap` are the editor/runtime override. `optionSource.*` remains the backend grounding shape for discovery and entity option-source authoring.
 
+Apply the same boundary to AI authoring manifests and adapters. A cascade operation may read
+`fieldMetadata.optionSource.dependsOn` and `fieldMetadata.optionSource.dependencyFilterMap` for
+hydration, grounding, or preservation checks, but it should not list or emit those backend `x-ui`
+paths as ordinary writes unless the operation is explicitly an option-source migration/configuration
+operation. Normal cascade authoring writes the metadata-editor runtime paths produced by
+`CascadeRulesService.dehydratePatch()`.
+
 ## Required Source Audit
 
 Inspect:
@@ -72,6 +79,10 @@ When changing cascades:
 - Prefer governed `RESOURCE_ENTITY` option-source semantics for business entity lookup, including identity, display, search, selection policy, capabilities, and detail/surface metadata.
 - Remote option-source authoring uses `resourcePath`; do not reintroduce legacy `endpoint` in select, radio, button-toggle, transfer-list, or entity lookup configs.
 - `RESOURCE_ENTITY` coverage must include `optionSource.key`, `type`, `entityKey`, `resourcePath`, value/label/code/description/status paths, search/filtering metadata, `dependsOn`, `dependencyFilterMap`, selection policy, `capabilities.byIds`, detail/create metadata, dialog columns, and actions.
+- Do not confuse RESOURCE_ENTITY option-source authoring with cascade rule authoring. Editing
+  `optionSource.dependsOn` inside an option-source editor configures backend/discovery grounding;
+  editing a cascade rule configures `dependencyFields` and root-level cascade behavior for
+  metadata-editor/runtime consumption.
 
 ## Normalization
 
@@ -111,6 +122,11 @@ npx ng test praxis-metadata-editor --watch=false --progress=false \
   --include=projects/praxis-metadata-editor/src/lib/ai/praxis-metadata-editor-authoring-manifest.spec.ts \
   --include=projects/praxis-metadata-editor/src/lib/ai/metadata-editor-ai.adapter.spec.ts
 ```
+
+For AI cascade changes, specs should prove the handler contract keeps backend `optionSource.*`
+dependency paths read-only/preserved unless the operation explicitly targets option-source
+migration/configuration, and that emitted patches follow `CascadeRulesService.dehydratePatch()` /
+`clearPatch()` semantics.
 
 If entity lookup option-source runtime behavior changes, pair this skill with `praxis-fields-option-sources` and validate the direct runtime consumer.
 
