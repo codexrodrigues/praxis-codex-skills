@@ -46,6 +46,8 @@ Apply updates the component preview/runtime without closing. Save emits the same
 
 Therefore the widget editor must preserve every unrelated input deliberately, update `inputs.chartDocument` and `inputs.queryContext`, and remove only inputs whose precedence would be wrong. For `source.kind = "praxis.stats"`, remove stale local `inputs.data`; do not silently delete shell or host inputs.
 
+Treat preserved `inputs.data` as local/derived runtime data only. It may be kept for legacy or `source.kind = "derived"` widgets, but when the canonical `chartDocument.source.kind` is `praxis.stats`, local rows must not remain as a palette/sample fallback, backend proof, capability evidence, or substitute for the stats request. If a host still needs sample data for an authoring preview, keep it in transient editor context or preview state, not in the persisted widget inputs envelope.
+
 ## Initialization And Baselines
 
 - `PraxisChartConfigEditor` may initialize from its documented component input or `SETTINGS_PANEL_DATA` compatibility shape. Keep one canonical input name and do not rely on passing duplicate aliases that the Settings Panel filters out.
