@@ -14,6 +14,7 @@ Global actions are governed runtime decisions, not string commands. Persist and 
 Inspect before editing:
 
 - `projects/praxis-core/AGENTS.md`
+- `projects/praxis-core/src/public-api.ts` when action models, catalogs, providers, validators, UI schemas, presets, or editor helpers are exported or public consumption changes.
 - `projects/praxis-core/docs/rfc-surface-open.md`
 - `projects/praxis-core/src/lib/models/global-action.model.ts`
 - `projects/praxis-core/src/lib/services/global-action.service.ts`
@@ -23,6 +24,9 @@ Inspect before editing:
 - `projects/praxis-core/src/lib/actions/global-action-ref.utils.ts`
 - `projects/praxis-core/src/lib/actions/global-action-ui.ts`
 - `projects/praxis-core/src/lib/actions/surface-open-presets.ts`
+- `projects/praxis-core/src/lib/services/surface-binding-runtime.service.ts`
+- `projects/praxis-core/src/lib/composition/composition-validator.service.ts`
+- `projects/praxis-core/src/lib/widgets/widget-page-composition.serialization.ts`
 - focused specs and the consumer/editor that persists or executes the action.
 
 ## Canonical Shape
@@ -69,11 +73,45 @@ Do not select an action by matching button text, labels, route fragments, aliase
 
 Use focused validation:
 
-- `global-action-ref.utils.spec.ts`
-- `global-action.service.spec.ts`
-- surface open preset/editor specs
-- provider/catalog specs
-- authoring editor or direct consumer specs where the action is saved and executed.
+- core ref validation, catalog/UI schema, execution, `payloadExpr`, `surface.result`, and `dynamicPage.composition.dispatch`:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/actions/global-action-ref.utils.spec.ts --include=projects/praxis-core/src/lib/services/global-action.service.spec.ts
+```
+
+- `surface.open` editor, presets, and binding runtime:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/actions/editors/surface-open-action-editor.component.spec.ts --include=projects/praxis-core/src/lib/actions/surface-open-presets.spec.ts --include=projects/praxis-core/src/lib/services/surface-binding-runtime.service.spec.ts
+```
+
+- composition persistence/validation when actions flow through dynamic pages:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/composition/composition-validator.service.spec.ts --include=projects/praxis-core/src/lib/widgets/widget-page-composition.serialization.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page.component.spec.ts --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page-record-surface-open.spec.ts
+```
+
+- visual providers when `surface.open`, `surface.result`, dialog actions, or provider registration changes:
+
+```sh
+npm run ng -- test praxis-dialog --watch=false --progress=false --include=projects/praxis-dialog/src/lib/providers/dialog-global-actions.provider.spec.ts --include=projects/praxis-dialog/src/lib/providers/surface-global-actions.provider.spec.ts
+```
+
+- authoring or component consumer proof when the action is saved/executed outside core:
+
+```sh
+npm run test:form -- --include=projects/praxis-dynamic-form/src/lib/action-authoring/global-action-authoring.util.spec.ts
+npm run test:table -- --include=projects/praxis-table/src/lib/table-global-action-adapter.spec.ts --include=projects/praxis-table/src/lib/praxis-table-config-editor.global-actions.spec.ts
+npm run ng -- test praxis-list --watch=false --progress=false --include=projects/praxis-list/src/lib/list-global-action-adapter.spec.ts
+```
+
+- Page Builder authoring/composition proof when `payloadExpr`, global-action targets, or `surface.open` connection editing changes:
+
+```sh
+npm run ng -- test praxis-page-builder --watch=false --progress=false --include=projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor.component.spec.ts --include=projects/praxis-page-builder/src/lib/editor/connection-editor/connection-editor-graph.util.spec.ts --include=projects/praxis-page-builder/src/lib/ai/page-builder-ui-composition-plan.spec.ts --include=projects/praxis-page-builder/src/lib/ai/praxis-page-builder-authoring-manifest.spec.ts
+```
+
+For public or cross-lib changes, also run `npm run build:praxis-core` and a direct consumer build selected by actual imports.
 
 For first-step issue resolution, audit a real action instance end to end: persisted shape, catalog entry, UI schema fields, validation result, runtime context used by `payloadExpr`, execution result, and failure message when the handler/provider is missing.
 
