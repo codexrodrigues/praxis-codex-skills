@@ -2446,8 +2446,8 @@
                        "dependencies":  [
                                             "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "875FE6DD04FACFF165D0FEDDB91D8639DD86C48FAF0265E584A2F034A09756B6",
-                       "treeSha256":  "6B46AC030D038FDC7EB4C5C30B983F565A993B863086E95F3D51DB15247C0829"
+                       "skillMdSha256":  "61CBA58101B8465C7B4C23B4C5ABC58826E287C872C20218D06E859156503213",
+                       "treeSha256":  "EB57F82519836E578FBB3CB2B227E4A5FF4B261563F0E4A06C6D9F08E6E53F14"
                    },
                    {
                        "name":  "praxis-api-quickstart-operational-proof",
