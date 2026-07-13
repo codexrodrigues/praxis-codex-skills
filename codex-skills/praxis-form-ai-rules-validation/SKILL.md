@@ -104,6 +104,7 @@ changing manifest, adapter, recipe, registry, or public docs involving `componen
   `decisionDiagnostics`, target layer/type/key/pointer) through `DomainRuleFormRulesService`.
   Do not re-author the same rule locally just because the visual effect is representable as
   `FormLayoutRule`.
+- Treat `propertiesWhenFalse` as the Dynamic Form false-branch projection for UI/form state, not as a canonical business denial. If a governed materialization is unsupported, incomplete, invalid, or missing provenance, suppress that projection or surface diagnostics; do not backfill a local `formRules` denial, infer `backend_validation`, or turn the false branch into the source of policy.
 - Context packs are grounding artifacts. Keep dynamic-form and filter-form context packs aligned with allowed targets, diagnostics, existing rules, actions, fields, visual blocks, and runtime/read-only evidence.
 - Computed field values must use the canonical closed envelope when authoring structured values: exactly `{ "expression": <JSON Logic> }` or exactly `{ "literal": <value> }`.
 - The visual property panel is a guided projection of the JSON/rule contract. Unsupported or JSON-only rule capabilities must remain visible as advanced/diagnostic state rather than being silently dropped.
