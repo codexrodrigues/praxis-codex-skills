@@ -24,6 +24,11 @@ Form appears inside `@praxisui/editorial-forms`, keep editorial journey/snapshot
 
 ## Source Audit
 
+First resolve the Angular workspace root. In the platform monorepo the files may live under
+`praxis-ui-angular/projects/...`; in a standalone Angular checkout they may live directly under
+`projects/...`. Audit the active `praxis-ui-angular` workspace, not stale issue worktrees such as
+`praxis-ui-angular-issue*`, unless the user explicitly targets one of those worktrees.
+
 Inspect the authoring surface:
 
 - `projects/praxis-dynamic-form/AGENTS.md`
@@ -51,9 +56,25 @@ Inspect the authoring surface:
 - `projects/praxis-dynamic-form/src/lib/utils/metadata-mappers.ts`
 - `projects/praxis-dynamic-form/docs/dynamic-form-authoring-document-semantics.md`
 - `projects/praxis-dynamic-form/docs/dynamic-form-visual-builder-parity-audit.md`
+- platform decision-authoring docs that mention `formRulesState`, `componentEditPlan`, or
+  `rule.visualBlockGuidance.add`, especially `docs/2026-04-form-rules-state-despromocao-backlog.md`
+  when the platform monorepo is available
 - related JSON API docs such as `config-editor/praxis-dynamic-form-config-editor.json-api.md`, `layout-editor/praxis-layout-editor.json-api.md`, and `json-config-editor/form-json-config-editor.json-api.md`
 
 Also inspect `projects/praxis-settings-panel/AGENTS.md` when changing `SettingsValueProvider`, drawer data, `apply`, `save`, `reset`, or persisted config.
+
+For Settings Panel protocol changes, inspect the concrete owner files instead of inferring behavior
+from Dynamic Form providers alone:
+
+- `projects/praxis-settings-panel/src/lib/settings-panel.component.ts`
+- `projects/praxis-settings-panel/src/lib/settings-panel.component.spec.ts`
+- `projects/praxis-settings-panel/src/lib/settings-panel.ref.ts`
+- `projects/praxis-settings-panel/src/lib/settings-panel.service.ts`
+- `projects/praxis-settings-panel/src/lib/settings-panel.service.spec.ts`
+- `projects/praxis-settings-panel/src/lib/settings-panel-bridge.provider.ts`
+- `projects/praxis-settings-panel/src/lib/settings-panel-bridge.provider.spec.ts`
+- `projects/praxis-settings-panel/src/lib/ai/settings-panel-ai.adapter.spec.ts`
+- `projects/praxis-settings-panel/src/lib/ai/praxis-settings-panel-authoring-manifest.spec.ts`
 
 ## Authoring Document Rules
 
@@ -69,6 +90,13 @@ Also inspect `projects/praxis-settings-panel/AGENTS.md` when changing `SettingsV
 Legacy partial adapter APIs can keep merge compatibility, but canonical editor apply/save is replace-all.
 
 Settings Panel, widget config editor, embedded config editor, JSON editor, metadata editor bridge, and AI assistant must all target the same authoring document/apply-plan semantics. Do not fix an authoring value in only one tab or host surface when the canonical editor family should own the round-trip.
+
+`formRulesState` is internal/legacy runtime and visual-builder round-trip state. Do not present it as
+the canonical authoring target for business rules, compliance, eligibility, validation policy, or
+shared decisions. Those decisions belong to governed semantic authoring such as `domain-rules` /
+`shared_rule_authoring` and may later materialize into `form_config`, visual guidance, or runtime
+state. Keep `componentEditPlan` and `rule.visualBlockGuidance.add` scoped to component/page authoring
+or optional UI projection, not primary rule authoring.
 
 ## Editor Round-Trip Checklist
 
@@ -92,6 +120,8 @@ If no visual editor is affected, state why.
 - Do not create component-specific local editors in a host when `ComponentDocMeta.configEditor` or the owning Dynamic Form editor should handle it.
 - Treat `Apply` working without `Save`, or `Save` working without reopen, as incomplete.
 - Treat runtime-only host values shown in the editor, such as schema URL, submit URL, submit method, and resolved metadata, as read-only diagnostics unless the authoring document explicitly owns the field.
+- Treat `formRulesState` echoes in visual-builder paths as derived state to preserve, not a new
+  public AI/write contract.
 - Treat a stale visual-builder echo, JSON-only advanced path, or tab-local fallback as a partial implementation until reopen and JSON editor paths preserve the same semantics.
 - When an editor embeds `FieldMetadataEditorComponent`, `DynamicEditorRendererComponent`, or `CascadeManagerTabComponent`, use the metadata-editor consumer bridge contract instead of reimplementing metadata editor logic in Dynamic Form.
 - Dynamic Form may delegate to manual-form or editorial-forms hosts, but those hosts must not redefine Dynamic Form authoring semantics through local autosave, toolbar, or journey snapshot shortcuts.
@@ -108,6 +138,8 @@ Only `lacuna-real-de-contrato` justifies a new authoring/settings contract. Othe
 ## Validation
 
 - Settings Panel/document semantics: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/dynamic-form-editor-capability.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form-authoring-protocol.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form-widget-config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form-widget-config-editor.spec.ts`
+- Settings Panel owner protocol: `npx ng test praxis-settings-panel --watch=false --progress=false --include=projects/praxis-settings-panel/src/lib/settings-panel.component.spec.ts --include=projects/praxis-settings-panel/src/lib/settings-panel.service.spec.ts --include=projects/praxis-settings-panel/src/lib/settings-panel-bridge.provider.spec.ts`
+- Settings Panel AI/protocol manifest: `npx ng test praxis-settings-panel --watch=false --progress=false --include=projects/praxis-settings-panel/src/lib/ai/settings-panel-ai.adapter.spec.ts --include=projects/praxis-settings-panel/src/lib/ai/praxis-settings-panel-authoring-manifest.spec.ts`
 - Config and JSON editor: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form-config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form.config-editor.cascade.integration.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/json-config-editor/json-config-editor.component.spec.ts`
 - Layout editor: include `layout-editor/layout-editor.component.spec.ts`, `field-configurator.component.spec.ts`, `row-configurator.component.spec.ts`, `section-configurator.component.spec.ts`, `apply-section-preset.util.spec.ts`, and `visual-block-presets.spec.ts` when layout or visual blocks change.
 - Behavior/rules/messages/hooks/actions: include focused editor specs such as `behavior-editor.component.spec.ts`, `rules-editor.component.spec.ts`, `messages-editor.component.spec.ts`, `actions-editor.component.spec.ts`, `rule-properties-panel.component.spec.ts`, and hook specs when present.
