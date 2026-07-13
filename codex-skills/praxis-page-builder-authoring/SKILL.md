@@ -31,6 +31,10 @@ For child widget config:
 Page Builder hosts child editors; it does not redefine child component config documents.
 When a child editor needs schemas, capabilities, resource catalogs, page targets, ports, or diagnostics only for authoring, provide them through `ComponentDocMeta.configEditor.contextResolver` as transient `context/contextDiagnostics`. Do not persist those values in `page.widgets[].definition.inputs`; only the editor's explicit settings result may update child inputs.
 If the child editor is Visual Builder, Dynamic Form, Table, Chart, List, Rich Content, or another Praxis component, load that component's authoring skill and preserve its document/apply semantics inside `page.widgets[].definition.inputs`.
+When a hosted child editor returns a `SettingsValueProvider` payload, Page Builder must apply the
+child-owned canonical input patch/document projection as `definition.inputs`, not wrap it in a
+Page-Builder-local envelope or merge back transient context. Missing blocks in a replace-all child
+document must remain cleared unless the child owner declares merge semantics.
 
 ## Required Source Inventory
 
@@ -71,6 +75,9 @@ Before calling a Page Builder editor ready, verify:
 - widget shell changes affect only `page.widgets[].shell`.
 - child widget settings open through the child `ComponentDocMeta.configEditor` or manifest path.
 - transient child editor context from `configEditor.contextResolver` is separated from persisted inputs and is not saved back to `page.widgets[].definition.inputs`.
+- Page Builder does not persist `context`, `contextDiagnostics`, runtime drawer `surfaceRuntime`,
+  `result$` envelopes, row-selection payloads, resolved catalogs, or diagnostics output as child
+  widget inputs unless the child owner explicitly declares those paths as stable inputs.
 - Visual Builder or rule editors hosted as child config preserve JSON Logic/graph round-trip and do not leak Page Builder-only rule state.
 - reset returns to the initial page/shell and updates dirty/valid/busy state.
 - runtime preview consumes the same document shape that persistence saves.
