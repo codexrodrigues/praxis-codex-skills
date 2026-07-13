@@ -23,6 +23,8 @@ The ingestion corpus with `components[].chunks` is canonical for aggregate analy
 
 Read `tools/ai-registry/AGENTS.md`, its README, workspace AGENTS, and the affected library's AGENTS before editing. Inspect the actual owner source: public API, component metadata, docs manifest, authoring manifest, capabilities/context pack, focused specs, and consumer docs.
 
+When backend registry persistence, bootstrap, classpath snapshot, template search/upsert, RAG document identity, or official upload behavior is in scope, also inspect `praxis-config-starter/AGENTS.md`, `RegistryIngestionController`, `RegistryIngestionService`, `RegistryIngestionRequest`, `AiRegistry`, `AiRegistryRepository`, `AiRegistryBootstrapService`, `AiRegistryStatusService`, `AiRegistryTemplateController`, `AiRegistryTemplateService`, and `src/main/resources/ai-registry/registry-snapshot.json`. The backend owns persisted registry identity, release-scoped RAG projection, snapshot bootstrap, template records, status/health, revision/ETag behavior, and rejection of invalid authoring manifests or presentation affordance catalogs.
+
 ## Decide The Smallest Canonical Operation
 
 | Change | Owner and minimum action |
@@ -64,5 +66,13 @@ Only a real contract gap justifies a schema, chunk, generator, endpoint, or scri
 ## Evidence And Companion Skills
 
 Run the smallest compatible command and report it exactly. For changes to tooling itself, add its focused Node self-test; for a source component, add that component's build/spec/authoring proof. State whether docs, recipes, manifests, landing, package assets, RAG/provider projections, backend sync, and release validation were affected.
+
+For backend registry ingestion, snapshot, template, bootstrap, or official upload contract changes, run the focused config-starter gate:
+
+```sh
+mvn "-Dtest=RegistryIngestionServiceTest,RegistryIngestionServiceIdentityTest,AiRegistrySnapshotContractTest,AiRegistryBootstrapServiceTest,AiRegistryTemplateServiceTest,AiRegistryTemplateControllerTest,AiRegistryRevisionPolicyTest" test
+```
+
+When `src/main/resources/ai-registry/registry-snapshot.json` is updated from the Angular ingestion corpus, prove both sides: `npm run generate:registry:ingestion` in `praxis-ui-angular`, then the backend snapshot gate above. Do not update the classpath snapshot hash, version, generated timestamp, chunk counts, or unsupported-validator expectations without regenerating from the canonical Angular corpus and validating the backend snapshot contract.
 
 Use `praxis-ai-authoring-manifests` for executable authoring contracts; `praxis-angular-docs-playgrounds` for public documentation; `praxis-angular-public-api-governance` for exports; `praxis-angular-validation-gates` for local proof; and the functional component skill for the changed source. Use `praxis-config-agentic-authoring-streaming` or `praxis-ai-turn-orchestration-transport` when registry chunks derive from governed turns, tools, observations, quick replies, or backend transport.
