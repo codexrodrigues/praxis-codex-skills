@@ -1530,8 +1530,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "1FADB35F06EF0090296C2D9A012C7644319EC4DFF9E309C1A40D62B7E356A49A",
-                       "treeSha256":  "4253460FA152F68CE781F422C03D8146FB19AB6AAB27D9446452587AC4D0A04D"
+                       "skillMdSha256":  "6292059E9F2C4205F9B7BDA68754A71D5F60BBE870B3E218B585D4472BAA3F67",
+                       "treeSha256":  "D64751D14284BA386AD3D8CB4EC541BE757CB718774C1FE579ADC34F8C253F7E"
                    },
                    {
                        "name":  "praxis-java-host-project",
