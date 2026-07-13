@@ -33,6 +33,8 @@ Inspect the owning component:
 
 Also inspect `projects/praxis-core/src/lib/ai/authoring-manifest.types.ts` when changing manifest shape.
 
+When backend registry projection, validation, compilation, or `/api/praxis/config/ai/authoring/manifests/**` endpoints are in scope, inspect `praxis-config-starter/AGENTS.md`, `AgenticAuthoringManifestController`, `AgenticAuthoringManifestService`, `AgenticAuthoringManifestContractValidator`, `AgenticAuthoringManifestEditPlanRequest`, `AgenticAuthoringManifestValidationResult`, `AgenticAuthoringManifestCompileResult`, and their focused tests. The backend is the runtime authority for resolving registry manifests, validating edit plans, compiling patches, and returning controlled configuration errors.
+
 For component-specific manifest work, use the focused skill when available: `praxis-page-builder-ai-agentic` for `PRAXIS_PAGE_BUILDER_AUTHORING_MANIFEST`, `UiCompositionPlan`, child operation delegation, streaming authoring, and Page Builder registry gates; `praxis-visual-builder-rules` for `PRAXIS_VISUAL_BUILDER_AUTHORING_MANIFEST`, rule graph operations, JSON Logic round-trip, and visual-builder AI adapter behavior.
 
 ## Manifest Rules
@@ -67,5 +69,17 @@ If no manifest update is required after a public change, state why.
 ## Validation
 
 Run the focused manifest spec first. Use `npm run validate:authoring-contracts` or the direct validator when the manifest is complete/public. Use `praxis-ai-registry-ingestion` when generated registry/catalog artifacts must be updated or verified.
+
+For backend registry projection, manifest endpoint, edit-plan validation, compile-patch, presentation affordance, or configuration-error behavior, run the focused config-starter gate:
+
+```sh
+mvn "-Dtest=AgenticAuthoringManifestContractValidatorTest,AgenticAuthoringManifestServiceTest,AgenticAuthoringManifestControllerTest" test
+```
+
+For Angular public manifest corpus changes, run:
+
+```sh
+npm run validate:authoring-contracts
+```
 
 For a public manifest, prove the owning runtime/editor round-trip and inspect the generated registry entry, public export, README claim, and required implementation/semantic reports. A passing TypeScript literal is insufficient when targets, effects, validators, profile projection, or runtime coverage disagree.
