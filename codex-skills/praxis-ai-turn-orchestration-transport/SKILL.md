@@ -43,6 +43,8 @@ Inspect the source and its focused specs together:
 
 Before proposing a field, event, endpoint, local state, or fallback, inventory the existing request, generated contract, backend event, diagnostics, preview, pending clarification, quick reply, runtime observation, and flow state. Classify the need as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`. Only the last can justify a cross-boundary contract change.
 
+Treat `core/contracts/ai-contract.generated.ts` as the generated boundary for `AI_STREAM_EVENT_TYPES`, `AI_STREAM_EVENT_SCHEMA_VERSION`, stream start/cancel responses, pending clarification, quick replies, semantic decisions, runtime observation trust boundary, and `canApply`. Do not hand-edit this file; regenerate it from the canonical backend contract when the server shape changes.
+
 ## Turn Identity And Local State
 
 - Create a fresh `clientTurnId` for each submitted, retried, edited, or resent turn; preserve `sessionId` until cancel/reset deliberately starts a new conversation.
@@ -55,7 +57,7 @@ Before proposing a field, event, endpoint, local state, or fallback, inventory t
 ## Semantic Continuations And Result Materialization
 
 - Quick-reply labels and display prompts are presentation, never authority. Carry structured `value`, `canonicalAction`, `semanticDecision`, `contextHints`, presentation, and diagnostics without parsing labels back into intent.
-- Promote only a backend-issued quick-reply semantic decision to `activeSemanticDecision`. Do not inherit context-hint decisions into free user input.
+- Promote only a backend-issued quick-reply semantic decision to `activeSemanticDecision`. The current shell carries `semanticDecision` only when the selected clarification option supplies it; free text remains ordinary submit with pending-clarification context and must not inherit a context-hint decision as route authority.
 - Preserve `pendingClarification` source prompt, questions, diagnostics, and client turn identity into a clarification answer. Direct user input remains a submit action while carrying the pending clarification context.
 - A result with structured clarification becomes `clarification` and cannot apply. A review requires backend `canApply === true` and the governed preview/patch. Consultative catalog answers may succeed with quick replies but no patch or apply authority.
 - Keep `assistantContent`, diagnostics, quick replies, and related-surface evidence structured. The shell may render them but cannot reinterpret them into a new route, action, or permission.
@@ -68,6 +70,7 @@ The canonical authoring-turn API is start, stream, probe, and cancel beneath `/a
 - Only `result`, `error`, and `cancelled` are terminal. `status`, `thought.step`, `heartbeat`, and `intent.resolved` are progress/evidence; they can update phase, status, or diagnostics but cannot authorize apply or complete the turn.
 - On a terminal event, complete the observable and close EventSource or abort fetch. Never append a late event after terminal completion.
 - Use EventSource with credentialed cookies when no explicit headers are required. Its stream path performs the canonical probe before connecting. Use the fetch SSE fallback when explicit headers are required or EventSource is unavailable; preserve cancellation through `AbortController` and do not claim that the EventSource probe ran on that fallback path.
+- The fetch SSE fallback must parse the same generated envelope and preserve the same terminal semantics as EventSource. Its lifecycle diagnostics should identify `transport=fetch`; absence of probe evidence on this path is expected, not a failed probe.
 - Surface lifecycle evidence such as probe readiness, transport opening, and first event as non-terminal diagnostics. Apply silence, result, and whole-turn timeouts as recoverable transport failures; do not fabricate a backend result.
 - `Last-Event-ID`, access token, tenant/user/environment headers, and normalized session/client IDs are backend contract/security inputs. Do not invent alternate query parameters, origins, or unauthenticated reconnect paths.
 
@@ -93,6 +96,8 @@ npm exec -- ng test praxis-ai --watch=false --progress=false \
 ```
 
 Add `assistant-shell.component.spec.ts` for shell state; use `npm run test:praxis-ai:assistant` for the legacy assistant view. Public `@praxisui/ai` changes require the library build, a direct consumer, and the focused E2E evidence required by local AGENTS. Backend semantics require the focused config-starter gates; cross-project/release proof may add quickstart HTTP/SSE, Page Builder, registry, and public docs checks.
+
+For generated-contract or envelope-shape changes, pair the Angular service gate with backend contract/event validation. The Angular tests prove request assembly, runtime payload validation, stale-turn protection, lifecycle materialization, and shell state; backend tests prove event lineage, security, transaction, signed-token/access-token behavior, and terminal authority.
 
 For backend authoring-turn transport, persisted event lineage, transaction, signed-token, access-token, or security-chain changes, prefer the focused config-starter gate:
 
