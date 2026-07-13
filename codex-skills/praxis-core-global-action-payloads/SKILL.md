@@ -44,6 +44,8 @@ Persist actions as:
 
 Use `payloadExpr` only when the payload is intentionally derived from runtime context such as `payload.row`, `runtime.selection`, `runtime.formData`, or `pageContext`. Do not encode expressions in labels, route strings, command prefixes, or component-local fields.
 
+Treat `payloadExpr` and `SurfaceBinding` as projection mechanisms over the declared runtime envelope, not as an intent language. Allowed roots are the structured context published by `GlobalActionContext` and `SurfaceBindingRuntimeService`: `payload`, `runtime`, `pageContext`, `meta`, `context`, `action`, `sourceId`, `widgetKey`, and `output`. Do not use template strings, `${...}` interpolation, or path extraction to choose an `actionId`, infer permission, switch resource identity, or reconstruct a semantic decision that should come from the authored ref, catalog, discovery, composition link, or backend contract.
+
 ## Payload Rules
 
 - Normalize refs with `normalizeGlobalActionRef`.
@@ -52,6 +54,8 @@ Use `payloadExpr` only when the payload is intentionally derived from runtime co
 - Use `GLOBAL_ACTION_CATALOG` entries and `payloadSchema` for discoverability, validation, AI authoring, and editor projection.
 - Use `surface.open` with `SurfaceOpenPayload` for modal/drawer widget targets; do not revive `showAlert:...`, `openUrl:...`, `navigate:...`, `apiCall:...`, or `surface.open:{...}` strings.
 - Use `onResult` plus `surface.result` or `dynamicPage.composition.dispatch` for surface outcomes. Do not patch parent widgets directly from the visual host.
+- `meta` is execution/display context. It may carry labels, icons, confirmation hints, authoring breadcrumbs, or the normalized action ref metadata copied into `context.meta.actionRef`; it must not be the only place where payload schema, resource identity, permission, operation id, or semantic decision is stored.
+- Missing handlers or providers are explicit runtime failures such as "Global action not registered" or "Surface service not available". Do not catch these by selecting another action, parsing labels, guessing a route, or silently mutating local state; repair the catalog/provider registration or fail closed with a user-visible diagnostic.
 - Built-in handlers are shared runtime capabilities. Host-specific handlers may be registered, but their action ids and payloads should still be cataloged and validated.
 
 ## Aderence Inventory
