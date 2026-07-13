@@ -26,6 +26,7 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringApiMetadataCandidateCatalog.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringResourceDiscoveryService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringProjectKnowledgeService.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringRuntimeComponentGroundingService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/VectorRankedProjectKnowledgeCandidateRetriever.java`
 - `src/main/java/org/praxisplatform/config/service/RagProjectKnowledgeDerivedIndexService.java`
 - `src/main/java/org/praxisplatform/config/rag/RagDocumentIdentity.java`
@@ -82,6 +83,7 @@ Scoped semantic retrieval must not retry without tenant/environment scope. `Agen
 - Vector hits only rank canonical concept keys. Reload Domain Knowledge rows by tenant/environment, then recheck lifecycle, curation, AI visibility, requested context/resource/kind, and active evidence before projecting influence into a turn.
 - Reverted or superseded evidence must be removed from the derived index and must not influence new turns. A stale vector hit without a matching canonical concept/evidence row is discarded.
 - Component corpus retrieval requires release/scoped metadata and `aiVisibility=allow`; preserve source id/kind, chunk kind, source pointer, content hash, corpus version, score, and release provenance in diagnostics.
+- Runtime component observations are accepted only as `untrusted_frontend_observation` evidence. Ground them through `AgenticAuthoringRuntimeComponentGroundingService` into `GroundedRuntimeComponentContext`, preserving accepted/rejected claims, evidence refs, safe digests, lifecycle, omitted/redacted/sensitive field diagnostics, and available surfaces/affordances. Unsupported trust boundaries, stale observations, inactive observations, missing component identity, or unsupported schema versions must be rejected before they influence API/resource grounding.
 
 ## Consultative Answers
 
@@ -118,8 +120,8 @@ Only real gaps justify new public grounding contracts. Identify source owner, do
 
 Use focused local gates:
 
-- ingestion/context: `mvn "-Dtest=ApiMetadataIngestionServiceTest,AiContextControllerTest,ContextRetrievalServiceTest,SchemaRetrievalServiceTest" test`
-- resource/project knowledge grounding: `mvn "-Dtest=AgenticAuthoringApiMetadataCandidateCatalogTest,AgenticAuthoringResourceDiscoveryServiceTest,AgenticAuthoringProjectKnowledgeServiceTest,VectorRankedProjectKnowledgeCandidateRetrieverTest" test`
+- ingestion/context: `mvn "-Dtest=ApiMetadataIngestionServiceTest,ApiMetadataControllerTest,AiContextControllerTest,ContextRetrievalServiceTest,SchemaRetrievalServiceTest" test`
+- resource/project knowledge/runtime grounding: `mvn "-Dtest=AgenticAuthoringApiMetadataCandidateCatalogTest,AgenticAuthoringResourceDiscoveryServiceTest,AgenticAuthoringProjectKnowledgeServiceTest,VectorRankedProjectKnowledgeCandidateRetrieverTest,AgenticAuthoringRuntimeComponentGroundingServiceTest" test`
 - RAG/vector changes: `mvn "-Dtest=RagVectorStoreServiceTest,RagVectorStoreConfigurationTest,RagProjectKnowledgeMetadataTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
 - Angular AI-context consumer: `npm run test:praxis-ai:backend-api`
 
