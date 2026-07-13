@@ -45,6 +45,22 @@ metadata discovery, selector mapping, catalogs, and downstream materialization.
 The goal is to encode working Praxis platform knowledge into the skill, not merely document a UI
 convention.
 
+First resolve the Angular workspace root. In the platform monorepo the files may live under
+`praxis-ui-angular/projects/...`; in a standalone Angular checkout they may live directly under
+`projects/...`. Audit the active `praxis-ui-angular` workspace, not stale issue worktrees such as
+`praxis-ui-angular-issue*`, unless the user explicitly targets one of those worktrees.
+
+When the platform monorepo is available, inspect `projects/praxis-dynamic-fields/AGENTS.md` before
+editing and keep its governed docs in scope when relevant:
+
+- `projects/praxis-dynamic-fields/docs/dynamic-fields-inventory.md`
+- `projects/praxis-dynamic-fields/docs/dynamic-fields-field-catalog.md`
+- `projects/praxis-dynamic-fields/docs/dynamic-fields-field-selection-guide.md`
+- `projects/praxis-dynamic-fields/docs/dynamic-fields-host-custom-field-guide.md`
+- `projects/praxis-dynamic-fields/docs/dynamic-fields-inline-filter-catalog.md`
+- `projects/praxis-dynamic-fields/docs/dynamic-fields-inline-filter-runtime-contract.md`
+- `projects/praxis-dynamic-fields/docs/dynamic-fields-inline-components-guide.md`
+
 If the task is to implement or review backend `RESOURCE_ENTITY` option sources, use
 `praxis-resource-entity-lookup-backend` first. Use this skill when that backend change affects
 Angular runtime registry, editorial descriptors, metadata-editor coverage, recipes, catalogs, or
@@ -92,6 +108,18 @@ editor must mark the source as partial and point back to the backend/platform wa
   private control map when the package registry/editorial catalog already owns the decision.
 - `@praxisui/metadata-editor` must expose the same package-owned metadata shape that runtime fields
   consume; renderer coverage gaps should be fixed in the editor bridge, not hidden in docs.
+- Metadata-editor field patches use JSON Merge Patch semantics: changed primitive values are emitted,
+  cleared properties are emitted as `null`, and hosts must remove those properties instead of
+  persisting the literal `null` unless the canonical field contract explicitly allows it.
+- `entityLookup` is an entity contract, not just a visual select variant. Runtime/editor coverage must
+  preserve canonical `optionSource` shape: `type = RESOURCE_ENTITY`, identity/display paths,
+  rich `display`, search, pagination, `dependsOn`, `dependencyFilterMap`, `selectionPolicy`,
+  `capabilities`, navigation/audit metadata, and `detail.kind = surface` when a canonical backend
+  surface exists.
+- Inline/editor-critical runtime properties must have visual metadata-editor coverage or an explicit
+  documented advanced JSON fallback. If a runtime property is added to an inline field, the matching
+  `projects/praxis-metadata-editor/src/lib/config/*.config.ts` coverage should be reviewed in the
+  same cycle.
 - Shared overlay infrastructure, layer tokens, and CDK stacking order belong to `@praxisui/core`. If an inline field renders but overlay clicks are blocked, verify the core layer scale before patching the field, filter host, or landing app.
 - Shared overlay color/contrast tokens also belong to `@praxisui/core`. If a dynamic field overlay opens with low contrast, first verify `@praxisui/core/theme-bridge.css` and the host `.cdk-overlay-container` mappings for `--pdx-overlay-surface` and `--pdx-overlay-on-surface`; only add a host override when the host intentionally uses an overlay surface that differs from the global Material theme.
 - Package-owned inline field and panel surface/contrast tokens belong to the inline components in `@praxisui/dynamic-fields` (`--pdx-inline-field-*` and `--pdx-inline-panel-*`). If host global `.mat-mdc-form-field`, `.mat-mdc-select-panel`, or Material option/select token styles break inline filters, fix or preserve these component tokens before adding host-only overrides.
@@ -193,6 +221,10 @@ Always distinguish:
 - editor/tooling coverage
 
 Do not collapse them into a single "supported" statement.
+
+For metadata-editor bridge changes, include focused validation around alias normalization,
+`null => remove` patch semantics, and inline editor coverage before claiming Dynamic Fields runtime
+support is also editor/tooling support.
 
 ## References
 
