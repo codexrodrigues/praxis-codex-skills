@@ -2119,8 +2119,8 @@
                        "dependencies":  [
                                             "praxis-visual-builder-jsonlogic-roundtrip"
                                         ],
-                       "skillMdSha256":  "2B70AC27B99E07519C3399F754BDF48E7103220C9B617951C18A51E780F716F2",
-                       "treeSha256":  "D227ABFDB539D03F9EC1799DC3321E2B1D385E3479984D5D2F1C622B584F6170"
+                       "skillMdSha256":  "F42347F0B385A93BFFFE13B332DCEE699165595EDBBB56EAEA5B91107AA77686",
+                       "treeSha256":  "2B7669ABCB0108ECC0A0DEF8F3A6867DF514DB40061DB67136552D4443525348"
                    },
                    {
                        "name":  "praxis-table-rule-table-integration",

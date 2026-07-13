@@ -49,6 +49,7 @@ Before editing code or guidance, inspect:
 - Keep preview classes out of persisted payloads. For persisted table mapping, use `toCellClassAndStyle(effect, { includeAnimationPreview: false })`.
 - Treat `cssClass` and `inlineStyle` as advanced escape hatches that still need safety review.
 - Keep panel chrome text in the package i18n catalog. Use `labels` only for host-specific overrides and never persist labels as rule semantics.
+- Treat `labels`, i18n text, hover/reduced-motion preview state, and computed preview classes/styles as authoring presentation context only. The only persisted effect payload emitted by the panel is the normalized `RuleEffectDefinition`; do not infer domain meaning, rule scope, preset identity, authorization, or business status from translated copy, host label overrides, preview-only animation behavior, `cssClass`, or `inlineStyle`.
 
 ## Inventory Before New Contract
 
