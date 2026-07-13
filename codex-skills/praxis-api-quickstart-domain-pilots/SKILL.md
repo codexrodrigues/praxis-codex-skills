@@ -94,6 +94,16 @@ Use the published contract rather than local UI knowledge:
 
 When a lookup crosses domains, prove the chain from the consuming field's `x-ui.optionSource` through its source key, source resource, filter/by-ids endpoints, dependency filters, selected-value reload, and authorization behavior. The `ResourceEntityLookupGovernanceIntegrationTest` pattern is the reference inventory, not an optional UI enhancement.
 
+For a dependent `RESOURCE_ENTITY` or governed option-source pilot, schema presence is not enough. Prove the runtime contract that removes cognitive load from consumers:
+
+- `/schemas/filtered` must publish `type`, `key`, `entityKey`, `resourcePath`, `filterEndpoint`, `byIdsEndpoint`, `dependsOn`, `dependencyFilterMap`, `selectedReloadPolicy`, `invalidSortPolicy`, capability flags, and selection policy from the canonical descriptor.
+- `dependencyFilterMap` is backend `x-ui.optionSource` grounding: it maps observed schema fields to backend filter payload names. Do not replace it with Angular metadata-editor cascade patches or local field-name translations in the consumer.
+- The filter endpoint must accept the mapped dependency payload and return selectable/disabled metadata, including code/status/description/disabled reason when the descriptor declares those semantics.
+- The by-ids endpoint must rehydrate existing values, preserve requested order, and return invalid/non-selectable rows with enough metadata for the runtime to retain or reject according to policy.
+- If a pilot uses provider-backed options instead of `RESOURCE_ENTITY`, still prove `filterEndpoint`, `byIdsEndpoint`, selected reload, invalid sort, dependencies, and lightweight `OptionDTO{id,label}` behavior, while making clear that it does not publish rich entity lookup metadata.
+
+Use `ProcurementEntityLookupPilotIntegrationTest` for dependent supplier/contract/product lookup proof, `VwStatsSmokeHttpTest` and `VwAnalyticsFolhaPagamentoServiceStatsTest` for `dependencyFilterMap` on analytical option sources, and `ProcurementExternalOptionSourceProviderIntegrationTest` for provider-backed dependency and reload policies. This distinction is especially important in migrations such as Ergon: Praxis should publish the canonical lookup and reload contract so migrators do not hand-code cascade, rehydration, or invalid-selection decisions per screen.
+
 Do not decide a resource, field, lookup, action, relation, or domain intent from labels, aliases, regexes, routes, or fuzzy matching as the primary mechanism. Resolve semantic scope through resource keys, schemas, governed catalogs, actions, capabilities, and declared tools. Textual matching can only rank candidates after that scope is known.
 
 ## Actions, Surfaces, And Decision Materializations
@@ -137,6 +147,9 @@ Choose the smallest focused proof that covers the changed contract:
 | --- | --- |
 | resource identity, schema, groups, actions | `mvn "-Dtest=QuickstartMetadataMigrationIntegrationTest,EventosFolhaPilotIntegrationTest,OpenApiGroupResolutionIsolatedIntegrationTest" test` |
 | cross-domain entity lookup/option-source contract | `mvn "-Dtest=FuncionarioEntityLookupIntegrationTest,ResourceEntityLookupGovernanceIntegrationTest" test` |
+| dependent `RESOURCE_ENTITY` lookup | `mvn "-Dtest=ProcurementEntityLookupPilotIntegrationTest,ResourceEntityLookupGovernanceIntegrationTest" test` plus the affected pilot test |
+| dependent provider-backed option source | `mvn "-Dtest=ProcurementExternalOptionSourceProviderIntegrationTest" test` plus the affected pilot test |
+| analytical option-source dependency mapping | `mvn "-Dtest=StatsSchemaSmokeHttpTest,VwStatsSmokeHttpTest,VwAnalyticsFolhaPagamentoServiceStatsTest" test` |
 | stats, analytics, or export | `mvn "-Dtest=StatsSchemaSmokeHttpTest,FuncionarioExportSmokeHttpTest" test` plus the affected pilot test |
 | Domain Knowledge/config host wiring | `mvn "-Dtest=DomainKnowledgeProjectionWiringIntegrationTest" test`; use the config-starter smoke for authoring/publication lifecycle |
 | one pilot implementation | its focused `*PilotIntegrationTest` plus any directly affected lookup/action/stats/export proof |
