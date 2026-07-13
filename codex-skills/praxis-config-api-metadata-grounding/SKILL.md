@@ -16,6 +16,8 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/controller/AiContextController.java`
 - `src/main/java/org/praxisplatform/config/controller/ContextRetrievalController.java`
 - `src/main/java/org/praxisplatform/config/service/ApiMetadataIngestionService.java`
+- `src/main/java/org/praxisplatform/config/dto/ApiMetadataRagStatusResponse.java`
+- `src/main/java/org/praxisplatform/config/dto/ApiMetadataRagReconcileResponse.java`
 - `src/main/java/org/praxisplatform/config/service/AiContextService.java`
 - `src/main/java/org/praxisplatform/config/service/ContextRetrievalService.java`
 - `src/main/java/org/praxisplatform/config/service/SchemaRetrievalService.java`
@@ -47,12 +49,18 @@ Keep the sources distinct: `praxis-metadata-starter` owns current resource struc
 ## Ingestion Contract
 
 - `POST /api/praxis/config/api-catalog/ingest` accepts endpoint snapshots with path, method, tags, summary, description, operation id, request/response schemas, parameters, release id, version, and generated timestamp. An empty endpoint list is a no-op.
+- Ingest resolves blank/missing scope to `tenantId=GLOBAL`, `environment=default`, `serviceKey=default`, and release id from `releaseId`, then version/generated time, then `v1`.
 - The structured `api_metadata` row currently stores tenant, environment, service key, release id/version, generated time, full schemas, parameters, raw endpoint JSON, and embedding.
 - Current scoped identity is canonical: V28 adds `tenant_id`, `environment`, `service_key`, and `release_id`, replaces the legacy global `path + method` unique key, and enforces `tenant_id + environment + service_key + release_id + path + method`.
 - Upsert first by scoped `path + method`, then by scoped stable `operationId + method` to reconcile a moved endpoint without crossing tenant, environment, service, or release boundaries.
 - Release identity resolves from `releaseId`, then version/generated time according to `RagDocumentIdentity`. Preserve that identity and the content hash; do not publish anonymous chunks that cannot be replayed or purged by scope.
-- The controller returns `202 Accepted`, but the current service performs structured upsert and attempted vector publication during the request. `202` is not proof that an optional vector store exists or that the derived corpus is reconciled.
-- Vector publication is derived and optional. A disabled/unavailable vector store must not invalidate the canonical structured metadata, and a vector row must never become authority over a later canonical schema response.
+- API catalog ingestion persists canonical `api_metadata` rows first. RAG/vector publication is scheduled after the database commit when transaction synchronization is active; outside a synchronized transaction the same publication task may run immediately after persistence.
+- The controller returns `202 Accepted`. Treat it as accepted structured ingestion, not proof that a vector store exists or that the derived RAG corpus is ready.
+- Vector publication is derived and optional. A disabled/unavailable vector store or publication failure must not roll back canonical structured metadata, and a vector row must never become authority over a later canonical schema response.
+- `GET /api/praxis/config/api-catalog/rag/status` reports expected structured document count, vector-store availability, publication enablement, and release status for tenant/environment/service/release.
+- `POST /api/praxis/config/api-catalog/rag/reconcile` rebuilds derived API metadata RAG documents from canonical `api_metadata` rows for the requested tenant/environment/service/release. It returns `202 Accepted` with the reconcile result and status.
+- Reconciliation must delete derived API metadata documents for the release scope before upserting the rebuilt document set; do not append duplicate stale chunks.
+- API RAG document ids and content hashes include tenant, environment, service key, release id, method/path, raw endpoint JSON, resource type, and chunk index. Preserve these fields for deterministic replay and purge.
 
 ## Retrieval Precedence
 
@@ -63,7 +71,7 @@ For API and component-definition search, preserve this order and diagnostics:
 3. When the vector store is available but the scoped release has no result, return no candidates instead of silently using the global structured table.
 4. When vector search is unavailable, legacy pgvector repository retrieval is allowed only for an unscoped request. Tenant/environment-scoped requests fail closed.
 
-`tags` filtering is supported on the vector path by over-fetching the scoped/method-filtered vector results and applying normalized tag matching before the effective limit. Legacy repository retrieval also receives normalized tags when vector search is unavailable and the request is unscoped. Keep tag evidence in focused `ContextRetrievalServiceTest` coverage when changing this path.
+`tags` filters are normalized from comma, semicolon, or pipe separated tokens and matched case-insensitively as an AND set. `tags` filtering is supported on the vector path by over-fetching the scoped/method-filtered vector results and applying normalized tag matching before the effective limit. Legacy repository retrieval also receives normalized tags when vector search is unavailable and the request is unscoped. Keep tag evidence in focused `ContextRetrievalServiceTest` coverage when changing this path.
 
 Semantic retrieval is candidate grounding, not primary intent resolution. `AgenticAuthoringApiMetadataCandidateCatalog` prefers semantic evidence, may supplement it with explicit or weak lexical evidence, and marks provenance such as `semantic-retrieval`, `lexical-fallback`, `weak-evidence`, and semantic role. Weak candidates may explain search but must not become executable selection or strong quick replies without governed confirmation.
 
@@ -97,6 +105,7 @@ Scoped semantic retrieval must not retry without tenant/environment scope. `Agen
 - Do not answer API catalog questions with hardcoded deterministic prose when LLM/RAG grounding is available.
 - Do not use local text search as the primary decision for business resource selection.
 - Preserve tenant, environment, release id, version, generatedAt, operationId, schemas, params, tags, scores, content hashes, source pointers, retrieval source, and raw JSON enough for replayable grounding.
+- Preserve RAG status/reconcile diagnostics when ingestion changes: expected document count, published document count, vector-store availability, publication-enabled flag, resource type, tenant, environment, service key, and release id.
 - Fail closed when scoped or required grounding is unavailable; do not launder lexical fallback into a selected resource or successful materialization.
 - Keep caches performance-only; `api_metadata`, `ai_registry`, runtime metadata, and persisted turn events remain canonical.
 - If schema or resource semantics are missing, inspect `praxis-metadata-starter` contracts before inventing config-starter API metadata fields.
