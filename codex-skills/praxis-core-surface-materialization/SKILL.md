@@ -14,6 +14,7 @@ This is a materialization skill, not a backend contract skill. `praxis-metadata-
 Inspect the affected source before changing code or guidance:
 
 - `projects/praxis-core/AGENTS.md`
+- `projects/praxis-core/src/public-api.ts` when surface payload models, adapters, materializers, related-resource outlets, action editors, presets, or providers are exported or public consumption changes
 - `projects/praxis-core/docs/schema-flow.md`
 - `projects/praxis-core/docs/rfc-surface-open.md`
 - `projects/praxis-core/src/lib/models/resource-discovery.model.ts`
@@ -23,6 +24,9 @@ Inspect the affected source before changing code or guidance:
 - `projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.ts`
 - `projects/praxis-core/src/lib/services/surface-open-materializer.service.ts`
 - `projects/praxis-core/src/lib/services/related-resource-surface-resolver.service.ts`
+- `projects/praxis-core/src/lib/surfaces/praxis-related-resource-outlet.component.ts`
+- `projects/praxis-core/src/lib/actions/editors/surface-open-action-editor.component.ts`
+- `projects/praxis-core/src/lib/actions/surface-open-presets.ts`
 - focused specs for the touched adapter/materializer/resolver and the direct consumer.
 
 ## Canonical Flow
@@ -67,12 +71,45 @@ Only `lacuna-real-de-contrato` justifies changing a canonical backend or public 
 
 Use the smallest proof that exercises the changed flow:
 
-- `resource-discovery.service.spec.ts`
-- `resource-action-open-adapter.service.spec.ts`
-- `resource-surface-open-adapter.service.spec.ts`
-- `surface-open-materializer.service.spec.ts`
-- `related-resource-surface-resolver.service.spec.ts`
-- direct consumer spec/build for table, CRUD, dialog, dynamic-form, page-builder, or host app when the payload is materialized there.
+- discovery plus adapter/materializer flow:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/services/resource-action-open-adapter.service.spec.ts --include=projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.spec.ts --include=projects/praxis-core/src/lib/services/surface-open-materializer.service.spec.ts
+```
+
+- related-resource surfaces and outlet registration:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/related-resource-surface-resolver.service.spec.ts --include=projects/praxis-core/src/lib/surfaces/praxis-related-resource-outlet.component.spec.ts --include=projects/praxis-core/src/lib/services/surface-outlet-registry.service.spec.ts
+```
+
+- `surface.open` authoring/editor presets:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/actions/editors/surface-open-action-editor.component.spec.ts --include=projects/praxis-core/src/lib/actions/surface-open-presets.spec.ts
+```
+
+- dynamic widget page surface materialization:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/widgets/dynamic-widget-page-record-surface-open.spec.ts
+```
+
+- CRUD consumer materialization when `schemaUrl`, `readUrl`, `submitUrl`, `submitMethod`, availability, or adapter payload handoff changes:
+
+```sh
+npm run ng -- test praxis-crud --watch=false --progress=false --include=projects/praxis-crud/src/lib/praxis-crud.component.spec.ts --include=projects/praxis-crud/src/lib/crud-launcher.service.spec.ts --include=projects/praxis-crud/src/lib/dynamic-form-dialog-host.component.spec.ts
+```
+
+- direct visual/runtime E2E proof only when rendered table/form/list behavior changes:
+
+```sh
+npx playwright test projects/praxis-table/test-dev/e2e/surface-open-funcionarios-demo.playwright.spec.ts
+npx playwright test projects/praxis-dynamic-form/test-dev/e2e/surface-open-form-demo.playwright.spec.ts
+npx playwright test projects/praxis-list/test-dev/e2e/surface-open-list-demo.playwright.spec.ts
+```
+
+For public or cross-lib changes, also run `npm run build:praxis-core` and a direct consumer build selected by actual imports (`praxis-table`, `praxis-crud`, `praxis-dynamic-form`, `praxis-list`, `praxis-dialog`, or `praxis-page-builder`).
 
 For the first resolution step of an issue, also do a local audit: prove that generated payloads include the right `resourceKey`, `resourcePath`, `schemaUrl`, `readUrl`, `submitUrl`, `bindingOrder`, availability state, and user-visible failure behavior.
 
