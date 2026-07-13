@@ -2401,8 +2401,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "11C93010C6B135AFDE0C7950DE1B3AAA728EC87F437C79AB8B414851CAD7DF32",
-                       "treeSha256":  "3E0AE5328D6597D6582E483955FD6631008708F89D3DE08E830459D589B835F4"
+                       "skillMdSha256":  "5F339C59C9DB5394ADC120E821C67161AE015BE7F851BA7F0E257F45307F6D45",
+                       "treeSha256":  "151C001883D100D88D2D4D1373EB8E17BE2783E65C59BD507D266CB73CC4A8AF"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
