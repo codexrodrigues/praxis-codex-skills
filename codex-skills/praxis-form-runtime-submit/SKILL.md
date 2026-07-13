@@ -21,17 +21,38 @@ Inspect the real source before changing form runtime behavior:
 - `projects/praxis-dynamic-form/AGENTS.md`
 - `projects/praxis-dynamic-form/src/public-api.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.spec.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.json-api.md`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/services/form-config.service.ts`
+- `projects/praxis-dynamic-form/src/lib/services/form-config.service.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/services/form-layout.service.ts`
 - `projects/praxis-dynamic-form/src/lib/services/form-context.service.ts`
+- `projects/praxis-dynamic-form/src/lib/services/form-context.service.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/services/form-rules.service.ts`
+- `projects/praxis-dynamic-form/src/lib/services/form-rules.service.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-submit-payload.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-date-arrays.ts`
+- `projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form-config-editor.json-api.md`
 - `projects/praxis-dynamic-form/docs/hot-metadata-updates.md`
+- `projects/praxis-dynamic-form/docs/dynamic-form-authoring-document-semantics.md`
 
-Also inspect `@praxisui/core` models/services when the change touches `FormConfig`, `FieldMetadata`, `DynamicFormService`, schema metadata, hooks, global actions, effect policies, layout policy, or submit events.
+Also inspect these `@praxisui/core` models/services when the change touches `FormConfig`, `FieldMetadata`, `DynamicFormService`, schema metadata, hooks, global actions, effect policies, layout policy, or submit events:
+
+- `projects/praxis-core/src/lib/models/form/form-events.model.ts`
+- `projects/praxis-core/src/lib/models/resolved-crud-operation.model.ts`
+- `projects/praxis-core/src/lib/services/crud-operation-resolution.service.ts`
+- `projects/praxis-core/src/lib/services/crud-operation-resolution.service.spec.ts`
+- `projects/praxis-core/src/lib/services/resource-action-open-adapter.service.ts`
+- `projects/praxis-core/src/lib/services/resource-action-open-adapter.service.spec.ts`
+- `projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.ts`
+- `projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.spec.ts`
+- `projects/praxis-core/src/lib/services/surface-open-materializer.service.ts`
+- `projects/praxis-core/src/lib/services/surface-open-materializer.service.spec.ts`
+- `projects/praxis-core/src/lib/services/dynamic-form.service.ts`
+- `projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts`
 
 ## Runtime Modes
 
@@ -56,6 +77,28 @@ Use the canonical payload pipeline:
 
 Do not patch around submit gaps in hosts. If backend submission fails, first inspect whether field metadata, option source, submit policy, DTO schema, or metadata starter contract is wrong.
 
+## Runtime Submit Semantics
+
+Keep these runtime boundaries explicit:
+
+- `onSubmit()` is the canonical runtime entrypoint. Guard duplicate submits with `submitting` and block submit while `entityHydrationPending` is true.
+- Run `beforeValidate` before invalid checks. For invalid forms, mark controls touched, update validity, optionally focus/scroll the first invalid control, run `afterValidate`, and do not emit HTTP or CRUD requests.
+- Run `afterValidate` for valid forms, then `beforeSubmit` as the cancelable hook. `beforeSubmit` must run before snapshotting form values so hook mutations can affect the payload.
+- Snapshot `rawFormData` from `form.getRawValue()` only after cancelable hooks complete, then derive `formData` with `prepareSubmitPayload(...)` and current dirty paths.
+- Emit `formSubmit` with `stage: "before"` before executing the request, `stage: "after"` on success, and `stage: "error"` on request failure. Preserve both `formData` and `rawFormData` in every stage.
+- Resolve operation from submit method first: `post` -> `create`, `put` -> `update`, `patch` -> `patch`. Without explicit method, use `resourceId` to choose update versus create.
+- Treat `submitUrl` and `submitMethod` as a pair. If both are present, execute the canonical HTTP request against the resolved API origin; if neither is present, the runtime may use the legacy/inferred CRUD service path; if only one is present, fail explicitly instead of guessing.
+- Only `post`, `put`, and `patch` are Dynamic Form submit methods. Do not add local delete submit handling here; delete belongs to action/surface orchestration.
+- Resolve `{id}` placeholders with `resourceId` or pending entity id. Missing entity id for a templated submit URL is a runtime contract failure, not a reason to synthesize a path locally.
+- `submitUrl`, `submitMethod`, `schemaUrl`, `readUrl`, `responseSchemaUrl`, `apiEndpointKey`, and `apiUrlEntry` are runtime inputs produced by resource/surface/action discovery. They may be shown as read-only diagnostics in authoring, but must not be persisted into `DynamicFormAuthoringDocument` bindings or context snapshots.
+- Surface/action adapters in `@praxisui/core` are responsible for materializing canonical `submitUrl` and `submitMethod` into Dynamic Form widget inputs. Fix those adapters or metadata discovery when a form opens with the wrong write target.
+- `formSubmit.formData` is the persistence payload. `formSubmit.rawFormData` exists for diagnostics, UI hooks, and local/transient context only.
+- `afterSubmit` receives `{ result, formData, rawFormData, operation }`; `onError` receives `{ error, formData, rawFormData, operation }`. Do not make hooks depend on host-only globals when the runtime already provides the canonical context.
+- Success behavior such as configured snack messages, `clearAfterSave`, and `redirectAfterSave` happens after a successful request. Keep navigation failures logged and non-fatal.
+- If entity lookup dependency policy blocks retained values, submit must remain invalid and no HTTP/CRUD request should run. If policy allows retained legacy values or reset-on-dependency-change marks fields dirty, submit should preserve the canonical value/null/empty-array shape through the payload pipeline.
+
+When a migration needs less cognitive work from implementers, prefer strengthening metadata discovery, surface/action materialization, request schema, or Dynamic Form runtime diagnostics over writing host glue code.
+
 ## Platform Aderence Inventory
 
 Before adding an input, output, config key, service, hook, field shape, submit transform, or public export, classify the need:
@@ -69,11 +112,51 @@ Only `lacuna-real-de-contrato` justifies a new public contract. Prefer materiali
 
 ## Validation
 
-- submit payload: `prepare-submit-payload.spec.ts`, `normalize-submit-payload.spec.ts`, `normalize-date-arrays.spec.ts`
-- runtime hydration or metadata: `praxis-dynamic-form.*hydration*.spec.ts`, `form-context.service.spec.ts`, `form-config.service.spec.ts`
-- form rules or hooks affecting runtime: focused service specs plus `praxis-dynamic-form.spec.ts`
-- schema-driven runtime: `praxis-dynamic-form.metadata.spec.ts`, metadata update specs, and browser flow when UI materialization matters
-- public API/exported contract: `npm run build:praxis-dynamic-form` plus a direct consumer when applicable
+Start with focused Dynamic Form runtime specs:
+
+```bash
+npx ng test praxis-dynamic-form --watch=false --progress=false \
+  --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.spec.ts
+```
+
+For payload behavior inside submit, add the focused payload specs:
+
+```bash
+npx ng test praxis-dynamic-form --watch=false --progress=false \
+  --include=projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.spec.ts \
+  --include=projects/praxis-dynamic-form/src/lib/utils/normalize-submit-payload.spec.ts \
+  --include=projects/praxis-dynamic-form/src/lib/utils/normalize-date-arrays.spec.ts
+```
+
+For runtime hydration, context, or config persistence:
+
+```bash
+npx ng test praxis-dynamic-form --watch=false --progress=false \
+  --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.external-config-hydration.spec.ts \
+  --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.first-config-hydration.spec.ts \
+  --include=projects/praxis-dynamic-form/src/lib/services/form-context.service.spec.ts \
+  --include=projects/praxis-dynamic-form/src/lib/services/form-config.service.spec.ts
+```
+
+For submit targets materialized by resource actions, surfaces, or CRUD operation resolution:
+
+```bash
+npx ng test praxis-core --watch=false --progress=false \
+  --include=projects/praxis-core/src/lib/services/crud-operation-resolution.service.spec.ts \
+  --include=projects/praxis-core/src/lib/services/resource-action-open-adapter.service.spec.ts \
+  --include=projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.spec.ts \
+  --include=projects/praxis-core/src/lib/services/surface-open-materializer.service.spec.ts
+```
+
+For rules or hooks affecting runtime submit, add focused service specs before browser validation:
+
+```bash
+npx ng test praxis-dynamic-form --watch=false --progress=false \
+  --include=projects/praxis-dynamic-form/src/lib/services/form-rules.service.spec.ts \
+  --include=projects/praxis-dynamic-form/src/lib/services/domain-rule-form-rules.service.spec.ts
+```
+
+For public API/exported contract changes, run `npm run build:praxis-dynamic-form` plus a direct consumer when applicable. Use Playwright only after unit tests prove the runtime behavior, choosing the smallest flow that exercises schema-driven open, submit HTTP, invalid form handling, or action-triggered surface open.
 
 ## Companion Skills
 
