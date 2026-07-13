@@ -81,11 +81,16 @@ Dynamic Fields owns:
 - Use `inlineOverlay.applyMode: "auto"` for simple, reversible, single-step interactions.
 - Use `inlineOverlay.applyMode: "explicit"` when a panel has draft state: ranges, multi-selection, presets, sliders, exploratory visual choices, or complex remote lookup.
 - In explicit mode, Apply commits, Cancel/Escape/outside close restores the last committed value, and Clear is distinct from Cancel.
+- Closing an explicit overlay is not proof of commit. Audit the full cycle: open from the committed value, mutate draft state, close by Cancel/Escape/outside click, reopen with the committed value restored, then Apply and verify only the applied value emits.
+- Draft state must be component-local and disposable. Do not let `FormControl`/CVA `onChange`, filter payload emission, selected token display, or table filter promotion observe draft values before Apply in explicit mode.
+- Clear is a committed reset action only when invoked through the clear action. It must not be implemented as "cancel plus empty draft"; after Clear, reopen should reflect the cleared committed value and downstream filter payloads should receive the canonical empty value.
 - Do not add local `confirm`, `commitPolicy`, or per-component Apply/Cancel contracts when `inlineOverlay.actions.apply|cancel|clear` can represent the workflow.
 - Keep `clearButton` as rendering/runtime metadata. It is not backend payload.
 - Keep overlay labels and aria strings in dynamic-fields i18n catalogs; do not hardcode Apply/Cancel/Clear per inline component.
 - Use `inline-display-mask` for display-only compact summaries. It must not mutate the committed value shape.
+- For inline selection/lookup overlays, combine explicit apply semantics with the option identity rules from `praxis-fields-selection-lookup-controls`: draft tokens may be rendered in-panel, but committed chip text, selected display, and removal actions must remain based on canonical committed identity until Apply.
 - Presentation mode, skip snapshot, metadata refresh, select rebind, and global disabled/readonly/loading states must remain compatible with inline overlays.
+- Metadata refresh or select rebind while an explicit overlay is open must either rebase draft state from the new committed metadata or close/cancel deterministically. Do not preserve stale draft option IDs after metadata/resource changes.
 - Do not document component internal value shape as the final HTTP DTO; range normalization may happen later in host/backend contracts.
 - Fix blocked overlays through shared layer/token contracts before adding host-only z-index or color overrides.
 - CDK stacking is owned by `@praxisui/core` layer scale tokens. Connected overlay panes must remain
