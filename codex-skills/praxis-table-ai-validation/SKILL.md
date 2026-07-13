@@ -35,6 +35,7 @@ Inspect `tools/ai-registry/AGENTS.md` when registry ingestion or component autho
 - Runtime operations are for declared immediate actions such as applying filters, exporting data, or opening related surfaces.
 - Filter questions must be grounded in `filterFieldCatalog`, resource metadata, and runtime operations.
 - Column visibility, public/private presentation, format, renderer, style, value mapping, computed columns, toolbar, row, bulk, and export authoring must use declared edit plan change kinds and operation ids.
+- Treat `visual-only` operations such as `column.conditionalRenderer.add`, `column.conditionalStyle.add`, row conditional renderers, badges, chips, icons, animations, and `effects` as table presentation materialization only. They may explain how a row or cell is displayed when a JSON Logic condition matches, but they must not classify the record, synthesize boolean status patches, create `domain-rules`, infer `backend_validation`, or become row authorization/business policy.
 - Capability discovery questions should answer from the catalog and stay consultative until the user explicitly asks to add, apply, or materialize.
 - Global actions must be chosen from declared catalogs and payload schemas. Ask concise clarification when required payload cannot be grounded.
 - Selected-record context must be sanitized and human-facing; do not expose raw IDs, internal fields, endpoint paths, schema keys, or payload examples unless explicitly requested.
