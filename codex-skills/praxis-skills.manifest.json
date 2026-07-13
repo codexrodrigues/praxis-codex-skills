@@ -1497,8 +1497,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "4B717AA57DFDC4EBF5451671B7DB84FAF4C2721BFC04BC6636C5527B647E4665",
-                       "treeSha256":  "DB4BFDD19A7E7354BC646FE0BE841F34E632A2499BFECF61D4665617275B5053"
+                       "skillMdSha256":  "150ECB9FBBA05B4B03BDB77C56A7F3E1E2443F1EDAAD14DCBA8FE8DD810B4474",
+                       "treeSha256":  "3BDFCE473D40B166DDD17FE430D2A40480741C9410279728F5CA00BC8028E4CA"
                    },
                    {
                        "name":  "praxis-form-submit-payload-pipeline",
