@@ -151,6 +151,7 @@ Validacao local: `python3 scripts/validate-issue-drafts.py`
 - [praxis-rich-content-integration-adapters](skill-reviews/praxis-rich-content-integration-adapters.md)
 - [praxis-rich-content-runtime](skill-reviews/praxis-rich-content-runtime.md)
 - [praxis-rich-crud-screen-authoring](skill-reviews/praxis-rich-crud-screen-authoring.md)
+- [praxis-rules-engine-runtime](skill-reviews/praxis-rules-engine-runtime.md)
 - [praxis-settings-ai-i18n-validation](skill-reviews/praxis-settings-ai-i18n-validation.md)
 - [praxis-settings-global-config](skill-reviews/praxis-settings-global-config.md)
 - [praxis-settings-panel-shell](skill-reviews/praxis-settings-panel-shell.md)
