@@ -30,6 +30,12 @@ convention.
 Do not redefine `RESOURCE_ENTITY` semantics in Angular, app consumers, local aliases, or ad hoc
 DTO conventions.
 
+Treat option-source publication diagnostics as a platform gate. If a host has a known lookup in a
+catalog, cockpit inventory, fixture, docs example, or migration plan, prove that the same
+`sourceKey + resourcePath` is published by `OptionSourceRegistry`; `UNPUBLISHED` and
+`RESOURCE_MISMATCH` diagnostics are contract failures, not permission to wire DTO annotations,
+Angular endpoints, or prompt-only lookup catalogs around the missing descriptor.
+
 ## Provider SPI Boundary
 
 `OptionSourceQueryExecutor` is the compatibility facade consumed by existing resource controllers.
