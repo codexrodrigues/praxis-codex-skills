@@ -90,6 +90,17 @@ Runtime drawer bridge:
 - It injects `context.surfaceRuntime` into hosted content, exposing `closed$`, `result$`, `close`, `emitResult`, `updateTitle`, and `updateSize`.
 - It publishes hosted `rowClick` and `selectionChange` outputs through `result$` using result envelopes with `type`, `data`, `output`, and `payload`.
 - It must not show authoring footer/status text such as Apply or Save & Close.
+- Treat `context.surfaceRuntime`, `result$`, `rowClick`, and `selectionChange` as runtime interaction
+  contracts. They are not authoring documents, persisted config, dirty state, or replacement for a
+  `SettingsValueProvider`.
+- Do not persist runtime drawer context, runtime selection envelopes, diagnostics visibility, or
+  resolved surface state into component config from this bridge. If a host needs an authored
+  connection to a runtime drawer, model that in the owning action/composition authoring contract,
+  not as Settings Panel shell state.
+- In Ergon migrations, a drawer that only needs to show detail, emit a selected row, update title, or
+  close with a result should stay on `SURFACE_DRAWER_BRIDGE`. Promote it to Settings Panel authoring
+  only when the user is editing a stable config document through an editor that owns
+  `SettingsValueProvider`.
 
 ## Visual And Token Rules
 
