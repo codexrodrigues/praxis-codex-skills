@@ -51,8 +51,8 @@ class DuplicateModuleRootGuardTests(unittest.TestCase):
 
             self.assertEqual(result.returncode, 2)
             self.assertIn("MIGRATION_MODULE_ROOT_GUARD_BLOCKED", result.stderr)
-            self.assertIn("migracao/ms-administracao-pessoal", result.stderr)
-            self.assertIn("migracao-package/ms-administracao-pessoal", result.stderr)
+            self.assertIn(str(canonical), result.stderr)
+            self.assertIn(str(package), result.stderr)
             self.assertIn("current root is not inside the canonical module root", result.stderr)
             self.assertNotIn("Authorization", result.stderr)
             self.assertNotIn("Cookie", result.stderr)
@@ -83,6 +83,72 @@ class DuplicateModuleRootGuardTests(unittest.TestCase):
 
             self.assertEqual(result.returncode, 0)
             self.assertIn("MIGRATION_MODULE_ROOT_GUARD_OK", result.stdout)
+
+    def test_allows_external_duplicate_when_current_root_is_canonical(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            canonical = base / "migracao" / "ms-administracao-pessoal"
+            external = base / "m79" / "ms-administracao-pessoal"
+            canonical.mkdir(parents=True)
+            external.mkdir(parents=True)
+            (base / "migracao" / ".git").mkdir()
+            (external / ".git").mkdir()
+            write_pom(canonical / "pom.xml", "ms-administracao-pessoal")
+            write_pom(external / "pom.xml", "ms-administracao-pessoal")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    "--workspace-root",
+                    str(base / "migracao"),
+                    "--module",
+                    "ms-administracao-pessoal",
+                    "--current-root",
+                    str(canonical),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+            self.assertEqual(result.returncode, 0)
+            self.assertIn("MIGRATION_MODULE_ROOT_GUARD_OK_WITH_EXTERNAL_DUPLICATES", result.stdout)
+            self.assertIn(str(external), result.stdout)
+            self.assertIn("[advisory]", result.stdout)
+
+    def test_blocks_duplicate_inside_canonical_workspace(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            workspace = base / "migracao"
+            canonical = workspace / "ms-administracao-pessoal"
+            duplicate = workspace / "archived" / "ms-administracao-pessoal"
+            canonical.mkdir(parents=True)
+            duplicate.mkdir(parents=True)
+            (workspace / ".git").mkdir()
+            write_pom(canonical / "pom.xml", "ms-administracao-pessoal")
+            write_pom(duplicate / "pom.xml", "ms-administracao-pessoal")
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    "--workspace-root",
+                    str(workspace),
+                    "--module",
+                    "ms-administracao-pessoal",
+                    "--current-root",
+                    str(canonical),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("MIGRATION_MODULE_ROOT_GUARD_BLOCKED", result.stderr)
+            self.assertIn("inside the canonical workspace", result.stderr)
+            self.assertIn("duplicate-blocking", result.stderr)
 
 
 if __name__ == "__main__":
