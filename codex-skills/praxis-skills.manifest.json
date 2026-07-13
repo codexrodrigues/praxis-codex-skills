@@ -2549,8 +2549,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "FDC81C2F9554F599E620329D9B32719A76D43A89383DE3FE724863924A6D6D80",
-                       "treeSha256":  "5AC051B021267F0317EF7E399ACB60E5EF5CC4431DD33D12D793861BDD5728D4"
+                       "skillMdSha256":  "19D6D416A227D556F58991C80FEB3A51DE889504338B102614D67461820FD4E9",
+                       "treeSha256":  "15FB1E022DD30600B19031FD9E260419668A18F0C8265300DBCC8A68D3E3A17E"
                    },
                    {
                        "name":  "praxis-http-examples-llm-smoke",
