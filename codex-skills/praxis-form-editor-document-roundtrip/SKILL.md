@@ -82,6 +82,17 @@ Legacy editor payloads may be normalized into the canonical document, but new co
 
 Field metadata editor patches may use merge semantics inside the edited field. For nested `entityLookup.optionSource`, preserve existing canonical values such as `key`, `resourcePath`, `valuePropertyPath`, and `capabilities.byIds` when editing only `dependsOn`, `selectionPolicy`, `detail`, or audit metadata.
 
+`domainRules` is a runtime input for consuming governed materializations from
+`/api/praxis/config/domain-rules/materializations`; it is not a field of
+`DynamicFormAuthoringDocument`. Do not save materialized `DomainRuleMaterialization` rules back into
+`config.formRules` as if the editor authored them locally. If a product explicitly needs to detach a
+governed projection into local config, require a named migration/detach decision and preserve
+`metadata.domainRule` provenance so the loss of governance is visible.
+
+Schema/layout materializations with `layoutPolicy.persistence='transient'` are runtime projections.
+Do not persist generated sections, runtime `domainRules`, resolved schema URLs, submit endpoints, or
+materialized domain rules into the authoring document just because the user opened Settings Panel.
+
 Filter form and dynamic form widget editors must follow the same document semantics. Do not create a separate filter-form authoring document unless the shared contract cannot represent a proven gap.
 
 ## Apply Plan Rules
@@ -101,6 +112,13 @@ Do not silently merge partial editor state when the canonical document requires 
 When `replaceContext` is active, absence is intentional: absent `bindings.mode`, `contextSnapshot.presentation`, `contextSnapshot.schemaPrefs`, or `contextSnapshot.backConfig` should emit clear flags/patches that remove previously persisted values. A partial editor form that does not own a block must either preserve it explicitly or declare why replacement is correct.
 
 AI-generated edit plans must target the canonical document/apply-plan surface. Do not let AI output ad hoc config patches, prompt-only field moves, or local editor state when the existing capability can express the change.
+
+For Ergon-style migrations, distinguish authored local form configuration from reusable platform
+decisions before applying/saving: local layout polish can round-trip through the document, but legal
+guidance, shared validation, command availability, approval policy, option-source policy, and other
+governed decisions should remain in `domain-rules` or metadata-backed contracts and project into the
+runtime. A successful editor reopen is not proof that the canonical owner is correct if the save
+silently converted governed runtime evidence into local `FormConfig`.
 
 ## Round-Trip Checklist
 
@@ -123,6 +141,9 @@ Also identify which path owns the proof:
 - Config editor tabs: layout, behavior, rules, messages, hooks, actions, JSON, and cascades.
 - Runtime hydration: first config hydration, external config hydration, mode/presentation/schema refresh, and back navigation.
 - AI authoring: manifest operation, turn flow, diagnostics, and generated apply plan.
+- Governed runtime projections: `domainRules` options, materialization status, provenance in
+  `metadata.domainRule`, and whether save/reopen preserves the projection as external evidence
+  instead of converting it into local authored `formRules`.
 
 ## Aderence Inventory
 
