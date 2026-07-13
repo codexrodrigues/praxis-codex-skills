@@ -46,6 +46,9 @@ Vertical packages may register their package metadata or package defaults throug
 - Avoid root `public-api` reexports from a vertical lib when the contract owner is core; import from `@praxisui/core` directly unless an intentional stable facade is reviewed.
 - Keep multi providers multi when the token is additive, such as i18n config, action catalogs, or registry entries.
 - Preserve bootstrap order when global config, API URL, headers, loading, logging, i18n, and metadata registry providers interact.
+- Treat provider installation as the canonical proof that a host opted into a platform capability. Importing a component class, referencing a selector, or seeing a package in `package.json` does not prove that `ENVIRONMENT_INITIALIZER`, `APP_INITIALIZER`, registry providers, interceptors, i18n catalogs, or default tokens ran.
+- Vertical metadata providers such as `providePraxis*Metadata()` install component registry facts; aggregate package providers such as `providePraxisDynamicFields()` may also install i18n, field selector registry defaults, logger bridges, styles, preloading, or HTTP defaults. Keep these capability bundles explicit and documented instead of recreating partial host-local provider arrays.
+- If a capability is absent at runtime, fail closed to a missing-provider diagnostic and identify the canonical provider to install. Do not synthesize registry entries, local tokens, prompt-only catalogs, selector switches, or ad hoc fallback defaults to hide an uninstalled provider.
 - Before adding a new token or provider, classify the gap as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`.
 - For real public contract gaps, map direct consumers and derived docs before editing.
 
