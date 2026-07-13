@@ -54,6 +54,10 @@ Treat `payloadExpr` and `SurfaceBinding` as projection mechanisms over the decla
 - Use `GLOBAL_ACTION_CATALOG` entries and `payloadSchema` for discoverability, validation, AI authoring, and editor projection.
 - Use `surface.open` with `SurfaceOpenPayload` for modal/drawer widget targets; do not revive `showAlert:...`, `openUrl:...`, `navigate:...`, `apiCall:...`, or `surface.open:{...}` strings.
 - Use `onResult` plus `surface.result` or `dynamicPage.composition.dispatch` for surface outcomes. Do not patch parent widgets directly from the visual host.
+- When `surface.open.onResult` is executed, the emitted surface result is exposed as `context.payload`, `runtime.value`, and
+  `runtime.state.surfaceResult` for the already-authored `GlobalActionRef`. Treat that as an execution envelope only; do not
+  inspect result fields to choose a different action id, infer permission, mutate metadata/config, or decide persistence locally.
+  If different outcomes need different continuations, author those continuations as governed composition/action contracts.
 - Treat `surface.result` as emission into the active surface runtime and
   `dynamicPage.composition.dispatch` as delivery into the page composition runtime. They are not
   config mutation APIs. Drawer result envelopes, row selections, and runtime payload snapshots should
