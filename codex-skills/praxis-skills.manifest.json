@@ -981,8 +981,8 @@
                                             "praxis-crud-drawer-adapter-contract",
                                             "praxis-crud-dialog-form-host-lifecycle"
                                         ],
-                       "skillMdSha256":  "FBA20DCBE1D21F7C011C33F45572E5AD1E195F08BCE3A1124B7043112E8CB050",
-                       "treeSha256":  "7782BB1F8AD6C8EA33013B81403A41997990F9442477499F9315E54A805990AC"
+                       "skillMdSha256":  "AA812DD2CD921A9616DD4B7DA5BA4F42DDE644FABCAFC21E94A401C853A36365",
+                       "treeSha256":  "E10D959824CA445D8D79F9F065CA012C348524AD33B8C59808804348C13BDA7E"
                    },
                    {
                        "name":  "praxis-crud-runtime-openmodes",
