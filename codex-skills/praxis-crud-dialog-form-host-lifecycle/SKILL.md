@@ -38,7 +38,9 @@ Use `praxis-form-runtime-submit` for dynamic-form submit contracts, `praxis-tabl
 - Resolve modal/drawer form inputs from action params, runtime operation resolution, capabilities, HATEOAS links, explicit form contract, inferred form id, and row initial value.
 - `form.submitUrl` and `form.submitMethod` must remain operationally coherent. Do not fake submit contracts in the host dialog.
 - Modal and default drawer open through the package dialog host. Drawer presentation changes CSS/classes/sizing, not the semantic save/delete/close result model.
+- For drawer mode, `PraxisCrudComponent` must consume the managed launcher callbacks (`onClose`, `onResult`) as the lifecycle source. Do not subscribe directly to a drawer `ref.afterClosed()` in the component; `CrudLauncherService` normalizes the drawer close payload into `CrudDrawerResult` and emits semantic `close` when the shell closes without payload.
 - On `save` and `delete`, emit the corresponding CRUD output and refresh the table via the component-owned table refetch path.
+- Do not refresh the table merely because a drawer/modal opened, a duplicate draft was fetched, or a close event happened. Refresh only after the semantic mutation result (`save` or `delete`) is received.
 - Canonical delete is not a form open mode. It uses confirmation plus resolved HTTP delete/action contract.
 - Preserve back/return behavior for route mode and cancel/close behavior for modal/drawer mode.
 - Maximize/remember-state behavior is dialog-host chrome only; it must not mutate form config or CRUD metadata.
