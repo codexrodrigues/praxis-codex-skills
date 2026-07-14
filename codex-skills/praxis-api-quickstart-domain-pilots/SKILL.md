@@ -84,6 +84,10 @@ Never use a generic PATCH or ordinary CRUD update to conceal an explicit busines
 
 For a real collection-level command that has no queryable or persisted collection, extend the metadata starter's `AbstractCollectionCommandResourceController`. Publish the action, capabilities, schemas, and governed command response without fabricating a repository, query service, CRUD endpoints, or decorative surface. Move that pilot to the resource-oriented persistent baseline only when the domain gains real item identity, persistence, and read operations; update host proof, discovery evidence, and consumers in the same change.
 
+When that persistent resource has a mutable lifecycle but ordinary CRUD would bypass its business states, use the read-only resource baseline for query/filter/stats and publish every mutation as an explicit workflow action. Expose `getResourceVersion` so item GET and action responses emit the canonical ETag. Require `If-Match` on item commands, but check for a completed idempotent replay before rejecting a now-stale ETag: a retry of an already committed command must return the original result without repeating the transition.
+
+Scope an idempotency key by resource key, collection/item target, action and authenticated actor, and fingerprint the complete command. Persist the domain mutation, append-only transition/effect ledger and completed idempotent response in one operational transaction; a committed mutation without a replayable result is not an acceptable corporate proof. A batch that promises partial success must declare itself non-atomic, preserve input order and run each item in its own transaction. If an effect leaves the operational database, replace direct remote execution with a transactional outbox and an idempotent consumer; same-database ledgers prove local atomicity only.
+
 ## Metadata, Governance, And Lookup
 
 Use the published contract rather than local UI knowledge:
@@ -171,6 +175,7 @@ Choose the smallest focused proof that covers the changed contract:
 | stats, analytics, or export | `mvn "-Dtest=StatsSchemaSmokeHttpTest,FuncionarioExportSmokeHttpTest" test` plus the affected pilot test |
 | Domain Knowledge/config host wiring | `mvn "-Dtest=DomainKnowledgeProjectionWiringIntegrationTest" test`; use the config-starter smoke for authoring/publication lifecycle |
 | governed snapshot loader/hot reload | focused runtime/health tests proving scope, hash, compatibility, monotonic activation, atomic last-known-good, invalid-candidate rejection and v1 → v2 → v1 rollback; then package/verify against released engine and Config Starter coordinates |
+| persistent action lifecycle | focused HTTP proof for read-only query, contextual capabilities, ETag `428/412`, replay before stale ETag, actor/item-scoped idempotency, state transition, atomic ledger rollback and exactly-once effect; add mixed ordered batch proof when partial success is supported |
 | one pilot implementation | its focused `*PilotIntegrationTest` plus any directly affected lookup/action/stats/export proof |
 | `ApiPaths` or cross-domain public identity | focused proofs above and cockpit verification scripts; use `mvn test` only if those cannot cover the resulting identity graph |
 
