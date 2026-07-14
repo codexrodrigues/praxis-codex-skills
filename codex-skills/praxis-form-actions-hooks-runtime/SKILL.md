@@ -71,6 +71,10 @@ In core, check these concrete files when `surface.open` payloads or global actio
   `widget`, `afterWidget`, `bindings`, `context`, and `onResult`. Do not let a Dynamic Form
   normalizer/editor silently drop semantic return handling or composed surface slots.
 - Hooks should execute through the registered hook contract and declared stages, not through arbitrary host callbacks hidden in config.
+- `beforeSubmit` is cancelable and runs before `PraxisDynamicForm` snapshots `form.getRawValue()`;
+  hook mutations that should affect persistence must update controls before that stage completes.
+- After submit starts, use `formSubmit.formData` as the persistence/command payload. `rawFormData`
+  and hook extras are diagnostic or UI context and must not become a parallel submit contract.
 - `formCommandRules` is the conditional command/side-effect channel. Keep it separate from `formRules` property effects and execute global actions through `GlobalActionService.executeRef(...)`.
 - `payload` is the structured authoring path for global actions; `payloadExpr` is an advanced JSON/expression escape hatch and must be preserved when structured payload is absent.
 - Treat `payloadExpr` as an advanced projection of runtime context, not as a scripting or policy
