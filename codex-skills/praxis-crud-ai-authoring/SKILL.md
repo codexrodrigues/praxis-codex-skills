@@ -44,6 +44,26 @@ Delegate child details to their owners:
 - dialog shell details to dialog skills
 - Settings Panel protocol to settings-panel skills
 
+## Editor Diagnostics As Cockpit
+
+Treat `CrudMetadataEditorComponent` and `validateCrudAuthoringDocument(...)` as
+the first cockpit for authoring health before manually editing JSON.
+
+- Normalize seeds through `parseLegacyOrCrudDocument(...)` /
+  `normalizeCrudAuthoringDocument(...)`; do not preserve legacy shapes just
+  because a host supplied them.
+- Use section health (`connection`, `defaults`, `actions`, `table`) and
+  `nextFocus*` guidance to decide the next authoring move before touching raw
+  metadata.
+- For each canonical action, resolve the blocking group in this order:
+  binding, schema, submit, then API. Do not treat a flat diagnostic list as the
+  only troubleshooting surface.
+- Inferred canonical modal/drawer actions may be accepted without `formId` when
+  the runtime resolver can derive the form contract; custom actions still need
+  explicit bindings.
+- Keep diagnostics tied to canonical paths such as `metadata.actions.create.form`
+  so shell summaries, JSON validation, and persistence events stay aligned.
+
 ## Manifest Rules
 
 Use `PRAXIS_CRUD_AUTHORING_MANIFEST` as executable source.
