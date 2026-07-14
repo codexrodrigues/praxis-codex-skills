@@ -89,6 +89,9 @@ Inspect:
 - Payload shape is canonical. Use `payloadMode` plus single/multiple semantics (`id`, `ids`, `entityRef`, `entityRefs`) consistently through display, edit, form submit, chips, dialogs, and table/filter consumers; do not infer payload shape from the current JavaScript value alone.
 - Selected-value reload must use by-ids/display paths when the source requires it; do not fake hydration with generic filter calls.
 - Selected display outside the open panel should route through `OptionDisplayResolverService`, `OptionStore`, or the owning select component path; do not persist labels as a shortcut for display.
+- Treat `OptionStore` by-id entries, including ephemeral selected options, as visibility/hydration
+  evidence only. They may keep selected values visible until a page load replaces the display row,
+  but they must not become persisted labels, local options, or a second source of lookup identity.
 - For dependent option sources, selected display/reopen must preserve the same structural filter
   context used by the option-source runtime. If the component uses `filterCriteria` for loading,
   verify the by-ids path also receives that contextual filter.
