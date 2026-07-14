@@ -2505,8 +2505,8 @@
                                             "praxis-config-domain-decisions",
                                             "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "BBDD5DFA4173111D98B61B3E621500A52E54B62BDB603113C83E39C03352539E",
-                       "treeSha256":  "650C27599D03B16BBC7D65C9D9CB369C0165587B8F95AF9D0BB26E482F6740DE"
+                       "skillMdSha256":  "AB93DEF7C19C92B66B75F3B7F0513F434C2685E800C27D4CFAD4652C82A9DC30",
+                       "treeSha256":  "935B9AE66626180FBE60A1D769B491E0E32EDB07268085DC5DD5A2DC897DB220"
                    },
                    {
                        "name":  "praxis-api-quickstart-cockpit-http-validation",
