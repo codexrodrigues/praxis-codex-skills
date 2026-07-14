@@ -127,6 +127,20 @@ When a pilot consumes a shared domain decision:
 4. Keep the host enforcement narrow and deterministic; it must not recreate authoring, publication, status transitions, or policy inference locally.
 5. Prove a published materialization changes runtime behavior, including the relevant rejected state, without presenting simulation as business-data execution.
 
+When a pilot demonstrates shadow or dual-run operation, keep it host-owned and
+strictly non-authoritative. The baseline must be independent of the candidate:
+it cannot copy the candidate result, read its snapshot payload, or use a
+persisted candidate outcome as its oracle. Freeze facts, `nowUtc`, timezone and
+resolved actor context once, then run both sides with isolated, bounded timeout,
+concurrency and saturation behavior. Classify `MATCH`, `MISMATCH`,
+`INCONCLUSIVE` and `TECHNICAL_ERROR` without converting failures into business
+denials. A shadow path must not use mutation/idempotency ledgers, advance a
+lifecycle, skip the approved baseline route, or execute an EffectIntent. Publish
+only allowlisted observations and low-cardinality metrics; never tag or log
+facts, request references, actors, amounts, exception messages, secrets, or
+snapshot payloads. Unit/integration proof establishes only `Shadow Implemented`;
+live baseline evidence is required for `Shadow Running` or `Shadow Passed`.
+
 If `DomainRuleService` is unavailable, the materialization store is missing, or no valid `applied` materialization exists for the target layer/artifact, treat that as missing operational proof for this host execution. The quickstart may return no optional policy or mark the proof unavailable according to the existing resolver contract, but it must not synthesize a fallback business rule from DTO labels, prompt text, demo data, Java defaults, or migration-specific assumptions. `DomainRuleOptionSourcePolicyResolver`, `DomainRuleBackendValidationPolicyResolver`, and `DomainRuleWorkflowActionPolicyResolver` are the reference boundary: they select the latest valid applied materialization from Config Starter and otherwise return empty. Empty means "no governed materialization available to this host now", not "the semantic rule is absent", not "the consumer can decide locally", and not "the pilot owns the policy".
 
 The quickstart may demonstrate a materialization, but no pilot may route rules through command words, local keyword rules, or copied assistant text. Governed semantic resolution remains the primary path.
