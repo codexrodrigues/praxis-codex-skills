@@ -51,6 +51,7 @@ for the smallest read slice. Run its checked chain in order:
 ```powershell
 pwsh -File tools/migration-factory/export-api-first-manifest.ps1 -Screen <SCREEN>
 pwsh -File tools/migration-factory/check-api-first-manifest.ps1 -ManifestPath docs/migracao/<SCREEN>/factory/api-first-manifest.json
+pwsh -File tools/migration-factory/start-api-first-timing.ps1 -ManifestPath docs/migracao/<SCREEN>/factory/api-first-manifest.json
 pwsh -File tools/migration-factory/new-api-first-read-profile.ps1 -ManifestPath docs/migracao/<SCREEN>/factory/api-first-manifest.json
 pwsh -File tools/migration-factory/check-api-first-read-profile.ps1 -ProfilePath docs/migracao/<SCREEN>/factory/api-first-read-profile.prelim.json
 pwsh -File tools/migration-factory/java-read-scaffold.ps1 -ProfilePath docs/migracao/<SCREEN>/factory/api-first-read-profile.prelim.json
@@ -63,6 +64,26 @@ files only in the canonical module. Read
 before selecting this path.
 
 ## Measure The First Slice
+
+When the API-first factory is available, its timing ledger is the canonical
+prospective metric. Start it immediately after the checked manifest and before
+the first Java edit:
+
+```powershell
+pwsh -File tools/migration-factory/record-api-first-timing-milestone.ps1 `
+  -LedgerPath docs/migracao/<SCREEN>/factory/api-first-timing.json `
+  -Milestone implementation-started `
+  -Evidence docs/migracao/<SCREEN>/factory/evidence/implementation-started.md
+```
+
+Record the canonical milestones in order: `implementation-started`,
+`first-endpoint-executed`, `schema-validated`, `focused-tests-passed`, and
+`legacy-parity-assessed`. Each evidence path must already exist. The ledger is
+bound to the source manifest hash; regenerate a changed manifest and restart an
+unmeasured pilot rather than mixing two contracts in one duration. Audit it with
+`check-api-first-timing.ps1`, adding `-RequireComplete` only at pilot closeout.
+
+## Generic Packet Timing
 
 The generated `factory-timing.json` starts the prospective clock. Record an
 event only after its evidence exists:
@@ -103,8 +124,9 @@ are inspected. Keep `ROWID`, Oracle session/HADES state, company/user context,
 and SQL private to the legacy bridge.
 
 The generic `create_api_scaffold.py` packet records entry evidence and elapsed
-time. It does not replace the API-first manifest, profile, SQL blueprint, or
-Java dry run when those official factory tools apply.
+time only when the API-first factory is unavailable. It does not replace the
+API-first manifest, profile, SQL blueprint, Java dry run, or factory timing
+ledger when those official tools apply.
 
 ## Mutation And Evidence
 

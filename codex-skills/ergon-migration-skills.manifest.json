@@ -143,8 +143,8 @@
                                             "praxis-java-resource-authoring",
                                             "praxis-dto-annotations"
                                         ],
-                       "skillMdSha256":  "9C51C8E231867B1EB5F2D1718AA8EA6B7EA6AAC80A525CCDC79EA134FD03D192",
-                       "treeSha256":  "DAF70435E5D2348A0CBD03EE381E1F05006001B5779974BA1D765FE92E5638F8"
+                       "skillMdSha256":  "833E7517D610541B94D2D47AC6D6B741F0E3967D15EE25B1890B6A14B0C5979D",
+                       "treeSha256":  "E95D477515687DD2A87DDDB37D36DB88FB43E6C85231B758B90F941EC17B674B"
                    },
                    {
                        "name":  "ergon-rule-migration-orchestration",
