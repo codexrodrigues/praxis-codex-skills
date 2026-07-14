@@ -45,6 +45,8 @@ Do not rebuild CRUD drawers, modals, or table/form launchers in apps when the mi
 - Save/delete results must propagate back to `PraxisCrudComponent` so outputs and table refresh stay component-owned.
 - `form.submitUrl` and `form.submitMethod` must appear together.
 - `actions[].params` maps row/context values into route/query/input and is not persistence.
+- When an action lacks an explicit open binding, prefer discovered CRUD surfaces/actions from capabilities, HATEOAS links, `/schemas/surfaces`, and `/schemas/actions` before falling back to legacy launcher behavior. If an explicit route/modal/drawer binding exists, preserve it and do not refetch discovery just to override the host contract.
+- Treat `openMode`, visible row/toolbar actions, and injected CRUD affordances as orchestration evidence only. Availability and executable permission come from capabilities, links, surfaces, actions, and adapter payloads; do not infer workflow permission or backend side effects from a drawer/modal opening or a button label.
 - Keep `crudContext` stable; avoid getters or object literals that recreate context each change detection cycle.
 
 ## Child Boundaries
