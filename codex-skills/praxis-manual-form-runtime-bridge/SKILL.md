@@ -55,6 +55,9 @@ Inspect before editing:
 - Field inference may rank selectors/constructors after the component context is known, but it must not become primary semantic intent routing.
 - Use `ManualFieldKeyService` for path/last-segment resolution and treat ambiguous matches as a diagnostic.
 - Preserve `ManualFormInstance.patchFieldMetadata()` as the patch application point so `FormConfig`, `FieldMetadata`, `FormGroup`, bound components, and state streams stay synchronized.
+- Treat `ManualFormInstance` as the runtime document for manual forms. `currentConfig`, `currentFieldMetadata`, `metadataChanges()`, `formConfigChanges$`, `fieldMetadataChanges$`, and `stateChanges$` are projections of the same instance state, not separate places for consumers to author divergent metadata.
+- Treat `getFieldMetadata(fieldName)` results and metadata stream values as read models. Apply changes through `patchFieldMetadata(fieldName, patch)` or `replaceConfig(config)` so JSON Merge Patch semantics, cloned snapshots, `FormGroup` validators/state, toolbar metadata, and bound component refresh remain coherent.
+- Use `bindComponent(fieldName, component)`/`unbindComponent(fieldName)` for projected component hot updates. Do not create host subscriptions that write directly to component inputs while also expecting `ManualFormInstance` to be authoritative.
 - Treat JSON Merge Patch `null` values from metadata-editor as removals.
 
 ## Inventory Before New Contract
