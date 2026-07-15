@@ -28,7 +28,28 @@ Inspect the owner before editing:
 
 `GET /{resource}/capabilities` and `GET /{resource}/{id}/capabilities` aggregate canonical operations, surfaces, actions, export, stats, and availability; they are snapshots, not a second source of schema truth.
 
+Keep `canonicalOperations` structural: it says which operations the OpenAPI and
+resource service support, never whether the current principal may execute them.
+Use `operations.{operationId}.availability` for current discovery. The canonical
+operation map covers CRUD plus `byId`, `update`, `all`, `filter`, `cursor`,
+`options`, `optionSources`, `statsGroupBy`, `statsTimeSeries`,
+`statsDistribution`, `statsComparison`, and `export`; consumers must preserve
+unknown future IDs instead of validating against a closed key set.
+
+Apply `ResourceOperationAvailabilityProvider` with the published stable ID and
+the operation's own scope. Collection operations remain `COLLECTION`, including
+inside an item capability snapshot; do not leak item state or `resourceId` into
+their policy context. The provider governs discovery and HATEOAS. The host's
+`SecurityFilterChain` remains the executable authorization boundary.
+
 Availability should use contextual resolvers and shared `ResourceStateSnapshot` rather than repeated N+1 resource loads.
+
+For an item surface without `resourceId`, evaluate principal-independent item
+context only after restrictions that can already decide eligibility. In the
+default rule chain, required authorities precede contextual and allowed-state
+rules: an ineligible principal receives `missing-authority`; an eligible one may
+then receive `resource-context-required`. Never expose the principal, token,
+security expression, or protected resource state in availability metadata.
 
 `resourceKey` is the stable semantic resource identity for discovery aggregation; `resourcePath`, action/surface `path`, HTTP method, schema URLs, and `_links` are operational execution evidence. Do not make URL shape the semantic identity, and do not hide a missing `resourceKey` with host-local aliases.
 
@@ -57,6 +78,8 @@ catalog instead of treating the inferred key as canonical.
 - Related-resource surfaces must publish child binding and supported child operations only when backed by canonical child capabilities.
 - Collection export is a collection operation with scope, selection, filters, sort, fields, limits, and capability proof.
 - Stats discovery should come from `StatsFieldRegistry` and `StatsSupportMode`, not from trial-and-error chart fields.
+- Do not make one authority imply another by name, prefix, role hierarchy guess, or textual matching. Let the host provider evaluate each operation and surface explicitly.
+- Keep HATEOAS alternatives coherent with availability: a denied `filter`, `cursor`, `all`, stats, or export operation must not be advertised as an executable link for that principal.
 - If a runtime needs a button, drawer, tab, related list, or workflow affordance, first check surfaces/actions/capabilities before inventing host UI metadata.
 
 ## No Keyword Routing
@@ -82,6 +105,7 @@ Use focused local gates:
 - actions: `mvn "-Dtest=AnnotationDrivenActionDefinitionRegistryTest,DefaultActionAvailabilityContextResolverTest,DefaultActionAvailabilityEvaluatorTest,ActionCatalogServiceTest,ActionCatalogE2ETest,WorkflowNegativePathsE2ETest" test`
 - capabilities/hypermedia: `mvn "-Dtest=OpenApiCanonicalCapabilityResolverTest,CapabilityServiceTest,CapabilityE2ETest,CapabilityConsistencyE2ETest,HypermediaDiscoveryE2ETest,HateoasAndPayloadSizeE2ETest" test`
 - quickstart downstream proof: `QuickstartMetadataMigrationIntegrationTest` and `EventosFolhaPilotIntegrationTest`
+- Angular contract proof: run the focused `ResourceDiscoveryService` test, then build `praxis-core` and direct public consumers when operation IDs or availability shape changes.
 
 Review Angular core action/surface/materializer tests and public docs/examples when discovery behavior changes.
 
