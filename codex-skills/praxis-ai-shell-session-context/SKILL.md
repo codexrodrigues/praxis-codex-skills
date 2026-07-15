@@ -31,6 +31,7 @@ The required identity is the stable tuple `sessionId`, `ownerId`, and `ownerType
 - The normalizer bounds context items, schema fields, attachments, capabilities, hints, actions, digest fields, and text length. Expand a limit only with a measured privacy/performance reason and a focused spec.
 - Target metadata accepts scalar values only and excludes raw `file`, `blob`, `bytes`, `base64`, `previewUrl`, `currentState`, `runtimeState`, form values, rows, pending patch, diagnostics, payload, and config keys. Keep the blacklist protective rather than copying raw data to a differently named field.
 - Attachments in the snapshot are serializable summaries only: identity/name, kind, MIME type, size, source, and preview availability. `File`, bytes, base64, blob URLs, and rich payloads stay on the composer/upload path.
+- Shell attachments may carry live `File` handles and local `previewUrl` values only while the composer/shell owns that interaction. Convert them to bounded `attachmentSummaries` before session/context registry use, and never persist, replay, reopen, or send blob URLs as grounding evidence.
 - Digests are summaries, hashes, sources, fields, and counts. A digest is evidence, not a serialized runtime object.
 - Turn runtime state is not snapshot context. Do not copy heartbeat, replay diagnostics, watchdog progress,
   stream lifecycle checkpoints, assistant messages, quick replies, pending clarification, preview, pending patch,
