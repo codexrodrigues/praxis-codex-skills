@@ -75,6 +75,13 @@ In core, check these concrete files when `surface.open` payloads or global actio
   hook mutations that should affect persistence must update controls before that stage completes.
 - After submit starts, use `formSubmit.formData` as the persistence/command payload. `rawFormData`
   and hook extras are diagnostic or UI context and must not become a parallel submit contract.
+- Treat `FormHooksRegistry` and `FormHooksLayout` as shared form-runtime contracts, not a Dynamic
+  Form-only convenience. Consumers such as `@praxisui/manual-form` may execute the same declared
+  stages (`beforeSubmit`, `afterSubmit`, `onError`, etc.) against their own `FormGroup` and
+  `FormConfig`; do not fork the hook shape or introduce manual-form-specific host callbacks.
+- In shared consumers, preserve the same fail-closed behavior: a stopped `beforeSubmit` cancels the
+  flow, hook exceptions can route to declared `onError`, and persistence should only snapshot values
+  after cancelable hooks that may mutate controls have completed.
 - `formCommandRules` is the conditional command/side-effect channel. Keep it separate from `formRules` property effects and execute global actions through `GlobalActionService.executeRef(...)`.
 - `payload` is the structured authoring path for global actions; `payloadExpr` is an advanced JSON/expression escape hatch and must be preserved when structured payload is absent.
 - Treat `payloadExpr` as an advanced projection of runtime context, not as a scripting or policy
