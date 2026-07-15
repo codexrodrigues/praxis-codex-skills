@@ -2378,8 +2378,8 @@
                        "dependencies":  [
                                             "praxis-core-global-actions-metadata"
                                         ],
-                       "skillMdSha256":  "1B5441C1748299CF33F7B37A712C9AA280F6ACEDD2FB92CE2DC055136854DBCD",
-                       "treeSha256":  "4DD50B018D00EC1992160B7FD5E0D8C2B02813B1B1C850F377A65A428F0E063A"
+                       "skillMdSha256":  "BDAEA78A2FEB69378F2709DFE6FD0958CA0CD1EDECD0E685D7322C9763C1553B",
+                       "treeSha256":  "D34E4BC1C8BCBC6D76593D8794E1A643493F29BC1D395B07C179B8111C41FE2D"
                    },
                    {
                        "name":  "praxis-core-domain-governance-runtime",
