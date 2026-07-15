@@ -52,6 +52,11 @@ provide options and hints, but `actionCatalog` must not become a keyword/templat
 Some manifest operations are intentionally not materialized as local patch shortcuts. For example,
 `renderer.configure` and `normalization.apply` require specialized runtime/editor handlers and must
 return an error if an assistant tries to compile them into a simple local seed patch.
+`normalization.apply` is especially not a cleanup patch over arbitrary metadata JSON: it is a
+SchemaNormalizerService/DynamicFormFactoryService operation over `normalizedSeed`, `form`, and
+`fieldMetadata`, with explicit failure modes for lost advanced properties and runtime/editor drift.
+When migration friction points to normalization, fix or invoke the normalizer/factory contract and
+focused specs instead of teaching the assistant to rewrite one consumer's seed.
 
 ## Operation Safety
 
