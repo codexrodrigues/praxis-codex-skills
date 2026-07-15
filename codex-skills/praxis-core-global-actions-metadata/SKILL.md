@@ -37,6 +37,12 @@ Before editing code or guidance, inspect:
 
 Consumers may declare package-specific actions and metadata entries, but should not persist command strings, invent local global-action payload shapes, or duplicate schema/resource discovery logic.
 
+When a consumer such as Dynamic Form, Table, Page Builder, dialog/surface editors,
+or AI authoring needs side effects, treat `GlobalActionRef` as the canonical
+command contract. The consumer may decide when to execute or present the action,
+but the action identity, catalog entry, payload schema, validation, and execution
+belong to core.
+
 ## Action And Metadata Rules
 
 - Persist global actions as `globalAction: { actionId, payload?, payloadExpr?, meta? }`.
@@ -45,6 +51,22 @@ Consumers may declare package-specific actions and metadata entries, but should 
 - Validate required payload keys and payload type with `validateGlobalActionRef(s)`.
 - Use `getGlobalActionUiSchema(...)` when authoring structured payload fields.
 - Use surface open presets and editors for canonical surface open actions.
+- Preserve the full `GlobalActionRef` shape across editor round-trips:
+  `actionId`, structured `payload`, advanced `payloadExpr`, `meta`, effect
+  ordering, and policy metadata must not be collapsed into a label, callback,
+  custom action id, or host command string.
+- Prefer structured `payload` authored from the catalog/UI schema for the
+  primary effect. Treat `payloadExpr` as an advanced runtime projection and
+  preserve it when no structured payload is authored; do not teach AI or visual
+  editors to replace normal catalog-backed payload authoring with expressions.
+- For `formCommandRules`, use `effects[].kind: "global-action"` plus
+  `effects[].globalAction` and execute through `GlobalActionService.executeRef`.
+  Dynamic Form is a consumer of the core contract here; it must not redefine
+  payload schema, action identity, or validation locally.
+- If an action id is missing, invalid, or needs a new payload shape, fail closed
+  or extend the canonical catalog/core contract. Do not downgrade the action to
+  `customAction`, a textual `action`, a local callback, or a generated command
+  string just to make the editor accept it.
 - Treat `GlobalActionResult.data` as the result produced by the executed action handler, not as a business authorization,
   persistence guarantee, or metadata mutation. Built-in dialog and surface actions may place close/result payloads in `data`,
   but domain continuation must still be modeled by the owning global action, composition dispatch, governed domain decision,
@@ -57,8 +79,8 @@ Consumers may declare package-specific actions and metadata entries, but should 
 Classify requests before adding action or metadata contracts:
 
 - `ja-suportado-so-ux`: action/catalog/schema metadata exists but the editor or runtime does not expose it well.
-- `ja-suportado-mal-nomeado-ou-mal-materializado`: command strings, local action wrappers, or aliases should normalize to `GlobalActionRef` or core metadata services.
-- `suportado-parcialmente`: core can represent the action/metadata but payload UI, validation, docs, consumer bridge, or AI registry projection is incomplete.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: command strings, local action wrappers, aliases, or consumer-only `actionId` handling should normalize to `GlobalActionRef` or core metadata services.
+- `suportado-parcialmente`: core can represent the action/metadata but payload UI, validation, docs, consumer bridge, editor round-trip, or AI registry projection is incomplete.
 - `lacuna-real-de-contrato`: no global action, UI schema, payload validator, resource/domain service, metadata registry, or schema flow can carry the semantic decision.
 
 For real gaps, update core contract, public API, specs, docs, and at least one direct consumer proof.
