@@ -174,6 +174,11 @@ not a shortcut around semantic intent or authorization.
 - `runtimeToolPlan` must publish `schemaVersion=praxis-runtime-tool-plan.v1`, backend-owned planner
   metadata, step budget, projection/redaction policy refs, and
   `multiToolAuthorization.source=backend_policy`.
+- Treat `runtime.tool-plan.*` stream phases as replay-safe technical projections, not execution
+  counters. Do not count repeated SSE phases, heartbeats, or `technicalDuplicate` diagnostics as
+  extra reads or tools; audit execution through `runtimeToolPlan.steps[]`,
+  `runtimeToolPlan.budget.usedToolCalls`, `runtimeRelatedSurfaceReads[]`, aggregate status, and
+  `streamEventDiagnostics.dedupeKey`/`eventUniquenessKey`.
 - Keep `steps[]`, `candidateSteps[]`, and `blockedSteps[]` as sibling arrays. `candidateSteps[]`
   ranks possible reads without authorizing execution; `blockedSteps[]` explains fail-closed cases.
 - Default beta policy is conservative: read-free availability/disambiguation, or a single governed
