@@ -861,8 +861,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "0E08C931B508591574AB5F209A210B06D8A10FC06F64528DA039FD918573A615",
-                       "treeSha256":  "F5D2C5E2C60C87706861299BF06D0E51B81BB1F2BB241699E633D563EEE6F913"
+                       "skillMdSha256":  "A289718D7193F091A76C55CD5B24FDF9BCA5FBCDB4D9FF1097E0D5096D9C7889",
+                       "treeSha256":  "B6E305F662FB054B614E41710CC911B48885F245F6B63D84CDB262BE2F912A7A"
                    },
                    {
                        "name":  "praxis-metadata-discovery-capabilities",
