@@ -1676,8 +1676,8 @@
                                             "praxis-manual-form-toolbar-metadata-bridge",
                                             "praxis-manual-form-rules-agentic"
                                         ],
-                       "skillMdSha256":  "6B1CB4412D731574D4C18907049F7C146FFBCBEF141BFB2F2897353DA35AFFC7",
-                       "treeSha256":  "89D9CB10F1AC4A6EF221AE47A1476B87146F7612DB25ECBC2D2CDEB5714959E7"
+                       "skillMdSha256":  "2CEE6379803A878C7AE027C5839FFB910593CBFF2523F30F1A2763F249C8AAB4",
+                       "treeSha256":  "0E5D9036A8010A95579DC86FF421BC1BFDD5192BA56DAE2B54FB41308C2F1826"
                    },
                    {
                        "name":  "praxis-manual-form-autosave-persistence",
