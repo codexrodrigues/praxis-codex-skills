@@ -883,8 +883,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "2D4601C9461CCC0F5F76E1A11AD3822D5B2E1E2D1796BA8ABAE4E5E235450EFB",
-                       "treeSha256":  "6916A9B4F69AE50E2862AC5714755364A8250279F1B3AC2D508C13097A41A74E"
+                       "skillMdSha256":  "8033F597500182A5D1B0236A70B413011199BB4EBDF21D341C249E5307D7D6CD",
+                       "treeSha256":  "72C40745E32541275E0D280378F291BD077B71CA40A7B693E6134257755B4211"
                    },
                    {
                        "name":  "praxis-core-runtime-contracts",
