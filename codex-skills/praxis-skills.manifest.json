@@ -1519,8 +1519,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "F653C2B9144E0A830571FDB797A3E0A1B9633F80942523B0802730AF556D8B50",
-                       "treeSha256":  "C124018A0FF8FC600D9140939D089BF6CE31902D57E66D827B5C2F2D06D29799"
+                       "skillMdSha256":  "2BAC432C5A9AF8C565B3ADDDC7481CADD859764C262C82C05461205093BC24AA",
+                       "treeSha256":  "61CFBF00859D39A29BC08C027E72EA22E3724BE239CA61510F538D00291BB17A"
                    },
                    {
                        "name":  "praxis-form-editor-document-roundtrip",
