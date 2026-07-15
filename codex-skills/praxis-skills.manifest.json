@@ -1805,8 +1805,8 @@
                                             "praxis-angular-validation-gates",
                                             "praxis-angular-i18n-governance"
                                         ],
-                       "skillMdSha256":  "06D85CEA2626366728A13DAEC7BC6BC599D381193EC0BBB47F6B77D68D33EB9F",
-                       "treeSha256":  "A06820DB0A5FEB3429EFFF97642EFED11FD6E91905338C6B3C5889CDC52A82BE"
+                       "skillMdSha256":  "C83015D31BE2C80904F64808EF39AEBFE66F0681719CE88371D320C826484AF5",
+                       "treeSha256":  "E87726EF100E9FACFC65FF81DF4370C744E4B64DD442F268B3F2D22B73843F4C"
                    },
                    {
                        "name":  "praxis-navigation-containers-ai-validation",

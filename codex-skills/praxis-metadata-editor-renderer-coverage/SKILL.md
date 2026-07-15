@@ -72,6 +72,12 @@ Inspect before editing:
   `optionSource.*`, `payloadMode`, selection policy, detail/create actions, or inline control
   properties, also point to the owning runtime/profile evidence before documenting the capability as
   active.
+- For remote select/list/entity authoring, prefer governed fields such as `resourcePath` and
+  `optionSource.*` over legacy `endpoint` properties. `configs-remote-source.spec.ts` is the boundary
+  proof: common select-like configs should not reintroduce `endpoint`, while entity lookup visual
+  coverage must expose `RESOURCE_ENTITY` metadata including key/type/entity/resource paths, identity,
+  display, dependency, selection policy, capabilities, detail/create actions, dialog, and payload
+  mode paths. Do not hide these common paths behind a JSON-only textarea or host-local editor patch.
 - AI-assisted metadata editing must use declared manifest operations such as `controlType.set`,
   `renderer.configure`, and inline/presentation operations. The adapter must reject free-form
   `seed`/`controlType` patches and JSON-only coverage for required visual authoring.
