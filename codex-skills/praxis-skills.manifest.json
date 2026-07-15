@@ -386,8 +386,8 @@
                        "dependencies":  [
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "215BED7089225338EFFFAA6CD37F7CA6B3E9F3B06CF932B912C288F75E7C40FB",
-                       "treeSha256":  "0688FF4C1D8EB5BA607EB955C0DA7139453E86F53DA413F1136E0BAC753BEBB6"
+                       "skillMdSha256":  "FCC7B33305895DC8F199CDE008E3A8804C47EEE01B5928C4D0E40114FFB1D8C2",
+                       "treeSha256":  "14832BA1C145FBC1F1CEFA52E81126B8B1E9C0D80B603978C6A120F351AD9244"
                    },
                    {
                        "name":  "praxis-angular-docs-playgrounds",
