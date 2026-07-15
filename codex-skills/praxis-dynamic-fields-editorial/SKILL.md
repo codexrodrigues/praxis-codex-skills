@@ -100,6 +100,12 @@ editor must mark the source as partial and point back to the backend/platform wa
 - `@praxisui/core` owns `FieldControlType`, `OptionSourceMetadata`,
   `DEFAULT_FIELD_SELECTOR_CONTROL_TYPE_MAP`, and selector registry tokens. Do not add a
   dynamic-fields-only alias when the canonical type or selector mapping belongs in core.
+- `@praxisui/core` also owns canonical control-type alias normalization through
+  `resolveControlTypeAlias(...)` and `normalizeControlTypeToken(...)`. `ComponentRegistryService`
+  may keep residual runtime synonyms for compatibility after calling the core normalizer, but that
+  local table is not the place to introduce new canonical names. When adding or reviewing an alias,
+  update/prove the core normalizer first, keep registry fallback behavior compatible, and prevent
+  aliases from becoming primary catalog/editorial choices.
 - Agentic authoring uses one family-level manifest for shared `FieldMetadata`/registry/editorial semantics plus component-level control profiles for granular per-control operation hints; use `praxis-fields-control-profile-ai` for that layer and do not duplicate a full manifest per runtime control when a profile can express the semantic difference.
 - Derived catalogs and inventories must stay aligned with the editorial source.
 - AI Registry component docs must remain extractable from either literal `ComponentDocMeta` metadata files or supported editorial factories such as `createWave1ComponentDocMeta(descriptor)`. If a package-owned field uses a metadata factory, verify the registry extractor still projects it before claiming catalog coverage.
@@ -174,6 +180,8 @@ Always verify:
 - runtime component still resolves for the target `controlType`
 - editorial metadata still resolves friendly name, icon, and discoverable identity
 - aliases still resolve correctly
+- alias normalization is covered in `@praxisui/core` before relying on the dynamic-fields registry
+  fallback table
 - selector-to-control mapping is correct in the `@praxisui/core` default selector map or in an
   explicit host override, with defaults disabled only at the root injector when intended
 - downstream tooling can still discover the field
@@ -192,6 +200,9 @@ If a field renders but becomes undiscoverable in editor/tooling, the change is i
 - runtime registry updated but metadata registry not updated
 - new `controlType` added without editorial descriptor
 - alias works in runtime but not in tooling
+- alias is added only to `ComponentRegistryService` residual synonyms, causing runtime resolution to
+  pass while `@praxisui/core`, catalogs, metadata-editor, AI profiles, or generated registry
+  surfaces still do not recognize the canonical identity
 - catalog updated manually without updating canonical editorial source
 - metadata exported through a factory renders in runtime/editorial tooling but is skipped by the AI Registry extractor, causing missing `authoringManifestProfiles`
 - consumer patched locally instead of fixing registry/editorial chain
