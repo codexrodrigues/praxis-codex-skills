@@ -46,12 +46,24 @@ Use `payloadExpr` only when the payload is intentionally derived from runtime co
 
 Treat `payloadExpr` and `SurfaceBinding` as projection mechanisms over the declared runtime envelope, not as an intent language. Allowed roots are the structured context published by `GlobalActionContext` and `SurfaceBindingRuntimeService`: `payload`, `runtime`, `pageContext`, `meta`, `context`, `action`, `sourceId`, `widgetKey`, and `output`. Do not use template strings, `${...}` interpolation, or path extraction to choose an `actionId`, infer permission, switch resource identity, or reconstruct a semantic decision that should come from the authored ref, catalog, discovery, composition link, or backend contract.
 
+For editors and AI authoring, structured `payload` has precedence. Preserve
+`payloadExpr` only when no structured payload is authored and the runtime context
+is the intended payload source. `validateGlobalActionRef(s)` intentionally treats
+`payloadExpr` as satisfying required payload presence because the value is
+resolved at execution time; do not present that as schema proof. When the value
+must be inspected, previewed, or validated statically, materialize a structured
+payload from the catalog/UI schema instead of relying on an expression.
+
 ## Payload Rules
 
 - Normalize refs with `normalizeGlobalActionRef`.
 - Validate required payload keys and payload type with `validateGlobalActionRef` or `validateGlobalActionRefs`.
 - Get editor fields from `getGlobalActionUiSchema(actionId)`.
 - Use `GLOBAL_ACTION_CATALOG` entries and `payloadSchema` for discoverability, validation, AI authoring, and editor projection.
+- In authoring surfaces such as Dynamic Form `formCommandRules`, save either a
+  structured `payload` or a `payloadExpr` for the primary effect, not both as
+  competing sources. If a user authors structured fields, drop or replace the
+  preserved expression for that primary effect and keep secondary effects intact.
 - Use `surface.open` with `SurfaceOpenPayload` for modal/drawer widget targets; do not revive `showAlert:...`, `openUrl:...`, `navigate:...`, `apiCall:...`, or `surface.open:{...}` strings.
 - Use `onResult` plus `surface.result` or `dynamicPage.composition.dispatch` for surface outcomes. Do not patch parent widgets directly from the visual host.
 - When `surface.open.onResult` is executed, the emitted surface result is exposed as `context.payload`, `runtime.value`, and
@@ -69,6 +81,11 @@ Treat `payloadExpr` and `SurfaceBinding` as projection mechanisms over the decla
 - `meta` is execution/display context. It may carry labels, icons, confirmation hints, authoring breadcrumbs, or the normalized action ref metadata copied into `context.meta.actionRef`; it must not be the only place where payload schema, resource identity, permission, operation id, or semantic decision is stored.
 - Missing handlers or providers are explicit runtime failures such as "Global action not registered" or "Surface service not available". Do not catch these by selecting another action, parsing labels, guessing a route, or silently mutating local state; repair the catalog/provider registration or fail closed with a user-visible diagnostic.
 - Built-in handlers are shared runtime capabilities. Host-specific handlers may be registered, but their action ids and payloads should still be cataloged and validated.
+- When executing `GlobalActionService.executeRef`, a `payloadExpr` is resolved
+  against the canonical `GlobalActionContext` and the resolved value becomes both
+  handler payload and `context.payload`; the original expression is exposed in
+  `context.meta.payloadExpr` for diagnostics. Do not reimplement this resolution
+  in consumers or mutate the ref after resolution.
 
 ## Aderence Inventory
 
