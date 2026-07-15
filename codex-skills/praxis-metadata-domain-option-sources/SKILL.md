@@ -41,6 +41,23 @@ as-is by Angular. Consumers may resolve origins, but must not synthesize
 control, or silently downgrade selected-value reload when the contract says
 `required` or `unsupported-with-waiver`.
 
+Keep structural and registry-wide discovery distinct. `/schemas/filtered`
+publishes `properties.*.x-ui.optionSource` only for a real schema property. When
+a resource owner hosts a broader `OptionSourceRegistry` whose descriptors do
+not correspond to DTO or filter properties, discover those descriptors through
+`/schemas/domain?resource={resourceKey}`. The semantic catalog must resolve the
+owner from the canonical resource key already materialized by surfaces/actions
+for the same `resourcePath`, using path-derived identity only as a legacy
+fallback. Do not create synthetic schema properties, duplicate descriptors in
+capabilities, or add a parallel option-source catalog endpoint.
+
+Required structured filters are expressed by
+`filtering.availableFilters[].required=true`; do not add or infer a second
+`requiredFilters` contract. `OptionSourceExecutionMode`, provider identity,
+SQL, datasource, credentials, and host execution context are private routing
+details. Public consumers need dependencies, filtering, endpoints, reload/sort
+policies, and capabilities, not evidence of which provider executed the source.
+
 Keep backend option-source dependencies distinct from metadata-editor cascade edits. In
 `praxis-metadata-starter`, `dependsOn` and `dependencyFilterMap` are published as
 `x-ui.optionSource.dependsOn` and `x-ui.optionSource.dependencyFilterMap` for backend discovery,
@@ -63,6 +80,10 @@ Selected-value reload is part of the backend contract. Use GET `/by-ids` only wh
   publish that limitation with `selectedReloadPolicy`/`invalidSortPolicy` and
   capabilities. Do not let Angular discover the limitation by failed requests,
   empty labels, or dropping selected ids from form state.
+- If a registered source is absent from `/schemas/filtered`, first verify whether
+  it actually corresponds to a property. For a registry-wide catalog, prove it
+  in `/schemas/domain` under the canonical `resourceKey`; absence from a
+  structural schema is not itself a contract gap.
 - If an Angular/editor flow needs to change cascade rules, first determine whether the task is
   backend option-source publication/migration or metadata-editor runtime cascade authoring. Only the
   former should write `x-ui.optionSource.dependsOn` / `x-ui.optionSource.dependencyFilterMap`.
@@ -89,6 +110,10 @@ Use focused local gates:
 - domain catalog/governance: domain catalog and semantic metadata reviewer tests
 - option sources: option-source registry/provider/executor/request validator tests and docs/spec examples
 - schema projection: `ApiDocsControllerTest`, filtered schema resolver tests, and spec schema validation where present
+- registry-wide provider source: prove `/schemas/domain?resource={resourceKey}`
+  publishes filtering/dependencies/runtime policies under the canonical owner,
+  does not expose provider execution details, and does not create a synthetic
+  field in `/schemas/filtered`
 - downstream Angular proof when lookup behavior changes: `GenericCrudService` option-source tests, dynamic-fields option-source tests, and dynamic-form submit/value tests
 
 Review `docs/spec/x-ui-field.schema.json`, option-source examples, guides, quickstart fixtures, and HTTP examples when public metadata changes.
