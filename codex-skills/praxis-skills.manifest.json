@@ -2434,8 +2434,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "0E6C6B030C8EDBCF69F65FC0E591B2B2BCAACAB8309210A658DDEBA9876205E8",
-                       "treeSha256":  "A408F8F4832D11AF8393B4B02589FE9689DA39026D040E122E423D9629CF4F00"
+                       "skillMdSha256":  "73838D23CE89469F951CE4DE4B2F848BD08D2A02BDC3F943E004A8F1D4952243",
+                       "treeSha256":  "1F4368A40F2A278671C4722D5C89646B8755F381D369FEDEC403E7C12FAC8B56"
                    },
                    {
                        "name":  "praxis-config-domain-decisions",
