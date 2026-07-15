@@ -123,6 +123,7 @@ Use only canonical status endpoints. Definition transitions allow review paths i
 - The validator recognizes concept, alias, binding, relationship, visibility, summary, add-evidence, and revert-evidence operation types, but the current apply service executes only `add_evidence` and `revert_evidence`. Treat all other operations as `suportado-parcialmente`; do not advertise them as operational until an applier and focused proof exist.
 - Applying evidence updates the Project Knowledge derived index. Revert deactivates the evidence; an active replacement marks the previous evidence `superseded`, otherwise it becomes `reverted`.
 - Timelines and responses expose safe summaries. Do not rehydrate raw patch payloads, prompts, private evidence, or chat transcripts into UI lifecycle events.
+- Domain-rule timelines are safe persisted observability projections, not a second source of business truth. Add or interpret timeline events only from persisted domain-rule sources or an explicit command/event ledger; do not backfill missing events from DTO timestamps, simulation ids, AI turn logs, frontend handoff state, quickstart smoke output, prompts, assistant messages, conditions, parameters, or materialized payloads. A blocked/rejected/ad hoc operation without a durable event source is a governance observability gap, not permission to invent a timeline fact.
 
 ## Grounding Safety
 
