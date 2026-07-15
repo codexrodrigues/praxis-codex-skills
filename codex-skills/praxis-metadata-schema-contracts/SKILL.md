@@ -28,11 +28,15 @@ Inspect the owner before editing:
 
 `/schemas/filtered` is the structural source of truth. It owns operation-specific schema shape, `properties.*.x-ui`, `x-ui.resource.idField`, `x-ui.resource.capabilities`, `schemaId`, `schemaUrl`, `ETag`, and `X-Schema-Hash`.
 
-`/schemas/catalog` is documentary/discovery material. `/schemas/domain`, `/schemas/surfaces`, `/schemas/actions`, and capabilities may reference schemas, but they must not redefine the filtered schema payload inline.
+`/schemas/catalog` is a derived documentary/discovery projection over OpenAPI. It enumerates candidate endpoints and publishes group/resource presentation, operation summaries/examples, and request/response schema links. Its `resourceKey`, `path`, and `method` can scope subsequent discovery, but catalog presence is not structural schema truth, authorization, or current capability proof.
+
+Capabilities are a contextual availability snapshot. They aggregate canonical operation flags, stats field eligibility/metrics, actions, surfaces, and stable `resourceKey` plus operational `resourcePath`; they do not redefine property structure. `/schemas/domain`, `/schemas/surfaces`, `/schemas/actions`, and capabilities may reference schemas, but none may replace or inline a second version of the filtered schema payload.
 
 Use canonical operation resolution from OpenAPI before inventing endpoint maps. `path + operation + schemaType` should resolve through `CanonicalOperationResolver`, `OpenApiDocumentService`, and `SchemaReferenceResolver`.
 
-`schemaId`, `schemaUrl`, `ETag`, and `X-Schema-Hash` are one structural evidence chain. Any new structural dimension such as `includeInternalSchemas`, `idField`, `readOnly`, `operation`, or `schemaType` must be reflected consistently in `FilteredSchemaReferenceResolver`, `ApiDocsController`, schema hash calculation, conditional request handling, docs/spec examples, and Angular cache consumption.
+For `/schemas/filtered`, `schemaId`, `schemaUrl`, `ETag`, and `X-Schema-Hash` are one structural evidence chain. Any new structural dimension such as `includeInternalSchemas`, `idField`, `readOnly`, `operation`, or `schemaType` must be reflected consistently in `FilteredSchemaReferenceResolver`, `ApiDocsController`, schema hash calculation, conditional request handling, docs/spec examples, and Angular cache consumption.
+
+Do not transfer that conditional-cache contract to `/schemas/catalog`, capabilities, surfaces, actions, or domain catalogs by association. A consumer must use `If-None-Match`, 304 handling, or a schema hash only when the exact endpoint independently publishes those headers and semantics. Where an endpoint does not, a bounded consumer TTL is an operational policy, not inherited structural evidence and not a substitute for capability refresh.
 
 Surfaces/actions/capabilities should reference canonical `schemaUrl`/`requestSchemaUrl`/`responseSchemaUrl` values produced by the resolver. They must not reconstruct schema URLs by concatenating paths, copy inline schema fragments, or treat a `schemaId` from another structural variant as equivalent.
 
@@ -57,6 +61,7 @@ metadata publication that produced it.
   choose the variant by inspecting method names, labels, widget mode, or local
   URL conventions.
 - If `ApiDocsController` changes, review cache headers, `ETag`, `X-Schema-Hash`, `If-None-Match`, and exposed headers in the same pass.
+- If `/schemas/catalog` or capabilities are consumed for authoring, keep their roles separate: catalog enumerates candidates, an exact published capabilities href proves current operation/field eligibility, and `/schemas/filtered` supplies structural property metadata. Do not infer one surface's freshness or authority from another's headers.
 - If `x-ui` shape changes, review `docs/spec/*.schema.json`, examples, conformance docs, Angular consumers, and quickstart downstream tests.
 
 ## No Keyword Routing
