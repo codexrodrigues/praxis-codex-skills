@@ -42,6 +42,7 @@ Delegate advanced `FieldMetadata` edits to `@praxisui/metadata-editor`, advanced
 
 - Use `componentEditPlan` validated against `PRAXIS_MANUAL_FORM_AUTHORING_MANIFEST`.
 - Reject free patches and require manifest operations.
+- Every operation must resolve its declared target through manifest target metadata and fail on ambiguity. Do not recover ambiguous fields, layout entries, actions, persistence keys, or bridge targets with prompt keyword matching, local aliases, or nearest-match heuristics.
 - `manualField.add` must validate unique field name, host template field existence, control-type discovery, metadata bridge boundaries, and round-trip.
 - `manualField.remove` is destructive and requires confirmation before metadata, layout, or value loss.
 - `manualField.label.set` should write through field metadata, not a host-local label map.
@@ -56,7 +57,7 @@ Delegate advanced `FieldMetadata` edits to `@praxisui/metadata-editor`, advanced
 - `formRules` is the authorable persisted rules surface.
 - Each `effect.condition` must be a JSON Logic object or `null`.
 - Do not generate JavaScript handlers, textual expressions, or legacy JSON Schema condition blocks for new manual-form rules.
-- Treat `formRulesState` as visual-editor round-trip state; prefer editing `formRules`.
+- Treat `formRulesState` as visual-editor round-trip state and read-only/internal for AI, hosts, and tools. Preserve it when needed for reopening the visual editor, but do not author rules by writing to it; edit `formRules` and let round-trip state be derived or preserved by the editor workflow.
 - Pair with `praxis-visual-builder-jsonlogic-roundtrip` when a rule comes from or returns to the visual rule graph.
 - Pair with `praxis-form-ai-rules-validation` when rule semantics must materialize consistently with dynamic-form behavior.
 
