@@ -307,8 +307,8 @@
                                             "praxis-ai-semantic-intent",
                                             "praxis-config-agentic-authoring-streaming"
                                         ],
-                       "skillMdSha256":  "B502F3695210C62D7787A6E6AD5ACB46C0525E4F8F0284D4348AEFE8A2DFD69B",
-                       "treeSha256":  "707A6A5AAE15FDE02B2473F983F6460171FE1B14F776CA128330942DC4B71F9A"
+                       "skillMdSha256":  "97CEFBB13500F40283C0BA70731BF2839D645027A406994D856ABB5D7F3EAEA2",
+                       "treeSha256":  "03A11B64DCD0D1265C0D6EEDBF2965137CDE4863E5619D339FA6BCEFEEB7C3D3"
                    },
                    {
                        "name":  "praxis-ai-backend-config-contracts",
@@ -2434,8 +2434,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "C365756E7118FAED28FA5DCBC1E8DA89A19BC519818757E8C0F52D5D1DAC929C",
-                       "treeSha256":  "032AB1534A67D8B6A5C8D2FA082595A9DEE51D72F63B07E8DE54739D4AD5BD5D"
+                       "skillMdSha256":  "C68D44A2CB5905D96CA4B3A71CF2FFBEF323C9A291D1893A965C86C6D5342930",
+                       "treeSha256":  "276266BB6D36F23B24952B207DEB474AF51F9589B56C3789926D83B1CE570189"
                    },
                    {
                        "name":  "praxis-config-domain-decisions",

@@ -171,6 +171,11 @@ not a shortcut around semantic intent or authorization.
   `untrusted_frontend_observation` boundary and become safe
   `groundedRuntimeComponentContext`; raw rows, sample rows, data sources, secrets, and frontend
   action decisions must not be copied into turn authority.
+- `groundedRuntimeComponentContext` is backend-owned. Strip any client-supplied
+  `contextHints.groundedRuntimeComponentContext` before grounding and only publish the context
+  produced by `AgenticAuthoringRuntimeComponentGroundingService` from accepted observations; forged
+  client context, provenance, permissions, or raw secrets must not survive into intent, tools,
+  consultative answers, preview, or fingerprint material.
 - `runtimeToolPlan` must publish `schemaVersion=praxis-runtime-tool-plan.v1`, backend-owned planner
   metadata, step budget, projection/redaction policy refs, and
   `multiToolAuthorization.source=backend_policy`.
