@@ -45,6 +45,14 @@ Use the hypermedia-first path:
 
 Do not reconstruct resource keys, schema URLs, submit URLs, read URLs, or action ids from labels, DOM text, route fragments, endpoint naming conventions, or command strings.
 
+Legacy or AI-created row actions may sometimes arrive as `surface.open`,
+`dynamicPage.surface.open`, or an unbound action label from older persisted table
+configs. Treat that only as a compatibility grounding step into an already
+declared record surface/capability context. Once the surface is identified, stop
+using the legacy action shape and rematerialize through `ResourceSurfaceOpenAdapterService`
+and `GlobalActionRef { actionId: 'surface.open', payload }`. Do not generalize
+label matching into a new authoring route for choosing surfaces.
+
 ## Materialization Rules
 
 - `resourceKey` identifies the resource semantically in action/surface/capability catalogs.
@@ -56,6 +64,11 @@ Do not reconstruct resource keys, schema URLs, submit URLs, read URLs, or action
 - Related resources should use `surface.relatedResource` and resolver output rather than host-local parent/child filter conventions.
 - Availability, denied operations, and permission-limited states must come from capabilities, catalog availability, or HATEOAS links, not frontend guesses.
 - Preserve the materialization provenance carried in `payload.context.resource`, `payload.context.surface`, and `payload.context.action`. Consumers may display titles, subtitles, icons, shell state, and hydrated widget inputs, but must not replace the context with labels, generated ids, component names, selected row text, or host-local route state.
+- Consumer events such as table `recordSurfaceOpen`, `dynamicPage.surface.open`,
+  selected row snapshots, and feedback messages are runtime telemetry and host
+  orchestration. They may carry `selectedRow`, `selectedRows`, `selectedCount`,
+  table id, and error diagnostics, but the surface payload itself must continue
+  to come from the core adapter/materializer and its backend catalog provenance.
 - `SurfaceOpenPayload.onResult` and `surface.result` are declarative continuation hooks for a governed result. They do not make the surface the primary owner of business state, resource identity, permission, or semantic decision. Route returned results through `GlobalActionRef`, composition links, or backend-confirmed actions; do not mutate host state from a surface result by local command parsing.
 - `SurfaceOpenMaterializerService` may hydrate read projections and add materialization diagnostics such as `readUrl`, `dataShape`, `recordCount`, and presentation mode. Treat those as derived runtime evidence. Do not use a successful hydration, fallback form projection, or unavailable data diagnostic as proof that the backend authorized an edit, action, or alternate resource target.
 - Treat materialized `widget.inputs`, `bindingOrder`, hydrated rows, fallback projections, and
@@ -70,7 +83,7 @@ Do not reconstruct resource keys, schema URLs, submit URLs, read URLs, or action
 Before adding a new adapter, field, input, or public type, classify the need:
 
 - `ja-suportado-so-ux`: catalog/capability/link already exists; editor or host does not expose it.
-- `ja-suportado-mal-nomeado-ou-mal-materializado`: host manually builds URLs or strings that should use core adapters.
+- `ja-suportado-mal-nomeado-ou-mal-materializado`: host manually builds URLs, strings, legacy `surface.open` actions, or row-action label bindings that should ground to declared surfaces and then use core adapters.
 - `suportado-parcialmente`: core can express the surface, but materializer, binding, diagnostics, docs, or consumer proof is incomplete.
 - `lacuna-real-de-contrato`: no backend catalog/capability/link or core payload field can express the operation.
 
