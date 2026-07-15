@@ -74,6 +74,12 @@ falls back from explicit `adapter.componentId` to text matching on
 materialization of canonical identity. Prefer explicit `componentId` and
 `componentType`; do not extend the name-based fallback to new components.
 
+Treat manifest target resolvers separately from intent routing. Backend resolvers such as
+`normalized-control-type-alias` run only after the semantic resolver has selected a component
+manifest operation such as `controlType.alias.add` or `controlType.alias.remove`. They may normalize
+and match a target inside the operation's config, but they must not be reused as a pre-manifest
+shortcut for deciding that the user's prompt is an alias-authoring request.
+
 Treat backend lexical checks with the same care. Residual `contains`, prompt
 shape checks, provider-error string classification, and artifact-name matching
 may support diagnostics, provider failure classification, post-resolution
