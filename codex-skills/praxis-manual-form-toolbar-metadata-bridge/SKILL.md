@@ -40,6 +40,7 @@ Manual Form owns:
 - Resolve the active field with `ManualFieldKeyService`; ambiguous matches must be surfaced as diagnostics.
 - Quick toggles may update required, read-only, hidden, and disabled metadata.
 - Required toggles must keep `required` and `validators.required` consistent with current runtime conventions.
+- Quick toggle implementation must patch the active field through `ManualFormInstance.patchFieldMetadata(...)`, not mutate the toolbar component, projected `pdx-*` instance, host config, or a parallel customization object. Treat the toolbar as an affordance over `FieldMetadata`; `ManualFormInstance` owns JSON Merge Patch semantics, config publication, control refresh, metadata stream emission, and bound component refresh.
 - Hidden state must update metadata and bound component visibility through the instance.
 - Keep toolbar actions keyboard accessible and positioned relative to the field anchor.
 - Closing, reopening, and metadata stream updates must not leave stale overlay state.
