@@ -73,6 +73,7 @@ When hosted in Settings Panel:
 - Use the editor's dirty/valid/busy state when exposed.
 - Do not swallow `applied$` or `saved$` events; bridge them to the consumer's canonical patch application.
 - If both `hostBridge.applyPatch` and `applied$`/`saved$` can emit the same patch, use idempotent application or duplicate suppression where necessary.
+- Treat duplicate patch handling as part of the bridge contract, not a cosmetic optimization. A consumer that wires both `hostBridge.applyPatch` and Settings Panel events must either prove the same JSON Merge Patch is idempotent in its storage model or suppress short-window duplicate signatures like `ManualFieldMetadataBridgeService`; otherwise Apply/Save can double-persist, double-rebuild, or double-trigger side effects.
 - If lazy import fails, surface a diagnostic instead of silently falling back to incomplete local editing.
 - Settings Panel ids should be stable and field-scoped so reopen/dirty state does not cross-contaminate unrelated fields.
 
