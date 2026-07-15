@@ -18,6 +18,11 @@ Read `projects/praxis-ai/AGENTS.md`, shell types/component, quick-reply utility,
 - Streamed quick replies are accepted only when they have stable `id` and `label`, then mapped into shell types with `kind`, `prompt`, description, icon/tone, `presentation`, `contextHints`, `canonicalAction`, `semanticDecision`, and `value`. Do not fabricate missing identity or infer a route from display text.
 - A quick reply preserves `id`, `value`, `rawValue`, `displayPrompt`, `contextHints`, `canonicalAction`, `semanticDecision`, description, and presentation. Clone structured objects before handing them between UI/turn state so later mutation cannot change a submitted continuation.
 - Its canonical submitted prompt is the nonempty string `value`, falling back to `prompt`; the visible label is only display text. Never route by label, translated copy, regex, aliases, `includes`, resource-path fragments, or hidden commands.
+- Treat direct `quickReply.semanticDecision` as the only quick-reply field that may become
+  `activeSemanticDecision` for the next request. A `semanticDecision` nested inside
+  `contextHints` is carried as context evidence for the backend, but it must not be promoted to
+  active decision or inherited by a later free-form prompt. This protects backend-authored choices
+  from hint-only or forged context payloads.
 - In clarification state call the canonical clarification path and preserve the pending clarification lineage. Outside it, submit a typed action carrying structured context. A free prompt must not inherit a quick reply's semantic decision.
 - Recommended intents are governed opportunities, not local permissions. Their current action kinds are `submit-prompt`, `start-review`, `open-guidance`, or an explicit custom kind; preview/apply still requires backend semantic resolution and contract gates.
 - Consultative catalog answers may include quick replies without forcing clarification. Preserve the backend's consultative/clarification distinction instead of treating every quick-reply list as a required user decision.
