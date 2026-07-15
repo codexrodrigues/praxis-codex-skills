@@ -38,9 +38,9 @@ Do not create a second host draft store for the same form. If a host needs remot
 - Prefer a stable `formId` for production flows.
 - Use `ManualFormPersistenceOptions.storageKey` only for an intentional override.
 - Otherwise compose keys from `manual-form`, `namespace`, `tenantId`, `profileId`, and `formId`.
-- Treat `componentInstanceId` as a host/runtime identity input that may participate in persistence options or config scoping, not as a replacement for `formId`.
+- Treat `componentInstanceId` as a host/runtime identity input that may intentionally override the persistence key at the component boundary. It scopes equivalent repeated instances, but it is not a replacement for the canonical `formId` in the seed or runtime model.
 - Keep storage browser/server safe. Do not assume `window`, `document`, or `localStorage` under SSR.
-- Loading persisted config should call `replaceConfig()` and loading persisted value should patch the instance form with `emitEvent: false`.
+- Loading persisted config should call `replaceConfig()` and loading persisted value should patch the instance form with `emitEvent: false`. Do not replay saved values through normal value-change handlers, because reload must restore a snapshot without immediately triggering a new autosave cycle.
 
 ## Autosave Rules
 
@@ -50,6 +50,7 @@ Do not create a second host draft store for the same form. If a host needs remot
 - `resetToSeed()` restores the seed config; coordinate reset with the adopted host form when one exists.
 - Missing storage is valid for local-only forms; it should be a no-op, not a runtime failure.
 - Do not persist invalid arbitrary JSON patches. Persist the instance's current canonical config/value snapshot.
+- Persist and reload only through `ManualFormInstanceFactory.create(...)`, `ManualFormInstance.saveDraft(...)`, `replaceConfig(...)`, and the injected `ASYNC_CONFIG_STORAGE`. Avoid host code that reads the same key and mutates `currentConfig`, `FormGroup`, or projected component metadata directly.
 
 ## Inventory Before New Contract
 
