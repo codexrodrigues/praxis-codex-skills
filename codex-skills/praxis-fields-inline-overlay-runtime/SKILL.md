@@ -89,6 +89,10 @@ Dynamic Fields owns:
 - Keep overlay labels and aria strings in dynamic-fields i18n catalogs; do not hardcode Apply/Cancel/Clear per inline component.
 - Use `inline-display-mask` for display-only compact summaries. It must not mutate the committed value shape.
 - For inline selection/lookup overlays, combine explicit apply semantics with the option identity rules from `praxis-fields-selection-lookup-controls`: draft tokens may be rendered in-panel, but committed chip text, selected display, and removal actions must remain based on canonical committed identity until Apply.
+- For inline multi-select panels, keep selected values available to the underlying selection control
+  so Material/CDK can retain selection state, but exclude the same selected values from the regular
+  unselected option list to avoid duplicate visible rows. Do not "fix" duplicate rows by dropping
+  selected identities from the control option set.
 - Presentation mode, skip snapshot, metadata refresh, select rebind, and global disabled/readonly/loading states must remain compatible with inline overlays.
 - Metadata refresh or select rebind while an explicit overlay is open must either rebase draft state from the new committed metadata or close/cancel deterministically. Do not preserve stale draft option IDs after metadata/resource changes.
 - Do not document component internal value shape as the final HTTP DTO; range normalization may happen later in host/backend contracts.
