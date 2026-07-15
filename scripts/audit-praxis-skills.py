@@ -205,7 +205,11 @@ def audit(args: argparse.Namespace) -> int:
                 f"{', '.join(source_in_other_family_manifest)}"
             )
 
-    return 1 if any(r["status"].startswith("SOURCE_") for r in results) else 0
+    source_invalid = any(r["status"].startswith("SOURCE_") for r in results)
+    audit_not_clean = any(
+        summary[key] > 0 for key in ("drift", "missing", "sourceInvalid", "sourceNotInManifest")
+    )
+    return 1 if source_invalid or (getattr(args, "fail_on_drift", False) and audit_not_clean) else 0
 
 
 def main() -> int:
@@ -216,6 +220,11 @@ def main() -> int:
     parser.add_argument("--skills-root")
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--fix-manifest", action="store_true")
+    parser.add_argument(
+        "--fail-on-drift",
+        action="store_true",
+        help="Return a non-zero exit code when installed skills drift, are missing, or the source inventory is invalid.",
+    )
     return audit(parser.parse_args())
 
 

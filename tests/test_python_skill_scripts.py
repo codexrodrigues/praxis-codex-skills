@@ -85,7 +85,7 @@ def run_sync(args) -> int:
         return SYNC_MODULE.sync(args)
 
 
-def audit_args(repo_root: Path, skills_root: Path):
+def audit_args(repo_root: Path, skills_root: Path, *, fail_on_drift: bool = False):
     return argparse.Namespace(
         repo_root=str(repo_root),
         family="praxis",
@@ -93,6 +93,7 @@ def audit_args(repo_root: Path, skills_root: Path):
         skills_root=str(skills_root),
         json=True,
         fix_manifest=False,
+        fail_on_drift=fail_on_drift,
     )
 
 
@@ -659,6 +660,36 @@ class PythonSkillScriptTests(unittest.TestCase):
                 run_sync(sync_args(root, skills_root))
 
             self.assertEqual("local drift\n", (skills_root / "praxis-test" / "SKILL.md").read_text())
+
+    def test_audit_reports_destination_drift_without_failing_by_default(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skills_root = root / "installed-skills"
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+            write_manifest(root, "ergon-migration", [])
+            self.assertEqual(0, run_sync(sync_args(root, skills_root)))
+            (skills_root / "praxis-test" / "SKILL.md").write_text("local drift\n")
+
+            with redirect_stdout(io.StringIO()):
+                result = AUDIT_MODULE.audit(audit_args(root, skills_root))
+
+            self.assertEqual(0, result)
+
+    def test_audit_fail_on_drift_returns_nonzero_for_destination_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skills_root = root / "installed-skills"
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+            write_manifest(root, "ergon-migration", [])
+            self.assertEqual(0, run_sync(sync_args(root, skills_root)))
+            (skills_root / "praxis-test" / "SKILL.md").write_text("local drift\n")
+
+            with redirect_stdout(io.StringIO()):
+                result = AUDIT_MODULE.audit(audit_args(root, skills_root, fail_on_drift=True))
+
+            self.assertEqual(1, result)
 
     def test_sync_force_converges_removed_files_without_touching_other_skill_directories(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
