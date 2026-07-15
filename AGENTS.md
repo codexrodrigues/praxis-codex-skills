@@ -35,6 +35,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.ps1 -Family ergon-migration
 ```
 
+Em gates automatizados ou de readiness, acrescente `-FailOnDrift`; o modo sem
+esse switch é diagnóstico e preserva compatibilidade para revisão de inventário.
+
 Se PowerShell não estiver disponível, use os fallbacks Python canônicos:
 
 ```bash
@@ -42,6 +45,8 @@ python3 scripts/preflight-python-fallbacks.py
 python3 scripts/audit-praxis-skills.py --family praxis
 python3 scripts/audit-praxis-skills.py --family ergon-migration
 ```
+
+No fallback Python, use `--fail-on-drift` para o mesmo comportamento bloqueante.
 
 Quando `SKILL.md` for alterado, valide a skill com `quick_validate.py` se ele estiver disponível no ambiente Codex local. Se `quick_validate.py` estiver indisponível por dependência local, use `python3 scripts/validate-praxis-skills.py` no menor escopo suficiente.
 
