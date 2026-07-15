@@ -189,6 +189,10 @@ not a shortcut around semantic intent or authorization.
 - `runtimeRelatedSurfaceResolution.*Target` should declare `source=semantic_decision`,
   `provenance=backend_reconciled`, read mode, aggregation policy, candidate refs, and failure
   diagnostics. Forged, missing, ambiguous, stale, or divergent targets block before backend reads.
+- `resourcePath` alone is not runtime surface identity when multiple accepted surfaces can share it.
+  If composition publishes `runtimeSurfaceInstanceRef` or `targetRuntimeSurfaceInstanceRef`, that ref
+  governs target selection. Without it, a reconciled `targetWidget` may disambiguate; without either,
+  block with ambiguity diagnostics instead of choosing the first matching resource.
 - Backend target-candidate resolution may rank sanitized `surfaceRef`, `candidateRef`,
   `runtimeSurfaceInstanceRef`, labels, and semantic aliases only after a targetable intent has been
   semantically resolved. It must not decide the primary intent from prompt text.
