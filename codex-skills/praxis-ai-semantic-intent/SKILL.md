@@ -131,6 +131,15 @@ Preserve structured `contextHints` returned with an option. Do not infer an
 from the option label or prompt text. Local parsing may validate or display an
 already explicit structured value; it must not create the semantic payload.
 
+Runtime related-surface disambiguation follows the same rule with stricter
+refs. A clicked option must carry backend-issued `semanticDecision.constraints`
+`runtimeRelatedSurfaceDisambiguationSelection` with `optionRef`, `candidateRef`,
+and `surfaceRef`, and the next turn must resend it as `activeSemanticDecision`.
+`contextHints.runtimeRelatedSurfaceDisambiguationSelection`, preserved
+`runtimeRelatedSurfaceDisambiguationContext`, chip labels, or natural follow-up
+text are grounding only; they cannot authorize a read, select a surface, or
+replace backend reconciliation against current accepted runtime candidates.
+
 ## Consult/Edit Rules
 
 - `consult/answer`: factual or explanatory answer grounded in active component context; no patch.
