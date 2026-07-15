@@ -34,12 +34,26 @@ Availability should use contextual resolvers and shared `ResourceStateSnapshot` 
 
 `capabilities.operations` governs whether an operation exists and is currently available; `_links` expose the executable hypermedia target. They must remain coherent. If a capability is denied, stale, missing, or contradicted by `_links`, treat it as a contract defect to fix in metadata/capability/HATEOAS generation, not as permission for Angular or agents to infer availability from labels, buttons, or route patterns.
 
+`/schemas/surfaces` and `/schemas/actions` must be queried with exactly one
+scope: `resource=<resourceKey>` for resource semantic discovery or `group=<apiGroup>`
+for group discovery. Do not pass `resourcePath`, URLs, labels, operation names,
+or inferred cockpit keys as the `resource` parameter. If a consumer only has a
+path-derived fallback, surface that as inferred evidence and repair the
+`@ApiResource(resourceKey=...)`, action/surface publication, or cockpit resource
+catalog instead of treating the inferred key as canonical.
+
 ## Decision Rules
 
 - Surfaces/actions reference real operations and canonical schemas; they do not define inline payloads.
 - Use `AbstractCollectionCommandResourceController` for an `@ApiResource` whose only real operations are collection-level `@WorkflowAction` commands. It owns canonical `/actions`, `/capabilities`, governed execution, and schema links without advertising query or CRUD operations.
 - Do not add a fake `BaseResourceQueryService`, in-memory collection, CRUD controller, or `@UiSurface` merely to make a command-only resource discoverable. Such a resource remains outside the surface registry, so a resource-filtered `/schemas/surfaces` lookup may return `404`, until it exposes a real semantic surface.
 - Absence in `actions` and absence in `capabilities` do not mean the same thing. Preserve the distinction.
+- Absence from `/schemas/actions` or `/schemas/surfaces` for a resourceKey means
+  that the corresponding semantic catalog entry was not published for that
+  resource. It does not mean Angular should downgrade to label matching,
+  generic CRUD conventions, or host-authored command strings; either complete
+  the metadata publication or keep the consumer in a diagnosed compatibility
+  mode.
 - Related-resource surfaces must publish child binding and supported child operations only when backed by canonical child capabilities.
 - Collection export is a collection operation with scope, selection, filters, sort, fields, limits, and capability proof.
 - Stats discovery should come from `StatsFieldRegistry` and `StatsSupportMode`, not from trial-and-error chart fields.
