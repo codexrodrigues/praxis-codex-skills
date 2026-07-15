@@ -27,6 +27,12 @@ paths as ordinary writes unless the operation is explicitly an option-source mig
 operation. Normal cascade authoring writes the metadata-editor runtime paths produced by
 `CascadeRulesService.dehydratePatch()`.
 
+Treat `CascadeRulesService.dehydratePatch()` and `clearPatch()` as the executable save contract for
+cascade patches. If an AI adapter or assistant materializer constructs cascade seed patches directly,
+audit it as a partial bridge and prove it preserves the same enum values, null-removal semantics, and
+root-level runtime paths before using it as migration guidance. Do not copy a simplified adapter patch
+into a host or Ergon screen as the canonical cascade implementation.
+
 ## Required Source Audit
 
 Inspect:

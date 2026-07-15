@@ -1773,8 +1773,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "1653102A276479A6D46D605287D287B389AAD390625F9B9B10CEC9F629616F07",
-                       "treeSha256":  "87CCF2840F7130C064F149EBA0D3378FA210AACD290ACA9269F866C3490E318A"
+                       "skillMdSha256":  "B5C689DD4247AD633D649EE24C66C7D57FBE29B29F95C478A720C2935C3C6ECC",
+                       "treeSha256":  "C16CCC7CC5F7F0C155B5A66700204A0373742D303E256E2814A87234FAC26837"
                    },
                    {
                        "name":  "praxis-metadata-editor-consumer-bridges",
