@@ -28,11 +28,29 @@ Mutable resources should use `AbstractResourceController` plus `AbstractBaseReso
 
 `RestApiResponse` publishes HATEOAS under `_links`; do not regress to `links` or wrap resources in host-local envelopes. Query, command, export, stats, and filter behavior should remain resource-oriented unless a governed workflow action is explicitly modeled.
 
+Using `RestApiResponse` by itself does not make an endpoint a canonical Praxis
+resource. The resource must also be declared with `@ApiResource(value=...,
+resourceKey=...)` and the appropriate resource-oriented controller/service base
+when it should participate in `/schemas/filtered`, `/schemas/surfaces`,
+`/schemas/actions`, `/capabilities`, cockpit discovery, and Angular CRUD
+materialization. Plain custom endpoints may return the canonical envelope, but
+they remain custom operations until surfaced through the resource baseline or an
+explicit workflow/action/surface contract.
+
 ## Decision Rules
 
 - Choose read-only, create/update/delete, unit-delete, or full mutable base intentionally.
 - Do not hide business workflow commands as opportunistic PATCH/CRUD shortcuts. Use workflow action contracts when the domain operation is explicit.
 - Do not add local DTO aliases or frontend-only id-field patches when the resource baseline can publish `idField`, `_links`, operation schemas, and capabilities.
+- Keep `@ApiResource(resourceKey=...)`, controller base, service base,
+  `ResourceMapper`, `RestApiResponse`, `_links`, and schema/action/surface links
+  aligned. A resource missing any of these may still compile, but it will force
+  consumers into convention fallbacks instead of semantic discovery.
+- For custom sub-resource operations on a canonical resource, publish the
+  correct `@UiSurface` or `@WorkflowAction`, return `RestApiResponse.success`,
+  and include `linkToUiSchema(..., request|response)` links when the operation
+  has structural schemas. Do not rely on path shape alone for Angular to infer
+  command forms, read projections, or follow-up actions.
 - Keep controller/base, service/base, mapper, response envelope, and tests aligned in the same change.
 - Treat legacy classes as migration surfaces unless the local AGENTS says otherwise.
 
