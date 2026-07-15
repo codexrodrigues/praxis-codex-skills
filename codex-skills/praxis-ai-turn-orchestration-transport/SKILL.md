@@ -54,6 +54,10 @@ Treat `core/contracts/ai-contract.generated.ts` as the generated boundary for `A
 - Replay, edit, resend, retry, and cancel/reset paths may preserve messages or backend lineage only through the explicit request/result contract. They must not rehydrate `activeSemanticDecision`, `canApply`, preview, pending patch, or pending clarification from prior shell state, diagnostics, display prompts, labels, or historical `contextHints`.
 - Cancel resets the conversation/session according to the flow and leaves no applicable patch or clarification. A missing cancel handler is still required to clear local review artifacts safely.
 - Runtime component observations are optional, best-effort evidence. Filter empty/unavailable collection, send only the supported envelope shape, mark it `untrusted_frontend_observation`, and never let frontend evidence elevate permissions, tool budgets, target eligibility, or apply authority.
+- Do not send `contextHints.groundedRuntimeComponentContext` from Angular or preserve one from local
+  shell state, quick replies, diagnostics, or replay. The backend owns that field and regenerates it
+  from accepted `runtimeComponentObservations`; the browser may send observations, not pre-grounded
+  context.
 
 ## Semantic Continuations And Result Materialization
 
