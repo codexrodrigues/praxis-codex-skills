@@ -95,6 +95,11 @@ Inspect:
 - For dependent option sources, selected display/reopen must preserve the same structural filter
   context used by the option-source runtime. If the component uses `filterCriteria` for loading,
   verify the by-ids path also receives that contextual filter.
+- Contextual selected reload is a first-class by-ids contract. `GenericCrudService.getOptionSourceOptionsByIds(...)`
+  posts `{ filter, ids }` when a filter is provided, and async select `preloadSelected()` must pass the
+  same dependency context through `optionSourceByIdsOptions()`. A broad `filterOptionSourceOptions`
+  request with `includeIds` can be compatibility evidence for option-source search, but it is not
+  equivalent proof of edit/reopen selected hydration for dependent lookups.
 - A visible option while the panel is open is not proof of selected identity support. Prove closed
   display, presentation/read-only mode, edit/reopen, missing-ID behavior, and requested ID order.
 - Legacy `valueField`/`displayField` must be normalized toward canonical option identity/display keys through the core mapper/normalizer; do not create a second alias layer in the component.
