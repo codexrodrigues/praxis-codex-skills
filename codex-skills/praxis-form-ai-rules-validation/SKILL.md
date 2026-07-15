@@ -98,6 +98,9 @@ changing manifest, adapter, recipe, registry, or public docs involving `componen
   promote them as the recommended operation for primary business-rule authoring.
 - Mark LLM-authored rules for human review when the workflow expects review.
 - `formCommandRules` is the command/side-effect channel. Keep it separate from property `formRules`, validate `GlobalActionRef`, preserve structured `payload`, and treat `payloadExpr` as an advanced JSON escape hatch.
+- Author command-rule conditions as canonical JSON Logic evaluated over stabilized `formData` after `formRules` computed values have settled. Do not evaluate command-rule AI previews, diagnostics, or `payloadExpr` examples against raw form snapshots, local/transient fields, or textual expressions.
+- Keep side effects out of `formRules[].effect.properties`; commands such as alerts, confirmations, navigation, dialogs, workflow actions, or service calls belong in `formCommandRules[].effects[].globalAction` with a catalog-backed `GlobalActionRef`.
+- In visual/editor authoring, prefer structured `effects[0].globalAction.payload` for the primary effect. Preserve `payloadExpr` and secondary effects from advanced JSON round-trip, but do not promote them as the normal AI-authored path for new command rules.
 - `domainRules` materializations are shared/governed rule projections. Do not collapse them into local `formRules` as if the form were the primary business-rule owner.
 - When a governed decision materializes to `form_config`, preserve `DomainRuleMaterialization`
   provenance (`ruleDefinitionId`, `materializationKey`, `sourceHash`, `status`,
