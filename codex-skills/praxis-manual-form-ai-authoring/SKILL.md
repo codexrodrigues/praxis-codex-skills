@@ -68,6 +68,9 @@ Classify authoring gaps before adding manifest operations or config paths:
 
 - Do not route prompts by keywords in the frontend.
 - Use component edit plans and declared operations.
+- Treat `runtimeAuthoringPolicy.canApplyLocalPatch=false` as normative for agentic authoring. If the backend returns a free patch, keep `canApply=false`, clear `pendingPatch`, surface diagnostics, and ask for a `componentEditPlan` validated against `PRAXIS_MANUAL_FORM_AUTHORING_MANIFEST`.
+- Do not treat adapter-level `applyPatch(...)` support as permission to apply arbitrary AI patches. It is an internal/runtime merge path; AI-facing apply must stay gated by manifest compilation, capability validation, and the component edit plan contract.
+- Include `authoringManifestRef`, capability refs, runtime state digest, and safe context items in assistant/session context so the model is grounded by the canonical manifest instead of host template text.
 - Keep `MANUAL_FORM_AI_CAPABILITIES` aligned with the manifest, config editor, and runtime behavior.
 - Update AI registry ingestion when component metadata, capabilities, manifests, or docs projections change.
 - Keep internal authoring text in the manual-form i18n catalogs.
