@@ -130,6 +130,11 @@ Apply these rules:
   business authorization or an effect compiler.
 - Treat runtime observations, chunks, examples, labels, aliases, and templates as grounding evidence,
   never as permissions.
+- Treat granular component corpus retrieval (`getComponentAuthoringContext` / `authoringEvidence`) as
+  read-only pre-preview grounding. It may enrich planner context with bounded source refs, release,
+  chunk kind, content hash, corpus version, visibility, score, and snippet evidence, but it must not
+  by itself authorize preview, apply, component selection, operation selection, target resolution,
+  validator success, or effect compilation.
 - Treat `AgenticAuthoringToolRegistry` tools as phase-scoped, route-scoped read-only grounding unless
   their `AgenticAuthoringToolDefinition` declares otherwise. Tool execution without an explicit phase
   must fail with `tool-phase-required`; an unregistered tool must fail with `tool-not-found`.
