@@ -36,11 +36,26 @@ Use canonical operation resolution from OpenAPI before inventing endpoint maps. 
 
 Surfaces/actions/capabilities should reference canonical `schemaUrl`/`requestSchemaUrl`/`responseSchemaUrl` values produced by the resolver. They must not reconstruct schema URLs by concatenating paths, copy inline schema fragments, or treat a `schemaId` from another structural variant as equivalent.
 
+When a consumer receives `schemaUrl`, `requestSchemaUrl`, or `responseSchemaUrl`
+from surfaces/actions/capabilities, treat that URL as the canonical structural
+reference for the already-resolved operation variant. Consumers may resolve the
+href against their configured API origin, but must not rebuild the query string,
+swap `schemaType`, reuse a response `schemaId` as a request schema, or infer a
+different operation from `resourcePath`. If the published URL is missing or
+wrong, repair `SchemaReferenceResolver`/`FilteredSchemaReferenceResolver` or the
+metadata publication that produced it.
+
 ## Decision Rules
 
 - Do not fix missing schema semantics in Angular, quickstart, HTTP examples, or docs when the canonical source is the starter.
 - Do not add parallel endpoints for request/response schema variants when `/schemas/filtered` plus canonical operation resolution can express them.
 - Keep `schemaId` and `schemaUrl` aligned when adding structural dimensions such as `includeInternalSchemas`, `idField`, or `readOnly`.
+- Preserve the request/response boundary. Workflow actions and writable
+  surfaces must use `requestSchemaUrl` or request `schemaUrl` for form inputs
+  and may carry `responseSchemaUrl` only as response evidence. Read projections
+  and view surfaces use response schemas. Do not let an Angular adapter or host
+  choose the variant by inspecting method names, labels, widget mode, or local
+  URL conventions.
 - If `ApiDocsController` changes, review cache headers, `ETag`, `X-Schema-Hash`, `If-None-Match`, and exposed headers in the same pass.
 - If `x-ui` shape changes, review `docs/spec/*.schema.json`, examples, conformance docs, Angular consumers, and quickstart downstream tests.
 
