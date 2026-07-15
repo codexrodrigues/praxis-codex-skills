@@ -95,6 +95,13 @@ A missing manifest is valid for a consult-only/non-authorable component. It must
 not-found/configuration outcome when an executable manifest endpoint is requested; it must not fall
 back to arbitrary JSON patching.
 
+For family components, child-entry `authoringManifestProfiles` are registry applicability
+projections, not executable manifests. `AgenticAuthoringManifestService.getManifest(...)` does not
+read them as a fallback source. If a child dynamic-fields component appears to have profile chunks but
+`/api/praxis/config/ai/authoring/manifests/{componentId}` cannot resolve an executable manifest,
+audit the aggregate family `authoringManifest`, component-definition payload, Angular ingestion
+projection, and backend registry snapshot instead of compiling from the child projection.
+
 For an authorable component, preserve the complete chain:
 
 `editableTargets -> operationId -> target resolver -> input schema -> validators -> effects/handler`
