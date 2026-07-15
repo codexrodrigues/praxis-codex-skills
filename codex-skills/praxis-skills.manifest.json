@@ -1699,8 +1699,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "61892D26FBABAD008AC9D0E9071D966E0B754828E5FEBB8738C34BDA29B54D61",
-                       "treeSha256":  "7ED73A1413FDFE90F9B62A7622BB0D1973001B57FD9BB11CC2D4EADC8FE6A66E"
+                       "skillMdSha256":  "365015008366F4D2BBCE34D6473C96E742BFFF90549C14F20D7A0080C9222272",
+                       "treeSha256":  "7935E9B7EC5D8D35A6218EDDF0FBBBE3634F7D43A5D312CC9CDCBB7490780880"
                    },
                    {
                        "name":  "praxis-manual-form-rules-agentic",
