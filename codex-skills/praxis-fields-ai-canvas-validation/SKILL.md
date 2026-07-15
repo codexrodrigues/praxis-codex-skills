@@ -68,6 +68,12 @@ For each AI/canvas change, answer:
 - What would fail if the AI only emitted JSON without grounding in the registry/catalog?
 - Which evidence is only a projection? A selected canvas element, playable catalog card, generated ingestion chunk, or preview recipe can point to canonical metadata, but none of them independently author control semantics, option-source contracts, selector aliases, or runtime registration.
 - Which evidence statuses are complete, partial, or intentionally skipped: runtime registry, metadata registry, profile/capability, playable catalog, canvas state, registry ingestion, docs, and downstream consumers?
+- If the authored decision is `controlType.alias.add`, which canonical alias owner changes?
+  `PRAXIS_DYNAMIC_FIELDS_AUTHORING_MANIFEST` exposes the operation so AI can reason about the
+  decision, but the implementation path must prove `@praxisui/core` alias normalization first
+  (`resolveControlTypeAlias(...)` / `normalizeControlTypeToken(...)`) before treating
+  `ComponentRegistryService` fallback synonyms, generated registry chunks, or canvas state as
+  evidence. A runtime-only alias is partial AI/canvas coverage.
 
 Do not use keyword routing as the primary way to pick a field. AI authoring should ground the user intent into canonical control types, option-source contracts, component profiles, and declared tools/catalogs.
 
@@ -85,6 +91,11 @@ Do not use keyword routing as the primary way to pick a field. AI authoring shou
 - A playable catalog entry is incomplete if its `controlType` is not resolvable by the default `ComponentRegistryService`, unless it is explicitly marked as experimental or host-owned.
 - A playable catalog entry is discovery evidence only after it aligns with runtime registration, editorial descriptor/component metadata, profile/capability coverage, and preview recipe. Catalog parity tests are necessary but do not replace option-source, loader, or profile-family validation.
 - A preview recipe is incomplete if it demonstrates a control with metadata paths or value shapes not supported by the profile, capability, runtime component, or metadata editor contract. For remote lookup and inline controls, also prove selected-value hydration/by-ids or explicit Apply/Cancel/Clear semantics when those are part of the canonical behavior.
+- Alias authoring is incomplete if the manifest operation, generated ingestion chunk, or canvas affordance
+  can name an alias that only `ComponentRegistryService` resolves. The AI/canvas proof must include
+  core alias normalization and downstream discoverability so generated authoring does not produce a
+  control identity that renders in preview but fails metadata-editor, catalog, docs, or registry
+  governance.
 - Docs and inventories should reference the exported catalog and registry chain. If a host needs custom fields, it may register its own runtime and metadata entries, but it must not override the platform catalog to redefine package-owned semantics.
 - For wrapper controls, AI/canvas may choose and place the field through dynamic-fields, but package-specific policy must come from the owning package AI/runtime skill.
 
