@@ -49,6 +49,12 @@ When backend registry persistence, bootstrap, classpath snapshot, template searc
 - Treat `npm run validate:authoring-contracts` as the Angular acceptance gate for structural and semantic completeness: target kind/resolver, ambiguity policy, validators, effects, affected paths, destructive confirmation, submission impact, remote-binding evidence, and profile metadata. It does not replace backend execution tests for `AgenticAuthoringTargetResolverRegistry`, `AgenticAuthoringValidatorRegistry`, or `AgenticAuthoringEffectCompilerRegistry`.
 - When a manifest introduces a new resolver id, validator id, effect kind, or `compile-domain-patch` handler, classify it as `suportado-parcialmente` until the backend registry implements it and focused config-starter tests prove the executable path. Do not upload or package the corpus as executable proof just because the generated Angular artifact contains the declaration.
 - Registry projections must preserve the traceable authoring-manifest fields required for semantic decisions and backend validation: component/profile id, `manifestVersion`, stable `operationId`, `target.kind`, `target.resolver`, `target.ambiguityPolicy`, `target.required`, validator ids, effect `kind`/handler/handler contract, `affectedPaths`, `submissionImpact`, and presentation-affordance `sourceRef`, `defaultTargetKind`, and options. Do not collapse these into prose chunks, display labels, quick-reply text, or RAG-only summaries.
+- For family components such as `praxis-dynamic-fields`, `authoringManifestProfiles` on child
+  entries are a generated applicability projection. `generate-registry-ingestion.ts` matches control
+  profiles from the family manifest to component docs through `meta.id`, selector, tags, or metadata
+  input type. A projected child profile is useful evidence that the corpus preserved applicability,
+  but it is not a source definition of the profile, not proof that a capability alias is a component
+  identity, and not a substitute for runtime/editorial/catalog/source metadata evidence.
 - Registry grounding is evidence for LLM semantic resolution. Do not encode primary intent as keyword, regex, alias, fuzzy match, display-label parsing, or a registry-only command dialect.
 - Quick replies/actions must retain structured canonical action, semantic decision, target, context, risk, and presentation. Labels are not authority.
 - If quick replies, semantic decisions, or component edit plans cite registry/RAG/provider projections, they must reference projected manifest operations and targets by stable ids. A projection that loses those ids is derived-artifact drift to repair at the source, not permission for backend, UI, or agents to fall back to text matching.
@@ -59,6 +65,11 @@ When backend registry persistence, bootstrap, classpath snapshot, template searc
   backend snapshot before declaring a platform contract gap.
 - Preserve the runtime observation contract chunk and its `untrusted_frontend_observation` boundary. Observations require backend grounding into canonical context before they influence an answer; registry text cannot grant read/tool/apply authority.
 - Catalog governance must reject duplicate IDs/selectors, invalid paths, incomplete target/validator/effect evidence, unconfirmed destructive work, ambiguous targets without policy, inconsistent control profiles, and lost trust boundaries. Repair the source owner or validator, never weaken the gate to pass a local artifact.
+- If a dynamic-fields child entry is missing `authoringManifestProfiles`, or has a profile that is
+  not declared by the family manifest, first audit component docs extraction and the source
+  `appliesTo` rules. Treat the mismatch as source/extractor/projection drift until proven otherwise;
+  do not patch the generated corpus, add a registry-only profile, or promote a capability alias into
+  `componentIds` just to satisfy the gate.
 - Use aggregate corpus for cross-package/release analysis and `@praxisui/<package>/ai/component-registry.json` only for source-less package consumers. Package assets remain filtered projections of their owning package.
 
 ## Before New Contracts Or Scripts
