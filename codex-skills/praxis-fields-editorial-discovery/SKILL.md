@@ -58,6 +58,7 @@ Inspect:
 - Keep `ComponentDocMeta.id`, `componentType`, descriptor `controlType`, selector, descriptor component reference, icon, lib, inputs, outputs, and runtime registration aligned.
 - Keep `PRAXIS_DYNAMIC_FIELDS_WAVE_1_COMPONENT_METADATA` and `PRAXIS_DYNAMIC_FIELDS_EDITORIAL_WAVE_1` in the same semantic order unless you deliberately update the contract spec.
 - Catalog entries should derive canonical friendly name, description, and descriptor icon from the editorial registry. Keep showcase-only data local to the catalog: recommended/avoid guidance, preview seeds, presets, snippets, interaction pattern overrides, and docs slugs.
+- Treat the exported playground catalog as operational discovery, not a loose documentation table. Every published `controlType` must stay unique, use canonical non-alias identity, derive editorial copy/icon from the wave registry, keep `previewRecipe.baseMetadata.controlType` aligned, and resolve through the default `ComponentRegistryService`; otherwise classify the entry as partial discovery rather than a supported published choice.
 - Editorial/catalog parity proves discoverability, not full behavior. If the descriptor or catalog advertises remote options, entity lookup, inline explicit overlays, runtime hot metadata, selected reload, or AI authoring readiness, also prove the owning runtime/profile/option-source skill evidence instead of treating catalog presence as support.
 - Keep i18n coverage in sync when editorial copy changes; do not add English-only copy for a package-owned control unless the package already treats it as technical-only.
 - Preserve the distinction between primary form controls and specialized inline filter controls. Inline controls should not appear as default corporate form choices unless the authoring context is filter-focused.
@@ -87,6 +88,7 @@ Prefer focused checks:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/editorial/metadata-i18n-contract.spec.ts`
 - catalogs:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/catalog/catalog-derivation.spec.ts --include=projects/praxis-dynamic-fields/src/lib/catalog/dynamic-fields-playground.catalog.spec.ts`
+  - This catalog gate proves both derivation from editorial metadata and registry resolvability for every published catalog `controlType`; do not replace it with markdown-only review when changing official discovery.
 - AI authoring discovery:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/ai/control-type-ai-catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/praxis-dynamic-fields-authoring-manifest.spec.ts`
 - downstream discovery: metadata-editor or dynamic-form specs only when the consumer behavior changed
