@@ -88,6 +88,7 @@ Scoped semantic retrieval must not retry without tenant/environment scope. `Agen
 ## Project Knowledge And Corpus
 
 - Project Knowledge vector publication and retrieval are opt-in derived accelerators. Publish only active, approved, AI-visible concepts backed by active evidence; mask or redact content before indexing.
+- AI visibility is a policy gate, not vector metadata convenience. `allow` may publish safe content, `mask`/`summarize_only` may publish only masked or governed summaries, and `deny`/`deny_for_llm` must stay out of prompt/context projection even when a vector hit, score, or cached retrieval result looks strong.
 - Vector hits only rank canonical concept keys. Reload Domain Knowledge rows by tenant/environment, then recheck lifecycle, curation, AI visibility, requested context/resource/kind, and active evidence before projecting influence into a turn.
 - Reverted or superseded evidence must be removed from the derived index and must not influence new turns. A stale vector hit without a matching canonical concept/evidence row is discarded.
 - Component corpus retrieval requires release/scoped metadata and `aiVisibility=allow`; preserve source id/kind, chunk kind, source pointer, content hash, corpus version, score, and release provenance in diagnostics.
