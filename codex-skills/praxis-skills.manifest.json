@@ -263,8 +263,8 @@
                                             "praxis-ai-turn-orchestration-transport",
                                             "praxis-ai-backend-config-contracts"
                                         ],
-                       "skillMdSha256":  "7C7F1F758DA89A6D9A0E57003628C25E1411194F613830F3451C328CBD2094C9",
-                       "treeSha256":  "3FE9115CB6DA0097DD56DDC92235AB6856C0D7A1A9321BCA68651C682CA12CC9"
+                       "skillMdSha256":  "EB3CEFFC7C22A22B2FC9D8972A523AB65386FC77A29B6C6606A7AF3B2E0CE1B6",
+                       "treeSha256":  "7C2175E363D0B0315C8C1073C3B881F1DF39030AC98538AC3C5FA15175B79FB6"
                    },
                    {
                        "name":  "praxis-ai-shell-session-context",

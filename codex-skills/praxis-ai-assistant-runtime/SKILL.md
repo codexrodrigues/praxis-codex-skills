@@ -56,6 +56,7 @@ Inspect:
 - Intermediate SSE status/thought/diagnostic events are progress evidence. Terminal result/error/cancelled transitions determine final materialized state; raw errors and diagnostics remain redacted and are never promoted to business semantics.
 - `heartbeat`, replay diagnostics, watchdog progress, and lifecycle checkpoints may update visible status or structured diagnostics, but they must not create assistant messages, history facts, quick replies, apply buttons, pending patches, or semantic decisions by themselves.
 - Treat duplicate progress as a UX/status concern. Preserve diagnostic evidence such as `streamEventDiagnostics`, but do not count duplicate phases, `technicalDuplicate`, `replaySafe`, or `duplicatesDoNotIndicateExecution` events as extra work, extra tool calls, or additional governed decisions.
+- Legacy snapshot fallback (`/patch` after a stream transport/schema failure) is compatibility materialization, not a second canonical decision route. It may show a clear snapshot/fallback badge and detail, but must not run after authorization/probe expiry failures, must not bypass stream auth/tenant scope, and must not make progress events or stale stream state applicable.
 - The shell may render quick-reply labels, descriptions, badges, and details, but only structured quick-reply payloads (`value`, `canonicalAction`, `semanticDecision`, `contextHints`, diagnostics) may continue a turn. Never parse rendered labels, status text, or diagnostic text back into intent.
 
 ## Validation
