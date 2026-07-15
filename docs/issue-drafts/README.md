@@ -15,6 +15,7 @@ Validacao local: `python3 scripts/validate-issue-drafts.py`
 - [ergon-migration-orchestration](skill-reviews/ergon-migration-orchestration.md)
 - [ergon-migration-scaffold](skill-reviews/ergon-migration-scaffold.md)
 - [ergon-rule-migration-orchestration](skill-reviews/ergon-rule-migration-orchestration.md)
+- [ergon-rule-source-extraction](skill-reviews/ergon-rule-source-extraction.md)
 - [ergon-table-rule-audit](skill-reviews/ergon-table-rule-audit.md)
 - [praxis-ai-assistant-runtime](skill-reviews/praxis-ai-assistant-runtime.md)
 - [praxis-ai-authoring-manifests](skill-reviews/praxis-ai-authoring-manifests.md)
