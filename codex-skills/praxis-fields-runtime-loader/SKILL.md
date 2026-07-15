@@ -65,6 +65,7 @@ Inspect the affected files, not only docs:
 
 - Prefer a canonical `FieldControlType` from `@praxisui/core`; add aliases only when they normalize deterministically to one existing type and the alias belongs in core.
 - Treat control-type normalization fallback as a compatibility warning, not support. A control is canonically supported only when the requested selector/control type resolves through `FieldSelectorRegistry` or `FieldControlType` aliases to a registered package component without relying on the registry returning the raw unknown string.
+- Do not use a successful `normalizeControlType(...)` call, a preserved raw token, or an absence of thrown errors as runtime coverage evidence. The fallback path exists to preserve the requested value for logging and `renderError` diagnostics; support claims require `ComponentRegistryService.isRegistered(...)` or an actual `getComponent(...)` resolution to a registered lazy component.
 - Register package-owned fields in `ComponentRegistryService.initializeDefaultComponents()` with lazy imports; do not solve package-owned fields through host bootstrap code.
 - Keep `ComponentPreloaderService` aligned with registry semantics. Preload should exercise registrations, caching, and failures, not become a side catalog.
 - Keep selector resolution in `FieldSelectorRegistry`, `DEFAULT_FIELD_SELECTOR_CONTROL_TYPE_MAP`, `provideFieldSelectorRegistryBase(...)`, `provideFieldSelectorRegistryOverride(...)`, or explicit runtime registration through `provideFieldSelectorRegistryRuntime(...)`. Disable defaults only at the intended root provider boundary.
@@ -88,7 +89,7 @@ Do not say "supported" unless the correct layer is true:
 - `editor/tooling coverage`: metadata/editorial registries, catalogs, AI profiles, and downstream builders can discover it.
 - `preload coverage`: `ComponentPreloaderService` can preload the same package-owned field through registry resolution without duplicate discovery data.
 
-Runtime-only support is valid for some host custom fields, but package-owned fields should normally progress through all three layers.
+Runtime-only support is valid for some host custom fields, but package-owned fields should normally progress through all three layers. When authoring catalogs or AI profiles, never infer package support from normalization aliases alone; cross-check the registered component list and the loader path that would emit `component_missing` for an unregistered control.
 
 ## Validation
 
