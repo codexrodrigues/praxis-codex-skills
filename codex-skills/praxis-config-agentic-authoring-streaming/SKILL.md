@@ -153,6 +153,10 @@ Preserve these invariants:
   optional environment, and effective expiry. The token secret must be at least 32 bytes, legacy
   signed token parsing stays disabled unless explicitly enabled, and connect/probe/cancel must enforce
   the same scope as cookie mode.
+- `fallbackAuthoringUrl` and legacy synchronous authoring fallbacks are migration bridges for clients
+  that do not yet consume SSE. They are not alternate authorization paths: they must preserve the same
+  tenant/user/environment scope, semantic decision governance, preview/apply gates, and fail-closed
+  behavior for auth, probe, expiry, terminal, and stale-turn failures.
 
 Treat `/ai/patch/stream/**` and `AiOrchestratorService` as legacy migration surfaces. Preserve
 contract compatibility while consumers move to authoring turns, but do not add new agentic semantics
