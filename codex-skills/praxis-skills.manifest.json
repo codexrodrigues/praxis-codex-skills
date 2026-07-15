@@ -278,8 +278,8 @@
                                             "praxis-core-widget-observations",
                                             "praxis-config-agentic-authoring-streaming"
                                         ],
-                       "skillMdSha256":  "1CB0AD9D5594164ABBC6E500659DE061390E0202E6D5211B8A71B2A7CC97740D",
-                       "treeSha256":  "31165EFEAD3B12C9B89E2C192090F4AFC30C1B077AB2261FD6666D1E2C546FD7"
+                       "skillMdSha256":  "BAE279B55D45FC0B29876EF36E177B1A6E96716363D3254EDD5773E0008AD613",
+                       "treeSha256":  "79E524A7F6F8843E974A8A3A9264764A1FB775CE95EB63F54DA3EBC95AE7B052"
                    },
                    {
                        "name":  "praxis-ai-composer-attachments-quick-replies",
