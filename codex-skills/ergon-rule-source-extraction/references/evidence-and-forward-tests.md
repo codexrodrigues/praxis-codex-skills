@@ -7,6 +7,7 @@ Load this reference for Phase 10 source extraction or review.
 Resolve paths from the active Ergon migration repository rather than copying these contracts into the skill:
 
 - `docs/migracao/rule-migration/factory-contracts/rule-source-manifest-v1.schema.json`
+- `docs/migracao/rule-migration/factory-contracts/rule-source-export-input-v1.schema.json`
 - `docs/migracao/rule-migration/factory-contracts/goldens/*.rule-source-manifest.json`
 - `docs/migracao/rule-migration/rule-migration-factory-rfc.md` (`RF-01`)
 - `docs/migracao/rule-migration/templates/rule-inventory.md`
@@ -45,7 +46,7 @@ Input:
 - versioned package specification and body with exact hashes;
 - the canonical `pck-regras-freq.rule-source-manifest.json` golden or an equivalent governed source set;
 - table-rule audit evidence with unresolved ownership or invocation gaps;
-- RF-01 is not yet implemented.
+- the active checkout does not contain an approved RF-01 exporter/parser.
 
 Expected behavior:
 
@@ -53,7 +54,9 @@ Expected behavior:
 - inventory routines, ranges, calls, reads, mutations and unparsed blocks;
 - cite the Parte 1 operation and audit evidence;
 - classify unsupported business ownership as `unknown` and disposition as `defer`;
-- produce `SOURCE_MANIFEST_REVIEW_REQUIRED` and record RF-01 as missing;
+- produce `SOURCE_MANIFEST_REVIEW_REQUIRED` and record RF-01 as unavailable in
+  the active checkout, without claiming that the canonical capability is
+  globally absent;
 - update Phase 10 artifacts without declaring Phase 10 closed or selecting a Java target.
 
 Failure signal: reporting `SOURCE_MANIFEST_STRUCTURALLY_CONFIRMED`, assigning business intent from routine names, or advancing to shadow/preflight.
