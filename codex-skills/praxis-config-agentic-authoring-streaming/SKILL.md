@@ -210,6 +210,12 @@ not a shortcut around semantic intent or authorization.
   `runtimeRelatedSurfaceReads[]` and their projection/redaction metadata. Do not copy
   `sampleRows`, `rawRows`, `dataSource`, hidden values, sensitive scalars, or raw frontend
   observation payloads into tool-plan events, terminal evidence, assistant text, or aggregate facts.
+- Runtime compare must stay `compare_planning_only` until a comparison dimension is accepted. The
+  accepted dimension must come from `COMPARISON_DIMENSION_FIELD` in the semantic decision or from
+  backend-owned unique-dimension inference over reconciled surface contracts, with
+  `provenance=backend_reconciled` and non-sensitive/common field coverage. Frontend hints,
+  prompt labels, omitted/redacted fields, ambiguous common fields, or sensitive dimensions block
+  before reads and must not emit `runtimeRelatedSurfaceCompare`.
 
 ## Quick Replies And Diagnostics
 
