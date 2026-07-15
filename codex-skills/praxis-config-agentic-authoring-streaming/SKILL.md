@@ -206,6 +206,10 @@ not a shortcut around semantic intent or authorization.
 - Terminal evidence may include sanitized `runtimeConsultableContext`,
   `runtimeRelatedSurfaceReads[]`, runtime summary/detail/list resolution, and runtime tool diagnostics.
   It must preserve `rawRuntimeValuesCopied=false` when records are projected by allowlist.
+- Runtime summary, detail, list, and compare evidence must derive only from sanitized
+  `runtimeRelatedSurfaceReads[]` and their projection/redaction metadata. Do not copy
+  `sampleRows`, `rawRows`, `dataSource`, hidden values, sensitive scalars, or raw frontend
+  observation payloads into tool-plan events, terminal evidence, assistant text, or aggregate facts.
 
 ## Quick Replies And Diagnostics
 
