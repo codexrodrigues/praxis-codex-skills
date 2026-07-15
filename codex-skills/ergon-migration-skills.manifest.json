@@ -156,7 +156,7 @@
                                             "ergon-table-rule-audit"
                                         ],
                        "skillMdSha256":  "ECF5500836F81C0AC8E478D0664CCA28AB50939A8BFE1F6F5C100DE8995CBA38",
-                       "treeSha256":  "6C723DE55814DD500A929304EA8BEA3A22FF57D10D21D0BE107218F9FD4CCF9C"
+                       "treeSha256":  "59FF1D13189A54EF65F9C14F09A7195D768AFA89303B22743D77CFED53D8365C"
                    },
                    {
                        "name":  "ergon-rule-migration-orchestration",
