@@ -91,6 +91,12 @@ Do not say "supported" unless the correct layer is true:
 
 Runtime-only support is valid for some host custom fields, but package-owned fields should normally progress through all three layers. When authoring catalogs or AI profiles, never infer package support from normalization aliases alone; cross-check the registered component list and the loader path that would emit `component_missing` for an unregistered control.
 
+Published catalog/playground entries are runtime claims, not just documentation. Keep
+`dynamic-fields-playground.catalog.spec.ts` proving every published `controlType` resolves through
+`ComponentRegistryService.getComponent(...)`. If an entry only exists in docs, selector defaults,
+or AI catalogs but `getComponent(...)` returns `null`, classify it as partial/declared-only and fix
+registry registration before using it as migration guidance.
+
 ## Validation
 
 Use the smallest sufficient checks:
