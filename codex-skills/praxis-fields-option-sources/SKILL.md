@@ -97,6 +97,11 @@ adding Angular fallbacks:
   normalize this, but Angular code should not reshuffle selected-value reloads by page/search order.
 - Preserve `entityKey`, `selectionPolicy`, `capabilities`, display property paths, status/disabled fields, and rich display fields when mapping backend lookup results to select/display DTOs. Those fields are governance evidence, not optional decoration for entity lookup.
 - Presentation/read-only mode still needs selected display proof. Use by-ids/display resolver coverage; a working open panel does not prove saved values render after reopen.
+- Presentation mode is a separate selected-display path through `FieldShellComponent` and
+  `OptionDisplayResolverService`; do not assume the async/select component's `preloadSelected()`
+  proof covers read-only rendering. For dependent option sources, either prove the display resolver
+  receives the same dependency context for by-ids hydration, or mark presentation/reopen support as
+  partial and fix that display path instead of persisting labels locally.
 - Preserve `selectedReloadPolicy`, `invalidSortPolicy`, and backend waivers in UX/tooling claims. If by-ids reload is not supported, mark the scenario partial instead of pretending edit/reopen is fully supported.
 - Respect `invalidSortPolicy`: with `reject`, do not send arbitrary UI sort keys or fallback to client-side resorting as if the backend had accepted the request; with `ignore` or `unsupported`, explain the degraded sort behavior in diagnostics/tooling.
 - Keep categorical buckets distinct: when the source is `CATEGORICAL_BUCKET`, default loading/search behavior may intentionally differ from free-text remote search.
