@@ -81,6 +81,11 @@ Inspect before editing:
 - AI-assisted metadata editing must use declared manifest operations such as `controlType.set`,
   `renderer.configure`, and inline/presentation operations. The adapter must reject free-form
   `seed`/`controlType` patches and JSON-only coverage for required visual authoring.
+- `renderer.configure` is a registry/editor-coverage operation, not a consumer seed patch. In the
+  current adapter it requires a specialized runtime/editor handler and must not be compiled into a
+  local `seed` or `FieldMetadata` patch. If a migration needs new visual coverage, update the owning
+  `EditorProperty[]` catalog, renderer registry/factory evidence, specs, and AI manifest/context
+  evidence instead of teaching the consumer or assistant to mutate one screen's metadata directly.
 
 ## Renderer And Form Factory
 
