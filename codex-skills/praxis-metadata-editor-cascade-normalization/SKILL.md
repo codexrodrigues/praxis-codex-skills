@@ -83,6 +83,12 @@ When changing cascades:
   `optionSource.dependsOn` inside an option-source editor configures backend/discovery grounding;
   editing a cascade rule configures `dependencyFields` and root-level cascade behavior for
   metadata-editor/runtime consumption.
+- When a field is also driven by Connections that write `filterCriteria`, treat that as a conflict
+  with automatic native cascade reload. The canonical editor response is to keep the conflict visible
+  and materialize one of the governed cascade choices: disable native cascade with
+  `enableDependencyCascade=false`, or keep cascade metadata but set `dependencyLoadOnChange='manual'`
+  so Connections orchestrate reload timing. Do not silently merge both behaviors into ad hoc
+  `filterCriteria` patches or host-specific reload code.
 
 ## Normalization
 
