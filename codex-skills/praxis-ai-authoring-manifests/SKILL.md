@@ -56,6 +56,11 @@ For component-specific manifest work, use the focused skill when available: `pra
 - Manifest examples are executable grounding/eval evidence: include positive examples and at least one explicit negative example. Do not encode lexical routing as an example substitute.
 - Remote-binding operations must prove input-schema and path/effect evidence, use a pertinent binding validator, and declare `affects-remote-binding`; do not label an unrelated operation as remote merely to satisfy a gate.
 - Family `controlProfiles` repeat the same operation metadata and applicability evidence. The generated registry must expose the aggregate family entry, `projectedComponentIds`, child `authoringManifestProfiles`, and preserved operation metadata.
+- For family manifests, edit profile semantics only in the aggregate source manifest. Child
+  `authoringManifestProfiles` in generated registry entries are applicability projections, not a
+  second manifest source. If a child component lacks a projected profile, audit the family
+  `controlProfiles.appliesTo` rules, component docs extraction, and registry ingestion before adding
+  a new operation, patching the corpus, or treating a capability alias as a component identity.
 - Presentation affordances must identify their source, default target, and compatible options; they are consultative constraints, not edit permission.
 - Quick replies, clarification options, feedback, stream diagnostics, and transport lifecycle events may select or carry
   a backend-issued semantic decision, but they cannot invent `operationId`, target resolver, validator, effect, handler,
