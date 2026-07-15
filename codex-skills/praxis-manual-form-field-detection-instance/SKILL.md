@@ -34,6 +34,9 @@ Do not duplicate this chain in a host component, quickstart, docs example, or co
 - Detect supported projected Praxis controls after content projection is stable.
 - Infer `FieldMetadata` from component inputs and control type mapping; do not treat selector matching as primary semantic intent routing.
 - Preserve a stable `FieldMetadata.name`. Use `usePathNames=true` only when nested `FormControlName.path` is intentionally the canonical name.
+- Treat `ManualFieldKeyService.resolveFieldName(...)` as the canonical identity boundary for toolbar/editor activation after fields have been detected. An `ok` result returns the exact key to pass into `ManualFormInstance.getFieldMetadata(...)`, `patchFieldMetadata(...)`, `bindComponent(...)`, and metadata bridge opening.
+- Stop activation on `missing` or `ambiguous` resolution and surface diagnostics or UX feedback from that state. Do not fall back to visible labels, placeholder text, CSS selectors, nearest host component identity, fuzzy command matching, or manually composed aliases to decide the target field.
+- Preserve the resolved key unchanged through toolbar actions and editor patches. Renaming a field is a dedicated authoring operation that must update the runtime model, layout references, persisted values, and host template contract intentionally; it is not a side effect of field toolbar metadata patches.
 - Adopt a host `FormGroupDirective` when `[formGroup]` is applied to `<praxis-manual-form>`.
 - Delegate host control wiring to Angular forms APIs when an external `FormGroupDirective` exists.
 - Create an internal `FormGroup` only when the host does not provide one.
@@ -48,6 +51,7 @@ Do not duplicate this chain in a host component, quickstart, docs example, or co
 - Use `bindComponent()`/`unbindComponent()` when a projected field must receive metadata hot updates without custom host subscriptions.
 - Treat JSON Merge Patch `null` values as property removals.
 - Use `ManualFieldKeyService` for toolbar/editor field resolution. Ambiguous or missing matches are diagnostics, not opportunities for fuzzy primary intent routing.
+- When a resolved field key has no `FieldMetadata` in the instance, treat it as an inconsistent detection/runtime state and do not open the toolbar or metadata editor. Fix the detection seed, `usePathNames` choice, or metadata synchronization path instead of patching around the missing metadata in a host.
 
 ## Inventory Before New Contract
 
