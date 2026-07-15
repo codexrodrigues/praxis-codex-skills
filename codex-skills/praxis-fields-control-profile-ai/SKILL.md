@@ -84,6 +84,11 @@ Only real gaps justify manifest/profile changes. Prefer profile correction over 
 - Treat `getControlTypeCatalog(...)` as capability-family routing, not renderability proof. Direct `FieldControlType` entries and declared inline aliases can select a specialized AI capability catalog, while unknown aliases intentionally fall back to `FIELD_METADATA_CAPABILITIES`; neither path proves that a package component is registered, exported, or safe to claim as full profile coverage.
 - Profile `componentIds` must align with exported metadata, runtime registration, docs/catalog, and generated component docs.
 - When a profile or generated registry asset claims a component family is AI-ready, cross-check three identities together: profile `componentIds`, canonical `fieldMetadata.controlType`, and runtime registry coverage from `ComponentRegistryService`. A component ID present only in the projected manifest list or capability catalog is partial coverage until registry/editorial/docs evidence closes the loop.
+- Also cross-check published catalog/playground evidence from `praxis-fields-runtime-loader`.
+  `dynamic-fields-playground.catalog.spec.ts` must prove every published `controlType` resolves
+  through `ComponentRegistryService.getComponent(...)`. A control family can have a profile operation
+  and capability catalog but still be only partial/declared-only if the published catalog or runtime
+  registry cannot materialize it.
 - Profile operations must produce canonical `FieldMetadata` paths. Operation `affectedPaths` for component profiles must start with `fieldMetadata.` and must not invent canvas-only, assistant-only, prompt-only, or local UI state.
 - Profile validators must be declared either in the base manifest validators or in the profile's own validators. Every operation validator should be traceable to one of those declarations.
 - Profile operations must remain executable and schema-addressable: `operationId` starts with `field.`, target resolver is `field-metadata-json-path`, ambiguity policy is `fail`, examples exist, and destructive profile operations are not introduced without a reviewed manifest-level contract.
