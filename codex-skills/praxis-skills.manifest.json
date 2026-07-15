@@ -307,8 +307,8 @@
                                             "praxis-ai-semantic-intent",
                                             "praxis-config-agentic-authoring-streaming"
                                         ],
-                       "skillMdSha256":  "4381768F9D7C5DB1D4FC9AD744EB0070FFEB7363D691235399B84EAF3AFED47A",
-                       "treeSha256":  "C2E26F1A6314322A705D192605E90C158271964F09EC9B7602CB3B6E366BB843"
+                       "skillMdSha256":  "B502F3695210C62D7787A6E6AD5ACB46C0525E4F8F0284D4348AEFE8A2DFD69B",
+                       "treeSha256":  "707A6A5AAE15FDE02B2473F983F6460171FE1B14F776CA128330942DC4B71F9A"
                    },
                    {
                        "name":  "praxis-ai-backend-config-contracts",
