@@ -20,6 +20,7 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/src/lib/services/generic-crud.service.ts`
 - `projects/praxis-core/src/lib/schema/schema-metadata-client.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.ts`
+- `projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts`
 - `projects/praxis-core/src/lib/services/resource-action-open-adapter.service.ts`
 - `projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.ts`
 - `projects/praxis-core/src/lib/services/surface-open-materializer.service.ts`
@@ -40,6 +41,7 @@ Also read nearby specs for the exact behavior being changed. They are often the 
 Use canonical metadata as the source:
 
 - `/schemas/filtered`: structural request/response schema, field metadata, `x-ui`, option-source metadata, operation-specific schema shape
+- `/schemas/catalog`: documentary/discovery enumeration of OpenAPI endpoints, resource/group visuals, operation examples, and canonical request/response schema links; it scopes candidates but does not replace filtered structural schema
 - `/schemas/actions` and action metadata: action discovery and availability
 - `/schemas/surfaces` and surface metadata: surface discovery and materialization
 - capabilities and HATEOAS links: availability and executable operation proof
@@ -56,6 +58,14 @@ Use canonical metadata as the source:
   endpoint convention without recording diagnostics and auditing metadata.
 
 If these are missing or contradictory, classify the gap and return to the canonical backend/config owner. Do not patch with host-only aliases, label matching, local endpoint maps, or Angular-only action routers.
+
+`ResourceDiscoveryService` exposes the shared read path for these projections:
+
+- `getSchemaCatalog(query, options)` requests `/schemas/catalog` through the configured API origin and forwards only canonical `group`, `path`, and `operation` filters;
+- `getCapabilitiesByUrl(href, options)` follows the exact capabilities href already published by discovery metadata, preserving the normal trusted-origin/proxy resolution rules instead of rebuilding a convention from `resourceKey`;
+- `getCapabilities(source, options)` remains the HATEOAS-rel path when a resource envelope already owns the `capabilities` link.
+
+Keep the Angular models aligned with the real backend payloads. `ResourceSchemaCatalogResponse` owns `group`, `groupVisual`, and endpoint entries; each endpoint carries canonical path/method/resource identity, visuals, request/response schema summaries, parameters, examples, and schema links. `ResourceCapabilitySnapshot.stats.fields[]` carries public field identity, metrics, modes, and each eligibility boolean. Do not shrink these payloads into chart-specific aliases or use `Record<string, unknown>` where the starter already publishes a stable shape.
 
 ## Common Decisions
 
@@ -122,6 +132,14 @@ npm run test:core -- --include=projects/praxis-core/src/lib/services/crud-operat
 ```sh
 npm run test:core -- --include=projects/praxis-core/src/lib/services/analytics-schema-contract.service.spec.ts --include=projects/praxis-core/src/lib/services/analytics-stats-request-builder.service.spec.ts
 ```
+
+- schema catalog and exact-href capability discovery:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts
+```
+
+Prove catalog query serialization, configured-origin resolution, exact capability-href following, and the full typed stats/catalog payload projection. Do not claim `/schemas/filtered` ETag behavior for catalog or capability calls unless those endpoints independently publish that contract.
 
 For public or cross-lib changes, also validate a direct consumer such as table, CRUD, dynamic-form, list, or charts.
 

@@ -839,8 +839,8 @@
                                             "praxis-core-i18n-resource-copy",
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "D600948EB5EAC6E59CCEEBF02759CFF3B57DB9D2C4FCB2D45AC39461D41A091A",
-                       "treeSha256":  "671C3A3B58A3445A27B13EC21CC4D20F0104EAE35D2D0F960056C6A4D142F5AA"
+                       "skillMdSha256":  "1B50728BEEB541C84B6167012848014BD8063BE26F7E4146ECB7DAC11AF2EAFE",
+                       "treeSha256":  "D0FAB636BAE691B466D570F5A698A684468D21BE420407811D81B4DBA8B0A716"
                    },
                    {
                        "name":  "praxis-metadata-schema-contracts",
@@ -850,8 +850,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "DC3121D2102F2545B8E6170C40BA8D166D0DB2AB5F7553FDBBF68D2EBD46D809",
-                       "treeSha256":  "B8BC8FFD431820F3227305AB837144105FFE792EE5FCE1D37B2EAF647EEAF6CF"
+                       "skillMdSha256":  "67959755E6949DA2C596C24591870C1FB726B1985A8CEA1A1B13B8773E1692F5",
+                       "treeSha256":  "40B2B1FBED2F93C7DFE4D0B249147B2143737716BD67D9E422F71C135A921614"
                    },
                    {
                        "name":  "praxis-metadata-resource-baseline",
@@ -2286,8 +2286,8 @@
                                             "praxis-charts-echarts-engine-boundary",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "5C164A0D287B4963884CDF70CFA9B74C2230BC536F020C821E44AD5AF162C97E",
-                       "treeSha256":  "EC8539804031004D07057AA7F4EF659871A271D37F9A834B9FD8B9FB91F15FCA"
+                       "skillMdSha256":  "83953A335DC75EBD1F83AEBF4E5BA7F679AE86D22EFEEC8C4AD1C05DA23057B8",
+                       "treeSha256":  "354F499AC061E2776FF848857987C9A1BC40A6570B7072BC4515246C17068D12"
                    },
                    {
                        "name":  "praxis-charts-ai-handler-contracts",
