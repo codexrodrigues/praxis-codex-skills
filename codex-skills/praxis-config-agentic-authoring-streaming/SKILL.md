@@ -179,6 +179,10 @@ not a shortcut around semantic intent or authorization.
 - Default beta policy is conservative: read-free availability/disambiguation, or a single governed
   read only when backend policy and target reconciliation allow it. Multi-read execution requires an
   explicit backend policy such as `runtime-tool-policy:multi-tool-readonly-beta`.
+- `runtime-tool-policy:multi-tool-dry-run-beta` is planning authority only. It may publish multiple
+  `candidateSteps[]`, dry-run aggregation policy, and execution diagnostics, but must keep
+  `budget.maxToolCalls=0`, `steps[]=[]`, `runtimeRelatedSurfaceReads[]=[]`,
+  `backendReadsPerformed=false`, and no real aggregate summary/detail/compare evidence.
 - Targeted detail/list/summary must be driven by semantic decision fields
   `DETAIL_TARGET_SURFACE_REF`, `LIST_TARGET_SURFACE_REF`, or `SUMMARY_TARGET_SURFACE_REF`, then
   reconciled against accepted runtime candidates before any HTTP read.
