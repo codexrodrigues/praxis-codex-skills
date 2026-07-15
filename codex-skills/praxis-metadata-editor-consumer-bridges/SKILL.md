@@ -42,6 +42,10 @@ Inspect the metadata-editor sources plus the affected consumer:
 - Lazy-load `@praxisui/metadata-editor` when the consumer should avoid a hard authoring dependency in the runtime path, but fail visibly through diagnostics/snackbar/logging when the module or `FieldMetadataEditorComponent` export is unavailable.
 - Wire at least one canonical patch path, and preferably both when supported by the host: `hostBridge.applyPatch` for immediate editor-to-host application and Settings Panel `applied$`/`saved$` subscriptions for Apply/Save.
 - Receive delta patch from `hostBridge`, `applied$`, or Settings Panel save and apply JSON Merge Patch semantics, including `null` removal where the consumer stores metadata overrides.
+- Treat `hostBridge.applyPatch`, `applied$`, and `saved$` as accepted patch channels,
+  not as proof that every intermediate editor draft belongs in the consumer model. Draft,
+  dirty, valid, busy, reset, and cancel state belong to the hosted editor/Settings Panel
+  contract until an accepted patch event is emitted.
 - Do not copy metadata-editor configs into consumers.
 - Do not add consumer-only fields for metadata that belongs to `FieldMetadata`, dynamic-fields descriptors, or backend `x-ui`.
 - Do not reinterpret cascade patches in consumers. If metadata-editor emits
@@ -64,6 +68,13 @@ Use the existing implementation as the default pattern:
 - table `praxis-filter.component.ts`: lazy import, Settings Panel id `filter-field-meta.<formId|filterId>.<fieldName>`, `applied$`/`saved$`, sanitized field override merge, schema re-application, and `saveConfig()`.
 - manual-form `ManualFieldMetadataBridgeService`: lazy import, Settings Panel id `manual-field.<formId>.<fieldName>`, `hostBridge.applyPatch`, `applied$`/`saved$`, duplicate patch suppression, `instance.patchFieldMetadata(...)`, and draft persistence.
 - CRUD and Page Builder: treat child component configuration as delegated authoring. CRUD must not locally write FormConfig/TableConfig/FieldMetadata semantics; Page Builder must use child manifests/config editors and Settings Panel bridge for widget inputs.
+
+Older architecture docs or examples may show direct import/open snippets or manual
+property-by-property patch mapping. Treat those snippets as historical integration
+evidence only when they conflict with the current bridge implementations. The
+canonical pattern is the current source: lazy load where appropriate, stable Settings
+Panel id, `hostBridge` and/or Settings Panel accepted patch events, JSON Merge Patch
+semantics, identity preservation, and focused consumer rebuild/persistence.
 
 ## Settings Panel
 
