@@ -45,6 +45,7 @@ Use `praxis-config-domain-decisions` for the backend owner of domain rules, doma
 - If a needed domain tool is missing, model or create the canonical tool/contract. Do not replace the missing tool with label matching.
 - Treat local textual search as candidate ranking after the resource/context/release scope is already semantic.
 - Keep headers, ETag/origin behavior, service key, release key, resource key, context key, and query parameters aligned with config-starter contracts.
+- Timeline rich-content helpers are visual projections over backend-provided safe events. Filter to `visibility=safe`, preserve safe summaries/metadata, and do not synthesize missing domain-rule or domain-knowledge events from prompts, DTO timestamps, frontend handoff state, smoke output, raw evidence, patch payloads, or local history. An empty timeline means no safe persisted events were published for that projection.
 
 ## Aderence Inventory
 
