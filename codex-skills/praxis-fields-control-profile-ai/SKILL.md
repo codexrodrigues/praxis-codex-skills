@@ -82,6 +82,11 @@ Only real gaps justify manifest/profile changes. Prefer profile correction over 
 - A profile claim is incomplete if the component renders but is missing from metadata/editorial discovery or AI registry extraction.
 - Runtime coverage claims must follow `praxis-fields-runtime-loader`: fallback normalization, host-only imports, visually similar fallback components, or missing hot metadata/rebind support are partial evidence, not a fully supported profile.
 - Treat `getControlTypeCatalog(...)` as capability-family routing, not renderability proof. Direct `FieldControlType` entries and declared inline aliases can select a specialized AI capability catalog, while unknown aliases intentionally fall back to `FIELD_METADATA_CAPABILITIES`; neither path proves that a package component is registered, exported, or safe to claim as full profile coverage.
+- Capability aliases in `control-type-ai-catalog.ts` are not profile identities. A value such as
+  `pdx-inline-entity-lookup` may route to `SELECT_CONTROLS_AI_CAPABILITIES` so AI can ask better
+  questions, but that does not make it a valid `appliesTo.componentIds` proof by itself. Profile
+  readiness still requires the component ID to close the loop with exported metadata, runtime
+  registration, editorial/catalog coverage, and generated component docs.
 - Profile `componentIds` must align with exported metadata, runtime registration, docs/catalog, and generated component docs.
 - When a profile or generated registry asset claims a component family is AI-ready, cross-check three identities together: profile `componentIds`, canonical `fieldMetadata.controlType`, and runtime registry coverage from `ComponentRegistryService`. A component ID present only in the projected manifest list or capability catalog is partial coverage until registry/editorial/docs evidence closes the loop.
 - Also cross-check published catalog/playground evidence from `praxis-fields-runtime-loader`.
@@ -101,6 +106,10 @@ Only real gaps justify manifest/profile changes. Prefer profile correction over 
 - Inline profile and recipe claims must state whether the control is `auto` or `explicit` apply. For explicit overlays, the profile is incomplete unless Apply/Cancel/Clear, draft isolation, and committed-value display are covered by profile examples, validators, catalog recipes, or runtime evidence.
 - Inline recipe projection must keep `templateMeta.registryKey` aligned with `fieldMetadata.controlType`; tags must keep `dynamic-fields` plus `inline` or `inline-filter`.
 - `getControlTypeCatalog(...)` may resolve direct `FieldControlType` values and declared inline aliases, but unknown aliases must fall back to `FIELD_METADATA_CAPABILITIES` rather than silently selecting a specialized family. Do not upgrade that fallback to a profile operation; resolve the semantic family first, then prove the control through manifest validators and runtime/editorial evidence.
+- Do not promote an inline alias used only by `getControlTypeCatalog(...)` into a new profile
+  `componentId` unless the same ID is present in the canonical projected component list or has a
+  matching platform change that adds runtime/editorial/registry extraction evidence. Capability
+  routing helps intent grounding; profile `componentIds` are coverage assertions.
 - For text, numeric, temporal, selection, upload, rich content, and CRON wrappers, keep the dynamic-fields profile focused on selection, metadata wiring, and capability exposure; use the specialized package skill for deeper behavior.
 - If a new profile operation or validator is needed, update manifest/profile source plus the specs that prove operation identity, affected paths, examples, validators, catalog derivation, and registry extraction. Do not ship prompt-only guidance as the source of truth.
 - Wrapper controls should be represented by the dynamic-fields profile only for control selection/discovery. Their deeper package semantics must be delegated to files upload, rich content, or CRON AI skills.
