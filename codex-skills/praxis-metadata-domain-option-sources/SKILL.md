@@ -33,6 +33,14 @@ Inspect the owner before editing:
 
 `RESOURCE_ENTITY` option sources must publish enough governed lookup evidence for agents and runtimes to preserve entity identity: `entityKey`, value/label/status paths, dependency filter map, selection policy, filtering contract, canonical `filterEndpoint`, and canonical `byIdsEndpoint`. Do not substitute this with frontend autocomplete URLs, label parsing, or inferred entity names.
 
+`OptionSourceRuntimeContract` is the canonical runtime surface for lookup
+transport. Its `filterEndpoint`, `byIdsEndpoint`, `selectedReloadPolicy`, and
+`invalidSortPolicy` must be published from the backend descriptor and consumed
+as-is by Angular. Consumers may resolve origins, but must not synthesize
+`/option-sources/{key}/options/*` paths, infer `by-ids` support from a select
+control, or silently downgrade selected-value reload when the contract says
+`required` or `unsupported-with-waiver`.
+
 Keep backend option-source dependencies distinct from metadata-editor cascade edits. In
 `praxis-metadata-starter`, `dependsOn` and `dependencyFilterMap` are published as
 `x-ui.optionSource.dependsOn` and `x-ui.optionSource.dependencyFilterMap` for backend discovery,
@@ -51,6 +59,10 @@ Selected-value reload is part of the backend contract. Use GET `/by-ids` only wh
 - Field access hints guide runtimes and assistants, but host services/security still enforce access.
 - Entity lookup, async select, and selected-value reload should be solved through `RESOURCE_ENTITY` option-source semantics, not host-local autocomplete conventions.
 - If selected IDs are not self-contained, by-ids reload needs contextual contract or an explicit partial/waived policy.
+- If an option source is filter-only or cannot safely reload selected values,
+  publish that limitation with `selectedReloadPolicy`/`invalidSortPolicy` and
+  capabilities. Do not let Angular discover the limitation by failed requests,
+  empty labels, or dropping selected ids from form state.
 - If an Angular/editor flow needs to change cascade rules, first determine whether the task is
   backend option-source publication/migration or metadata-editor runtime cascade authoring. Only the
   former should write `x-ui.optionSource.dependsOn` / `x-ui.optionSource.dependencyFilterMap`.
