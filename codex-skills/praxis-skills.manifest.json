@@ -85,8 +85,8 @@
                                             "praxis-java-filter-query-authoring",
                                             "praxis-java-resource-authoring"
                                         ],
-                       "skillMdSha256":  "EF348D7AC8E92ADA643B3357F594834178CB414B4F2DDA1EFE84A72EF4FEB110",
-                       "treeSha256":  "8C7599EAF9744269842E5EBCAD194B34C06375C9383676893B9B5DAF293F7133"
+                       "skillMdSha256":  "BDD6B0C4EB9C2F8ECE0CA4D0DDF489E4F1101C056D6C2B0D6A54CE54CEBE7CC0",
+                       "treeSha256":  "608FF49CD2DEEF9523A44F8926C88613224EFF797F65C9CA849A7B6BC1A2E6F2"
                    },
                    {
                        "name":  "praxis-java-availability-discovery-authoring",
