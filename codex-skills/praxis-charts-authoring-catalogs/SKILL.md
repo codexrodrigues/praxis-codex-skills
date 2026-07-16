@@ -62,7 +62,7 @@ Repository search is required. A polished demo array is evidence of local duplic
 - Normalize resource identity separately from execution: stable `resourceKey`/operation identity for governance, canonical `resourcePath` for requests, and localized label for presentation.
 - Keep discovery lazy: load the catalog to enumerate candidates, then fetch collection capabilities only for the selected resource through the exact capabilities href published by that catalog projection. Do not rebuild the href from a resource label/key or infer stats support by trial requests.
 - Accept a selected `resourceKey` as semantic identity when reopening, but normalize the persisted `chartDocument.source.resource` to the selected candidate's canonical operational path before runtime execution. Never concatenate a `resourceKey` as though it were an HTTP path.
-- Offer only operations whose canonical capability is true: `statsGroupBy`, `statsTimeSeries`, and/or `statsDistribution`.
+- Offer only operations whose canonical capability is true: `statsGroupBy`, `statsTimeSeries`, `statsDistribution`, and/or `statsComparison`. Map these exact operation identities to `group-by`, `timeseries`, `distribution`, and `comparison`; do not accept aliases or infer support from field names.
 - Require strict root-relative operational paths and exact catalog/capability parity. Reject absolute, protocol-relative, or relative paths, and fail closed when the capability href resolves to a different resource path than the catalog entry. Normalizing a trailing slash is acceptable; synthesizing a leading slash or rebuilding identity from a label/key is not.
 - Deduplicate only concurrent in-flight catalog/capability reads. Bound each read with the current 10-second timeout, evict the request on completion or failure, allow a later resolution to retry, and reject stale async results when the selection changes. Do not retain settled permission-sensitive discovery projections until the canonical backend/client contract publishes an explicit authorization-context epoch or equivalent tenant/principal/profile cache scope. Do not pretend `/schemas/catalog` or capabilities inherit `/schemas/filtered` ETag/hash semantics.
 - Treat forbidden, unavailable, empty, stale, and network-error states distinctly. Never fall back to an arbitrary URL input for governed remote authoring.
@@ -85,11 +85,27 @@ Filter editor controls by the selected operation:
 - `timeseries`: the time dimension requires `timeSeriesEligible`; metrics and aggregations remain capability-gated.
 - `distribution/terms`: bucket dimension requires `distributionTermsEligible`.
 - `distribution/histogram`: histogram field requires `distributionHistogramEligible`; histogram uses the backend's fieldless `COUNT` metric and requires the governed bucket-size contract.
+- `comparison`: bucket dimension requires governed grouping eligibility, the period field requires `timeSeriesEligible`, metric fields remain capability-gated, and only `COUNT`, `DISTINCT_COUNT`, and `SUM` are accepted by the canonical comparison endpoint.
 - `count`: expose the derived editor option only when the selected resource capability publishes `COUNT`; keep its runtime request fieldless rather than treating `count` as a physical property or permitting field-specific `COUNT` on arbitrary metrics.
 
 Materialize `distributionModes` per option instead of treating every distribution field as valid for both modes. Terms dimensions come only from `distributionTermsEligible`, histogram dimensions only from `distributionHistogramEligible`, regular metric fields remain terms-scoped, and the capability-backed fieldless count option can serve the modes supported by the selected resource. Switching to terms must remove histogram-only bucket settings; switching modes must invalidate fields that no longer match.
 
 Changing resource, operation, or distribution mode must recompute dependent candidates. Preserve a selected value only if it remains eligible; otherwise show a stale-selection diagnostic and block Apply/Save until the user resolves it. Do not silently remap by label or fuzzy text.
+
+## Comparison Authoring Boundary
+
+Treat `comparison` as one governed analytics operation, not as a chart convenience assembled from independent requests:
+
+- expose it only when the selected resource publishes `canonicalOperations.statsComparison === true`;
+- persist one complete `source.options.comparisonPeriod` with canonical `field`, explicit `timezone`, backend-supported `preset`, and `PREVIOUS_ALIGNED` or `PREVIOUS_CALENDAR_PERIOD` mode;
+- require at least one bucket dimension and one or more unique metric field identities; constrain comparison aggregations to `count`, `distinct-count`, and `sum`;
+- materialize exactly one `POST /{resource}/stats/comparison` request with mandatory `metrics[]`; never emit the singular `metric` shape and never downgrade to multiple `group-by` calls;
+- leave preset resolution, calendar arithmetic, bucket union, baseline detection, delta, and delta-percent calculation to the canonical backend response;
+- project each response metric alias to current/previous runtime series using the shared comparison response adapter. These projection fields are derived runtime identities, not values to persist as business configuration;
+- preserve `bucket.key` as filter/event identity and use `bucket.label` only for presentation. A visible label must never become the cross-filter value;
+- keep visual editor controls, normalizer, validator, canonical mapper, preview sample, AI manifest, i18n, examples, and registry acceptance on the same operation vocabulary.
+
+Fail closed when the resource operation, period field, bucket field, metric field, aggregation, alias uniqueness, or comparison period is not proven. A backend 403/501 or incompatible response is an explicit runtime state, not permission to retry through a different stats operation.
 
 ## Target Catalogs
 
@@ -168,6 +184,7 @@ Prove at least:
 - operational path: only strict root-relative catalog/capability paths are accepted, trailing-slash normalization preserves identity, and absolute/protocol-relative/relative or parity-drift inputs fail closed;
 - identity path: an existing semantic resource key reopens against the catalog and is normalized to the canonical operational resource path before save/runtime;
 - distribution path: terms and histogram candidates, metrics, bucket options, and fieldless count semantics remain mode/capability-gated;
+- comparison path: exact `statsComparison` capability, eligible period/bucket/metric fields, complete period vocabulary, unique aliases, supported metrics, one `metrics[]` request, current/previous projection, and no local period or delta calculation are proven together;
 - event target path: the same target linked from one chart output event is unavailable to unrelated events, `availableTargets[].events` preserves that exact evidence, and raw `pointClick` never substitutes for structured `pointAction`;
 - AI parity path: the point-click handler, named validators, and backend consumption of action-specific target events execute against the same governed candidates as the visual editor;
 - adversarial path: reject manual URL, invented field/metric, unsupported aggregation, stale target, label-based identity, unsafe route, and raw ECharts option.
