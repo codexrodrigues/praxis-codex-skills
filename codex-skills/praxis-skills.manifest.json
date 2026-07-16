@@ -774,8 +774,8 @@
                                             "praxis-core-providers-bootstrap",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "D374B7B7E9CB90F3E3E1214410C6D5B81D353EB0AEEDA3CCE6E00CBDB23B10C6",
-                       "treeSha256":  "6DA2E776B64533445BE7795C76D37C9FDF11BA799BB06BE6111BC2A61943D08B"
+                       "skillMdSha256":  "F502E7FC26245D700D575940C33D31476D7C05FFC418774DC848FA0B8D800055",
+                       "treeSha256":  "EE30716F281286CFC75503E1845AB68A7DC977E0CE62428598051E612E2439FB"
                    },
                    {
                        "name":  "praxis-core-global-actions-metadata",
@@ -1996,8 +1996,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "68AD32105D930EA0DDB18477226BFE9836A9214D2E240E30610759897D760DBC",
-                       "treeSha256":  "19F1A8E0F1B3498FC2B4BEF699C5F9DCA298CE3E6C4205FFF701B65B25AA09FA"
+                       "skillMdSha256":  "43248AEDB6E67D7A14E6EE9B509F43B746F36BA024203C68FA9BCEAEBBBADBD0",
+                       "treeSha256":  "F7C5A901EC6C0154F26E8C0A4FC926A3DC024B9374CF2CDEF6C2307C024C6756"
                    },
                    {
                        "name":  "praxis-settings-roundtrip-authoring",
@@ -2423,8 +2423,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "6B1E8F3D5EC1EE252CD64DA33C5CDEF49DBD4C30667E47D6351DF2A4A9DDFEB4",
-                       "treeSha256":  "E643208943A925BD251852B709BB22538B0FE3066373B28B76187AE45E31E1C3"
+                       "skillMdSha256":  "07D3F2F75407CFE8C3D89B64B07924EB51488A78B5E5EBAE3CB08DDBC16B7407",
+                       "treeSha256":  "EC3D21EB58AA3293C3772B3829DDB0BA4ACDD7D86E799433F2356EC7F9EC2D21"
                    },
                    {
                        "name":  "praxis-config-agentic-authoring-streaming",
@@ -2470,8 +2470,8 @@
                                             "praxis-http-examples-contract-surfaces",
                                             "praxis-http-examples-llm-smoke"
                                         ],
-                       "skillMdSha256":  "7D06CA573F72B4CBFF207896574EDA7BEC1C619C4C028C7C12AD0951399B10EC",
-                       "treeSha256":  "1333F49F1FF815378A365F77395D9946C39264476A9F801ECEE906A7C20CFF50"
+                       "skillMdSha256":  "76D6DD4200AF241B6BF820E6F27330FDE196727635D0A28B5350A23818E68A67",
+                       "treeSha256":  "13AA54552626B45D0E283D5D28EB257EC8A9CF3550124BD4E76F723BF20226B7"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
