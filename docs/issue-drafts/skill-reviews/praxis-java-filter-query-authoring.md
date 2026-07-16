@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-java-filter-query-authoring/
-- Descricao atual: Use when implementing, auditing, or migrating Praxis Java resource filters and queries: dedicated GenericFilterDTO contracts, @Filterable predicates and relations, ranges, relative periods, pageable sorting, query services, filtered schemas, option-source dependencies, and focused HTTP proof in a Spring host or praxis-metadata-starter.
+- Descricao atual: Use when implementing, auditing, or migrating Praxis Java resource filters and queries: dedicated GenericFilterDTO contracts, @Filterable predicates and relations, ranges, relative periods, pageable sorting, server-side ResourceFilterAccessScope, includeIds hydration, filtered schemas, option-source dependencies, and focused HTTP proof in a Spring host or praxis-metadata-starter.
 
 ## Classificacao inicial
 
