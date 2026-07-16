@@ -31,6 +31,9 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringRuntimeComponentGroundingService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/VectorRankedProjectKnowledgeCandidateRetriever.java`
 - `src/main/java/org/praxisplatform/config/service/RagProjectKnowledgeDerivedIndexService.java`
+- `src/main/java/org/praxisplatform/config/controller/DomainCatalogController.java`
+- `src/main/java/org/praxisplatform/config/service/DomainCatalogIngestionService.java`
+- `src/main/java/org/praxisplatform/config/service/DomainCatalogPromptContextService.java`
 - `src/main/java/org/praxisplatform/config/rag/RagDocumentIdentity.java`
 - `src/main/java/org/praxisplatform/config/rag/RagFilters.java`
 - `src/main/java/org/praxisplatform/config/rag/**`
@@ -94,6 +97,14 @@ Scoped semantic retrieval must not retry without tenant/environment scope. `Agen
 - Component corpus retrieval requires release/scoped metadata and `aiVisibility=allow`; preserve source id/kind, chunk kind, source pointer, content hash, corpus version, score, and release provenance in diagnostics.
 - Runtime component observations are accepted only as `untrusted_frontend_observation` evidence. Ground them through `AgenticAuthoringRuntimeComponentGroundingService` into `GroundedRuntimeComponentContext`, preserving accepted/rejected claims, evidence refs, safe digests, lifecycle, omitted/redacted/sensitive field diagnostics, and available surfaces/affordances. Unsupported trust boundaries, stale observations, inactive observations, missing component identity, or unsupported schema versions must be rejected before they influence API/resource grounding.
 
+## Domain Catalog First-Turn Grounding
+
+- The persisted latest governed Domain Catalog release remains canonical. Its vector documents are a derived ranking index; map ranked hits back to canonical items before prompt projection.
+- Publish and filter Domain Catalog RAG documents with the same normalized release token from `RagDocumentIdentity.resolveReleaseId`. Also preserve tenant, environment, service key, resource key, item type, context key, node type, and canonical item identity. A raw release key on one side and a normalized token on the other creates false empty retrieval and unreconciled status.
+- Pre-intent planning must receive governed Domain Catalog context on the first authoring turn when the caller did not provide a Domain Catalog preference. Add a copied internal `enabled=true` hint only for this asymmetry; preserve an explicit `enabled=false` or caller-provided scope.
+- Retrieve semantically from the scoped latest release first, then use the existing scoped lexical query only as a fallback when semantic retrieval produces no canonical item. Lexical matching does not decide primary intent.
+- Do not treat successful ingestion, a populated Domain 360 response, or vector availability alone as proof of grounding. An operational gate must wait for `expectedDocumentCount == publishedDocumentCount > 0` and audit that every provider pre-intent call contains the governed context.
+
 ## Consultative Answers
 
 - `artifactKind=api_catalog` is a read-only consultative path. It may combine API candidates with a compact Domain Catalog projection and LLM-authored response, but it must not trigger preview/apply or pretend an unconfirmed domain exists.
@@ -133,6 +144,7 @@ Use focused local gates:
 - ingestion/context: `mvn "-Dtest=ApiMetadataIngestionServiceTest,ApiMetadataControllerTest,AiContextControllerTest,ContextRetrievalServiceTest,SchemaRetrievalServiceTest" test`
 - resource/project knowledge/runtime grounding: `mvn "-Dtest=AgenticAuthoringApiMetadataCandidateCatalogTest,AgenticAuthoringResourceDiscoveryServiceTest,AgenticAuthoringProjectKnowledgeServiceTest,VectorRankedProjectKnowledgeCandidateRetrieverTest,AgenticAuthoringRuntimeComponentGroundingServiceTest" test`
 - RAG/vector changes: `mvn "-Dtest=RagVectorStoreServiceTest,RagVectorStoreConfigurationTest,RagProjectKnowledgeMetadataTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
+- Domain Catalog prompt/RAG grounding: `mvn "-Dtest=DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,RagVectorStoreServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest" test`
 - Angular AI-context consumer: `npm run test:praxis-ai:backend-api`
 
 Review `docs/ai/**`, `docs/domain-catalog/**`, API contract docs, quickstart ingestion/smoke scripts, and Angular AI context consumers when public grounding changes.
