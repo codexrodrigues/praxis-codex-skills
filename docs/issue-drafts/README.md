@@ -14,6 +14,7 @@ Validacao local: `python3 scripts/validate-issue-drafts.py`
 - [ergon-fieldspec-ui-contract](skill-reviews/ergon-fieldspec-ui-contract.md)
 - [ergon-migration-orchestration](skill-reviews/ergon-migration-orchestration.md)
 - [ergon-migration-scaffold](skill-reviews/ergon-migration-scaffold.md)
+- [ergon-rule-decision-decomposition](skill-reviews/ergon-rule-decision-decomposition.md)
 - [ergon-rule-migration-orchestration](skill-reviews/ergon-rule-migration-orchestration.md)
 - [ergon-rule-source-extraction](skill-reviews/ergon-rule-source-extraction.md)
 - [ergon-table-rule-audit](skill-reviews/ergon-table-rule-audit.md)
