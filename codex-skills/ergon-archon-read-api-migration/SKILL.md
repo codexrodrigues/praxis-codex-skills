@@ -152,6 +152,16 @@ For screens that prove both a stable public key and a legacy internal row locato
 - keep `ROWID`, `ROWID_REG`, XML hidden ids, and component-specific row fields internal;
 - resolve internal row locators server-side only when a later legacy-backed flow explicitly requires them.
 
+Before accepting the discovery key strategy, verify that uniqueness was tested
+against the effective legacy query with server-side scope/session predicates,
+not against the raw view alone. Duplicate keys in an unscoped view can be
+technical fan-out for company/query modes and do not by themselves require a
+composite or opaque id. When the base domain key is unique in the effective
+resource slice, use it for list/detail/by-ids and keep scope internal. If the
+effective slice still duplicates the key, return to discovery to classify
+same-entity projection versus genuinely distinct resources before designing
+normalization, a composite key, or an opaque representation.
+
 When read SQL or screen views depend on `HADES.FLAG_PACK` or similar package state, the API design must require setup and cleanup on the same physical Oracle connection used by the query. Do not treat context set in SQLcl, a separate JDBC connection, or a different transaction as API parity evidence.
 
 For read-only legacy queries that require package/session context, prefer a shared same-connection executor. In the Praxis host/backend module, use or add an explicit read route such as `ErgonLegacyRoute.READ_ONLY` instead of misusing write routes. The resource service may contain legacy SQL mapping, but context setup/cleanup and Oracle exception/session handling must stay behind the shared bridge.
@@ -202,7 +212,9 @@ An endpoint can move to implementation only when:
 
 - the component or workflow requiring it is identified;
 - source SQL/view/package and bind values are confirmed;
-- public key strategy is stable and does not expose internal `ROWID` unless explicitly accepted;
+- public key strategy is stable, was proven in the effective legacy query scope
+  (not inferred from an unscoped view count), and does not expose internal
+  `ROWID` unless explicitly accepted;
 - filter semantics match legacy behavior, including date overlap and null/default handling;
 - authorization and company/user scope are known;
 - user/company mapping has a central provider or documented project equivalent, with production-specific mapping isolated behind replaceable hooks;
