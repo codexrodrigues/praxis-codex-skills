@@ -10,7 +10,7 @@ Canonical repository for Codex skills used by the Praxis platform and Ergon/Arch
 ## Program Status
 
 The broad July 2026 skill-review backlog is closed. The canonical Praxis
-manifest currently has 161 active Praxis skills and 10 Ergon migration skills.
+manifest currently has 162 active Praxis skills and 12 Ergon migration skills.
 New work should come from evidence, not from a skill-count target.
 
 Current planning references:
