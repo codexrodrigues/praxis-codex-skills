@@ -124,7 +124,7 @@ If the answer is incomplete, keep the phase blocked/deferred and record the miss
 
 ## Workflow
 
-This skill is the conductor for Parte 2 phases 9-18. It owns orchestration, gates, and cross-artifact consistency; specialized skills own bounded phase work. Use `$ergon-rule-source-extraction` for Phase 10 structural source inventory and preserve its blockers without promoting them to semantic conclusions.
+This skill is the conductor for Parte 2 phases 9-18. It owns orchestration, gates, and cross-artifact consistency; specialized skills own bounded phase work. Use `$ergon-rule-source-extraction` for Phase 10 structural source inventory and preserve its blockers without promoting them to semantic conclusions. Use `$ergon-rule-decision-decomposition` for the evidence-bound RF-03 decision pack; keep technical proposals separate from later business homologation.
 
 For corporate use, ensure this local skill is distributed/versioned as part of the migration kit. If the skill is not installed in the developer workstation, execute the same flow manually from the portable repo artifacts under `docs/migracao/rule-migration/`.
 
@@ -136,6 +136,7 @@ Before closing any phase, validate cross-artifact identity: screen/transaction, 
 4. If baseline evidence is missing, use `references/return-to-part-1.md` and stop Parte 2 advancement.
 5. If the baseline is sufficient, route the work to the appropriate Parte 2 skill or phase:
    - Phase 10 structural source inventory and evidence-backed classification through `$ergon-rule-source-extraction`;
+   - RF-03 decision proposals, total occurrence coverage and governed review queue through `$ergon-rule-decision-decomposition`;
    - dependency graph;
    - HADES read-only chain;
    - shadow contract/execution;

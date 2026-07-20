@@ -159,6 +159,18 @@
                        "treeSha256":  "59FF1D13189A54EF65F9C14F09A7195D768AFA89303B22743D77CFED53D8365C"
                    },
                    {
+                       "name":  "ergon-rule-decision-decomposition",
+                       "sourcePath":  "codex-skills/ergon-rule-decision-decomposition",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "ergon-rule-source-extraction"
+                                        ],
+                       "skillMdSha256":  "C378E0AE008D65932D02609BF864179EA81795391935456FE5686B4B146B1E5A",
+                       "treeSha256":  "A5E6663D91698DEC6C728ABCA34626C8F7F9023DC8FBB6DC85E6EF99CCE4A93D"
+                   },
+                   {
                        "name":  "ergon-rule-migration-orchestration",
                        "sourcePath":  "codex-skills/ergon-rule-migration-orchestration",
                        "version":  "0.1.0-beta.0",
@@ -167,6 +179,7 @@
                        "dependencies":  [
                                             "ergon-migration-orchestration",
                                             "ergon-rule-source-extraction",
+                                            "ergon-rule-decision-decomposition",
                                             "ergon-table-rule-audit",
                                             "ergon-archon-read-api-migration",
                                             "ergon-archon-write-api-migration",
@@ -175,8 +188,8 @@
                                             "praxis-java-host-project",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "785F8DCEFBBE8CCC952ACD11D406AC64AD86ABCD76D65CADF7DC7F101D235FE1",
-                       "treeSha256":  "3BF657113B7EE6371E5C4C854A4A027622C4B7F52A480E7C634B174FAB671C73"
+                       "skillMdSha256":  "71CB6634F33E4A34ACEC7464504FBD723A7FE3E20AA042AEC90777F3978A7F05",
+                       "treeSha256":  "4FCA65465E86C6AE5C3AD9CCD5C74F5DA3EE5C7CB78B710AA30B436559D0A499"
                    },
                    {
                        "name":  "ergon-table-rule-audit",
