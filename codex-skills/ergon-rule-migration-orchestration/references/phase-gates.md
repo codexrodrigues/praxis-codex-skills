@@ -1,5 +1,13 @@
 # Parte 2 Phase Gates
 
+## Global Admission Before Every Phase
+
+Read `factory-contracts/part2-foundation-readiness-v2.json` before evaluating a
+phase-local gate. Confirm the active profile, environment, authority, exact
+stage/action and profile blockers. Corporate `NOT_READY` does not block an
+admitted development action, and development admission never authorizes a
+homologation or production action.
+
 Use these gates to decide whether a phase can advance. A plan is not closeout evidence.
 
 ## Cross-Artifact Identity Gate
