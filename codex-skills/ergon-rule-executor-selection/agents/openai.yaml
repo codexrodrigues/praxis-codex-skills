@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Rule Executor Selection"
+  short_description: "Choose JSON Logic, Java, composition, or DB"
+  default_prompt: "Use $ergon-rule-executor-selection to classify a rule executor without generating implementation."

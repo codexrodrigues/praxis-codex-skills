@@ -27,6 +27,24 @@ and technically enforced read-only access. Do not require production SIEM, SLO,
 HA/DR, final retention policy, business owner confirmation or per-run human
 approval merely to open development intake or inventory.
 
+## Mandatory Readiness First
+
+Before reading phase-local status, creating an artifact or routing to another
+Parte 2 skill, read
+`docs/migracao/rule-migration/factory-contracts/part2-foundation-readiness-v2.json`
+from the active migration repository. Resolve and record:
+
+- `corporateReadinessStatus` as production context, never as an automatic
+  development veto;
+- active profile, environment class and authority level;
+- the exact requested stage and action;
+- profile-specific blockers and constraints;
+- whether cross-environment admission reuse is forbidden.
+
+If readiness is missing, invalid or does not admit the requested stage/action,
+do not advance that transition. Read-only diagnosis may identify the precise
+repair, but must not manufacture a profile, waiver or implicit admission.
+
 Apply the root migration `AGENTS.md` when Parte 2 introduces or changes public
 runtime contracts, rule APIs, error envelopes, feature flags, or migration
 documents. Do not expose HADES, SQL, `ROWID`, empresa, usuario, perfil,
@@ -145,26 +163,29 @@ not require a waiver to create intake, inventory or a dependency graph draft.
 
 ## Workflow
 
-This skill is the conductor for Parte 2 phases 9-18. It owns orchestration, gates, and cross-artifact consistency; specialized skills own bounded phase work. Use `$ergon-rule-source-extraction` for Phase 10 structural source inventory and preserve its blockers without promoting them to semantic conclusions. Use `$ergon-rule-decision-decomposition` for the evidence-bound RF-03 decision pack; keep technical proposals separate from later business homologation.
+This skill is the conductor for Parte 2 phases 9-18. It owns orchestration, gates, and cross-artifact consistency; specialized skills own bounded phase work. Use `$ergon-rule-source-extraction` for Phase 10 structural source inventory and preserve its blockers without promoting them to semantic conclusions. Use `$ergon-rule-decision-decomposition` for the evidence-bound RF-03 decision pack; keep technical proposals separate from later business homologation. Use `$ergon-rule-executor-selection` and `$ergon-rule-target-planning` for conservative executor classification and non-executable FND-12 planning. Use `$ergon-rule-shadow-parity` for Phases 13-14 and `$ergon-rule-legacy-containment` only for an admitted Phase 17 after explicit promotion.
 
 For corporate use, ensure this local skill is distributed/versioned as part of the migration kit. If the skill is not installed in the developer workstation, execute the same flow manually from the portable repo artifacts under `docs/migracao/rule-migration/`.
 
 Before closing any phase, validate cross-artifact identity: screen/transaction, resource/API path, rule id, operation, environment, and relevant user/company fixtures must match across code, evidence, matrix, and artifact location. If code or logs say `screen=ERGadm00189`, do not close that rule under `docs/migracao/ERGadm00033/`; fix the artifact location or matrix first.
 
-1. Identify the target screen, operation, and current Parte 2 phase.
-2. Read `references/part-1-baseline-contract.md` and validate required Parte 1 inputs.
-3. Create or update `rule-migration-intake.md`, `rule-canonical-decision-inventory.md`, and `rule-traceability-matrix.md`.
-4. If baseline evidence is missing, use `references/return-to-part-1.md` and stop Parte 2 advancement.
-5. If the baseline is sufficient, route the work to the appropriate Parte 2 skill or phase:
+1. Read readiness V2 and prove that the active profile admits the exact requested stage/action in the current environment.
+2. Identify the target screen, operation, and current Parte 2 phase.
+3. Read `references/part-1-baseline-contract.md` and validate required Parte 1 inputs.
+4. Create or update `rule-migration-intake.md`, `rule-canonical-decision-inventory.md`, and `rule-traceability-matrix.md`.
+5. If baseline evidence is missing, use `references/return-to-part-1.md` and stop only the closeout/downstream transition that depends on it.
+6. Route admitted work to the bounded skill:
    - Phase 10 structural source inventory and evidence-backed classification through `$ergon-rule-source-extraction`;
    - RF-03 decision proposals, total occurrence coverage and governed review queue through `$ergon-rule-decision-decomposition`;
+   - executor responsibility through `$ergon-rule-executor-selection`;
+   - FND-12 technical target planning/check/admission through `$ergon-rule-target-planning`;
    - dependency graph;
    - HADES read-only chain;
-   - shadow contract/execution;
+   - Phase 13-14 shadow contract/execution through `$ergon-rule-shadow-parity`;
    - preflight/promotion;
-   - legacy containment;
+   - admitted Phase 17 containment through `$ergon-rule-legacy-containment`;
    - final handoff.
-6. Close each phase with `phase-<PHASE-ID>-execution-gate.md`.
+7. Close each phase with `phase-<PHASE-ID>-execution-gate.md`.
 
 Phase 15 has planning/decision outcomes before runtime: `Preflight Candidate`, `Preflight Approved`, `Preflight Approved Candidate - planning only`, and `Preflight Deferred - runtime blocked`. `Preflight Approved` records the governance decision in `preflight-decision.md`; `Preflight Approved Candidate - planning only` means a runtime evidence plan and readiness review exist, but implementation still requires explicit approval; `Preflight Deferred - runtime blocked` is required when the boundary is understood but precedence, structured error, rollback, observability, HADES, or rollout evidence is missing. `Preflight Running` requires `preflight-results.md` evidence showing feature flag plus operational approval gate, rollback, DENY blocked before the baseline route, ALLOW still uses the approved baseline route, compatible structured error response, no-mutation, cleanup, and observability. Do not treat HTTP status alone as shadow/preflight equivalence; if code/message/fields cannot be extracted, classify the comparison as inconclusive.
 

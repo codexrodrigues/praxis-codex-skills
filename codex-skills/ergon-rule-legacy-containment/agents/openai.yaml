@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Rule Legacy Containment"
+  short_description: "Govern post-promotion legacy containment"
+  default_prompt: "Use $ergon-rule-legacy-containment to plan legacy treatment after an explicit promotion decision."
