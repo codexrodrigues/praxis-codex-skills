@@ -188,8 +188,8 @@
                                             "praxis-java-host-project",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "71CB6634F33E4A34ACEC7464504FBD723A7FE3E20AA042AEC90777F3978A7F05",
-                       "treeSha256":  "4FCA65465E86C6AE5C3AD9CCD5C74F5DA3EE5C7CB78B710AA30B436559D0A499"
+                        "skillMdSha256":  "685ED38A40225B20A9A4FF18ED0953066379C85D6173BCE3E86E241475B4D569",
+                        "treeSha256":  "72FDB048AD2D3CA9185E5A837448CD3CCF9028AD21F5E935B3C167D39E042AB0"
                    },
                    {
                        "name":  "ergon-table-rule-audit",
