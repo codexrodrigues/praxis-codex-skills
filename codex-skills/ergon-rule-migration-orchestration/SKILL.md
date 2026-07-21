@@ -1,15 +1,31 @@
 ---
 name: ergon-rule-migration-orchestration
-description: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon migrations after an approved Parte 1 functional baseline handoff. Use when Codex must validate a Parte 1 baseline, plan or gate phases 9-18, decide whether rule migration may start, coordinate rule inventory, dependency graph, HADES read-only chain, shadow mode, preflight/promotion, legacy containment, final rule handoff, or return work to Parte 1 phases 4/5/7/8.
+description: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon through progressive gates for development discovery, homologation and production authority. Use when Codex must validate Parte 1 evidence, plan or gate phases 9-18, decide which profile/actions are admitted, coordinate rule inventory, dependency graph, HADES read-only chain, shadow mode, preflight/promotion, legacy containment, final rule handoff, or return work to Parte 1 phases 4/5/7/8.
 ---
 
 # Ergon Rule Migration Orchestration
 
-Use this skill as the top-level conductor for Parte 2 - Migracao Progressiva de Regras. It starts only after Parte 1 - Migracao Funcional has a closed, approved baseline handoff for the target screen/operation. The baseline is usually DB-backed, but may be `WRITE_TABLE_DIRECT_SAFE` when Parte 1 explicitly proved direct table/platform persistence is safe for that exact operation.
+Use this skill as the top-level conductor for Parte 2 - Migracao Progressiva de Regras. Development intake may start with sufficient screen/operation/source identity and explicit Parte 1 gaps; missing baseline evidence blocks phase closeout or the first transition that depends on it, not creation of the intake package. Shadow comparison, preflight and authority still require the approved Parte 1 baseline appropriate to their boundary. The baseline is usually DB-backed, but may be `WRITE_TABLE_DIRECT_SAFE` when Parte 1 explicitly proved direct table/platform persistence is safe for that exact operation.
 
 ## Core Rule
 
 Treat rule migration as governed decision migration, not as a mechanical PL/SQL-to-Java rewrite. The legacy route is the approved parity authority and evidence source; the target platform shape should be a canonical, observable, reversible decision boundary that can later be materialized through Praxis metadata, config/authoring, runtime services, UI capabilities, and API responses.
+
+Apply progressive governance on two axes: pipeline stage and execution
+profile/environment. `FACTORY_DEVELOPMENT` is the normal low-bureaucracy path
+for intake, inventory, dependency discovery, HADES read-only, technical drafts,
+offline simulation and controlled development experiments. It may coexist with
+corporate production readiness `NOT_READY`. `HOMOLOGATION_CANDIDATE` and
+`PRODUCTION_AUTHORITY` require fresh admissions bound to their target
+environment; development evidence or permission never crosses that boundary
+automatically.
+
+Fail closed at the first action capable of producing the corresponding risk,
+not at earlier evidence-gathering stages. Preserve early controls for secrets,
+data minimization/redaction, provenance, toolchain integrity, bounded queries
+and technically enforced read-only access. Do not require production SIEM, SLO,
+HA/DR, final retention policy, business owner confirmation or per-run human
+approval merely to open development intake or inventory.
 
 Apply the root migration `AGENTS.md` when Parte 2 introduces or changes public
 runtime contracts, rule APIs, error envelopes, feature flags, or migration
@@ -38,9 +54,9 @@ keywords, labels, regexes, aliases, XML names, or table-name heuristics. Textual
 matching may rank candidates only after the target screen, operation, rule, and
 canonical artifact scope have been resolved from governed evidence.
 
-Never let Parte 2 correct, complete, or contradict Parte 1 silently. If rule migration discovers missing baseline evidence, return to the correct Parte 1 phase before proceeding.
+Never let Parte 2 correct, complete, or contradict Parte 1 silently. If rule migration discovers missing baseline evidence, record the gap in intake/matrix and return the affected closeout or downstream transition to the correct Parte 1 phase. Unrelated read-only discovery may continue when the active profile admits it.
 
-No rule can advance to shadow, preflight, or promotion without:
+No rule can close shadow comparison, preflight evidence, homologation or promotion without:
 
 - identified legacy origin;
 - referenced Parte 1 artifact;
@@ -122,6 +138,11 @@ During diagnosis and especially Phases 10-12, answer this for the exact screen/o
 
 If the answer is incomplete, keep the phase blocked/deferred and record the missing evidence in the matrix and execution gate.
 
+Starting a discovery phase and closing it are different decisions. In
+`FACTORY_DEVELOPMENT`, unknowns are expected inputs to Phases 9-12. They block
+only the closeout or downstream action whose evidence they invalidate; they do
+not require a waiver to create intake, inventory or a dependency graph draft.
+
 ## Workflow
 
 This skill is the conductor for Parte 2 phases 9-18. It owns orchestration, gates, and cross-artifact consistency; specialized skills own bounded phase work. Use `$ergon-rule-source-extraction` for Phase 10 structural source inventory and preserve its blockers without promoting them to semantic conclusions. Use `$ergon-rule-decision-decomposition` for the evidence-bound RF-03 decision pack; keep technical proposals separate from later business homologation.
@@ -147,7 +168,7 @@ Before closing any phase, validate cross-artifact identity: screen/transaction, 
 
 Phase 15 has planning/decision outcomes before runtime: `Preflight Candidate`, `Preflight Approved`, `Preflight Approved Candidate - planning only`, and `Preflight Deferred - runtime blocked`. `Preflight Approved` records the governance decision in `preflight-decision.md`; `Preflight Approved Candidate - planning only` means a runtime evidence plan and readiness review exist, but implementation still requires explicit approval; `Preflight Deferred - runtime blocked` is required when the boundary is understood but precedence, structured error, rollback, observability, HADES, or rollout evidence is missing. `Preflight Running` requires `preflight-results.md` evidence showing feature flag plus operational approval gate, rollback, DENY blocked before the baseline route, ALLOW still uses the approved baseline route, compatible structured error response, no-mutation, cleanup, and observability. Do not treat HTTP status alone as shadow/preflight equivalence; if code/message/fields cannot be extracted, classify the comparison as inconclusive.
 
-Before implementing preflight runtime, create `preflight-runtime-evidence-plan.md` and `preflight-implementation-readiness.md`. The readiness gate must explicitly approve implementation; planning approval alone is not permission to write code. The runtime plan must require two independent default-off gates, proof that DENY did not call the approved baseline executor/route, proof that ALLOW still uses the approved Parte 1 baseline route, v2/error-envelope parity, rollback, and observability. Oracle row counts alone are not sufficient proof that the approved baseline route was not called.
+Before implementing preflight runtime, create `preflight-runtime-evidence-plan.md` and `preflight-implementation-readiness.md`. The readiness gate must explicitly approve the technical implementation boundary; planning approval alone is not permission to write code. In `FACTORY_DEVELOPMENT`, this is an automated/focal technical gate and does not require human approval per run. Homologation or production preflight requires the additional admission of that profile. The runtime plan must require independent default-off technical controls, proof that DENY did not call the approved baseline executor/route, proof that ALLOW still uses the approved Parte 1 baseline route, v2/error-envelope parity, rollback, and observability. Oracle row counts alone are not sufficient proof that the approved baseline route was not called.
 
 Before implementing any reusable rule runtime classes, check the portable `rule-execution-model.md` if present. Implementation readiness should record that the slice uses neutral execution-mode, authority, decision, and observation names and does not introduce TemporalIO as a Parte 2 dependency.
 
