@@ -27,8 +27,8 @@
                                             "praxis-dto-annotations",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "D6436CA40CDF20DDDC597E9C68A118DD8333BEF515825F5A0EF265F350DE6B9E",
-                       "treeSha256":  "C2C7BED21D9C0D6BAB31538BA3B1164000831AD89E3B9AF33FF044EBD49590EE"
+                       "skillMdSha256":  "DAC4E53456F7CF22A5529FB77A6E00069B83D324A0C41D9A47EAEA80C3C1295C",
+                       "treeSha256":  "93A5D9D1C29DE234426CBB5162454713C83A802534A9420FB52EF3E577721461"
                    },
                    {
                        "name":  "ergon-archon-read-api-migration",
