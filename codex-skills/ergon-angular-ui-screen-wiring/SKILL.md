@@ -126,6 +126,15 @@ Only `lacuna-real-de-contrato` may justify a new platform contract. Do not add a
    - Hide or disable write actions until the write API gate is closed.
    - For `Duplicar`, do not wire it as a generic action from the legacy button state. Wait for the backend contract to classify it as `duplicate-draft + POST`, a real `@WorkflowAction`, `Blocked`, or `Not present`, then consume the native Praxis discovery/runtime path for that classification.
    - For option and LOV fields, consume canonical option-source metadata, including by-ids reload for selected values. Do not build screen-specific Angular lookup services when `RESOURCE_ENTITY`, `/option-sources/{sourceKey}/options/filter`, or `/options/by-ids` can express the need.
+   - Model persisted/default selection and option availability as separate asynchronous inputs.
+     For local options, do not write a non-empty `FormControl` value until the matching canonical
+     option is present. For remote/entity sources, allow the Praxis control to rehydrate through
+     by-ids; do not replace that path with a host-local options array.
+   - Before using any option-bearing control in a shell, route guard, global toolbar, filter, edit
+     form, or dependent lookup, test both bootstrap orders: value before options and options before
+     value. Also test missing ID, context/dependency change during load, and teardown during load.
+     Reconciliation must not emit a user selection event, refresh the route repeatedly, or create
+     an effect cycle that writes the same value/metadata back into the component.
 
 6. Verify end to end.
    - Run backend tests affected by DTO/schema/API changes.

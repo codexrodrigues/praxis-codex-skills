@@ -82,6 +82,21 @@ Inspect:
 ## Runtime Rules
 
 - Preserve value identity. Display labels are not persisted identity unless the canonical option contract says so.
+- Treat value arrival and option arrival as independent asynchronous streams. A non-empty
+  selected value that is not yet present in local options is a pending selection, not proof that
+  the value is invalid. The control must preserve identity without emitting a synthetic change,
+  repeatedly rewriting the CVA control, opening an overlay, or starting an unbounded reload loop.
+- For genuinely local `metadata.options`, hosts should keep a persisted/default value pending until
+  the matching option is available. If the component accepts the value first, it must expose a
+  deterministic unresolved state and reconcile exactly once when options arrive. Do not render a
+  stale label from a previous context.
+- For remote or entity-backed sources, a selected ID absent from the current page must use the
+  canonical by-ids/display rehydration path. Do not wait for the search page to happen to contain
+  the selected ID, and do not clear the value while rehydration is in flight.
+- Context changes must invalidate option display evidence from the previous context while
+  preserving only identities allowed by `selectionPolicy`. Cancel or ignore stale async responses;
+  a late response from company, tenant, dependency, or parent A must not resolve a pending
+  selection under context B.
 - Prefer `optionSource` for remote/entity-backed data and local `options` only for genuinely local lists.
 - `entityLookup` should use canonical `RESOURCE_ENTITY` semantics, stable value/display paths, by-ids rehydration when required, dependency maps, and selection policy.
 - For entity lookup, keep selection state (`selectable`, `blocked`, `legacy`) distinct from generic disabled UI state. `blocked` prevents new selection; `legacy` may preserve an already selected invalid value only when `selectionPolicy.allowRetainInvalidExistingValue` or equivalent backend evidence allows it.
@@ -146,6 +161,14 @@ Use focused gates:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/ai/control-type-ai-catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/praxis-dynamic-fields-authoring-manifest.spec.ts`
 - Selected reload/reopen tests for remote/entity options:
   - Include the relevant component spec plus `option-store`/display resolver proof; add regression coverage before relying on manual QA.
+- Bootstrap-order regression tests for every changed option-bearing control:
+  - Cover value-before-options, options-before-value, selected ID absent after load, context change
+    during load, and component destruction during load.
+  - Assert bounded calls/effects, no emitted user change during reconciliation, stable CVA value,
+    deterministic unresolved display, and successful resolution when the matching option arrives.
+  - For shell/global-context usage, add a browser test with heartbeat, `requestAnimationFrame`, DOM
+    snapshot, open/select interaction, and a timeout that distinguishes locator/accessibility
+    failure from a blocked main thread.
 - Playwright for inline selection overlays, multi-select draft behavior, lookup UX, and contrast:
   - `projects/praxis-dynamic-fields/test-dev/e2e/entity-lookup-procurement.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/entity-lookup-funcionarios.playwright.spec.ts`
