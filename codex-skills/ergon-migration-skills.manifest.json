@@ -222,6 +222,18 @@
                         "treeSha256":  "55B36CA9D14A440029B3BD1A27F0DD280688F37F7440B97F42996C6B803F951F"
                     },
                     {
+                        "name":  "ergon-rule-portfolio-catalog",
+                        "sourcePath":  "codex-skills/ergon-rule-portfolio-catalog",
+                        "version":  "0.1.0-beta.0",
+                        "status":  "active",
+                        "compatibility":  "0.x",
+                        "dependencies":  [
+                                             "ergon-rule-migration-orchestration"
+                                         ],
+                        "skillMdSha256":  "8E8FD6E9F7042FFC37DA97C387E6C3C4730FB9E7FDDBA67897545549A90AAA3F",
+                        "treeSha256":  "F58EEA080CCD14E6B88F9AE4A8B963181470F46453DB6EBD4A7C9B2AE0255A4A"
+                    },
+                    {
                         "name":  "ergon-rule-migration-orchestration",
                        "sourcePath":  "codex-skills/ergon-rule-migration-orchestration",
                        "version":  "0.1.0-beta.0",

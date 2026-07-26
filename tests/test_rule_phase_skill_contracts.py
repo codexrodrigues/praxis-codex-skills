@@ -47,11 +47,36 @@ class RulePhaseSkillContractsTest(unittest.TestCase):
             "ergon-rule-executor-selection",
             "ergon-rule-shadow-parity",
             "ergon-rule-legacy-containment",
+            "ergon-rule-portfolio-catalog",
         )
         for name in names:
             references = list((SKILLS / name / "references").glob("*.md"))
             self.assertEqual(1, len(references), name)
             self.assertIn("Forward Test", references[0].read_text(encoding="utf-8"))
+
+    def test_portfolio_catalog_routes_to_phase_orchestration_without_promoting_state(self) -> None:
+        manifest = json.loads(
+            (SKILLS / "ergon-migration-skills.manifest.json").read_text(encoding="utf-8")
+        )
+        entries = {item["name"]: item for item in manifest["skills"]}
+        entry = entries["ergon-rule-portfolio-catalog"]
+        self.assertIn("ergon-rule-migration-orchestration", entry["dependencies"])
+
+        text = (SKILLS / "ergon-rule-portfolio-catalog" / "SKILL.md").read_text(
+            encoding="utf-8"
+        )
+        readiness_index = text.index("## Step Zero: Readiness")
+        workflow_index = text.index("## Workflow")
+        self.assertLess(readiness_index, workflow_index)
+        self.assertIn(READINESS, text)
+        for marker in (
+            "documentary rules",
+            "atomic decision proposals",
+            "Never copy an atomic phase/status onto its documentary parent or sibling",
+            "`UNKNOWN`, `REVIEW_REQUIRED` and `KEEP_DB_BACKED`",
+            "does not open, close or approve a migration phase",
+        ):
+            self.assertIn(marker, text)
 
 
 if __name__ == "__main__":
