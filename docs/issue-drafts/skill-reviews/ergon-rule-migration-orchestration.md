@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: ergon-migration
 - Caminho: codex-skills/ergon-rule-migration-orchestration/
-- Descricao atual: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon migrations after an approved Parte 1 functional baseline handoff. Use when Codex must validate a Parte 1 baseline, plan or gate phases 9-18, decide whether rule migration may start, coordinate rule inventory, dependency graph, HADES read-only chain, shadow mode, preflight/promotion, legacy containment, final rule handoff, or return work to Parte 1 phases 4/5/7/8.
+- Descricao atual: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon through progressive gates for development discovery, homologation and production authority. Use when Codex must validate Parte 1 evidence, plan or gate phases 9-18, decide which profile/actions are admitted, coordinate rule inventory, dependency graph, HADES read-only chain, shadow mode, preflight/promotion, legacy containment, final rule handoff, or return work to Parte 1 phases 4/5/7/8.
 
 ## Classificacao inicial
 
