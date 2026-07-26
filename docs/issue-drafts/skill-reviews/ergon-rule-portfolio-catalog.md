@@ -1,16 +1,16 @@
-# Revisar skill ergon-migration: ergon-rule-migration-orchestration
+# Revisar skill ergon-migration: ergon-rule-portfolio-catalog
 
 ## Objetivo
 
-Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-rule-migration-orchestration para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
+Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-rule-portfolio-catalog para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
 
 O objetivo e que qualquer agente que use esta skill consiga implementar com excelencia, seguranca e velocidade a funcionalidade coberta por ela.
 
 ## Skill
 
 - Familia: ergon-migration
-- Caminho: codex-skills/ergon-rule-migration-orchestration/
-- Descricao atual: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon through progressive gates for development discovery, homologation and production authority. Use when Codex must validate Parte 1 evidence, plan or gate phases 9-18, decide which profile/actions are admitted, coordinate rule inventory, dependency graph, HADES read-only chain, shadow mode, preflight/promotion, legacy containment, final rule handoff, or return work to Parte 1 phases 4/5/7/8.
+- Caminho: codex-skills/ergon-rule-portfolio-catalog/
+- Descricao atual: Build, audit, and consume the governed read-only portfolio of Ergon legacy rules and atomic decision proposals. Use when Codex must explain RN identities such as RN-013a, measure discovered versus proposed versus migrated rules, refresh the rule cockpit or Praxis Domain Catalog v0.2 projection, check catalog determinism, select a rule for Parte 2 intake, or reconcile catalog state after a migration phase.
 
 ## Classificacao inicial
 
