@@ -1,16 +1,16 @@
-# Revisar skill ergon-migration: ergon-rule-migration-orchestration
+# Revisar skill ergon-migration: ergon-rule-executor-selection
 
 ## Objetivo
 
-Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-rule-migration-orchestration para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
+Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-rule-executor-selection para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
 
 O objetivo e que qualquer agente que use esta skill consiga implementar com excelencia, seguranca e velocidade a funcionalidade coberta por ela.
 
 ## Skill
 
 - Familia: ergon-migration
-- Caminho: codex-skills/ergon-rule-migration-orchestration/
-- Descricao atual: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon through progressive gates for development discovery, homologation and production authority. Use when Codex must validate Parte 1 evidence, plan or gate phases 9-18, decide which profile/actions are admitted, coordinate rule inventory, dependency graph, HADES read-only chain, shadow mode, preflight/promotion, legacy containment, final rule handoff, or return work to Parte 1 phases 4/5/7/8.
+- Caminho: codex-skills/ergon-rule-executor-selection/
+- Descricao atual: Classify an Ergon rule decision conservatively as JSON Logic, typed Java, fact-provider plus decision, host orchestration/effect, or KEEP_DB_BACKED for governed target planning. Use when Codex must choose the appropriate execution surface from evidence about purity, facts, queries, algorithms, side effects, security, customization and supported operators without inferring semantics or generating Java, expressions, runtime definitions or authority.
 
 ## Classificacao inicial
 

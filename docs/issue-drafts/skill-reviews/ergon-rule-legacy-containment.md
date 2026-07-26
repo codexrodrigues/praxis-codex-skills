@@ -1,16 +1,16 @@
-# Revisar skill ergon-migration: ergon-rule-migration-orchestration
+# Revisar skill ergon-migration: ergon-rule-legacy-containment
 
 ## Objetivo
 
-Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-rule-migration-orchestration para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
+Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-rule-legacy-containment para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
 
 O objetivo e que qualquer agente que use esta skill consiga implementar com excelencia, seguranca e velocidade a funcionalidade coberta por ela.
 
 ## Skill
 
 - Familia: ergon-migration
-- Caminho: codex-skills/ergon-rule-migration-orchestration/
-- Descricao atual: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon through progressive gates for development discovery, homologation and production authority. Use when Codex must validate Parte 1 evidence, plan or gate phases 9-18, decide which profile/actions are admitted, coordinate rule inventory, dependency graph, HADES read-only chain, shadow mode, preflight/promotion, legacy containment, final rule handoff, or return work to Parte 1 phases 4/5/7/8.
+- Caminho: codex-skills/ergon-rule-legacy-containment/
+- Descricao atual: Govern Ergon legacy-rule containment for Parte 2 Phase 17 after an explicit Phase 16 authority decision. Use when Codex must decide and evidence whether each legacy package, trigger, constraint, HADES/EP path or side effect is retained as defense, bypassed, deactivated, fallback-only, deliberately duplicated or not containable, with rollback and double-execution controls, without disabling legacy behavior from a draft, shadow or preflight state.
 
 ## Classificacao inicial
 

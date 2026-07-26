@@ -1,16 +1,16 @@
-# Revisar skill ergon-migration: ergon-rule-migration-orchestration
+# Revisar skill ergon-migration: ergon-rule-target-planning
 
 ## Objetivo
 
-Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-rule-migration-orchestration para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
+Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-rule-target-planning para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
 
 O objetivo e que qualquer agente que use esta skill consiga implementar com excelencia, seguranca e velocidade a funcionalidade coberta por ela.
 
 ## Skill
 
 - Familia: ergon-migration
-- Caminho: codex-skills/ergon-rule-migration-orchestration/
-- Descricao atual: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon through progressive gates for development discovery, homologation and production authority. Use when Codex must validate Parte 1 evidence, plan or gate phases 9-18, decide which profile/actions are admitted, coordinate rule inventory, dependency graph, HADES read-only chain, shadow mode, preflight/promotion, legacy containment, final rule handoff, or return work to Parte 1 phases 4/5/7/8.
+- Caminho: codex-skills/ergon-rule-target-planning/
+- Descricao atual: Build, check and technically admit non-executable FND-12 TargetBindingPlan drafts for Ergon rule migration. Use after evidence-bound decomposition and semantic-gap reporting when Codex must project a selected decision into governed JSON Logic, Java, host or DB-backed target surfaces, preserve unknowns and blockers, run the canonical checker/admission chain, or prepare target-planning evidence without generating code, Config records, runtime definitions, business approval or authority.
 
 ## Classificacao inicial
 
