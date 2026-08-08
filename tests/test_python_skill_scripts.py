@@ -188,6 +188,10 @@ class PythonSkillScriptTests(unittest.TestCase):
 
         self.assertNotIn("| Tee-Object", content)
         self.assertIn("1> $stdoutPath 2> $stderrPath", content)
+        self.assertIn('$ErrorActionPreference = "Continue"', content)
+        self.assertIn("run_oracle_query_jdbc.ps1", content)
+        self.assertIn("$jdbcExitCode -ne 0", content)
+        self.assertIn("java\\.io\\.IOException", content)
         self.assertIn("$sqlclExitCode -ne 0", content)
         self.assertIn("SQLCL_ERROR_CLASS=", content)
 

@@ -70,8 +70,17 @@ try {
   # SQLcl can fail with java.io.IOException when its console streams are sent
   # through a PowerShell pipeline under non-interactive Windows execution.
   # Redirect its process streams directly instead of piping through Tee-Object.
-  & $SqlclPath -S $Connection "@$SqlFile" 1> $stdoutPath 2> $stderrPath
-  $sqlclExitCode = $LASTEXITCODE
+  $previousErrorActionPreference = $ErrorActionPreference
+  try {
+    # SQLcl still creates a NativeCommandError for some console failures even
+    # when stderr is redirected. Capture it first so the JDBC fallback below
+    # can make the final decision.
+    $ErrorActionPreference = "Continue"
+    & $SqlclPath -S $Connection "@$SqlFile" 1> $stdoutPath 2> $stderrPath
+    $sqlclExitCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+  }
 
   $stdout = if (Test-Path -LiteralPath $stdoutPath) {
     [System.IO.File]::ReadAllText($stdoutPath)
@@ -84,6 +93,20 @@ try {
     ""
   }
   $output = $stdout + $stderr
+
+  if ($output -match '(?i)java\.io\.IOException') {
+    $jdbcRunner = Join-Path $PSScriptRoot "run_oracle_query_jdbc.ps1"
+    if (Test-Path -LiteralPath $jdbcRunner) {
+      # SQLcl requires a Windows console in some non-interactive hosts. The
+      # JDBC runner is the read-only fallback for that specific runtime error.
+      & $jdbcRunner -SqlFile $SqlFile -Connection $Connection -SqlclPath $SqlclPath -JavaHome $JavaHome -OutputPath $OutputPath
+      $jdbcExitCode = $LASTEXITCODE
+      if ($jdbcExitCode -ne 0) {
+        exit $jdbcExitCode
+      }
+      return
+    }
+  }
 
   if ($OutputPath) {
     $outputDirectory = Split-Path -Parent $OutputPath
