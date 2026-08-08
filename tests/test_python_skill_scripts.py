@@ -163,6 +163,19 @@ def audit_report(**summary_overrides):
 
 
 class PythonSkillScriptTests(unittest.TestCase):
+    def test_jdbc_runner_exits_nonzero_when_oracle_reports_an_error(self) -> None:
+        script = (
+            REPO_ROOT
+            / "codex-skills"
+            / "ergon-archon-screen-discovery"
+            / "scripts"
+            / "run_oracle_query_jdbc.ps1"
+        )
+        content = script.read_text(encoding="utf-8")
+
+        self.assertIn('System.err.println("ERROR: " + e.getMessage());', content)
+        self.assertIn("System.exit(1);", content)
+
     def test_validate_skill_structure_reads_utf8_skill_content(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
