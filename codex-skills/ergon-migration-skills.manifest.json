@@ -55,7 +55,7 @@
 
                                         ],
                        "skillMdSha256":  "A7815F35B8FB829DA6A0B179E1EF01C5C2E25D7605D16ECA86AF91470ABBDD3E",
-                       "treeSha256":  "D6E516C26E493E9D20AE0DCBAE9FC15CD3E538EC8126BF6F350654EE127B043F"
+                       "treeSha256":  "BF17911A5B8F0055FA7BAF9D7EF5A96B44B291618CD6A1B13185646717D7A2D4"
                    },
                    {
                        "name":  "ergon-archon-write-api-migration",
