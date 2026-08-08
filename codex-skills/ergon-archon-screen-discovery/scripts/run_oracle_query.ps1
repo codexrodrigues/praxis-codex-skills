@@ -60,8 +60,50 @@ if (-not (Test-Path -LiteralPath $JavaHome)) {
 $env:JAVA_HOME = $JavaHome
 $env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
 
-if ($OutputPath) {
-  & $SqlclPath -S $Connection "@$SqlFile" | Tee-Object -FilePath $OutputPath
-} else {
-  & $SqlclPath -S $Connection "@$SqlFile"
+$work = Join-Path ([System.IO.Path]::GetTempPath()) ("ergon-sqlcl-" + [Guid]::NewGuid().ToString("N"))
+New-Item -ItemType Directory -Force -Path $work | Out-Null
+
+try {
+  $stdoutPath = Join-Path $work "stdout.txt"
+  $stderrPath = Join-Path $work "stderr.txt"
+
+  # SQLcl can fail with java.io.IOException when its console streams are sent
+  # through a PowerShell pipeline under non-interactive Windows execution.
+  # Redirect its process streams directly instead of piping through Tee-Object.
+  & $SqlclPath -S $Connection "@$SqlFile" 1> $stdoutPath 2> $stderrPath
+  $sqlclExitCode = $LASTEXITCODE
+
+  $stdout = if (Test-Path -LiteralPath $stdoutPath) {
+    [System.IO.File]::ReadAllText($stdoutPath)
+  } else {
+    ""
+  }
+  $stderr = if (Test-Path -LiteralPath $stderrPath) {
+    [System.IO.File]::ReadAllText($stderrPath)
+  } else {
+    ""
+  }
+  $output = $stdout + $stderr
+
+  if ($OutputPath) {
+    $outputDirectory = Split-Path -Parent $OutputPath
+    if ($outputDirectory) {
+      New-Item -ItemType Directory -Force -Path $outputDirectory | Out-Null
+    }
+    [System.IO.File]::WriteAllText($OutputPath, $output, [System.Text.UTF8Encoding]::new($false))
+  }
+
+  if ($output) {
+    Write-Output $output
+  }
+
+  if ($sqlclExitCode -ne 0) {
+    throw "SQLcl exited with code $sqlclExitCode. Review the captured output."
+  }
+
+  if ($output -match '(?im)^\s*(?:ORA-|SP2-|TNS-|ERROR:|Exception\b|java\.(?:io|lang)\.|SQLCL_ERROR_CLASS=)') {
+    throw "SQLcl reported an Oracle or Java error despite a zero exit code. Review the captured output."
+  }
+} finally {
+  Remove-Item -LiteralPath $work -Recurse -Force -ErrorAction SilentlyContinue
 }
