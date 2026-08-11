@@ -33,6 +33,7 @@ Inspect:
 - `docs/dynamic-fields-field-selection-guide.md`
 - `docs/dynamic-fields-inline-filter-runtime-contract.md`
 - selection component folders under `src/lib/components/**`
+- `src/lib/components/collection-overlay/**` and `src/lib/components/collection-search/**`
 - selection `*.metadata.ts` and `*.json-api.md`
 - `src/lib/base/option-store.ts`
 - `src/lib/base/simple-base-select.component.ts`
@@ -67,6 +68,7 @@ Inspect:
 - `src/lib/editorial/metadata-i18n-contract.spec.ts`
 - `src/lib/catalog/dynamic-fields-playground.catalog.ts` and catalog specs
 - `projects/praxis-core/src/lib/helpers/field-definition-mapper.ts` and spec when optionSource metadata is normalized from backend/schema
+- `projects/praxis-core/src/lib/tokens/collection-search.token.ts` and spec when shared collection-search theming changes
 - `projects/praxis-core/src/lib/services/schema-normalizer.service.ts` and spec when `x-ui` optionSource, value/display fields, cascades, or entity lookup contracts change
 - `projects/praxis-metadata-editor/src/lib/config/entity-lookup.config.ts`
 - `projects/praxis-metadata-editor/src/lib/config/inline-editor-coverage.spec.ts` when entity lookup, tree/list, selection policy, display, detail, or create affordance coverage changes
@@ -124,6 +126,16 @@ Inspect:
 - Multi-select and chip removal must operate on canonical identity, not label text or object reference equality. If values can be `EntityRef`, normalize comparison through the same identity extraction used by the payload serializer.
 - Toggle/radio/checkbox/button-toggle controls are still option-bearing when labels, values, disabled states, or i18n are derived from metadata; do not treat them as plain booleans unless the control contract is boolean.
 - Inline selection overlays use `inlineOverlay` when selections are drafted before commit.
+- Search, option rows, empty/loading states, and pagination actions must not be projected as
+  interactive descendants of `MatSelect`. Use the shared collection overlay composition with
+  sibling header, scrollable option region, and footer. Keep `MatSelect` only where its panel owns
+  actual Material option rows and every auxiliary action remains outside its trigger/content model.
+- Search UX shared by Dynamic Fields and Table must consume the canonical collection-search
+  variables/builders from `@praxisui/core` and the public `PdxCollectionSearchComponent`; do not
+  recreate radius, surface, foreground, border, focus, or placeholder tokens per consumer.
+- A remote `loadMore` action is panel footer state, not an option. Render it only while the owning
+  overlay is open and only when the loaded-page contract proves another page exists. Static option
+  arrays and fully loaded first pages must not expose the action.
 - Dynamic Form, metadata-editor, table filters, CRUD dialogs, and host projects should consume the same identity/source contract. Do not fork lookup behavior per consumer.
 - Treat Cockpit verifiers, HTTP examples, and LLM smokes as external evidence that lookup endpoints are reachable, not as proof that a generic select can replace `entityLookup`. If the backend publishes `RESOURCE_ENTITY`, the Angular control must preserve `entityKey`, `selectionPolicy`, `capabilities`, `selectable`, `disabledReason`, `status`, `statusTone`, rich display fields, detail/create affordances, and retained-invalid-value semantics through open panel, closed display, edit/reopen, and presentation mode.
 - Do not use LLM operational examples or published HTTP payloads as a local shape contract for Ergon or another host. They can help diagnose the backend response, but the runtime shape must still flow through `OptionSourceMetadata`, `OptionDTO.extra`, `OptionDisplayResolverService`, `OptionStore`, and the entity lookup component's view model. If those fields are not reaching the control, fix mapper/normalizer/runtime wiring before inventing a consumer adapter.
@@ -174,6 +186,11 @@ Use focused gates:
   - `projects/praxis-dynamic-fields/test-dev/e2e/entity-lookup-funcionarios.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-searchable-select-panel-ux.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-all-components-smoke.playwright.spec.ts`
+- Shared collection content model and search tokens:
+  - run the focused specs under `components/collection-overlay` and `components/collection-search`;
+  - run `node tools/check-mat-select-content-model.mjs` and keep the debt baseline empty;
+  - prove square, intermediate, and pill search radii in Dynamic Fields and at least one direct
+    consumer, including a narrow viewport at the shared-consumer level.
 - Direct consumer checks when a selection control is exposed through dynamic-form, metadata-editor, table filter, CRUD, or a host example.
 - Metadata-editor coverage for entity lookup/selection controls:
   - Add or run `projects/praxis-metadata-editor/src/lib/config/inline-editor-coverage.spec.ts`
