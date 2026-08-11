@@ -83,6 +83,18 @@ Treat schema-driven layout as opt-in and explicit:
 - `layoutPolicy.source = "schema"` makes schema metadata the layout source for that runtime surface.
 - `compactPresentation` with `intent: "detail"` is for read-only detail summaries.
 - `groupedCommand` is for create/edit command forms.
+- `groupedCommand.partialRowStrategy` is the canonical policy for incomplete rows. Default
+  `preserve` keeps authored/schema widths unchanged. `fill-compatible` may widen only eligible,
+  known, non-compact controls to the next supported grid span (`3`, `4`, `6`, `8`, `12`) so the
+  visible row fills 12 columns; it must not rewrite the underlying field width contract.
+- Resolve `fill-compatible` independently for each visible row and each active responsive
+  breakpoint. Hidden fields change row membership, so a desktop projection cannot be reused for
+  tablet or narrow layouts. Dynamic Form owns this runtime projection and should use its named
+  form-row container rather than global viewport guesses.
+- Put `container-type`/`container-name` on an element with measurable inline size that actually
+  contains the responsive columns, such as `.form-row.grid-12`. Never name a `display: contents`
+  wrapper as the query container: its zero-size box leaves responsive span classes present in the
+  DOM but permanently inactive.
 - authored `FormConfig.sections` must not be silently overwritten unless policy says schema owns layout.
 - non-layout config, such as actions, messages, hooks, behavior, submit behavior, and hints, can still come from authored config.
 - `DynamicFormLayoutPolicy.schemaType` and `schemaOperation` must agree with the schema URL when declared. Detail/read-only surfaces use response schema; create/edit command surfaces use request schema.
@@ -128,6 +140,9 @@ Only `lacuna-real-de-contrato` justifies a new public layout contract. Otherwise
 - Visual blocks: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/utils/visual-block-rule-content-overrides.util.spec.ts --include=projects/praxis-dynamic-form/src/lib/utils/rule-converters.spec.ts`
 - Submit boundary: add `normalize-submit-payload.spec.ts` when layout/visual-block changes could affect payload construction.
 - Browser layout: Playwrights such as `projects/praxis-dynamic-form/test-dev/e2e/visual-blocks-responsive-ux.playwright.spec.ts`, `projects/praxis-dynamic-form/test-dev/e2e/form-config-editor-layout.playwright.spec.ts`, and narrow viewport checks when UI layout changed.
+- Grouped-command partial-row changes must include core materializer tests for `preserve`, eligible
+  widening, fixed/compact exclusions, and deterministic spans; Dynamic Form DOM/diagnostic tests;
+  and `schema-layout-policy-demo.playwright.spec.ts` geometry at desktop, tablet, and narrow widths.
 - `npm run build:praxis-dynamic-form` when public exports, layout models, config editor, runtime layout services, or generated presets change.
 - `npm run validate:published-doc-assets` and `npm run generate:registry:ingestion` when public docs, JSON API docs, or generated AI/registry surfaces change.
 
