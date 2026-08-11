@@ -37,6 +37,8 @@ Inspect:
 - `docs/dynamic-fields-inline-filter-selection-guide.md`
 - `docs/dynamic-fields-inline-filter-troubleshooting.md`
 - `src/lib/components/inline-*/**`
+- `src/lib/components/collection-overlay/**`
+- `src/lib/components/collection-search/**`
 - `src/lib/components/material-date-range/date-range-shortcuts-overlay.component.ts`
 - `src/lib/utils/inline-display-mask.util.ts` and spec
 - `src/lib/i18n/dynamic-fields.i18n.ts`
@@ -97,6 +99,20 @@ Dynamic Fields owns:
 - Metadata refresh or select rebind while an explicit overlay is open must either rebase draft state from the new committed metadata or close/cancel deterministically. Do not preserve stale draft option IDs after metadata/resource changes.
 - Do not document component internal value shape as the final HTTP DTO; range normalization may happen later in host/backend contracts.
 - Fix blocked overlays through shared layer/token contracts before adding host-only z-index or color overrides.
+- Selection overlays must use the shared connected-overlay shell: trigger ownership, a sibling
+  header/search slot, one scrollable options region, and a sibling footer/action slot. Footer
+  content must be created only while the overlay is open; it must never be projected into a
+  `MatSelect` trigger or option list.
+- Use the standard transparent CDK backdrop for deterministic outside-close semantics and keep the
+  panel connected to the trigger with below-then-above positions, viewport push, and a viewport
+  margin. Do not emulate outside close with competing document click handlers.
+- Keep overflow inside the options region. Header and footer stay visible, short collections must
+  not gain a forced scrollbar, and long collections must have measurable `scrollHeight >
+  clientHeight`. Use `scrollbar-gutter: auto` for the shared options region unless a specific stable
+  layout contract proves otherwise.
+- Prove focus and keyboard activation of footer actions while the panel remains open. Also prove
+  trigger/panel geometry at desktop and narrow widths; a unit test that only toggles `opened` is not
+  sufficient evidence for connected-overlay placement.
 - CDK stacking is owned by `@praxisui/core` layer scale tokens. Connected overlay panes must remain
   above CDK backdrops through `PRAXIS_LAYER_SCALE_*`; do not patch individual inline components with
   one-off z-index values unless the shared layer contract is already correct and the issue is truly local.
@@ -132,6 +148,12 @@ Use focused gates:
 - Core layer scale changes:
   - Add `projects/praxis-core/src/lib/tokens/layer-scale.token.spec.ts` when overlay clickability,
     backdrop ordering, or CDK z-index behavior changes.
+- Shared collection overlay changes:
+  - include the focused `collection-overlay.component.spec.ts` and affected selection component specs;
+  - run `node tools/check-mat-select-content-model.mjs`;
+  - use `inline-searchable-select-panel-ux.playwright.spec.ts` for header/options/footer lifecycle,
+    short/long overflow, theme tokens, keyboard load-more, and open-panel persistence;
+  - use `inline-layout-overflow.playwright.spec.ts` for desktop/narrow trigger-panel geometry.
 - Metadata-editor authoring changes:
   - Add focused metadata-editor config/manifest specs when `inlineOverlay.applyMode`,
     `inlineOverlay.actions.*`, or `clearButton.*` metadata is added, renamed, or reinterpreted.
