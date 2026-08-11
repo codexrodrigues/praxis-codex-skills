@@ -93,6 +93,12 @@ Schema/layout materializations with `layoutPolicy.persistence='transient'` are r
 Do not persist generated sections, runtime `domainRules`, resolved schema URLs, submit endpoints, or
 materialized domain rules into the authoring document just because the user opened Settings Panel.
 
+Nested layout policy is still canonical authoring data when it was explicitly authored. In
+particular, preserve `groupedCommand.partialRowStrategy` through document normalization, editor
+apply plans, JSON serialization, save, and reopen. Do not flatten it into generated column spans or
+drop it because the generated schema sections are transient; the policy is authored while those
+sections are derived.
+
 Filter form and dynamic form widget editors must follow the same document semantics. Do not create a separate filter-form authoring document unless the shared contract cannot represent a proven gap.
 
 ## Apply Plan Rules
@@ -164,6 +170,8 @@ Treat a value that works in one editor tab but fails in another path as `suporta
 - Widget editor round-trip: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form-widget-config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form-widget-config-editor.spec.ts`
 - Runtime hydration/context: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.first-config-hydration.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.external-config-hydration.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.layout-policy.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.compact-presentation-dom.spec.ts`
 - Config/editor paths: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form-config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.config-editor.spec.ts --include=projects/praxis-dynamic-form/src/lib/json-config-editor/json-config-editor.component.spec.ts`
+- For nested `layoutPolicy` additions, add a focused serialize/parse/reopen assertion that proves the
+  exact nested value survives; runtime layout tests alone are not document round-trip evidence.
 - Tab-specific editor paths: add the focused specs under `behavior-editor`, `rules-editor`, `messages-editor`, `hooks-editor`, `actions-editor`, and `config-editor/rule-properties-panel.component.spec.ts` when those blocks change.
 - Settings Panel protocol: `npx ng test praxis-settings-panel --watch=false --progress=false --include=projects/praxis-settings-panel/src/lib/settings-panel.component.spec.ts --include=projects/praxis-settings-panel/src/lib/settings-panel.service.spec.ts --include=projects/praxis-settings-panel/src/lib/settings-panel-bridge.provider.spec.ts`
 - Settings Panel AI/protocol manifest: `npx ng test praxis-settings-panel --watch=false --progress=false --include=projects/praxis-settings-panel/src/lib/ai/praxis-settings-panel-authoring-manifest.spec.ts`
