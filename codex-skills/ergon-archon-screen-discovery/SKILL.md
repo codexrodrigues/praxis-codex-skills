@@ -204,6 +204,26 @@ text confirms `-1` = all companies, `-2` = no company, and
 company/query-mode scope, not a public `FilterDTO`, schema, URL, `OptionDTO.extra`,
 or x-ui field when a functional key exists.
 
+### Public Identity Must Follow The Effective Legacy Query
+
+Never infer a composite or opaque public id merely because a legacy view
+contains duplicate domain keys. First distinguish view fan-out from entity
+identity:
+
+1. prove the base-table PK/UK and its projection through the view;
+2. reconstruct the exact list/detail query used by the component;
+3. apply server-side scope/session binds under the same Oracle connection;
+4. test key uniqueness in that effective resource slice;
+5. confirm how child components and legacy operations identify the selected row.
+
+The unscoped view count is diagnostic only. If the domain key is unique in the
+effective slice, expose that key and keep company, user, HADES state, `VALOR`,
+`ROWID`, and equivalent locators internal. If duplicates remain, determine
+whether they are projections of the same entity or genuinely distinct public
+resources before considering normalization, a composite key, or an opaque id.
+Record `blocked_effective_scope_key_uniqueness_not_proven` when the effective
+probe has not run; do not convert that uncertainty into an opaque-token design.
+
 Use `docs/migracao/phase1-cronos-bind-resolution-standard.md` when present. If
 XML plus Oracle metadata closes the semantics and no browser evidence
 contradicts it, record `BIND_SEMANTICS_CLOSED_BY_XML_ORACLE` or equivalent in
