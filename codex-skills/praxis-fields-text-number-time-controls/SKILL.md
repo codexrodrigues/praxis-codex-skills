@@ -70,6 +70,13 @@ Inspect:
 - Numeric and currency display decisions should use `numeric-presentation` or documented component metadata, not ad hoc pipes in consumers.
 - Inline display-only masks should use `inline-display-mask` and preserve the submitted value shape.
 - Visual numeric controls such as rating, score, and distance must keep text labels or accessible names; color/star/graphic affordance is never the only semantic channel.
+- Material-backed Praxis fields must default `materialDesign.subscriptSizing` to `dynamic` so
+  multiline hints, validation errors, and counters participate in document flow. Preserve an
+  explicitly authored `fixed` override, but do not use it as the library fallback or require
+  popover help merely to avoid overlap.
+- A shared subscript minimum-height token may reserve one-line rhythm, but it must not cap content
+  growth. Validate layout changes with bounding-box assertions between hint/error/counter and the
+  following field, including narrow widths and a real modal or drawer when overlays are in scope.
 - Inline temporal/numeric controls use `inlineOverlay` where draft state exists.
 - Do not collapse wrapper field payloads into scalar text just because the host form submits through dynamic-form. Use the wrapper package contract and then verify dynamic-form payload projection.
 
@@ -102,6 +109,7 @@ Use focused gates:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/ai/control-type-ai-catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/praxis-dynamic-fields-authoring-manifest.spec.ts`
 - Form submit or filter payload tests when value shape changes.
 - Playwright for inline overlay/range/date/time visual interactions, especially `inline-number-real-usage.playwright.spec.ts`, `inline-date-range-visual.playwright.spec.ts`, `inline-date-range-business-shortcuts.playwright.spec.ts`, `inline-layout-overflow.playwright.spec.ts`, and `inline-all-components-smoke.playwright.spec.ts`.
+- Multiline Material subscript layout: `projects/praxis-dynamic-form/test-dev/e2e/subscript-sizing-layout.playwright.spec.ts`.
 - Wrapper package tests plus dynamic-fields registration/discovery tests when a wrapper control is involved.
 - `npm run build:praxis-dynamic-fields` when public exports, metadata contracts, AI profiles, or package-owned control coverage changes.
 
