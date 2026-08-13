@@ -121,6 +121,7 @@ Inspect:
   display, presentation/read-only mode, edit/reopen, missing-ID behavior, and requested ID order.
 - Legacy `valueField`/`displayField` must be normalized toward canonical option identity/display keys through the core mapper/normalizer; do not create a second alias layer in the component.
 - `searchable-select`, `async-select`, and autocomplete need explicit search/load policy and clear value shape.
+- Governed lookup search is deterministic: auto-select one declared `searchStrategy`; require an accessible chooser for multiple strategies and block HTTP while ambiguous. Apply strategy-specific minimum and input format before loading options; never guess intent from the typed term.
 - Tree controls require stable node identity and parent/children semantics.
 - Chips/list/transfer controls must preserve array value shape, order policy, and max-selection rules. For remote/entity-backed chips, render labels from the canonical selected-display/by-ids path and preserve option identity even when the option is not present in the currently filtered page.
 - Multi-select and chip removal must operate on canonical identity, not label text or object reference equality. If values can be `EntityRef`, normalize comparison through the same identity extraction used by the payload serializer.
