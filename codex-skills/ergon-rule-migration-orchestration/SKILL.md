@@ -1,6 +1,6 @@
 ---
 name: ergon-rule-migration-orchestration
-description: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon through progressive gates for development discovery, homologation and production authority. Use when Codex must validate Parte 1 evidence, plan or gate phases 9-18, decide which profile/actions are admitted, coordinate rule inventory, dependency graph, HADES read-only chain, shadow mode, preflight/promotion, legacy containment, final rule handoff, or return work to Parte 1 phases 4/5/7/8.
+description: Orchestrate Parte 2 - Migracao Progressiva de Regras for Ergon/Archon, including short intent-plus-identifier requests to identify active customer customizations or business rules in a screen's write flow. Use for phases 9-18, current HADES activation, rule inventory/dependencies, shadow, preflight/promotion, containment and final handoff.
 ---
 
 # Ergon Rule Migration Orchestration
@@ -26,6 +26,26 @@ data minimization/redaction, provenance, toolchain integrity, bounded queries
 and technically enforced read-only access. Do not require production SIEM, SLO,
 HA/DR, final retention policy, business owner confirmation or per-run human
 approval merely to open development intake or inventory.
+
+## Short prompts and customer-customization intent
+
+The factory contract accepts a short user prompt containing intent plus an
+identifier. Do not require the presenter to pre-resolve phase, operation,
+HADES flags, Oracle owner, EP/package name, source ranges, skills or next gate.
+Resolve those from the screen package, Parte 1 handoff, current environment and
+canonical workflow.
+
+In a Parte 2/write context, interpret “customização cliente” as a
+customer-specific server-side extension unless the user explicitly asks for a
+client-side/UI rule. The Portuguese word `cliente` is ambiguous: preserve XML,
+JavaScript and component validations as UI/client evidence, but never use them
+as a substitute for a requested customer customization. Start with the exact
+write operation and approved DB-backed route, then investigate HADES/EP,
+customer-owned Oracle objects and the decision source.
+
+When this intent is present, read
+`references/customer-customization-active-discovery.md` before concluding that
+a customization is active or inactive.
 
 ## Mandatory Readiness First
 
