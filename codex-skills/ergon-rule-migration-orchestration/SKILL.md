@@ -45,7 +45,9 @@ customer-owned Oracle objects and the decision source.
 
 When this intent is present, read
 `references/customer-customization-active-discovery.md` before concluding that
-a customization is active or inactive.
+a customization is active or inactive. This routing is mandatory even if
+`ergon-archon-screen-discovery` was selected first because the prompt contains
+a screen identifier.
 
 ## Mandatory Readiness First
 
