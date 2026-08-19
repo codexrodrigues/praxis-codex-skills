@@ -20,7 +20,9 @@ JavaScript, `onChanged`, field validation or another client-side screen rule
 merely because those sources are easy to locate. A short prompt such as
 “identifique uma customização cliente ativa na escrita de <SCREEN>” carries an
 intent plus identifier: resolve the existing Parte 1 write handoff and route to
-`ergon-rule-migration-orchestration`. Screen discovery may contribute the
+`ergon-rule-migration-orchestration`. You must use that skill before issuing
+any active/inactive conclusion; do not finish the request inside screen
+discovery. Screen discovery may contribute the
 operation and DB-backed route, but it must not substitute a UI rule for the
 requested customer-specific server-side rule.
 
