@@ -12,6 +12,8 @@ Validacao local: `python3 scripts/validate-issue-drafts.py`
 - [ergon-archon-write-api-migration](skill-reviews/ergon-archon-write-api-migration.md)
 - [ergon-dashboard-praxis-charts](skill-reviews/ergon-dashboard-praxis-charts.md)
 - [ergon-fieldspec-ui-contract](skill-reviews/ergon-fieldspec-ui-contract.md)
+- [ergon-forms-static-extraction](skill-reviews/ergon-forms-static-extraction.md)
+- [ergon-forms-target-handoff](skill-reviews/ergon-forms-target-handoff.md)
 - [ergon-migration-orchestration](skill-reviews/ergon-migration-orchestration.md)
 - [ergon-migration-scaffold](skill-reviews/ergon-migration-scaffold.md)
 - [ergon-rule-decision-decomposition](skill-reviews/ergon-rule-decision-decomposition.md)
