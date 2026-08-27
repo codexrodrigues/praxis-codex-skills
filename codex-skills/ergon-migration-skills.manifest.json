@@ -115,7 +115,7 @@
 
                                         ],
                        "skillMdSha256":  "4FAF15911D5C7EF03320DE26905A04E73E1CCF9F0414D3EDB7A391EF28732861",
-                       "treeSha256":  "F5127E615009A2C6E6232EA9BD91B077979363CE85DDBFD3DD91565C7312D2A0"
+                       "treeSha256":  "281E56BADB4BDF62AF54FA0F31F348557CEED015B5C5A6075160DF8BAC9F65CE"
                    },
                    {
                        "name":  "ergon-forms-target-handoff",
@@ -127,7 +127,7 @@
 
                                         ],
                        "skillMdSha256":  "2809EE75A367B586A42A5E1BF40BE6072105462E208261FAE46AB8A28A3B5758",
-                       "treeSha256":  "F630F91B145F862B1B4B50C512CA5170B4B8E0C6DB77BD9D37A9BD156B500FEE"
+                       "treeSha256":  "EB54C5E9784978B6A0479793568DF91BAEBB10DE86315980EEC35D3614AF8941"
                    },
                    {
                        "name":  "ergon-migration-orchestration",
