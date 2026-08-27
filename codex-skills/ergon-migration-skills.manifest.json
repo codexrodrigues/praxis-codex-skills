@@ -106,6 +106,30 @@
                        "treeSha256":  "8D29B448B845AAC42802FCF56568CC5FC28CB52D7F516D8D229DCEA461C8619C"
                    },
                    {
+                       "name":  "ergon-forms-static-extraction",
+                       "sourcePath":  "codex-skills/ergon-forms-static-extraction",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+
+                                        ],
+                       "skillMdSha256":  "4FAF15911D5C7EF03320DE26905A04E73E1CCF9F0414D3EDB7A391EF28732861",
+                       "treeSha256":  "F5127E615009A2C6E6232EA9BD91B077979363CE85DDBFD3DD91565C7312D2A0"
+                   },
+                   {
+                       "name":  "ergon-forms-target-handoff",
+                       "sourcePath":  "codex-skills/ergon-forms-target-handoff",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+
+                                        ],
+                       "skillMdSha256":  "2809EE75A367B586A42A5E1BF40BE6072105462E208261FAE46AB8A28A3B5758",
+                       "treeSha256":  "F630F91B145F862B1B4B50C512CA5170B4B8E0C6DB77BD9D37A9BD156B500FEE"
+                   },
+                   {
                        "name":  "ergon-migration-orchestration",
                        "sourcePath":  "codex-skills/ergon-migration-orchestration",
                        "version":  "0.1.0-beta.0",
