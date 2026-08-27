@@ -1,16 +1,16 @@
-# Revisar skill ergon-migration: ergon-archon-screen-discovery
+# Revisar skill ergon-migration: ergon-forms-static-extraction
 
 ## Objetivo
 
-Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-archon-screen-discovery para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
+Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-forms-static-extraction para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
 
 O objetivo e que qualquer agente que use esta skill consiga implementar com excelencia, seguranca e velocidade a funcionalidade coberta por ela.
 
 ## Skill
 
 - Familia: ergon-migration
-- Caminho: codex-skills/ergon-archon-screen-discovery/
-- Descricao atual: Investigate legacy Ergon/Archon screens for Oracle lineage and Java API migration. Use for screen workflow, debug/XML components, SQL lineage, resources and Parte 1 API contracts. Requests to identify or migrate active customer customizations or business rules on a write operation belong to ergon-rule-migration-orchestration, even when a screen identifier is the only context.
+- Caminho: codex-skills/ergon-forms-static-extraction/
+- Descricao atual: Extract and audit static Oracle Forms 6i metadata from admitted FMB baselines. Use for F1 inventory, coverage, source hashes, blocks, items, triggers, attached libraries and structural comparison; do not use for Forms runtime, compilation, Oracle execution or Cronos/browser sources.
 
 ## Classificacao inicial
 
