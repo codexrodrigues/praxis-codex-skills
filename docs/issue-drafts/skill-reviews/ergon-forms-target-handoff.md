@@ -1,16 +1,16 @@
-# Revisar skill ergon-migration: ergon-archon-screen-discovery
+# Revisar skill ergon-migration: ergon-forms-target-handoff
 
 ## Objetivo
 
-Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-archon-screen-discovery para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
+Solicitar a um especialista em plataforma Praxis uma revisao criteriosa da skill ergon-forms-target-handoff para garantir que ela esteja 100% em conformidade com os recursos disponiveis do Praxis e com as melhores praticas de uso desses recursos.
 
 O objetivo e que qualquer agente que use esta skill consiga implementar com excelencia, seguranca e velocidade a funcionalidade coberta por ela.
 
 ## Skill
 
 - Familia: ergon-migration
-- Caminho: codex-skills/ergon-archon-screen-discovery/
-- Descricao atual: Investigate legacy Ergon/Archon screens for Oracle lineage and Java API migration. Use for screen workflow, debug/XML components, SQL lineage, resources and Parte 1 API contracts. Requests to identify or migrate active customer customizations or business rules on a write operation belong to ergon-rule-migration-orchestration, even when a screen identifier is the only context.
+- Caminho: codex-skills/ergon-forms-target-handoff/
+- Descricao atual: Validate an admitted Oracle Forms F7 capability and emit an origin-neutral intake for its real Ergon/Praxis target owner. Use only after F6 semantics and F7 admission are closed; do not use for Forms discovery, Cronos/Archon discovery, public API design, Java/Angular implementation or rule migration.
 
 ## Classificacao inicial
 
