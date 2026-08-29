@@ -74,7 +74,7 @@ Legacy migration is an explicit ingress concern. Use `CompositionLinkLegacyMigra
 Do not infer executable support from a public union or serialized field alone:
 
 - Link policy currently executes `missingValuePolicy`, `distinct`, `distinctBy`, and `debounceMs`.
-- `LinkPolicy.delivery` and `LinkPolicy.errorPolicy` are modeled, serialized, and authorable, but the core executor does not currently schedule `microtask`/`batched` delivery or apply `drop`/`halt-page`. Classify behavior that depends on them as `suportado-parcialmente` and open a core follow-up instead of simulating it in a host.
+- `LinkPolicy.delivery` is intentionally synchronous: the executable and persisted beta contract accepts only `sync` or omission. Canonical factory and serialization ingress reject removed `microtask`/`batched` values instead of silently normalizing them. `LinkPolicy.errorPolicy` executes `diagnostic`, `drop`, and `halt-page`: `diagnostic` preserves the sanitized failure, `drop` rolls back the failed link and lets later links continue in document order with `RUNTIME_LINK_ERROR_DROPPED`, and `halt-page` rolls back the failed delivery, marks the page failed, blocks later effects with `RUNTIME_PAGE_HALTED`, and requires a new bootstrap to resume. Do not recreate async scheduling or error-policy behavior in a host.
 - The stable transform catalog currently executes `identity`, `constant`, `pick-path`, `template`, `object-template`, `array-template`, `coalesce`, `merge-objects`, and `select-case`. Other `TransformKind` members are declared future surface and produce `RUNTIME_TRANSFORM_UNSUPPORTED`; never create a host transform dialect to bypass the catalog. For value formatting, first inventory the canonical derived-state `format-value` operator in `WidgetPageStateRuntimeService` instead of assuming the pipeline transform with the same name is executable.
 - A link-level `condition` is canonical Json Logic with explicit roots and no implicit root. A transform step `when` currently permits the implicit `source` root. Preserve this distinction when validating or migrating conditions.
 
@@ -124,7 +124,8 @@ Before declaring composition guidance current, prove:
 1. Happy path: a widget output matches one `composition.links` source, passes a supported transform, delivers to a canonical port or writable state, and records link status plus trace phases.
 2. Risk path: a missing nested widget/port, incompatible semantic kind, invalid condition, unsupported transform, derived-state write, or unguarded feedback cycle produces the expected structured diagnostic and a non-divergent snapshot.
 3. Feedback path: prove an unguarded component/component or component/state/component cycle degrades bootstrap and skips involved matched links with `RUNTIME_FEEDBACK_CYCLE_BLOCKED`; prove an intentional guarded cycle remains a warning by using `intentional-feedback` plus canonical guards.
-4. Adversarial path: reject `page.connections`, new `bindingPath` links, local event buses, command strings, raw callback transforms, host-local loop breakers, and host implementations of unexecuted policy fields.
+4. Policy path: prove synchronous document order; prove `drop` rolls back only the failed link and permits later links; prove `halt-page` blocks later effects and future dispatch until a new bootstrap; reject removed `microtask`/`batched` values at canonical ingress.
+5. Adversarial path: reject `page.connections`, new `bindingPath` links, local event buses, command strings, raw callback transforms, host-local loop breakers, and host implementations of composition policy semantics.
 
 Use a focused Angular gate from the `praxis-ui-angular` root:
 
