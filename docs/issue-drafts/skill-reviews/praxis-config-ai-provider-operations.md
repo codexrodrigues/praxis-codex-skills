@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-config-ai-provider-operations/
-- Descricao atual: Use when operating or changing Praxis Config AI provider infrastructure: provider catalog/status/test endpoints, connection probes, routing and fallback, failure classification, streaming cancellation, invocation telemetry and metrics, pricing snapshots, usage/cost attribution, provider metadata, paid live-gate budgets, key separation, or public-host AI rate limiting. Do not use for semantic authoring logic alone.
+- Descricao atual: Use when operating or changing Praxis Config AI provider infrastructure: provider catalog/status/test endpoints, governed audio transcription, connection probes, routing and fallback, failure classification, streaming cancellation, invocation telemetry and metrics, pricing snapshots, usage/cost attribution, provider metadata, paid live-gate budgets, key separation, or public-host AI rate limiting. Do not use for semantic authoring logic alone.
 
 ## Classificacao inicial
 

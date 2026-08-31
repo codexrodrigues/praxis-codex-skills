@@ -289,10 +289,11 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                             "praxis-ai-shell-session-context",
-                                            "praxis-ai-semantic-intent"
+                                            "praxis-ai-semantic-intent",
+                                            "praxis-ai-backend-config-contracts"
                                         ],
-                       "skillMdSha256":  "39316F144015A6C9095EEB21BF042D9F38FC5F71C0DD64498C60C5B9DFD8C255",
-                       "treeSha256":  "E6E733BE178728A4295C607D7581A1FDCC7A32C3ED779490AC6984BAE2D608F9"
+                       "skillMdSha256":  "896867559FE09D7FA88B032F5D665D7D00F0037C9892D0AF72C842A8B09080F2",
+                       "treeSha256":  "9A2FECD2DD585CDCE75B127137A1096A632575CA5B48DEED92C21D4291DD570F"
                    },
                    {
                        "name":  "praxis-ai-turn-orchestration-transport",
@@ -319,8 +320,8 @@
                        "dependencies":  [
                                             "praxis-ai-turn-orchestration-transport"
                                         ],
-                       "skillMdSha256":  "E4D9FA93C114F92BB982D2A7B8C9A856B1F110A0430FEE9A3F89CEF236DFEC55",
-                       "treeSha256":  "01B882203B57C673CC44F4034AE2A620EBF2C04E3F2981B2158985E918C1FDB3"
+                       "skillMdSha256":  "18DDE7EECFD02727043919C57C0C63ADB29695E7AE91318B6ACF27C13A7A16EB",
+                       "treeSha256":  "3D4A03B47320C01F068E81339CA40BE762A9CA915C2CEFA3E43B5227837AE36B"
                    },
                    {
                        "name":  "praxis-ai-authoring-manifests",
@@ -2683,8 +2684,8 @@
                                             "praxis-config-agentic-authoring-streaming",
                                             "praxis-api-quickstart-security-config"
                                         ],
-                       "skillMdSha256":  "BE2D6739FE9F947E3A04EAB5C71435C8414FB25F6D5B41A72E185B4C286D7F70",
-                       "treeSha256":  "A7506A09177F69D3FA9D136159B53E0066F96F82D1D70947AC8B3D350FE5E08E"
+                       "skillMdSha256":  "C78C8FB349C437545D4C74EEA3EBC86741DC298F4DC23F70F55F9031BF5B5901",
+                       "treeSha256":  "36B204DAE1DEA9D31E8EF6B33D565B7917B21FE2315D81B14D202F97838CAF4D"
                    },
                    {
                        "name":  "praxis-landing-dynamic-page-studio",

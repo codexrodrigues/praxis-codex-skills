@@ -1,6 +1,6 @@
 ---
 name: praxis-ai-backend-config-contracts
-description: Use when changing or reviewing `AiBackendApiService`, `AI_BACKEND_CONFIG_STORE`, `AI_BACKEND_STORAGE_OPTIONS`, `AI_BACKEND_ENDPOINTS`, `API_URL` endpoint resolution, `/api/praxis/config/ai/**`, `/api/praxis/config/ai-context/**`, provider catalog/model/test/status endpoints, AI config snapshots, headers, ETag-adjacent identity, risk confirmation policy, manifest endpoints, or backend AI contract integration.
+description: Use when changing or reviewing `AiBackendApiService`, governed audio transcription, `AI_BACKEND_CONFIG_STORE`, `AI_BACKEND_STORAGE_OPTIONS`, `AI_BACKEND_ENDPOINTS`, `API_URL` endpoint resolution, `/api/praxis/config/ai/**`, `/api/praxis/config/ai-context/**`, provider catalog/model/test/status endpoints, AI config snapshots, headers, ETag-adjacent identity, risk confirmation policy, manifest endpoints, or backend AI contract integration.
 ---
 
 # Praxis AI Backend Config Contracts
@@ -25,6 +25,7 @@ Inspect:
 - `projects/praxis-ai/README.md`
 - `src/lib/core/services/ai-backend-api.service.ts`
 - `src/lib/core/services/ai-backend-api.service.spec.ts`
+- `src/lib/core/services/governed-audio-transcription.service.ts` and the assistant shell voice flow when transcription is in scope
 - `src/lib/core/services/praxis-ai.service.ts` when a change risks browser-side provider execution or legacy fallback behavior
 - `src/lib/core/contracts/ai-contract.generated.ts`
 - `praxis-config-starter/docs/ai/contracts/praxis-ai-api-contract-v1.1.openapi.yaml`
@@ -34,6 +35,7 @@ Inspect:
 - `src/public-api.ts`
 - host provider setup for `API_URL` and `AI_BACKEND_*` tokens
 - relevant `praxis-config-starter` AI registry/config endpoint contracts when backend behavior changes
+- `praxis-config-starter` `AiAudioTranscriptionController`, `AiProviderManagementService`, `AiProvider`, transcription DTO/request, controller test, and AI contract docs when governed transcription changes
 
 Use `praxis-ai-authoring-manifests` for component manifest endpoints and edit-plan shape. Use `praxis-ai-turn-orchestration-transport` for turn stream conversion.
 
@@ -50,6 +52,8 @@ When backend contract behavior is in scope, load the relevant config-starter ski
 - Resolve AI base URL in this order: explicit `AI_BACKEND_ENDPOINTS.aiBaseUrl`, derived `API_URL.default.baseUrl + praxis/config/ai`, fallback `/api/praxis/config/ai`.
 - Resolve AI context base URL in this order: explicit `AI_BACKEND_ENDPOINTS.aiContextBaseUrl`, derived `API_URL.default.baseUrl + praxis/config/ai-context`, fallback `/api/praxis/config/ai-context`.
 - Do not hardcode external provider URLs in `@praxisui/ai`. Provider catalog, model listing, status, test calls, suggestions, patches, stream start/connect/cancel, observation feedback, and authoring manifest operations go through the Praxis Config boundary.
+- `POST /api/praxis/config/ai/transcriptions` is the canonical short-audio transcription boundary. Send multipart `audio` plus optional `language` through the resolved AI base URL, preserve credentials and tenant/user/environment headers, and accept only the safe transcription response. Do not derive a provider endpoint, key, model, or fallback in Angular.
+- A transcription response is editable user-input material, not an assistant result. It must not start a turn, resolve intent, auto-submit, mutate history, authorize preview/apply, or become trusted grounding merely because Config returned provider/model metadata.
 - Preserve generated contract version and schema hash headers for patch/orchestrator contracts.
 - Treat `praxis-config-starter/docs/ai/contracts/praxis-ai-api-contract-v1.1.openapi.yaml` as the canonical AI HTTP/SSE contract source. Do not hand-edit `ai-contract.generated.ts` or Java contract constants; update the OpenAPI source, run `node tools/contracts/generate-ai-contract-bindings.js` from `praxis-config-starter`, and commit the generated Java/TypeScript outputs together.
 - Preserve tenant/user/env headers from `AI_BACKEND_STORAGE_OPTIONS`. Local identity fallback is for demos/local hosts and must be explicit.
@@ -79,10 +83,12 @@ When backend contract behavior is in scope, load the relevant config-starter ski
   `canApply`, or become grounding evidence for a later request unless a separate backend contract explicitly returns
   governed remediation context.
 
-Provider catalog/status/test responses are operational projections from Config
-Starter. Angular may present sanitized provider/model/status/failure information
-but must not own routing, retry, pricing, key storage, or cost attribution. Use
-`praxis-config-ai-provider-operations` when those contracts change.
+Provider catalog/status/test/transcription responses are operational projections
+from Config Starter. Angular may present sanitized provider/model/status/failure
+information and append returned transcript text for user review, but must not
+own routing, retry, pricing, key storage, transcription policy, or cost
+attribution. Use `praxis-config-ai-provider-operations` when those contracts
+change.
 
 ## Inventory Before New Contracts
 
@@ -101,11 +107,18 @@ Only `lacuna-real-de-contrato` justifies a new public contract. Identify backend
 
 Use focused checks:
 
-- client endpoints, headers, base URL resolution, streams: `ai-backend-api.service.spec.ts`
+- client endpoints, headers, base URL resolution, multipart transcription, streams: `ai-backend-api.service.spec.ts`
 - turn stream behavior: `agentic-authoring-turn-client.service.spec.ts`
 - generated AI contracts: contract generation/validator specs when schema changes
 - public exports: build `praxis-ai` and a direct consumer when `public-api.ts` changes
 - backend endpoint behavior: focused `praxis-config-starter` tests when backend contracts change
+
+For governed transcription, prove scoped multipart encoding, `withCredentials`,
+safe response handling, no automatic turn submission, capture cancellation and
+track cleanup. Run the Config controller test and the provider management/
+provider adapter tests applicable to the selected implementation; if the latter
+do not exist, report that test gap explicitly rather than using an Angular HTTP
+mock as provider proof.
 
 For AI HTTP/SSE contract source, generated binding, schema hash, or retro-compatibility changes, use the backend contract gate:
 
