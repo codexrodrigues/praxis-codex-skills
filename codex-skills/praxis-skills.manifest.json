@@ -1838,8 +1838,8 @@
                                             "praxis-ai-registry-ingestion",
                                             "praxis-ai-semantic-intent"
                                         ],
-                       "skillMdSha256":  "59D0B52959EC8075F0AB6E69D320287ED30765D9177E8E706E74B6A44B1B60C6",
-                       "treeSha256":  "3DD0FA1ABB60D76258CFE9BF521A3F4C70E36765951F0DFD74BF62066E08E6FC"
+                       "skillMdSha256":  "0374ED3FE1236FBCFFD1D928A71953B1AEA2902F02C44C256E574404EC910BA2",
+                       "treeSha256":  "FF5D0D4E867B1E30E20BF0DB980B568C5F8CFFF6E962E06227AA165CD4076956"
                    },
                    {
                        "name":  "praxis-page-builder-authoring",
@@ -2683,8 +2683,8 @@
                                             "praxis-config-agentic-authoring-streaming",
                                             "praxis-api-quickstart-security-config"
                                         ],
-                       "skillMdSha256":  "D1E7EE7C9878EAD3C83EE9F6250764974E7F8AFE561F1991517B5271BAF1CCDB",
-                       "treeSha256":  "45A017C708BC5D8D4796BB0F56B153CC8F7D66A1250BB07B4574915D8EAD9F2F"
+                       "skillMdSha256":  "BE2D6739FE9F947E3A04EAB5C71435C8414FB25F6D5B41A72E185B4C286D7F70",
+                       "treeSha256":  "A7506A09177F69D3FA9D136159B53E0066F96F82D1D70947AC8B3D350FE5E08E"
                    },
                    {
                        "name":  "praxis-landing-dynamic-page-studio",

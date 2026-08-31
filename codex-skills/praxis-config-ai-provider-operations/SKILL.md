@@ -39,9 +39,17 @@ deployment variables, and the exact live-gate workflow or script.
 - Failure classification drives retry/fallback policy. Authentication, quota,
   rate-limit, timeout, cancellation, invalid request, schema failure, and
   provider outage are not interchangeable.
+- Normalize provider failures on both unit and batch paths. Prefer structured
+  status, error code, `Retry-After`, and `google.rpc.RetryInfo`; retain raw
+  provider bodies/messages only as an unexposed cause when necessary, never in
+  DTOs, ordinary logs, or canonical error messages.
 - Retries and fallbacks are bounded. Cancellation must reach the provider path
   and the turn lifecycle; do not start a replacement call after a terminal
   cancel or duplicate a paid call after an accepted result.
+- Provider retry guidance is a lower bound, not a polling hint. Do not retry
+  before it. If the guided delay exceeds the bounded inline retry window,
+  persist the typed terminal attempt with its safe `retryAfter` instead of
+  sleeping for less or inventing a consumer-side retry.
 - Pricing snapshots are versioned evidence for estimation, not billing truth.
   Record model/input/output/cache units and snapshot identity so estimates are
   reproducible; never hardcode prices in UI or prompts.
@@ -81,9 +89,10 @@ scope, stopping conditions, cost expectation, and sanitized output.
 
 Prove healthy probe/routing, classified provider failure with bounded fallback,
 cancel/timeout without duplicate call, sanitized telemetry serialization,
-pricing estimate reproducibility, and rate-limit denial. Review OpenAPI/docs,
-workflows, environment examples, Quickstart security docs, and operational
-receipts when public behavior changes.
+unit and batch failure parity, provider-guided retry timing, pricing estimate
+reproducibility, and rate-limit denial. Review OpenAPI/docs, workflows,
+environment examples, Quickstart security docs, and operational receipts when
+public behavior changes.
 
 ## Companion Skills
 
@@ -92,4 +101,3 @@ receipts when public behavior changes.
 - `praxis-api-quickstart-security-config`: hosted endpoint protection and rate limiting.
 - `praxis-api-quickstart-operational-proof`: deployed reference-host evidence.
 - `praxis-core-logging-observability`: safe client/runtime diagnostics.
-

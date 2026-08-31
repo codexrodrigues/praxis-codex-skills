@@ -85,6 +85,15 @@ For shared-rule or project-knowledge continuation:
 - do not render raw prompt, patch, source pointer, materialized payload, assistant message, or sensitive evidence in common cockpit state;
 - keep route-required handoffs as clarification/continuation states, not successful page previews.
 
+For typed RAG readiness consumed by a Page Builder gate, keep lifecycle ownership
+in Config. Poll `PENDING`/`PUBLISHING`, require `PUBLISHED` plus reconciled corpus,
+and treat `FAILED` as terminal for that publication revision. `retryable=true`
+and `retryAfter` are evidence for a later explicit run; they do not authorize
+Angular to fabricate a `FAILED -> PUBLISHED` transition, re-trigger publication,
+or poll through a provider-governed wait as if the failed backend task were still
+running. A fixture may show recovery only when the tested backend/scheduler or
+an explicit new publication request actually produces it.
+
 ## Validation
 
 Use local-first gates and pick the gate that matches the risk:
