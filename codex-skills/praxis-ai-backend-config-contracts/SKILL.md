@@ -79,6 +79,11 @@ When backend contract behavior is in scope, load the relevant config-starter ski
   `canApply`, or become grounding evidence for a later request unless a separate backend contract explicitly returns
   governed remediation context.
 
+Provider catalog/status/test responses are operational projections from Config
+Starter. Angular may present sanitized provider/model/status/failure information
+but must not own routing, retry, pricing, key storage, or cost attribution. Use
+`praxis-config-ai-provider-operations` when those contracts change.
+
 ## Inventory Before New Contracts
 
 Before adding a token, endpoint, DTO, or exported type, answer: what does the platform already know but this client, host, or UX is not materializing correctly?

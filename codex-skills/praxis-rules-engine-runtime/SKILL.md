@@ -87,6 +87,12 @@ Do not use `mvn install`, file repositories, or local version overrides as downs
 
 When migrating Ergon or another host, use the engine skill to remove cognitive load from migrators by routing questions to the canonical layer: missing facts or algorithms belong to the host/domain contract, shared decisions belong to `domain-rules`, deterministic expression semantics belong to the JSON Logic dialect/engine, and UI behavior belongs to materialized target adapters. Avoid screen-local rule transforms that make one migrated screen pass while leaving the platform unable to explain, simulate, publish, or replay the decision.
 
+When a host projects a RuleSet as Reactive Determinations, keep the engine
+runtime-neutral. Form modes, triggers, field bindings, metadata projection, and
+Angular cancellation/application belong to the determination handoff described
+by `praxis-reactive-determinations`; do not add form-specific execution to the
+engine.
+
 ## Gates
 
 Use Java 21 and Maven 3.9+:

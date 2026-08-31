@@ -126,6 +126,10 @@ Before declaring composition guidance current, prove:
 3. Feedback path: prove an unguarded component/component or component/state/component cycle degrades bootstrap and skips involved matched links with `RUNTIME_FEEDBACK_CYCLE_BLOCKED`; prove an intentional guarded cycle remains a warning by using `intentional-feedback` plus canonical guards.
 4. Policy path: prove synchronous document order; prove `drop` rolls back only the failed link and permits later links; prove `halt-page` blocks later effects and future dispatch until a new bootstrap; reject removed `microtask`/`batched` values at canonical ingress.
 5. Adversarial path: reject `page.connections`, new `bindingPath` links, local event buses, command strings, raw callback transforms, host-local loop breakers, and host implementations of composition policy semantics.
+6. Certification path: preflight the authored plan against the target registry,
+   then preserve first-pass/refinement lineage and a sanitized lifecycle receipt
+   through apply, persistence, reload, and applicable CRUD/related/global-action
+   effects. Readiness and receipts remain derived evidence, never page inputs.
 
 Use a focused Angular gate from the `praxis-ui-angular` root:
 

@@ -102,6 +102,11 @@ In core, check these concrete files when `surface.open` payloads or global actio
 
 When a required command is missing, extend the canonical action/hook/global action contract. Do not add regex, aliases, or local prompt parsing as the primary decision path.
 
+Do not implement Reactive Determinations as form hooks, arbitrary callbacks, or
+legacy Form Effects. Hooks may coordinate lifecycle around the generic runtime,
+but typed definitions/bindings and business execution remain in the governed
+determination chain.
+
 ## Authoring Rules
 
 - Use the injected global action catalog when available; fallback catalogs are for local authoring coverage, not new semantics.
@@ -152,6 +157,8 @@ Run `npm run build:praxis-dynamic-form` for exported action/hook API changes.
 Run core build/focused tests too when the canonical global-action or surface-open contract changes.
 
 ## Companion Skills
+
+- Use `praxis-reactive-determinations` for reactive business outputs, stale/cancel handling, and snapshot provenance.
 
 - Use `praxis-form-submit-payload-pipeline` when actions trigger or affect submit payloads.
 - Use `praxis-form-editor-document-roundtrip` when actions/hooks are edited through Settings Panel or authoring documents.

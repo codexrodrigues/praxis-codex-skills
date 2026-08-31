@@ -151,6 +151,10 @@ Inspect:
 
 Only real gaps justify new metadata or backend contracts. Most select/lookup bugs should complete the existing option-source and profile chain.
 
+Use `praxis-angular-accessibility-governance` for searchable-panel focus,
+loading announcements, option naming, keyboard selection, and localized
+calendar/lookup accessibility.
+
 ## Validation
 
 Use focused gates:

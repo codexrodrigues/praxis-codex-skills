@@ -45,6 +45,11 @@ Use `praxis-form-runtime-submit` for dynamic-form submit contracts, `praxis-tabl
 - Preserve back/return behavior for route mode and cancel/close behavior for modal/drawer mode.
 - Maximize/remember-state behavior is dialog-host chrome only; it must not mutate form config or CRUD metadata.
 
+Pass the exact operation/form mode and Reactive Determination metadata into the
+hosted Dynamic Form. CRUD/dialog adapters must not execute, reorder, or locally
+recreate determinations; they preserve cancellation, diagnostics, and result
+propagation across overlay lifecycle.
+
 ## Aderencia Before Contract Changes
 
 Classify before changing contracts:
@@ -55,6 +60,9 @@ Classify before changing contracts:
 - `lacuna-real-de-contrato`: the lifecycle cannot express a required operation, result, or refresh signal with existing CRUD/dynamic-form/dialog contracts.
 
 For a real gap, name the canonical owner, impacted consumers, docs/examples, public API, and focused tests.
+
+Pair hosted-form determination changes with `praxis-reactive-determinations`;
+overlay render alone is not business-execution evidence.
 
 ## Validation
 

@@ -42,6 +42,9 @@ Inspect:
 - Keep preset merge order canonical: type preset, variant preset, local config.
 - Use `PraxisLayerScaleStyleService`/core overlay layering before patching individual hosts for z-index issues.
 
+Pair focus lifecycle, keyboard containment, accessible names, and overlay
+announcements with `praxis-angular-accessibility-governance`.
+
 ## Validation
 
 Minimum gates:

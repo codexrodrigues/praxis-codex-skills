@@ -56,6 +56,11 @@ Only `lacuna-real-de-contrato` can justify a new public contract. Prefer fixing 
 - For export, use `PraxisCollectionExportService` and declared export config; do not invent direct CSV/PDF generation inside a host.
 - For analytics, use `analytics-table` models/services and core analytics projection contracts instead of bespoke dashboard payloads.
 - For runtime observations, use the core observation registry rather than console-only diagnostics.
+- For public or untrusted hosts, consume the Table-owned runtime profiles. A
+  profile must close the input shape and declare every possible resource-read
+  operation, including compatibility fallbacks. `effects: []` means local-only;
+  it is not permission to execute arbitrary config. Resolve profiles through
+  the Core service and keep capability/authorization enforcement separate.
 
 ## Validation
 
@@ -66,6 +71,8 @@ Prefer the smallest reliable validation:
 - renderers/rich content: the matching `praxis-table.*rich-content.spec.ts`
 - export/global action/runtime operation: focused runtime spec plus AI/runtime operation spec when assistant behavior is involved
 - public API/exported contract: `npm run build:praxis-table` plus a direct consumer or adapter validation when applicable
+- runtime profile: metadata/profile specs plus
+  `ComponentRuntimeProfileService` happy, mismatch, and adversarial shape proof
 - browser-visible behavior: focal Playwright under `projects/praxis-table/test-dev/e2e/**`
 
 When PowerShell is unavailable, run equivalent local manifest/frontmatter/hash checks for skill changes and state the limitation.
