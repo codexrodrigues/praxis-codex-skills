@@ -110,6 +110,12 @@ For a cross-platform authoring gate, require stronger operational evidence than 
 - correlate browser traffic with the expected principal and capability surface. A reduced aggregate-only principal must not cause individual/table reads or materialize table-derived detail/KPIs;
 - retain visual, responsive, accessibility, network, persistence/reload, and redaction evidence, and clean up owned processes, temporary databases, and temporary local artifacts without touching user runtimes.
 
+For provider operations, distinguish a deterministic local gate, a no-inference
+connection/model probe, and a paid external-provider journey. Preserve bounded
+call count, usage origin, sanitized provider metadata, cancellation/fallback,
+and dedicated AI rate-limit evidence; do not treat a successful LLM response as
+the only connectivity or security proof.
+
 ## Adherence Inventory
 
 Before adding a property, endpoint, DTO, dependency override, test fixture, controller adapter, security exception, or example, ask what the platform already publishes and classify:
@@ -148,6 +154,8 @@ When public behavior changes, review `README.md`, properties/deployment guidance
 Do not choose resource, schema, action, capability, security policy, domain decision, AI route, or validation path using labels, route fragments, aliases, regexes, or fuzzy matching as the primary decision. Use canonical resource keys, OpenAPI/schema references, starter contracts, governed catalog/context, capabilities, diagnostics, and declared tools. Textual matching may only rank already-scoped candidates.
 
 ## Companion Skills
+
+- `praxis-config-ai-provider-operations`: provider status, routing, telemetry, pricing, paid gates, and cost controls.
 
 - Use `praxis-api-quickstart-security-config` for host exposure, CORS/CSRF/origin/firewall/rate-limit policy.
 - Use `praxis-api-quickstart-domain-pilots` for concrete resource paths, domains, DTOs, lookups, actions, and migration proof.

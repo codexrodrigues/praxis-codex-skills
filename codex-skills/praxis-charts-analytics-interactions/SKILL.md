@@ -107,6 +107,13 @@ Rules:
 
 The AI manifest, editor, canonical mapper, component outputs, component metadata, Page Builder port catalog, runtime dispatch, and docs must agree. Validator names or authored event objects do not prove execution by themselves.
 
+Selection identity is semantic: series/dimension/category/point keys, not pixel
+position or delayed DOM event identity. Re-selecting the same semantic point
+toggles it once; deduplicate delayed click fallbacks and prevent feedback loops
+when the resulting filter rematerializes the chart. Expose keyboard interaction,
+localized accessible state, and an equivalent table/summary path; pair with
+`praxis-angular-accessibility-governance`.
+
 ## Loop And Consistency Safety
 
 - Use stable widget keys, port ids, link ids, action ids, and state paths.

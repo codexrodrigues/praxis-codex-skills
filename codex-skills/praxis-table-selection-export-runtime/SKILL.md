@@ -37,6 +37,10 @@ Inspect `@praxisui/core` collection export models/services and global action pay
 - Reconcile selection after data refresh by stable row identity, not visual index.
 - For related resource or surface actions, separate row-selection transport from authorization. Availability comes from capabilities, surfaces, actions, or `_links`.
 
+Selection and filter announcements use semantic record/point identity and
+current governed state. Preserve focus across CRUD overlays and data refresh;
+do not rebuild selection from rendered row indexes.
+
 ## Export Rules
 
 - Use `PraxisCollectionExportService` and core export request/result contracts.

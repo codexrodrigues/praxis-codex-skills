@@ -83,7 +83,7 @@ label matching into a new authoring route for choosing surfaces.
 - Item-scoped actions and surfaces require either an explicit `resourceId` or a binding such as `payload.row.id`.
 - Governed nominal-row opening must re-resolve the current principal and record context at execution time; authoring-time catalogs are grounding evidence, not runtime authority.
 - Collection `VIEW` and `READ_PROJECTION` surfaces materialize to `praxis-table`; item `FORM`, `PARTIAL_FORM`, `VIEW`, and `READ_PROJECTION` surfaces materialize to `praxis-dynamic-form`.
-- Related resources should use `surface.relatedResource` and resolver output rather than host-local parent/child filter conventions.
+- Related resources should use `surface.relatedResource` and resolver output rather than host-local parent/child filter conventions. Keep the contextual collection read target and child command target distinct: `SurfaceCatalogItem.path` materializes the parent-scoped `readUrl`, while `relatedResource.childResourcePath` is the base for create, update, and delete. Derive `childParentField` from the selected parent for create, expose only operations declared in `childOperations`, and resolve only the declared `parentIdPathVariable`. If the child path is absent, unsafe, or retains any unresolved placeholder, remove executable child actions and report fail-closed diagnostics; never reuse the contextual `readUrl` as a mutation fallback.
 - Availability, denied operations, and permission-limited states must come from capabilities, catalog availability, or HATEOAS links, not frontend guesses.
 - Preserve the materialization provenance carried in `payload.context.resource`, `payload.context.surface`, and `payload.context.action`. Consumers may display titles, subtitles, icons, shell state, and hydrated widget inputs, but must not replace the context with labels, generated ids, component names, selected row text, or host-local route state.
 - Consumer events such as table `recordSurfaceOpen`, `dynamicPage.surface.open`,
@@ -129,11 +129,15 @@ npm run ng -- test praxis-list --watch=false --progress=false --include=projects
 npm run ng -- test praxis-page-builder --watch=false --progress=false --include=projects/praxis-page-builder/src/lib/ai/page-builder-ui-composition-plan.spec.ts
 ```
 
-- related-resource surfaces and outlet registration:
+- related-resource surfaces, outlet registration, and command-path materialization:
 
 ```sh
-npm run test:core -- --include=projects/praxis-core/src/lib/services/related-resource-surface-resolver.service.spec.ts --include=projects/praxis-core/src/lib/surfaces/praxis-related-resource-outlet.component.spec.ts --include=projects/praxis-core/src/lib/services/surface-outlet-registry.service.spec.ts
+npm run test:core -- --include=projects/praxis-core/src/lib/services/related-resource-surface-resolver.service.spec.ts --include=projects/praxis-core/src/lib/surfaces/praxis-related-resource-outlet.component.spec.ts --include=projects/praxis-core/src/lib/services/surface-outlet-registry.service.spec.ts --include=projects/praxis-core/src/lib/services/surface-open-materializer.service.spec.ts
 ```
+
+For writable related resources, assert both halves explicitly: GET remains on the parent-scoped
+surface path, POST/PUT/DELETE use the canonical child path, create derives the parent field, and an
+unresolved child placeholder produces no toolbar/action metadata.
 
 - `surface.open` authoring/editor presets:
 

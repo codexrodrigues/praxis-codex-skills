@@ -1,0 +1,8 @@
+interface:
+  display_name: "Praxis Runtime Profiles"
+  short_description: "Govern component execution profiles"
+  default_prompt: "Use $praxis-core-component-runtime-profiles to author or audit owner-authored component runtime profiles, fail-closed input constraints, declared effects, and host-policy proof."
+
+policy:
+  allow_implicit_invocation: true
+

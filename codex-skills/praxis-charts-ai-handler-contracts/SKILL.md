@@ -120,6 +120,12 @@ For `crossFilter.configure`, `drilldown.configure`, and `selection.configure`:
 
 `legend.configure` and `tooltip.configure` remain visual-only path-local effects unless their implementation changes data behavior.
 
+New presentation operations for KPI, gauge, treemap, grouped scatter,
+funnel/pyramid, histogram, or comparison require a deterministic handler whose
+schema names the exact canonical bindings and whose backend registry compiler
+supports it. Do not reuse a generic chart patch handler to bypass presentation
+eligibility or catalog resolution.
+
 ## Registry And Consumer Parity
 
 The Angular manifest, generated ingestion registry, and `praxis-config-starter` classpath snapshot must agree exactly on operation IDs, targets, schemas, validators, effects, handler contracts, `affectedPaths`, and `submissionImpact`. Count equality is insufficient.

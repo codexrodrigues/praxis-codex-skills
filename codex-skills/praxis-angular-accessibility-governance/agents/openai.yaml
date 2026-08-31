@@ -1,0 +1,8 @@
+interface:
+  display_name: "Praxis Angular Accessibility"
+  short_description: "Govern functional accessibility"
+  default_prompt: "Use $praxis-angular-accessibility-governance with the owning component skill to implement or audit keyboard, focus, ARIA, announcements, contrast, reflow, and accessibility proof."
+
+policy:
+  allow_implicit_invocation: true
+

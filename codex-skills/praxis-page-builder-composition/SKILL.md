@@ -80,6 +80,19 @@ event data, not proof that the target widget's config/input document should be m
 
 For runtime observations, preserve the trust boundary: observations can explain selected widgets, visible runtime state, component ids, resource refs, and diagnostics, but they must remain serializable and redacted before being sent into agentic authoring.
 
+## Factory And Certification Evidence
+
+Composition factory readiness requires more than a valid page literal. Preflight
+the `UiCompositionPlan` against the target registry, preserve semantic lineage
+through first-pass, refinement, preview, apply, persistence, reload, and mode
+switches, and emit sanitized receipts that name the archetype and canonical
+sources without embedding raw rows or prompts. A successful render does not
+certify CRUD, related-resource, global-action, or cross-filter behavior; use the
+matrix-owned production-like scenario for the exact archetype.
+
+Do not persist factory projections or readiness/receipt state in
+`WidgetPageDefinition`. Those remain derived execution evidence.
+
 ## Public API
 
 Treat `projects/praxis-page-builder/src/public-api.ts` as public contract. Changes can affect hosts, AI registry ingestion, `@praxisui/core`, Settings Panel bridge, child component config editors, docs, and examples. Map those consumers before changing exports.

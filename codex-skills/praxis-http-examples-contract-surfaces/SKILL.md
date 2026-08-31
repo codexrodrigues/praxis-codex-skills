@@ -43,6 +43,11 @@ Config examples derive from `praxis-config-starter` hosted by quickstart: `/api/
 - Do not promote an option-source example into `llmOperational` only because it succeeds once against the published backend. It must be read-only or auth-light, have stable headers, use a deterministic payload, avoid ordinary production scopes, and explain whether it is discovery/reachability, runtime lookup proof, or governed materialization evidence.
 - For `dependencyFilterMap`, examples should show the backend filter payload accepted by the endpoint and link it to the schema-published mapping. Do not teach Angular, Ergon, or LLM consumers to invent local field translations when the backend descriptor is the source of truth.
 
+Reactive Determination examples pair the operation-specific filtered schema with
+success and business-rejection execution payloads, preserve provenance without
+leaking snapshots, and remain synchronized with `examples.manifest.json`, the
+corpus verifier, smoke, and LLM surface.
+
 ## No Keyword Routing
 
 Do not decide endpoint class, header requirements, source owner, or safety level by filename words, labels, aliases, regexes, or local fuzzy matching as the primary decision. Use manifest flags, HTTP method, route contract, source-of-truth links, protected/public classification, and canonical starter/quickstart evidence.
@@ -72,6 +77,8 @@ Use focused local gates:
 State whether validation hit the published backend or only structural checks.
 
 ## Companion Skills
+
+- Use `praxis-reactive-determinations` for the end-to-end owner/runtime contract behind the examples.
 
 - Use `praxis-http-examples-corpus-manifest` for manifest flags and corpus integrity.
 - Use `praxis-http-examples-llm-smoke` for LLM-safe lanes and smoke selection.

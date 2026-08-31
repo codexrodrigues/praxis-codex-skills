@@ -50,6 +50,15 @@ Do not rebuild CRUD drawers, modals, or table/form launchers in apps when the mi
 - A table with `crudContext` delegates canonical create/open actions to `PraxisCrudComponent` before any standalone `surface.open` attempt. A standalone table owns exactly one `surface.open` attempt. Correlate request/failure diagnostics with `actionId`, `surfaceId`, mode, resource path, selected path, normalized cause, and `fallback=none`; do not include row data, form payloads, headers, or raw stacks.
 - Treat `openMode`, visible row/toolbar actions, and injected CRUD affordances as orchestration evidence only. Availability and executable permission come from capabilities, links, surfaces, actions, and adapter payloads; do not infer workflow permission or backend side effects from a drawer/modal opening or a button label.
 - Keep `crudContext` stable; avoid getters or object literals that recreate context each change detection cycle.
+- `CrudMetadata.interactionMode='inspect-only'` is the canonical public-local
+  inert mode. It suppresses derived and declared operational actions, launchers,
+  remote resource/capability discovery, config persistence, and externally
+  injected create/view/edit/delete events while retaining purely local
+  sort/filter/pagination. Incompatible resource paths, actions, forms, or open
+  modes produce diagnostics; they do not silently re-enable execution.
+- The `public-local-inspect-only` runtime profile proves a closed local shape
+  with `effects: []`. The host still evaluates policy and must not treat a
+  matching profile as authorization.
 
 ## Child Boundaries
 
@@ -73,6 +82,8 @@ Minimum gates:
 - form host: `src/lib/dynamic-form-dialog-host.component.spec.ts`
 - drawer adapter: `src/lib/drawer-adapter-token.spec.ts`
 - metadata/public component docs: `src/lib/praxis-crud.metadata.spec.ts`
+- inspect-only/profile: component and metadata/profile specs plus an adversarial
+  assertion that no router, HTTP, dialog, drawer, or global action executes
 - E2E labs when host behavior changes: focused `test-dev/e2e/*.playwright.spec.ts`
 
 Review public API, drawer adapter entrypoint, README, docs manifest, and official examples when behavior is public.

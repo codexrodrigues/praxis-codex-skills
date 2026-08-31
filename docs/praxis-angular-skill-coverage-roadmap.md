@@ -24,18 +24,24 @@ This estimate covers `praxis-ui-angular` only. A full-platform skill program tha
 
 ## Current Repository Coverage
 
-Status after the July 2026 curation and Wave 3 backend/HTTP proof closure, with
-`codex-skills/praxis-skills.manifest.json` at 161 Praxis skills:
+Status after the 2026-08-31 evidence-driven reconciliation, with
+`codex-skills/praxis-skills.manifest.json` at 167 Praxis skills:
 
 | Metric | Count |
 | --- | ---: |
-| Praxis skills in manifest | 161 |
-| Active Praxis skills | 161 |
+| Praxis skills in manifest | 167 |
+| Active Praxis skills | 167 |
 | Active skills needing curation | 0 |
 | Open roadmap issues | 0 |
 | Open evidence follow-up issues | 1 |
 
 There are no Praxis skills currently marked `active-needs-curation`.
+
+The August reconciliation added five focused skills from live source evidence:
+component runtime profiles, Angular accessibility, Reactive Determinations, AI
+provider operations, and Dynamic Page Studio. It also refreshed their direct
+consumer families. This preserves the evidence-driven policy: the change does
+not reopen a broad march toward the 180-200 upper band.
 
 Follow-up live source audit:
 
@@ -44,11 +50,12 @@ Follow-up live source audit:
 
 That audit confirmed that the earlier 146 active skills were already sufficient
 for strong canonical Angular coverage, while 180-200 remained a reasonable upper
-band for exhaustive Angular-only coverage. Since then, the manifest has grown to
-161 Praxis skills through evidence-driven additions for config, metadata,
-quickstart, HTTP examples, landing/public docs, and platform operations. The
-immediate follow-up work is tracked in #254 as a focused evidence ledger, not as
-a broad skill-count wave.
+band for exhaustive Angular-only coverage. By the July reconciliation, the
+manifest had grown to 161 Praxis skills through evidence-driven additions for
+config, metadata, quickstart, HTTP examples, landing/public docs, and platform
+operations. The 2026-08-31 source review then promoted five focused gaps and
+reached the current 167-skill inventory. Immediate follow-up work remains an
+evidence ledger, not a broad skill-count wave.
 
 The Java/Praxis reconciliation confirms that the canonical repository already
 contains the core `praxis-java-*` skill family. That means backend Java coverage
@@ -65,7 +72,7 @@ Post-audit curation status:
 | #109 package-name routing for table-rule-builder/settings-panel | Completed in PR #113 |
 
 The repository has moved past the minimum useful coverage tier and is now inside
-the strong canonical coverage band for the Angular side. The current 161-skill
+the strong canonical coverage band for the Angular side. The current 167-skill
 set is no longer just an initial foundation: it encodes substantial platform
 knowledge across runtime, authoring, AI, validation, docs, metadata, config,
 quickstart proof, HTTP examples, and landing/public docs.
@@ -78,13 +85,13 @@ This distribution is based on skill names in the manifest and is meant as planni
 
 | Area | Skills |
 | --- | ---: |
-| `praxis-core*` | 12 |
+| `praxis-core*` | 13 |
 | `praxis-table*` | 12 |
 | `praxis-form*` | 8 |
 | `praxis-fields*` plus `praxis-dynamic-fields-editorial` | 9 |
 | `praxis-ai*` | 8 |
 | `praxis-metadata*` including metadata editor | 8 |
-| `praxis-config*` | 5 |
+| `praxis-config*` | 6 |
 | `praxis-charts*` | 7 |
 | `praxis-page-builder*` | 3 |
 | `praxis-visual-builder*` | 5 |
@@ -93,7 +100,7 @@ This distribution is based on skill names in the manifest and is meant as planni
 | `praxis-list*` | 4 |
 | `praxis-api-quickstart*` | 4 |
 | `praxis-http-examples*` | 3 |
-| `praxis-landing*` | 2 |
+| `praxis-landing*` | 3 |
 
 Coverage added through the completed roadmap waves now includes:
 
@@ -165,7 +172,7 @@ This tier is now complete and should be treated as surpassed.
 
 ### Strong canonical Angular coverage: 140-170 skills
 
-This is the recommended planning target. The current 161-skill manifest is
+This is the recommended planning target. The current 167-skill manifest is
 inside this band.
 
 It allows each complex library to have several focused skills for:
@@ -213,7 +220,7 @@ Therefore:
 - 198 skills is enough for `praxis-ui-angular` if the goal is exhaustive Angular coverage.
 - 198 skills is probably higher than necessary for a strong first canonical roadmap.
 - 198 skills is not enough for the entire Praxis platform if config and metadata starters are included with the same depth.
-- 161 skills is enough to operate as strong canonical Angular coverage, but not enough to declare the whole Praxis platform exhaustively covered.
+- 167 skills is enough to operate as strong canonical Angular coverage, but not enough to declare the whole Praxis platform exhaustively covered.
 
 ## Proposed Waves
 
@@ -287,10 +294,10 @@ The next backlog should now be created only from new evidence:
 Recommended near-term target:
 
 ```text
-161 active curated skills
+167 active curated skills
 ```
 
-Keep the current 161-skill set stable until a real implementation miss proves
+Keep the current 167-skill set stable until a real implementation miss proves
 that a new skill or deeper split is worth the maintenance cost. A move toward
 180-200 Angular-only skills should happen only after a new source audit proves
 that exhaustive Angular coverage is worth that cost.

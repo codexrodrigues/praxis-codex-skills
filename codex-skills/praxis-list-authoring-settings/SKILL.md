@@ -60,6 +60,12 @@ Use `getGlobalActionUiSchema(...)`, `preserveListGlobalActionRefPayload(...)`, a
 
 All editor chrome is framework-owned text. Section labels, helper text, placeholders, validation messages, empty states, tab names, action labels, and defaults must come from Praxis i18n catalogs where the lib already provides them. Domain labels inside item templates may remain host/schema data.
 
+Author `configPersistenceStrategy` explicitly, including `volatile` for
+transient/public documents. Collection toolbar controls, filters, actions,
+selection, responsive row slots, and feature templates round-trip through the
+List owner document/editor; do not persist runtime-discovered links or
+capabilities as config.
+
 ## Runtime Parity
 
 Do not make the editor present declared-only fields as active runtime features. If the editor exposes `virtualScroll`, `stickySectionHeader`, `events.*`, `emitPayload`, `highContrast`, or `reduceMotion`, label or validate the limitation consistently with README/json-api docs and AI manifest warnings.
