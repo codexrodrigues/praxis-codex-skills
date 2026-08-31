@@ -129,7 +129,6 @@ budgets, token/cost telemetry, and provider-status endpoints belong to
 `praxis-config-ai-provider-operations`. This skill consumes their bounded
 outcomes but must not duplicate provider routing or cost policy inside the turn
 engine.
-
 ## Stream Contract
 
 The canonical authoring family is:
