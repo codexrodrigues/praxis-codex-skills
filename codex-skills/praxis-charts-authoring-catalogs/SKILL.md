@@ -107,6 +107,14 @@ Treat `comparison` as one governed analytics operation, not as a chart convenien
 
 Fail closed when the resource operation, period field, bucket field, metric field, aggregation, alias uniqueness, or comparison period is not proven. A backend 403/501 or incompatible response is an explicit runtime state, not permission to retry through a different stats operation.
 
+Presentation catalogs must expose eligibility and required bindings for KPI,
+gauge, treemap, grouped scatter, funnel/pyramid, distribution, and comparison
+without treating the display label as the semantic decision. Re-resolve the
+current catalog after resource/mode changes, preserve exact canonical ids, and
+fail closed when a selected presentation no longer has compatible fields or
+capabilities. Catalog transport/indexing failure may explain unavailability but
+must not be repaired with a hardcoded local option.
+
 ## Target Catalogs
 
 Resolve targets after the structured event action is known:

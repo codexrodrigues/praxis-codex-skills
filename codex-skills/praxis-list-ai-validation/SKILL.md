@@ -56,6 +56,11 @@ The manifest and context pack must not imply full authorability for fields that 
 
 If AI needs to author one of these as active behavior, first implement the runtime/editor contract and update docs and tests.
 
+Generated List authoring/AI evidence preserves runtime profiles,
+`configPersistenceStrategy`, collection controls, responsive slots, feature
+templates, actions, and declared-only boundaries. A visible toolbar or profile
+match does not authorize a remote/global action.
+
 ## Capability Coverage
 
 When adding or changing authorable paths, check:

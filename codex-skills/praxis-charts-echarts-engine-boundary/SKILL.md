@@ -67,6 +67,11 @@ Track host identity explicitly in the adapter or owning runtime. `if (!chart) in
 
 Keep ECharts `use(...)`, renderer selection, and browser-only initialization centralized in the implementation path. Audit SSR/import safety separately from DOM-time safety; a browser guard around `render()` does not make module-level side effects automatically SSR-safe.
 
+Map KPI, gauge, treemap, grouped scatter, funnel/pyramid, histogram, and
+comparison only from renderer-neutral Praxis config. Keep ECharts series/options
+derived and transient. Preserve feature-injector locale, accessible table
+contrast, semantic point identity, and deterministic resize/dispose behavior.
+
 ## Event Materialization
 
 - Convert series clicks to `PraxisChartPointEvent`; never emit raw ECharts params.

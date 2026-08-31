@@ -64,6 +64,13 @@ For composition links, require stable ids, resolvable endpoints, valid nested pa
 
 For page persistence, keep `pageIdentity`, scope, and ETag policy out of the page document itself. Persist through the canonical config surface; do not create Page Builder-local persistence routes.
 
+For a parent-child related-resource plan, persist a parent selection link into
+`praxis-related-resource-outlet.parentResourceId` and the exact backend-selected `surfaceId`. Do not
+persist the child foreign key or reconstruct the relationship in Angular. Certification must prove
+the first prompt produces a reload-stable page, contextual reads switch with the selected parent,
+child create/update/delete use the canonical child resource path, create derives the parent binding,
+and records do not leak between parent contexts.
+
 ## Agentic Turn Rules
 
 Streaming turn behavior must show intermediate reasoning/state in the assistant UI before the terminal preview/result. Clarifications, quick replies, diagnostics, attachments, component capabilities, runtime observations, and selected widget context must remain visible enough for enterprise users to understand why the assistant is blocked or proposing a change.
@@ -78,6 +85,15 @@ For shared-rule or project-knowledge continuation:
 - do not render raw prompt, patch, source pointer, materialized payload, assistant message, or sensitive evidence in common cockpit state;
 - keep route-required handoffs as clarification/continuation states, not successful page previews.
 
+For typed RAG readiness consumed by a Page Builder gate, keep lifecycle ownership
+in Config. Poll `PENDING`/`PUBLISHING`, require `PUBLISHED` plus reconciled corpus,
+and treat `FAILED` as terminal for that publication revision. `retryable=true`
+and `retryAfter` are evidence for a later explicit run; they do not authorize
+Angular to fabricate a `FAILED -> PUBLISHED` transition, re-trigger publication,
+or poll through a provider-governed wait as if the failed backend task were still
+running. A fixture may show recovery only when the tested backend/scheduler or
+an explicit new publication request actually produces it.
+
 ## Validation
 
 Use local-first gates and pick the gate that matches the risk:
@@ -89,8 +105,12 @@ Use local-first gates and pick the gate that matches the risk:
 - runtime observation context: normalization specs plus core observation serializability/redaction checks when observation payloads or digests change.
 - build/spec only: acceptable for local non-agentic refactors or manifest/catalog units that do not alter backend transport, streaming, preview/apply, or LLM integration.
 - quick Playwright smoke: use `cmd.exe /c npx.cmd playwright test --config=tools/e2e/playwright/praxis-page-builder-agentic-smoke.playwright.config.ts` for post-merge checks or incremental diagnosis.
-- full agentic validation gate: mandatory before closing relevant authoring agentic/page-builder/AI contract changes touching agentic flow, SSE, manifests, backend tools, patch/apply, or LLM integration. Run `cmd.exe /c npx.cmd playwright test --config=tools/e2e/playwright/praxis-page-builder-agentic-validation.playwright.config.ts`.
+- production-like agentic gate: mandatory before closing relevant authoring agentic/page-builder/AI contract changes touching agentic flow, SSE, manifests, backend tools, patch/apply, or LLM integration. Run `cmd.exe /c npx.cmd playwright test --config=tools/e2e/playwright/praxis-page-builder-agentic-production-like.playwright.config.ts`.
+- parent-child related-resource certification: use the matrix-owned production-like focal mode and
+  require functional receipts for child update, delete, create, derived parent binding, parent switch
+  isolation, persistence, and reload. Merely rendering the outlet or exposing CRUD buttons is not
+  functional proof.
 
-The full gate must use the real local environment from `projects/praxis-page-builder/AGENTS.md`: `praxis-config-starter` installed locally, `praxis-api-quickstart` packaged against that local version, backend on `http://localhost:8088`, Angular on `http://localhost:4003` with `PAX_PROXY_TARGET=http://localhost:8088`, real provider LLM variables, and `PRAXIS_AI_STREAM_PROCESSING_TIMEOUT_SECONDS=180`. Do not replace this gate with the smoke when the change affects agentic flow, SSE, manifests, backend tools, patch/apply, or LLM integration.
+The production-like gate must use the real local environment from `projects/praxis-page-builder/AGENTS.md`. Its scenarios, timeouts, retries, package coordinates, and readiness requirements are owned by `praxis-config-starter/tools/e2e/page-builder-agentic-gate-matrix.json`; do not duplicate or weaken them in Angular. The `live` lane must reject interception of critical endpoints and require registry-sourced, non-degraded component capabilities. Mocked `page.route(...).fulfill(...)` scenarios belong only to the mocked config and never count as production-like evidence.
 
-Report whether only the quick smoke ran or the complete agentic validation gate ran. Do not use GitHub Actions as the normal exploratory loop when local gates can prove the change.
+Report whether only the quick smoke ran or the production-like gate ran, including the matrix scenario and receipt. Do not use GitHub Actions as the normal exploratory loop when local gates can prove the change.

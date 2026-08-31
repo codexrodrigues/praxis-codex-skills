@@ -42,6 +42,11 @@ Inspect `@praxisui/core` rich-content, i18n, loading, and runtime observation co
 - Runtime observations must be serializable and redacted, using core observation contracts rather than console-only diagnostics.
 - User-facing chrome text belongs in `table-runtime.i18n.ts`; editor chrome belongs in `table-editor.i18n.ts`.
 
+Publish localized live status for resize/reorder/export/filter/persistence
+outcomes without duplicate announcements. In strict CSP style mode, disable
+runtime operations that require disallowed inline styles and emit a bounded
+diagnostic; do not partially execute them.
+
 ## Aderence Inventory
 
 Classify before adding renderer/state fields:
@@ -67,6 +72,8 @@ Use focused proof:
 For first-step issue resolution, audit: source column/schema config, renderer choice, formatter path, rich-content payload, loading/empty/error branch, i18n key, observation envelope, and focused spec coverage.
 
 ## Companion Skills
+
+- Use `praxis-angular-accessibility-governance` for keyboard, ARIA, focus, live-region, contrast, and reflow proof.
 
 - Use `praxis-table-runtime-data` for surrounding data/pagination/sorting runtime.
 - Use `praxis-rich-content-runtime` for rich-content document and node contracts.

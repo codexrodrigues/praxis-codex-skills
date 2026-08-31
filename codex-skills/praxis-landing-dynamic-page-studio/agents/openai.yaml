@@ -1,0 +1,8 @@
+interface:
+  display_name: "Praxis Dynamic Page Studio"
+  short_description: "Govern the public Studio journey"
+  default_prompt: "Use $praxis-landing-dynamic-page-studio to implement or audit safe operational JSON, runtime-policy materialization, guided recipes, accessibility, and hosted Studio proof."
+
+policy:
+  allow_implicit_invocation: true
+

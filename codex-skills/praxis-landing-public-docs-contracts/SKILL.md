@@ -96,6 +96,8 @@ For browser proof against the public quickstart, use the official landing origin
 
 ## Companion Skills
 
+- Use `praxis-landing-dynamic-page-studio` when a public contract is taught or proven through the Dynamic Page Studio journey.
+
 - Use `praxis-landing-registries-sitemap-playgrounds` for guide registries, sitemap, LLM files, playgrounds, examples, and validation tooling.
 - Use `praxis-angular-docs-playgrounds` for Angular component docs, manifests, examples, AI recipes, and playground behavior.
 - Use `praxis-metadata-schema-contracts`, `praxis-metadata-discovery-capabilities`, and `praxis-metadata-domain-option-sources` for metadata claims.

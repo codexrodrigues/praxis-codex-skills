@@ -101,6 +101,11 @@ sections are derived.
 
 Filter form and dynamic form widget editors must follow the same document semantics. Do not create a separate filter-form authoring document unless the shared contract cannot represent a proven gap.
 
+The Filter Form authoring manifest is a fail-closed projection of the Dynamic
+Form owner manifest. Reference runtime inputs, operations, targets, validators,
+examples, and round-trip requirements by stable identity through
+`projectComponentAuthoringManifest()`; do not copy or weaken owner operations.
+
 ## Apply Plan Rules
 
 The editor capability should produce an apply plan that names what changes:
@@ -179,6 +184,10 @@ Treat a value that works in one editor tab but fails in another path as `suporta
 - Browser authoring: focused Playwright such as `form-config-editor-smoke`, `form-config-editor-json`, `form-config-editor-layout`, `form-config-editor-behavior`, `form-config-editor-rules`, `form-config-editor-messages`, `form-config-editor-hooks`, `form-config-editor-actions`, `form-config-editor-cascades`, and apply/save/reset/reopen flows when visible behavior changes.
 - `npm run build:praxis-dynamic-form` when public document models, capability exports, Settings Panel providers, or editor public APIs change.
 - `npm run validate:published-doc-assets` and `npm run generate:registry:ingestion` when JSON API docs, generated docs, AI manifests, or registry surfaces change.
+
+When Filter Form projection changes, add
+`praxis-filter-form-authoring-manifest.spec.ts` and Core
+`authoring-manifest-projection.spec.ts` to the focused proof.
 
 ## Companion Skills
 

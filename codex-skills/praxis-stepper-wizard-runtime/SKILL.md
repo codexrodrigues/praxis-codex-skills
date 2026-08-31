@@ -52,6 +52,10 @@ Hosts consume these contracts. Do not move linear validation, form step mapping,
 - Keep navigation config as workflow chrome. Do not encode business approval rules as button labels, local command strings, or keyword-routed step actions.
 - Forward nested widget events through `widgetEvent` instead of host-local event buses.
 
+Forward operation/form mode and Reactive Determination metadata to each hosted
+form adapter. Step changes must cancel or isolate stale determination work so a
+result from a previous step cannot mutate the active form.
+
 ## Wizard Rules
 
 - Use `PraxisWizardFormComponent` when the input is a higher-level wizard document rather than raw stepper config.
@@ -82,6 +86,8 @@ Use the smallest reliable proof for the touched surface:
 Report exactly what was validated and what remained unvalidated.
 
 ## Companion Skills
+
+- Use `praxis-reactive-determinations` for governed reactive definition/runtime and stale-result proof.
 
 - Use `praxis-form-runtime-submit` for dynamic-form step integration, submit behavior, hooks, schema metadata, and resource path boundaries.
 - Use `praxis-rich-content-runtime` and `praxis-rich-content-integration-adapters` for step rich content, wizard legacy block convergence, and `stepBlocksBeforeForm`/`stepBlocksAfterForm` semantics.

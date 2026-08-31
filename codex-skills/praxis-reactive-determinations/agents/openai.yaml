@@ -1,0 +1,8 @@
+interface:
+  display_name: "Praxis Reactive Determinations"
+  short_description: "Govern reactive decision handoff"
+  default_prompt: "Use $praxis-reactive-determinations to implement or audit governed Reactive Determinations from snapshot and metadata publication through Angular runtime, host proof, and HTTP evidence."
+
+policy:
+  allow_implicit_invocation: true
+
