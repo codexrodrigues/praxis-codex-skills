@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-ai-backend-config-contracts/
-- Descricao atual: Use when changing or reviewing `AiBackendApiService`, `AI_BACKEND_CONFIG_STORE`, `AI_BACKEND_STORAGE_OPTIONS`, `AI_BACKEND_ENDPOINTS`, `API_URL` endpoint resolution, `/api/praxis/config/ai/**`, `/api/praxis/config/ai-context/**`, provider catalog/model/test/status endpoints, AI config snapshots, headers, ETag-adjacent identity, risk confirmation policy, manifest endpoints, or backend AI contract integration.
+- Descricao atual: Use when changing or reviewing `AiBackendApiService`, governed audio transcription, `AI_BACKEND_CONFIG_STORE`, `AI_BACKEND_STORAGE_OPTIONS`, `AI_BACKEND_ENDPOINTS`, `API_URL` endpoint resolution, `/api/praxis/config/ai/**`, `/api/praxis/config/ai-context/**`, provider catalog/model/test/status endpoints, AI config snapshots, headers, ETag-adjacent identity, risk confirmation policy, manifest endpoints, or backend AI contract integration.
 
 ## Classificacao inicial
 

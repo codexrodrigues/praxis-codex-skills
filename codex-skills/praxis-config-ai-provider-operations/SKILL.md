@@ -1,6 +1,6 @@
 ---
 name: praxis-config-ai-provider-operations
-description: Use when operating or changing Praxis Config AI provider infrastructure: provider catalog/status/test endpoints, connection probes, routing and fallback, failure classification, streaming cancellation, invocation telemetry and metrics, pricing snapshots, usage/cost attribution, provider metadata, paid live-gate budgets, key separation, or public-host AI rate limiting. Do not use for semantic authoring logic alone.
+description: Use when operating or changing Praxis Config AI provider infrastructure: provider catalog/status/test endpoints, governed audio transcription, connection probes, routing and fallback, failure classification, streaming cancellation, invocation telemetry and metrics, pricing snapshots, usage/cost attribution, provider metadata, paid live-gate budgets, key separation, or public-host AI rate limiting. Do not use for semantic authoring logic alone.
 ---
 
 # Praxis Config AI Provider Operations
@@ -19,6 +19,7 @@ Inspect:
 - `AiProviderManagementService`, `AiProviderRouter`, `AiProviderStatusService`
 - `AiProviderFailureClassifier`, invocation telemetry/metrics/trace
 - provider streaming fallback/cancel and access-token services
+- `AiAudioTranscriptionController`, `AiAudioTranscriptionRequest`, `AiAudioTranscriptionResponse`, `AiProvider.supportsAudioTranscription/transcribeAudio`, provider management selection/configuration, and provider adapter implementation
 - `docs/ai/openai-cost-attribution-and-live-gates.md`
 - provider pricing schema/snapshot and provider telemetry evidence docs
 - focused management, router, failure, metrics, telemetry, pricing, streaming,
@@ -36,6 +37,16 @@ deployment variables, and the exact live-gate workflow or script.
   phase, attempt, response mode, latency, token usage, failure class, fallback,
   cancellation, and terminal outcome without storing prompts or responses in
   ordinary operational telemetry.
+- Governed audio transcription is a provider operation, not an intent or turn.
+  The canonical Config endpoint resolves principal scope, enforces the bounded
+  multipart payload, chooses the configured transcription provider/model, checks
+  provider capability, and returns transcript text for later user review. It
+  must not initiate authoring, semantic routing, preview, apply, or persistence.
+- Keep raw audio bytes, transcript text, file names, tenant/user identifiers,
+  provider bodies, and credentials out of ordinary telemetry and errors. When
+  operational evidence is required, retain only bounded safe metadata such as
+  provider/model, MIME class, byte/duration units, outcome, latency, and failure
+  class according to the canonical observability policy.
 - Failure classification drives retry/fallback policy. Authentication, quota,
   rate-limit, timeout, cancellation, invalid request, schema failure, and
   provider outage are not interchangeable.
@@ -70,6 +81,12 @@ whether the gate was deterministic or external-provider, call/turn count,
 bounded continuation, cancellation behavior, and sanitized receipt. GitHub
 Actions is a release/final gate, not the normal development loop.
 
+Provider-backed transcription is also a paid operation. Unit/controller tests
+must use deterministic adapters or mocks; a live transcription probe requires
+an explicit audio fixture, maximum call count, payload-size/cost expectation,
+cleanup policy, and sanitized receipt. Do not submit a second assistant turn as
+part of a transcription connectivity probe.
+
 Public hosts apply a dedicated AI rate limit before broader config limits. The
 reference in-memory limiter is not a substitute for production gateway/WAF
 enforcement or provider project budgets.
@@ -82,12 +99,14 @@ Use focused Config gates:
 mvn "-Dtest=AiProviderManagementServiceTest,AiProviderRouterTest,AiProviderFailureClassifierTest,AiProviderInvocationMetricsTest,AiProviderStreamingFallbackAndCancelIntegrationTest,AgenticAuthoringProviderTelemetrySerializationTest,AgenticAuthoringProviderPricingSnapshotTest" test
 ```
 
-Add controller/status tests for endpoint changes, Quickstart security tests for
+Add controller/status tests for endpoint changes, focused provider management
+and provider adapter tests for audio transcription, Quickstart security tests for
 rate limiting, and a real-provider probe only when credentials, model listing,
 or external integration genuinely requires it. Real paid calls require explicit
 scope, stopping conditions, cost expectation, and sanitized output.
 
-Prove healthy probe/routing, classified provider failure with bounded fallback,
+Prove healthy probe/routing, transcription capability rejection and scoped
+bounded success without turn creation, classified provider failure with bounded fallback,
 cancel/timeout without duplicate call, sanitized telemetry serialization,
 unit and batch failure parity, provider-guided retry timing, pricing estimate
 reproducibility, and rate-limit denial. Review OpenAPI/docs, workflows,
