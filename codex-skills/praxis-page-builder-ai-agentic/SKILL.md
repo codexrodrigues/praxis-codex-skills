@@ -121,4 +121,14 @@ the matrix but cannot be selected is an operational materialization defect; fix
 that boundary instead of substituting a broader, costlier profile or copying its
 defaults into the consumer.
 
+For a repeated hosted certification, keep the raw Playwright report inside its
+run. Publish only a sanitized attestation produced after the canonical report
+validator passes, including the report hash, exact matrix/catalog/RAG
+projection, zero-retry counts, and summarized receipts. Download each run's
+published result separately and close the series with the canonical aggregator;
+it must reject duplicate report hashes, immutable-coordinate drift, retries,
+flaky/skipped tests, and receipt divergence. A list of green Actions links is
+not series evidence, and publishing raw reports to make aggregation convenient
+is not an acceptable substitute.
+
 Report whether only the quick smoke ran or the production-like gate ran, including the matrix scenario and receipt. Do not use GitHub Actions as the normal exploratory loop when local gates can prove the change.
