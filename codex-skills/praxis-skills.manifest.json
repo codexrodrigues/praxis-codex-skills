@@ -1838,8 +1838,8 @@
                                             "praxis-ai-registry-ingestion",
                                             "praxis-ai-semantic-intent"
                                         ],
-                       "skillMdSha256":  "0374ED3FE1236FBCFFD1D928A71953B1AEA2902F02C44C256E574404EC910BA2",
-                       "treeSha256":  "FF5D0D4E867B1E30E20BF0DB980B568C5F8CFFF6E962E06227AA165CD4076956"
+                       "skillMdSha256":  "74843F8C7C639A5DDC3EAF77DEA5B6F931620EF8A8213E156BEA7BDF0A873642",
+                       "treeSha256":  "DA63F540DF9D0C6AA1ECF10983F8E7A4D2E61C962C0F771754CD9918737A7E8D"
                    },
                    {
                        "name":  "praxis-page-builder-authoring",

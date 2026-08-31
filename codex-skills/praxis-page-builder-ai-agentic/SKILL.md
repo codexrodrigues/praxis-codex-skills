@@ -113,4 +113,12 @@ Use local-first gates and pick the gate that matches the risk:
 
 The production-like gate must use the real local environment from `projects/praxis-page-builder/AGENTS.md`. Its scenarios, timeouts, retries, package coordinates, and readiness requirements are owned by `praxis-config-starter/tools/e2e/page-builder-agentic-gate-matrix.json`; do not duplicate or weaken them in Angular. The `live` lane must reject interception of critical endpoints and require registry-sourced, non-degraded component capabilities. Mocked `page.route(...).fulfill(...)` scenarios belong only to the mocked config and never count as production-like evidence.
 
+Before spending provider calls, verify that every selected matrix profile is
+reachable through the intended local or hosted entrypoint. Workflow choices and
+orchestrators must materialize the matrix-owned catalog group, path prefixes,
+RAG requirement, scenarios, timeouts, and retries. A profile that exists only in
+the matrix but cannot be selected is an operational materialization defect; fix
+that boundary instead of substituting a broader, costlier profile or copying its
+defaults into the consumer.
+
 Report whether only the quick smoke ran or the production-like gate ran, including the matrix scenario and receipt. Do not use GitHub Actions as the normal exploratory loop when local gates can prove the change.
