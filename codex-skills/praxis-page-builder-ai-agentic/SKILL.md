@@ -131,4 +131,14 @@ flaky/skipped tests, and receipt divergence. A list of green Actions links is
 not series evidence, and publishing raw reports to make aggregation convenient
 is not an acceptable substitute.
 
+Select the sanitized publication profile from the journeys that actually ran.
+Use `page-builder` for a Page Builder-only provider gate; it publishes the
+production-like result and source audit without requiring unrelated HTTP/SSE
+evidence. Use `page-builder-http-sse` only when the live provider HTTP/SSE
+journey also ran and produced its validated summary. The deterministic domain
+rule lifecycle reports `provider=not-used`; it is a separate proof and must not
+be relabeled as live SSE evidence. Do not enable an additional paid HTTP journey
+only to satisfy an exporter that conflates these profiles; correct the canonical
+publication boundary instead.
+
 Report whether only the quick smoke ran or the production-like gate ran, including the matrix scenario and receipt. Do not use GitHub Actions as the normal exploratory loop when local gates can prove the change.
