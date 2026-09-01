@@ -239,8 +239,11 @@ effective slice, expose that key and keep company, user, HADES state, `VALOR`,
 `ROWID`, and equivalent locators internal. If duplicates remain, determine
 whether they are projections of the same entity or genuinely distinct public
 resources before considering normalization, a composite key, or an opaque id.
-Record `blocked_effective_scope_key_uniqueness_not_proven` when the effective
-probe has not run; do not convert that uncertainty into an opaque-token design.
+Record `candidate_public_key_unique_in_effective_scope` when the effective probe
+proves one selected-row match and key uniqueness. Record
+`blocked_effective_scope_key_uniqueness_not_proven` when that probe has not run
+or its same-connection scope is not reproducible; do not convert uncertainty
+into an opaque-token design.
 
 Use `docs/migracao/phase1-cronos-bind-resolution-standard.md` when present. If
 XML plus Oracle metadata closes the semantics and no browser evidence

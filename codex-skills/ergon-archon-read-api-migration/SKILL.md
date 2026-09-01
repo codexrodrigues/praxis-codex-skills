@@ -160,7 +160,11 @@ composite or opaque id. When the base domain key is unique in the effective
 resource slice, use it for list/detail/by-ids and keep scope internal. If the
 effective slice still duplicates the key, return to discovery to classify
 same-entity projection versus genuinely distinct resources before designing
-normalization, a composite key, or an opaque representation.
+normalization, a composite key, or an opaque representation. Accept
+`candidate_public_key_unique_in_effective_scope` only with the recorded
+same-connection probe and selected-row correlation; treat
+`blocked_effective_scope_key_uniqueness_not_proven` as a discovery blocker, not
+as permission to invent an opaque public id.
 
 When read SQL or screen views depend on `HADES.FLAG_PACK` or similar package state, the API design must require setup and cleanup on the same physical Oracle connection used by the query. Do not treat context set in SQLcl, a separate JDBC connection, or a different transaction as API parity evidence.
 

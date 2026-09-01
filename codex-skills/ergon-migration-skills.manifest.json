@@ -42,8 +42,8 @@
                                             "praxis-java-host-project",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "C5A54DF59BDD5BD5BF07AA6B4991CD95E60545EEACA6A332D293C1E0A84133C7",
-                       "treeSha256":  "3848C42E7BCF3F8927A9677504042E1C8205C4F61E306C82923A9066A7F58C30"
+                       "skillMdSha256":  "754B5E6CE8AA788EB985F3515B7CFB82B7348A85CB8F602FC8CD44C48E74CEA4",
+                       "treeSha256":  "42CB6647E5A25A780C189AA126A237EDA93772F103B4EC867DD4F1B31DE1FD4E"
                    },
                    {
                        "name":  "ergon-archon-screen-discovery",
@@ -54,8 +54,8 @@
                        "dependencies":  [
 
                                         ],
-                       "skillMdSha256":  "8BAC3139E55D402EA3CC7F76A102A0C165456ABD5E9DE14600302911D2DE76EB",
-                       "treeSha256":  "ECF0D711C6711BAF3E5B8C524AF38DD6FE1AD896AD0B88E6D464357A64A36290"
+                       "skillMdSha256":  "790B4F64E5E50BEDAEC7B1E493FD36FAC6DCB969014ED6FFC9B6737F344123CB",
+                       "treeSha256":  "B2AC566350C17C5791C64D939106614E9D2B917D2CDBF2224BA11C1AD507F5B5"
                    },
                    {
                        "name":  "ergon-archon-write-api-migration",
