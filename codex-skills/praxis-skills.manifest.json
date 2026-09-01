@@ -375,8 +375,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "8ABCF43C9948A1326967F3B89943EB2F0D83BD1A269F5B5226A5C84A7B66D134",
-                       "treeSha256":  "610E504FE823C6225853F9891DD8A2BE2F0C2D99DA4B8452298B8350D2E4D97B"
+                       "skillMdSha256":  "D7CE4D19044033B44E560FBDEDB1C7E0E926DC2A6C4573C025A104C4625EBA0C",
+                       "treeSha256":  "E0A20604212B2016E1AB759D7753D573019646682EDC71E1240347B1FDDD7E3A"
                    },
                    {
                        "name":  "praxis-ai-semantic-intent",
@@ -2424,8 +2424,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "07D3F2F75407CFE8C3D89B64B07924EB51488A78B5E5EBAE3CB08DDBC16B7407",
-                       "treeSha256":  "EC3D21EB58AA3293C3772B3829DDB0BA4ACDD7D86E799433F2356EC7F9EC2D21"
+                       "skillMdSha256":  "94048EB09A21678EF5C72182AAC586CFC782C9F8B925CD941A79A11F2E93EA97",
+                       "treeSha256":  "A2C28CBA1A0930CCD295C9663C08D289CAB80A45C70947BAFCF270D3E18A8427"
                    },
                    {
                        "name":  "praxis-config-agentic-authoring-streaming",
