@@ -80,11 +80,15 @@ Semantic retrieval is candidate grounding, not primary intent resolution. `Agent
 
 Scoped semantic retrieval must not retry without tenant/environment scope. `AgenticAuthoringApiMetadataCandidateCatalog` may fall back to scoped structured metadata when semantic retrieval returns no candidates, but it must not issue an unscoped vector query to recover scoped results.
 
+Broad candidate scans must use repository projections containing only the fields needed to rank or identify candidates, such as path, method, tags, summary, description, and operation id. Do not hydrate embeddings, raw endpoint JSON, schemas, or parameters for every row; hydrate exact heavy evidence only after a candidate is selected. Apply the same rule to Domain Catalog context: reuse one scoped context result for candidates of the same canonical resource within one enhancement/turn instead of repeating the same remote query per operation.
+
 ## Context And Schema
 
 - `GET /api/praxis/config/ai-context/{componentId}` resolves current state through `ui_user_config` user-to-tenant fallback. `POST` uses transient caller state and does not persist it.
 - Both paths compose the system component definition, optional template, component state, mode, resource path, and `AiSchemaContext`. Default mode is `edit`; `requireSchema` defaults true only for `create`.
 - `/ai-context` does not fetch or populate the schema itself. `schemaContext` is a pointer. Executable authoring resolves the actual structure just in time through `SchemaRetrievalService` and canonical `/schemas/filtered?path=...&operation=...&schemaType=...`.
+- Preserve exact operational verification evidence for the remainder of the same turn. When pre-intent verification already resolved schemas, principal capabilities, actions, or related-resource surfaces, carry compact typed projections forward instead of repeating the same remote probes after intent resolution.
+- A parent-child semantic decision needs the canonical related-resource candidates before the LLM chooses `targetSurfaceId`. Project related surfaces from `/schemas/surfaces` with their exact runtime id, resource/scope, semantic title/description/tags, availability, and related-resource contract. The LLM selects among those governed candidates; the preview must still verify the selected surface and block missing, ambiguous, unavailable, or incomplete contracts.
 - Schema retrieval returns typed failures for invalid context, missing base URL, access denial, not found, invalid payload, and transport/unavailable states. Do not replace a failed canonical schema request with `/schemas/catalog`, `api_metadata`, or an inferred local schema.
 - The Angular `AiBackendApiService` derives the AI-context base URL from `API_URL.default` unless an explicit gateway override exists. Hosts must supply governed identity headers; demo/local header defaults are not corporate authorization.
 
