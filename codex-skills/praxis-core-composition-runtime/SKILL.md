@@ -49,6 +49,7 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 - Keep dynamic widget input materialization idempotent. A page update that rebuilds a plain JSON input with the same structural value, including a different object-key order, must not rebind the input or emit `ngOnChanges`; use the core loader's stable JSON signature. Values outside the JSON-safe set, including functions, class instances, dates, non-finite numbers, and cycles, retain `Object.is` reference semantics instead of being coerced into a serialized equality rule.
 - Treat `CompositionRuntimeEngine.bootstrap()` as semantic validation plus state materialization. Blocking diagnostics produce a `degraded` snapshot with trace evidence; do not convert every diagnostic into an exception or silently mark the page ready.
 - Dispatch a `CompositionDispatchEvent` from an exact canonical endpoint. Matching includes owner widget, port, direction, and `nestedPath` when present. Let the engine execute condition, transform, policy, target delivery, state update, diagnostics, and trace as one cycle.
+- Treat `nestedPath` as an ordered semantic path, not serialized JSON text. Match each segment by the canonical fields `kind`, `id`, `key`, `index`, and `componentType`; property order inside a segment is irrelevant because PostgreSQL `jsonb` and other stores may reorder object keys. A persisted link must continue matching the equivalent runtime event after reload. Do not use `JSON.stringify` equality for endpoint paths.
 - When dispatch originates from `surface.result`, `SurfaceOpenPayload.onResult`, or `dynamicPage.composition.dispatch`, preserve the `EndpointRef` source as the authority for matching. For global-action continuations this means `source: { kind: 'global-action', ref: { actionId, payload?, payloadExpr?, meta? } }`; do not replace it with action labels, result type strings, widget names, route ids, or host-local event names. The event payload may carry data, but it does not choose the link source or target.
 - Treat `surface.result` and `dynamicPage.composition.dispatch` as runtime event delivery into the
   composition engine, not config mutation APIs. Drawer result envelopes, row selections, and returned
@@ -129,7 +130,9 @@ Before declaring composition guidance current, prove:
 6. Certification path: preflight the authored plan against the target registry,
    then preserve first-pass/refinement lineage and a sanitized lifecycle receipt
    through apply, persistence, reload, and applicable CRUD/related/global-action
-   effects. Readiness and receipts remain derived evidence, never page inputs.
+   effects. For nested composition, execute a fresh output-to-state-to-input
+   interaction after reload so hash equality alone cannot hide an endpoint-match
+   regression. Readiness and receipts remain derived evidence, never page inputs.
 
 Use a focused Angular gate from the `praxis-ui-angular` root:
 
