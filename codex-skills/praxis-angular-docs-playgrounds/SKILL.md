@@ -122,6 +122,8 @@ Report canonical owner/evidence, source documents/manifests, derived artifacts u
 
 ## Companion Skills
 
+- Use `praxis-landing-dynamic-page-studio` for the public Studio product, runtime-profile policy, curated journeys, and hosted evidence.
+
 - Use `praxis-landing-public-docs-contracts` and `praxis-landing-registries-sitemap-playgrounds` for public landing projection.
 - Use `praxis-angular-validation-gates`, `praxis-angular-public-api-governance`, and `praxis-angular-i18n-governance` for underlying contract gates.
 - Use `praxis-ai-authoring-manifests` and `praxis-ai-registry-ingestion` for AI-derived docs and recipes.

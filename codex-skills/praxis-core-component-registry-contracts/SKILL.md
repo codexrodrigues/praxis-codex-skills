@@ -54,7 +54,7 @@ Vertical packages own their component-specific metadata entries. Page Builder an
 
 Keep the two metadata paths distinct:
 
-- `ComponentDocMeta` is the runtime/catalog contract for component refs, inputs, outputs, actions, commands, ports, config editor, authoring manifest ref, insertion presets, layout hints, tags, and owner lib. Its labels/descriptions are plain strings.
+- `ComponentDocMeta` is the runtime/catalog contract for component refs, inputs, outputs, actions, commands, ports, config editor, authoring manifest ref, insertion presets, layout hints, owner-authored `runtimeProfiles`, tags, and owner lib. Its labels/descriptions are plain strings.
 - `ComponentMetadataEditorialDescriptor` is the localized editorial projection. Its `PraxisTextValue` fields are resolved by `PraxisI18nService` through `resolveEditorial()`.
 - Common input/output defaults injected by `normalizeMeta()` are resolved from the core `componentMetadataRegistry` i18n namespace, with built-in `pt-BR` and `en-US` catalog entries and clean textual fallback. Keep explicit component labels/descriptions authoritative over these defaults, and do not add component-specific business copy to the shared registry catalog.
 
@@ -70,6 +70,11 @@ Every consumer is a projection with its own fidelity; verify the target instead 
 - `PageBuilderAiAdapter` projects `runtimeState.componentCatalog` as a bounded registry grounding surface. It must preserve ids, display copy, tags, input/output descriptors, compatibility name arrays, semantic ports, insertion presets, actions, commands, config editor availability, authoring manifest references, and layout hints without exposing mutable registry entries or Angular component classes as serializable truth.
 - `component-context.schema` defines component-specific options/actions/field resolvers and merge patches. It is not an automatic `ComponentDocMeta` registry projection, and a component context pack may maintain its own explicit option enum.
 - Generated `tools/ai-registry/component-docs.json` preserves a bounded registry subset for AI ingestion, including inputs/outputs, semantic ports, actions, commands, config editor reference, authoring manifest reference, layout hints, and insertion presets. Pair registry ingestion work with `praxis-ai-registry-ingestion` and inspect the generated schema/artifact instead of assuming the runtime adapter, generated docs, and backend ingestion have identical fidelity.
+- Runtime-profile projections must preserve the stable profile id, audience,
+  structural constraints, complete declared effects, owner package, and source
+  metadata. A profile describes an audited input/effect shape; it never grants
+  authorization or replaces backend capabilities. Pair profile authoring and
+  host policy with `praxis-core-component-runtime-profiles`.
 - Treat registry projections as component-grounding evidence, not action authorization. `actions`, `commands`, insertion presets, labels, aliases, tags, and `intentExamples` may help rank an already scoped component operation, but preview/apply/execute still requires the owning authoring manifest, capability, global-action handler, or backend/domain contract to authorize the operation.
 - When projecting registry data to agents, preserve `componentId`, normalized registry id, selector, owner package/lib, ports, presets, `authoringManifestRef`, config editor capability, and source artifact. If any of these are missing, report projection loss or missing provider instead of synthesizing a prompt-only component catalog.
 
@@ -164,3 +169,4 @@ npm run ng -- test praxis-crud --watch=false --progress=false --include=projects
 - Use `praxis-core-domain-governance-runtime` when metadata is grounded in governed domain decisions.
 - Use `praxis-angular-public-api-governance` for exported registry/model changes.
 - Use `praxis-ai-registry-ingestion` when changing extraction, generated component docs, ingestion schemas, or backend registry artifacts.
+- Use `praxis-core-component-runtime-profiles` when authoring, resolving, projecting, or enforcing owner-authored execution profiles.

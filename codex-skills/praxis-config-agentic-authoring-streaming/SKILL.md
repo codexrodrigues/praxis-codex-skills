@@ -102,6 +102,34 @@ primary intent by itself.
 - Keep tool traces and evidence bundles sanitized: no API keys, raw rows, secrets, unrestricted
   payloads, internal prompts, or unbounded provider output.
 
+## Parent-Child Related-Resource Authoring
+
+Treat a parent-child page as a semantic archetype, not as a table plus an AI-invented foreign-key
+filter. The LLM-authored visualization decision must select the exact governed surface identity
+(`targetSurfaceId`) after resource scope is resolved. Before compilation, retrieve the current
+principal's `/schemas/surfaces` catalog and verify that the exact surface:
+
+- belongs to the selected parent resource and path;
+- is an item-scoped collection `VIEW` or `READ_PROJECTION`;
+- has explicit availability, accepting `resource-context-required` only before parent selection;
+- publishes a complete and internally consistent `relatedResource` contract, including parent key,
+  parent path variable, child key/path, child parent field, selection field, and canonical child
+  operations;
+- contains safe API paths whose placeholders can be resolved by the declared parent binding.
+
+Persist the composition binding from parent selection to the related-resource outlet; do not author
+the child foreign key as an independent user value. Preserve the parent-scoped surface path for
+contextual reads and the canonical child resource path for commands. Missing, ambiguous, mismatched,
+unsafe, or unavailable evidence must make preview and semantic materialization invalid. Do not infer
+the surface from labels, resource names, prompt words, or endpoint shape, and do not compile a
+fallback mutation against the contextual read URL.
+
+Provider selection, connection probes, retry/fallback classification, paid-call
+budgets, token/cost telemetry, and provider-status endpoints belong to
+`praxis-config-ai-provider-operations`. This skill consumes their bounded
+outcomes but must not duplicate provider routing or cost policy inside the turn
+engine.
+
 ## Stream Contract
 
 The canonical authoring family is:
@@ -262,6 +290,8 @@ Use the smallest local gate that proves the boundary:
   `mvn "-Dtest=AgenticAuthoringIntentResolverServiceTest,AgenticAuthoringLlmIntentResolverServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest,AgenticAuthoringToolRegistryTest,AgenticAuthoringToolLoopExecutorTest,AgenticAuthoringCandidateProvenancePolicyTest,AgenticAuthoringSemanticDecisionPolicyTest" test`
 - turn engine, runtime grounding, preview/repair/apply, and stream lifecycle:
   `mvn "-Dtest=AgenticAuthoringTurnEngineTest,AgenticAuthoringTurnStreamServiceTest,AgenticAuthoringRuntimeComponentGroundingServiceTest,AgenticAuthoringPreviewServiceTest,AgenticAuthoringApplyServiceTest,AiTurnEventServiceTest" test`
+- parent-child composition authoring and fail-closed surface verification:
+  `mvn "-Dtest=AgenticAuthoringGenericUiCompositionPlanProviderTest,AgenticAuthoringLlmIntentResolverServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest,AgenticAuthoringSemanticMaterializationPolicyTest,AgenticAuthoringPreviewServiceTest" test`
 - HTTP/SSE/security and legacy compatibility:
   `mvn "-Dtest=AgenticAuthoringControllerTest,AgenticAuthoringTurnStreamHttpSseIntegrationTest,AgenticAuthoringTurnStreamSecurityChainIntegrationTest,AgenticAuthoringTurnStreamSignedTokenIntegrationTest,AiStreamAccessTokenServiceTest,AiPatchStreamControllerTest,AiProviderStreamingFallbackAndCancelIntegrationTest,AiOrchestratorControllerTest,AiOrchestratorService*Test" test`
 - persisted HTTP/SSE and security-chain integration, when the owner context is healthy:
@@ -293,6 +323,8 @@ smokes, `praxisui-http-examples`, Page Builder recipes/E2E, public landing examp
 configuration. State explicitly when each family is unaffected.
 
 ## Companion Skills
+
+- `praxis-config-ai-provider-operations`: provider probes, routing, failure classification, telemetry, cost, and live-gate policy.
 
 - `praxis-ai-semantic-intent`: shared semantic-routing rules and frontend red flags.
 - `praxis-config-ai-registry-manifests`: executable component operations, validators, and compilers.

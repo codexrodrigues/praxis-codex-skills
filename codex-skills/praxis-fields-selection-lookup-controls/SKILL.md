@@ -33,6 +33,7 @@ Inspect:
 - `docs/dynamic-fields-field-selection-guide.md`
 - `docs/dynamic-fields-inline-filter-runtime-contract.md`
 - selection component folders under `src/lib/components/**`
+- `src/lib/components/collection-overlay/**` and `src/lib/components/collection-search/**`
 - selection `*.metadata.ts` and `*.json-api.md`
 - `src/lib/base/option-store.ts`
 - `src/lib/base/simple-base-select.component.ts`
@@ -67,6 +68,7 @@ Inspect:
 - `src/lib/editorial/metadata-i18n-contract.spec.ts`
 - `src/lib/catalog/dynamic-fields-playground.catalog.ts` and catalog specs
 - `projects/praxis-core/src/lib/helpers/field-definition-mapper.ts` and spec when optionSource metadata is normalized from backend/schema
+- `projects/praxis-core/src/lib/tokens/collection-search.token.ts` and spec when shared collection-search theming changes
 - `projects/praxis-core/src/lib/services/schema-normalizer.service.ts` and spec when `x-ui` optionSource, value/display fields, cascades, or entity lookup contracts change
 - `projects/praxis-metadata-editor/src/lib/config/entity-lookup.config.ts`
 - `projects/praxis-metadata-editor/src/lib/config/inline-editor-coverage.spec.ts` when entity lookup, tree/list, selection policy, display, detail, or create affordance coverage changes
@@ -82,6 +84,21 @@ Inspect:
 ## Runtime Rules
 
 - Preserve value identity. Display labels are not persisted identity unless the canonical option contract says so.
+- Treat value arrival and option arrival as independent asynchronous streams. A non-empty
+  selected value that is not yet present in local options is a pending selection, not proof that
+  the value is invalid. The control must preserve identity without emitting a synthetic change,
+  repeatedly rewriting the CVA control, opening an overlay, or starting an unbounded reload loop.
+- For genuinely local `metadata.options`, hosts should keep a persisted/default value pending until
+  the matching option is available. If the component accepts the value first, it must expose a
+  deterministic unresolved state and reconcile exactly once when options arrive. Do not render a
+  stale label from a previous context.
+- For remote or entity-backed sources, a selected ID absent from the current page must use the
+  canonical by-ids/display rehydration path. Do not wait for the search page to happen to contain
+  the selected ID, and do not clear the value while rehydration is in flight.
+- Context changes must invalidate option display evidence from the previous context while
+  preserving only identities allowed by `selectionPolicy`. Cancel or ignore stale async responses;
+  a late response from company, tenant, dependency, or parent A must not resolve a pending
+  selection under context B.
 - Prefer `optionSource` for remote/entity-backed data and local `options` only for genuinely local lists.
 - `entityLookup` should use canonical `RESOURCE_ENTITY` semantics, stable value/display paths, by-ids rehydration when required, dependency maps, and selection policy.
 - For entity lookup, keep selection state (`selectable`, `blocked`, `legacy`) distinct from generic disabled UI state. `blocked` prevents new selection; `legacy` may preserve an already selected invalid value only when `selectionPolicy.allowRetainInvalidExistingValue` or equivalent backend evidence allows it.
@@ -104,11 +121,22 @@ Inspect:
   display, presentation/read-only mode, edit/reopen, missing-ID behavior, and requested ID order.
 - Legacy `valueField`/`displayField` must be normalized toward canonical option identity/display keys through the core mapper/normalizer; do not create a second alias layer in the component.
 - `searchable-select`, `async-select`, and autocomplete need explicit search/load policy and clear value shape.
+- Governed lookup search is deterministic: auto-select one declared `searchStrategy`; require an accessible chooser for multiple strategies and block HTTP while ambiguous. Apply strategy-specific minimum and input format before loading options; never guess intent from the typed term.
 - Tree controls require stable node identity and parent/children semantics.
 - Chips/list/transfer controls must preserve array value shape, order policy, and max-selection rules. For remote/entity-backed chips, render labels from the canonical selected-display/by-ids path and preserve option identity even when the option is not present in the currently filtered page.
 - Multi-select and chip removal must operate on canonical identity, not label text or object reference equality. If values can be `EntityRef`, normalize comparison through the same identity extraction used by the payload serializer.
 - Toggle/radio/checkbox/button-toggle controls are still option-bearing when labels, values, disabled states, or i18n are derived from metadata; do not treat them as plain booleans unless the control contract is boolean.
 - Inline selection overlays use `inlineOverlay` when selections are drafted before commit.
+- Search, option rows, empty/loading states, and pagination actions must not be projected as
+  interactive descendants of `MatSelect`. Use the shared collection overlay composition with
+  sibling header, scrollable option region, and footer. Keep `MatSelect` only where its panel owns
+  actual Material option rows and every auxiliary action remains outside its trigger/content model.
+- Search UX shared by Dynamic Fields and Table must consume the canonical collection-search
+  variables/builders from `@praxisui/core` and the public `PdxCollectionSearchComponent`; do not
+  recreate radius, surface, foreground, border, focus, or placeholder tokens per consumer.
+- A remote `loadMore` action is panel footer state, not an option. Render it only while the owning
+  overlay is open and only when the loaded-page contract proves another page exists. Static option
+  arrays and fully loaded first pages must not expose the action.
 - Dynamic Form, metadata-editor, table filters, CRUD dialogs, and host projects should consume the same identity/source contract. Do not fork lookup behavior per consumer.
 - Treat Cockpit verifiers, HTTP examples, and LLM smokes as external evidence that lookup endpoints are reachable, not as proof that a generic select can replace `entityLookup`. If the backend publishes `RESOURCE_ENTITY`, the Angular control must preserve `entityKey`, `selectionPolicy`, `capabilities`, `selectable`, `disabledReason`, `status`, `statusTone`, rich display fields, detail/create affordances, and retained-invalid-value semantics through open panel, closed display, edit/reopen, and presentation mode.
 - Do not use LLM operational examples or published HTTP payloads as a local shape contract for Ergon or another host. They can help diagnose the backend response, but the runtime shape must still flow through `OptionSourceMetadata`, `OptionDTO.extra`, `OptionDisplayResolverService`, `OptionStore`, and the entity lookup component's view model. If those fields are not reaching the control, fix mapper/normalizer/runtime wiring before inventing a consumer adapter.
@@ -122,6 +150,10 @@ Inspect:
 - `lacuna-real-de-contrato`: no current control type, option source contract, value identity, by-ids reload path, metadata path, profile, or validator can express the selection decision.
 
 Only real gaps justify new metadata or backend contracts. Most select/lookup bugs should complete the existing option-source and profile chain.
+
+Use `praxis-angular-accessibility-governance` for searchable-panel focus,
+loading announcements, option naming, keyboard selection, and localized
+calendar/lookup accessibility.
 
 ## Validation
 
@@ -146,11 +178,24 @@ Use focused gates:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/ai/control-type-ai-catalog.spec.ts --include=projects/praxis-dynamic-fields/src/lib/ai/praxis-dynamic-fields-authoring-manifest.spec.ts`
 - Selected reload/reopen tests for remote/entity options:
   - Include the relevant component spec plus `option-store`/display resolver proof; add regression coverage before relying on manual QA.
+- Bootstrap-order regression tests for every changed option-bearing control:
+  - Cover value-before-options, options-before-value, selected ID absent after load, context change
+    during load, and component destruction during load.
+  - Assert bounded calls/effects, no emitted user change during reconciliation, stable CVA value,
+    deterministic unresolved display, and successful resolution when the matching option arrives.
+  - For shell/global-context usage, add a browser test with heartbeat, `requestAnimationFrame`, DOM
+    snapshot, open/select interaction, and a timeout that distinguishes locator/accessibility
+    failure from a blocked main thread.
 - Playwright for inline selection overlays, multi-select draft behavior, lookup UX, and contrast:
   - `projects/praxis-dynamic-fields/test-dev/e2e/entity-lookup-procurement.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/entity-lookup-funcionarios.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-searchable-select-panel-ux.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-all-components-smoke.playwright.spec.ts`
+- Shared collection content model and search tokens:
+  - run the focused specs under `components/collection-overlay` and `components/collection-search`;
+  - run `node tools/check-mat-select-content-model.mjs` and keep the debt baseline empty;
+  - prove square, intermediate, and pill search radii in Dynamic Fields and at least one direct
+    consumer, including a narrow viewport at the shared-consumer level.
 - Direct consumer checks when a selection control is exposed through dynamic-form, metadata-editor, table filter, CRUD, or a host example.
 - Metadata-editor coverage for entity lookup/selection controls:
   - Add or run `projects/praxis-metadata-editor/src/lib/config/inline-editor-coverage.spec.ts`

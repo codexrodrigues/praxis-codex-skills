@@ -47,6 +47,14 @@ operational proof, never the canonical owner of a starter or runtime semantic.
    coherent slice. Preserve `RestApiResponse`, canonical `idField`, and `_links`;
    do not introduce host envelopes, endpoint aliases, string-built schema maps,
    or frontend-only id fixes.
+   `ResourceMapper.applyUpdate` must preserve identity loaded from the route.
+   MapStruct update methods over `@MappingTarget` must ignore `id` and every
+   route-owned technical key, or use an equivalent deliberate mapper contract.
+   A missing or divergent payload id never clears, replaces, or repairs the
+   managed entity identity; do not reinsert it in Angular or after the mapper.
+   Resource generators and scaffolds must emit this rule and keep a focused
+   generated-source gate that rejects technical-identity assignment in update
+   merges.
 5. Add relations only through governed option/lookup contracts. A resource entity
    lookup must prove its source key, `x-ui.optionSource`, filter endpoint,
    selected-value reload, dependencies, authorization, and human display value.
@@ -92,7 +100,10 @@ scoped probe, before/after evidence, and cleanup or rollback plan.
 Prove the smallest complete path:
 
 - resource base, CRUD, identity, and `_links`: focused starter or host resource
-  tests;
+  tests, including update with absent and divergent payload ids followed by a
+  read proving that the route identity stayed stable; for generated resources,
+  inspect or assert the generated update implementation so it cannot assign a
+  route-owned technical key;
 - schema/`x-ui` contract: `/schemas/filtered` and operation resolution proof;
 - lookup: filter and by-ids, including dependency and selected-value reload;
 - action/surface/capability: positive and negative availability/discovery proof;

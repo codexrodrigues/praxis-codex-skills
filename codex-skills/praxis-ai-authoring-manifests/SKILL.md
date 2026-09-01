@@ -70,6 +70,15 @@ For component-specific manifest work, use the focused skill when available: `pra
   effect, and presentation affordance can be traced to the current registry-projected manifest for the component/profile.
   Treat untraceable references as contract drift or clarification, not as a reason to patch UI state locally.
 
+Use `projectComponentAuthoringManifest()` when a child component such as Filter
+Form or standalone Filter exposes a closed subset of an owner manifest. Select
+source runtime inputs and operation ids by stable identity and require closure
+of editable targets, validators, positive/negative examples, and round-trip
+requirements. Missing or duplicate references fail closed. Never copy source
+operations into a second child-owned manifest. Inspect Core
+`authoring-manifest.types.ts`, `authoring-manifest-projection.ts`, and their
+specs whenever this projection contract changes.
+
 ## Synchronization Triggers
 
 Review manifests when a public component change touches:

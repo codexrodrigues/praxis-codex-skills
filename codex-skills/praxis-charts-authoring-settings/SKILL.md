@@ -96,6 +96,12 @@ The preview must consume the normalized document through the same canonical mapp
 - Determine whether catalogs are transient editor context or intentionally persisted runtime inputs. Do not freeze stale API metadata into page config by accidental object spreading.
 - Reuse canonical option-source/search controls where appropriate; do not create a chart-local lookup service when shared metadata or `@praxisui/dynamic-fields` already owns discovery.
 
+For gauge, treemap, grouped scatter, funnel/pyramid, KPI, histogram, and
+comparison, round-trip the canonical presentation id and only its applicable
+bindings/settings. Switching presentation must remove incompatible transient
+editor state without deleting still-valid authored query context. Preview must
+use the same catalog and adapter as runtime.
+
 ## Metadata, AI, And Derived Artifacts
 
 When an editable path or input envelope changes, inspect together:

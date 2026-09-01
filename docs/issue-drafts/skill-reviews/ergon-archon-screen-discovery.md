@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: ergon-migration
 - Caminho: codex-skills/ergon-archon-screen-discovery/
-- Descricao atual: Investigate legacy Ergon/Archon screens for Oracle lineage and Java API migration. Use when Codex needs to map screens such as ERGadm00033 or ERGadm00034, debug/XML components, sqlSelect/sqlParameters, related flows, Oracle views, physical tables, synonyms, dependencies, packages, triggers, permissions, DTOs, parity tests, or a minimal backend API contract.
+- Descricao atual: Investigate legacy Ergon/Archon screens for Oracle lineage and Java API migration. Use for screen workflow, debug/XML components, SQL lineage, resources and Parte 1 API contracts. Requests to identify or migrate active customer customizations or business rules on a write operation belong to ergon-rule-migration-orchestration, even when a screen identifier is the only context.
 
 ## Classificacao inicial
 

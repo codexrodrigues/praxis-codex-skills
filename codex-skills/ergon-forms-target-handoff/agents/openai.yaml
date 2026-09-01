@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Forms Target Handoff"
+  short_description: "Emit a governed post-F7 target intake"
+  default_prompt: "Validate an admitted Oracle Forms F7 package and emit an origin-neutral target handoff."
