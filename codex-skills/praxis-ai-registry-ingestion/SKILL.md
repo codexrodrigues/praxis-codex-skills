@@ -71,6 +71,7 @@ When backend registry persistence, bootstrap, classpath snapshot, template searc
   do not patch the generated corpus, add a registry-only profile, or promote a capability alias into
   `componentIds` just to satisfy the gate.
 - Use aggregate corpus for cross-package/release analysis and `@praxisui/<package>/ai/component-registry.json` only for source-less package consumers. Package assets remain filtered projections of their owning package.
+- Broad backend registry status, reconciliation, startup, and candidate scans must use compact repository projections. Do not hydrate embeddings, full chunk content, raw registry payloads, or large manifests for every row merely to compute identity, readiness, counts, hashes, or candidate summaries; hydrate the exact canonical record only when publication or selected-evidence materialization requires it.
 
 ## Before New Contracts Or Scripts
 
