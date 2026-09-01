@@ -49,6 +49,12 @@ Use `praxis-core-global-actions-metadata` for shared action contracts and `praxi
   backend-confirmed domain action that owns that mutation. The dialog provider should emit/close; it
   should not decide the business continuation by parsing result type, row text, or localized labels.
 - Drawer presentation requires `SURFACE_DRAWER_BRIDGE`; do not silently fall back to a different drawer contract.
+- `providePraxisSurfaceGlobalActions()` and `providePraxisSurfaceDrawerBridge()` may coexist in the
+  root injector or in a feature `EnvironmentInjector`. In feature scope, register both in the same
+  injector so the global surface factory can resolve the optional drawer bridge; sibling routes do
+  not inherit providers from that feature injector.
+- Provider registration and resolution must remain inert: neither provider opens an overlay, starts
+  polling, or schedules recurring work until an explicit `surface.open` requests presentation.
 - Host/domain side effects after `afterClosed` or `result$` remain host-owned.
 
 ## Red Flags
@@ -69,6 +75,8 @@ Use focused checks:
 
 - `src/lib/providers/dialog-global-actions.provider.spec.ts`
 - `src/lib/providers/surface-global-actions.provider.spec.ts`
+- an integration spec using both concrete surface providers, proving idle resolution and exactly one
+  drawer materialization after an explicit `surface.open`
 - `src/lib/providers/dialog-global-presets.provider.spec.ts`
 - core global action/payload validator specs when shared action contracts change
 - service/component specs when overlay lifecycle or registry open behavior changes

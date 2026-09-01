@@ -1,0 +1,3 @@
+interface:
+  display_name: "Ergon Forms Static Extraction"
+  short_description: "Inventory static Oracle Forms 6i metadata"

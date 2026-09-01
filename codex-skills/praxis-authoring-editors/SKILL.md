@@ -342,6 +342,12 @@ Treat these as canonical risks:
 - host-specific glue becomes the de facto contract because the owning lib was not corrected
 - global actions are serialized through `action` strings instead of persisted as structured `globalAction`
 
+For editor open/apply/cancel/close flows, preserve keyboard reachability and
+restore focus to the invoker after the overlay closes or fails. Localized
+accessible names and busy/invalid/saved announcements belong to the editor
+owner. Pair functional accessibility changes with
+`praxis-angular-accessibility-governance`.
+
 ## Validation Guidance
 
 Prefer the smallest relevant validation:

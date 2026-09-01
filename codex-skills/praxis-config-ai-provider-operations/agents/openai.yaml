@@ -1,0 +1,8 @@
+interface:
+  display_name: "Praxis AI Provider Operations"
+  short_description: "Operate providers, telemetry, and cost"
+  default_prompt: "Use $praxis-config-ai-provider-operations to implement or audit provider probes, routing, fallback, telemetry, pricing, cost attribution, paid gates, and hosted protection."
+
+policy:
+  allow_implicit_invocation: true
+

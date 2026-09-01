@@ -24,6 +24,29 @@ This audit covers `praxis-ui-angular` only. It does not claim exhaustive coverag
 
 ## Current Answer
 
+### Reconciliation - 2026-08-31
+
+The July inventory remains historical evidence, but it no longer represents the
+current source-parity state. The canonical manifest now contains 167 active
+Praxis skills. The August evidence review promoted five recurring, already
+implemented platform decisions into focused skills:
+
+- `praxis-core-component-runtime-profiles`;
+- `praxis-angular-accessibility-governance`;
+- `praxis-reactive-determinations`;
+- `praxis-config-ai-provider-operations`;
+- `praxis-landing-dynamic-page-studio`.
+
+This is not a count-driven wave. The additions are backed respectively by the
+public runtime-profile contract across Core/CRUD/Form/List/Table, repeated
+cross-package accessibility fixes, the metadata-to-snapshot-to-Angular Reactive
+Determination handoff, provider operations/cost controls, and the public Dynamic
+Page Studio execution/learning surface.
+
+The current answer remains **strong but not exhaustive coverage**. Source parity
+now requires the focused August refresh recorded in the skill files themselves;
+the 161-skill conclusions below describe the 2026-07-12 audit point.
+
 ### Reconciliation - 2026-07-11
 
 At this audit point, the skill source contained 147 `praxis-*` skills. The Angular workspace
@@ -48,7 +71,7 @@ missing proof, or repeated implementation friction is material. The next formal
 audit should regenerate the package metrics and check source drift against this
 reconciliation.
 
-The current 161 active Praxis skills are sufficient for strong canonical
+At the July audit point, the 161 active Praxis skills were sufficient for strong canonical
 coverage of the Angular platform, but not for exhaustive Angular coverage.
 
 The earlier 198-skill estimate remains a reasonable upper bound for exhaustive Angular-only coverage. It is not the next recommended target. The live source audit indicates that the next work should refine discoverability, routing, validation gates, and source-aligned guidance in existing skill families before creating another broad wave of new skills.
@@ -57,7 +80,7 @@ Recommended position:
 
 | Coverage goal | Skill count interpretation |
 | --- | --- |
-| Strong Angular coverage | Current 161 skills are enough to operate effectively. |
+| Strong Angular coverage | At the July audit point, 161 skills were enough to operate effectively. |
 | Exhaustive Angular coverage | 180-200 skills remains a reasonable upper band. |
 | Whole Praxis platform coverage | 198 skills is not enough if config, metadata, quickstart, examples, and landing are covered with the same depth. |
 
@@ -96,9 +119,9 @@ The inventory confirms that the Angular surface is too large to reason about by 
 
 These are the highest-risk packages for future skill drift because they combine public APIs, authoring flows, AI manifests, and cross-lib runtime behavior.
 
-## Current Skill Coverage By High-Risk Area
+## July Skill Coverage By High-Risk Area
 
-| Area | Current skill family | Count | Coverage reading |
+| Area | Skill family at the July audit point | Count | Coverage reading |
 | --- | --- | ---: | --- |
 | Core runtime and contracts | `praxis-core-*` | 12 | Strong. Matches public API, resource runtime, providers, i18n, observations, global actions, registry, and materialization. |
 | Table | `praxis-table-*` | 12 | Strong. Covers runtime data, filters, authoring settings, rules, selection/export, analytics, diagnostics, and data precedence. |
@@ -163,8 +186,8 @@ Status as of the post-audit curation pass: all four follow-up issues below were 
 ## Post-Curation Recommendation
 
 Do not create new Angular skill-count issues immediately. The current next step
-is to use the curated 161 active skills during real Praxis implementation and
-record only evidence-backed misses in #254:
+is to use the curated 167 active skills during real Praxis implementation and
+record only evidence-backed misses in the active evidence ledger:
 
 - a skill routes to the wrong canonical owner;
 - a skill misses a validation gate that the source requires;

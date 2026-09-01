@@ -132,6 +132,17 @@ Use only canonical status endpoints. Definition transitions allow review paths i
 - Prefer an active persisted federation release; use catalog projection fallback only as declared by the query response. Preserve `sourceMode`, release keys, policy report, evidence refs, and redaction decisions.
 - The existing `policy_reference` option-source prediction contains residual text matching after semantic scope resolution. Do not extend it or use it as primary intent routing; require an explicit canonical `ruleType`/target contract for new behavior.
 
+## Reactive Determination Handoff
+
+When a governed rule materializes as a Reactive Determination, keep Config as
+the decision/snapshot owner and publish a typed
+`DomainRuleReactiveDeterminationSpec` with stable definition identity, scope,
+form modes, trigger, bindings, provenance, and target coverage. Metadata Starter
+compiles the public operation projection; Angular executes only that projection.
+Do not emit legacy Form Effect payloads or make the form infer determination
+selection from field names. Pair with `praxis-reactive-determinations` for the
+complete snapshot-to-runtime proof.
+
 ## Decision Rules
 
 - If a request is about a shared business rule, validation, eligibility, compliance, approval, or policy over a resolved resource, route to domain decisions before component preview/apply.
@@ -186,6 +197,8 @@ Use focused local gates:
 For public decision/materialization changes, review `docs/ai/**`, `docs/domain-catalog/**`, quickstart smokes, Angular core domain services, Page Builder handoff, and public docs/examples.
 
 ## Companion Skills
+
+- `praxis-reactive-determinations` for governed snapshot, metadata, host, Angular, and HTTP handoff.
 
 - Use `praxis-core-domain-governance-runtime` for Angular clients and cockpit projection of these decisions.
 - Use `praxis-config-agentic-authoring-streaming` when turn streams route into shared rule/domain knowledge authoring.

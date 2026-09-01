@@ -121,11 +121,23 @@ Only `lacuna-real-de-contrato` may justify a new platform contract. Do not add a
      - A settings/editor trigger that can change reusable table, filter, form, or surface configuration is governed authoring. It must be rendered only from a public server-resolved authoring capability and its save endpoint must enforce the same capability. Never derive it in Angular from a username, raw HADES role, or a broad `privileged` flag.
      - Related-resource tables must inherit the host table-affordance policy or receive an explicit equivalent policy. A related surface may not silently fall back to library defaults that re-enable columns, authoring, or other utility controls excluded from its parent experience.
      - The screen package must include a compact affordance matrix: table/surface, control, classification, default visibility, persistence scope, capability (when applicable), and standard-versus-authoring-principal QA result. If Praxis cannot materialize the policy or consume the capability, classify it as `lacuna-real-de-contrato` and create a Praxis Platform Follow-up instead of adding host checks.
-     - Build only thin screen composition: route, title/breadcrumb integration, resource config, optional detail panel/tabs, child resource wiring, and action gating.
+   - Build only thin screen composition: route, title/breadcrumb integration, resource config, optional detail panel/tabs, child resource wiring, and action gating.
+   - Treat action hierarchy as a factory gate, not final visual polish. A mutable collection has one create entrypoint, materialized by the native PraxisTable/PraxisCrud toolbar. Do not repeat `Novo`/`Adicionar` in the detail header or empty state. Keep selection-scoped record actions secondary and group workflow commands separately from CRUD.
+   - Use concise object-aware create labels such as `Novo tipo`, `Nova regra` or `Novo documento`; generic `Novo`/`Adicionar` is acceptable only when the surface contains a single unambiguous entity and no competing action region.
+   - Do not define local height, padding, radius, icon gap or disabled geometry for resource buttons. Consume the shared Praxis/Material component and token contract; a platform mismatch becomes a Praxis follow-up, not `.resource-action-button` CSS.
    - For tabs, use the tab strategy in `references/praxis-screen-composition.md`; do not merge unrelated tab data into the main DTO just to match the legacy layout.
    - Hide or disable write actions until the write API gate is closed.
    - For `Duplicar`, do not wire it as a generic action from the legacy button state. Wait for the backend contract to classify it as `duplicate-draft + POST`, a real `@WorkflowAction`, `Blocked`, or `Not present`, then consume the native Praxis discovery/runtime path for that classification.
    - For option and LOV fields, consume canonical option-source metadata, including by-ids reload for selected values. Do not build screen-specific Angular lookup services when `RESOURCE_ENTITY`, `/option-sources/{sourceKey}/options/filter`, or `/options/by-ids` can express the need.
+   - Model persisted/default selection and option availability as separate asynchronous inputs.
+     For local options, do not write a non-empty `FormControl` value until the matching canonical
+     option is present. For remote/entity sources, allow the Praxis control to rehydrate through
+     by-ids; do not replace that path with a host-local options array.
+   - Before using any option-bearing control in a shell, route guard, global toolbar, filter, edit
+     form, or dependent lookup, test both bootstrap orders: value before options and options before
+     value. Also test missing ID, context/dependency change during load, and teardown during load.
+     Reconciliation must not emit a user selection event, refresh the route repeatedly, or create
+     an effect cycle that writes the same value/metadata back into the component.
 
 6. Verify end to end.
    - Run backend tests affected by DTO/schema/API changes.
@@ -167,3 +179,4 @@ Historical `phase-6-5-ui-execution-gate.md` files may remain as evidence from ol
 - Do not mark a DTO/UI handoff as ready while visible fields remain `SEMANTIC_UNCONFIRMED`, unless the gap is explicitly documented as accepted with conservative copy and an owner to investigate legacy docs/source.
 - Do not enable create/edit/delete/duplicate in Angular unless command APIs are implemented and gated. For duplicate specifically, `duplicateEnabled=true` in XML is not enough; the contract must prove copied/reset fields, defaults, save route, and whether the correct Praxis shape is `duplicate-draft + POST` or `@WorkflowAction`.
 - Do not mark the UI ready without executing schema and visual QA.
+- Do not mark the UI ready while `check-angular-praxis-reference-pattern.ps1 -Strict` reports action-hierarchy, generic-label, local-button-geometry, mixed CRUD/workflow, or related-empty-state policy findings.

@@ -33,6 +33,23 @@ numeric target.
 
 ## Current Status
 
+### Reconciliation - 2026-08-31
+
+The canonical manifests now contain 186 versioned skills: 167 Praxis and 19
+Ergon migration skills. The five new Praxis skills came from source-backed
+misses rather than a numeric target:
+
+- component runtime-profile policy;
+- cross-package Angular accessibility;
+- Reactive Determination platform handoff;
+- Config AI provider operations and cost controls;
+- Landing Dynamic Page Studio execution and learning proof.
+
+The same review also promoted the MapStruct identity-preservation gap (#526),
+the related-resource factory guidance PR (#527), and Page Builder production-like
+gate drift into the active evidence cycle. The July status below remains the
+historical reconciliation baseline.
+
 Status reconciled on 2026-07-12 after the quickstart security/firewall skill
 follow-up and the first evidence-driven follow-up loop.
 

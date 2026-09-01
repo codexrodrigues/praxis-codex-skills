@@ -43,6 +43,13 @@ Also inspect `projects/praxis-settings-panel/AGENTS.md` and the Settings Panel b
 - For actions, preserve global action validation and effect shapes.
 - For i18n, put editor chrome text in `table-editor.i18n.ts`; do not add visible hardcoded text.
 
+Column visibility, reorder, resize, auto-fit, density, and other runtime
+customizations must serialize through one persistence lane. Queue/coalesce
+overlapping mutations deliberately, acknowledge success, and handle 409/412 by
+loading the remote document and reconciling only the changed semantic field.
+Never blindly retry a stale whole document or report persisted before the
+storage acknowledgement.
+
 ## Round-Trip Checklist
 
 For every editable field, prove or inspect:
@@ -66,6 +73,8 @@ If no visual editor is affected, say so explicitly and explain why.
 - Visual authoring: Playwrights such as `table-json-authoring`, `table-json-rules`, `table-rules-editor`, `column-drag`, and expansion authoring.
 
 ## Companion Skills
+
+- Use `praxis-angular-accessibility-governance` for keyboard resize/reorder, focus, and live persistence feedback.
 
 - Use `praxis-authoring-editors` for cross-component editor, persistence, Settings Panel, and round-trip principles.
 - Use `praxis-table-data-source-precedence` for authoring `resourcePath`, local-data mode, bindings, apply-plan diagnostics, and source precedence.

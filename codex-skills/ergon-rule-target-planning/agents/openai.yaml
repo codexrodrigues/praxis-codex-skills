@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Rule Target Planning"
+  short_description: "Plan governed non-executable rule targets"
+  default_prompt: "Use $ergon-rule-target-planning to create and validate an evidence-bound technical target plan."

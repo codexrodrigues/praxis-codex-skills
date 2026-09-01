@@ -64,6 +64,11 @@ metadata publication that produced it.
 - If `/schemas/catalog` or capabilities are consumed for authoring, keep their roles separate: catalog enumerates candidates, an exact published capabilities href proves current operation/field eligibility, and `/schemas/filtered` supplies structural property metadata. Do not infer one surface's freshness or authority from another's headers.
 - If `x-ui` shape changes, review `docs/spec/*.schema.json`, examples, conformance docs, Angular consumers, and quickstart downstream tests.
 
+Reactive Determinations are operation-specific `x-ui` operation metadata,
+compiled from the canonical definition registry. Preserve stable identity,
+form/trigger modes, typed input/output bindings, and provenance. Do not
+republish removed Form Effect annotations or a second form-owned schema.
+
 ## No Keyword Routing
 
 Do not resolve resource, operation, schema, or field intent through keywords, regexes, aliases, or local fuzzy matching as the primary decision. Use canonical OpenAPI operations, resource keys, schema references, governed semantic catalogs, and declared tools for grounding; textual matching may only rank already-scoped candidates.
@@ -90,6 +95,8 @@ Use focused local gates:
 Review `README.md`, `CHANGELOG.md`, `docs/index.md`, `docs/guides/**`, `docs/spec/CONFORMANCE.md`, `docs/spec/*.schema.json`, and `docs/spec/examples/**` when public schema semantics change. State why if no derived artifact is updated.
 
 ## Companion Skills
+
+- Use `praxis-reactive-determinations` when schema metadata drives governed reactive form execution.
 
 - Use `praxis-metadata-resource-baseline` for resource-oriented controller/service hierarchy.
 - Use `praxis-metadata-discovery-capabilities` for surfaces, actions, capabilities, `_links`, availability, stats, and export discovery.

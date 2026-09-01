@@ -141,6 +141,12 @@ Reject the plan before apply when:
 
 A validator named `editor-runtime-round-trip` must execute a real proof or be renamed/narrowed to what it checks. A no-op validator is not evidence.
 
+Validate the current governed presentation family—KPI, gauge, treemap, grouped
+scatter, funnel/pyramid, distribution/histogram, comparison, and ordinary
+series—against Angular manifest, generated registry, Config compiler/validator,
+metadata contract, preview, and runtime. A source manifest literal is not proof
+when any downstream layer lacks the presentation handler or field eligibility.
+
 ## Synchronization Triggers
 
 Re-run the full chain when any of these change:

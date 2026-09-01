@@ -27,8 +27,8 @@
                                             "praxis-dto-annotations",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "D6436CA40CDF20DDDC597E9C68A118DD8333BEF515825F5A0EF265F350DE6B9E",
-                       "treeSha256":  "C2C7BED21D9C0D6BAB31538BA3B1164000831AD89E3B9AF33FF044EBD49590EE"
+                       "skillMdSha256":  "F654B1E9B3EACEB0B9BDEEBC0D1A3C6E1CB88A0FB3F0A61131D4A2DA4B2B40F0",
+                       "treeSha256":  "9200BDEA43B4C3EDC26763D53AF8C2A7F2C4D89BB1A35A54612674FBFD925642"
                    },
                    {
                        "name":  "ergon-archon-read-api-migration",
@@ -54,8 +54,8 @@
                        "dependencies":  [
 
                                         ],
-                       "skillMdSha256":  "A7815F35B8FB829DA6A0B179E1EF01C5C2E25D7605D16ECA86AF91470ABBDD3E",
-                       "treeSha256":  "D6E516C26E493E9D20AE0DCBAE9FC15CD3E538EC8126BF6F350654EE127B043F"
+                       "skillMdSha256":  "8BAC3139E55D402EA3CC7F76A102A0C165456ABD5E9DE14600302911D2DE76EB",
+                       "treeSha256":  "ECF0D711C6711BAF3E5B8C524AF38DD6FE1AD896AD0B88E6D464357A64A36290"
                    },
                    {
                        "name":  "ergon-archon-write-api-migration",
@@ -104,6 +104,30 @@
                                         ],
                        "skillMdSha256":  "4B0E52263D3EAC020A180400122BEE8DF57EF827B41767F15321249B987E04F3",
                        "treeSha256":  "8D29B448B845AAC42802FCF56568CC5FC28CB52D7F516D8D229DCEA461C8619C"
+                   },
+                   {
+                       "name":  "ergon-forms-static-extraction",
+                       "sourcePath":  "codex-skills/ergon-forms-static-extraction",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+
+                                        ],
+                       "skillMdSha256":  "4FAF15911D5C7EF03320DE26905A04E73E1CCF9F0414D3EDB7A391EF28732861",
+                       "treeSha256":  "281E56BADB4BDF62AF54FA0F31F348557CEED015B5C5A6075160DF8BAC9F65CE"
+                   },
+                   {
+                       "name":  "ergon-forms-target-handoff",
+                       "sourcePath":  "codex-skills/ergon-forms-target-handoff",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+
+                                        ],
+                       "skillMdSha256":  "2809EE75A367B586A42A5E1BF40BE6072105462E208261FAE46AB8A28A3B5758",
+                       "treeSha256":  "EB54C5E9784978B6A0479793568DF91BAEBB10DE86315980EEC35D3614AF8941"
                    },
                    {
                        "name":  "ergon-migration-orchestration",
@@ -159,14 +183,94 @@
                        "treeSha256":  "59FF1D13189A54EF65F9C14F09A7195D768AFA89303B22743D77CFED53D8365C"
                    },
                    {
-                       "name":  "ergon-rule-migration-orchestration",
+                       "name":  "ergon-rule-decision-decomposition",
+                       "sourcePath":  "codex-skills/ergon-rule-decision-decomposition",
+                       "version":  "0.1.0-beta.0",
+                       "status":  "active",
+                       "compatibility":  "0.x",
+                       "dependencies":  [
+                                            "ergon-rule-source-extraction"
+                                        ],
+                       "skillMdSha256":  "C378E0AE008D65932D02609BF864179EA81795391935456FE5686B4B146B1E5A",
+                       "treeSha256":  "A5E6663D91698DEC6C728ABCA34626C8F7F9023DC8FBB6DC85E6EF99CCE4A93D"
+                   },
+                    {
+                        "name":  "ergon-rule-executor-selection",
+                        "sourcePath":  "codex-skills/ergon-rule-executor-selection",
+                        "version":  "0.1.0-beta.0",
+                        "status":  "active",
+                        "compatibility":  "0.x",
+                        "dependencies":  [
+                                             "ergon-rule-decision-decomposition",
+                                             "praxis-rules-engine-runtime"
+                                         ],
+                        "skillMdSha256":  "B87F16C613530E68B6CB1193DDF002C099EE5A3E3108D9860496DC2864E49BFA",
+                        "treeSha256":  "2BBD5A4A5F28F544B3EC1D4CD8F849C4005394EC47464E8DB8BC35EFE880BD44"
+                    },
+                    {
+                        "name":  "ergon-rule-target-planning",
+                        "sourcePath":  "codex-skills/ergon-rule-target-planning",
+                        "version":  "0.1.0-beta.0",
+                        "status":  "active",
+                        "compatibility":  "0.x",
+                        "dependencies":  [
+                                             "ergon-rule-decision-decomposition",
+                                             "ergon-rule-executor-selection"
+                                         ],
+                        "skillMdSha256":  "7C108674CCF2618CF6D04676D0805EA4BA7622FD929F515C0D4A78D592278C9A",
+                        "treeSha256":  "91EC169DB2A98E120842FA1DFC8F261F2F0BBB6625C82D6F28046B3435EAC6F0"
+                    },
+                    {
+                        "name":  "ergon-rule-shadow-parity",
+                        "sourcePath":  "codex-skills/ergon-rule-shadow-parity",
+                        "version":  "0.1.0-beta.0",
+                        "status":  "active",
+                        "compatibility":  "0.x",
+                        "dependencies":  [
+                                             "ergon-rule-target-planning",
+                                             "praxis-rules-engine-runtime"
+                                         ],
+                        "skillMdSha256":  "3D4F38049A6C37374500DA000ADD3672F2E4729E881776A0E949892D95E3A21A",
+                        "treeSha256":  "FFD5785A3D2F1AA472DDFDD1EBC239FBE51204A74DE432B63B15B09A708162D4"
+                    },
+                    {
+                        "name":  "ergon-rule-legacy-containment",
+                        "sourcePath":  "codex-skills/ergon-rule-legacy-containment",
+                        "version":  "0.1.0-beta.0",
+                        "status":  "active",
+                        "compatibility":  "0.x",
+                        "dependencies":  [
+                                             "ergon-rule-shadow-parity"
+                                         ],
+                        "skillMdSha256":  "0BA8B5C693EE2BFDCAFFA3B85670D2E54532E0A1BD3D310BF8EC323E36CB99E6",
+                        "treeSha256":  "55B36CA9D14A440029B3BD1A27F0DD280688F37F7440B97F42996C6B803F951F"
+                    },
+                    {
+                        "name":  "ergon-rule-portfolio-catalog",
+                        "sourcePath":  "codex-skills/ergon-rule-portfolio-catalog",
+                        "version":  "0.1.0-beta.0",
+                        "status":  "active",
+                        "compatibility":  "0.x",
+                        "dependencies":  [
+                                             "ergon-rule-migration-orchestration"
+                                         ],
+                        "skillMdSha256":  "8E8FD6E9F7042FFC37DA97C387E6C3C4730FB9E7FDDBA67897545549A90AAA3F",
+                        "treeSha256":  "F58EEA080CCD14E6B88F9AE4A8B963181470F46453DB6EBD4A7C9B2AE0255A4A"
+                    },
+                    {
+                        "name":  "ergon-rule-migration-orchestration",
                        "sourcePath":  "codex-skills/ergon-rule-migration-orchestration",
                        "version":  "0.1.0-beta.0",
                        "status":  "active",
                        "compatibility":  "0.x",
                        "dependencies":  [
                                             "ergon-migration-orchestration",
-                                            "ergon-rule-source-extraction",
+                                             "ergon-rule-source-extraction",
+                                             "ergon-rule-decision-decomposition",
+                                             "ergon-rule-executor-selection",
+                                             "ergon-rule-target-planning",
+                                             "ergon-rule-shadow-parity",
+                                             "ergon-rule-legacy-containment",
                                             "ergon-table-rule-audit",
                                             "ergon-archon-read-api-migration",
                                             "ergon-archon-write-api-migration",
@@ -175,8 +279,8 @@
                                             "praxis-java-host-project",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "785F8DCEFBBE8CCC952ACD11D406AC64AD86ABCD76D65CADF7DC7F101D235FE1",
-                       "treeSha256":  "3BF657113B7EE6371E5C4C854A4A027622C4B7F52A480E7C634B174FAB671C73"
+                        "skillMdSha256":  "AC5195AC9B02F391874748FC3B3915A34404022C5520F780F900D4F78F58EEE2",
+                        "treeSha256":  "CC38BBB115B328625A03E55317769CB58B7B6D46174403408292CB31B39B301A"
                    },
                    {
                        "name":  "ergon-table-rule-audit",
