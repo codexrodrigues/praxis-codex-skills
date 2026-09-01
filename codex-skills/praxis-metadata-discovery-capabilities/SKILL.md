@@ -28,13 +28,15 @@ Inspect the owner before editing:
 
 `GET /{resource}/capabilities` and `GET /{resource}/{id}/capabilities` aggregate canonical operations, surfaces, actions, export, stats, and availability; they are snapshots, not a second source of schema truth.
 
-Keep `canonicalOperations` structural: it says which operations the OpenAPI and
-resource service support, never whether the current principal may execute them.
-Use `operations.{operationId}.availability` for current discovery. The canonical
-operation map covers CRUD plus `byId`, `update`, `all`, `filter`, `cursor`,
-`options`, `optionSources`, `statsGroupBy`, `statsTimeSeries`,
-`statsDistribution`, `statsComparison`, and `export`; consumers must preserve
-unknown future IDs instead of validating against a closed key set.
+Keep `canonicalOperations` structural: it says which capabilities the OpenAPI
+and resource service support, never whether the current principal may execute
+them. Use `operations.{operationId}.availability` for current executable
+discovery. The maps are related but not identical: the structural projection can
+publish capability IDs such as `filterExpression`, while the executable
+projection can carry CRUD aliases such as `view` and `edit`. Treat the current
+CRUD, query, options, stats, comparison, and export IDs as an evolving catalog;
+consumers must preserve unknown future IDs instead of validating against a
+closed key set or zipping both maps by position or presumed membership.
 
 Apply `ResourceOperationAvailabilityProvider` with the published stable ID and
 the operation's own scope. Collection operations remain `COLLECTION`, including
