@@ -5,7 +5,8 @@ param(
     [string]$ManifestPath,
     [string]$RepoRoot,
     [string]$SkillsRoot,
-    [switch]$Json
+    [switch]$Json,
+    [switch]$FailOnDrift
 )
 
 Set-StrictMode -Version Latest
@@ -144,49 +145,59 @@ $report = [pscustomobject]@{
     SourceInOtherFamilyManifest = $sourceInOtherFamilyManifest
 }
 
+$blockingProblemCount =
+    $report.Summary.Drift +
+    $report.Summary.Missing +
+    $report.Summary.SourceInvalid +
+    $report.Summary.SourceNotInManifest
+
 if ($Json) {
     $report | ConvertTo-Json -Depth 8
-    return
+}
+else {
+    Write-Host "Codex skills audit"
+    Write-Host "Family: $($report.Family)"
+    Write-Host "Manifest: $($report.ManifestPath)"
+    Write-Host "Source: $($report.SourceRoot)"
+    Write-Host "Destination: $($report.SkillsRoot)"
+    Write-Host ""
+    Write-Host ("Summary: OK={0} DRIFT={1} MISSING={2} SOURCE_INVALID={3} INSTALLED_ONLY={4} SOURCE_NOT_IN_MANIFEST={5} SOURCE_IN_OTHER_FAMILY_MANIFEST={6}" -f $report.Summary.Ok, $report.Summary.Drift, $report.Summary.Missing, $report.Summary.SourceInvalid, $report.Summary.InstalledOnly, $report.Summary.SourceNotInManifest, $report.Summary.SourceInOtherFamilyManifest)
+
+    foreach ($item in $results) {
+        Write-Host ""
+        Write-Host ("[{0}] {1}" -f $item.Status, $item.Skill)
+
+        if ($item.SourceErrors.Count -gt 0) {
+            Write-Host ("  source errors: {0}" -f ($item.SourceErrors -join '; '))
+        }
+        if ($item.MissingFiles.Count -gt 0) {
+            Write-Host ("  missing: {0}" -f ($item.MissingFiles -join ', '))
+        }
+        if ($item.ExtraFiles.Count -gt 0) {
+            Write-Host ("  extra: {0}" -f ($item.ExtraFiles -join ', '))
+        }
+        if ($item.DifferentFiles.Count -gt 0) {
+            Write-Host ("  different: {0}" -f ($item.DifferentFiles -join ', '))
+        }
+    }
+
+    if ($installedOnly.Count -gt 0) {
+        Write-Host ""
+        Write-Host ("Installed-only directories outside family manifest: {0}" -f ($installedOnly -join ', '))
+    }
+
+    if ($sourceNotInManifest.Count -gt 0) {
+        Write-Host ""
+        Write-Host ("Source directories outside selected manifest: {0}" -f ($sourceNotInManifest -join ', '))
+    }
+
+    if ($sourceInOtherFamilyManifest.Count -gt 0) {
+        Write-Host ""
+        Write-Host ("Source directories tracked by another family manifest: {0}" -f ($sourceInOtherFamilyManifest -join ', '))
+    }
 }
 
-Write-Host "Codex skills audit"
-Write-Host "Family: $($report.Family)"
-Write-Host "Manifest: $($report.ManifestPath)"
-Write-Host "Source: $($report.SourceRoot)"
-Write-Host "Destination: $($report.SkillsRoot)"
-Write-Host ""
-Write-Host ("Summary: OK={0} DRIFT={1} MISSING={2} SOURCE_INVALID={3} INSTALLED_ONLY={4} SOURCE_NOT_IN_MANIFEST={5} SOURCE_IN_OTHER_FAMILY_MANIFEST={6}" -f $report.Summary.Ok, $report.Summary.Drift, $report.Summary.Missing, $report.Summary.SourceInvalid, $report.Summary.InstalledOnly, $report.Summary.SourceNotInManifest, $report.Summary.SourceInOtherFamilyManifest)
-
-foreach ($item in $results) {
-    Write-Host ""
-    Write-Host ("[{0}] {1}" -f $item.Status, $item.Skill)
-
-    if ($item.SourceErrors.Count -gt 0) {
-        Write-Host ("  source errors: {0}" -f ($item.SourceErrors -join '; '))
-    }
-    if ($item.MissingFiles.Count -gt 0) {
-        Write-Host ("  missing: {0}" -f ($item.MissingFiles -join ', '))
-    }
-    if ($item.ExtraFiles.Count -gt 0) {
-        Write-Host ("  extra: {0}" -f ($item.ExtraFiles -join ', '))
-    }
-    if ($item.DifferentFiles.Count -gt 0) {
-        Write-Host ("  different: {0}" -f ($item.DifferentFiles -join ', '))
-    }
-}
-
-if ($installedOnly.Count -gt 0) {
-    Write-Host ""
-    Write-Host ("Installed-only directories outside family manifest: {0}" -f ($installedOnly -join ', '))
-}
-
-if ($sourceNotInManifest.Count -gt 0) {
-    Write-Host ""
-    Write-Host ("Source directories outside selected manifest: {0}" -f ($sourceNotInManifest -join ', '))
-}
-
-if ($sourceInOtherFamilyManifest.Count -gt 0) {
-    Write-Host ""
-    Write-Host ("Source directories tracked by another family manifest: {0}" -f ($sourceInOtherFamilyManifest -join ', '))
+if ($FailOnDrift -and $blockingProblemCount -gt 0) {
+    throw ("Codex skills audit is not clean for family '{0}': DRIFT={1} MISSING={2} SOURCE_INVALID={3} SOURCE_NOT_IN_MANIFEST={4}." -f $report.Family, $report.Summary.Drift, $report.Summary.Missing, $report.Summary.SourceInvalid, $report.Summary.SourceNotInManifest)
 }
 

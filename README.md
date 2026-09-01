@@ -10,7 +10,7 @@ Canonical repository for Codex skills used by the Praxis platform and Ergon/Arch
 ## Program Status
 
 The broad July 2026 skill-review backlog is closed. The canonical Praxis
-manifest currently has 161 active Praxis skills and 10 Ergon migration skills.
+manifest currently has 167 active Praxis skills and 19 Ergon migration skills.
 New work should come from evidence, not from a skill-count target.
 
 Current planning references:
@@ -60,6 +60,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\audit-praxis-skills.ps1 -Family ergon-migration
 ```
 
+Use `-FailOnDrift` em gates automatizados que devem falhar quando a instalação
+estiver ausente ou diferente da fonte canônica. Sem esse switch, o audit mantém
+o modo diagnóstico compatível e apenas reporta drift.
+
 When PowerShell is unavailable, use the Python fallback. It computes `skillMdSha256`
 from normalized UTF-8 text content (LF line endings; binary assets remain byte-for-byte) and
 `treeSha256` from sorted `SHA256  relative/path` entries, matching the manifest semantics used
@@ -69,6 +73,8 @@ by the PowerShell scripts. This keeps audits stable across Windows and LF-based 
 python3 scripts/audit-praxis-skills.py --family praxis
 python3 scripts/audit-praxis-skills.py --family ergon-migration
 ```
+
+No fallback Python, o modo equivalente é `--fail-on-drift`.
 
 Family-scoped audits report source directories from other known family manifests separately as
 `sourceInOtherFamilyManifest`. `sourceNotInManifest` is reserved for directories not tracked by

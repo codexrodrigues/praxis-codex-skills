@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Rule Portfolio Catalog"
+  short_description: "Governa o catálogo técnico de regras Ergon"
+  default_prompt: "Use $ergon-rule-portfolio-catalog para reconstruir e auditar o portfólio técnico de regras antes do intake da migração."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Rule Source Extraction"
+  short_description: "Inventory legacy rule sources with evidence"
+  default_prompt: "Use $ergon-rule-source-extraction to build a conservative Phase 10 rule-source inventory from approved Ergon evidence."

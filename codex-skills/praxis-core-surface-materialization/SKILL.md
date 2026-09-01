@@ -1,6 +1,6 @@
 ---
 name: praxis-core-surface-materialization
-description: Use when Codex must implement, audit, or consume @praxisui/core resource action/surface materialization: ResourceDiscoveryService, capabilities, HATEOAS links, ResourceActionOpenAdapterService, ResourceSurfaceOpenAdapterService, SurfaceOpenMaterializerService, related-resource surfaces, schemaUrl/readUrl/submitUrl wiring, or table/form surface.open payloads.
+description: Use when Codex must implement, audit, or consume @praxisui/core resource action/surface materialization: ResourceDiscoveryService, capabilities, HATEOAS links, ResourceRecordOpenService, ResourceActionOpenAdapterService, ResourceSurfaceOpenAdapterService, SurfaceOpenMaterializerService, related-resource surfaces, governed nominal-row opening, schemaUrl/readUrl/submitUrl wiring, or table/form surface.open payloads.
 ---
 
 # Praxis Core Surface Materialization
@@ -20,6 +20,7 @@ Inspect the affected source before changing code or guidance:
 - `projects/praxis-core/src/lib/models/resource-discovery.model.ts`
 - `projects/praxis-core/src/lib/models/surface-action.model.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.ts`
+- `projects/praxis-core/src/lib/services/resource-record-open.service.ts`
 - `projects/praxis-core/src/lib/services/resource-action-open-adapter.service.ts`
 - `projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.ts`
 - `projects/praxis-core/src/lib/services/surface-open-materializer.service.ts`
@@ -45,6 +46,26 @@ Use the hypermedia-first path:
 
 Do not reconstruct resource keys, schema URLs, submit URLs, read URLs, or action ids from labels, DOM text, route fragments, endpoint naming conventions, or command strings.
 
+For a governed nominal row that references a record owned by another resource,
+preserve only `ResourceRecordOpenRef { sourceIdentityField, target: {
+resourceKey, surfaceId } }`. On each click, use `ResourceRecordOpenService` to:
+
+1. fetch the current principal's aggregate target catalog and accept only the
+   exact available surface or `resource-context-required`;
+2. read the declared source identity field without falling back to `item.id`;
+3. load the target item through the catalog `resourcePath`;
+4. follow the item's `_links.surfaces` relation;
+5. require the exact `ITEM` surface with `availability.allowed=true`;
+6. materialize with `ResourceSurfaceOpenAdapterService` and execute the result
+   as `surface.open`.
+
+Fail closed on identity, catalog, HATEOAS, path, or availability divergence.
+Keep detailed diagnostics internal and show a safe localized failure. Do not
+persist copied paths, schemas, widgets, presentation, a prebuilt payload, or an
+authoring-time availability decision inside `recordOpen`. Preserve this field
+through component and Page Builder round-trips, but do not expose it as a
+free-form component editor or AI-manifest choice.
+
 Legacy or AI-created row actions may sometimes arrive as `surface.open`,
 `dynamicPage.surface.open`, or an unbound action label from older persisted table
 configs. Treat that only as a compatibility grounding step into an already
@@ -60,8 +81,9 @@ label matching into a new authoring route for choosing surfaces.
 - `SurfaceCatalogItem.path` plus `method` becomes `submitUrl`/`submitMethod` only for writable form surfaces.
 - `ActionCatalogItem.requestSchemaUrl` becomes dynamic-form `schemaUrl`; `ActionCatalogItem.path`/`method` becomes submit target.
 - Item-scoped actions and surfaces require either an explicit `resourceId` or a binding such as `payload.row.id`.
+- Governed nominal-row opening must re-resolve the current principal and record context at execution time; authoring-time catalogs are grounding evidence, not runtime authority.
 - Collection `VIEW` and `READ_PROJECTION` surfaces materialize to `praxis-table`; item `FORM`, `PARTIAL_FORM`, `VIEW`, and `READ_PROJECTION` surfaces materialize to `praxis-dynamic-form`.
-- Related resources should use `surface.relatedResource` and resolver output rather than host-local parent/child filter conventions.
+- Related resources should use `surface.relatedResource` and resolver output rather than host-local parent/child filter conventions. Keep the contextual collection read target and child command target distinct: `SurfaceCatalogItem.path` materializes the parent-scoped `readUrl`, while `relatedResource.childResourcePath` is the base for create, update, and delete. Derive `childParentField` from the selected parent for create, expose only operations declared in `childOperations`, and resolve only the declared `parentIdPathVariable`. If the child path is absent, unsafe, or retains any unresolved placeholder, remove executable child actions and report fail-closed diagnostics; never reuse the contextual `readUrl` as a mutation fallback.
 - Availability, denied operations, and permission-limited states must come from capabilities, catalog availability, or HATEOAS links, not frontend guesses.
 - Preserve the materialization provenance carried in `payload.context.resource`, `payload.context.surface`, and `payload.context.action`. Consumers may display titles, subtitles, icons, shell state, and hydrated widget inputs, but must not replace the context with labels, generated ids, component names, selected row text, or host-local route state.
 - Consumer events such as table `recordSurfaceOpen`, `dynamicPage.surface.open`,
@@ -99,11 +121,23 @@ Use the smallest proof that exercises the changed flow:
 npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/services/resource-action-open-adapter.service.spec.ts --include=projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.spec.ts --include=projects/praxis-core/src/lib/services/surface-open-materializer.service.spec.ts
 ```
 
-- related-resource surfaces and outlet registration:
+- governed nominal-row opening plus list and Page Builder preservation:
 
 ```sh
-npm run test:core -- --include=projects/praxis-core/src/lib/services/related-resource-surface-resolver.service.spec.ts --include=projects/praxis-core/src/lib/surfaces/praxis-related-resource-outlet.component.spec.ts --include=projects/praxis-core/src/lib/services/surface-outlet-registry.service.spec.ts
+npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-record-open.service.spec.ts --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/services/resource-surface-open-adapter.service.spec.ts
+npm run ng -- test praxis-list --watch=false --progress=false --include=projects/praxis-list/src/lib/components/praxis-list.component.spec.ts --include=projects/praxis-list/src/lib/editors/list-config-editor.component.spec.ts --include=projects/praxis-list/src/lib/list-editor-capability.spec.ts --include=projects/praxis-list/src/lib/ai/praxis-list-authoring-manifest.spec.ts
+npm run ng -- test praxis-page-builder --watch=false --progress=false --include=projects/praxis-page-builder/src/lib/ai/page-builder-ui-composition-plan.spec.ts
 ```
+
+- related-resource surfaces, outlet registration, and command-path materialization:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/related-resource-surface-resolver.service.spec.ts --include=projects/praxis-core/src/lib/surfaces/praxis-related-resource-outlet.component.spec.ts --include=projects/praxis-core/src/lib/services/surface-outlet-registry.service.spec.ts --include=projects/praxis-core/src/lib/services/surface-open-materializer.service.spec.ts
+```
+
+For writable related resources, assert both halves explicitly: GET remains on the parent-scoped
+surface path, POST/PUT/DELETE use the canonical child path, create derives the parent field, and an
+unresolved child placeholder produces no toolbar/action metadata.
 
 - `surface.open` authoring/editor presets:
 

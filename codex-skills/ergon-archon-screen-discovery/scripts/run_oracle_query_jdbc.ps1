@@ -125,7 +125,8 @@ public class RunOracleSql {
             System.out.println("Update count: " + st.getUpdateCount());
           }
         } catch (SQLException e) {
-          System.out.println("ERROR: " + e.getMessage());
+          System.err.println("ERROR: " + e.getMessage());
+          System.exit(1);
         }
       }
     }

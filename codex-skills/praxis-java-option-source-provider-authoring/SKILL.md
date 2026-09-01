@@ -49,7 +49,9 @@ in `praxis-metadata-starter`; host code supplies only execution.
 5. Use `OptionSourceContextResolver` and `OptionSourceExecutionContext` for
    tenant, user, session, datasource, credential, or host-private execution
    attributes. Never publish those attributes in `x-ui`, OpenAPI, option extras,
-   logs intended for consumers, examples, or errors.
+   logs intended for consumers, examples, or errors. Treat public
+   `filterPayload`, structured filters, `includeIds`, and by-ids IDs only as
+   query criteria; they are never proof of authorization or row scope.
 6. Apply each published `dependsOn` / `dependencyFilterMap` value to provider
    execution. If a dependency is not executable, remove it from public metadata
    or resolve the platform gap. A provider that ignores a declared dependency is
@@ -57,7 +59,9 @@ in `praxis-metadata-starter`; host code supplies only execution.
 7. Implement `byIds` as a separate selected-value reload path. Return concrete
    options for found IDs; the executor preserves requested order and omits
    missing IDs. When reload needs the same public dependencies as filtering,
-   prove the contextual POST by-ids path carries them into the provider.
+   prove the contextual POST by-ids path carries them into the provider. Resolve
+   private context and enforce access even when the requested ID list is empty;
+   an early empty response must not bypass authorization.
 8. Override source dataset versioning when an external source would otherwise
    inherit a resource-level JPA count or timestamp query. A version header may
    remain public, but external availability must not depend on a base table.
@@ -88,13 +92,20 @@ rules into a provider.
 - The host owns private catalog access, context resolution, authorization and
   typed backend execution. Do not leak its datasource, query language, package,
   or credentials through metadata.
+- JPA-backed resource owners apply server-resolved row scope through
+  `normalizeOptionSourceFilter(...)`, which must govern filter, `includeIds`,
+  GET by-ids, POST by-ids, and empty-ID requests before the `Specification`
+  executes. Provider-backed sources apply the equivalent policy from the
+  private `OptionSourceExecutionContext`; do not assume the JPA hook rewrites a
+  provider-specific public payload.
 - `praxis-ui-angular` consumes filter and by-ids endpoints. It must not invent a
   fallback reload path or infer dependency semantics from labels.
 
 Prove: descriptor/schema runtime projection; correct provider selection; filter
 results; by-ids rehydration in requested order; dependency effect; private
-context use without leakage; and rejection of invalid input before `supports`,
-`filter`, or `byIds` is called. Add dataset-version proof for external sources.
+context use without leakage; scoped `includeIds`; empty-ID authorization; and
+rejection of invalid input before `supports`, `filter`, or `byIds` is called.
+Add dataset-version proof for external sources.
 Run the focused provider/registry/composite/validator tests and a host or
 quickstart HTTP integration test for published sources. Review Angular option
 consumer tests when public runtime metadata changes.

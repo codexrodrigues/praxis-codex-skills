@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Rule Decision Decomposition"
+  short_description: "Decompose rule evidence into governed decision drafts"
+  default_prompt: "Use $ergon-rule-decision-decomposition to build an evidence-bound RF-03 decision pack without inferring business semantics."

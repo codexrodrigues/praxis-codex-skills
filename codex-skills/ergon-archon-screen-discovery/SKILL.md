@@ -1,6 +1,6 @@
 ---
 name: ergon-archon-screen-discovery
-description: Investigate legacy Ergon/Archon screens for Oracle lineage and Java API migration. Use when Codex needs to map screens such as ERGadm00033 or ERGadm00034, debug/XML components, sqlSelect/sqlParameters, related flows, Oracle views, physical tables, synonyms, dependencies, packages, triggers, permissions, DTOs, parity tests, or a minimal backend API contract.
+description: Investigate legacy Ergon/Archon screens for Oracle lineage and Java API migration. Use for screen workflow, debug/XML components, SQL lineage, resources and Parte 1 API contracts. Requests to identify or migrate active customer customizations or business rules on a write operation belong to ergon-rule-migration-orchestration, even when a screen identifier is the only context.
 ---
 
 # Ergon Archon Screen Discovery
@@ -12,6 +12,24 @@ phase gate. It is an index only: XML/runtime evidence, the phase gate and the
 canonical Praxis resource contract decide discovery conclusions.
 
 Use this skill to turn an exploratory Ergon/Archon screen investigation into a reproducible migration package. Prefer evidence-backed conclusions over naming conventions. When coordinating a multi-phase migration, use `ergon-migration-orchestration` first to verify phase gates and artifact handoff.
+
+## Rule-intent handoff
+
+Do not answer a Parte 2 request for an active customer customization from XML,
+JavaScript, `onChanged`, field validation or another client-side screen rule
+merely because those sources are easy to locate. A short prompt such as
+“identifique uma customização cliente ativa na escrita de <SCREEN>” carries an
+intent plus identifier: resolve the existing Parte 1 write handoff and route to
+`ergon-rule-migration-orchestration`. You must use that skill before issuing
+any active/inactive conclusion; do not finish the request inside screen
+discovery. Screen discovery may contribute the
+operation and DB-backed route, but it must not substitute a UI rule for the
+requested customer-specific server-side rule.
+
+If both a client-side validation and an Oracle/HADES customer extension exist,
+preserve both as distinct origins and let the rule workflow classify the
+requested one. Do not ask the user to spell out HADES flags, owners, EP names,
+packages or source ranges that the factory is expected to discover.
 
 For developer onboarding and day-to-day execution, use [developer-quickstart.md](references/developer-quickstart.md). For repeatable starts, use [prompt-template.md](references/prompt-template.md). For didactic PT-BR user guidance and ready-to-use prompts by reading/discovery scenario, use [read-prompt-examples.md](references/read-prompt-examples.md). For team handoff review, use [handoff-review-checklist.md](references/handoff-review-checklist.md). For database access provisioning, use [codex-oracle-access.md](references/codex-oracle-access.md). For authenticated browser-session capture, use [codex-browser-runtime-capture.md](references/codex-browser-runtime-capture.md) and [runtime-capture-form-template.md](references/runtime-capture-form-template.md). For Cronos XML source-of-truth decisions, use [cronos-source-of-truth-template.md](references/cronos-source-of-truth-template.md). For legacy documentation discovery, use [legacy-docs-discovery.md](references/legacy-docs-discovery.md). For component-to-API inventory, use [component-lineage-matrix-template.md](references/component-lineage-matrix-template.md). For read endpoint parity gates, use [read-parity-matrix-template.md](references/read-parity-matrix-template.md). For Java/API package-state parity, use [java-oracle-session-context.md](references/java-oracle-session-context.md). For API endpoint design, use [api-design-patterns.md](references/api-design-patterns.md), [lib-ui-fieldspec-api.md](references/lib-ui-fieldspec-api.md), and [java-api-implementation-playbook.md](references/java-api-implementation-playbook.md). For a filled read-first frequency API model, use [example-ergadm00189-api-contract.md](references/example-ergadm00189-api-contract.md). For architecture-level write patterns, use [archon-write-patterns.md](references/archon-write-patterns.md). For write behavior and write deferral, use [write-risk-template.md](references/write-risk-template.md), [write-risk-detail-template.sql](references/write-risk-detail-template.sql), and [write-api-handoff-template.md](references/write-api-handoff-template.md). For deciding whether a screen can move to API implementation, use [closure-checklist-template.md](references/closure-checklist-template.md).
 

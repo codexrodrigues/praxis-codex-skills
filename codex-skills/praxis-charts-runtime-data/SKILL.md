@@ -90,6 +90,14 @@ For dashboard catalog payloads, choose the materialization path deliberately whe
 
 Do not assume the schema mapper and backend payload adapter have identical round-trip behavior. If a flow must reopen, explain, or reauthor the governed document, preserve `chartDocument` through the canonical path instead of reconstructing it from runtime config. Do not create a parallel widget schema if `x-ui.chart` plus widget shell/canvas metadata is enough.
 
+Current governed presentations include ordinary series plus KPI, gauge,
+treemap, grouped scatter with two measures, funnel/pyramid, terms/histogram
+distribution, and comparison projections where the backend contract supports
+them. Each presentation must materialize from canonical capability/schema/stats
+evidence; do not map a chart type to a visually similar ECharts series when its
+dimension, measure, denominator, hierarchy, bucket, or comparison semantics are
+missing.
+
 ## Operational Proof
 
 Prove the guidance against source and focused specs before declaring the skill current:

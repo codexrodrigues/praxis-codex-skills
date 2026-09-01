@@ -92,6 +92,13 @@ CORS is part of the browser-visible Praxis contract.
 - Rate limiting is abuse protection, not authorization. Use distinct buckets for login, public read, public query, bulk action, config, and any high-cost AI/SSE surface; never let a forged forwarding header create arbitrary buckets.
 - Include `Retry-After`, bounded/safe error bodies, and diagnostics that do not leak secrets, tokens, or private config values.
 
+Apply the dedicated AI per-client rate limit before the broader config limit for
+`/api/praxis/config/ai/**`. Keep its limit/window externally configurable and
+prove denial without triggering a provider call. The reference in-memory
+limiter is host baseline only; production gateway/WAF and provider project
+budgets remain separate controls. Pair provider-cost or probe work with
+`praxis-config-ai-provider-operations`.
+
 ## CSRF, Session, And Filter Chain
 
 Cookie JWT authentication, CSRF, origin governance, and rate limiting have separate responsibilities.

@@ -34,6 +34,7 @@ Start with the narrowest applicable row. Add a row only when the changed contrac
 | internal framework UI text | `praxis-angular-i18n-governance`, relevant specs, and both `pt-BR`/`en-US` catalog updates; preserve UTF-8 |
 | docs, recipes, examples, playgrounds | `praxis-angular-docs-playgrounds` and the owning changed-doc validator, such as `npm run docs:validate-frontmatter:changed` |
 | visual/product behavior | focused functional evidence plus browser/screenshot evidence at desktop and narrow viewport with `praxis-ui-product-design` |
+| functional accessibility | owning component spec plus `praxis-angular-accessibility-governance`; add real browser keyboard/focus/overlay/chart proof when DOM lifecycle matters |
 | config-starter/quickstart integration or semantic decision materialization | matching focused local E2E lane or documented cross-repository smoke, only after unit/build proof |
 | release/package/publication | documented local preflight from `RELEASE.md`; GitHub tag/workflows remain the only official publish path |
 | skills-only change | skill structure, manifest hashes, generated issue draft, local sync, and audit only; do not run Angular suites without code/generated/runtime change |

@@ -85,7 +85,7 @@ def run_sync(args) -> int:
         return SYNC_MODULE.sync(args)
 
 
-def audit_args(repo_root: Path, skills_root: Path):
+def audit_args(repo_root: Path, skills_root: Path, *, fail_on_drift: bool = False):
     return argparse.Namespace(
         repo_root=str(repo_root),
         family="praxis",
@@ -93,6 +93,7 @@ def audit_args(repo_root: Path, skills_root: Path):
         skills_root=str(skills_root),
         json=True,
         fix_manifest=False,
+        fail_on_drift=fail_on_drift,
     )
 
 
@@ -162,6 +163,38 @@ def audit_report(**summary_overrides):
 
 
 class PythonSkillScriptTests(unittest.TestCase):
+    def test_jdbc_runner_exits_nonzero_when_oracle_reports_an_error(self) -> None:
+        script = (
+            REPO_ROOT
+            / "codex-skills"
+            / "ergon-archon-screen-discovery"
+            / "scripts"
+            / "run_oracle_query_jdbc.ps1"
+        )
+        content = script.read_text(encoding="utf-8")
+
+        self.assertIn('System.err.println("ERROR: " + e.getMessage());', content)
+        self.assertIn("System.exit(1);", content)
+
+    def test_sqlcl_runner_avoids_console_pipeline_and_preserves_failure_detection(self) -> None:
+        runner = (
+            REPO_ROOT
+            / "codex-skills"
+            / "ergon-archon-screen-discovery"
+            / "scripts"
+            / "run_oracle_query.ps1"
+        )
+        content = runner.read_text(encoding="utf-8")
+
+        self.assertNotIn("| Tee-Object", content)
+        self.assertIn("1> $stdoutPath 2> $stderrPath", content)
+        self.assertIn('$ErrorActionPreference = "Continue"', content)
+        self.assertIn("run_oracle_query_jdbc.ps1", content)
+        self.assertIn("$jdbcExitCode -ne 0", content)
+        self.assertIn("java\\.io\\.IOException", content)
+        self.assertIn("$sqlclExitCode -ne 0", content)
+        self.assertIn("SQLCL_ERROR_CLASS=", content)
+
     def test_validate_skill_structure_reads_utf8_skill_content(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -659,6 +692,36 @@ class PythonSkillScriptTests(unittest.TestCase):
                 run_sync(sync_args(root, skills_root))
 
             self.assertEqual("local drift\n", (skills_root / "praxis-test" / "SKILL.md").read_text())
+
+    def test_audit_reports_destination_drift_without_failing_by_default(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skills_root = root / "installed-skills"
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+            write_manifest(root, "ergon-migration", [])
+            self.assertEqual(0, run_sync(sync_args(root, skills_root)))
+            (skills_root / "praxis-test" / "SKILL.md").write_text("local drift\n")
+
+            with redirect_stdout(io.StringIO()):
+                result = AUDIT_MODULE.audit(audit_args(root, skills_root))
+
+            self.assertEqual(0, result)
+
+    def test_audit_fail_on_drift_returns_nonzero_for_destination_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            skills_root = root / "installed-skills"
+            skill_root = write_skill(root, "praxis-test")
+            write_manifest(root, "praxis", [manifest_entry(root, skill_root)])
+            write_manifest(root, "ergon-migration", [])
+            self.assertEqual(0, run_sync(sync_args(root, skills_root)))
+            (skills_root / "praxis-test" / "SKILL.md").write_text("local drift\n")
+
+            with redirect_stdout(io.StringIO()):
+                result = AUDIT_MODULE.audit(audit_args(root, skills_root, fail_on_drift=True))
+
+            self.assertEqual(1, result)
 
     def test_sync_force_converges_removed_files_without_touching_other_skill_directories(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

@@ -96,6 +96,8 @@ If the landing `node_modules` was installed in a platform-specific environment, 
 
 ## Companion Skills
 
+- Use `praxis-landing-dynamic-page-studio` for Studio execution policy, safe operational JSON, guided recipes, and hosted workstation proof.
+
 - Use `praxis-landing-public-docs-contracts` before changing platform-level claims.
 - Use `praxis-angular-docs-playgrounds` for component docs manifests, Angular examples, AI recipes, and generated registry projections.
 - Use `praxis-api-quickstart-cockpit-http-validation` when the page cites quickstart/cockpit evidence.

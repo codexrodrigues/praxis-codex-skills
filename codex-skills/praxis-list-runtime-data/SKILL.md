@@ -39,6 +39,13 @@ Before editing or advising:
 - `selection` supports `none`, `single`, and `multiple`, with return modes `value`, `item`, or `id`. Validate form binding and `compareBy` before changing payload semantics.
 - `actions` may emit local events or delegate to shared `GlobalActionService` through canonical `globalAction`. Do not persist command strings or host-only action DSLs.
 - `export` uses the shared collection export contract from `@praxisui/core`; optional export UI must still be gated by capability/link evidence when the resource is remote.
+- Select `configPersistenceStrategy` deliberately. `volatile` disables local
+  storage for transient/public materializations; `input-first` and
+  `local-first` retain their documented precedence. Never persist a runtime
+  projection merely because the list opened.
+- Owner-authored runtime profiles describe the closed local shape or declared
+  remote read effects. A matching profile is execution evidence for host policy,
+  not authorization and not a substitute for resource capabilities.
 
 ## Active Versus Declared
 
@@ -62,6 +69,7 @@ Use the smallest proof that matches the change:
 
 - runtime data precedence or remote loading: `src/lib/services/list-data.service.spec.ts`
 - component rendering, events, selection, templating, skin, or export: `src/lib/components/praxis-list.component.spec.ts` plus focused utility specs
+- volatile/profile behavior: `src/lib/components/praxis-list.volatile-persistence.spec.ts`, metadata/profile specs, and registry projection proof
 - remote pagination: `test-dev/e2e/list-remote-pagination.playwright.spec.ts` when browser evidence is required
 - surface host integration: `test-dev/e2e/surface-open-list-demo.playwright.spec.ts` when list is opened as a composed surface
 - public API or docs behavior: use `praxis-angular-public-api-governance` and `praxis-list-docs-evidence`

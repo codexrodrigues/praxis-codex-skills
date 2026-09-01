@@ -38,6 +38,11 @@ For backend grounding, inspect `praxis-metadata-starter` filter DTO and resource
 
 If a field, range, or lookup cannot be represented, classify the gap. Most problems are `ja-suportado-mal-nomeado-ou-mal-materializado` or `suportado-parcialmente`, not a new table-only contract.
 
+Standalone `praxis-filter` is authorable through its projected manifest. Keep
+filter-field operations selected by stable ids from the Table owner manifest;
+preserve target/validator/example closure through
+`projectComponentAuthoringManifest()` and generated registry ingestion.
+
 ## Action Contract Rules
 
 - Toolbar, row, and bulk actions must resolve from declared table config, global action catalog, resource actions, record surfaces, capabilities, and `_links`.
@@ -56,6 +61,10 @@ Do not route user intent by local keywords. The AI or backend contract chooses t
 - Toolbar/row/bulk/global actions: `table-global-action-adapter.spec.ts`, toolbar editor specs, config editor integration, and AI operation specs when assistant behavior changes.
 - CRUD action integration: `crud-integration-editor` plus config editor integration specs.
 - Browser-visible filter/action UX: relevant Playwrights such as `funcionarios-inline-filters`, filter demo interactions, table connections, or surface-open demos.
+
+Add `praxis-filter-authoring-manifest.spec.ts`, widget config-editor/metadata
+specs, registry projection specs, and palette/editor round-trip when standalone
+Filter authoring changes.
 
 ## Companion Skills
 

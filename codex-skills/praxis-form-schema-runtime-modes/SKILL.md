@@ -104,6 +104,12 @@ Keep these runtime rules explicit:
 
 Do not create `FormConfig.sections` or `sections: []` merely to make a schema-driven form initialize. If generated layout is weak, classify the gap and fix metadata/runtime materialization.
 
+Resolve Reactive Determinations from the actual operation/form mode metadata.
+The runtime may debounce, cancel stale work, apply declared outputs, and emit
+sanitized diagnostics, but it must not select a determination by field names or
+execute a local business formula. Pair definition/binding or race changes with
+`praxis-reactive-determinations`.
+
 ## Aderence Inventory
 
 Before creating any input, config key, endpoint convention, or public export, classify the need:
@@ -166,6 +172,8 @@ For public input/export changes, run `npm run build:praxis-dynamic-form` and a d
 State explicitly when live API/browser validation was skipped.
 
 ## Companion Skills
+
+- Use `praxis-reactive-determinations` for governed rule/snapshot, metadata compiler, host resolver, and HTTP proof.
 
 - Use `praxis-form-submit-payload-pipeline` for payload normalization and local/transient submit semantics.
 - Use `praxis-form-layout-canvas` for `layoutPolicy`, visual blocks, generated presets, and canvas/editor placement.

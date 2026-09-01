@@ -1,6 +1,6 @@
 ---
 name: praxis-java-filter-query-authoring
-description: Use when implementing, auditing, or migrating Praxis Java resource filters and queries: dedicated GenericFilterDTO contracts, @Filterable predicates and relations, ranges, relative periods, pageable sorting, query services, filtered schemas, option-source dependencies, and focused HTTP proof in a Spring host or praxis-metadata-starter.
+description: Use when implementing, auditing, or migrating Praxis Java resource filters and queries: dedicated GenericFilterDTO contracts, @Filterable predicates and relations, ranges, relative periods, pageable sorting, server-side ResourceFilterAccessScope, includeIds hydration, filtered schemas, option-source dependencies, and focused HTTP proof in a Spring host or praxis-metadata-starter.
 ---
 
 # Praxis Java Filter Query Authoring
@@ -58,6 +58,12 @@ specification helper.
 7. Connect relationship filters to their governed option source only when value,
    display, dependency, filter and by-ids reload contracts all exist. A filter
    DTO does not replace an option source descriptor.
+8. For row-level authorization on `POST /{resource}/filter`, override
+   `resolveResourceFilterAccessScope()` in the resource service and return an
+   explicit `ResourceFilterAccessScope.unrestricted()`, `.denied()`, or
+   `.restricted(specification)` from authenticated server context. The base
+   service composes this boundary with the functional filter and reapplies it
+   when loading missing `includeIds`.
 
 Read [predicate-and-proof-matrix.md](references/predicate-and-proof-matrix.md)
 when selecting operations, modeling aliases/ranges/relative periods, or choosing
@@ -72,6 +78,16 @@ the smallest proof.
   authorization context, and resource-specific default sort. Do not publish
   confidential, tenant-crossing, audit-only, or prohibited fields simply because
   JPA can filter them.
+- A `FilterDTO` is a client-controlled functional query, never an authorization
+  boundary. `includeIds` may rehydrate an authorized selected value outside the
+  current functional filter, but it must never materialize a row outside the
+  server-resolved `ResourceFilterAccessScope`. Do not solve this by applying the
+  full functional filter to the selected-ID query or by hiding external rows in
+  Angular.
+- The resource-filter scope also applies to `/options/filter`, which reuses the
+  filtered resource query. It does not implicitly govern independent `/by-ids`,
+  `/all`, `/filter/cursor`, `/locate`, stats, or option-source by-ids paths;
+  audit and enforce each published surface through its canonical contract.
 - `praxis-ui-angular` materializes published filter metadata. It does not infer
   a predicate from labels or construct an undocumented payload dialect.
 
@@ -88,6 +104,13 @@ one invalid or unsupported payload, and authorization/dependency constraints whe
 applicable. For ranges or relative periods, test normalization and boundary/time
 semantics. For public filter-schema changes, prove `/schemas/filtered` and the
 direct runtime consumer or state why it is unaffected.
+
+When `ResourceFilterAccessScope` is involved, use a real JPA/service or HTTP
+fixture with at least two scopes. Prove the normal page, an authorized
+`includeIds` value outside the functional filter, an external ID, a mixed
+authorized/external request, null or empty IDs, denied scope, explicit global
+scope, and a read-only resource. Keep option-source tests green and validate the
+downstream host against the exact published starter artifact.
 
 Use focused starter tests for `GenericSpecificationsBuilder`, range/relative
 normalizers, `PageableBuilder`, `FilterRequestBodyAdvice`, and affected resource
