@@ -31,6 +31,9 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringRuntimeComponentGroundingService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/VectorRankedProjectKnowledgeCandidateRetriever.java`
 - `src/main/java/org/praxisplatform/config/service/RagProjectKnowledgeDerivedIndexService.java`
+- `src/main/java/org/praxisplatform/config/controller/DomainCatalogController.java`
+- `src/main/java/org/praxisplatform/config/service/DomainCatalogIngestionService.java`
+- `src/main/java/org/praxisplatform/config/service/DomainCatalogPromptContextService.java`
 - `src/main/java/org/praxisplatform/config/rag/RagDocumentIdentity.java`
 - `src/main/java/org/praxisplatform/config/rag/RagFilters.java`
 - `src/main/java/org/praxisplatform/config/rag/**`
@@ -77,11 +80,15 @@ Semantic retrieval is candidate grounding, not primary intent resolution. `Agent
 
 Scoped semantic retrieval must not retry without tenant/environment scope. `AgenticAuthoringApiMetadataCandidateCatalog` may fall back to scoped structured metadata when semantic retrieval returns no candidates, but it must not issue an unscoped vector query to recover scoped results.
 
+Broad candidate scans must use repository projections containing only the fields needed to rank or identify candidates, such as path, method, tags, summary, description, and operation id. Do not hydrate embeddings, raw endpoint JSON, schemas, or parameters for every row; hydrate exact heavy evidence only after a candidate is selected. Apply the same rule to Domain Catalog context: reuse one scoped context result for candidates of the same canonical resource within one enhancement/turn instead of repeating the same remote query per operation.
+
 ## Context And Schema
 
 - `GET /api/praxis/config/ai-context/{componentId}` resolves current state through `ui_user_config` user-to-tenant fallback. `POST` uses transient caller state and does not persist it.
 - Both paths compose the system component definition, optional template, component state, mode, resource path, and `AiSchemaContext`. Default mode is `edit`; `requireSchema` defaults true only for `create`.
 - `/ai-context` does not fetch or populate the schema itself. `schemaContext` is a pointer. Executable authoring resolves the actual structure just in time through `SchemaRetrievalService` and canonical `/schemas/filtered?path=...&operation=...&schemaType=...`.
+- Preserve exact operational verification evidence for the remainder of the same turn. When pre-intent verification already resolved schemas, principal capabilities, actions, or related-resource surfaces, carry compact typed projections forward instead of repeating the same remote probes after intent resolution.
+- A parent-child semantic decision needs the canonical related-resource candidates before the LLM chooses `targetSurfaceId`. Project related surfaces from `/schemas/surfaces` with their exact runtime id, resource/scope, semantic title/description/tags, availability, and related-resource contract. The LLM selects among those governed candidates; the preview must still verify the selected surface and block missing, ambiguous, unavailable, or incomplete contracts.
 - Schema retrieval returns typed failures for invalid context, missing base URL, access denial, not found, invalid payload, and transport/unavailable states. Do not replace a failed canonical schema request with `/schemas/catalog`, `api_metadata`, or an inferred local schema.
 - The Angular `AiBackendApiService` derives the AI-context base URL from `API_URL.default` unless an explicit gateway override exists. Hosts must supply governed identity headers; demo/local header defaults are not corporate authorization.
 
@@ -93,6 +100,14 @@ Scoped semantic retrieval must not retry without tenant/environment scope. `Agen
 - Reverted or superseded evidence must be removed from the derived index and must not influence new turns. A stale vector hit without a matching canonical concept/evidence row is discarded.
 - Component corpus retrieval requires release/scoped metadata and `aiVisibility=allow`; preserve source id/kind, chunk kind, source pointer, content hash, corpus version, score, and release provenance in diagnostics.
 - Runtime component observations are accepted only as `untrusted_frontend_observation` evidence. Ground them through `AgenticAuthoringRuntimeComponentGroundingService` into `GroundedRuntimeComponentContext`, preserving accepted/rejected claims, evidence refs, safe digests, lifecycle, omitted/redacted/sensitive field diagnostics, and available surfaces/affordances. Unsupported trust boundaries, stale observations, inactive observations, missing component identity, or unsupported schema versions must be rejected before they influence API/resource grounding.
+
+## Domain Catalog First-Turn Grounding
+
+- The persisted latest governed Domain Catalog release remains canonical. Its vector documents are a derived ranking index; map ranked hits back to canonical items before prompt projection.
+- Publish and filter Domain Catalog RAG documents with the same normalized release token from `RagDocumentIdentity.resolveReleaseId`. Also preserve tenant, environment, service key, resource key, item type, context key, node type, and canonical item identity. A raw release key on one side and a normalized token on the other creates false empty retrieval and unreconciled status.
+- Pre-intent planning must receive governed Domain Catalog context on the first authoring turn when the caller did not provide a Domain Catalog preference. Add a copied internal `enabled=true` hint only for this asymmetry; preserve an explicit `enabled=false` or caller-provided scope.
+- Retrieve semantically from the scoped latest release first, then use the existing scoped lexical query only as a fallback when semantic retrieval produces no canonical item. Lexical matching does not decide primary intent.
+- Do not treat successful ingestion, a populated Domain 360 response, or vector availability alone as proof of grounding. An operational gate must wait for `expectedDocumentCount == publishedDocumentCount > 0` and audit that every provider pre-intent call contains the governed context.
 
 ## Consultative Answers
 
@@ -133,6 +148,7 @@ Use focused local gates:
 - ingestion/context: `mvn "-Dtest=ApiMetadataIngestionServiceTest,ApiMetadataControllerTest,AiContextControllerTest,ContextRetrievalServiceTest,SchemaRetrievalServiceTest" test`
 - resource/project knowledge/runtime grounding: `mvn "-Dtest=AgenticAuthoringApiMetadataCandidateCatalogTest,AgenticAuthoringResourceDiscoveryServiceTest,AgenticAuthoringProjectKnowledgeServiceTest,VectorRankedProjectKnowledgeCandidateRetrieverTest,AgenticAuthoringRuntimeComponentGroundingServiceTest" test`
 - RAG/vector changes: `mvn "-Dtest=RagVectorStoreServiceTest,RagVectorStoreConfigurationTest,RagProjectKnowledgeMetadataTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
+- Domain Catalog prompt/RAG grounding: `mvn "-Dtest=DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,RagVectorStoreServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest" test`
 - Angular AI-context consumer: `npm run test:praxis-ai:backend-api`
 
 Review `docs/ai/**`, `docs/domain-catalog/**`, API contract docs, quickstart ingestion/smoke scripts, and Angular AI context consumers when public grounding changes.

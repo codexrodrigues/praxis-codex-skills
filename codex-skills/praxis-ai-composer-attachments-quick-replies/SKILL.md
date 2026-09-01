@@ -1,6 +1,6 @@
 ---
 name: praxis-ai-composer-attachments-quick-replies
-description: Use when implementing, auditing, or consuming `@praxisui/ai` composer submission, quick replies, recommended intents, clarification continuation, pasted/selected attachments, safe attachment forwarding, edit/resend/feedback actions, or optional browser speech input.
+description: Use when implementing, auditing, or consuming `@praxisui/ai` composer submission, quick replies, recommended intents, clarification continuation, pasted/selected attachments, safe attachment forwarding, edit/resend/feedback actions, governed provider-backed audio transcription, MediaRecorder capture, or optional browser speech compatibility.
 ---
 
 # Praxis AI Composer, Attachments, And Quick Replies
@@ -9,9 +9,9 @@ The composer captures local interaction and renders backend-authored choices. It
 
 ## Owner Flow
 
-`PraxisAiAssistantShellComponent` owns accessible input, display, file/paste events, object-URL cleanup, optional voice UX, and emits typed actions. `assistant-quick-reply.utils` preserves a reply's canonical value and structured metadata. `AgenticAuthoringTurnClientService` maps backend stream quick replies, pending clarification, preview, patch, diagnostics, and consultative catalog answers into shell turn results. `PraxisAssistantTurnOrchestratorService` owns submit/clarification/edit/resend/retry/cancel state and stale-artifact reset. Backend contracts own semantic intent, canonical actions, decisions, risk, clarification authority, upload references, and apply authorization.
+`PraxisAiAssistantShellComponent` owns accessible input, display, file/paste events, object-URL cleanup, optional voice UX, and emits typed actions. `PraxisGovernedAudioTranscriptionService` owns browser audio capture and delegates transcription to `AiBackendApiService`; it does not own provider routing. `assistant-quick-reply.utils` preserves a reply's canonical value and structured metadata. `AgenticAuthoringTurnClientService` maps backend stream quick replies, pending clarification, preview, patch, diagnostics, and consultative catalog answers into shell turn results. `PraxisAssistantTurnOrchestratorService` owns submit/clarification/edit/resend/retry/cancel state and stale-artifact reset. Backend contracts own semantic intent, canonical actions, decisions, risk, clarification authority, upload references, provider transcription, and apply authorization.
 
-Read `projects/praxis-ai/AGENTS.md`, shell types/component, quick-reply utility, turn models/orchestrator, context snapshot models, speech service, and focused specs. Use `praxis-ai-turn-orchestration-transport` for turn/stream state and `praxis-ai-shell-session-context` for snapshots or serializable attachment summaries.
+Read `projects/praxis-ai/AGENTS.md`, the README voice section, `docs/voice-transcription-platform-investigation.md`, shell types/component/tokens, quick-reply utility, turn models/orchestrator, context snapshot models, both speech services, `AiBackendApiService.transcribeAudio(...)`, and focused specs. Use `praxis-ai-turn-orchestration-transport` for turn/stream state, `praxis-ai-shell-session-context` for snapshots or serializable attachment summaries, and `praxis-ai-backend-config-contracts` for the governed transcription endpoint.
 
 ## Structured Continuations
 
@@ -42,7 +42,10 @@ Read `projects/praxis-ai/AGENTS.md`, shell types/component, quick-reply utility,
 - Image attachments created by paste or file picker receive an owned object URL. Revoke owned preview URLs when attachments are removed, detached, or the shell is destroyed. Preserve host-owned URLs and do not revoke an URL still used by active attachments.
 - Edit/resend branches from the selected user message and clears stale quick replies, preview, pending patch, diagnostics, clarification, and apply state before the replacement turn. Retry/cancel follow the orchestrator's same reset authority.
 - Feedback is write-only evidence linked to assistant/status/error observation IDs; it cannot mutate a semantic decision or applied result without backend acknowledgement.
-- Browser speech is explicit opt-in and local transcription convenience. Keep it disabled by default, append a valid transcript without auto-submitting, handle unsupported/permission/no-speech outcomes, and invalidate late captures through the capture sequence when mode changes or capture stops. Voice text still goes through normal backend semantic resolution.
+- `voiceInputMode="governed-transcription"` is the enterprise/provider-backed path. Capture with `getUserMedia` plus `MediaRecorder`, select a supported audio MIME type, and post the resulting blob through `AiBackendApiService.transcribeAudio(...)` to the canonical Config endpoint with normal tenant/user/environment scope and credentials. Angular must never call a provider directly.
+- Governed transcription returns editable prompt text only. Trim and append a valid transcript without auto-submitting, resolving intent, starting a turn, granting apply authority, or treating provider/model metadata as semantic evidence. The user must review or explicitly submit the normal backend semantic-resolution turn.
+- Stop every `MediaStreamTrack` after stop, cancel, error, mode change, or teardown. Preserve unsupported, permission-denied, aborted, no-speech, capture, HTTP, and empty-transcript outcomes without exposing raw provider errors. Invalidate late captures through the shell capture sequence so a stale result cannot alter the prompt.
+- `browser-speech` is an explicit compatibility option for approved low-risk environments, not the enterprise/default architecture. It keeps the same no-auto-submit, stale-result, cleanup, accessibility, and normal semantic-resolution rules.
 
 ## Contract Inventory And Impact
 
@@ -57,11 +60,17 @@ npm exec -- ng test praxis-ai --watch=false --progress=false \
   --include='projects/praxis-ai/src/lib/ui/assistant-shell/assistant-shell.component.spec.ts' \
   --include='projects/praxis-ai/src/lib/core/models/assistant-context.models.spec.ts' \
   --include='projects/praxis-ai/src/lib/core/services/assistant-turn-orchestrator.service.spec.ts' \
+  --include='projects/praxis-ai/src/lib/core/services/ai-backend-api.service.spec.ts' \
   --include='projects/praxis-ai/src/lib/core/services/browser-speech-transcription.service.spec.ts'
 ```
 
+When `PraxisGovernedAudioTranscriptionService` changes, require its focused
+MediaRecorder lifecycle spec in addition to the shell and backend-client specs.
+If that spec is absent, record a platform test gap rather than treating the
+browser-speech fixture as equivalent proof.
+
 `assistant-context.models.spec.ts` is the focused proof that attachment summaries remain serializable, redact unsafe text, and drop raw `File`, blob/preview URL, runtime state, config payload, diagnostics, or pending patch details before entering assistant context.
 
-Exercise: structured clarification; direct prompt after clarification; edit/resend cleanup; pasted and selected attachment with preview cleanup; hostile label that must not route intent; stale speech transcript; serializable attachment summaries with no local file/blob leakage; and a requested upload with no contract that must be rejected/escalated.
+Exercise: structured clarification; direct prompt after clarification; edit/resend cleanup; pasted and selected attachment with preview cleanup; hostile label that must not route intent; scoped multipart governed transcription; stop/cancel/track cleanup; stale governed and browser-speech transcripts; transcript review without auto-submit; serializable attachment summaries with no local file/blob leakage; and a requested upload with no contract that must be rejected/escalated.
 
 Use `praxis-ai-semantic-intent` for routing, `praxis-files-upload-backend-contract` for uploads, `praxis-ai-backend-config-contracts` for endpoint changes, and `praxis-angular-i18n-governance` for framework copy.

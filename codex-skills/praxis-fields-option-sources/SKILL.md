@@ -75,6 +75,9 @@ adding Angular fallbacks:
 ## Option Source Rules
 
 - Prefer `optionSource.key` plus `filterOptionSourceOptions(...)` over ad hoc endpoints when the backend publishes an option source.
+- Treat `filtering.searchStrategies` as governed search intent. Auto-select the only declared strategy; when two or more exist, require an explicit accessible choice and do not send a search until it is selected. Never infer code, name, or document strategy from the entered text.
+- Preserve the selected key as `searchStrategy` in the option-source request. Apply its `minSearchChars` before HTTP. Honor `inputFormat=digits` with ASCII digits only; for `kind=normalized-document`, accept only digits plus spaces, periods, and hyphens, strip those visual separators, and apply the minimum to the normalized digits.
+- Keep strategy validation provider-neutral and feedback safe. Do not expose the raw searched document, SQL, bindings, provider arguments, or backend exception text in UI messages, logs, metadata, or `OptionDTO.extra`.
 - Treat `optionSource.filterEndpoint` and `optionSource.byIdsEndpoint`, when present in backend metadata, as execution evidence for the published contract. Angular code may route through `GenericCrudService`, but it must preserve the same source key, resource path, endpoint intent, and request envelope instead of synthesizing a different lookup route.
 - Use `optionSource.resourcePath` or the canonical resource path to configure the CRUD service; do not invent local routes or derive a path from label/value names.
 - Treat option labels, translated display text, visible search results, local `options` arrays, selected object labels, and `OptionStore` cached rows as presentation and hydration evidence only. Canonical identity is the selected value/id resolved through the configured value path plus the backend `optionSource`/entity lookup contract. Do not infer enum expansion, authorization, selectable policy, domain meaning, or backend validation from labels or currently loaded option rows.
@@ -154,3 +157,8 @@ Always audit reopen/edit and presentation mode for selected values. A filter req
 For backend-aligned option-source work, include a negative check for fields named `search`, `sort`,
 `filters`, or `includeIds` and a by-ids check that verifies missing IDs are omitted and returned
 options preserve requested order.
+
+When governed search strategies change, also prove: ambiguous multi-strategy input makes no HTTP
+request; a single strategy is transported automatically; invalid `digits` input is blocked;
+`normalized-document` is normalized before transport; and `minSearchChars` is evaluated after that
+normalization.

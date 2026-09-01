@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ergon Rule Shadow Parity"
+  short_description: "Govern shadow contracts and parity evidence"
+  default_prompt: "Use $ergon-rule-shadow-parity to design and assess fail-safe shadow parity evidence."

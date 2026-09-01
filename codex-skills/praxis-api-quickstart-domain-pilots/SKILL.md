@@ -158,6 +158,12 @@ When a pilot consumes an active runtime snapshot, keep it as a downstream data-p
 
 The loader changes which governed plan is evaluated; it does not authorize business effects. Keep business endpoints, persistence, idempotency, shadow, effect execution and authority behind their own pilot gates.
 
+For Reactive Determination pilots, resolve the complete active snapshot as one
+compatible unit, validate tenant/scope/content/head identity, atomically retain
+last-known-good on an invalid candidate, and expose only sanitized health. Prove
+the operation-specific Metadata projection and Angular/HTTP consumer rather than
+embedding the formula in the demo controller.
+
 ## Persistence And Demo Data
 
 Operational migrations and deterministic demo data support proof; they do not define canonical platform semantics. Preserve resource relationships, lifecycle states, and representative data needed for filters, lookups, actions, analytics, governance, and negative paths. Update `docs/DEMO-DATABASE.md` when the operational model or seed assumptions change.
@@ -198,6 +204,8 @@ For public cockpit evidence, run the relevant documented script, such as `script
 Review `README.md`, `docs/DEMO-DATABASE.md`, `docs/COCKPIT-QUICKSTART-REFERENCE.md`, relevant quickstart scripts, public landing docs, and executable HTTP examples when behavior is published. State explicitly when no derived artifact changes.
 
 ## Companion Skills
+
+- `praxis-reactive-determinations`: metadata, host resolver, Angular runtime, and corpus proof.
 
 - Use `praxis-api-quickstart-operational-proof` for host/starter ownership, dependency versions, and host validation.
 - Use `praxis-api-quickstart-cockpit-http-validation` for cockpit docs, HTTP scripts, and published proof.

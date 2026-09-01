@@ -137,7 +137,10 @@ const queryContext = {
 
 When a list config includes a data source, keep the resource path relative and point it at the same backend resource. Pass contextual filters/pagination/sort through the component's `queryContext` input when the published `PraxisListConfig.dataSource` type does not expose `queryContext`. Use local templating/skinning for presentation, not for semantic resource behavior. Do not fetch data with host `HttpClient` just to pass local data unless the screen is explicitly local-only.
 
-In current published trains, list persistence strategies may be limited to `input-first` and `local-first`; do not assume table's `volatile` strategy is accepted by list.
+Current published List supports `volatile`, `input-first`, and `local-first`.
+Use `volatile` for transient/public materializations that must not write local
+storage; do not infer the strategy from Table or silently persist a derived page
+projection.
 
 ## Related Surfaces And Row Actions
 

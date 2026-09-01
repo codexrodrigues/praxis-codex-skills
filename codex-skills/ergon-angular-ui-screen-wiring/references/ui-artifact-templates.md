@@ -110,11 +110,55 @@ Create these under `docs/migracao/<SCREEN>/`.
 | Actions/surfaces/capabilities nativos | pass/fail/n-a | `<evidence>` |
 | Option sources e selected reload | pass/fail/n-a | `<evidence>` |
 | Checker `check-angular-praxis-reference-pattern.ps1` | pass/fail/n-a | `<comando/output>` |
+| Hierarquia de acoes | pass/fail | `uma criacao por colecao; CRUD e workflow separados; labels orientados ao objeto` |
 | Angular implementado | pass/fail | `<link>` |
 | Build/testes frontend | pass/fail | `<link>` |
-| QA visual desktop/mobile | pass/fail | `<link>` |
+| QA visual por estado desktop/mobile | pass/fail | `<ui-visual-qa.md + capturas sanitizadas>` |
 
 ## Resultado
 
 `PASS_READ_ONLY/PASS_WITH_DEFERRED_WRITES/PARTIAL_SESSION_REQUIRED_FOR_DATA/RETURN_TO_BACKEND_CONTRACT/RETURN_TO_DTO_SEMANTIC_HARDENING/BLOCKED_LEGACY_RUNTIME/BLOCKED_BACKEND_API`
+```
+
+## ui-visual-qa.md
+
+```markdown
+# UI Visual QA - <SCREEN>
+
+## Direcao visual
+
+- Adjetivos: `<3-5 adjetivos especificos>`
+- Densidade: `<compacta/confortavel>`
+- Cor de orientacao: `<token semantico Praxis/host>`
+- Hierarquia: `<acao primaria, secundaria, destrutiva e workflow>`
+
+## Matriz obrigatoria de estados
+
+| Estado | Desktop | Narrow/mobile | Resultado | Evidencia/residuo |
+|---|---|---|---|---|
+| inicial/loading | pass/fail | pass/fail | `<resultado>` | `<captura ou gap>` |
+| vazio inicial | pass/fail | pass/fail | `<resultado>` | `<captura ou gap>` |
+| populado | pass/fail | pass/fail | `<resultado>` | `<captura ou gap>` |
+| item selecionado | pass/fail | pass/fail | `<resultado>` | `<captura ou gap>` |
+| acoes desabilitadas | pass/fail | pass/fail | `<resultado>` | `<captura ou gap>` |
+| filtro sem resultado | pass/fail | pass/fail | `<resultado>` | `<captura ou gap>` |
+| overlay/drawer/modal aberto | pass/fail/n-a | pass/fail/n-a | `<resultado>` | `<captura ou gap>` |
+| erro recuperavel | pass/fail/n-a | pass/fail/n-a | `<resultado>` | `<captura ou gap>` |
+
+## Hierarquia de acoes
+
+| Regiao | Primaria | Secundarias | Destrutiva | Workflow | Duplicacao |
+|---|---|---|---|---|---|
+| colecao | `<acao ou nenhuma>` | `<acoes>` | `<acao ou nenhuma>` | `separado` | `nao` |
+| detalhe | `nenhuma, salvo requisito comprovado` | `<acoes contextuais>` | `<acao ou nenhuma>` | `<regiao separada>` | `nao` |
+| estado vazio | `<CTA somente se nao houver equivalente visivel>` | `nenhuma` | `nenhuma` | `nenhum` | `nao` |
+
+## Aceite
+
+- [ ] Componentes usam tokens e aparencia Praxis, sem geometria local de botao.
+- [ ] Labels sao curtos, orientados ao objeto e consistentes entre estados.
+- [ ] Uma unica acao primaria domina cada regiao funcional.
+- [ ] Disabled continua reconhecivel como controle e informa o requisito faltante.
+- [ ] Foco, contraste, truncamento, scroll e touch target foram verificados.
+- [ ] Toda excecao local tem owner, issue e gatilho de remocao.
 ```

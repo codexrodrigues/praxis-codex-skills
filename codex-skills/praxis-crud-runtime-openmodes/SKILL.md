@@ -46,8 +46,19 @@ Do not rebuild CRUD drawers, modals, or table/form launchers in apps when the mi
 - `form.submitUrl` and `form.submitMethod` must appear together.
 - `actions[].params` maps row/context values into route/query/input and is not persistence.
 - When an action lacks an explicit open binding, prefer discovered CRUD surfaces/actions from capabilities, HATEOAS links, `/schemas/surfaces`, and `/schemas/actions` before falling back to legacy launcher behavior. If an explicit route/modal/drawer binding exists, preserve it and do not refetch discovery just to override the host contract.
+- Treat discovery and launcher resolution as sequential decision stages, not retry mechanisms. The launcher fallback is valid only when discovery did not select an executable surface. Once a canonical surface is selected, synchronous or asynchronous materialization/open failure must fail closed without emitting a second toolbar/row action or launching another drawer, modal, or route.
+- A table with `crudContext` delegates canonical create/open actions to `PraxisCrudComponent` before any standalone `surface.open` attempt. A standalone table owns exactly one `surface.open` attempt. Correlate request/failure diagnostics with `actionId`, `surfaceId`, mode, resource path, selected path, normalized cause, and `fallback=none`; do not include row data, form payloads, headers, or raw stacks.
 - Treat `openMode`, visible row/toolbar actions, and injected CRUD affordances as orchestration evidence only. Availability and executable permission come from capabilities, links, surfaces, actions, and adapter payloads; do not infer workflow permission or backend side effects from a drawer/modal opening or a button label.
 - Keep `crudContext` stable; avoid getters or object literals that recreate context each change detection cycle.
+- `CrudMetadata.interactionMode='inspect-only'` is the canonical public-local
+  inert mode. It suppresses derived and declared operational actions, launchers,
+  remote resource/capability discovery, config persistence, and externally
+  injected create/view/edit/delete events while retaining purely local
+  sort/filter/pagination. Incompatible resource paths, actions, forms, or open
+  modes produce diagnostics; they do not silently re-enable execution.
+- The `public-local-inspect-only` runtime profile proves a closed local shape
+  with `effects: []`. The host still evaluates policy and must not treat a
+  matching profile as authorization.
 
 ## Child Boundaries
 
@@ -65,11 +76,14 @@ Patch the child owner when the child contract is wrong. Patch CRUD when orchestr
 Minimum gates:
 
 - compile: `npm run build:praxis-crud`
-- component/runtime: `src/lib/praxis-crud.component.spec.ts`
+- component/runtime: `npx ng test praxis-crud --watch=false --progress=false --include=projects/praxis-crud/src/lib/praxis-crud.component.spec.ts`
+- table ownership/standalone execution: `npm run test:table -- --include=projects/praxis-table/src/lib/praxis-table.remote-regression.spec.ts --watch=false`
 - launcher/open modes: `src/lib/crud-launcher.service.spec.ts`
 - form host: `src/lib/dynamic-form-dialog-host.component.spec.ts`
 - drawer adapter: `src/lib/drawer-adapter-token.spec.ts`
 - metadata/public component docs: `src/lib/praxis-crud.metadata.spec.ts`
+- inspect-only/profile: component and metadata/profile specs plus an adversarial
+  assertion that no router, HTTP, dialog, drawer, or global action executes
 - E2E labs when host behavior changes: focused `test-dev/e2e/*.playwright.spec.ts`
 
 Review public API, drawer adapter entrypoint, README, docs manifest, and official examples when behavior is public.

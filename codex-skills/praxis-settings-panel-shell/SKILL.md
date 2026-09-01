@@ -61,7 +61,7 @@ Inspect:
 - Use canonical tokens/classes for visual changes: `--pfx-settings-panel-*`, `.praxis-settings-panel-backdrop`, and `.praxis-settings-panel-pane`.
 - Do not bypass `SettingsPanelService.open(...)` replacement mediation. It must consult `onBeforeClose('cancel')`, preserve the current panel when vetoed, and apply dirty discard confirmation when relevant.
 - Inputs are applied through declared Angular inputs when possible and also passed via the relevant data token (`SETTINGS_PANEL_DATA` for authoring, `BASE_SIDE_PANEL_DATA` for base/runtime).
-- Escape must defer to active child CDK overlays before closing the panel. Do not reintroduce local document listeners in consumers that bypass `overlay-escape-defer`.
+- Escape must defer to active interactive child CDK overlays before closing the panel. `overlay-escape-defer` must ignore panes that are themselves `aria-hidden="true"` or whose direct content host is aria-hidden, such as a non-interactive Material tooltip; otherwise a tooltip can block the drawer indefinitely. Do not reintroduce local document listeners in consumers that bypass this mediation.
 
 ## Base Side Panel Rules
 
@@ -73,6 +73,7 @@ When changing `BaseSidePanelService` or `BaseSidePanelComponent`:
 - `updateSize(...)` must update the overlay, emit `sizeChanged$`, and persist when a `persistSizeKey` is bound.
 - Horizontal resize is `resizeAxis: 'x'` only; keyboard resize uses ArrowLeft/ArrowRight plus Home/End for min/max when available.
 - Backdrop and Escape close should emit typed close results such as `{ type: 'backdrop' }` or `{ type: 'esc' }`.
+- Escape coverage must prove both transitions: the panel remains open while an interactive child pane is active, then closes after that pane disappears even if an aria-hidden tooltip pane remains. Dispose every opened scope in test teardown so stale CDK overlays cannot capture later keyboard events.
 - Keep base panel neutral: it may host optional footer content, but it must not introduce Settings Panel Apply/Save/Reset semantics.
 
 ## Authoring Vs Runtime Drawer

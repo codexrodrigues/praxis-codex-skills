@@ -1,5 +1,13 @@
 # Parte 2 Phase Gates
 
+## Global Admission Before Every Phase
+
+Read `factory-contracts/part2-foundation-readiness-v2.json` before evaluating a
+phase-local gate. Confirm the active profile, environment, authority, exact
+stage/action and profile blockers. Corporate `NOT_READY` does not block an
+admitted development action, and development admission never authorizes a
+homologation or production action.
+
 Use these gates to decide whether a phase can advance. A plan is not closeout evidence.
 
 ## Cross-Artifact Identity Gate
@@ -43,6 +51,11 @@ Blocking gaps:
   support.
 
 ## Phase 9 - Rule Migration Intake
+
+Opening an intake package under `FACTORY_DEVELOPMENT` requires minimum
+screen/operation/source/environment identity and an admitted `CREATE_INTAKE`
+action. Missing Parte 1 artifacts are recorded as gaps and may keep Phase 9
+open or block later transitions; they do not prevent creating the package.
 
 Required outputs:
 
@@ -197,7 +210,9 @@ Output:
 Close only when:
 
 - feature flag off proves all cases still use the approved Parte 1 baseline route;
-- runtime preflight requires both the feature flag and an explicit operational approval gate, or an equivalent dynamic/auditable provider that fails closed;
+- runtime preflight requires independent default-off controls. In
+  `FACTORY_DEVELOPMENT` they may be technical and automated; homologation or
+  production additionally requires the operational admission of that profile;
 - feature flag on plus approved DENY proves Java blocks before the legacy route, including direct proof that `ErgonLegacyExecutor` or the scoped legacy routine was not called;
 - feature flag on plus ALLOW proves the request still calls the approved Parte 1 baseline route;
 - preflight error response matches the legacy/API contract, including status, code/message marker, fields, and structured envelope when the API exposes one;
