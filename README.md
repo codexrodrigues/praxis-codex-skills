@@ -146,3 +146,7 @@ Each family manifest lives in `codex-skills/` and records:
 When any file inside a skill changes, update the corresponding `treeSha256`; when `SKILL.md` changes, update both `skillMdSha256` and `treeSha256`.
 
 Migration workspaces should pin these manifests by hash instead of vendoring skill contents.
+
+## Política de CI e publicação
+
+Validação local durante desenvolvimento; Actions apenas no fechamento necessário de versões. Consulte [ACTIONS-RELEASE-POLICY.md](ACTIONS-RELEASE-POLICY.md) para gatilhos, gates e recuperação.
