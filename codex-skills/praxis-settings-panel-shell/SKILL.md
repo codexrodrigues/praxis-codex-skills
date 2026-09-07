@@ -52,8 +52,9 @@ Inspect:
 
 ## Shell Rules
 
-- Keep Apply and Save enabled only when dirty, valid, and not busy.
-- `Apply` previews without closing through `applied$`; `Save` emits through `saved$` and closes.
+- Keep `Apply` enabled only when the hosted editor is dirty, valid, not busy, and interactive.
+- Keep `Save` enabled when the editor is valid, not busy, interactive, and either has a dirty draft or has changes already published through `Apply` that still need final persistence.
+- `Apply` previews without closing through `applied$`; it may synchronously clear the editor draft. `Save` must then read the provider's current value again, emit through `saved$`, and close without replaying a cached transient operation.
 - `Reset` delegates to the hosted editor and emits `reset$`; it must not clear unrelated host state.
 - `Cancel`, backdrop, Escape, and replacement of an open panel must pass through the canonical close mediation, including `onBeforeClose` and dirty discard confirmation where applicable.
 - Persist width through `persistSizeKey`; expanded/collapsed state must not accidentally overwrite persisted manual width.
