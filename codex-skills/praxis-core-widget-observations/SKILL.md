@@ -48,6 +48,36 @@ Before editing code or guidance, inspect:
   non-serializable, or failing provider observations. Resolve existence and authority from component metadata, manifests,
   resource/action/surface discovery, composition definitions, or backend/domain contracts before making a decision.
 
+## Selection-Driven Shell Identity
+
+Before declaring avatar unsupported, inspect `WidgetShellConfig.avatar` in
+`projects/praxis-core/src/lib/widgets/widget-shell.model.ts`, the avatar component
+and its spec, shell binding/transient specs, and the Core README section
+“Selection-driven widget headers”. The existing optional object exposes textual
+`imageSrc`, `name`, and `initials`, takes precedence over the icon, and uses the
+Core image/initials/person fallback. Do not coerce objects into URLs or bypass
+image URL sanitization/authentication. Prove missing/failed images and recovery
+after changing/clearing identity, including late errors from an earlier image.
+
+Dynamic Page resolves shell path bindings against `state`, `transient`, `context`
+and the existing widget context. Keep selected identity transient and propagate
+empty selection. The header does not fetch the record or format dates/documents;
+use the canonical link projection in `praxis-core-composition-runtime`.
+
+Use the native Page Builder shell editor's Appearance section for avatar fields.
+Inspect `projects/praxis-page-builder/src/lib/editor/widget-shell-editor.component.spec.ts`
+and pair with `praxis-page-builder-authoring` for Apply/Save/reopen/reset,
+illustrative preview versus real bound values, and disabling the avatar. The
+existing `widget.shell.configure` operation/capability owns these fields; no new
+avatar link kind is needed. Check the manifest and target registry before claiming
+AI discovery; a local editor screenshot does not prove remote publication.
+
+For identity plus remote detail, verify first-frame hiding, error/retry and focus
+in the Dynamic Form owner. Check actual widget width, action overflow and the open
+editor at narrow width with `praxis-ui-product-design`; viewport size alone does
+not describe the available shell width. Run shell/avatar/transient specs and
+the shell editor round-trip tests for changes in these surfaces.
+
 ## Inventory Before New Contract
 
 Classify gaps before adding widget or observation contracts:
