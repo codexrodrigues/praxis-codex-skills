@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-core-composition-runtime/
-- Descricao atual: Use when Codex must inspect, change, or rely on @praxisui/core composition and widget runtime contracts: DynamicWidgetPageComponent, widget definitions, widget events, widget shell, composition links, nested ports, connection/link execution, transform runtime, surface hosts, related-resource outlets, runtime observations, or dynamic page materialization.
+- Descricao atual: Use when Codex must inspect, change, or rely on @praxisui/core composition and widget runtime contracts: DynamicWidgetPageComponent, widget definitions, widget events, widget shell, composition links, selection-driven formatted headers, nested ports, connection/link execution, transform runtime, surface hosts, related-resource outlets, runtime observations, or dynamic page materialization.
 
 ## Classificacao inicial
 

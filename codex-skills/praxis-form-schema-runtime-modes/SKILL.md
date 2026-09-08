@@ -1,6 +1,6 @@
 ---
 name: praxis-form-schema-runtime-modes
-description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view modes, initialValue hydration, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
+description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view modes, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
 ---
 
 # Praxis Form Schema Runtime Modes
@@ -84,6 +84,48 @@ Keep these runtime rules explicit:
   transient `layoutPolicy`, prove the adapter/materializer produced the right runtime inputs before
   adding host-side defaults. Do not patch a migrated screen by hardcoding operation URLs or copying
   generated layout into `FormConfig.sections`.
+
+## Remote Selection, Loading And Recovery
+
+Read `projects/praxis-dynamic-form/docs/entity-read-feedback.md`, the runtime
+`loadEntity`/`retryEntityRead` implementation, template and i18n, and
+`projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.entity-selection.spec.ts`.
+These states belong to Dynamic Form. Existing `resourceId` and loading events
+already carry the integration; do not create a host overlay, new loading input,
+or connection-editor option to hide outdated values.
+
+- Audit pending, failed, superseded, cleared and successful reads independently.
+  Keep mounted controls and geometry while hiding the previous body with zero
+  opacity, no transition, `inert` and `aria-hidden` during pending or failure.
+  An opacity fade still exposes two identities; assert computed opacity zero
+  immediately after selection even when a host supplies an opacity transition.
+  `visibility:hidden` alone is insufficient when descendants override visibility.
+- Keep local status outside the busy form. Use the stable live region and the
+  existing localized loading/error/retry/success text, avoiding duplicated speech.
+  A page-top loading bar is not sufficient feedback for a detail region.
+- Failed or invalid reads must keep body and submit blocked. Explicit retry
+  invalidates read deduplication and focuses the stable detail region. Neither
+  automatic selection nor a later response may steal focus from another control.
+- Remote success replaces the snapshot using `form.reset(normalized)`, clearing
+  fields omitted by the new response. Cancel superseded reads and block submit
+  after identity changes, including changes during async hooks. Preserve create
+  and authoritative local `initialValue` behavior; do not replace those with
+  remote selection semantics.
+- Use existing `emptyState` for selection guidance when applicable. Header
+  name/photo formatting belongs to Core composition; it does not replace the
+  form's loading/error state or require a new avatar-specific connection.
+
+Run the entity-selection spec for A→B pending, B failure/retry, partial/invalid
+responses, B arriving after C, clearing while pending, submit guards and focus
+after keyboard retry. For visual proof, the official `/dynamic-page-lab` includes
+`form-entity-read-proof.component.ts` with explicit completion/failure controls.
+Separate this deterministic local fixture from real API evidence. Inspect desktop
+and narrow width, first-frame hiding, accessible tree and keyboard focus; do not
+claim screen-reader certification from DOM assertions alone.
+
+No new editor control, manifest operation or public API is required for this
+internal feedback materialization. Reassess derived artifacts only when the
+actual public surface changes, and record the decision.
 
 ## Mode And Presentation Rules
 
