@@ -5,6 +5,7 @@ Use this reference for Praxis visual authoring surfaces: settings panel, metadat
 ## Contents
 
 - Common Layouts
+- Connection Diagrams
 - Rule Builders
 - Settings Panels
 - Metadata-Driven Forms
@@ -39,6 +40,28 @@ Decision tree:
 - If more than one pattern seems necessary, identify the dominant workflow and keep secondary regions quiet.
 
 Do not use a card grid as the default editor layout. Use cards only for comparable repeated items, not as generic spacing containers.
+
+## Connection Diagrams
+
+Keep identity, relationship category and interaction state visually distinct.
+Stable component accents supplement icons and names; link colors require a
+legend and direction must remain readable through terminals/line geometry.
+Motion should indicate an explicit exploration or observed state, not imply
+that configured connections are continuously executing.
+
+Give the map the primary work area and keep details on demand. Avoid competing
+hover cards, port catalogues and inspectors. Long catalogues need an opaque
+theme-aware surface, independent scrolling and reachable close controls.
+Informational tooltips must paint above radials/captions without intercepting
+wire selection. Validate hit targets at actual zoom, not just path stroke width.
+
+Caption placement, connection anchors and routing are coordinated geometry.
+Moving a label with CSS alone can leave unnecessary detours or new collisions.
+Keep geometry stable during zoom; separate clipped canvas content from fixed
+navigation chrome. When the stage is too small, a readable relationship list
+can preserve the same inspection journey better than a miniature diagram.
+For implementation invariants, use the connection-editor reference in
+`praxis-page-builder-composition`; do not transplant its graph into Visual Builder.
 
 ## Rule Builders
 

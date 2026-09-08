@@ -53,6 +53,11 @@ Before editing Page Builder composition, inspect:
 
 ## Composition Rules
 
+For connection-diagram work, load [connection-editor-ux.md](references/connection-editor-ux.md).
+It maps the existing editorial, trace, caption, routing, viewport, and inspection
+sources to their invariants and focused proof. This is the Page Builder connection
+graph over `composition.links`, not Visual Builder's `RuleBuilderState`.
+
 Use stable widget keys for all widget, canvas, shell, and composition operations. Never address widgets by array index in persisted links or AI/edit operations.
 
 Model wiring as canonical `page.composition.links`:

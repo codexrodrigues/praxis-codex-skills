@@ -19,6 +19,15 @@ Use only official repo routes, ports, origins, scripts, and browser validation f
 
 ## Review Questions
 
+For connection diagrams, add task evidence to still screenshots: follow one
+specific output, select an incoming link from its destination, close details
+one layer at a time, and verify the restored context with mouse and keyboard.
+Capture long catalogues, high zoom and compact mode with details open. Inspect
+tooltip paint order and click-through, caption/line collisions, distinct node
+identity versus link categories, and clipping at the toolbar/control strip.
+Check native scroll as well as transform and focused-element bounds. A screenshot
+cannot prove event ordering, focus restoration, delivery or human comprehension.
+
 Ask these from the screenshot, not from code intent:
 
 1. What does the eye see first?
@@ -71,4 +80,3 @@ Report:
 - validation skipped and exact reason
 - visual defects fixed
 - residual visual risk
-

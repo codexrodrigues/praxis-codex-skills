@@ -89,6 +89,22 @@ GitHub Actions is for the final release/tag, publication, or hosted-only smoke. 
 
 ## Failure Triage
 
+For browser evidence from a shared watcher, identify the active process,
+checkout, effective proxy target and a rendered marker of the changed code.
+A proxy file's default does not prove the running process's target. Do not
+restart someone else's server or change origins to hide an integration error.
+If a reload destroys the editor mid-journey, discard that interrupted segment
+and re-establish its starting state on the updated DOM; report it as partial
+if it cannot be repeated. Keep build/spec results tied to the tested revision
+or file state, especially when other tasks are modifying the checkout.
+
+For canvas/overlay focus, record the actual active element, clipped visibility,
+transform, native surface scroll and inner-panel scroll separately. Cover both
+keyboard and pointer event ordering. Screenshot, unit test, structural route
+preview, live delivery and participant usability evidence are distinct claims;
+none automatically proves the others. Historical benchmark/test counts must
+not become permanent readiness thresholds in a skill.
+
 Classify a failure before broadening tests:
 
 1. Environment/tooling mismatch: Node ownership, missing browser, ports, credentials, or stale `dist`/`node_modules`.

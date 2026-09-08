@@ -55,6 +55,20 @@ timers that lack lifecycle ownership.
 
 ## Workflow
 
+For layered editors, use semantic inspection context as well as the original
+DOM invoker. Re-rendering a catalogue can destroy that DOM node; restore the
+same selected object/port/relationship by stable identity. Incoming-link
+inspection must return to the destination catalogue that initiated it, not
+automatically to the source. Escape dismisses one owned layer at a time while
+preserving unrelated route/progress and draft-cancellation semantics.
+
+Check that a focus-restoration target is connected, non-inert and actually
+visible inside its clipping/scrolling surface. For transformed canvases,
+client rectangles alone do not prove visibility. Use a visible editor fallback
+when necessary; reveal controls by scrolling their owning list/catalogue,
+without unintentionally scrolling the canvas. Lifecycle callbacks must verify
+that the inspected object and open state are still current before moving focus.
+
 1. Name the user journey and the exact accessibility failure, not only the WCAG
    label.
 2. Map focus owner, keyboard owner, semantic DOM owner, i18n owner, and overlay
@@ -64,6 +78,9 @@ timers that lack lifecycle ownership.
    diagnostics.
 4. Exercise the sequence with keyboard only, including open, mutate, async
    result, error/cancel, close, and restored focus where applicable.
+   Also repeat with a real pointer sequence when outside-click dismissal is
+   involved: `pointerdown` can destroy context before `click`. A synthetic
+   `.click()`-only spec does not cover that ordering.
 5. Review desktop and narrow reflow plus high-contrast/reduced-motion behavior
    when the changed surface uses color, motion, sticky/floating controls, canvas,
    charts, tables, or overlays.
@@ -96,4 +113,3 @@ behavior.
 - `praxis-charts-analytics-interactions`: chart selection and cross-filter semantics.
 - `praxis-angular-i18n-governance`: localized accessible names and messages.
 - `praxis-ui-product-design`: visual hierarchy, tokens, contrast, and screenshot QA.
-
