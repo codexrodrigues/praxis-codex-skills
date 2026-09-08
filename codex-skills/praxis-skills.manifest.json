@@ -775,8 +775,8 @@
                                             "praxis-core-providers-bootstrap",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "2C431F11DE3C0D38825DB18F869A2AAF96579DD159EF5C97C3EACE7849531488",
-                       "treeSha256":  "355826E4AEF4D9CBD4E0547AC196F0DDD3CEFC15FE89ADF2659241906C5E9DB2"
+                       "skillMdSha256":  "B9EA2DBE77FD5B940CFC2B172C6D53C0CB2EE75BD7A313FF243A19106AEC5E4B",
+                       "treeSha256":  "2BA0F758C561F0E067F566A4D215B6C694097736FEC3512FC55F228EB4168C1B"
                    },
                    {
                        "name":  "praxis-core-global-actions-metadata",
@@ -915,8 +915,8 @@
                                             "praxis-core-providers-bootstrap",
                                             "praxis-core-global-actions-metadata"
                                         ],
-                       "skillMdSha256":  "5789484BFEE9400E4DEB8A7767BAB8BB852DC06BB98E60445FCEAF084051AC5B",
-                       "treeSha256":  "7AECEC13426F24DA58D83A47ECCE98C54F7DAC05F08786D16819FF03CF98A5F4"
+                       "skillMdSha256":  "39FDA052F6808265CB94DCDD50A0892DCF95F339A0412FAFECA5C7E629694310",
+                       "treeSha256":  "49F5D083F9DDFC7DA0B31B77B30EC9BFA456CA75534BDE93D3EAEBC6A4B1FD3A"
                    },
                    {
                        "name":  "praxis-cron-builder-ai-validation",
@@ -1498,8 +1498,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "ED22A942E28C9E34D87727B0C984797135F101F1B8BE1E4742EA78B9B77F3CCF",
-                       "treeSha256":  "30EF7B192E7544BFDF3F3B7EBF247D70C0F3309F5021338343AD5313B4805098"
+                       "skillMdSha256":  "DCE4B1E154B90736B420892E8041DEB201A62D363547F4B66F61638B8D4FB89F",
+                       "treeSha256":  "2256C84224AE796021F54A47D0980DF4A8F9260A2D6F63A2D865FA328CA68DA7"
                    },
                    {
                        "name":  "praxis-form-submit-payload-pipeline",
