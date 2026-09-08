@@ -43,6 +43,22 @@ filter-field operations selected by stable ids from the Table owner manifest;
 preserve target/validator/example closure through
 `projectComponentAuthoringManifest()` and generated registry ingestion.
 
+Distinguish filter outputs when authoring connections or explaining payloads:
+`change` carries filter values; `contextChange` carries `PraxisFilterViewContext`
+with `filter`, `labels`, `fieldLabels` and `fields` for presentation. Only its
+`filter` portion is the query payload; do not send the entire view context as
+a backend filter or imply that its display labels trigger a query. Inspect
+`requestSearch` separately when the workflow requires explicit search.
+
+For localized labels, inspect
+`components/praxis-filter/praxis-filter-editorial.ts` and its spec under
+`projects/praxis-table/src/lib/`, owning metadata providers and i18n registration.
+The official descriptors distinguish “Valores do filtro” from “Valores e
+rótulos do filtro”. Consumers resolve them through
+`ComponentMetadataRegistry.resolveEditorial()`; do not rename outputs or add
+host label maps. Test pt-BR/en-US, fallback and host translation overrides
+without changing binding identity or payload shape.
+
 ## Action Contract Rules
 
 - Toolbar, row, and bulk actions must resolve from declared table config, global action catalog, resource actions, record surfaces, capabilities, and `_links`.

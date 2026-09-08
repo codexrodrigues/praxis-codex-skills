@@ -55,6 +55,13 @@ skill, not only document a UI convention.
 
 ## Primary Component Map
 
+For Page Builder connection-diagram UX, follow `praxis-page-builder-composition`
+and its `references/connection-editor-ux.md`, then `praxis-page-builder-authoring`
+when a draft, state description or saved link changes. A connection diagram
+does not imply Visual Builder rule-graph ownership. Inspect-only navigation
+must be proved free of page mutations; it does not require a save just to
+demonstrate opening and closing details.
+
 Use the real component family of the task, not a generic "editor changed" label.
 
 - `@praxisui/settings-panel`: `SettingsPanelService`, `SettingsPanelRef`, `SettingsValueProvider`, `global-config-editor`, shell `Apply` / `Save` / `Reset` / `Cancel`

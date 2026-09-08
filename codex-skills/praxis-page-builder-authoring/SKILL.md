@@ -65,6 +65,16 @@ When `applyToAll` or page preset behavior changes, confirm whether the canonical
 
 ## Round-Trip Checklist
 
+For Connection Editor, separate inspection from mutation. Selecting a port
+opens its catalogue; explicit create/edit actions start a cancellable draft.
+Opening, zooming, following a structural route and dismissing details must not
+emit page changes. Naming state information is different: it edits the existing
+`state.schema[path].description` or `state.derived[path].description` through
+history, preserving paths, values and endpoints; persistence still uses page
+Save. Do not name transient state through a persisted layer or fill absent
+descriptions by guessing business meaning. Load the connection-editor reference
+in `praxis-page-builder-composition` for panel, route and geometry invariants.
+
 Before calling a Page Builder editor ready, verify:
 
 - opening an existing page preserves `WidgetPageDefinition` without converting it to legacy `GridPageDefinition`.
