@@ -48,6 +48,12 @@ When the task touches a config path, verify whether it is:
 
 JSON-only support is incomplete for frequently edited paths such as templating, actions, selection, skin, data binding, export, localization, and accessibility.
 
+For `surface.open` actions, aggregate mounted child raw-draft validity with the main JSON,
+query and document validators. Invalid-only text is dirty, blocks Apply/Save, survives unrelated
+tab visits, and is discarded only by explicit Reset/Cancel. Track contributors by mounted editor
+identity rather than mutable labels or indices; do not rewrite the main JSON editor from a
+validation-only notification or remove an action while its unresolved draft would be lost.
+
 ## Global Actions
 
 List actions should use canonical `GlobalActionRef` shape:
@@ -81,6 +87,8 @@ Minimum useful gates:
 - JSON editor changes: `src/lib/editors/json-config-editor.component.spec.ts`
 - authoring document/projection changes: `src/lib/list-editor-capability.spec.ts`
 - global action changes: `src/lib/list-global-action-adapter.spec.ts`
+- surface action drafts: mount the Core Surface editor and prove invalid text, tab preservation,
+  correction, independent contributors, removal guard and Reset through the List owner.
 - visual/round-trip authoring changes: `test-dev/e2e/list-authoring-canonical.playwright.spec.ts` when browser proof is needed
 - public docs/manifest impact: use `praxis-list-docs-evidence` and `praxis-list-ai-validation`
 

@@ -89,6 +89,15 @@ Keep the Angular models aligned with the real backend payloads. `ResourceSchemaC
 
 Do not route user intent, action selection, surface opening, tab selection, lookup selection, or analytics metrics by labels, regex, XML names, aliases, or keyword lists as the primary decision. Textual matching may rank candidates only after canonical resource/operation/surface/field scope is resolved from metadata and governed tools.
 
+## Schema transport resilience
+
+- `SchemaMetadataClient` owns the schema-read deadline. Angular consumers inject `SCHEMA_METADATA_CLIENT_OPTIONS`; direct clients pass constructor options. `requestTimeoutMs` defaults to 30000; finite nonnegative values are required and 0 explicitly disables the deadline. Do not invent per-widget timeout settings for this policy.
+- Propagate `GetSchemaParams.signal` and preserve shared-request isolation: cancelling one subscriber must not cancel others; cancelling the final subscriber aborts the transport. Timeout must release in-flight state even if transport ignores abort, and late responses must not start cache writes.
+- The deadline covers cache reads, fetch/body consumption and a 304 refetch. It does not bound all component initialization, hooks or independent preference persistence. A cache write already started is not rolled back by abort.
+- Keep tenant, locale, credentials and host headers on a 304 refetch. Prove timeout, retry, cancellation, shared subscribers and response-body stalls with focused tests.
+- Diagnose a pending browser request separately from backend latency. Compare the exact observed URL and capture response/failure evidence. A client-block error is not proof of a backend defect; a timeout improves recovery but does not prove that the block was fixed.
+- Consumers must not silently substitute a different schema operation after timeout or cancellation. Form retries must invalidate old initialization attempts before they can mutate the current configuration.
+
 ## Validation Guidance
 
 Use focused specs for the touched service or model:

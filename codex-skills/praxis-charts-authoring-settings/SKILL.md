@@ -38,6 +38,10 @@ Do not conflate the direct chart editor with the widget editor.
 
 Apply updates the component preview/runtime without closing. Save emits the same document shape; the external host decides whether and where to persist it.
 
+When a shell action invokes `command: "openConfigEditor"`, route by the stable command rather than the authored action id or label. Query live availability from the chart owner: customization enabled, Settings Panel bridge present, canonical document present, context resolution complete, and owner still alive. These explanations are localized presentation state, not backend authorization, and must not enter `chartDocument`.
+
+Context resolution can outlive the component or its customization session. Recheck eligibility after every asynchronous boundary, pass the chart `DestroyRef` as the transient Settings Panel owner, and release Apply/Save subscriptions on destruction. A late result must not open a panel or materialize another document patch after the chart owner disappears.
+
 ### Dynamic widget/Page Builder
 
 `ComponentDocMeta.configEditor` points to `PraxisChartWidgetConfigEditor`. The widget host passes one `inputs` object and accepts either an `{ inputs }` envelope or a legacy bare object, then replaces the widget's complete input object:
@@ -133,6 +137,7 @@ Require focused assertions for the changed rows:
 - AI: manifest version/schema/editable paths and registry projection;
 - runtime parity: normalizer, validator, canonical mapper, component precedence, and local preview boundary;
 - host proof: open -> edit -> Apply -> runtime reflects -> Save -> persisted widget inputs -> reopen -> Reset, at desktop and narrow widths when UI changed.
+- shell-command lifecycle: renamed action still executes by command; unavailable states explain the current blocker; destruction before/during open cancels the panel and late Apply/Save emissions have no effect.
 
 Typical focused gates from the Angular workspace root are:
 

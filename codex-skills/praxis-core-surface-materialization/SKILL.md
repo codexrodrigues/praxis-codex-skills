@@ -113,6 +113,40 @@ Only `lacuna-real-de-contrato` justifies changing a canonical backend or public 
 
 ## Validation
 
+For registered widget input controls, audit `ComponentDocMeta.inputs.type` before
+adding an editor contract. Finite literal unions and nullable booleans must preserve
+their scalar types through select, apply, JSON and reopen. Distinguish omission from
+explicit null/false; preserve and flag out-of-catalog persisted values until an
+explicit replacement. Do not classify quoted enum content such as `input-first` as
+an object/JSON type. Include long metadata descriptions in screenshot checks so
+helper text neither overlaps the next row nor stretches adjacent controls.
+
+Before adding input-group contracts, inspect existing presets, explicit authored
+inputs and exact binding targets. Disclosure must not emit or persist changes;
+keep control membership stable during same-widget host echoes so edits cannot
+move the focused control. Preserve collapsed values and invalid drafts. Resolve
+copy through the existing editorial registry: the component owner registers
+localized labels/help, while the consumer merges copy only onto raw declarations,
+never editorial types/defaults or undeclared inputs. Prove locale and host-copy
+overrides with the real owner provider, plus a no-change disclosure interaction.
+
+For raw Surface JSON drafts, bind `validationChange` into the owning editor's
+aggregate validity and count invalid-only edits as dirty. A valid last emitted
+payload does not prove that visible raw text is valid. Preserve draft text/errors
+across parent echoes and tab navigation; an authoritative field replacement may
+replace its stale draft. Child teardown releases its validity contribution, so
+handle discard or preserve the child before switching/removing it. Prove independent
+errors, correction, blocked Apply/Save, and invalid-only cancellation through the
+actual consumer. Audit every consumer separately; Core support does not certify
+that Form, List, Table and connection editors all propagate the state.
+
+Use mounted editor identity for independent validation contributions; mutable
+action labels or indices are not stable identities. Explicit Reset/Cancel can call
+`discardInvalidDrafts()` to clear raw errors without emitting a payload. A
+validation-only notification must not rewrite another invalid JSON editor. Verify
+deferred document validation also respects pending raw errors, and exercise the
+mounted child when opening a connection transaction to catch teardown losses.
+
 Use the smallest proof that exercises the changed flow:
 
 - discovery plus adapter/materializer flow:

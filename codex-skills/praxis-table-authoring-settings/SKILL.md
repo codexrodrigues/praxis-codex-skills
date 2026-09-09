@@ -35,12 +35,20 @@ Also inspect `projects/praxis-settings-panel/AGENTS.md` and the Settings Panel b
 ## Authoring Rules
 
 - Keep the canonical pair `runtime/config <-> editor` in sync.
+- Test sparse host configurations and compare the entire persisted document after a single-field edit. Editor defaults must remain transient for untouched settings; action label edits must not author export, row-action or layout defaults. Reuse the Table internal initial/edited projection merge (`table-authoring-changes.ts`) rather than replacing complete config groups. Preserve coupled semantics when explicitly selected, such as hybrid row-action behavior.
 - `PraxisTableConfigEditor` implements `SettingsValueProvider`; preserve `isDirty$`, `isValid$`, `isBusy$`, `getSettingsValue`, and apply/save/reset behavior.
 - Treat `resourcePath`, `idField`, schema hash, local-data mode, and CRUD context as governed authoring state. Do not silently drop them when normalizing config.
 - For columns, always validate runtime rendering, editor visibility, order, type/format, renderer, computed expressions, value mapping, conditional styles, sticky state, and headers.
 - For filters, keep `behavior.filtering.advancedFilters.settings` synchronized with `FilterSettingsComponent`.
 - For rules and formulas, preserve the rule compiler/operator registry and do not reintroduce prohibited old Visual Builder dependencies.
 - For actions, preserve global action validation and effect shapes.
+- For `surface.open` actions, combine mounted child raw-draft validity with Table document and
+  main JSON validation. Invalid-only text must count as dirty, block Apply/Save, survive tab changes,
+  and clear only through explicit Reset/Cancel. Track the mounted editor, not label/index identity,
+  and prevent removal or replacement that would silently discard the draft.
+- Project runtime action availability out of authoring before cloning, normalizing or diffing action arrays. Use the Table owner’s `table-action-authoring-projection.ts` for toolbar, row, bulk and nested children; do not strip arbitrary business payloads or patch only the Page Builder adapter.
+- Capture the host-authored `disabled` state before availability overrides it. A later allowed capability must not erase an explicit host denial, and a session denial must not become an authored restriction after a label/order edit. Internal `__praxis*` provenance is runtime bookkeeping, never a public setting or persisted action field.
+- For older snapshots without recoverable origin, preserve `disabled: true` and diagnose the ambiguity. Never infer origin from labels, array positions, duplicate identifiers or assumed credentials. Test clean/legacy input, explicit false/true/absent disabled, nested menus, reorder and save/reopen through the real editor.
 - For i18n, put editor chrome text in `table-editor.i18n.ts`; do not add visible hardcoded text.
 
 Column visibility, reorder, resize, auto-fit, density, and other runtime
@@ -60,6 +68,12 @@ For every editable field, prove or inspect:
 4. Runtime reflects the applied change.
 5. Reopening the editor preserves the value.
 6. Reset does not erase unrelated table state.
+
+Also switch from visual controls to JSON without closing the editor: an untouched
+JSON projection must follow current visual edits. Preserve unapplied manual JSON,
+including invalid or empty text, instead of overwriting it on input changes. After
+the host acknowledges an applied JSON draft, subsequent visual edits must sync
+again. Compare the complete document so unknown authored keys are not silently lost.
 
 If no visual editor is affected, say so explicitly and explain why.
 

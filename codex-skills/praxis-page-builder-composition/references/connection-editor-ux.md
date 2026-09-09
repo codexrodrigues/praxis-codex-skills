@@ -116,6 +116,14 @@ After rendering, focus a visible task control. A removed, inert or clipped
 radial is not a valid restoration target; use a visible editor fallback.
 Keep draft cancellation ownership intact.
 
+When a connection draft embeds a Core Surface editor, its visible raw JSON state
+participates in the connection transaction. Invalid-only edits must mark the
+transaction dirty/invalid, block Apply, survive parent echoes while mounted and
+be discarded on connection Cancel without publishing the last valid payload.
+Track the mounted child rather than a mutable action label or index, and exercise
+this through the real connection editor so child teardown cannot silently release
+the invalid contribution.
+
 Use the owning focal specs plus Page Builder build. In the browser, include
 light/dark catalogue contrast, a long catalogue, desktop, narrow stage, high
 zoom, and destination-catalogue → incoming-link → inspector → Escape → catalogue

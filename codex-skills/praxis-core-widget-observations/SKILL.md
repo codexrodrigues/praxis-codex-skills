@@ -78,6 +78,22 @@ editor at narrow width with `praxis-ui-product-design`; viewport size alone does
 not describe the available shell width. Run shell/avatar/transient specs and
 the shell editor round-trip tests for changes in these surfaces.
 
+## Runtime Shell Action Availability
+
+Widget shell actions keep their authored id, label, icon and order, while execution
+and live availability belong to the component owner. Resolve handlers by declared
+`command` or canonical action reference, not button text or action id conventions.
+An optional `getWidgetShellActionAvailability` result is transient presentation:
+it may explain disabled customization, missing bridge/document, pending context or
+other current owner state, but it must not be persisted or treated as permission.
+
+Keep removal/configuration of an authored action available even when execution is
+currently blocked. Recheck the owner's guard at execution and after asynchronous
+context loading. When an editor targets a live widget instance, pass its lifecycle
+owner to Settings Panel and cancel late open/apply/save work after destruction.
+Prove renamed actions, unavailable explanations, positive execution, owner teardown
+and subscription cleanup through the real contributor and shell host.
+
 ## Inventory Before New Contract
 
 Classify gaps before adding widget or observation contracts:

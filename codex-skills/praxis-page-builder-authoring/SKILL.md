@@ -36,6 +36,13 @@ child-owned canonical input patch/document projection as `definition.inputs`, no
 Page-Builder-local envelope or merge back transient context. Missing blocks in a replace-all child
 document must remain cleared unless the child owner declares merge semantics.
 
+Each editor session must remain tied to the current page/widget instance and authoring context. Pass
+the transient owner through the Settings Panel bridge, preserve a valid session across a controlled
+`pageChange -> [page]` echo of the same canonical document, and invalidate it when page identity,
+widget instance, context or authoring eligibility changes. Negotiate panel replacement before
+destroying the previous owner; stale close/context callbacks must not replace a newer editor or keep
+Apply/Save subscriptions alive after their target disappears.
+
 ## Required Source Inventory
 
 Before editing Page Builder authoring, inspect:
@@ -84,6 +91,7 @@ Before calling a Page Builder editor ready, verify:
 - page context/state remain structured objects.
 - widget shell changes affect only `page.widgets[].shell`.
 - child widget settings open through the child `ComponentDocMeta.configEditor` or manifest path.
+- destroying/removing the page or widget owner cancels its editor tree without Save, while replacing one child preserves the parent draft and focus when the replacement is vetoed.
 - transient child editor context from `configEditor.contextResolver` is separated from persisted inputs and is not saved back to `page.widgets[].definition.inputs`.
 - Page Builder does not persist `context`, `contextDiagnostics`, runtime drawer `surfaceRuntime`,
   `result$` envelopes, row-selection payloads, resolved catalogs, or diagnostics output as child
