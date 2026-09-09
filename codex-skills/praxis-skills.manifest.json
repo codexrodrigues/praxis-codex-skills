@@ -452,8 +452,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "6B7D78EC4DAD7305315C7EEB8AC8A810DC28974EDBB3AA430BF7CDDE74E48F9F",
-                       "treeSha256":  "4D221C582E8E30AECC8329CCF97A2396C7EF858F320134EA14AF9533B871C811"
+                       "skillMdSha256":  "CBE994699FEFDA71F83D72EEC922CB460B5D4FC04E0305A9634BB84D4C227301",
+                       "treeSha256":  "0578E00A1C8EBB20631BD3C1616AAE57A5AE0F478A2132365855319BBC8FBAB7"
                    },
                    {
                        "name":  "praxis-angular-host-project",
