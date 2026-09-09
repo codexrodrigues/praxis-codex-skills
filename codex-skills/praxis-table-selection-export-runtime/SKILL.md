@@ -45,6 +45,27 @@ Selection and filter announcements use semantic record/point identity and
 current governed state. Preserve focus across CRUD overlays and data refresh;
 do not rebuild selection from rendered row indexes.
 
+## Per-Item Collection Outcomes
+
+Inspect `table-collection-outcome.component.ts`, Table's remote regression specs and
+Core's `resource-action-open-adapter.service.ts` when a bulk command declares
+`PER_ITEM`. HTTP success does not mean all selected records succeeded. Materialize
+the existing `details[{id,ok,error}]` outcome near the table with counts, expandable
+item results and non-color failure labels. Preserve only failed identities for a
+retry; the prior successful records must not be submitted again. Clear or ignore
+stale outcomes when the resource/action context changes.
+
+The Core adapter carries existing `selection.idsField` and `selection.versionsField`
+into `groupedCommand.contextFields` and suppresses the generic success toast for
+`PER_ITEM`; Table owns the outcome presentation. Do not reconstruct selection/version
+payloads or translate backend reasons by keyword in the host.
+
+Prove mixed success/failure, selection retention, retry scope, keyboard and narrow
+layout with exclusive test records. Cleanup belongs in `finally` with enough timeout
+budget, then verify GET 404. Include context/payload tests and prove that a retry does
+not change the successful record's version. Public Table/Core READMEs and the bulk
+composition recipe are derived references to review with this path.
+
 ## Export Rules
 
 - Use `PraxisCollectionExportService` and core export request/result contracts.
