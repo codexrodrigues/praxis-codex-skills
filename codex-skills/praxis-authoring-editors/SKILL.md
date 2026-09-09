@@ -417,3 +417,12 @@ so edits in Header/Avatar and Bindings cannot display stale parallel inputs.
 `compositionLinks` shown in Bindings are read-only transient context from the page;
 editing page connections remains with the canonical composition editor. Recheck
 focus return, Escape, discard veto, Apply and reopen after changing navigation.
+
+Content-only presentation (`shell.kind = 'none'`) hides the shell in the runtime;
+it must not short-circuit draft assembly for identity, avatar, appearance or actions.
+Validate Apply, subsequent dirty state and reopen with that presentation selected.
+Keep topic navigation reachable while scrolling long sections; the narrow-panel
+selector and wide-panel tabs must use the same section IDs and provider state.
+Changing topics must reveal the beginning of the selected section. Check long
+empty-field labels and pointer access to both contextual settings and resize handles
+on narrow canvas widgets, including after saving a content-only presentation.

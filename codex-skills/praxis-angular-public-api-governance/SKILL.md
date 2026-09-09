@@ -106,6 +106,41 @@ Review the owning README, package docs, `*.json-api.md`, `docs/praxis-docs.manif
 
 A valid no-change conclusion must name what was reviewed and why it is unaffected. For example: the symbol remained owner-local, no component metadata/config/authoring contract changed, no docs or examples claim the symbol, no AI registry artifact references it, and no visible text changed.
 
+## Published Baseline Before Choosing A Release Line
+
+A source diff from a Git tag is a lead, not proof of what consumers installed.
+When an export appears removed, inspect the exact public npm tarball and its root
+`types`/`typings`/`exports` declaration. Compare it with the built candidate using
+`tools/compare-package-exports.mjs` when available. This gate reports removed names
+and declaration hashes, not signature, subpath or runtime compatibility.
+
+Check both runtime symbols and exported interfaces. Moving an editor to
+`ComponentDocMeta.configEditor.loadComponent` preserves metadata-driven loading;
+it does not preserve a host's direct imports. Do not label a removal from an
+actually published stable package as a compatible patch merely because the
+platform still uses beta cleanup practices internally. Record affected imports,
+canonical replacement, consumer migration and the explicit release-line decision.
+Do not automatically restore a heavy barrel or add aliases to hide a boundary
+problem. If no names disappeared, still review signatures and behavior.
+
+When a removal is justified by lazy loading, reconstruct the removing commit and
+compare controlled builds of the current surface, the original value exports,
+and type-only exports where applicable. Check the emitted FESM: a source-level
+`import()` can become `Promise.resolve()` when its target is also statically
+exported. Passing compilation alone proves neither code splitting nor absence
+of a runtime initialization cycle; load the built package and a direct consumer.
+Keep raw module bytes distinct from optimized host bundles or measured latency.
+Separate source-map postprocessing from executable-code differences.
+
+Removing interfaces does not inherently reduce runtime loading: try a canonical
+`export type` from the existing owner before accepting their loss as necessary.
+A metadata loader is an alternative for generic authoring hosts, not a drop-in
+replacement for template imports or direct component types. A secondary editor
+entrypoint can establish a deliberate loading boundary, but changing import
+paths remains a public migration; it does not magically preserve old root
+imports. Record demonstrated benefit, compatibility cost and unresolved evidence
+before recommending either restoration or a breaking release.
+
 ## Failure Triage
 
 Before altering a contract after a build failure, exclude:
