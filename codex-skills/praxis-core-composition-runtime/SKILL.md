@@ -70,6 +70,21 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 
 Legacy migration is an explicit ingress concern. Use `CompositionLinkLegacyMigrator` for supported legacy condition/policy shapes, then persist the canonical result. Unsupported legacy conditions fail explicitly; do not keep an open-ended legacy interpreter in runtime code.
 
+## Published Shell Presets
+
+`widgets/widget-shell-presets.ts` owns the single `BUILTIN_WIDGET_SHELL_PRESETS`
+catalog. `BUILTIN_SHELL_PRESETS` is its derived public ID lookup, not a second set
+of appearance definitions. Preserve published IDs when evolving the catalog;
+inspect `widget-shell-published-presets.spec.ts` and shell-editor round-trip tests.
+The eight restored historical treatments retain their published values, including
+the fixed default dark-glass palette. Corporate hosts override via
+`context.ui.shell.presets` and explicit widget `appearance`, using CSS tokens there;
+do not mutate exported catalogs or map old IDs to unrelated new styles.
+`frameless` intentionally keeps the corrected content inset; an explicit
+`appearance.body.padding: "0"` requests the previous edge-to-edge treatment.
+This documented visual difference must not be described as byte-identical baseline
+compatibility. Name-only export validation also does not prove full API compatibility.
+
 ## Implemented Contract Limits
 
 Do not infer executable support from a public union or serialized field alone:
