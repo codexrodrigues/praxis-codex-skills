@@ -139,6 +139,23 @@ Review README, public API, and host integration docs when shell behavior, public
 
 ## Container Width and Unified Widget Settings
 
-Adapt editor navigation to the available panel width, not only the browser viewport: a narrow drawer can exist on a wide desktop. Reuse the editor's section collection and selected index for compact selectors and wide tabs. Verify switching to expanded mode preserves the selected section. Keep close/expand controls aligned with long titles and put preview on its own row when necessary.
+Adapt editor navigation to the available panel width, not only the browser viewport: a narrow drawer can exist on a wide desktop. Reuse the editor's section collection and stable selected ID for responsive topic navigation. Verify switching to expanded mode preserves the selected section. Keep close/expand controls aligned with long titles and put preview on its own row when necessary.
 
 When unified widget settings expose Size, suppress the redundant overflow-menu shortcut only when that editor can actually open; standalone consumers retain the shortcut. A page lockSize constraint should expose an explanation in the Size tab without editable size controls, while other permitted properties remain editable. Do not infer or persist a second lock state.
+
+
+## Escape Routing Across Overlay Layers
+
+Inspect `BaseSidePanelService`, `overlay-escape-defer` and the SettingsPanel
+service regression before changing Escape. Keep a `keydownEvents()` subscription
+on the owner overlay even with `closeOnEsc: false`: this option disables automatic
+closure, not CDK keyboard ownership. Otherwise CDK can route Escape to the launching
+menu still animating underneath; that menu prevents the event before the editor
+can mediate clean close or dirty-draft confirmation.
+
+Defer Escape only to active panes above the owner in the overlay stack, never to
+an older menu below it. Preserve first-Escape ownership for a real child overlay.
+Prove previous overlay → owner panel → child with real CDK overlays and a bubbling
+keyboard event; then verify mobile menu opening, Escape, return focus and discard
+veto in the real host. An isolated pass or longer timeout does not close a race
+that still reproduces in the full interaction sequence.

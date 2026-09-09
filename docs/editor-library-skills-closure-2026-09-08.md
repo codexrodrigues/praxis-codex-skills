@@ -257,3 +257,15 @@ certificação nova de LLM/SSE ou matriz completa de leitor de tela. A limitaç�
 continua sendo limite explícito de evidência, não funcionalidade certificada.
 A integração remota desta execução será confirmada separadamente; as afirmações
 de “sem push” das seções anteriores descrevem somente aquelas rodadas.
+
+
+### Pendência adicional encontrada na validação final
+
+A sequência completa de teclado revelou Escape intermitente ao abrir o editor
+pelo menu móvel. O teste determinístico de overlays reproduziu o defeito antes
+do patch: CDK entregava o evento ao menu anterior, pois o painel com closeOnEsc
+false não tinha observador de teclado. Corrigida a retenção da assinatura e a
+precedência apenas de panes acima do owner; 93 testes Settings Panel passaram.
+A skill `praxis-settings-panel-shell` registra causa, contrato preservado e prova
+de regressão. Essa é a quarta skill refinada na execução, além das três listadas
+acima. A orientação de navegação também passou de índice para ID estável.
