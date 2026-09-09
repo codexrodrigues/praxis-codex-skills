@@ -83,7 +83,7 @@ For visual or interactive playgrounds, prove the actual behavior in the owning r
 
 Generated artifacts under `dist/`, vendored landing copies, generated registry output, and package assets are never hand-edited. Regenerate/synchronize through the owning script.
 
-When a published README links to source-only evidence, verify that the target exists and use an explicit canonical repository URL if the landing has no public route for it. A relative link valid inside the library can break after vendor projection. Correct the owning README, regenerate vendor docs, then run the published-guide link gate; do not invent a public route for an internal test report.
+When a published README links to source-only evidence, verify both target existence and audience access. A canonical repository URL is a public link only if consumers can open it without repository membership; authenticated GitHub access and structural link gates do not prove this. Prefer an existing published guide for consumer-facing contracts. Keep private test reports in internal closure documentation, or label maintainer-only references explicitly instead of presenting them as public navigation. Correct the owning README and regenerate vendor docs; do not invent a public route for an internal test report.
 
 ## Derived Artifact Decision Matrix
 

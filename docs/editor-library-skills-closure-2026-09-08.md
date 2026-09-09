@@ -276,3 +276,15 @@ a correção definitiva de Escape, sem retries. O caso adicional BaseSidePanel
 closeOnEsc:false passou, totalizando 94 testes únicos de SettingsPanel nesta
 validação final. As quatro skills refinadas nesta execução foram validadas,
 sincronizadas e auditadas: 167 Praxis e 19 Ergon sem drift ou fonte inválida.
+
+
+## Correção de acessibilidade pública das referências — 2026-09-09
+
+A revisão de publicação confirmou que o repositório Angular é privado. Portanto,
+a existência das nove URLs GitHub citadas acima não provava acesso público.
+A orientação foi corrigida em `praxis-angular-docs-playgrounds`: conferir audiência
+e visibilidade, conservar evidência privada no fechamento interno e usar guias
+públicos existentes para orientar consumidores. Os convites para abrir essas
+referências foram retirados dos READMEs públicos, com os caminhos preservados em
+`projects/praxis-core/docs/editor-library-publication-readiness-2026-09-09.md`.
+O conteúdo funcional dos READMEs continua disponível; nenhum contrato mudou.
