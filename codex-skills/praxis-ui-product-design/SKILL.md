@@ -301,6 +301,13 @@ Separate visual evidence from contract evidence:
 
 Screenshot evidence never replaces required contract validation.
 
+## Widget Material And Preset Review
+
+For shell preset identity, glass/opaque treatments, border experiments or real-widget
+comparisons, read [widget-shell-material-review.md](references/widget-shell-material-review.md).
+Audit the Core catalog, resolved context, explicit appearance and the actual child component
+before proposing more presets. A thumbnail or passing name/ID test does not prove visual identity.
+
 ## References
 
 Load only what is needed, but follow these mandatory routing rules:

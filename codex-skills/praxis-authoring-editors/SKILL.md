@@ -402,6 +402,16 @@ Load these only as needed:
 - `references/owner-decision-matrix.md`
 - `references/new-editor-checklist.md`
 
+## Appearance Draft Validation
+
+For shell appearance controls, treat omitted/cleared values as inheritance and trim
+whitespace before draft emission. Validate each CSS field against the property the
+runtime actually renders, and keep invalid state, dirty state, customization count,
+preview and Save eligibility consistent. Preserve explicit overrides when switching
+presets; expose clearing them as an explicit action. Pair this workflow with
+`praxis-page-builder-authoring` and `praxis-ui-product-design` for the canonical
+fields and real-component visual proof.
+
 ## Widget Editor Reading Order
 
 Inspect the current `WidgetShellEditorComponent.editorTopics()` before changing navigation: identity, styles, avatar, bindings, behavior, appearance and actions share one draft, with size exposed when the owner provides it. Reuse topic IDs, selection and responsive navigation rather than restoring an obsolete single-page/disclosure arrangement. Keyboard navigation, topic changes and preview collapse must preserve authored values and validity. Keep preset previews derived from Core definitions, including header and body colors. Selection needs a visible non-color marker as well as aria-pressed. Verify the actual widget separately: a schematic preview does not certify chart/list/table composition or persisted overrides.

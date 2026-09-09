@@ -77,6 +77,19 @@ Use the canonical payload pipeline:
 
 Do not patch around submit gaps in hosts. If backend submission fails, first inspect whether field metadata, option source, submit policy, DTO schema, or metadata starter contract is wrong.
 
+### Primitive arrays and command feedback
+
+Inspect Core's `dynamic-form.service.ts` and `dynamic-form-array.service.spec.ts`
+when array payloads lose selected values. Object collection controls (`arrayInput`
+or `array`) use FormArray; primitive selection arrays such as `chipInput` use
+FormControl. Preserve both forms with focused tests rather than treating every array
+schema as a collection of child FormGroups.
+
+For collection commands with `PER_ITEM`, the Core action adapter suppresses generic
+HTTP success feedback. The consuming Table presents the canonical per-item outcome.
+An explicit empty message override must remain empty through Core i18n inheritance;
+it must not fall back to a false all-records success message.
+
 ## Runtime Submit Semantics
 
 Keep these runtime boundaries explicit:

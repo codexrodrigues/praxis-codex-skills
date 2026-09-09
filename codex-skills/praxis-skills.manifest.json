@@ -674,8 +674,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "5F96586D24539956937101F2ACAA2A7EC852CDA587D9EECC918D52D19F28AA85",
-                       "treeSha256":  "6A491A985270A6787E205EB4C81088F902A9818FC41279D82CDBABF11E340D77"
+                       "skillMdSha256":  "8BFD083E71856FACAF1399BB8306080C6E962ADBC76142C7160B96CFB5F34223",
+                       "treeSha256":  "8F580850560AFA92307ADF7655AED8E1981DB57279950FF23830A99B9554F93F"
                    },
                    {
                        "name":  "praxis-charts-ai-validation",
@@ -733,8 +733,8 @@
                                             "praxis-charts-ai-handler-contracts",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "C705AC860222E797F8FD384C7ABC3F11620AEF70AFFFE278BBD3FA33B024DDAA",
-                       "treeSha256":  "D8F9C568830ED95D432BE8D9D54B5902FA0DDFAC95C7A6F4BD927DFE02435D5F"
+                       "skillMdSha256":  "8AD12F82A584753360956AC8E97264B5C20EF709A09728ED8DD1EEC989A3EB70",
+                       "treeSha256":  "5BE9B248A26203F30F92B5308F799F61F3D68BED1F19DD4FC0FEA9EB9757CBA3"
                    },
                    {
                        "name":  "praxis-component-minimums",
@@ -775,8 +775,8 @@
                                             "praxis-core-providers-bootstrap",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "0C19B32A67B82190E962500C89163356E8E6244EDD3A1570B55DB43AF61CD312",
-                       "treeSha256":  "887AD8E440D2353DF57C27275AB2FB1B2DDDE0E4A3C060B5457FD08BFD4CA22B"
+                       "skillMdSha256":  "4ED9C6E3A1A44BE9F0FCCBBBA3A5AE4357AF1B5E6B750174E90A6386A4540DE2",
+                       "treeSha256":  "0D7FC43B8E3930F71274B996A30ACB3E4DBB03B9450AE3F982C0CCFF3651AC5F"
                    },
                    {
                        "name":  "praxis-core-global-actions-metadata",
@@ -1467,8 +1467,8 @@
                                             "praxis-ui-product-design",
                                             "praxis-dynamic-fields-editorial"
                                         ],
-                       "skillMdSha256":  "A1061FAC7807072AAE9F8A09793F00EEEBA24568384F2B57CCEDA2A032A5EC0A",
-                       "treeSha256":  "8F9819828354B8052280EA09037CBA8709CDE172F3B1D3BE9B1651060FB52DB0"
+                       "skillMdSha256":  "753791654DAA446B52C71B870DB41D8450A0E6024678A49B623D546BA500713F",
+                       "treeSha256":  "398FDAB944950C1A70984030704D9B686187EB3AD31C6258156CBC3E90EF41B5"
                    },
                    {
                        "name":  "praxis-form-runtime-submit",
@@ -1487,8 +1487,8 @@
                                             "praxis-cron-builder-form-field",
                                             "praxis-cron-schedule-authoring"
                                         ],
-                       "skillMdSha256":  "B9CB188E52653B9371BDBABB6834EE3722A0160A0AE1DA28D844CE24D58BF67A",
-                       "treeSha256":  "71CE78195CC5DB617C45BCB746D6DDC438B6F7FF7583BE060AC81C4C5D3F0B60"
+                       "skillMdSha256":  "B7C023910A0EBC0700C08E640458F2ABF4EF687CAC5C5FCEAC9F0F8AA8AFD8ED",
+                       "treeSha256":  "BE2341793BC020E57C24C865F9069D97D09A112B2D452054E8D462A6A1C7AB90"
                    },
                    {
                        "name":  "praxis-form-schema-runtime-modes",
@@ -1851,8 +1851,8 @@
                        "dependencies":  [
                                             "praxis-page-builder-composition"
                                         ],
-                       "skillMdSha256":  "266B2B073FEE228A7B70D79E274B65B1FE6651B1C85A552D2AEDC817FC2AC975",
-                       "treeSha256":  "CC20A972EB2278F44FBADFA3FCB5C12EAFA9D028C2F84C798DE4C37C9D536F00"
+                       "skillMdSha256":  "CE13FEAFC2EB568DBF3A3056DCD889E857509EA71A7BA68BC3B14D165B58636D",
+                       "treeSha256":  "519EA5BF4B8360462EFEF80B130179C12228FB007D6F864FC4BA6998AFE2C77D"
                    },
                    {
                        "name":  "praxis-page-builder-composition",
@@ -2176,8 +2176,8 @@
                                             "praxis-resource-entity-lookup-backend",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "A1F8BE82C4B4767A9166C625F2A87CF59B78A038714DFB6D132ED3A5A75A5E55",
-                       "treeSha256":  "1FC48770CC8D304D50054AA9C735D2AB2555801AECE2DD10A2FA8BB940FB731E"
+                       "skillMdSha256":  "9E0D4270C0E0D91675D0A4B58B6E387B435AF8B6289464732FCD325F6ADF01F1",
+                       "treeSha256":  "152F58475AB0FDA842F93673A1D52E6A157B639F62A9B8D8DFFFBEE5065257B9"
                    },
                    {
                        "name":  "praxis-visual-builder-ai-validation",
@@ -2603,8 +2603,8 @@
                                             "praxis-table-filter-actions",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "26685025D59C54029D37218FE7F599ECA3055BE8663712EBC065E8CF9421C598",
-                       "treeSha256":  "B66B60C63B0CC7AC3E6AA1CE9AB40411CD1374DBE5334FA1A126882F02AA590F"
+                       "skillMdSha256":  "94D79AE540308ABD81BF18A05DA24FAA44F86F2EC9C348B9E5D2A8827C835F23",
+                       "treeSha256":  "EB958E818AF693543A9B0CB9B5778F5AF3B93032F62934C4E6A40458F08D88DB"
                    },
                    {
                        "name":  "praxis-table-analytics-stats-runtime",

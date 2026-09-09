@@ -117,6 +117,15 @@ Treat schema-driven layout as opt-in and explicit:
 
 Classify repeated local section configs as `ja-suportado-mal-nomeado-ou-mal-materializado` or `suportado-parcialmente` before proposing backend metadata changes. The backend may already publish `group`, `order`, `width`, labels, help text, read-only hints, and presentation metadata.
 
+### Grouped command context
+
+`groupedCommand.contextFields` preserves declared hidden metadata fields in the form
+and submission while excluding them from interactive layout. Inspect Core's
+`form-layout-materializer.ts` and tests for this split. Selection IDs and expected
+versions materialized by resource-action discovery must survive; do not expose them
+as editable fields or restore them with a host submit hook. Verify metadata retention,
+layout omission and the actual request payload, including hidden context fields.
+
 ## Inventory Before New Contract
 
 - `ja-suportado-so-ux`: `items[]`, layout policy, visual block, or schema metadata already supports the need, but the canvas/editor does not expose the workflow clearly.
