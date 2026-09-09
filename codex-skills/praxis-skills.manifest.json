@@ -1851,8 +1851,8 @@
                        "dependencies":  [
                                             "praxis-page-builder-composition"
                                         ],
-                       "skillMdSha256":  "CE13FEAFC2EB568DBF3A3056DCD889E857509EA71A7BA68BC3B14D165B58636D",
-                       "treeSha256":  "519EA5BF4B8360462EFEF80B130179C12228FB007D6F864FC4BA6998AFE2C77D"
+                       "skillMdSha256":  "00C32E45833F4E339C31C67F33A5DC74B80138746040D2A8E3AC9E22D2EC0A10",
+                       "treeSha256":  "D043BEEB8CB85EA12FE7A698F5EEC3ACF7E546C1EEA673975979B37A186418BC"
                    },
                    {
                        "name":  "praxis-page-builder-composition",
@@ -1997,8 +1997,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "586EEDF0F5DC761E75F223DB1FD58B960E86680FB7A12A5543B5FDCB55F01CB4",
-                       "treeSha256":  "0709FDCED57821E063A64959AC91898EF4A2ED590CC518E68E6CCEA9F62E6DF8"
+                       "skillMdSha256":  "01ADE192C0D344E727174EBF017BA7F08CD84E6D7597B791FA7C0DE596340EF7",
+                       "treeSha256":  "A3C78AC18B4ADD0E4D067F2C2790B14EAF28F9923A0128AFCE880B9F2ABC1CAE"
                    },
                    {
                        "name":  "praxis-settings-roundtrip-authoring",
