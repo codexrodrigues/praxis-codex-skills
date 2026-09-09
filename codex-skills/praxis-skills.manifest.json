@@ -452,8 +452,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "D5828208318BA274B636322B7E777F97E33CFA9AA83BB72D7E9B837D3E549039",
-                       "treeSha256":  "1739DA5AE4541C6FBD70AE3B528DDDCA40B32FF17B1FCED80C411960A38540C3"
+                       "skillMdSha256":  "6B7D78EC4DAD7305315C7EEB8AC8A810DC28974EDBB3AA430BF7CDDE74E48F9F",
+                       "treeSha256":  "4D221C582E8E30AECC8329CCF97A2396C7EF858F320134EA14AF9533B871C811"
                    },
                    {
                        "name":  "praxis-angular-host-project",
@@ -674,8 +674,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "423F4DC91C6C02CC8D938944A260806B01E2624B7F31A20B19AADFD5A72E5C44",
-                       "treeSha256":  "FA7C32435955FDA7082AC66DDD93351752E3FFD6A4084D385076B206748F11E4"
+                       "skillMdSha256":  "488F27F56819243DD0364E7A7CBF1BC6B0D44639D9A35621C33C352E0EA06F6B",
+                       "treeSha256":  "E5F26A9F5D00C322C292DB7A8AFEE46B6B6A39F6338595CD7327F827EB3D9F27"
                    },
                    {
                        "name":  "praxis-charts-ai-validation",
@@ -2260,8 +2260,8 @@
                        "dependencies":  [
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "5DB408A893614DC321C7F81AB49D7F8F38B2F792840A9F3ED3EDD95C1E23883A",
-                       "treeSha256":  "EDC4AE461314529DCE40A9D8FC4889456FF871CCB951490EAB77E16E5B641095"
+                       "skillMdSha256":  "A772F2101D41507E3705FAD968D55A79982D0CD81F686CAF087206F7AC5AE13F",
+                       "treeSha256":  "E541FC92C9192313D35872BDAD47978CB2350D9D18CA8194F4DE3E90F895C396"
                    },
                    {
                        "name":  "praxis-charts-analytics-interactions",

@@ -215,3 +215,45 @@ revisão; esse fato não dispensa a integração dos derivados do trabalho origi
 - Nenhum teste Angular, build ou percurso de navegador foi executado nesta rodada
   documental. Os caminhos de provas na tabela são evidência inspecionada e roteiro
   reproduzível, não novos resultados de execução.
+
+
+## Execução das pendências de encerramento
+
+A rodada seguinte deixou de ser somente documental: o runtime Angular foi
+consolidado no checkpoint `307fffca3` e conciliado com o main remoto em
+`60cb4ecf9`. A correção do contraste foi realizada em
+`PraxisChartComponent.applyInheritedTheme`: embedded/transparent explícito omite
+apenas o fundo contained herdado, preservando overrides e o documento.
+Regressão reproduzida antes da correção; 88 testes Charts e cenário real
+`widget-chart-theme.playwright.spec.ts` passaram depois dela, com capturas
+inspecionadas em tema claro e escuro. A pendência 1 acima está resolvida nesse
+escopo, sem afirmar conformidade para toda paleta customizada.
+
+Três skills foram refinadas nesta execução:
+
+- `praxis-charts-echarts-engine-boundary`: precedência entre superfície embedded,
+  texto do host e overrides explícitos, com prova em canvas e shell real.
+- `praxis-authoring-editors`: protocolo final de assuntos por IDs, navegação
+  hospedada, FormGroup compartilhado, validade por assunto e vínculos da página
+  como contexto transitório. Substitui guidance antigo de disclosures contínuos.
+- `praxis-angular-docs-playgrounds`: links de README para evidências source-only
+  devem continuar resolvíveis após projeção na landing; corrigir fonte e regenerar.
+
+Não foi criada skill nova. Manifesto alterado somente nos hashes dessas árvores;
+validação estrutural das três e dos drafts passou. A sincronização focal manteve
+167/167 Praxis e 19/19 Ergon, zero drift, missing ou source-invalid.
+
+A integração documental da landing atualizou 18 arquivos pelo vendor sync oficial,
+com 74 artefatos conferidos, 25 itens de manifesto e 145 guias aprovados; sitemap e
+llms-full sem drift. Nove links relativos para relatórios internos foram corrigidos
+nos READMEs canônicos. O registry regenerado passou 20/20 critérios de authoring e
+10 testes de snapshot no Config Starter; o diff estrutural conserva 106 componentes
+e atualiza span inteiro e emptyState anulável do Form.
+
+Contagens adicionais de runtime, comandos e limites estão no relatório Angular
+`projects/praxis-core/docs/editor-library-final-integration-2026-09-08.md`.
+Builds focais e host development passaram; não houve release npm, deploy,
+certificação nova de LLM/SSE ou matriz completa de leitor de tela. A limitação 2
+continua sendo limite explícito de evidência, não funcionalidade certificada.
+A integração remota desta execução será confirmada separadamente; as afirmações
+de “sem push” das seções anteriores descrevem somente aquelas rodadas.
