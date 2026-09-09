@@ -62,6 +62,7 @@ without changing binding identity or payload shape.
 ## Action Contract Rules
 
 - Toolbar, row, and bulk actions must resolve from declared table config, global action catalog, resource actions, record surfaces, capabilities, and `_links`.
+- Toolbar disabled explanations must materialize existing denied availability from runtime CRUD operations, discovered actions or surfaces through Core resourceDiscovery translations. An available surface does not override a denied operation. Preserve selection-only guidance when no denial exists, host locale/translation overrides, unknown-code fallback and fail-closed dispatch; do not infer permission from a configured tooltip or enable an action merely to demonstrate it. Validate the session-required path separately from authenticated open/cancel/save.
 - For global actions, use `GLOBAL_ACTION_CATALOG`, `PRAXIS_GLOBAL_ACTION_CATALOG`, validation helpers, and effect preservation; do not write one-off action payloads.
 - For row actions that open declared record surfaces, preserve the canonical `recordSurface.id`; do not overwrite it with a row action id.
 - For CRUD actions, respect `crudContext`, `resourcePath`, `idField`, open mode, and canonical CRUD integration editor behavior.

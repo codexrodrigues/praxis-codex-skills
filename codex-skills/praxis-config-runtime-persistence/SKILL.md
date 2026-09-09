@@ -80,6 +80,9 @@ Keep these boundaries separate: `ui_user_config` persists component runtime stat
 - Respect the `AsyncConfigStorage` acknowledgement contract: success emits at least one value before completion; soft failure may complete without emission; hard failure errors. Do not report a soft completion as a confirmed save.
 - `ApiConfigStorage` can soft-fail noncritical keys under the default error policy. Critical keys such as `praxis:global-config*` and `table-config:*` should propagate save/clear failures. Use `errorPolicy: 'fail'` where the workflow requires a hard persistence guarantee and handle `412` as a conflict requiring reload/reconciliation, not blind retry.
 - `ApiConfigStorage` treats `404` loads as missing config and must release its availability probe so later keys still load. A missing global config key must not block subsequent table or page config reads.
+- Treat a scope returned by an unscoped read as cache provenance only. A user-to-tenant fallback must not add `scope=tenant` to later unscoped reads, writes, or deletes. Write ownership comes from the explicit `scope` option or the current request headers; response scope does not transition ownership.
+- Reuse a cached write ETag only when its recorded scope matches the scope targeted by the current save/delete request. A tenant fallback validator must never become `If-Match` for a user override, and clearing that user override must reveal rather than delete the tenant document.
+- A successful PUT and rotated ETag prove storage acknowledgement, not runtime round-trip. Reload the real consumer and verify that the acknowledged remote document wins according to its declared precedence; a host-authored input can otherwise mask a correctly persisted preference.
 
 ## Decision Rules
 
@@ -125,6 +128,8 @@ Use focused local gates:
 - runtime context: `mvn "-Dtest=AiPrincipalContextResolverTest,EnterpriseRuntimeContextControllerTest,EnterpriseRuntimeAutoConfigurationTest,DefaultEnterpriseRuntimeContextProviderTest" test`
 - Angular consumers: `npm run test:core -- --include=projects/praxis-core/src/lib/services/config-storage.service.spec.ts --include=projects/praxis-core/src/lib/services/enterprise-runtime-context.service.spec.ts`
 - broad starter smoke for shared contract changes: `mvn -B -P ci-smoke-unit -T 1C clean verify`
+- For fallback ownership changes, prove tenant seed -> unscoped fallback -> user save -> conditional user read -> user clear -> tenant fallback -> explicit tenant clear. Compare the two scope-specific documents and ETags directly; a single unscoped GET cannot prove ownership isolation.
+- For component preference precedence, prove Apply without persistence, Save acknowledgement, browser reload, reopen, stale-ETag conflict without blind retry, and preservation of unmanaged sibling fields in the complete document.
 
 For public persistence changes, review `README.md`, `docs/ai/**` when AI config is affected, Angular storage clients, Settings Panel global config, quickstart smokes, and HTTP examples. State explicitly when no derived artifact is affected.
 

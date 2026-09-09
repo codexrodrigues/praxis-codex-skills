@@ -122,6 +122,11 @@ determination chain.
   contract; do not store a host command name in a custom action label.
 - When editing `surface.open`, verify that Dynamic Form wrapper utilities preserve core-owned
   fields rather than reducing the payload to only the fields currently visible in the form editor.
+- Aggregate each mounted `SurfaceOpenActionEditorComponent.validationChange` contribution into the
+  Form editor's dirty/valid state. Invalid-only raw JSON must block Apply/Save, survive unrelated tab
+  navigation, and be discarded explicitly on Reset/Cancel without publishing the last valid payload.
+  Use component instance identity, not action label or array index, and guard removal/switching that
+  would destroy an unresolved draft.
 - For AI-authored actions/hooks, route through the Dynamic Form authoring manifest/edit-plan surface and the core global-action catalog. Do not generate ad hoc click handlers, host callbacks, or prompt-only action strings.
 
 ## Aderence Inventory
@@ -150,6 +155,8 @@ Only `lacuna-real-de-contrato` should create a new public action or hook contrac
   `surface-open-action-editor.component.spec.ts`, `surface-binding-runtime.service.spec.ts`, and
   `surface-open-materializer.service.spec.ts` when `beforeWidget`, `afterWidget`, `bindings`,
   `context`, `widget.inputs`, or `onResult` can be changed or preserved.
+- Surface raw-draft validity: mount the real child editor, create an invalid JSON-only change, switch
+  tabs, correct it, repeat with two independent actions, and verify Reset/Cancel and parent validity.
 - Browser validation: focused Playwrights for `form-config-editor-actions`, `form-config-editor-actions-custom`, `form-config-editor-command-rules`, `form-config-editor-hooks`, and `surface-open-form-demo` when visible action/hook behavior changes.
 - Docs/registry: validate JSON API docs and generated AI/registry surfaces when action/hook public contracts or authoring catalogs change.
 

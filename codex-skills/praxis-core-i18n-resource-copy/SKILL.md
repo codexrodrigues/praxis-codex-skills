@@ -51,6 +51,22 @@ Vertical packages own package-specific namespaces and catalogs. Backend metadata
 - Do not replace backend/domain labels with framework copy. Framework chrome goes through i18n; domain labels remain metadata/config.
 - Prefer value presentation resolver paths for display formatting instead of per-component stringification.
 
+## Lookup Cost And Runtime Updates
+
+When localized editors become slow, profile the interaction before changing tab
+lifetime or draft preservation. `PraxisI18nService` resolves the requested key
+directly across current configuration layers; do not reconstruct complete merged
+catalogs for each `t()`, locale or fallback lookup. The exported merge utility
+remains available for explicit materialization, not the per-label hot path.
+
+Preserve layer/provider precedence, namespace-to-unscoped fallback, explicit
+empty-entry masking, parent scopes and the external translator. Avoid a permanent
+cache that hides global snapshot replacements or in-place host dictionary updates.
+Run the focused service tests, including the unrelated-entry read probe and
+dynamic-update cases; compare CPU profiles and repeat open/navigate/close on the
+actual consumer. Stable DOM counts alone do not prove absence of memory leaks or
+explain every long-session crash.
+
 ## Inventory Before New Contract
 
 Classify requests before adding i18n keys or providers:

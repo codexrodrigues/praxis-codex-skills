@@ -62,7 +62,7 @@ For Settings Panel protocol changes, inspect these concrete files:
 - `kind: "praxis.dynamic-form.editor"`
 - `version: 1`
 - `config: FormConfig`
-- optional `bindings`, currently including `mode`
+- optional `bindings`, including `mode`, `presentationModeGlobal`, and `emptyState`
 - optional `contextSnapshot`, including `backConfig`, `presentation`, and `schemaPrefs`
 
 Canonical apply/save is replace-all:
@@ -120,6 +120,10 @@ The editor capability should produce an apply plan that names what changes:
 
 Do not silently merge partial editor state when the canonical document requires replacement semantics.
 
+After Apply, update the dirty baseline only when the owner accepts the local application. Keep that baseline separate from the opening document used by Form Reset. Exercise A → B → Apply → A: the final A must be dirty and applicable. The session-local `appliedValues$` acknowledgement is transient and must never enter persisted widget inputs; it confirms local application, not HTTP persistence. Rejected application must not acknowledge the draft.
+
+Isolate `SETTINGS_PANEL_DATA` at embedded Form wrapper boundaries. A child must not parse its parent's transport envelope as legacy Form config or subscribe to a wrapper acknowledgement as a canonical document. Supply optional session channels only to editors declaring support. Cover this with a real Angular wrapper/child fixture: instance-only stubs cannot detect DI leakage or attempts to clone Observables.
+
 When `replaceContext` is active, absence is intentional: absent `bindings.mode`, `contextSnapshot.presentation`, `contextSnapshot.schemaPrefs`, or `contextSnapshot.backConfig` should emit clear flags/patches that remove previously persisted values. A partial editor form that does not own a block must either preserve it explicitly or declare why replacement is correct.
 
 AI-generated edit plans must target the canonical document/apply-plan surface. Do not let AI output ad hoc config patches, prompt-only field moves, or local editor state when the existing capability can express the change.
@@ -155,6 +159,36 @@ Also identify which path owns the proof:
 - Governed runtime projections: `domainRules` options, materialization status, provenance in
   `metadata.domainRule`, and whether save/reopen preserves the projection as external evidence
   instead of converting it into local authored `formRules`.
+
+## Empty selection authoring
+
+`bindings.emptyState` reuses `PraxisDynamicFormEmptyState`; it is not a `FormConfig` section or a second widget-shell state model. The runtime renders it only in view mode without a selected resource id or local record snapshot. Preserve its supported title, description, icon and appearance options through the editor and widget inputs.
+
+Disabling the feature emits `null`. Replacing a document without the binding clears it; input-first page settings and explicit null must not revive an older preference. The Filter Form must not advertise a selection placeholder it cannot render. Verify valid selection, cleared selection, create/edit, invalid blank title and save/reopen.
+
+Do not confuse empty selection with an empty data value. A form filled with Not informed placeholders does not explain that no record was selected. Before changing runtime templates, audit the existing empty-state input and its authoring bridge. Likewise, a literal separator between missing template values belongs to the authored composition; do not strip arbitrary punctuation globally to compensate for it.
+
+## Partial Effective Config and Corporate Acceptance
+
+The effective editor baseline may be only a projection of the authored document, especially with
+operation-specific schemas. Absence from that baseline is not an explicit deletion. When projecting
+field edits by canonical name, preserve authored fields absent from both baseline and edited view;
+separately test intentional removal of a field that was present in the baseline.
+
+Do not approve per-field persistence from emitted JSON alone. Exercise editor → projection → canonical
+reconciler → schema materialization → reload. Use a permitted visual customization (for example a
+placeholder) and a server-owned boundary case. Inspect Core's form-config reconciler before deciding
+whether visibility, requiredness, validation or access metadata can be overridden locally.
+
+Changing layout ownership from schema to authored must not incidentally change operation or visual
+intent. Pair layout edits with `praxis-form-schema-runtime-modes` and cover presentation
+Automático/null, true and false across schema/authored ownership. A demo with explicit true does not
+prove automatic presentation survives detachment.
+
+Test configuration source with an actual older persisted form preference, not only an input-first
+fixture. Distinguish Apply, saving the component draft, and saving the page. Await the page persistence
+acknowledgment before reload, then reopen the editor and compare authored and effective configuration.
+Report helper tests, runtime tests and browser evidence separately; overlapping suites are not additive.
 
 ## Aderence Inventory
 
