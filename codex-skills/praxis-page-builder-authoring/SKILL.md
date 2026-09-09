@@ -70,6 +70,25 @@ Widget shell editor owns shell chrome only: title, subtitle, icon, preset, appea
 
 When `applyToAll` or page preset behavior changes, confirm whether the canonical owner is page preset, shell preset, or widget shell. Do not silently copy shell style into every widget when a page-level preset can express the decision.
 
+## Page Spacing And Canvas Geometry
+
+Shared lateral breathing room belongs to `WidgetPageDefinition.layout.paddingInline`, not to
+individual table cells or form sections. Inspect `page-layout-spacing.ts`, the Page Builder
+README's shared-margin section and Core's wrapper materialization. Device layout overrides base
+layout, then the host `--pdx-page-padding-inline` token applies (default `0px`). Explicit `0px`
+removes the inset; clearing the editor removes the override and restores inheritance, preserving
+other layout properties. Validate aligned header/table/form edges and drag/resize coordinates:
+the inset belongs outside the canvas; editing-control safety space remains separate.
+
+For Size, widget limits, responsive stacking or direct resize, inspect Core's
+`docs/rfc-dynamic-page-canvas-runtime.md`, geometry helpers/specs and the Page Builder README's
+**Direct canvas manipulation** section. These paths author existing `canvas.items`, device
+overrides, `constraints` and `contentSize`; do not persist measured geometry or validation callbacks
+as child inputs. Distinguish omitted inherited height, explicit `'auto'`, and an adjustable size.
+Validate locks, inherited bounds, active-device measurements, cancellation of the complete resize
+transaction and unchanged child inputs. A numeric editor check alone does not certify usable body
+space or remote persistence; use the real consumer and the owning resize round-trip tests.
+
 ## Round-Trip Checklist
 
 For Connection Editor, separate inspection from mutation. Selecting a port

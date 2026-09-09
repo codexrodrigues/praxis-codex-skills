@@ -1,5 +1,10 @@
 # Fechamento das skills para editores e componentes — 2026-09-08
 
+> Revisão crítica posterior: o fechamento abaixo registra a consolidação inicial
+> `6b6746a`. A seção **Revisão crítica e limites de encerramento** amplia a janela
+> para 4–8 de setembro e prevalece sobre qualquer leitura de certificação geral.
+> Igualdade de hashes certifica instalação, não cobertura semântica nem produto.
+
 ## Escopo
 
 Classificação: `docs-apenas` neste repositório de skills, derivada de uma
@@ -124,3 +129,150 @@ há manifesto AI, registry, corpus HTTP ou documentação pública gerada a
 regenerar por causa desta rodada de skills. Commit, push e publicação remota
 permanecem operações separadas; esta auditoria será registrada apenas em um
 commit local, sem envio ao remoto.
+
+## Revisão crítica e limites de encerramento
+
+Classificação desta revisão: `docs-apenas`. Fonte Angular inspecionada:
+worktree `praxis-ui-angular-corporate-gate`, HEAD
+`df274485ec0240a47bbf2e95ffca84159e84012a`, mais mudanças locais e arquivos ainda
+não rastreados. Fonte de skills antes desta revisão: `c08e86d`, posterior ao
+fechamento inicial; esse commit acrescentou orientação de navegação em painel,
+leitura do editor de widget e contraste dos eixos. Não foi atribuído à validação
+anterior. As árvores locais de outras tarefas foram preservadas.
+
+### Correções do fechamento
+
+- A janela anterior enfatizava relatórios de 7–8 de setembro. A revisão consultou
+  também o histórico relevante de 4–8 de setembro, incluindo `929c943ff`
+  (composição), `1346ad3f4` (resize e integridade), `49cbc7c09`
+  (master-detail), `edb8c2565` (authoring governado), `8c70458a1` e
+  `0e2b49edb` (tabela). O inventário de commits inclui trabalho de outras tarefas;
+  presença no histórico não implica autoria desta tarefa ou certificação nova.
+- Orientações genéricas não bastavam para preservar três decisões concretas:
+  margem lateral da página, apresentação governada de filtros e preenchimento
+  de `gapBottom`. As skills existentes foram detalhadas, sem novo contrato.
+- A skill de governança passou a exigir separação explícita entre cobertura
+  semântica, paridade instalada, validação recente e integração remota.
+- As 17 árvores e os 41 testes citados acima são resultados da primeira rodada.
+  Esta revisão altera quatro skills existentes; não são 21 skills distintas,
+  pois três delas já pertenciam ao conjunto anterior.
+
+### Rastreabilidade das lacunas corrigidas
+
+Os caminhos abaixo são relativos ao repositório Angular e apontam para fonte,
+documentação e testes inspecionados; os testes não foram reexecutados nesta revisão.
+
+| Comportamento | Fonte e documentação | Prova existente inspecionada | Skill corrigida |
+| --- | --- | --- | --- |
+| Margem lateral, zero e herança | `projects/praxis-page-builder/src/lib/page-layout-spacing.ts`; README Page Builder, seção Margem lateral compartilhada; Core `dynamic-widget-page.component.ts` | `page-config-editor.component.spec.ts` e `dynamic-page-config-editor.component.spec.ts`: limpar, preservar siblings e Reset | `praxis-page-builder-authoring` |
+| Resize, limites e tamanho de conteúdo | README Page Builder, Direct canvas manipulation; `projects/praxis-core/docs/rfc-dynamic-page-canvas-runtime.md` | `canvas-content-size.spec.ts`, `canvas-resize-placement.spec.ts`; cenário `remote-canvas-resize-real-backend.playwright.spec.ts` como roteiro de integração | `praxis-page-builder-authoring` |
+| Título/ícone do filtro e preferências | `projects/praxis-table/src/lib/praxis-table.json-api.md`, Filter presentation; `PraxisFilterComponent` e Filter Settings | `praxis-filter.component.spec.ts`: ícone vazio, texto herdado, apresentação persistida e persistência desabilitada | `praxis-table-filter-actions` |
+| Espaço após seção, preservando zero | `LayoutEditorComponent.canApplyAll/applyGapToAll`; `projects/praxis-dynamic-form/docs/section-spacing-authoring-2026-09-08.md`; JSON API do Layout Editor | `layout-editor-toolbar.spec.ts`: zero, valor explícito, proposta sem emissão, ausência de `gapCustomized` | `praxis-form-layout-canvas` |
+| Retrospectiva sem superestimar aceite | Este relatório e a divergência entre paridade de instalação e cobertura documental | Auditorias de manifesto e inspeção semântica são evidências separadas | `praxis-skill-authoring-governance` |
+
+Avatar, título/subtítulo formatado, falha de seleção e fronteira do shorthand
+agentic já têm orientação específica em `praxis-core-widget-observations`,
+`praxis-core-composition-runtime/references/selection-presentation.md` e
+`praxis-form-schema-runtime-modes`. Conferidos contra
+`projects/praxis-core/docs/composition-value-format.md` e
+`widget-identity-documentation-review.md`; não se duplicaram essas regras.
+O estudo de contraste e os limites de navegação já estão refletidos no commit
+posterior `c08e86d`; sua existência não resolve os defeitos que ele documenta.
+
+### Pendências que impedem afirmar encerramento integral do produto
+
+1. O estudo `projects/praxis-page-builder/test-dev/research/2026-09-08-editor-visual-coherence-study.md`
+   registra gráficos com fundo escuro e parte do texto de tema claro. A causa
+   de precedência não estava provada nesse registro. A skill de ECharts preserva
+   explicitamente essa pendência; corrigir nomes de eixos não certifica contraste
+   da composição. Exige investigação e prova focal no owner Charts.
+2. `2026-09-08-widget-authoring-validation-summary.md`, no mesmo diretório,
+   limita as provas de lifecycle/concorrência e leitor de tela. Evidência de ETag
+   do laboratório não certifica toda combinação de editor, usuário e backend.
+3. Código e parte da documentação Angular continuam em mudanças locais, inclusive
+   arquivos não rastreados. A fonte das skills pode estar consolidada enquanto
+   a integração e os artefatos públicos da implementação ainda precisam de um
+   fechamento próprio. Esta revisão não afirma que o site publicado ou o pacote
+   distribuído já contém o estado local.
+
+O resultado é cobertura documental melhor rastreada no escopo inspecionado,
+sem certificação exaustiva de todas as funcionalidades ou de produção. Nenhuma
+alteração de runtime, manifesto AI, corpus HTTP ou registry foi feita nesta
+revisão; esse fato não dispensa a integração dos derivados do trabalho original.
+
+### Validação desta revisão crítica
+
+- Validador estrutural canônico: quatro skills aprovadas; usado o fallback já
+  estabelecido para o ambiente sem PyYAML. Não se repetiu a suite de 41 testes
+  das ferramentas, pois nenhum script foi alterado.
+- Drafts de revisão gerados continuam atuais; validador dos drafts e
+  `git diff --check` aprovados.
+- Manifesto: apenas hashes das quatro árvores alterados, sem novos contratos,
+  descrições de ativação, dependências ou entradas.
+- Antes da edição: 167/167 Praxis em paridade. Após revisar o dry-run e sincronizar
+  apenas as quatro árvores: auditoria bloqueante Praxis 167/167 e Ergon 19/19,
+  zero drift, ausência ou fonte inválida.
+- Nenhum teste Angular, build ou percurso de navegador foi executado nesta rodada
+  documental. Os caminhos de provas na tabela são evidência inspecionada e roteiro
+  reproduzível, não novos resultados de execução.
+
+
+## Execução das pendências de encerramento
+
+A rodada seguinte deixou de ser somente documental: o runtime Angular foi
+consolidado no checkpoint `307fffca3` e conciliado com o main remoto em
+`60cb4ecf9`. A correção do contraste foi realizada em
+`PraxisChartComponent.applyInheritedTheme`: embedded/transparent explícito omite
+apenas o fundo contained herdado, preservando overrides e o documento.
+Regressão reproduzida antes da correção; 88 testes Charts e cenário real
+`widget-chart-theme.playwright.spec.ts` passaram depois dela, com capturas
+inspecionadas em tema claro e escuro. A pendência 1 acima está resolvida nesse
+escopo, sem afirmar conformidade para toda paleta customizada.
+
+Três skills foram refinadas nesta execução:
+
+- `praxis-charts-echarts-engine-boundary`: precedência entre superfície embedded,
+  texto do host e overrides explícitos, com prova em canvas e shell real.
+- `praxis-authoring-editors`: protocolo final de assuntos por IDs, navegação
+  hospedada, FormGroup compartilhado, validade por assunto e vínculos da página
+  como contexto transitório. Substitui guidance antigo de disclosures contínuos.
+- `praxis-angular-docs-playgrounds`: links de README para evidências source-only
+  devem continuar resolvíveis após projeção na landing; corrigir fonte e regenerar.
+
+Não foi criada skill nova. Manifesto alterado somente nos hashes dessas árvores;
+validação estrutural das três e dos drafts passou. A sincronização focal manteve
+167/167 Praxis e 19/19 Ergon, zero drift, missing ou source-invalid.
+
+A integração documental da landing atualizou 18 arquivos pelo vendor sync oficial,
+com 74 artefatos conferidos, 25 itens de manifesto e 145 guias aprovados; sitemap e
+llms-full sem drift. Nove links relativos para relatórios internos foram corrigidos
+nos READMEs canônicos. O registry regenerado passou 20/20 critérios de authoring e
+10 testes de snapshot no Config Starter; o diff estrutural conserva 106 componentes
+e atualiza span inteiro e emptyState anulável do Form.
+
+Contagens adicionais de runtime, comandos e limites estão no relatório Angular
+`projects/praxis-core/docs/editor-library-final-integration-2026-09-08.md`.
+Builds focais e host development passaram; não houve release npm, deploy,
+certificação nova de LLM/SSE ou matriz completa de leitor de tela. A limitação 2
+continua sendo limite explícito de evidência, não funcionalidade certificada.
+A integração remota desta execução será confirmada separadamente; as afirmações
+de “sem push” das seções anteriores descrevem somente aquelas rodadas.
+
+
+### Pendência adicional encontrada na validação final
+
+A sequência completa de teclado revelou Escape intermitente ao abrir o editor
+pelo menu móvel. O teste determinístico de overlays reproduziu o defeito antes
+do patch: CDK entregava o evento ao menu anterior, pois o painel com closeOnEsc
+false não tinha observador de teclado. Corrigida a retenção da assinatura e a
+precedência apenas de panes acima do owner; 93 testes Settings Panel passaram.
+A skill `praxis-settings-panel-shell` registra causa, contrato preservado e prova
+de regressão. Essa é a quarta skill refinada na execução, além das três listadas
+acima. A orientação de navegação também passou de índice para ID estável.
+
+
+Aceite focal final da implementação: 18/18 percursos de navegador aprovados após
+a correção definitiva de Escape, sem retries. O caso adicional BaseSidePanel
+closeOnEsc:false passou, totalizando 94 testes únicos de SettingsPanel nesta
+validação final. As quatro skills refinadas nesta execução foram validadas,
+sincronizadas e auditadas: 167 Praxis e 19 Ergon sem drift ou fonte inválida.

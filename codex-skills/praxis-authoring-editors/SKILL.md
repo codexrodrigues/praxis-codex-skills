@@ -404,4 +404,16 @@ Load these only as needed:
 
 ## Widget Editor Reading Order
 
-Prioritize identity fields followed by the canonical style gallery. Put avatar controls and binding explanations in native, keyboard-operable disclosures after the gallery; collapsing them must preserve authored values. Keep preset previews derived from Core definitions, including header and body colors. Selection needs a visible non-color marker as well as aria-pressed. Verify the actual widget separately: a schematic preview does not certify chart/list/table composition or persisted overrides.
+Inspect the current `WidgetShellEditorComponent.editorTopics()` before changing navigation: identity, styles, avatar, bindings, behavior, appearance and actions share one draft, with size exposed when the owner provides it. Reuse topic IDs, selection and responsive navigation rather than restoring an obsolete single-page/disclosure arrangement. Keyboard navigation, topic changes and preview collapse must preserve authored values and validity. Keep preset previews derived from Core definitions, including header and body colors. Selection needs a visible non-color marker as well as aria-pressed. Verify the actual widget separately: a schematic preview does not certify chart/list/table composition or persisted overrides.
+
+
+For hosted widget topics, inspect Core `SettingsValueProvider.getSettingsSections()` /
+`selectSettingsSection(id)`, `SETTINGS_EDITOR_SECTIONS_HOSTED` and
+`SettingsSectionTabsComponent`. The host combines `widget:<id>` with page-owned `size`,
+without nesting a second topic navigation. Keep invalid state attached to the stable
+section ID; the provider still owns dirty/valid and the same draft. Render only the
+active set of shared binding controls while keeping the FormGroup and shell alive,
+so edits in Header/Avatar and Bindings cannot display stale parallel inputs.
+`compositionLinks` shown in Bindings are read-only transient context from the page;
+editing page connections remains with the canonical composition editor. Recheck
+focus return, Escape, discard veto, Apply and reopen after changing navigation.

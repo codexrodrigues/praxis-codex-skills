@@ -99,3 +99,18 @@ fix.
 
 Do not claim a local installation is current merely because its directory exists.
 The canonical tree hash and an audit are the proof.
+
+## Reviewing A Multi-Day Closure
+
+Hash equality proves source/installation parity, not semantic coverage or runtime correctness.
+For a retrospective, record the requested date range, repository/worktree heads, relevant committed
+changes and uncommitted/untracked implementation evidence. Do not silently reduce several days to
+the latest diff, or treat another task's later commit as part of an earlier validation.
+
+Map each material behavior to its canonical source, public documentation, owner skill and focused
+evidence. Separate guidance already adequate, guidance corrected, platform defects still open and
+claims lacking proof. Retain links to tests or reproducible commands, not only ephemeral log paths
+or historical passing counts. Distinguish documentation coverage, installation parity, fresh test
+execution and remote integration in the closure. A documentation-only change may require no
+generated artifacts itself while the underlying implementation still has publication or consumer
+validation pending. Never turn that narrower conclusion into a full product certification.
