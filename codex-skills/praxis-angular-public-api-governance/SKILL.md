@@ -114,6 +114,25 @@ When an export appears removed, inspect the exact public npm tarball and its roo
 `tools/compare-package-exports.mjs` when available. This gate reports removed names
 and declaration hashes, not signature, subpath or runtime compatibility.
 
+For a coordinated release, compare every package in the release set against its
+published baseline, not only the most recently changed library. After publication,
+verify the actual candidate tarballs. Record versions, declaration hashes and
+removed subpaths separately from the name-only gate. Successful npm publication
+and installation do not certify compatibility or authorize stable promotion.
+
+Audit persisted semantic identifiers when replacing catalogs or presets. A new
+export name may also change a record into an array and remove IDs still stored in
+host documents. Inspect the canonical resolver, host overrides, appearance/default
+precedence and saved fixtures; require open/edit/save/reopen proof for migration.
+Do not hide a semantic change behind an alias or an arbitrary old-to-new style map.
+
+Inspect public class/interface members as well as root symbols. Direct-member AST
+diffs are triage: account for inheritance, signatures and intentional lifecycle
+changes before concluding a consumer break. Reconstruct the reason for a renamed
+callback before restoring it; a formerly exposed method may collide with a runtime
+protocol. Preserve a demonstrated bug fix and document the intentional API/migration
+instead of adding an alias that reintroduces the collision.
+
 Check both runtime symbols and exported interfaces. Moving an editor to
 `ComponentDocMeta.configEditor.loadComponent` preserves metadata-driven loading;
 it does not preserve a host's direct imports. Do not label a removal from an
