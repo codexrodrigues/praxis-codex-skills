@@ -401,3 +401,7 @@ Load these only as needed:
 - `references/scope-boundaries.md`
 - `references/owner-decision-matrix.md`
 - `references/new-editor-checklist.md`
+
+## Widget Editor Reading Order
+
+Prioritize identity fields followed by the canonical style gallery. Put avatar controls and binding explanations in native, keyboard-operable disclosures after the gallery; collapsing them must preserve authored values. Keep preset previews derived from Core definitions, including header and body colors. Selection needs a visible non-color marker as well as aria-pressed. Verify the actual widget separately: a schematic preview does not certify chart/list/table composition or persisted overrides.

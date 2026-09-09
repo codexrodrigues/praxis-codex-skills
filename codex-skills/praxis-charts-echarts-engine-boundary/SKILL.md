@@ -123,3 +123,9 @@ npm run build:praxis-charts
 ```
 
 An existing helper-only adapter spec does not prove lifecycle or event wiring. Report exact assertions that ran, gaps left unproved, derived docs/examples/manifests reviewed, and whether a direct consumer build was required.
+
+## Axis Contrast and Surface Evidence
+
+EChartsOptionBuilderService must project the effective Praxis theme.textColor into both axisLabel.color and nameTextStyle.color. Cover primary/secondary axes, horizontal orientation and scatter: styling tick values alone leaves axis names at engine defaults. Keep this mapping inside the adapter, without exposing ECharts-shaped metadata.
+
+Validate theme changes against the rendered chart background, not only text tokens or the outer widget. A dark explicit/inherited chart surface can remain when host text switches to a light theme. Treat mixed foreground/background provenance as an unresolved defect until traced through effectiveConfig and applyInheritedTheme; do not claim that fixing axis names solves that separate issue or override authored colors without inspecting their canonical precedence.

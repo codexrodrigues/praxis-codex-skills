@@ -136,3 +136,9 @@ Prefer focused checks:
 - screenshot or Playwright evidence when visual drawer behavior is material
 
 Review README, public API, and host integration docs when shell behavior, public tokens, or bridge semantics change.
+
+## Container Width and Unified Widget Settings
+
+Adapt editor navigation to the available panel width, not only the browser viewport: a narrow drawer can exist on a wide desktop. Reuse the editor's section collection and selected index for compact selectors and wide tabs. Verify switching to expanded mode preserves the selected section. Keep close/expand controls aligned with long titles and put preview on its own row when necessary.
+
+When unified widget settings expose Size, suppress the redundant overflow-menu shortcut only when that editor can actually open; standalone consumers retain the shortcut. A page lockSize constraint should expose an explanation in the Size tab without editable size controls, while other permitted properties remain editable. Do not infer or persist a second lock state.
