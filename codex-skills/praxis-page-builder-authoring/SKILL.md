@@ -148,3 +148,40 @@ Run focused validation:
 - public behavior: `ng build praxis-page-builder`; browser validation when visible editor layout or page runtime changes.
 
 Report skipped E2E explicitly. Build/spec validation is enough for non-agentic editor-only changes. Escalate to `praxis-page-builder-ai-agentic` and the full Playwright validation gate from `projects/praxis-page-builder/AGENTS.md` when the authoring change touches agentic authoring, SSE, manifests, backend tools, patch/apply, LLM integration, or Settings Panel bridge behavior used by agentic preview/apply.
+
+### Preset selection and document fidelity
+
+Selecting an organization reference must not synthesize a canvas for an existing
+flow page, freeze omitted canvas defaults, or persist a resolved theme/context
+shell as an explicit page override. Compare the authored document before/after,
+including omitted fields; only an explicit base-grid edit may introduce its canvas.
+Prove theme changes and clear/reopen inheritance after Apply. In Widget Settings,
+Undo stages an inverse preview that still requires Apply; do not confuse it with
+discarding the current draft or persisting the page.
+
+
+## Collective Canvas Arrangement
+
+For explicit base-canvas arrangement, inspect Core `prepareCanvasArrangement` and
+its focused specs. The editor prepares geometry, lists affected keys, stages it,
+and uses the existing panel Apply/Undo flow. Keep the proposal transient and reject
+it when its source draft changes. An exact Apply echo may preserve the single undo;
+page replacement and Reset invalidate it. Preserve child inputs, composition, heights,
+limits and device documents. Locked positions are obstacles, not permission to move
+an entire locked group. Partial device anchors may block base reorganization; do not
+invent overrides or claim a device/selection solver. Column choices express geometry,
+not inferred business roles or a new assistant tool.
+
+For page-level Apply, consume the owner-confirmed session receipt through the existing
+`SettingsValueProvider.acceptAppliedValue`. Capture the authored document before runtime
+bootstrap enriches it. Advance the dirty baseline only on that receipt, never during
+`getSettingsValue`; test Apply → Undo → Apply through the actual panel.
+
+Revalidate staged arrangements at final submission with Core
+`validateCanvasArrangement(candidate, source)`. Device numeric constraints still apply
+when positions inherit. Grid edits after staging must not emit out-of-bounds items.
+A rendered diagnostic can change without a form fingerprint change; handle a null
+candidate before reading canvas. Keep Undo tied to reviewed geometry across unrelated
+edits, and restore only geometric fields so content/limits/gap edits survive.
+Include the four `canvas-arrangement-regressions.spec.ts` cases and the mixed-edit
+Apply/Undo browser journey when changing this path.
