@@ -27,6 +27,18 @@ Inspect:
 
 ## Canonical Authoring Chain
 
+The root `@praxisui/list` API includes `PraxisListConfigEditor`,
+`PraxisListWidgetConfigEditor`, `PraxisListWidgetEditorInputs` and
+`PraxisListWidgetEditorValue`. Preserve these published owner-local imports.
+Generic hosts resolve the widget editor with
+`PRAXIS_LIST_COMPONENT_METADATA.configEditor.loadComponent`; asynchronous
+resolution does not promise a separate downloaded chunk when the classes are
+also statically exported. Before changing this boundary, use
+`praxis-angular-public-api-governance`, compare the published package, and run
+`src/lib/list-public-api.spec.ts` plus an owning/direct-consumer package build.
+Do not remove the interfaces to optimize runtime loading: type-only exports
+have no executable cost. A metadata loader alone does not migrate direct imports.
+
 Preserve:
 
 `PraxisListConfig -> ListAuthoringDocument(kind='praxis.list.editor', version=1) -> editor state -> SettingsValueProvider.getSettingsValue/onSave -> persisted config -> reopen -> PraxisList runtime`

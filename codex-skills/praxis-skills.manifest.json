@@ -594,8 +594,8 @@
                                             "praxis-angular-i18n-governance",
                                             "praxis-authoring-editors"
                                         ],
-                       "skillMdSha256":  "7C63A549903C1CCDC944EBACCB8D9731EBE8BD2D4BC019BD21B9E9693966C499",
-                       "treeSha256":  "32CCC1F41428AD332300D9886A87B2C9F52939532FED8165B618DD1BE79F36C1"
+                       "skillMdSha256":  "AAFE9FFB53DC10091C7106587BDCFF754B61CCCB9F7FAAD990587BAAAD00D3E4",
+                       "treeSha256":  "80373160467B6E16302A75DEFF8C06ECB31E6F9BA2E1663AE0BCB10E8E22FFD0"
                    },
                    {
                        "name":  "praxis-angular-validation-gates",
@@ -674,8 +674,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "488F27F56819243DD0364E7A7CBF1BC6B0D44639D9A35621C33C352E0EA06F6B",
-                       "treeSha256":  "E5F26A9F5D00C322C292DB7A8AFEE46B6B6A39F6338595CD7327F827EB3D9F27"
+                       "skillMdSha256":  "5F96586D24539956937101F2ACAA2A7EC852CDA587D9EECC918D52D19F28AA85",
+                       "treeSha256":  "6A491A985270A6787E205EB4C81088F902A9818FC41279D82CDBABF11E340D77"
                    },
                    {
                        "name":  "praxis-charts-ai-validation",
@@ -1628,8 +1628,8 @@
                                             "praxis-settings-roundtrip-authoring",
                                             "praxis-angular-i18n-governance"
                                         ],
-                       "skillMdSha256":  "9E1FEAD418D91F051778DB01FCC3D7D75ECE7A77269890E654ED8554A7BB4527",
-                       "treeSha256":  "0567F30A8D3A6AC9300E613D147E03B97E5DEAFD95BD1350B3D2E0B9AED53979"
+                       "skillMdSha256":  "4B8828733F65FC892B39142E769E5B30F70E35BC36D54369246BA89BB0EAC545",
+                       "treeSha256":  "538A09A46A120FB48502D70ABC367EF821F59C97A8617C9FD6081108886CFA21"
                    },
                    {
                        "name":  "praxis-list-docs-evidence",
