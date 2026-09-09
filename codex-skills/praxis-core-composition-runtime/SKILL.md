@@ -76,14 +76,30 @@ Legacy migration is an explicit ingress concern. Use `CompositionLinkLegacyMigra
 catalog. `BUILTIN_SHELL_PRESETS` is its derived public ID lookup, not a second set
 of appearance definitions. Preserve published IDs when evolving the catalog;
 inspect `widget-shell-published-presets.spec.ts` and shell-editor round-trip tests.
-The eight restored historical treatments retain their published values, including
-the fixed default dark-glass palette. Corporate hosts override via
+Published IDs remain resolvable; visual recalibration is not pixel-for-pixel
+historical compatibility. Dark-glass and graphite retain dark material defaults. Corporate hosts override via
 `context.ui.shell.presets` and explicit widget `appearance`, using CSS tokens there;
 do not mutate exported catalogs or map old IDs to unrelated new styles.
 `frameless` intentionally keeps the corrected content inset; an explicit
 `appearance.body.padding: "0"` requests the previous edge-to-edge treatment.
 This documented visual difference must not be described as byte-identical baseline
 compatibility. Name-only export validation also does not prove full API compatibility.
+
+### Material fields and nested shells
+
+Inspect `WidgetShellAppearance`: `card.borderWidth`, `card.borderStyle`,
+`card.backdropFilter`, `card.fallbackBackground`, `header.borderWidth` and
+`header.borderStyle` are canonical fields. Defaults remain 1px solid. Card borders
+may vary per side; the header owns one bottom divider. Explicit appearance overrides
+the resolved preset. Resolve the shell editor context from `mergedContext.ui.shell`
+without persisting inherited theme data into the widget.
+
+Reset these material CSS variables at each `.pdx-shell` boundary so nesting does not
+implicitly inherit an outer thick/dashed/blurred treatment. Preserve intentional
+`context.ui.shell.preset/presets` inheritance. Test both paths in
+`widget-shell-material.spec.ts`; do not indiscriminately reset all global theme tokens.
+Glass uses transparency plus backdrop-filter, with an opaque paired-color fallback
+for unsupported filters, reduced transparency, expanded/fullscreen and sticky headers.
 
 ## Implemented Contract Limits
 

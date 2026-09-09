@@ -70,6 +70,23 @@ Widget shell editor owns shell chrome only: title, subtitle, icon, preset, appea
 
 When `applyToAll` or page preset behavior changes, confirm whether the canonical owner is page preset, shell preset, or widget shell. Do not silently copy shell style into every widget when a page-level preset can express the decision.
 
+### Preset comparison and appearance overrides
+
+Resolve page layout presets through Core's resolver, including `presetFamily`
+fallback, and preserve an explicit page theme while comparing layouts. Shell previews
+must render Core's resolved preset; avoid a second appearance catalog in the editor.
+Changing a shell preset preserves explicit appearance overrides; the explicit
+"Use style only" action clears them. Keep that distinction visible in preview and
+customization count.
+
+Round-trip Core's `card.borderWidth/borderStyle/backdropFilter/fallbackBackground` and
+`header.borderWidth/borderStyle` with the other appearance fields. Trim CSS input
+before deciding whether to emit an override; whitespace-only values restore
+inheritance. Validate header border color with `border-bottom-color`, since its
+single divider cannot consume the card's multi-side color shorthand. Invalid values
+must block Save. Test corrected validity, Apply, clearing overrides and fresh remote
+reopen without altering child inputs or persisting resolved inherited context.
+
 ## Page Spacing And Canvas Geometry
 
 Shared lateral breathing room belongs to `WidgetPageDefinition.layout.paddingInline`, not to

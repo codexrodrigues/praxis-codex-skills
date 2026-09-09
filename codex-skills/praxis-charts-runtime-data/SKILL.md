@@ -98,6 +98,20 @@ evidence; do not map a chart type to a visually similar ECharts series when its
 dimension, measure, denominator, hierarchy, bucket, or comparison semantics are
 missing.
 
+## Shell Appearance Integration
+
+Inspect `praxis-chart.component.ts` and `praxis-micro-visualization.component.ts`
+when charts lose contrast inside a widget shell. Inherit shell foreground when no
+explicit chart override is authored; retain deliberate chart configuration. The
+accessible-data table has an opaque surface and must pair its own foreground with
+that surface instead of inheriting light text onto white.
+
+For micro visualizations, preserve `--prx-micro-text-color` precedence and use the
+public `total` field for radial proportions. Card-summary radial presentations need
+card-sized geometry; do not enlarge the compact table default globally. Cover both
+contexts in the focused chart/micro specs and real-shell browser comparison. This
+is runtime presentation, not a new governed analytics metric or chart catalog.
+
 ## Operational Proof
 
 Prove the guidance against source and focused specs before declaring the skill current:
