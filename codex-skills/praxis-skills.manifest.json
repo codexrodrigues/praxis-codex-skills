@@ -35,8 +35,8 @@
                                             "praxis-java-host-project",
                                             "praxis-dto-annotations"
                                         ],
-                       "skillMdSha256":  "C4292402C682ECB09DF328668A680F46ED6847A3E600B8D03141D480E717384F",
-                       "treeSha256":  "82B85001411FFEBB5ACCC51A38481C65BE4D16456CA9C026E1EFB482F7812B69"
+                       "skillMdSha256":  "324DADAA47B8939BA1F4BCF3EFAB5CC672AE586BE081D14CDE502027F6D0FE7B",
+                       "treeSha256":  "2337C9F1210A2BE66AF8F14C72A12D84D39717DC7FEAD5DA56468A80E81BDD8B"
                    },
                    {
                        "name":  "praxis-java-resource-authoring",
@@ -1467,8 +1467,8 @@
                                             "praxis-ui-product-design",
                                             "praxis-dynamic-fields-editorial"
                                         ],
-                       "skillMdSha256":  "4C156B7E9461D3083A0AE7BFA1F82945CDCCB1F76FCF1384EAD8B599ADEAFF54",
-                       "treeSha256":  "36699650E627683ED08B42A68C6280BC028D57841AED9569798E1604CE06ABA8"
+                       "skillMdSha256":  "A1061FAC7807072AAE9F8A09793F00EEEBA24568384F2B57CCEDA2A032A5EC0A",
+                       "treeSha256":  "8F9819828354B8052280EA09037CBA8709CDE172F3B1D3BE9B1651060FB52DB0"
                    },
                    {
                        "name":  "praxis-form-runtime-submit",
@@ -1851,8 +1851,8 @@
                        "dependencies":  [
                                             "praxis-page-builder-composition"
                                         ],
-                       "skillMdSha256":  "857F149A2A253257B136A9DB891958CEA34402A48026C8E453A3BA1463C9CCA4",
-                       "treeSha256":  "E381E0985143D50A654C2C35FDE0E73D088EB114BED3E616A32C7FAE754049D7"
+                       "skillMdSha256":  "266B2B073FEE228A7B70D79E274B65B1FE6651B1C85A552D2AEDC817FC2AC975",
+                       "treeSha256":  "CC20A972EB2278F44FBADFA3FCB5C12EAFA9D028C2F84C798DE4C37C9D536F00"
                    },
                    {
                        "name":  "praxis-page-builder-composition",
@@ -2081,8 +2081,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "37DBCC8F596CA5DAE10737EE21C8ED9A64B5E0FF1FFB2FACFC5547BBA21915FD",
-                       "treeSha256":  "B68AFD4F0715AD49F7096F9650ABBF81D7B07B13C41F5C610F9B9F9761BBE5E9"
+                       "skillMdSha256":  "26501B477C09DB46FBAEB03073B0879068AD6D4891D98D6A109487B496F45DDB",
+                       "treeSha256":  "84DE328088F72F877386BEC2A449F10E012099109A2D81F2B6394A45A175D5E0"
                    },
                    {
                        "name":  "praxis-table-rule-ai-validation",

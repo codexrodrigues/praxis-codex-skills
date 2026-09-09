@@ -59,6 +59,23 @@ rótulos do filtro”. Consumers resolve them through
 host label maps. Test pt-BR/en-US, fallback and host translation overrides
 without changing binding identity or payload shape.
 
+## Governed Filter Presentation
+
+Inspect Core's `FilterPresentationConfig`, the Table JSON API's **Filter presentation** section,
+`PraxisFilterComponent` and Filter Settings before adding a label, icon or local toolbar style.
+The table path is `behavior.filtering.advancedFilters.settings.presentation`; standalone filters
+use `FilterConfig.presentation`. Neither changes query semantics. Reuse `header.visible`,
+text/icon/position/size, `advancedAction` display/position/size and the declared presentation tokens.
+An absent header stays hidden; an empty icon removes it. Empty authored text restores localized
+copy, and an icon-only advanced action without an icon must retain a visible text fallback.
+Keep `showAdvancedButton` as the existing availability switch rather than adding another one.
+
+Prove visible/hidden heading, authored/cleared text, icon removal, host token and translation
+overrides in both embedded and standalone consumers. Preserve the complete effective FilterConfig
+when editing presentation. With persistence enabled, acknowledged preferences win over authored
+presentation on reload; `disablePersistence` prevents preference loading and saving. Apply alone
+is not proof of that round-trip. Use `praxis-config-runtime-persistence` for remote ownership/ETag.
+
 ## Action Contract Rules
 
 - Toolbar, row, and bulk actions must resolve from declared table config, global action catalog, resource actions, record surfaces, capabilities, and `_links`.
