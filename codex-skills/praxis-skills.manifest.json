@@ -594,8 +594,8 @@
                                             "praxis-angular-i18n-governance",
                                             "praxis-authoring-editors"
                                         ],
-                       "skillMdSha256":  "AAFE9FFB53DC10091C7106587BDCFF754B61CCCB9F7FAAD990587BAAAD00D3E4",
-                       "treeSha256":  "80373160467B6E16302A75DEFF8C06ECB31E6F9BA2E1663AE0BCB10E8E22FFD0"
+                       "skillMdSha256":  "FFF06B0EB79C8EF0ADDDBE7270BD845909DBACDBB9D2956FE2ED7EF1C090326A",
+                       "treeSha256":  "56669B6E7D2A5EF91688CC9F49ADF008BD38B1A6381D7AE7B3755FE0C0EAF8F6"
                    },
                    {
                        "name":  "praxis-angular-validation-gates",
@@ -775,8 +775,8 @@
                                             "praxis-core-providers-bootstrap",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "B9EA2DBE77FD5B940CFC2B172C6D53C0CB2EE75BD7A313FF243A19106AEC5E4B",
-                       "treeSha256":  "2BA0F758C561F0E067F566A4D215B6C694097736FEC3512FC55F228EB4168C1B"
+                       "skillMdSha256":  "0C19B32A67B82190E962500C89163356E8E6244EDD3A1570B55DB43AF61CD312",
+                       "treeSha256":  "887AD8E440D2353DF57C27275AB2FB1B2DDDE0E4A3C060B5457FD08BFD4CA22B"
                    },
                    {
                        "name":  "praxis-core-global-actions-metadata",
