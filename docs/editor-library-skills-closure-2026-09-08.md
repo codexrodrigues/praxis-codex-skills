@@ -269,3 +269,10 @@ precedência apenas de panes acima do owner; 93 testes Settings Panel passaram.
 A skill `praxis-settings-panel-shell` registra causa, contrato preservado e prova
 de regressão. Essa é a quarta skill refinada na execução, além das três listadas
 acima. A orientação de navegação também passou de índice para ID estável.
+
+
+Aceite focal final da implementação: 18/18 percursos de navegador aprovados após
+a correção definitiva de Escape, sem retries. O caso adicional BaseSidePanel
+closeOnEsc:false passou, totalizando 94 testes únicos de SettingsPanel nesta
+validação final. As quatro skills refinadas nesta execução foram validadas,
+sincronizadas e auditadas: 167 Praxis e 19 Ergon sem drift ou fonte inválida.
