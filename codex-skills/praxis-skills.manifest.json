@@ -1908,8 +1908,8 @@
                                             "praxis-rich-content-runtime",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "8873492D3E1D177BEEED8FDF6ABC667684E9197B41CD3520248B2BF22CB6E66F",
-                       "treeSha256":  "E45004142293A297A3C64185E15CA765964F6975F47E66472C40A5EAA0545976"
+                       "skillMdSha256":  "BE6100203816F9B0BAFEF5B6E6EB8BA5DE1CB4A60397B8B7D97EC43B71E1A9E3",
+                       "treeSha256":  "EB95627E3EAABD36D9F15050207B888DDE7CAAB66FAF1ACA1C82D29B852395B9"
                    },
                    {
                        "name":  "praxis-rich-content-integration-adapters",
@@ -2046,8 +2046,8 @@
                                             "praxis-table-rule-ai-validation",
                                             "praxis-table-rule-table-integration"
                                         ],
-                       "skillMdSha256":  "66DA4848BB29C410739FFE209361C35FEA94DB3849FF3C4F36C341CF2CB554D8",
-                       "treeSha256":  "5CB63C354B2BCFE0BE0727E88FEBDB915F8836432FFD6CE3C6A0110F8E11E4B8"
+                       "skillMdSha256":  "43F415E0C268742BCADA3AEF564E46E7756FE142B9914668556C62F88B386580",
+                       "treeSha256":  "A0E60DEEF1C34407E680F430A0184535A0D206D4DAF2BBE36C954CFE91AFFC12"
                    },
                    {
                        "name":  "praxis-table-authoring-settings",
@@ -2066,8 +2066,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-table-rule-ai-validation"
                                         ],
-                       "skillMdSha256":  "7A5D75458B1C0D95D261BBE4E426B6C8E428450413671DEB339D585015A981AA",
-                       "treeSha256":  "92697BE97F882D952C6F306CA12E4F591DF0C66B725D53DB3609FAF3BE4584BE"
+                       "skillMdSha256":  "DED9526CF8E3DDFA7686A993A4DB84CE9DF07790D08EA63F140BC9B16230B4D9",
+                       "treeSha256":  "9A08AE590687533F1AA888C7415799369AF27F0FC20A6CA5729B925C34795CAF"
                    },
                    {
                        "name":  "praxis-table-filter-actions",
@@ -2147,8 +2147,8 @@
                                             "praxis-core-resource-runtime",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "B40DEAB71CE371D77B18FFD22E4DE3901CF794FDE3C096A45D446BDDBA77A88C",
-                       "treeSha256":  "1C5113A51B8564B469CD65F133B7E774175F67D06D47522E60823DE9FA1251FD"
+                       "skillMdSha256":  "311361273251193228A3BEA683BDD291028AC97325217BD1B12D738C0FEC2973",
+                       "treeSha256":  "9E232387271ADFE88068BE0A636D03910A378061429919AECAC646466975A066"
                    },
                    {
                        "name":  "praxis-tabs-runtime-authoring",
