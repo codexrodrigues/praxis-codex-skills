@@ -1628,8 +1628,8 @@
                                             "praxis-settings-roundtrip-authoring",
                                             "praxis-angular-i18n-governance"
                                         ],
-                       "skillMdSha256":  "4B8828733F65FC892B39142E769E5B30F70E35BC36D54369246BA89BB0EAC545",
-                       "treeSha256":  "538A09A46A120FB48502D70ABC367EF821F59C97A8617C9FD6081108886CFA21"
+                       "skillMdSha256":  "F0778FD98A83D5DC77EE9C30805686F4F8A855DC42BA368AB48F5764943065BE",
+                       "treeSha256":  "04A7BE069279CC8164AED96495FFB16834E63E2E59643F8B048E7E9D4C4C2123"
                    },
                    {
                        "name":  "praxis-list-docs-evidence",
@@ -1791,8 +1791,8 @@
                                             "praxis-manual-form-toolbar-metadata-bridge",
                                             "praxis-manual-form-field-detection-instance"
                                         ],
-                       "skillMdSha256":  "EA43473DB6CC56446D4731EBE788FE9AA8BE3F7E7BEC6A57525882876D523D32",
-                       "treeSha256":  "DCD6A60377086F8EDF9712AB16615E41E4B35DD2A19E936734B3F19A0E8458D8"
+                       "skillMdSha256":  "470F05B333FDFF02D32F22D8DC528B9CDF063539884D2B3BBC47033564B2E8AD",
+                       "treeSha256":  "4EF80961B7B693DB027FF0CF0025E2020DF1D06D9C86174236D06A2B33797EC1"
                    },
                    {
                        "name":  "praxis-metadata-editor-renderer-coverage",
@@ -2011,8 +2011,8 @@
                                             "praxis-authoring-editors",
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "73922E82606EF0C70587EF7E244A71CB2DA97412404760E28648168F97F68386",
-                       "treeSha256":  "F6B0C7238F54B3249D46FDCC416FFE1E2E53A91E361C75C5AE0E030B8D178FDA"
+                       "skillMdSha256":  "CA5CC460DF8260780EE2186582EF64EDCA37F4E8ABEE28A5745FA85765DDB1F9",
+                       "treeSha256":  "9D2416C90D2F6D44CCADDAEE1E2099E995094E423CA1EBE3408319C5DDCBF7DA"
                    },
                    {
                        "name":  "praxis-stepper-wizard-runtime",
