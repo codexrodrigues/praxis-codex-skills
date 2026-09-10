@@ -22,6 +22,7 @@ Inspect the AI and registry surface:
 - `projects/praxis-table/src/lib/ai/table-agentic-authoring-turn-flow.ts`
 - `projects/praxis-table/src/lib/ai/table-ai.adapter.ts`
 - `projects/praxis-table/src/lib/ai/table-context-pack.ts`
+- `projects/praxis-table/src/lib/detail/table-detail-authoring.ts`
 - `projects/praxis-table/src/lib/ai/filter-form-dialog-host-context-pack.ts`
 - `projects/praxis-table/src/lib/ai/*.spec.ts`
 - `projects/praxis-table/test-dev/e2e/table-ai-*.playwright.spec.ts`
@@ -41,6 +42,10 @@ Inspect `tools/ai-registry/AGENTS.md` when registry ingestion or component autho
 - Global actions must be chosen from declared catalogs and payload schemas. Ask concise clarification when required payload cannot be grounded.
 - Selected-record context must be sanitized and human-facing; do not expose raw IDs, internal fields, endpoint paths, schema keys, or payload examples unless explicitly requested.
 - Do not invent unsupported OR/nested boolean filters when the resource/runtime contract does not materialize them.
+- Author contextual detail only through declared operations such as `detail.configure`, `detail.source.configure`, and `detail.presentation.configure`. Retrieve the current manifest before selecting an operation and keep row expansion interaction separate from the shared `behavior.detail` source/presentation contract.
+- Source-only operations must preserve presentation and unknown extensions. Validate resource/source fallback completeness and cycles, inline Rich Content documents and class names, and action references against declared row actions.
+- A validator name in a manifest is insufficient. The owning `praxis-config-starter` registry must dispatch executable validation with failing and passing contract tests, and its effect compiler must materialize the same canonical path used by the Angular runtime.
+- When the table authoring manifest changes, regenerate the ingestion registry into the explicit Config Starter destination, update the snapshot hash contract, and validate both the frontend catalog and backend classpath snapshot before integration.
 
 ## Intent Guardrail
 
@@ -54,6 +59,7 @@ When a required operation is missing, model or extend the canonical AI/tool cont
 - Component edit plans: `table-component-edit-plan` specs and AI adapter specs.
 - Runtime operations: `table-agentic-authoring-turn-flow.spec.ts`, `table-ai.adapter.spec.ts`, and E2E flows for selected records, filters, export, and consultative follow-up.
 - AI registry: `npm run generate:registry:ingestion` and `npm run validate:catalog` when the manifest/catalog surface changes.
+- Contextual detail: `table-detail-operations.spec.ts`, detail authoring/editor specs, backend `TableDetailAuthoringSemanticsTest`, effect-compiler and validator-registry tests, `AgenticAuthoringManifestServiceTest`, and `AiRegistrySnapshotContractTest`.
 - Browser-real AI: use focused Playwrights such as `table-ai-assistant-component-edit-plan`, `table-ai-assistant-selection-context`, `table-ai-assistant-consultative-follow-up`, and opt-in live matrix only when live AI is intentionally required.
 
 State whether live AI E2E was skipped. Do not use GitHub Actions as exploratory validation.

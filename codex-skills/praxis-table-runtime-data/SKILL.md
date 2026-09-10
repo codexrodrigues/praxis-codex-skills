@@ -20,6 +20,7 @@ Inspect the real source before changing table runtime behavior:
 - `projects/praxis-table/src/lib/local-data/**`
 - `projects/praxis-table/src/lib/data-formatter/**`
 - `projects/praxis-table/src/lib/analytics/**`
+- `projects/praxis-table/src/lib/detail/**`
 - `projects/praxis-table/docs/local-data-mode-precedence.md`
 - `projects/praxis-table/docs/resource-events.md`
 
@@ -56,6 +57,11 @@ Only `lacuna-real-de-contrato` can justify a new public contract. Prefer fixing 
 - For export, use `PraxisCollectionExportService` and declared export config; do not invent direct CSV/PDF generation inside a host.
 - For analytics, use `analytics-table` models/services and core analytics projection contracts instead of bespoke dashboard payloads.
 - For runtime observations, use the core observation registry rather than console-only diagnostics.
+- Reuse `behavior.detail` for both row and bottom placement. Bottom detail consumes exactly one eligible visible selected row; preserve the configured multiple-selection policy and never silently select the first record.
+- Keep collection chrome structurally connected. `presentation.bottomStackPosition=afterControls` is the default enterprise order after the footer toolbar and paginator; use `beforeControls` only as an explicit product decision. A hidden or empty detail surface must not leave margins, borders, fixed height, or an empty flex/grid track.
+- Missing detail height means dynamic sizing. Fixed height requires a positive pixel value and scrolling inside the detail body so the paginator and footer remain reachable.
+- Treat detail resource responses as untrusted documents. A Table `resourceAllowList` only restricts the canonical same-origin pathname; it does not authorize records, fields, methods, redirects, or tenant access. Propagate the canonical request context, enforce authorization at the backend endpoint/resolver, fail closed on non-2xx responses, and protect corporate endpoints with timeout and response-size policies.
+- Invalidate selected-record detail on tenant/context change, row replacement, page visibility loss, and newer data/detail responses. A matching record id across two tenants is not the same authorization context.
 - For public or untrusted hosts, consume the Table-owned runtime profiles. A
   profile must close the input shape and declare every possible resource-read
   operation, including compatibility fallbacks. `effects: []` means local-only;
@@ -74,6 +80,7 @@ Prefer the smallest reliable validation:
 - runtime profile: metadata/profile specs plus
   `ComponentRuntimeProfileService` happy, mismatch, and adversarial shape proof
 - browser-visible behavior: focal Playwright under `projects/praxis-table/test-dev/e2e/**`
+- contextual bottom detail: selection/state specs plus `/table-bottom-detail-lab` Playwright proof for paginator/footer adjacency, before/after control ordering, zero geometry when hidden, dynamic/fixed height, collapse focus, late responses, and narrow layout
 
 When PowerShell is unavailable, run equivalent local manifest/frontmatter/hash checks for skill changes and state the limitation.
 
