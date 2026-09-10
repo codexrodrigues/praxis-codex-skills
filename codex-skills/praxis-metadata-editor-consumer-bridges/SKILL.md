@@ -102,6 +102,26 @@ Consumer patch application must respect the consumer storage model without chang
   authoring patches, while ordinary cascade edits should persist root-level cascade paths. Consumers
   must not silently promote hydrated backend `x-ui` dependencies into local override semantics.
 
+## Opening Baseline And Cumulative Deltas
+
+`FieldMetadataEditorComponent.getSettingsValue()` is a cumulative delta relative to
+its opening seed. For Layout Editor and Filter Settings, capture an immutable
+field-scoped opening baseline and apply every accepted delta to that baseline.
+Applying a cumulative delta to the already patched value loses reversions:
+A -> B -> Apply -> A -> Conclude must restore A even when the final delta is `{}`.
+Keep unrelated fields from the current parent document; do not restore the entire
+parent snapshot while accepting one field. Preserve nested siblings, replace arrays,
+and delete only paths explicitly marked `null`. A shallow object spread is not a
+recursive merge patch. Reuse the owning consumer's internal helper without making
+another public library a transitive facade.
+
+Do not change the canonical editor to emit incremental patches to fix one consumer:
+other consumers, including PraxisFilter, already capture opening override baselines.
+Prove the real child `getSettingsValue()` through parent accepted events for nested
+option-source edits, null removal, A -> B -> A, repeated Apply and another field
+changed while the child is open. Handwritten patch fixtures alone cannot prove the
+emitter/consumer baseline agreement.
+
 ## Consumer Validation
 
 Choose the consumer proof:
