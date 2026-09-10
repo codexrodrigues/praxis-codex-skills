@@ -47,6 +47,10 @@ Do not create editor-only document shapes or host wrappers that the renderer can
 - Keep labels and validation messages in `providePraxisRichContentI18n()` catalogs.
 - Use presets for repeatable structures instead of copying bulky local JSON into consumers.
 - Keep Settings Panel apply/save/reset/reopen behavior aligned with runtime rendering.
+- When another editor embeds Rich Content, delegate through the canonical document/input contract and keep guided editing, preview, advanced JSON, validation, and unapplied-draft state connected to the host apply/save lifecycle. Do not fork a reduced host-local card or callout editor.
+- Preserve semantic callout/card tone, icon, title, message, context-path bindings, action references, and safe advanced properties. Validate `rootClassName` and the full document even when content enters through advanced JSON.
+- Treat action nodes as references only. The owning host must resolve them against its governed action catalog and enforce capability, record authorization, confirmation, and dispatch; a rendered button never grants authority.
+- Prefer semantic tones and platform tokens. Arbitrary styles or gradients remain advanced input and require the canonical safety validator plus rendered contrast evidence across supported themes.
 
 ## Validation
 
