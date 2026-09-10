@@ -159,3 +159,16 @@ Prove previous overlay → owner panel → child with real CDK overlays and a bu
 keyboard event; then verify mobile menu opening, Escape, return focus and discard
 veto in the real host. An isolated pass or longer timeout does not close a race
 that still reproduces in the full interaction sequence.
+
+### Provider emissions during child rendering
+
+When a corrected field leaves Apply/Save disabled, inspect provider state, wrapper
+state, panel state and the rendered buttons separately. A true validity property
+and a manual detectChanges call do not prove the footer refreshed. Test late
+dirty/valid/busy emissions during a child check under zoneless change detection,
+await natural stabilization, and inspect the actual buttons without another click.
+Use reactive state in the panel owner when those emissions occur after the panel
+was checked; do not add consumer-specific delays or weaken validity gates.
+Reference regressions: settings-panel-provider-render.spec.ts in Settings Panel and
+page-settings-fidelity.integration.spec.ts in Page Builder (real shell, size editor,
+Core and Settings Panel; invalid full width -> half width -> Apply).
