@@ -84,6 +84,24 @@ selection, responsive row slots, and feature templates round-trip through the
 List owner document/editor; do not persist runtime-discovered links or
 capabilities as config.
 
+## Standalone Save Boundary
+
+`PraxisList.openConfigEditorPanel` supplies an owner-local `persistSettings` callback
+through `SETTINGS_PANEL_DATA` and binds the panel to the List `DestroyRef` owner.
+Destroying the owner closes its panel without Save; late responses cannot publish
+into the destroyed target. The config editor awaits persistence in `onSave()` before
+Settings Panel emits `saved$` and closes. The host validates/projects the authoring
+document, checks its storage target, and awaits `ASYNC_CONFIG_STORAGE.saveConfig`.
+The subsequent `saved$` consumes the accepted config without a second storage write.
+`volatile` completes locally; a widget editor without this callback retains its
+local value-returning protocol. Do not move remote persistence into an unawaited
+`saved$` subscription or swallow storage errors.
+
+Run `src/lib/components/praxis-list.editor-persistence.spec.ts` with the real editor,
+Settings Panel and a controlled storage response. Prove rejection, draft retention,
+retry, single write, stale-response suppression, volatile mode and reopen/runtime
+consumption. This adapter test is not an HTTP/backend durability certificate.
+
 ## Runtime Parity
 
 Do not make the editor present declared-only fields as active runtime features. If the editor exposes `virtualScroll`, `stickySectionHeader`, `events.*`, `emitPayload`, `highContrast`, or `reduceMotion`, label or validate the limitation consistently with README/json-api docs and AI manifest warnings.

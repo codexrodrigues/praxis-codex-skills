@@ -64,7 +64,7 @@ For each editable path, prove or inspect:
 2. Editor UI changes the canonical path, not an editor-only alias.
 3. `getSettingsValue()` and `onSave()` emit the expected document or patch shape.
 4. `applied$` updates preview/runtime without closing when supported.
-5. `saved$` persists the same canonical shape.
+5. The persistence owner accepts the same canonical shape before the shell reports completion when Save promises durable storage.
 6. `reset()` returns only the intended scope to baseline.
 7. Reopen reloads the value without silent normalization drift.
 8. Runtime consumes the saved/applied value without hidden adapters.
@@ -93,6 +93,29 @@ For each editable path, prove or inspect:
 - `reset()` emits `reset$`.
 - `close(reason)` emits `closed$` and completes the streams.
 - `DeferredSettingsPanelRef` preserves event streams when a new panel waits for the current panel to close before opening.
+
+## Awaited Persistence And State
+
+`saved$` is a notification paired with shell closure; an asynchronous subscriber is
+not awaited by Settings Panel. When Save promises persistence, the owning editor's
+`onSave()` must await the host storage adapter before returning its accepted value.
+Reuse the injected `SETTINGS_PANEL_DATA` envelope for an owner-local persistence
+callback where that integration pattern already exists. Keep persistence ownership
+with the host; widget wrappers may still return a synchronous local payload.
+
+Publish busy state while awaiting storage, veto close during that operation, retain
+the draft and show localized failure on rejection, and permit one explicit retry.
+Do not write again from `saved$` after the awaited save. Before accepting a delayed
+response, verify the editor is alive, the target is unchanged, and the submitted
+snapshot still matches the current valid draft. Resolve asynchronously to `undefined`
+when an obsolete response must not close the editor. Adapter success proves only
+that adapter's declared durability; do not label an in-memory adapter as remote save.
+
+Dirty state, reset baseline and whether Apply occurred are separate facts. Inspect
+the provider's semantics instead of inferring all three from one value comparison.
+A silent Reactive Forms reset (`emitEvent: false`) still needs a provider state
+notification so the shell observes the new dirty/valid state without publishing an
+outward config change. Test reset with an active state subscription.
 
 ## Open, Replace, And Close
 
