@@ -19,6 +19,7 @@ Inspect the real authoring surface:
 - `projects/praxis-table/src/lib/table-editor-capability.ts`
 - `projects/praxis-table/src/lib/columns-config-editor/**`
 - `projects/praxis-table/src/lib/behavior-config-editor/**`
+- `projects/praxis-table/src/lib/detail/**`
 - `projects/praxis-table/src/lib/filter-settings/**`
 - `projects/praxis-table/src/lib/toolbar-actions-editor/**`
 - `projects/praxis-table/src/lib/rules-editor/**`
@@ -50,6 +51,12 @@ Also inspect `projects/praxis-settings-panel/AGENTS.md` and the Settings Panel b
 - Capture the host-authored `disabled` state before availability overrides it. A later allowed capability must not erase an explicit host denial, and a session denial must not become an authored restriction after a label/order edit. Internal `__praxis*` provenance is runtime bookkeeping, never a public setting or persisted action field.
 - For older snapshots without recoverable origin, preserve `disabled: true` and diagnose the ambiguity. Never infer origin from labels, array positions, duplicate identifiers or assumed credentials. Test clean/legacy input, explicit false/true/absent disabled, nested menus, reorder and save/reopen through the real editor.
 - For i18n, put editor chrome text in `table-editor.i18n.ts`; do not add visible hardcoded text.
+- Keep contextual detail in the canonical `behavior.detail` group. `behavior.expansion` owns row interaction; it must not become a second source for detail source, schema, height, or presentation.
+- Give detail a dedicated editor section that covers placement, dynamic or fixed height, empty behavior, source and fallback, the selected-record document, and advanced JSON without losing supported extension properties.
+- Delegate selected-record callouts, cards, icons, formatted text, context bindings, and contextual action references to the canonical Rich Content editor. Do not recreate Rich Content appearance fields inside Table.
+- Distinguish the selected-record document from shell states. Zero, multiple, off-page, loading, blocked, and error states remain localized Table messages unless the runtime contract explicitly supports rich state documents.
+- `emptyBehavior=hide` must remove the panel geometry when no eligible selected record or renderable content exists. `emptyBehavior=message` must expose a useful localized instruction. Missing height defaults to dynamic; fixed height requires a positive pixel value and an internal overflow strategy.
+- Rich Content action references must resolve to declared table row actions. The editor may configure the reference and presentation, but it must not invent or authorize a domain action.
 
 Column visibility, reorder, resize, auto-fit, density, and other runtime
 customizations must serialize through one persistence lane. Queue/coalesce
@@ -69,6 +76,8 @@ For every editable field, prove or inspect:
 5. Reopening the editor preserves the value.
 6. Reset does not erase unrelated table state.
 
+For contextual detail, repeat the proof with no selection, one eligible visible selection, multiple selection, a selection outside the visible page, empty content, resource failure, dynamic height, fixed height, collapse/reopen, and narrow Settings Panel navigation.
+
 Also switch from visual controls to JSON without closing the editor: an untouched
 JSON projection must follow current visual edits. Preserve unapplied manual JSON,
 including invalid or empty text, instead of overwriting it on input changes. After
@@ -85,6 +94,7 @@ If no visual editor is affected, say so explicitly and explain why.
 - Rules/formulas: `table-rules-editor*.spec.ts`, `rule-compiler.service.spec.ts`, `visual-formula-builder*.spec.ts`, and `npm run verify:no-visual-builder` when relevant.
 - CRUD integration: `crud-integration-editor` coverage plus config editor integration.
 - Visual authoring: Playwrights such as `table-json-authoring`, `table-json-rules`, `table-rules-editor`, `column-drag`, and expansion authoring.
+- Contextual detail: focused `detail/*.spec.ts`, `praxis-table.bottom-detail.spec.ts`, config-editor initialization/round-trip specs, and `/table-bottom-detail-lab` Playwright coverage for collection chrome, sizing, hidden geometry, Rich Content, and governed actions.
 
 ## Companion Skills
 
