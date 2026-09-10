@@ -163,7 +163,7 @@ discarding the current draft or persisting the page.
 ## Collective Canvas Arrangement
 
 For explicit base-canvas arrangement, inspect Core `prepareCanvasArrangement` and
-its focused specs. The editor prepares geometry, lists affected keys, stages it,
+its focused specs. The editor prepares geometry, compares numbered before/after maps with stable widget identity, stages it,
 and uses the existing panel Apply/Undo flow. Keep the proposal transient and reject
 it when its source draft changes. An exact Apply echo may preserve the single undo;
 page replacement and Reset invalidate it. Preserve child inputs, composition, heights,
@@ -185,3 +185,11 @@ candidate before reading canvas. Keep Undo tied to reviewed geometry across unre
 edits, and restore only geometric fields so content/limits/gap edits survive.
 Include the four `canvas-arrangement-regressions.spec.ts` cases and the mixed-edit
 Apply/Undo browser journey when changing this path.
+
+Keep Visual templates, Layout templates, Arrange and Adjustments as exclusive tasks
+in the canvas page editor. Theme/shell samples derive from canonical tokens and
+remain illustrative; composition diagrams explain roles, not actual canvas positions.
+The nine distribution choices are transient ratios passed to Core, not new persisted
+preset IDs. Verify tab navigation does not dirty the document, errors route to the
+correct adjustment, proposal feedback receives focus, and narrow/keyboard use retains
+access to the primary tabs. More choices must not bury the before/after review.
