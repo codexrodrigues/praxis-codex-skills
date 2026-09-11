@@ -197,6 +197,16 @@ Run the smallest local gate that proves the changed boundary:
   `npm run validate:authoring-contracts`; use `npm run generate:registry:ingestion` when aggregate
   publication must be regenerated.
 
+Template service changes also affect the Java compiler receipt in
+`docs/ai/agentic-authoring/proofs/ui-composition-compiler-parity-corpus.v1.json`.
+Run `UiCompositionGoldenCorpusRunnerTest` alongside the template tests: its execution closure
+includes `AiRegistryTemplateService` even though the runner mocks the repository boundary.
+When source/class hashes change, regenerate only `compilerReceipts.java` from the runner report's
+`compilerIdentity.sourceReceipt`; review the closure and keep all corpus cases and expected
+projections intact. Re-run the golden/compiler/template-resolver/snapshot gate documented in
+`docs/ai/agentic-authoring/ui-composition-compiler-parity-corpus-v1.md`, including deliberate
+mismatch tests. Do not weaken receipt validation to publish a release.
+
 For templates, prove object validation, default description, identity-preserving upsert, semantic
 search scoping/limits, payload mapping, bulk partial failure, delete/not-found, and HTTP behavior.
 If the owner has no focal template tests for the changed behavior, record that as a platform test
