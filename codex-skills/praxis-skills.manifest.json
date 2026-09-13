@@ -119,8 +119,8 @@
                                             "praxis-api-quickstart-cockpit-http-validation",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "637D3DF863C0CD5D929D401561ACC6B1710DD9297735236A918371B4D2FE2A00",
-                       "treeSha256":  "1FBEE3DC2655A3CF06D280BE18C33BE03307A9EFF527D3BA5D3AA6370C2597BB"
+                       "skillMdSha256":  "F4C53FEECCFAF6C6FCAB6FCA0124BD9328B819AB62B33ADD4576871865721A12",
+                       "treeSha256":  "5821A23AA50F0F7FBB14A7E6F64EC436E8EE763E1F7D92F481EE534ECCF59D3F"
                    },
                    {
                        "name":  "praxis-java-command-concurrency-authoring",
@@ -1112,8 +1112,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "FEF9FEFF47DDADDB4317E537024F5C8B2429A2640F427D7175ACC83EFF68F8DF",
-                       "treeSha256":  "CD103A5EA8C4044F9B92DDE76D54152C6F73CE292D107D06DF7FF0AFF879377D"
+                       "skillMdSha256":  "AC890D8554CCBC4A75CDCE2B18BF0BDC8CF3E20ABDE1EEECDDD7EA1BB8B65120",
+                       "treeSha256":  "A3AE091C59459865DA8982AFF43E47925C0995EAE0F0D41ADB5100BE8D30EE0C"
                    },
                    {
                        "name":  "praxis-dynamic-fields-editorial",
