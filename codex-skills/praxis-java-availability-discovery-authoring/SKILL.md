@@ -81,6 +81,33 @@ confirmation role, provider wiring, authorization or execution. The future bulk
 registry must still validate these and fail at bootstrap when dependencies are
 missing. Do not advertise bulk support from this resolver-only foundation.
 
+## Bind The Actual MVC Request DTO
+
+Where available, use `requireResourceRequestBody(resourceKey, operationId, method,
+mapper.getTypeFactory())` and read `docs/spec/CANONICAL-OPERATION-BINDING.md` first.
+It shares the strict MVC entry with operation resolution and returns operation plus
+JavaType from the actual required @RequestBody, resolving controller/interface generics.
+Do not pass an independently guessed DTO or perform another handler lookup in the host.
+
+Only the documented concrete DTO subset is supported. Reject optional/multiple bodies,
+transport wrappers, scalar/container roots, raw/unbound/wildcard types, non-static member
+classes and unresolved generic ancestors. Preserve nested arguments rather than reducing
+them to Object. Custom resolvers implement the same guarantee; default fails explicitly.
+
+Pass the returned operation to `documents.requireRequestSchema` and the returned bodyType
+to BulkEditableFields with the same configured mapper and trusted protected wire names.
+This proves the declared MVC type, not custom converter/deserializer or SpringDoc parity.
+The bulk evaluation wrapper is not the unit update DTO. Require explicit update IDs in
+the adopting host; do not weaken the binding when old overrides only declare a summary.
+
+MVC binding needs initialized mappings but performs no schema fetch. Read schemas only
+when the document source is ready. Optional asynchronous warmup is not an admission gate:
+the future executable registry must reject admission until schema/providers/infrastructure
+are validated and define invalidation/revalidation separately.
+
+Prove CanonicalRequestBodyBindingTest, the existing operation resolver tests and
+CanonicalRequestSchemaHttpIntegrationTest, plus exact-candidate host HTTP regression.
+
 ## Preserve The Platform Boundary
 
 - `praxis-metadata-starter` owns annotations, catalogs, availability

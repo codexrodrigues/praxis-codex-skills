@@ -101,8 +101,8 @@
                                             "praxis-metadata-resource-baseline",
                                             "praxis-api-quickstart-cockpit-http-validation"
                                         ],
-                       "skillMdSha256":  "C9D830A543AF4A8FEC75A1701A50B5AABD5B23A7A01A5A967887E5200BCF6B78",
-                       "treeSha256":  "419765729FFFBB4DCB5B23F575A441E3D727EBB5DBFD4E77C5D7E531988024DA"
+                       "skillMdSha256":  "29BF2D6694B799251C9893D2AD16E64B51A570F0E35731E51505D470CE689D42",
+                       "treeSha256":  "9BAFF725ACD55CADDD3BA65EFCA51663DE7E7863989F134A34F1F3DAB9824AD7"
                    },
                    {
                        "name":  "praxis-java-contract-conformance",
@@ -119,8 +119,8 @@
                                             "praxis-api-quickstart-cockpit-http-validation",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "1F0916111747634C5B9FC604D739607FDDEC6F91FFCCE27B902A56E2626265F1",
-                       "treeSha256":  "ED8EB1AFA40E3C9B878D3684D1FAAAE679FEDA1554EF41E7B54BA789D1857E61"
+                       "skillMdSha256":  "247E70088F4221B25A52A75D8EDF7265E10EF8D4133B615F0FCCBA7262347AE4",
+                       "treeSha256":  "30A7006B0FD8CC3A8C7BB99E5787ED31B4D30428190AEDB6C179DE37808A2294"
                    },
                    {
                        "name":  "praxis-java-command-concurrency-authoring",
@@ -851,8 +851,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "CBF91608F1ED8ED552559D63AF5BA756803BBCA7C2A223EA08A3E9B7D3D7CBA1",
-                       "treeSha256":  "566FCB5CF9C75FB811B8D211984BBF4A003892B4FE9596576D1835BCBF565531"
+                       "skillMdSha256":  "E3B5DE908009B761A75EF95E07CBA035EFF8F0CB63D6FF1E230DAD15DED7C309",
+                       "treeSha256":  "917E3F1957BAFF64BC4DC8D0108EE3D7C8EFB729B87C0B1FFF179B9008FC37B0"
                    },
                    {
                        "name":  "praxis-metadata-resource-baseline",
