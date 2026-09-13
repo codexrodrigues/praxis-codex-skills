@@ -1294,8 +1294,8 @@
                                             "praxis-fields-selection-lookup-controls",
                                             "praxis-fields-control-profile-ai"
                                         ],
-                       "skillMdSha256":  "BA5401A33A2F883D73B845D330F6EA169DAB5AB6E687C327134F86539849C213",
-                       "treeSha256":  "A8418DBCF3DC1371F040CBC3316A8455560E0E18D2CD99C8AE7D061C251514A2"
+                       "skillMdSha256":  "6E2EBB113979DAAB5525FCFAC3B002CBCCED97A53A4A5E16BA33362FBED462E9",
+                       "treeSha256":  "52E924B9509ED529B8A8A8A9602DE4479799C1A63A5A4E95464A3CBBDE80C2B2"
                    },
                    {
                        "name":  "praxis-fields-inline-overlay-runtime",
@@ -1598,8 +1598,8 @@
                                             "praxis-api-quickstart-cockpit-http-validation",
                                             "praxis-http-examples-llm-smoke"
                                         ],
-                       "skillMdSha256":  "6225F3CD04D3B941DFD706068568052B215B03BE80194E408035F6959BA75CB9",
-                       "treeSha256":  "6926C9291525ABCD438E70EF588D6E388667B2290ACE2A8D3A31506DA9DDB128"
+                       "skillMdSha256":  "79FF97947375175F71B17EE59D9AD5044434B48FD664BBB26FAB411A87E60BE1",
+                       "treeSha256":  "E720BE3FFC66023EB28978085F73AE7D4F8D7FF179F5DBAC5333632A24C875C5"
                    },
                    {
                        "name":  "praxis-list-ai-validation",
