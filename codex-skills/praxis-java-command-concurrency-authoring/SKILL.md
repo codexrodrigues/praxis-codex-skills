@@ -106,6 +106,17 @@ revalidation. Reading an expired snapshot does not authorize execution. Never ex
 object through HTTP, logs or UI; store failures omit protected driver/parser causes.
 Fingerprint checking detects inconsistent content, not malicious database administrators.
 
+Before persisting, require canonical wire validation of every target, not only a recognized
+codecId: a custom codec must not claim integer/UUID while storing incompatible JSON tokens.
+Use BulkStoredProposalContractTest for this boundary and preserve compatible custom encoders.
+
+Read HTTP decimal tokens directly as BigDecimal as well as in protected storage; Jackson's
+tree reader can probe a valid large exponent as double/Infinity despite exact-decimal settings.
+Prove normalization is closed under repeated validation and storage decoding: trailing zeros
+at scale -256 must not produce an invalid scale after normalization. Preserve the existing
+fingerprint framing, distinguish integer from decimal, and prove commit/readback of input,
+facts and plan in BulkEvaluationStorePostgresTest. Do not relax transport numeric limits.
+
 Use the internal storage codec, not the host ObjectMapper: canonical decimal 1.0 must
 remain DecimalNode and differ from integer 1. Preserve exact large integers, decimal
 precision/scale limits and defensive copies. Protocol node validation is reused internally;
