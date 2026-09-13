@@ -1,6 +1,6 @@
 ---
 name: praxis-config-ai-provider-operations
-description: Use when operating or changing Praxis Config AI provider infrastructure: provider catalog/status/test endpoints, governed audio transcription, connection probes, routing and fallback, failure classification, streaming cancellation, invocation telemetry and metrics, pricing snapshots, usage/cost attribution, provider metadata, paid live-gate budgets, key separation, or public-host AI rate limiting. Do not use for semantic authoring logic alone.
+description: Use when operating or changing Praxis Config AI provider infrastructure: provider catalog/status/test endpoints, governed audio transcription, connection probes, routing and fallback, failure classification, streaming cancellation, invocation telemetry and metrics, pricing snapshots, usage/cost attribution, provider metadata, managed Agents API session renewal, paid live-gate budgets, key separation, or public-host AI rate limiting. Do not use for semantic authoring logic alone.
 ---
 
 # Praxis Config AI Provider Operations
@@ -19,6 +19,8 @@ Inspect:
 - `AiProviderManagementService`, `AiProviderRouter`, `AiProviderStatusService`
 - `AiProviderFailureClassifier`, invocation telemetry/metrics/trace
 - provider streaming fallback/cancel and access-token services
+- `OpenAiAgentsTableTurnPlanner`, `OpenAiAgentsSessionClient`, and their focused
+  tests when changing managed-session authority, renewal, or cleanup
 - `AiAudioTranscriptionController`, `AiAudioTranscriptionRequest`, `AiAudioTranscriptionResponse`, `AiProvider.supportsAudioTranscription/transcribeAudio`, provider management selection/configuration, and provider adapter implementation
 - `docs/ai/openai-cost-attribution-and-live-gates.md`
 - provider pricing schema/snapshot and provider telemetry evidence docs
@@ -86,6 +88,22 @@ A completed remote turn is not an approved Praxis preview. Accept session contin
 only after the canonical engine successfully appends an applicable terminal result;
 UI persistence still requires the separate governed apply operation.
 
+Before continuing a managed session, compare the server-reconciled target app,
+component, route, selected widget, schema base URL, authoring manifest, declared
+tools, skill catalog refs and hashes, required skill refs, and server-resolved
+credential fingerprint with the authority captured when that session opened. The current
+page draft may change after an accepted terminal and is not itself renewal drift.
+On authority or credential drift, close the old remote session and open a new one
+only after cleanup reports `deleted` or `already-absent`. Preserve the accepted
+page draft as grounded input to the new session; it is not a persisted apply or a
+preserved remote conversation. If deletion remains unconfirmed, block another
+session for the same owner in this process with `managed-session-cleanup-required`.
+The tombstone consumes bounded in-process owner capacity; reconcile remote cleanup
+explicitly instead of restarting merely to bypass the block. Do not silently
+retry creation or promise distributed recovery. After renewal or
+loss of remote history, do not promise that anaphoric references to prior turns
+will resolve unless the necessary context is explicitly available and verified.
+
 Bound function calls, repair attempts, request/body deadlines, response size, and
 session lifetime. Prove timeout when headers arrive but the body stalls, duplicate
 function replay without re-execution, conflicting replay rejection, cancellation,
@@ -93,6 +111,12 @@ and cleanup. Never blindly repeat a session-creation mutation with an uncertain
 network outcome. Record inability to recover a missing remote session ID as a limit.
 Keep provider error codes allowlisted; syntactically safe arbitrary strings can still
 contain secrets.
+
+For managed-session changes, also run
+`OpenAiAgentsTableTurnPlannerTest#renewsRemoteAuthorityWithoutLosingAcceptedDraft`, including
+authority drift, accepted-draft handoff, and failed deletion, alongside the client
+cleanup tests. Inspect the sanitized cleanup status and the absence of a second
+session after an unconfirmed delete; do not use a paid call to establish this gate.
 
 Hosted skill evidence has distinct levels: attachment/configuration, explicit file
 reads through a governed application tool, and native provider skill execution.
