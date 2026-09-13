@@ -98,6 +98,34 @@ that proves the complete executable protocol. Programmatic decimal changes must
 use exact decimal nodes; reject binary Float/Double values that may already have
 lost precision.
 
+## Bulk Snapshots And Result Schemas
+
+For `BulkIntentSnapshot`, `BulkProposal`, `BulkExecution` or `BulkItemResult`,
+read Metadata `docs/spec/BULK-PROTOCOL-RESULTS.md` and the exact revision of
+`docs/spec/bulk-protocol.schema.json`. Extend the input gate with
+`BulkIntentFingerprintTest`, `BulkResponseContractTest` and `BulkProtocolSchemaTest`.
+Inspect fixed reference vectors for the versioned framing, context/operation/codec
+binding, set normalization, ordered items/business arrays, exact decimals, deep
+copies and bounds before defensive allocation. Preserve the published hash
+algorithm: changing canonicalization without a migration invalidates persisted
+fingerprints even if equality-only tests remain green.
+
+A digest of evaluation intent does not bind a future frozen QUERY manifest,
+proposal identity or durable receipt by itself. Require those additional bindings
+in storage/execution proof; do not claim idempotency from SDK tests. Keep protected
+intent separate from an explicitly redacted public preview. Constructors validate
+shape/invariants, not authorization or redaction. Diagnostics use the canonical
+message type with empty metadata; evidence references expose only authorized data.
+
+Compare Java-valid outputs with each concrete identity schema, including optional
+operation groups, string IDs containing spaces, all three request modalities,
+reserved parameter names, status/count constraints and decimal round-trips. Use
+an isolated mapper with JavaTimeModule, ISO dates, USE_BIG_DECIMAL_FOR_FLOATS and
+STRIP_TRAILING_BIGDECIMAL_ZEROES disabled for response JSON; do not alter global
+Jackson. Pending differs from NOT_PROCESSED; terminal executions cannot retain
+pending/unknown, and RECONCILIATION_REQUIRED is not terminal. Public output types
+are not proof of persisted proposals, schema discovery or executable endpoints.
+
 ## Report Without Ambiguity
 
 Return an evidence pack containing:
