@@ -80,6 +80,8 @@ must not commit/rollback, change auto-commit or retain the connection. Its retur
 provisional until the outer owner commits; authorization, deadlines and receipt semantics
 remain separate. Manager-visible rollback-only is rejected; a local outer status mark
 may not yet be visible to a participant. Stop mutations when the owner decides rollback.
+The binding rejects globalRollbackOnParticipationFailure=false at construction and before
+work, preserving the required rollback-only behavior when a callback fails.
 
 Prove the adopted pair with real PostgreSQL/JPA: same backend PID for JPA/JDBC, independent
 observer before/after commit, both writes rolled back, deferred constraint failing at
