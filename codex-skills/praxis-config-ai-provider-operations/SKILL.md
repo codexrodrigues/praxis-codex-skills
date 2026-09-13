@@ -104,6 +104,22 @@ retry creation or promise distributed recovery. After renewal or
 loss of remote history, do not promise that anaphoric references to prior turns
 will resolve unless the necessary context is explicitly available and verified.
 
+Recover only read-only `GET` of the session and paginated turns after HTTP
+`500`, `502`, `503`, or `504`. Share at most two retries across all those reads
+in one user turn, with minimum waits of one then two seconds. Honor a valid
+`Retry-After` in seconds or RFC 1123 date form, but stop if the delay cannot fit
+within the five-second cumulative inline wait budget or remaining turn
+deadline. Check cancellation throughout the wait. Preserve the first sanitized
+HTTP failure diagnostic after a later successful read; its presence alone does
+not prove a terminal turn failure. Prove the shared budget, first diagnostic,
+cancellation, deadline, and no duplicate function execution with
+`OpenAiAgentsSessionClientTest`.
+Do not retry authentication/quota failures, unknown transport outcomes, or
+`POST` creation/events under this read policy. Pending `tool_result` replay
+with cached output is a separate idempotency path. Session cleanup separately
+retries `DELETE` on HTTP `409` up to four attempts; neither path supplies a
+durable journal or cross-process recovery.
+
 Bound function calls, repair attempts, request/body deadlines, response size, and
 session lifetime. Prove timeout when headers arrive but the body stalls, duplicate
 function replay without re-execution, conflicting replay rejection, cancellation,
