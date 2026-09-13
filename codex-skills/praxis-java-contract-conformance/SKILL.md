@@ -142,6 +142,33 @@ unresolved schema composition. A model-conversion test is not an HTTP evaluation
 schema or bootstrap proof. Keep those registry/provider gates open, and run the
 existing consumer HTTP regression with the exact isolated candidate artifact.
 
+## Strict Canonical Request Reading
+
+Read Metadata `docs/spec/CANONICAL-REQUEST-SCHEMA.md` before using
+`OpenApiDocumentService.requireRequestSchema`. Resolve an explicit operation by
+resource/operation ID/method; the reader verifies the same ID in the cached OpenAPI
+document and returns an isolated schema, concrete JSON media type and SpecVersion.
+The default algorithm also applies to substitute document services through their
+getDocumentForGroup/resolveDocumentPath methods; do not manufacture a trusted snapshot.
+Keep `/schemas/filtered` as the UI projection and SchemaReferenceResolver as its
+identity/URL owner; do not replace them with this backend compilation snapshot.
+
+Require exactly one JSON representation, declared 3.0/3.1 dialect, supported local
+component references and bounded materialization. Unsupported composition, cycles,
+reference siblings, custom dialects and ambiguous JSON media types fail explicitly.
+Defaults/examples/x-ui remain literal data. Do not flatten allOf by dropping constraints.
+
+The default source fetches SpringDoc over self HTTP: call after the server/document
+is available. This reader does not implement startup readiness or an executable bulk
+registry. The future composition must prove the JavaType belongs to the real handler's
+request body, including generics. A bulk evaluation wrapper is not the unit update DTO;
+never infer the latter from method names or the first PUT/PATCH operation.
+
+Prove CanonicalRequestSchemaTest and CanonicalRequestSchemaHttpIntegrationTest,
+inspect reports for both, then regress OpenApiDocsSupport/ApiDocsController and the
+exact candidate JAR in Quickstart. The HTTP fixture proves schema reading and field
+compilation, not persistence, authorization or bulk execution.
+
 ## Report Without Ambiguity
 
 Return an evidence pack containing:
