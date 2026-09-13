@@ -45,6 +45,26 @@ override is not a replacement for an ambiguous starter contract.
 Read [bootstrap-contract-matrix.md](references/bootstrap-contract-matrix.md)
 when selecting a condition, property, SPI, ordering rule, or validation gate.
 
+## Preserve Explicit Bulk Infrastructure Adoption
+
+`BulkExecutionInfrastructure` is a host-constructed binding of the operational datasource,
+local JDBC/JPA transaction manager and stable namespace. It is not registered automatically
+and does not run DDL or workers. Do not infer its collaborators by Primary, bean name or URL.
+JPA requires the same datasource exposed by EntityManagerFactoryInfo and its manager;
+initialize both first. Opaque managers, routing and datasource wrappers are outside the
+initial demonstrated subset. Do not add a fallback connection when composition fails.
+
+Its withConnection callback requires a real existing writable transaction (MANDATORY),
+with JdbcTemplate's connection bound to the configured datasource. It does not implement
+registry/readiness, migrations or storage. A later runtime must compose and validate these
+actual dependencies before advertising an executable operation; OpenApiDocumentWarmup is
+optional/asynchronous and tolerates errors, so it is not an admission gate.
+
+Validate BulkExecutionInfrastructureTest and the real-process
+BulkExecutionInfrastructurePostgresTest before a host adoption. The latter proves JPA/JDBC
+commit/rollback and lock contention on fixture tables, not production ledger migration.
+No AutoConfiguration.imports change is needed merely to add this explicit value/participant.
+
 ## Prove Bootstrap And Consumers
 
 Prove default context startup, intended host override, absent-required capability,

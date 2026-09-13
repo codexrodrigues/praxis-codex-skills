@@ -50,8 +50,9 @@ scope, preconditions, idempotency, result status, or focused proof.
 
 - `praxis-metadata-starter` owns command execution types, resource version
   preconditions, action discovery, schemas, and capability projection.
-- The host owns domain transition, transaction boundary, idempotency storage,
-  external-effect coordination, and authorization. Do not leak database version,
+- The host owns domain transition, transaction boundary, operational datasource and
+  adoption of idempotency storage, external-effect coordination, and authorization.
+  Metadata owns the shared bulk infrastructure described below. Do not leak database version,
   package, queue, token, or internal exception details.
 - `praxis-ui-angular` consumes action schemas, links, capabilities and safe conflicts.
   It does not infer idempotency or manufacture `If-Match` locally.
@@ -59,6 +60,33 @@ scope, preconditions, idempotency, result status, or focused proof.
 Do not resolve command intent from labels, route fragments, keywords, regexes, or aliases.
 Use resource/action IDs, schemas, availability, capabilities, and governed context;
 text can only rank already-scoped candidates.
+
+## Bind Bulk JDBC Work To The Operational Transaction
+
+`BulkExecutionInfrastructure(dataSource, transactionManager, namespace)` is the
+Metadata-owned explicit integration boundary. It currently provides participation,
+not a ledger/store, migrator, executor, worker or runtime capability. Construction
+performs no database access or DDL. The namespace is explicit and stable; it is not
+authentication or authorization and must not be inferred from untrusted headers.
+
+Use the actual shared datasource instance with a local JDBC manager or a JPA manager
+whose EntityManagerFactory exposes the same datasource through EntityManagerFactoryInfo.
+Initialize the beans first. The initial subset rejects opaque/mismatched managers,
+routing and datasource wrappers; do not compare URLs or choose a Primary bean.
+
+`withConnection(ConnectionCallback)` joins MANDATORY, writable, existing physical
+transactions through JdbcTemplate. No independent transaction is started. The callback
+must not commit/rollback, change auto-commit or retain the connection. Its return is
+provisional until the outer owner commits; authorization, deadlines and receipt semantics
+remain separate. Manager-visible rollback-only is rejected; a local outer status mark
+may not yet be visible to a participant. Stop mutations when the owner decides rollback.
+
+Prove the adopted pair with real PostgreSQL/JPA: same backend PID for JPA/JDBC, independent
+observer before/after commit, both writes rolled back, deferred constraint failing at
+COMMIT after callback completion, manager mismatch, and two-connection lock contention.
+Use BulkExecutionInfrastructureTest and BulkExecutionInfrastructurePostgresTest. Fixture
+tables are not the production ledger DDL; this gate does not certify fencing/replay or
+bulk execution. Consult Metadata docs/spec/BULK-EXECUTION-INFRASTRUCTURE.md.
 
 ## Prove The Command Under Stress
 
