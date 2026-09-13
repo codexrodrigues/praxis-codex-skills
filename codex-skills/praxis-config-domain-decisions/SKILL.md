@@ -91,6 +91,37 @@ The current auto-derived publication targets are:
 
 Other predicted targets, including form guidance, may require an explicit materialization. Never infer that a predicted target was persisted; inspect `materializations` and `publicationDiagnostics.materializationOutcomes`.
 
+## Preserve Materialization Application History
+
+For persistence/lifecycle changes, read Config's
+`docs/domain-rules/materialization-application-history.md`, migration V63,
+`DomainRuleMaterialization`, and `DomainRuleApplicationHistoryPostgresTest`.
+Use the existing materialization identity and V55 unique applied head; do not
+create another head store to compensate for an incomplete reader.
+
+- Preserve `everApplied=true` through every apply/revert/supersede path. Legacy
+  null is inconclusive, never false. New/imported superseded rows cannot claim
+  false; inconclusive legacy rows retain null. New drafts start false; the migration uses
+  exact linked application events or applied status/timestamp as positive proof.
+- Keep both publication and explicit transition in the Config transaction.
+  Do not delete/reidentify historical materializations, mutate applied events,
+  or truncate history to repair a failed publication. Preserve orphan events and
+  migration guards in retention and restore procedures.
+- Leave a new entity's `rowVersion` null for Spring Data persist, even with an
+  assigned UUID. JPA increments once; V63 also advances SQL-only updates without
+  double-incrementing ORM writes. SQL compare-and-set still needs an expected
+  version predicate and row-count check. HTTP 409 means reload and reassess,
+  not blind retry, and does not add client If-Match to materialization commands.
+- Run the focused PostgreSQL history test on canonical migrations, plus
+  `DomainRuleServiceTest` and `DomainRuleConcurrencyResponseTest`. Hibernate
+  create-drop does not prove upgrade/backfill or database guards. Prove candidate
+  consumption in Quickstart without claiming a local SNAPSHOT is a release.
+- History preservation alone does not implement authoritative policy resolution.
+  Do not use the UX materialization list for admission or equate a missing head
+  with initial absence. The operational reader, payload/hash/effect validation,
+  consistent snapshot with orphan history and apply-versus-deactivate coordination
+  require their own implementation and evidence before publishing readiness.
+
 ## Runtime Snapshot Control Plane
 
 Treat a runtime snapshot as a governed aggregate, not as an opaque `DomainRuleMaterialization` payload. The public runtime-neutral snapshot record and compiler belong to `praxis-rules-engine`; Config Starter owns the append-only JPA store, publication transaction, active head, event history, HTTP concurrency and rollback.
