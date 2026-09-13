@@ -245,8 +245,8 @@
                                             "praxis-config-api-metadata-grounding",
                                             "praxis-api-quickstart-security-config"
                                         ],
-                       "skillMdSha256":  "71C3F6578EED0DDD749B3206476BD72A1A3E96F13177D30B743C8110D9776F16",
-                       "treeSha256":  "B187D446DE31EFD241686BF70D9D66A1FBBB7D0BB29D0DF14F2C87B2C22F8A92"
+                       "skillMdSha256":  "8F6B3DE249EA2B4DD7BC8BE57EE1DB365B4655047AA5E703A47D1EA3AAC09EF7",
+                       "treeSha256":  "8C90057A19481E2158A59FCFF6E97BB49D13AC0799E170D6FA31C11D7F118099"
                    },
                    {
                        "name":  "praxis-ai-assistant-runtime",
@@ -2447,8 +2447,8 @@
                        "dependencies":  [
                                             "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "083AF6ACB7CD427F6E7E590C50CA990ED70411B5D9AEDFD9CDC2645BFFA9F126",
-                       "treeSha256":  "061071E256C7D26C420604AE9F12F108EA0864E73C0864C38D3582ED3C1747D3"
+                       "skillMdSha256":  "AD5D8A66563938B887CA9B1AAC485B9B8904E5C583F2C72F01D8D8F63897F6B5",
+                       "treeSha256":  "45DB5E77982671BF4D638CBA45B000AC4251706D15883C678A33DEFD1F2EFF06"
                    },
                    {
                        "name":  "praxis-api-quickstart-operational-proof",
