@@ -19,8 +19,10 @@ Inspect:
 - `AiProviderManagementService`, `AiProviderRouter`, `AiProviderStatusService`
 - `AiProviderFailureClassifier`, invocation telemetry/metrics/trace
 - provider streaming fallback/cancel and access-token services
-- `OpenAiAgentsTableTurnPlanner`, `OpenAiAgentsSessionClient`, and their focused
-  tests when changing managed-session authority, renewal, or cleanup
+- `OpenAiAgentsTableTurnPlanner`, `OpenAiAgentsSessionClient`,
+  `OpenAiAgentsSessionJournalService`, `AgenticAuthoringTurnEventSink`,
+  `AgenticAuthoringTurnStreamService`, `AiThread`, its migration, and focused
+  tests when changing managed-session authority, renewal, cleanup, or terminal publication
 - `AiAudioTranscriptionController`, `AiAudioTranscriptionRequest`, `AiAudioTranscriptionResponse`, `AiProvider.supportsAudioTranscription/transcribeAudio`, provider management selection/configuration, and provider adapter implementation
 - `docs/ai/openai-cost-attribution-and-live-gates.md`
 - provider pricing schema/snapshot and provider telemetry evidence docs
@@ -94,15 +96,43 @@ tools, skill catalog refs and hashes, required skill refs, and server-resolved
 credential fingerprint with the authority captured when that session opened. The current
 page draft may change after an accepted terminal and is not itself renewal drift.
 On authority or credential drift, close the old remote session and open a new one
-only after cleanup reports `deleted` or `already-absent`. Preserve the accepted
-page draft as grounded input to the new session; it is not a persisted apply or a
-preserved remote conversation. If deletion remains unconfirmed, block another
-session for the same owner in this process with `managed-session-cleanup-required`.
-The tombstone consumes bounded in-process owner capacity; reconcile remote cleanup
-explicitly instead of restarting merely to bypass the block. Do not silently
-retry creation or promise distributed recovery. After renewal or
-loss of remote history, do not promise that anaphoric references to prior turns
-will resolve unless the necessary context is explicitly available and verified.
+only after cleanup reports `deleted` or `already-absent`. During in-process renewal,
+preserve the accepted page draft as grounded input to the new session; it is not a
+persisted apply or a preserved remote conversation. The experimental journal on
+`ai_thread` reserves a random generation and 30-minute lease before one creation
+POST, then records the remote ID synchronously under the same fence. The POST
+metadata carries only the generation nonce. Resolve the real `proj_...` ID on
+the server; send `OpenAI-Project` on every request and journal the credential
+reference, project ID,
+and SHA-256 credential fingerprint, never the key. Check the lease/fence before
+provider requests, function execution, returning a result, and accepting a turn.
+Do not treat an in-memory client or a successful HTTP response as a substitute
+for the durable transition.
+
+For a managed terminal, inspect the real event sink and stream service. Keep
+lock order stream monitor then database; `journal.withLease` wraps only the
+persisted append through `appendGuarded`. The transaction must commit before
+updating stream cache/cursor, sending SSE, or completing stream resources. On
+rollback, release the local terminal claim so a valid append can retry; do not
+emit or accept the uncommitted result. Never include emitter I/O in that database
+transaction. Prove the ordering with `AgenticAuthoringGuardedStreamCommitTest`
+and journal PostgreSQL tests.
+
+After restart or lease expiry, recovery is driven by the next eligible request;
+there is no autonomous sweeper. Use the original credential and project scope.
+For a known ID, verify it by scoped GET before cleanup. For an unknown ID, scan
+the paginated `GET /agents/sessions` list within the client page cap and require
+exactly one session whose metadata nonce matches; the API does not filter by
+metadata or guarantee immediate list visibility. Record the unique ID under the
+fence, persist `DELETE_PENDING` before DELETE, and clear only after DELETE 2xx
+or scoped GET/DELETE 404. Zero or multiple matches, an incomplete list, unavailable
+credential/project, or unconfirmed deletion keep the journal blocked with the
+generation intact. Do not open a replacement session or blindly retry POST.
+Recovery deletes the old remote session; after process restart the host must
+reconcile the canonical page and must not claim to restore a preview draft or
+remote conversation. Anaphoric references to prior turns are not guaranteed.
+A missing historical ID from a session created without the nonce still needs
+operational reconciliation.
 
 Recover only read-only `GET` of the session and paginated turns after HTTP
 `500`, `502`, `503`, or `504`. Share at most two retries across all those reads
@@ -117,22 +147,26 @@ cancellation, deadline, and no duplicate function execution with
 Do not retry authentication/quota failures, unknown transport outcomes, or
 `POST` creation/events under this read policy. Pending `tool_result` replay
 with cached output is a separate idempotency path. Session cleanup separately
-retries `DELETE` on HTTP `409` up to four attempts; neither path supplies a
-durable journal or cross-process recovery.
+retries `DELETE` on HTTP `409` up to four attempts. Reconciliation GETs use
+the same bounded retry policy without creating a session or sending input.
+The journal records remote identity and cleanup state, not function outputs or
+the remote conversation.
 
 Bound function calls, repair attempts, request/body deadlines, response size, and
 session lifetime. Prove timeout when headers arrive but the body stalls, duplicate
 function replay without re-execution, conflicting replay rejection, cancellation,
 and cleanup. Never blindly repeat a session-creation mutation with an uncertain
-network outcome. Record inability to recover a missing remote session ID as a limit.
+network outcome. An unknown ID may remain blocked when exact, complete list
+evidence is unavailable; do not describe the nonce as guaranteed recovery.
 Keep provider error codes allowlisted; syntactically safe arbitrary strings can still
 contain secrets.
 
-For managed-session changes, also run
-`OpenAiAgentsTableTurnPlannerTest#renewsRemoteAuthorityWithoutLosingAcceptedDraft`, including
-authority drift, accepted-draft handoff, and failed deletion, alongside the client
-cleanup tests. Inspect the sanitized cleanup status and the absence of a second
-session after an unconfirmed delete; do not use a paid call to establish this gate.
+For managed-session changes, run focused planner, client, journal and host tests.
+Prove authority drift and accepted-draft handoff, single POST under concurrent
+claims, the known/unknown-ID recovery paths, zero/multiple/incomplete list veto,
+lost-fence veto before provider mutation, and DELETE 2xx/404/409/timeout. Inspect
+the sanitized cleanup status and absence of a second session after unconfirmed
+cleanup; use a fake provider and isolated database, not a paid call, for these gates.
 
 Hosted skill evidence has distinct levels: attachment/configuration, explicit file
 reads through a governed application tool, and native provider skill execution.
