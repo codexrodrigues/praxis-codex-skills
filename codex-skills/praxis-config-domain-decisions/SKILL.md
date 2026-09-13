@@ -116,11 +116,48 @@ create another head store to compensate for an incomplete reader.
   `DomainRuleServiceTest` and `DomainRuleConcurrencyResponseTest`. Hibernate
   create-drop does not prove upgrade/backfill or database guards. Prove candidate
   consumption in Quickstart without claiming a local SNAPSHOT is a release.
-- History preservation alone does not implement authoritative policy resolution.
-  Do not use the UX materialization list for admission or equate a missing head
-  with initial absence. The operational reader, payload/hash/effect validation,
-  consistent snapshot with orphan history and apply-versus-deactivate coordination
-  require their own implementation and evidence before publishing readiness.
+- For operational admission, use Config's public Java
+  `OperationalPolicyService.resolveOperationalPolicy(target, resolvedPrincipal)`;
+  never the UX materialization list. Inspect `OperationalPolicyTarget`,
+  `OperationalPolicyResolution`, the exact repository snapshot query, and
+  `docs/domain-rules/operational-policy-resolution.md` in Config before changing it.
+- Preserve all four resolution states. NEVER_APPLIED permits continuation only
+  under a provider's explicit ALLOW_IF_NEVER_APPLIED policy and mandatory lookup.
+  Withdrawal, unknown history, malformed/mismatched evidence and unavailability
+  block. A verified ALLOW bypasses only this gate, never authorization or business
+  invariants. Existence of the target remains the host registry's responsibility.
+- New creation/publication/application of approval, workflow and backend-validation
+  policies must declare BLOCK or ALLOW in the existing definition parameters slot
+  (approvalPolicy, availabilityPolicy or validationPolicy). Derive and verify the
+  payload/hash before replacing a head. Keep ALLOW restrictive: no condition,
+  requirements/groups/blockedWhen, hidden nested action requirements or unsupported
+  execution parameters, even if false/zero/empty. Publication approvals remain
+  distinct and mandatory under their governance. Preserve exact persisted numeric
+  semantics in these producers and the reader; a canonical hash does not repair a
+  payload narrowed to double.
+- Legacy missing effect is conservative BLOCK only when its source/projection is
+  verifiable. Unverifiable old hashes require a governed replacement definition
+  with distinct identity at the same target; never rewrite history or add a
+  permissive fallback. Other projection families retain their existing digests.
+- Keep publish/status transitions/promotion under the Config PostgreSQL transaction
+  scope mutex, acquired before loading lifecycle inputs. Require READ COMMITTED and
+  a clean Config persistence context on entry; reject external pending entity
+  changes before autoflush. Refresh clean preloaded inputs under the lock and
+  recheck scope. Promotion's inserted version is flushed under the already-held
+  mutex before its nested transition. Do not implement H2/no-op locking in production.
+- The reader captures one exact SQL snapshot with orphan history and binds ordered
+  identity/revision/status/hash evidence in its fingerprint. Never-applied drafts
+  and observedAt do not change operational identity. Bounds (4,096 relevant rows,
+  oversized JSON evidence) fail closed, not truncated into permission. Digests are
+  not signatures against coherent administrative SQL changes; services remain the
+  supported writer. Do not promise instantaneous Config-to-domain revocation.
+- Add `DomainRuleLifecycleConcurrencyPostgresTest`, `OperationalPolicyContractTest`,
+  `OperationalPolicyServiceTest` and `DomainRuleChangeWorkspaceServiceTest` to the
+  focal history/service tests when changing this seam. Prove the isolated candidate
+  in Quickstart with both `praxis.palette.proof` and `praxis.operational.policy.proof`
+  enabled: Config PostgreSQL, authenticated publication/withdrawal/replacement,
+  Java resolution and exact nested JAR. A test fixture is not proof of migrations,
+  and this SDK alone does not make a bulk provider READY.
 
 ## Runtime Snapshot Control Plane
 
