@@ -2435,8 +2435,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "68C6CDEEA09CC7EA0E700347F4E3E11728D7B3D5FF2CF5B009F1266730EF1450",
-                       "treeSha256":  "123D04000AAE2975207B1A10924081854171568918081735E71F26EEF3A67448"
+                       "skillMdSha256":  "8091514A05F32F734367F7B29D31AE627E96A485B1C23FAB387F77FC5CE48543",
+                       "treeSha256":  "DB9CF9CD254187CBCBFA232BE80F593A5F43545235C68818F1902E5C66A9D8B7"
                    },
                    {
                        "name":  "praxis-config-domain-decisions",
@@ -2684,8 +2684,8 @@
                                             "praxis-config-agentic-authoring-streaming",
                                             "praxis-api-quickstart-security-config"
                                         ],
-                       "skillMdSha256":  "C78C8FB349C437545D4C74EEA3EBC86741DC298F4DC23F70F55F9031BF5B5901",
-                       "treeSha256":  "36B204DAE1DEA9D31E8EF6B33D565B7917B21FE2315D81B14D202F97838CAF4D"
+                       "skillMdSha256":  "2CD9348DF0AEECE950C8313F3986D86BB5358EE298F03C3492488940ABBB5236",
+                       "treeSha256":  "6331D32C68B27B8ED3975E7BE4D20B1404983A7BBC55B5DA9F5046349025BAAA"
                    },
                    {
                        "name":  "praxis-landing-dynamic-page-studio",

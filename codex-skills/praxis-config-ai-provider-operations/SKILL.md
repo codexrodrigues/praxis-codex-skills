@@ -68,6 +68,46 @@ deployment variables, and the exact live-gate workflow or script.
   keys, prompts, responses, tenant/user ids, business data, and raw exceptions
   out of metadata and logs.
 
+## OpenAI Model And Managed Session Qualification
+
+Before enabling a newly released model, inspect the current official model guide and
+`SpringAiOpenAiService` request serialization. Availability in the model list does not
+prove compatibility with temperature, reasoning effort, or output-token settings.
+For the known `gpt-6-astra` identifier, the adapter omits temperature, uses supported
+reasoning effort, and preserves explicit token limits; do not infer undocumented
+snapshot identifiers or apply the same policy to every future model by prefix.
+Prove the serialized request in `SpringAiOpenAiServiceTest`, including an unaffected
+model, before a paid comparison.
+
+For the experimental Agents API transport, inspect `OpenAiAgentsSessionClient`, its
+focused tests, and `docs/ai/agents-api-pilot.md`. Keep one remotely managed session
+bound to the server-owned principal, canonical thread, and credential scope.
+A completed remote turn is not an approved Praxis preview. Accept session continuation
+only after the canonical engine successfully appends an applicable terminal result;
+UI persistence still requires the separate governed apply operation.
+
+Bound function calls, repair attempts, request/body deadlines, response size, and
+session lifetime. Prove timeout when headers arrive but the body stalls, duplicate
+function replay without re-execution, conflicting replay rejection, cancellation,
+and cleanup. Never blindly repeat a session-creation mutation with an uncertain
+network outcome. Record inability to recover a missing remote session ID as a limit.
+Keep provider error codes allowlisted; syntactically safe arbitrary strings can still
+contain secrets.
+
+Hosted skill evidence has distinct levels: attachment/configuration, explicit file
+reads through a governed application tool, and native provider skill execution.
+Record the project, skill version, archive/file hashes and observed read mechanism
+without copying raw files into telemetry. A skill attached to a session or returned
+by an application function is not proof of native execution. When using reviewed
+exports, preserve exact content and an allowlist; do not silently replace a missing
+account skill with locally authored instructions.
+
+Compare runtimes with equivalent prompts, model, context and skill availability.
+Record successful first attempts, repairs, total journey latency, calls and token
+units separately from billing. A single successful journey supports a pilot, not
+reliability estimates or definitive adoption. Keep the production selection unchanged
+until the explicit adoption criteria are met.
+
 ## Usage, Cost, And Live Gates
 
 Separate provider credentials and budgets by runtime owner/environment, such as
