@@ -84,6 +84,24 @@ segregated approval or domain invariants. Bind/revalidate the resolution fingerp
 at the orchestrator's documented unit boundaries; it is not instantaneous
 revocation across the independent Config and domain transactions.
 
+Audit every early return around admission, including missing business input and
+cached idempotent responses. A mandatory policy read must not disappear on those
+branches. Checking current policy does not prove that an existing receipt ledger
+is tenant/environment-scoped; verify that separately before claiming corporate
+replay isolation. Registry authority hints supplement domain authorization.
+Use trusted server tenant/environment context; an explicitly configured corporate
+single-tenant default is not proof of multi-tenant identity propagation.
+
+Test specialized host evaluators against the canonical producer and real authored
+fixtures, not only hand-written projection JSON. Backend validation currently
+copies definition parameters, including the nested validationPolicy effect marker;
+verified legacy BLOCK may lack that marker. When present, validate it. Workflow
+requiredStates can coexist with the canonical condition over `state`; supplier
+blockedStatuses can coexist with the condition over `supplier.status`. Equivalent
+representations must agree. Unsupported or contradictory specializations fail
+closed, rather than being filtered out as absent policy. Do not generalize these
+specialists into an undocumented rule evaluator.
+
 Author a replacement through existing Config review/publication routes. New
 operational publications require explicit effect in the source's existing policy
 slot; do not patch the payload in the host. Old unverifiable hashes require a
@@ -98,6 +116,13 @@ must fail if the Java API/bean is absent. The focal HTTP test uses Config Postgr
 and proves publication, retirement and ALLOW replacement in all three families.
 Verify candidate identity in the packaged host; do not claim SNAPSHOT publication,
 migration DDL proof from the host fixture, or completed bulk-provider adoption.
+Compile production consumers with real SDK imports. An isolated SNAPSHOT override
+proves a candidate, not that the committed dependency pin can compile. Keep that
+adoption in a draft PR until a published, resolvable coordinate supplies the API;
+do not hide this gate through reflection, a production fallback, or a silent pin
+change. In HTTP probes, use the resource controller baseline actually discovered
+by the action/surface registries; annotations alone on arbitrary controllers do
+not prove registered resource admission.
 
 For user configuration, preserve `X-Tenant-ID`, optional user/environment
 scope, quoted ETag conditional reads/writes, secret sanitization, and exact

@@ -245,8 +245,8 @@
                                             "praxis-config-api-metadata-grounding",
                                             "praxis-api-quickstart-security-config"
                                         ],
-                       "skillMdSha256":  "8F6B3DE249EA2B4DD7BC8BE57EE1DB365B4655047AA5E703A47D1EA3AAC09EF7",
-                       "treeSha256":  "8C90057A19481E2158A59FCFF6E97BB49D13AC0799E170D6FA31C11D7F118099"
+                       "skillMdSha256":  "4C81C584381F42089EC856E5D38D7FD7C4F8CE4BEDB44E99EB478CA9A17C31D8",
+                       "treeSha256":  "D58286B06FE97A5B8DC206AA10B7B690CC3687260E1AD655F9543DA9B556AA22"
                    },
                    {
                        "name":  "praxis-ai-assistant-runtime",
