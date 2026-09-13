@@ -65,6 +65,29 @@ BulkExecutionInfrastructurePostgresTest before a host adoption. The latter prove
 commit/rollback and lock contention on fixture tables, not production ledger migration.
 No AutoConfiguration.imports change is needed merely to add this explicit value/participant.
 
+## Adopt The Protected Proposal Migration Lane
+
+`BulkExecutionMigrator.migrate(dataSource)` is explicit and separate from host Flyway
+startup. Metadata supplies optional Flyway core/PostgreSQL dependencies (11.17.0 in the
+reference candidate); consumers choosing this adapter must supply these dependencies.
+Use `classpath:db/praxis-bulk-migrations`, schema `praxis_bulk`, and history
+`praxis_bulk_schema_history`; do not put the SQL in the default db/migration lane or
+baseline an unknown nonempty bulk schema. Existing tables in public remain independent.
+
+Run privileged migration/validation outside domain transactions, then construct
+JdbcBulkProposalStore using the operational datasource and transaction binding. Runtime
+credentials need schema USAGE and table SELECT/INSERT, not CREATE/UPDATE/DELETE. Migration
+credentials are not inferred or manufactured by the starter. History checksum validation
+alone is insufficient: validate physical constraints and the enabled immutability trigger.
+No bean, readiness capability or executor is registered automatically by adding the SDK.
+
+The three protected EXPLICIT/SYNC input modalities are the current store subset; QUERY,
+ASYNC, evaluated readiness, quotas, ledger and workers remain separate gates. Test explicit
+migration with a nonempty host public schema, repeat/concurrent invocation, unsupported
+schema drift, restricted runtime credentials and real PostgreSQL persistence. See
+Metadata docs/spec/BULK-PROPOSAL-STORAGE.md. Keep Boot's own Flyway lane configured by its
+host; optional dependency changes must not silently enroll bulk DDL in it.
+
 ## Prove Bootstrap And Consumers
 
 Prove default context startup, intended host override, absent-required capability,

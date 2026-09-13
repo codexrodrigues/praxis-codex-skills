@@ -64,8 +64,8 @@ text can only rank already-scoped candidates.
 ## Bind Bulk JDBC Work To The Operational Transaction
 
 `BulkExecutionInfrastructure(dataSource, transactionManager, namespace)` is the
-Metadata-owned explicit integration boundary. It currently provides participation,
-not a ledger/store, migrator, executor, worker or runtime capability. Construction
+Metadata-owned explicit integration boundary. It provides transaction participation. Storage is composed explicitly through
+JdbcBulkProposalStore; neither class is an executor, worker or runtime capability. Construction
 performs no database access or DDL. The namespace is explicit and stable; it is not
 authentication or authorization and must not be inferred from untrusted headers.
 
@@ -89,6 +89,35 @@ COMMIT after callback completion, manager mismatch, and two-connection lock cont
 Use BulkExecutionInfrastructureTest and BulkExecutionInfrastructurePostgresTest. Fixture
 tables are not the production ledger DDL; this gate does not certify fencing/replay or
 bulk execution. Consult Metadata docs/spec/BULK-EXECUTION-INFRASTRUCTURE.md.
+
+## Persist Protected Bulk Inputs Explicitly
+
+Compose `JdbcBulkProposalStore` with the same BulkExecutionInfrastructure. Persist a
+`BulkStoredProposal` containing the UUID, microsecond timestamps and immutable
+`BulkIntentSnapshot` (trusted context, built-in identity codec, modality and intent).
+This initial adapter accepts EXPLICIT/SYNC inputs in all three modalities. It is not
+a READY evaluation, a captured QUERY manifest, admission/quota control or a receipt.
+Do not persist the redacted public BulkProposal as execution input.
+
+Insert/find join the existing writable transaction. Insert is provisional until commit;
+UUID conflicts never overwrite. Find requires trusted namespace, subject, resource and
+operation ID; original operation coordinates/schema revision are returned for subsequent
+revalidation. Reading an expired snapshot does not authorize execution. Never expose this
+object through HTTP, logs or UI; store failures omit protected driver/parser causes.
+Fingerprint checking detects inconsistent content, not malicious database administrators.
+
+Use the internal storage codec, not the host ObjectMapper: canonical decimal 1.0 must
+remain DecimalNode and differ from integer 1. Preserve exact large integers, decimal
+precision/scale limits and defensive copies. Protocol node validation is reused internally;
+the public raw-byte reader keeps its original lexical limits.
+
+Migrate explicitly with BulkExecutionMigrator on the operational PostgreSQL datasource,
+outside domain transactions. Follow Metadata docs/spec/BULK-PROPOSAL-STORAGE.md for the
+isolated migration lane, privileged migration identity, runtime grants, physical schema
+validation and unsupported features. Prove JdbcBulkProposalStorePostgresTest and
+BulkSnapshotStorageCodecTest, including concurrent migration/insertion, rollback,
+scoped lookup, immutable rows and corrupted content. Update this guidance as evaluated
+facts, target manifests and execution state are actually implemented.
 
 ## Prove The Command Under Stress
 
