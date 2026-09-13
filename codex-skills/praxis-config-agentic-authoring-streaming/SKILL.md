@@ -63,6 +63,37 @@ Keep consult and edit distinct:
 - shared-rule/domain-decision intent hands off to `praxis-config-domain-decisions`; it must not be
   flattened into component configuration.
 
+## Managed Planning Handoff
+
+When qualifying an external managed planning session, inventory the existing turn,
+intent, manifest compilation, preview, terminal event and apply flow first. Keep the
+transport adaptation internal to the server composition; do not pass an authoritative
+plan through client-editable `contextHints` or introduce an alternate apply endpoint.
+
+Inspect `AgenticAuthoringManagedTurnPlanner`, the engine completion path,
+`resolveProvidedIntent`, `compileProvidedPlan`, and `previewProvidedComponentEditPlan`
+when these experimental seams are present in the target checkout. Supplied intent
+still requires canonical grounding and policy. Unresolved intent must fail closed;
+do not invoke a second model or recover primary intent with lexical fallback.
+The supplied plan may select only declared operations, never substitute application
+config, schema, principal or target evidence. Preserve the existing validator and
+materialization path, and audit its assumptions independently.
+
+Hold the session lease until the terminal append is known. Only `canApply=true` plus
+an appended result permits advancing the managed draft/session; timeout, cancel,
+failed append or veto must abort that pending state. A remote cleanup/reuse failure
+after persistence must not rewrite an already authoritative terminal event.
+Consumers must retain the outer terminal veto even when a nested component plan
+compiles locally, while preserving safe informational and clarification messages.
+
+Prove the internal handoff with providers that fail if called again, then prove
+start/result/review/apply/read through the real host with isolated persistence.
+Test foreign principal, modified patch and stale ETag with unchanged stored data.
+Do not count a fabricated approved event, mocked engine/compiler, intercepted UI
+PUT, or direct preview injection as full HTTP/governance proof. If H2 cannot execute
+canonical PostgreSQL queries, use the repository's isolated PostgreSQL fixture rather
+than masking the incompatibility by mocking the contract owner.
+
 ## Semantic Intent Rules
 
 Primary intent must be resolved by LLM/tooling over governed context, manifests, metadata schemas,
