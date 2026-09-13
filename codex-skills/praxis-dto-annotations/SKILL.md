@@ -338,6 +338,30 @@ Before considering a DTO property complete, verify:
 - Do not let `@Operation`, `@ResourceIntent`, `@UiSurface`, or `@WorkflowAction` fall back to
   generic catalog text when the operation is part of a public/corporate reference surface.
 
+## Declare Bulk-Editable Update Fields
+
+When the resolved Metadata version provides `@BulkEditable`, read its
+`docs/spec/BULK-EDITABLE-FIELDS.md` and `BulkEditableFields` implementation first.
+Annotate only update DTO fields/record components with verified business eligibility;
+commands use typed parameters. Defaults allow both update families and forbid CLEAR.
+Do not infer editable fields or identity/version/workflow protection from names.
+
+Compile with the host's configured ObjectMapper, concrete JavaType, resolved canonical
+update schema, the actual OpenAPI `SpecVersion`, and trusted protected **wire** names.
+The immutable result feeds `BulkFieldChanges`; it does not add x-ui or enable a runtime.
+Do not build a permissive parallel schema or remove composition constraints to make
+compilation pass. Missing properties, hidden/read-only/protected fields, ambiguous
+Jackson bindings and unresolved schema composition must fail explicitly.
+
+CLEAR requires explicit nullability in the declared dialect; `nullable:true` applies
+to V30, while V31 requires a null type/union. Absence of required is not nullability.
+Cross-check DTO constraints on accessors/constructor members and Jackson null handling;
+a setter that skips/converts null is not a valid CLEAR transport. Final candidate and
+domain validation/authorization remain mandatory. Run `BulkEditableFieldsTest` plus
+`BulkFieldChangeValidationTest` and prove the exact candidate JAR in the consumer.
+The annotation SDK alone does not certify registry bootstrap, real evaluation schemas,
+providers, workflows, persistence or Angular readiness.
+
 ## References
 
 - Read `references/semantic-writing.md` when writing `@Schema`, `@Operation`, DTO descriptions,

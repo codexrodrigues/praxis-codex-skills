@@ -126,6 +126,22 @@ Jackson. Pending differs from NOT_PROCESSED; terminal executions cannot retain
 pending/unknown, and RECONCILIATION_REQUIRED is not terminal. Public output types
 are not proof of persisted proposals, schema discovery or executable endpoints.
 
+## Bulk Editable Field Compilation
+
+For `@BulkEditable`/`BulkEditableFields`, read Metadata
+`docs/spec/BULK-EDITABLE-FIELDS.md` in the exact candidate. Require the update DTO and
+resolved schema of the real operation, configured Jackson naming, actual OpenAPI
+SpecVersion and trusted wire names for identity/version/workflow protections. Never
+supply a client-controlled allowlist or infer protection from a conventional field name.
+
+Prove `BulkEditableFieldsTest` with isolated ModelConverters/CustomOpenApiResolver,
+renaming, naming strategy, inheritance/records, hidden/read-only fields, both update
+modes, immutable sets, and application through `BulkFieldChanges`. Explicitly test
+CLEAR under V30/V31, Bean Validation on accessors, Jackson null policies and rejected
+unresolved schema composition. A model-conversion test is not an HTTP evaluation
+schema or bootstrap proof. Keep those registry/provider gates open, and run the
+existing consumer HTTP regression with the exact isolated candidate artifact.
+
 ## Report Without Ambiguity
 
 Return an evidence pack containing:
