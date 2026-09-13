@@ -119,6 +119,35 @@ BulkSnapshotStorageCodecTest, including concurrent migration/insertion, rollback
 scoped lookup, immutable rows and corrupted content. Update this guidance as evaluated
 facts, target manifests and execution state are actually implemented.
 
+## Bind Domain Evaluation Evidence Before Readiness
+
+Use `BulkTargetEvidence` with the existing canonical wire BulkTarget/expectedVersion,
+observedVersion, minimal exact-number facts and the evaluated candidate plan.
+`BulkEvaluationSnapshot(proposal, evaluatedAt, targets)` requires exact original target
+coverage and versions, normalizes evidence order to the input (including per-item order),
+and binds UUID/input fingerprint/validity/instant/facts/plan with the distinct
+`praxis.bulk.evaluation/1` frame. It does not produce eligibility, public totals or READY.
+A different observed version is a recorded conflict fact, not permission to proceed.
+
+The host/provider supplies authoritative, minimal domain evidence and dependency
+revalidation/locking semantics. Do not store full domain state by default, fabricate
+facts for inaccessible targets, or encode policy absence as an allow boolean. Config
+remains the owner of operational policy resolution; readiness awaits that resolution,
+governed provider composition and current-context revalidation.
+
+`JdbcBulkProposalStore.insertEvaluated` inserts input plus evidence atomically in the
+existing physical transaction; no attach/update/upsert. Re-evaluation needs a new UUID.
+`findEvaluation` scope-checks the input and verifies the protected companion binding;
+missing evidence is not reconstructed, corrupt linkage is not a fallback to input.
+Migration V2 preserves V1, adds the immediate composite FK and immutable companion table;
+runtime needs SELECT/INSERT on both. One bounded payload (8 MiB) is not proof of efficient
+paged/per-item execution. Review access/indexing with those future consumers.
+
+Prove BulkEvaluationSnapshotTest and BulkEvaluationStorePostgresTest, including V1→V2,
+exact typed coverage, numeric limits, corruption, concurrent conflicting evidence,
+observer-before-commit and caught companion failure rolling back both rows. See Metadata
+docs/spec/BULK-EVALUATION-EVIDENCE.md; do not expose these protected values as public results.
+
 ## Prove The Command Under Stress
 
 Prove permitted execution; denied state/authority; validation failure; same retry;
