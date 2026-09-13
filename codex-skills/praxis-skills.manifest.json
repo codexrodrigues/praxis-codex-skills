@@ -2046,8 +2046,8 @@
                                             "praxis-table-rule-ai-validation",
                                             "praxis-table-rule-table-integration"
                                         ],
-                       "skillMdSha256":  "43F415E0C268742BCADA3AEF564E46E7756FE142B9914668556C62F88B386580",
-                       "treeSha256":  "A0E60DEEF1C34407E680F430A0184535A0D206D4DAF2BBE36C954CFE91AFFC12"
+                       "skillMdSha256":  "2BE8966E5CF1DCC7A7A111D2E5822517B0771DF8218FE640661CC33F19F502A9",
+                       "treeSha256":  "D8E6986C92CFAC487E4E20988BDDD9D46B65583513312F9E0C93B91CD78ED63D"
                    },
                    {
                        "name":  "praxis-table-authoring-settings",

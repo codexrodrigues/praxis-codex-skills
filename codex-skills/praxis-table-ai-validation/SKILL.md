@@ -61,6 +61,8 @@ When a required operation is missing, model or extend the canonical AI/tool cont
 - AI registry: `npm run generate:registry:ingestion` and `npm run validate:catalog` when the manifest/catalog surface changes.
 - Contextual detail: `table-detail-operations.spec.ts`, detail authoring/editor specs, backend `TableDetailAuthoringSemanticsTest`, effect-compiler and validator-registry tests, `AgenticAuthoringManifestServiceTest`, and `AiRegistrySnapshotContractTest`.
 - Browser-real AI: use focused Playwrights such as `table-ai-assistant-component-edit-plan`, `table-ai-assistant-selection-context`, `table-ai-assistant-consultative-follow-up`, and opt-in live matrix only when live AI is intentionally required.
+- Managed Agents API previews: keep host HTTP/provider qualification separate from the Angular rendering proof. Feed the server-emitted `pagePreview`, `currentPreview`, real response/filter schemas, and sample rows to `table-agents-api-host-pilot.playwright.spec.ts`; require the existing table input `configPersistenceStrategy: 'volatile'` and assert the compiled columns and filters without another AI call or autonomous write. This browser proof alone is not a full HTTP authoring E2E.
+- In that browser proof, classify POST `/filter` and `/stats/*` using the owning Quickstart controller's read-query contract, not the HTTP verb alone; block and record actual mutations. Inspect the filter schema before asserting field availability. The filter-field manager stages checkbox changes until **Apply**: capture the accepted-preview screenshot first, then apply a removal before checking the resulting inline filters.
 
 State whether live AI E2E was skipped. Do not use GitHub Actions as exploratory validation.
 
