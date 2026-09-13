@@ -56,6 +56,31 @@ metadata until an actual operation and its canonical schema exist.
 Read [discovery-decision-matrix.md](references/discovery-decision-matrix.md)
 when selecting discovery type, scope, availability evidence, or focused proof.
 
+## Bind An Explicit Operation Safely
+
+When a contract references an operation by ID, inspect the exact Metadata version's
+`CanonicalOperationResolver` and `docs/spec/CANONICAL-OPERATION-BINDING.md` first.
+Where available, `requireResourceOperation(resourceKey, operationId, method)` checks
+an explicit `@Operation` against the real MVC registration and matching `@ApiResource`.
+Use it after handler initialization; do not reconstruct this proof in the host or
+choose a handler by path fragments. Custom resolvers must implement the strict
+method; its default throws rather than falling back to permissive lookup.
+
+Global uniqueness is checked before resource/method filtering, including collisions
+with effective legacy Java method IDs. `resolveByOperationId` now rejects duplicate
+IDs; its legacy single-handler fallback is not a strict binding. Require one path
+and method; reject an address shared by another mapping even with a different ID
+or media type. Reject hidden or unrepresentable conditional routing, and do not silently
+normalize a different registered path. Check the candidate's tests for these limits.
+
+Run `OpenApiCanonicalOperationResolverTest` and
+`CanonicalResourceOperationBindingTest` when present, plus
+`ReactiveDeterminationMetadataCompilerTest` for the existing lookup consumer.
+A generated schema reference alone does not prove schema content, evaluation versus
+confirmation role, provider wiring, authorization or execution. The future bulk
+registry must still validate these and fail at bootstrap when dependencies are
+missing. Do not advertise bulk support from this resolver-only foundation.
+
 ## Preserve The Platform Boundary
 
 - `praxis-metadata-starter` owns annotations, catalogs, availability
