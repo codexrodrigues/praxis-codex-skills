@@ -88,6 +88,14 @@ schema drift, restricted runtime credentials and real PostgreSQL persistence. Se
 Metadata docs/spec/BULK-PROPOSAL-STORAGE.md. Keep Boot's own Flyway lane configured by its
 host; optional dependency changes must not silently enroll bulk DDL in it.
 
+The evaluation-evidence adapter adds V2 without rewriting V1. Verify fresh migration=2,
+V1 upgrade=1 and repeat=0; old inputs remain readable without invented evidence.
+`insertEvaluated` and `findEvaluation` require SELECT/INSERT on both proposal and evaluation
+tables. Physical validation must cover the immediate composite FK, parent unique key and
+both immutable triggers. Migrate before enabling the new SDK consumer; adding this evidence
+still registers no READY/public capability. Prove BulkEvaluationStorePostgresTest and see
+Metadata docs/spec/BULK-EVALUATION-EVIDENCE.md.
+
 ## Prove Bootstrap And Consumers
 
 Prove default context startup, intended host override, absent-required capability,
