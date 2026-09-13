@@ -66,6 +66,39 @@ endpoint under metadata for configuration merely because a screen needs it.
    owns its migrations and identity semantics; do not copy `ui_user_config`,
    registry, or metadata tables into the business service.
 
+For operational approval/workflow/validation admission, inspect Config's
+`docs/domain-rules/operational-policy-resolution.md` and use the public embedded
+`OperationalPolicyService.resolveOperationalPolicy(OperationalPolicyTarget,
+DomainRuleGovernancePrincipal)` instead of reading repositories or the UX list.
+Pass authenticated scope already resolved by the host. Target grammar/family
+validation is not resource/action existence or authorization; validate those in
+the canonical host registry.
+
+Preserve NEVER_APPLIED, ELIGIBLE_APPLIED_HEAD,
+PREVIOUSLY_APPLIED_WITHOUT_ELIGIBLE_HEAD and INCONSISTENT_OR_UNAVAILABLE. Initial
+absence allows continuation only when the operation explicitly declares
+ALLOW_IF_NEVER_APPLIED, still with mandatory lookup. Withdrawal/error/inconclusive
+history block; never catch a Config failure and return empty. Only an eligible
+head carries a verified typed effect/payload. ALLOW does not bypass other gates,
+segregated approval or domain invariants. Bind/revalidate the resolution fingerprint
+at the orchestrator's documented unit boundaries; it is not instantaneous
+revocation across the independent Config and domain transactions.
+
+Author a replacement through existing Config review/publication routes. New
+operational publications require explicit effect in the source's existing policy
+slot; do not patch the payload in the host. Old unverifiable hashes require a
+new governed identity for the same target, not history rewrites. Keep lifecycle
+calls in a clean Config persistence context under READ COMMITTED; Config rejects
+pending external entity changes before its PostgreSQL scope mutex. Its independent
+read may need an extra Config pool connection. Keep domain persistence separate.
+
+For the pre-release Quickstart proof, enable both `praxis.palette.proof=true` and
+`praxis.operational.policy.proof=true` against the isolated candidate. The latter
+must fail if the Java API/bean is absent. The focal HTTP test uses Config PostgreSQL
+and proves publication, retirement and ALLOW replacement in all three families.
+Verify candidate identity in the packaged host; do not claim SNAPSHOT publication,
+migration DDL proof from the host fixture, or completed bulk-provider adoption.
+
 For user configuration, preserve `X-Tenant-ID`, optional user/environment
 scope, quoted ETag conditional reads/writes, secret sanitization, and exact
 scope resolution. For protected config APIs, enforce the documented `Origin`,
