@@ -66,6 +66,8 @@ Only real gaps in the owning contract justify new canonical fields or route sema
 
 - Treat `package.json` scripts as the source of operational commands.
 - Keep generated or synchronized artifacts generated. Do not hand-edit sitemap/vendor/generated docs when a sync script owns them.
+- Treat the sitemap as the projection of the union returned by `getPraxisDocItems` and `getPraxisDocItemSurfaces`, including generated and manual items. Preserve each item's canonical `path` and its `indexable`/`enabled` state; do not derive the sitemap from a manual JSON list alone.
+- A public Angular catalog must reuse the installed release's package manifests and component registries. Do not infer exports, import paths, or runtime component availability from a registry entry, and keep explicit `contextOnly` entries distinct from catalogued component surfaces.
 - Preserve guide `slug`, `related_docs`, publication status, internal markdown links, and route validity.
 - When adding a published guide, wire registry, route visibility, sitemap, related docs, LLM files, and validation together.
 - Flow-oriented published guides should use fenced Mermaid diagrams when they explain runtime, integration, request/response, sequence, state, or runbook flows. Treat `validate:published-guides` Mermaid warnings in the changed/publication scope as editorial drift to resolve or explicitly justify from the landing rendering policy; do not let recurring warnings become background noise.
