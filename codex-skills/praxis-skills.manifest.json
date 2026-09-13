@@ -101,8 +101,8 @@
                                             "praxis-metadata-resource-baseline",
                                             "praxis-api-quickstart-cockpit-http-validation"
                                         ],
-                       "skillMdSha256":  "45881880866F9D6FB7975A3F209B126478E1621FA59A281F27CF561FA8265176",
-                       "treeSha256":  "4638094BF82439011B5262A27DD21B966CC2249935FB02AA33480967A88FB071"
+                       "skillMdSha256":  "C9D830A543AF4A8FEC75A1701A50B5AABD5B23A7A01A5A967887E5200BCF6B78",
+                       "treeSha256":  "419765729FFFBB4DCB5B23F575A441E3D727EBB5DBFD4E77C5D7E531988024DA"
                    },
                    {
                        "name":  "praxis-java-contract-conformance",
