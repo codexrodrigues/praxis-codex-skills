@@ -67,8 +67,12 @@ Defaults/examples/x-ui remain literal data. Do not flatten allOf by dropping con
 
 The default source fetches SpringDoc over self HTTP: call after the server/document
 is available. This reader does not implement startup readiness or an executable bulk
-registry. The future composition must prove the JavaType belongs to the real handler's
-request body, including generics. A bulk evaluation wrapper is not the unit update DTO;
+registry. Use CanonicalOperationResolver.requireResourceRequestBody with the configured
+mapper.getTypeFactory() to obtain the operation and actual MVC bodyType, including
+controller/interface generics; prove CanonicalRequestBodyBindingTest and its HTTP
+consumer. The binding does not certify custom converters or arbitrary SpringDoc
+overrides. Keep the required concrete DTO subset and fail on raw/wildcard/optional
+bodies instead of guessing a class. A bulk evaluation wrapper is not the unit update DTO;
 never infer the latter from method names or the first PUT/PATCH operation.
 
 Prove CanonicalRequestSchemaTest and CanonicalRequestSchemaHttpIntegrationTest,
