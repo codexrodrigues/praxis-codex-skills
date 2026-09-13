@@ -86,6 +86,17 @@ model, before a paid comparison.
 For the experimental Agents API transport, inspect `OpenAiAgentsSessionClient`, its
 focused tests, and `docs/ai/agents-api-pilot.md`. Keep one remotely managed session
 bound to the server-owned principal, canonical thread, and credential scope.
+Before returning a completed root turn, inspect its session items through bounded
+pagination and the same per-turn GET retry/deadline budget. A `function_call` or
+`function_call_output` with `status=failed` and the current root `turn_id` must
+veto success with the fixed sanitized code `remote-function-failed`. Do not infer
+success from session `idle` or root `completed`, classify raw error text, copy
+provider output into telemetry, retry mutations, or attribute an older turn's
+failure to the current turn. An incomplete item list cannot prove success. Test
+current versus historical failures, later pages, malformed/incomplete pagination,
+shared read retries, and no local function re-execution. This veto diagnoses a
+remote tool failure; it does not establish the provider's internal root cause.
+
 A completed remote turn is not an approved Praxis preview. Accept session continuation
 only after the canonical engine successfully appends an applicable terminal result;
 UI persistence still requires the separate governed apply operation.
@@ -134,7 +145,7 @@ remote conversation. Anaphoric references to prior turns are not guaranteed.
 A missing historical ID from a session created without the nonce still needs
 operational reconciliation.
 
-Recover only read-only `GET` of the session and paginated turns after HTTP
+Recover only read-only `GET` of the session and paginated turns/items after HTTP
 `500`, `502`, `503`, or `504`. Share at most two retries across all those reads
 in one user turn, with minimum waits of one then two seconds. Honor a valid
 `Retry-After` in seconds or RFC 1123 date form, but stop if the delay cannot fit
