@@ -69,6 +69,35 @@ available, and affected Angular specs. Use source-local `AGENTS.md` commands;
 prefer focused tests over broad suites. Review docs, corpus, examples, and
 playgrounds only when they publish the changed contract.
 
+## Bulk Protocol Input Proof
+
+When reviewing the Metadata `org.praxisplatform.uischema.bulk` package, first read
+`docs/spec/BULK-PROTOCOL-INPUT.md` in the exact starter revision being tested.
+Distinguish an available Java input SDK from advertised HTTP/discovery and from
+an executable, durable operation. Parser tests alone do not certify proposals,
+fingerprints, idempotency, authorization, atomicity, recovery, or Angular readiness.
+
+Prove `BulkProtocolReader` against original JSON bytes before any DTO/Map coercion:
+Long IDs use canonical decimal strings, Integer IDs use int32 tokens, and SET,
+CLEAR, omission, duplicates, unknown transport fields and limits stay distinct.
+`BulkIdentityCodec.wireSchema()` is a fragment; only a real operation binding can
+prove its projection into OpenAPI and `/schemas/filtered`. Require typed and
+validated domain parameter/filter readers; structural allowlists do not authorize
+an actor or validate aggregate rules. The HTTP adapter must also bound stream
+reading before allocating the body.
+
+Run `BulkProtocolContractTest`, `BulkIdentityCodecTest` and
+`BulkFieldChangeValidationTest` when these files exist in the candidate; inspect
+reports rather than treating a selector as proof. Validate the exact candidate
+JAR in the direct consumer using an isolated Maven repository and explicit
+candidate version. Existing host HTTP tests prove regression, not new bulk HTTP
+behavior. Do not mark later lifecycle phases complete because this input gate
+passes, or publish corpus calls to endpoints absent from the candidate. A focused
+consumer regression gate does not replace the later independent consumer fixture
+that proves the complete executable protocol. Programmatic decimal changes must
+use exact decimal nodes; reject binary Float/Double values that may already have
+lost precision.
+
 ## Report Without Ambiguity
 
 Return an evidence pack containing:
