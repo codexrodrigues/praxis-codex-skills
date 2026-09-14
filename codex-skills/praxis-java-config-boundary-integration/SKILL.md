@@ -84,6 +84,19 @@ segregated approval or domain invariants. Bind/revalidate the resolution fingerp
 at the orchestrator's documented unit boundaries; it is not instantaneous
 revocation across the independent Config and domain transactions.
 
+For protected bulk evaluation, the host maps that canonical resolution into Metadata's
+`BulkPolicyObservation` (trusted tenant/environment, canonical target coordinates, state,
+fingerprint and observedAt) inside mandatory `BulkEvaluationGovernance`. Keep the full
+resolution for actual evaluation of effect/specialization; the Metadata observation is
+opaque provenance, not a second policy engine or a public evidence reference. The required
+policy target set and its consistent capture belong to the provider. Bind the real evaluator
+revision and current authorization fingerprint; do not manufacture a grant revision from
+JWT claims or a static authority catalog. The current HTTP gate does not certify worker
+identity. `matchesCurrentEvidence` requires fresh reads and validated outcomes before use;
+equality cannot turn withdrawal/error or unsupported specialization into admission. See
+Metadata `docs/spec/BULK-EVALUATION-EVIDENCE.md`; SDK storage/comparison proof does not close
+the corporate grants/provider/READY gates or instantaneous revocation across transactions.
+
 Audit every early return around admission, including missing business input and
 cached idempotent responses. A mandatory policy read must not disappear on those
 branches. Checking current policy does not prove that an existing receipt ledger
