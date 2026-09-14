@@ -58,6 +58,16 @@ Route by evidence, not by the route name alone:
 
 Do not add endpoint aliases, DTO copies, Spring overrides, local manifest validators, local AI orchestration, browser bypasses, or schema patches to cover a starter gap. Correct the owner and keep only the smallest quickstart proof.
 
+## Protected Bulk Capture Adoption
+
+For protected proposal capture and recapture in the host, use
+`praxis-java-command-concurrency-authoring` and inspect
+`EventosFolhaApprovalProposalService`, its unit tests and
+`EventosFolhaApprovalEvaluationHttpTest`. Prove commit/rollback, current scoped grants,
+restricted runtime credentials and safe SQL lock failure on real PostgreSQL. A
+persisted snapshot or equivalent recapture is not READY or execution; keep migration
+identity separate and leave uncomposed public capabilities unavailable.
+
 ## Maven And Bootstrap Discipline
 
 `pom.xml` intentionally pins `praxis.core.version` and `praxis.config.version`. A version change is an integration change, not a dependency-only edit:
