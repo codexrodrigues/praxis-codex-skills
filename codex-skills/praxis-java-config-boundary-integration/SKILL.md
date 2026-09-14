@@ -97,6 +97,17 @@ equality cannot turn withdrawal/error or unsupported specialization into admissi
 Metadata `docs/spec/BULK-EVALUATION-EVIDENCE.md`; SDK storage/comparison proof does not close
 the corporate grants/provider/READY gates or instantaneous revocation across transactions.
 
+Quickstart now supplies a host-owned current-grant foundation in
+`QuickstartOperationalContextResolver` / `QuickstartPrincipalGrantRepository`; inspect
+`docs/OPERATIONAL-GRANTS-CONTEXT.md` and pair with `praxis-api-quickstart-security-config`.
+It binds a dedicated operational database to immutable namespace/tenant/environment, reads
+revocable versioned grants independently under READ COMMITTED and publishes Config's existing
+server attributes only after authorization. Its fingerprint covers the grant and required
+authority, not field/target/reference authorization. Provider adoption, multi-coordinate
+policy capture, ETag scope wiring, worker identity and READY remain separate gates; do not
+invent an empty Metadata context SPI before an actual consumer establishes the requirement.
+The existing HTTP policy gate is not automatically switched to this new source.
+
 Audit every early return around admission, including missing business input and
 cached idempotent responses. A mandatory policy read must not disappear on those
 branches. Checking current policy does not prove that an existing receipt ledger
