@@ -77,6 +77,28 @@ Only real gaps in the owning contract justify new canonical fields or route sema
 - When public docs mirror quickstart or HTTP examples, verify the referenced evidence still exists; do not cite stale smoke output.
 - Exclude `dist/`, `artifacts/`, `output/`, `tmp/`, `.angular/`, and `node_modules/` from source audits unless debugging generated output.
 
+## Initial HTML For Technical Documentation
+
+For discoverability work, audit the public GET response before editing: HTTP 200
+and a valid route do not prove that a crawler receives documentation. Inspect
+initial body text, headings and code with JavaScript disabled. Reuse the existing
+crawler publication pipeline and the adopted release's canonical public sources;
+do not hand-maintain a parallel inventory or silently copy newer private source.
+
+Render complete approved documentation with tables, code and working fragment
+links. Preserve readable prose when sanitizing raw HTML, reject active content
+and unsafe protocols, and resolve source-relative links only through known public
+routes. Account for the application base URL when rendering fragment links.
+A manifest may reference an internal curation plan: that is not visitor copy.
+For an interactive examples page, project its existing visitor-facing catalog and
+code; clearly distinguish readable examples from previews requiring JavaScript.
+
+Validate content completeness in the generated and hosted HTML, not merely a
+crawler marker, then prove no-JavaScript reading and normal Angular bootstrap.
+Use the official build/deploy pipeline so the verified HTML is included in the
+published artifact. Record uncovered routes and separate local evidence from
+hosted publication and search-engine indexing.
+
 ## Validation Matrix
 
 Choose the smallest sufficient gate:
