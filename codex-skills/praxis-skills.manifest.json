@@ -2684,8 +2684,8 @@
                                             "praxis-config-agentic-authoring-streaming",
                                             "praxis-api-quickstart-security-config"
                                         ],
-                       "skillMdSha256":  "0E3F1DFB76F0FBF9D1A14EF2D25A777D77D88C21BF8D060EFB26280B82D1E12C",
-                       "treeSha256":  "6106D209417C50F05C08844B9BF04C4C2BEE62FC6B10D4CE675454E780064C75"
+                       "skillMdSha256":  "9AEF05815786F9CB1D25F1752D6F8F6539859A6CFC9ED301C61F44FDC01FE72F",
+                       "treeSha256":  "4773D52CD7FDCD114E9876AADFBC2668CF0F93EA466E3112E84535AC3D19A412"
                    },
                    {
                        "name":  "praxis-landing-dynamic-page-studio",
