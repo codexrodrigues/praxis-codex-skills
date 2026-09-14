@@ -23,6 +23,9 @@ Inspect:
   `OpenAiAgentsSessionJournalService`, `AgenticAuthoringTurnEventSink`,
   `AgenticAuthoringTurnStreamService`, `AiThread`, its migration, and focused
   tests when changing managed-session authority, renewal, cleanup, or terminal publication
+- `AgentsApiFunctionBridgeProbe` and
+  `scripts/workspace/agents-sdk-function-comparison.py` with their offline tests
+  when comparing the Java client and official Python SDK
 - `AiAudioTranscriptionController`, `AiAudioTranscriptionRequest`, `AiAudioTranscriptionResponse`, `AiProvider.supportsAudioTranscription/transcribeAudio`, provider management selection/configuration, and provider adapter implementation
 - `docs/ai/openai-cost-attribution-and-live-gates.md`
 - provider pricing schema/snapshot and provider telemetry evidence docs
@@ -192,6 +195,24 @@ Record successful first attempts, repairs, total journey latency, calls and toke
 units separately from billing. A single successful journey supports a pilot, not
 reliability estimates or definitive adoption. Keep the production selection unchanged
 until the explicit adoption criteria are met.
+
+For a Java-client versus Python-SDK transport comparison, use the same fixed
+synthetic fixture, model and provider project, with at most one session, two root
+turns and two local function executions per runtime. Before any paid run, prove
+both harnesses offline. Stop each runtime arm at its first failure, and never
+rerun either arm to select a favorable result. Run the other arm at most once
+only after confirmed cleanup of the first; an unknown creation outcome or
+unconfirmed deletion requires reconciliation before proceeding. Keep a bounded,
+sanitized timeline of HTTP method/endpoint template/status, required actions
+and current-turn items. Match the executed handler's `call_id` to both the
+recorded `function_call` and its output; require expected content and confirmed
+cleanup. Never copy the API key, raw arguments, provider error text or arbitrary
+usage fields into receipts. Report per-turn latency and token units as observed,
+not as billing or a causal performance result. Attribute Java's bounded GET
+retries and separate read-only forensic GETs explicitly; the SDK comparison has
+`max_retries=0` and different observability requests. Neither synthetic probe
+substitutes for the durable journal, account-skill execution, governed preview,
+apply or Angular rendering proofs.
 
 ## Usage, Cost, And Live Gates
 
