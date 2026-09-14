@@ -85,6 +85,25 @@ Generated artifacts under `dist/`, vendored landing copies, generated registry o
 
 When a published README links to source-only evidence, verify both target existence and audience access. A canonical repository URL is a public link only if consumers can open it without repository membership; authenticated GitHub access and structural link gates do not prove this. Prefer an existing published guide for consumer-facing contracts. Keep private test reports in internal closure documentation, or label maintainer-only references explicitly instead of presenting them as public navigation. Correct the owning README and regenerate vendor docs; do not invent a public route for an internal test report.
 
+## npm Discovery Links
+
+For npm README discovery work, inspect `docs/public-links.manifest.json` and each
+package's docs manifest before changing links. A commercial homepage and a
+technical overview serve different purposes; their URLs differing does not
+establish drift. Preserve deliberate commercial links and derive technical
+navigation from explicit public manifest routes, excluding `source-only`
+surfaces. Reuse the public Angular catalog rather than maintaining a second
+package inventory in READMEs. Validate generated sections and the packaged
+README, including preservation through frontmatter removal.
+
+A repository README change does not update the npm package page until a new
+package version is published. Before a documentation-driven release, compare
+`main` with the current public tag: unrelated runtime or breaking changes become
+part of the same release train. Record that scope and its validation requirements;
+do not represent the release as documentation-only or infer authorization for
+unrelated functional publication. Keep source integration, npm publication and
+landing vendor synchronization as separate delivery states.
+
 ## Derived Artifact Decision Matrix
 
 | Changed canonical surface | Review/update |
