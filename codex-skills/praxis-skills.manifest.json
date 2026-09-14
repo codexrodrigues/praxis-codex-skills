@@ -119,8 +119,8 @@
                                             "praxis-api-quickstart-cockpit-http-validation",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "247E70088F4221B25A52A75D8EDF7265E10EF8D4133B615F0FCCBA7262347AE4",
-                       "treeSha256":  "30A7006B0FD8CC3A8C7BB99E5787ED31B4D30428190AEDB6C179DE37808A2294"
+                       "skillMdSha256":  "447D17CEFA62C717C3A34D5514F2E50D325188E62B1DBFF66A256AE802D65F07",
+                       "treeSha256":  "B96A4113845DE17C50B5E0D725939D5125BC3A25F9FEE2C1B5376B992A9D8013"
                    },
                    {
                        "name":  "praxis-java-command-concurrency-authoring",
