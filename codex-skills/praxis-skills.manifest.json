@@ -135,8 +135,8 @@
                                             "praxis-metadata-schema-contracts",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "C8D34D0BA52C532F5AF753710B6332961614C6DDD893BD314ABEB225890CE628",
-                       "treeSha256":  "C941CFD8C921A20058D7B27B075F4E391A0E070714D98C20D69DA191A5D9C422"
+                       "skillMdSha256":  "63B4D1963CA23F1DD49B2FFA07AAEBF584780D7C1995407CCEEF5ADDD10B043B",
+                       "treeSha256":  "00C9905EAB5E1A07022A070AF356A3DC1549768B112D502C6E396DF5DF0E8399"
                    },
                    {
                        "name":  "praxis-java-error-response-contracts",
@@ -2457,6 +2457,7 @@
                        "status":  "active",
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
+                                            "praxis-java-command-concurrency-authoring",
                                             "praxis-api-quickstart-security-config",
                                             "praxis-api-quickstart-domain-pilots",
                                             "praxis-api-quickstart-cockpit-http-validation",
@@ -2471,8 +2472,8 @@
                                             "praxis-http-examples-contract-surfaces",
                                             "praxis-http-examples-llm-smoke"
                                         ],
-                       "skillMdSha256":  "CFB83A4DAB96EA39FCED59F8EB07233A358090AE79DB07DB3F04633937F65A57",
-                       "treeSha256":  "E93F350369981C29D97D2ECD9BE31063B0CA41934024A9C8E297613C99E4541E"
+                       "skillMdSha256":  "52086A7391F4E5AB5EF7E9F04DD32AD243DE725A87DB4582245E7E352DF3F93B",
+                       "treeSha256":  "CE76A50FFCFC9FE91AD05E075A7A959730D7D14F8671CE36FE664952491658A4"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
