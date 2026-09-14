@@ -1,6 +1,6 @@
 ---
 name: praxis-api-quickstart-security-config
-description: Use when Codex must implement, audit, or prove praxis-api-quickstart host security and exposure policy: SecurityConfig, CORS contract headers, CSRF/cookie JWT, read-open/write-disabled, schemas/actuator/runtime/config endpoint policy, trusted proxy and origin governance, rate limiting, encoded-path firewall settings, or security-focused HTTP integration tests.
+description: Use when Codex must implement, audit, or prove praxis-api-quickstart host security and exposure policy: SecurityConfig, CORS contract headers, CSRF/cookie JWT, read-open/write-disabled, schemas/actuator/runtime/config endpoint policy, trusted proxy and origin governance, rate limiting, encoded-path firewall settings, current operational grants and trusted context, or security-focused HTTP integration tests.
 ---
 
 # Praxis API Quickstart Security Config
@@ -41,6 +41,44 @@ Read `praxis-api-quickstart/AGENTS.md`, then inspect:
 - focused SecurityConfig, CORS, config-origin, rate-limit, CSRF, config AI, and schema integration tests
 
 Treat effective properties and executable tests as source evidence. Documentation is a required derived surface, not proof that a default or route policy is actually configured.
+
+## Current Operational Grants And Context
+
+For bulk-provider composition, inspect `security/QuickstartOperationalContextResolver.java`,
+`QuickstartPrincipalGrantRepository.java`, `docs/OPERATIONAL-GRANTS-CONTEXT.md` and the
+canonical `db/operational-migrations/V20260914_001__operational_binding_and_principal_grants.sql`.
+Do not use token authorities or the demo catalog as a revocable authorization source.
+
+- The host reference profile binds one dedicated operational database to an immutable
+  namespace/tenant/environment. Configure all three `app.security.operational-binding.*`
+  properties explicitly; absence blocks resolution, partial values fail bean creation.
+  Future registry readiness must verify persisted binding before advertising availability.
+- Provision binding/grants administratively after the official migration. Runtime needs
+  schema USAGE and only SELECT on the two authorization tables, with no owner/admin role
+  membership. Reads reject effective table/column write privileges; this is not a universal
+  proof against role escalation or an administrator disabling triggers.
+- Revoke by deactivation, preserving UUID/subject/namespace and monotonic row version.
+  Administrative UPDATE must condition on the expected version and verify one returned row;
+  the trigger increments versions but cannot enforce an administrator's WHERE predicate.
+- Resolve the authenticated subject, reject divergent/repeated identity headers, and load
+  the current grant on a separate READ COMMITTED `apiDataSource` connection. Never reuse an
+  ambient REPEATABLE READ snapshot or the Config datasource; account for an extra pool connection.
+  Publish Config server attributes only after authorization and clear previous bridge values
+  on every attempt. Missing grants deny; infrastructure/binding failures stay unavailable.
+- The context's grant fingerprint does not authorize fields/targets/references, and its
+  ResourceVersionScope is not installed globally. No new bulk route, job authorization or
+  READY is implied. Review session versus legacy internal-delegation token admission when
+  composing the actual provider/executor. Revocation applies to the next fresh lookup,
+  not retroactively to an admitted transaction.
+
+Run `QuickstartPrincipalGrantRepositoryPostgresTest`, `QuickstartOperationalContextHttpTest`
+and the operational migrator tests; verify actual PostgreSQL versions in logs. On macOS ARM,
+`embedded.postgres.binary.version` selects the test binary (default 17.11.0, 16.14.0 override).
+Do not label other platforms as PG16/17 without runtime evidence. EmbeddedPostgres's
+`getJdbcUrl(user, database)` embeds the user in the URL: assert `current_user` to avoid testing
+with owner credentials accidentally. The HTTP fixture proves context resolution only;
+write admission/CSRF, domain effects, replay/status/cancel and worker delegation need their
+own integration gates. Existing route policies and demo grounding are not replaced by this source.
 
 ## Exposure Matrix Before Editing
 
