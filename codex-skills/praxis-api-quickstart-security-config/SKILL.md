@@ -65,13 +65,20 @@ Do not use token authorities or the demo catalog as a revocable authorization so
   ambient REPEATABLE READ snapshot or the Config datasource; account for an extra pool connection.
   Publish Config server attributes only after authorization and clear previous bridge values
   on every attempt. Missing grants deny; infrastructure/binding failures stay unavailable.
+- Validate well-formed Unicode scalar values before JDBC and identity hashing. Isolated
+  UTF-16 surrogates can survive a signed JWT and be silently replaced by `?` by JDBC or
+  a permissive UTF-8 encoder, borrowing another subject's grant and colliding fingerprints.
+  Reject malformed input rather than normalizing/replacing it, use strict digest encoding,
+  and compare the stored subject exactly with the authenticated subject. Keep valid
+  supplementary characters distinct; Java limits remain UTF-16 code-unit limits. Prove
+  both malformed high/low surrogates via real JWT/HTTP/PG and positive valid Unicode.
 - The context's grant fingerprint does not authorize fields/targets/references, and its
   ResourceVersionScope is not installed globally. No new bulk route, job authorization or
   READY is implied. Review session versus legacy internal-delegation token admission when
   composing the actual provider/executor. Revocation applies to the next fresh lookup,
   not retroactively to an admitted transaction.
 
-Run `QuickstartPrincipalGrantRepositoryPostgresTest`, `QuickstartOperationalContextHttpTest`
+Run `QuickstartOperationalIdentityTest`, `QuickstartPrincipalGrantRepositoryPostgresTest`, `QuickstartOperationalContextHttpTest`
 and the operational migrator tests; verify actual PostgreSQL versions in logs. On macOS ARM,
 `embedded.postgres.binary.version` selects the test binary (default 17.11.0, 16.14.0 override).
 Do not label other platforms as PG16/17 without runtime evidence. EmbeddedPostgres's
