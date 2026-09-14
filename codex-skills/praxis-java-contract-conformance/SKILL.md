@@ -173,6 +173,23 @@ inspect reports for both, then regress OpenApiDocsSupport/ApiDocsController and 
 exact candidate JAR in Quickstart. The HTTP fixture proves schema reading and field
 compilation, not persistence, authorization or bulk execution.
 
+## Prove PostgreSQL Bootstrap With An Empty Binary Cache
+
+For PostgreSQL integration or starter release evidence, an isolated Maven repository
+does not imply an empty extracted-binary cache. Preserve `EmbeddedPostgresColdStartTest`
+in Metadata: use a new working directory and a distinct binary resolver instance so
+Zonky's process-wide resolver cache cannot bypass extraction; start the real database,
+query it, and close it before temporary-directory cleanup. Do not clear shared caches
+or disable PostgreSQL tests to hide bootstrap failures.
+
+When bootstrap fails with a missing method, inspect the resolved dependency tree and
+upstream POM requirements before blaming the OS. Align existing Commons Lang/Compress
+dependencies in their canonical Maven owner, including compile/runtime where applicable;
+a test-only override can leave consumers broken. Reproduce the failing cold path,
+then run the relevant release gate. During host adoption, inspect its actual resolved
+versions: a direct dependency or BOM can override the starter's published choices.
+Record cold-path proof separately from cached database tests and artifact availability.
+
 ## Report Without Ambiguity
 
 Return an evidence pack containing:
