@@ -190,6 +190,15 @@ policy/grant/domain reads and checks; true is not permission/READY. Invalid curr
 throws validation errors which the orchestrator must treat as an impediment; context/TTL
 mismatch returns false. Re-evaluate under a new UUID when evidence changes.
 
+When evidence comes from a separately recaptured snapshot, first require its protected
+`BulkIntentSnapshot.fingerprint()` to equal the stored proposal's intent fingerprint,
+or reconstruct the capture exclusively from the stored proposal input. The comparison
+method reuses the original intent and cannot detect changed parameters from current
+targets/governance alone. Prove equal-input fresh evidence compares equal, changed
+grants/facts invalidate it, and a parameter-only change fails the input guard. A new
+snapshot's overall fingerprint differs because UUID/timestamps differ; that inequality
+alone is not proof of changed authorization or domain evidence.
+
 The SDK beta constructor has no compatibility path without governance. Old evaluation
 payloads without it are CORRUPT even with an otherwise valid old hash; recover input only
 to obtain a new governed evaluation. Do not rewrite immutable evidence or invent history.
