@@ -46,6 +46,29 @@ contracts, never in a host controller convention.
 Read [command-outcome-matrix.md](references/command-outcome-matrix.md) when selecting
 scope, preconditions, idempotency, result status, or focused proof.
 
+## Refactor Command Parameters Without Invalidating Existing Work
+
+Before separating selection/version transport from shared business parameters,
+inspect the current handler DTO, Bean Validation, emitted request schema, action
+links and durable command fingerprint implementation. Reuse a typed parameter model
+only when it preserves the active endpoint contract; inheritance is an option, not
+a requirement. Prove inherited constraints and field metadata in real HTTP schemas,
+not only a local ModelConverters result. Keep the complete request schema distinct
+from a parameter-only model; extracting a class does not publish a bulk evaluator.
+
+For strict bulk binding, require an explicit globally unique operation ID on the
+real resource handler and verify discovery links resolve that operation. Changing
+an automatically generated ID requires consumer rediscovery; do not add aliases by
+reflex or silently redirect saved operation references.
+
+DTO refactoring can change Jackson property order even when the JSON object has
+the same logical fields. If the current ledger hashes serialized POJO bytes, map-key
+sorting alone does not make bean property order stable. Capture pre-change bytes or
+a fingerprint with the host's mapper and prove replay of a previously completed
+record against the new code. Preserve the existing wire order when that is the
+scoped compatible correction; do not rewrite hashes or globally normalize the ledger
+without a separate migration design. Same-version retry tests alone miss this risk.
+
 ## Preserve Boundaries
 
 - `praxis-metadata-starter` owns command execution types, resource version
