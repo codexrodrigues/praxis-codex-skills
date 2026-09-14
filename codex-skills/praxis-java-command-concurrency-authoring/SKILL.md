@@ -134,17 +134,44 @@ facts, target manifests and execution state are actually implemented.
 
 Use `BulkTargetEvidence` with the existing canonical wire BulkTarget/expectedVersion,
 observedVersion, minimal exact-number facts and the evaluated candidate plan.
-`BulkEvaluationSnapshot(proposal, evaluatedAt, targets)` requires exact original target
+`BulkEvaluationSnapshot(proposal, evaluatedAt, targets, governance)` requires exact original target
 coverage and versions, normalizes evidence order to the input (including per-item order),
-and binds UUID/input fingerprint/validity/instant/facts/plan with the distinct
+and binds UUID/input fingerprint/validity/instant/facts/plan/governance with the distinct
 `praxis.bulk.evaluation/1` frame. It does not produce eligibility, public totals or READY.
 A different observed version is a recorded conflict fact, not permission to proceed.
 
 The host/provider supplies authoritative, minimal domain evidence and dependency
 revalidation/locking semantics. Do not store full domain state by default, fabricate
 facts for inaccessible targets, or encode policy absence as an allow boolean. Config
-remains the owner of operational policy resolution; readiness awaits that resolution,
-governed provider composition and current-context revalidation.
+remains the owner of operational policy resolution; readiness awaits governed provider
+composition, real current grants and current-context revalidation.
+
+Capture mandatory `BulkEvaluationGovernance` from the trusted evaluator revision,
+current authorization fingerprint and nonempty `BulkPolicyObservation` list. Observations
+retain tenant/environment, canonical Config layer/type/key, opaque resolution state,
+resolution fingerprint and observedAt. Metadata rejects duplicate coordinates and binds
+this evidence; it does not interpret Config states, duplicate policy payload/head identity,
+or check provider target completeness. The host must validate the full Config resolution
+and all required targets, including an explicit lookup for NEVER_APPLIED. Do not fabricate
+revocable grants from a JWT or static authority catalog. A test fingerprint is not a
+production authorization provider. Multiple observations require consistency proof from
+their owner, not an assumption of atomic multi-target Config reads.
+
+`matchesCurrentEvidence` compares the full trusted current context, validity window,
+target evidence and governance using `praxis.bulk.revalidation/1`; only observation and
+evaluation timestamps are excluded. A loaded integer and the same fresh integer must
+compare equal even if Jackson uses different integer node classes; integer and decimal
+remain distinct. Use canonical typed digests, never JsonNode.equals for this comparison.
+It performs no reads and cannot detect reused stale observations. Call only after fresh
+policy/grant/domain reads and checks; true is not permission/READY. Invalid current shape
+throws validation errors which the orchestrator must treat as an impediment; context/TTL
+mismatch returns false. Re-evaluate under a new UUID when evidence changes.
+
+The SDK beta constructor has no compatibility path without governance. Old evaluation
+payloads without it are CORRUPT even with an otherwise valid old hash; recover input only
+to obtain a new governed evaluation. Do not rewrite immutable evidence or invent history.
+V1/V2 SQL checksums remain unchanged. Prove BulkGovernanceEvidenceTest and the PostgreSQL
+legacy/readback cases in addition to the existing suite.
 
 `JdbcBulkProposalStore.insertEvaluated` inserts input plus evidence atomically in the
 existing physical transaction; no attach/update/upsert. Re-evaluation needs a new UUID.
