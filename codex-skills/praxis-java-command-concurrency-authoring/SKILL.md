@@ -153,6 +153,40 @@ BulkSnapshotStorageCodecTest, including concurrent migration/insertion, rollback
 scoped lookup, immutable rows and corrupted content. Update this guidance as evaluated
 facts, target manifests and execution state are actually implemented.
 
+## Compose A Protected Capture In The Host
+
+For a host entry point whose result must mean the protected capture committed, inspect
+`EventosFolhaApprovalProposalService` and its focused unit/PostgreSQL HTTP proofs in
+Quickstart. The store only participates in an existing transaction. Make ownership
+explicit: reject an ambient transaction/synchronization, capture fresh authorized
+input outside the write transaction, then insert input and evidence together in a
+local transaction using the exact operational datasource/manager. Do not silently
+suspend the caller's domain transaction or return a participant result as committed.
+A deliberately participating internal API must instead document its provisional result.
+
+Use the evaluator's clock and check validity before and after insertion. Translate
+storage and commit failures without protected causes; a failed or ambiguous commit
+must not be reported as success. This capture has no idempotent receipt: a caller
+must not assume a retry is deduplicated. Elapsed validity after commit does not undo
+storage and never grants permission to execute.
+
+`TransactionTemplate.setTimeout` alone does not apply query timeouts to the store's
+manually prepared JDBC statements. In this PostgreSQL adapter, the host can apply a
+server-owned `SET LOCAL statement_timeout` through `BulkExecutionInfrastructure`
+on the same transaction connection before storage calls. Keep the limit local to the
+transaction, not the pool/global configuration. It bounds each SQL statement; do not
+advertise it as a total request deadline or a guaranteed COMMIT timeout. Prove a
+concurrent lock times out safely and rolls back both rows using real PostgreSQL.
+
+Recover a stored evaluation only through fresh trusted scope and current grants.
+When comparing a separately captured request, require equal input fingerprints first,
+then compare current context, TTL, facts/plans and governance. Equivalent evidence may
+still describe blocked targets: true is not eligibility, READY, admission or execution.
+Prove changed parameters, revocation, other subjects, expiry, policy/fact drift,
+companion failure, deferred COMMIT failure and absence of domain writes. Migrate and
+validate the canonical schema with a separate privileged identity; runtime gets only
+the documented bulk SELECT/INSERT grants and necessary domain reads.
+
 ## Bind Domain Evaluation Evidence Before Readiness
 
 Use `BulkTargetEvidence` with the existing canonical wire BulkTarget/expectedVersion,
