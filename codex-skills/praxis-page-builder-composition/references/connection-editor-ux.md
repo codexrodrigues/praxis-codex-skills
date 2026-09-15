@@ -117,12 +117,20 @@ radial is not a valid restoration target; use a visible editor fallback.
 Keep draft cancellation ownership intact.
 
 When a connection draft embeds a Core Surface editor, its visible raw JSON state
-participates in the connection transaction. Invalid-only edits must mark the
-transaction dirty/invalid, block Apply, survive parent echoes while mounted and
-be discarded on connection Cancel without publishing the last valid payload.
-Track the mounted child rather than a mutable action label or index, and exercise
-this through the real connection editor so child teardown cannot silently release
-the invalid contribution.
+participates in the connection transaction. Invalid-only edits must survive
+parent echoes while mounted and block Apply unless an existing `payloadExpr`
+is the effective source. While that expression is active, retain the invalid
+structured draft as inactive local state; returning to a source without the
+expression reactivates its validation, including when delivery is the source.
+The editor shows an existing expression but does not author expression text.
+Opening or rendering must not silently remove a competing literal or expression.
+Track the mounted child and canonical link identity, not a mutable action label
+or index. Cancel discards the transient text without publishing the last valid
+payload. Actually changing away from the Surface destination discards that
+link's abandoned transient state; temporarily incomplete endpoints preserve it.
+Test source switching, Cancel/focus, and destination changes with and without an
+intermediate render so teardown order cannot restore an abandoned invalid draft
+or silently release an active invalid contribution.
 
 Use the owning focal specs plus Page Builder build. In the browser, include
 light/dark catalogue contrast, a long catalogue, desktop, narrow stage, high
