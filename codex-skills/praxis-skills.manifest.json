@@ -1869,7 +1869,7 @@
                                             "praxis-navigation-container-composition-events"
                                         ],
                        "skillMdSha256":  "3DC9CC6A71AD55CD35231658D95C90737E422179E88B69B51E50AD9E6C348539",
-                       "treeSha256":  "215CF5F9996546C9FFDE8266E88CF3868E6ABBFBCDF64049DAF52A2822CA453F"
+                       "treeSha256":  "21C364F9955EF705A866C5BC9063ADEC7BEA1A14203A6E400FDE97D99EBCE207"
                    },
                    {
                        "name":  "praxis-resource-entity-lookup-backend",
