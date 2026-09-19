@@ -33,6 +33,8 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/service/RagProjectKnowledgeDerivedIndexService.java`
 - `src/main/java/org/praxisplatform/config/controller/DomainCatalogController.java`
 - `src/main/java/org/praxisplatform/config/service/DomainCatalogIngestionService.java`
+- `src/main/java/org/praxisplatform/config/service/DomainCatalogRagPublicationStateService.java`
+- `src/main/java/org/praxisplatform/config/service/RagPublicationFailureClassifier.java`
 - `src/main/java/org/praxisplatform/config/service/DomainCatalogPromptContextService.java`
 - `src/main/java/org/praxisplatform/config/rag/RagDocumentIdentity.java`
 - `src/main/java/org/praxisplatform/config/rag/RagFilters.java`
@@ -105,6 +107,9 @@ Broad candidate scans must use repository projections containing only the fields
 
 - The persisted latest governed Domain Catalog release remains canonical. Its vector documents are a derived ranking index; map ranked hits back to canonical items before prompt projection.
 - Publish and filter Domain Catalog RAG documents with the same normalized release token from `RagDocumentIdentity.resolveReleaseId`. Also preserve tenant, environment, service key, resource key, item type, context key, node type, and canonical item identity. A raw release key on one side and a normalized token on the other creates false empty retrieval and unreconciled status.
+- Derive the physical document id from the same canonical identity enforced by vector metadata and database uniqueness. In particular, the id chunk index must equal metadata `chunkIndex`; never use incidental list order as an id segment. During reconciliation of legacy rows, remove only a row that occupies the same tenant/environment/release/component/docType/contentHash/chunkIndex identity under a different physical id before upserting.
+- Preserve the publication lifecycle and sanitized failure evidence (`failureKind`, `retryable`, `retryAfter`, revision, attempt, expected and published counts). Provider failures retain the shared provider taxonomy; vector-store integrity, transient, generic data-access, contract, and internal failures need explicit sanitized kinds. Never expose provider bodies, SQL details, exception messages, or document content.
+- Retry only failures explicitly classified as transient. Quota, auth, client, integrity, contract, internal, and otherwise untyped failures are terminal for the publication revision. `retryable=true` permits a later explicit request after `retryAfter`; it never authorizes an implicit retry, corrective prompt, or paid gate rerun.
 - Pre-intent planning must receive governed Domain Catalog context on the first authoring turn when the caller did not provide a Domain Catalog preference. Add a copied internal `enabled=true` hint only for this asymmetry; preserve an explicit `enabled=false` or caller-provided scope.
 - Retrieve semantically from the scoped latest release first, then use the existing scoped lexical query only as a fallback when semantic retrieval produces no canonical item. Lexical matching does not decide primary intent.
 - Do not treat successful ingestion, a populated Domain 360 response, or vector availability alone as proof of grounding. An operational gate must wait for `expectedDocumentCount == publishedDocumentCount > 0` and audit that every provider pre-intent call contains the governed context.
@@ -121,7 +126,7 @@ Broad candidate scans must use repository projections containing only the fields
 - Do not answer API catalog questions with hardcoded deterministic prose when LLM/RAG grounding is available.
 - Do not use local text search as the primary decision for business resource selection.
 - Preserve tenant, environment, release id, version, generatedAt, operationId, schemas, params, tags, scores, content hashes, source pointers, retrieval source, and raw JSON enough for replayable grounding.
-- Preserve RAG status/reconcile diagnostics when ingestion changes: expected document count, published document count, vector-store availability, publication-enabled flag, resource type, tenant, environment, service key, and release id.
+- Preserve RAG status/reconcile diagnostics when ingestion changes: expected document count, published document count, vector-store availability, publication-enabled flag, resource type, tenant, environment, service key, release id, publication revision/attempt, `failureKind`, `retryable`, and `retryAfter`.
 - Fail closed when scoped or required grounding is unavailable; do not launder lexical fallback into a selected resource or successful materialization.
 - Keep caches performance-only; `api_metadata`, `ai_registry`, runtime metadata, and persisted turn events remain canonical.
 - If schema or resource semantics are missing, inspect `praxis-metadata-starter` contracts before inventing config-starter API metadata fields.
@@ -148,7 +153,7 @@ Use focused local gates:
 - ingestion/context: `mvn "-Dtest=ApiMetadataIngestionServiceTest,ApiMetadataControllerTest,AiContextControllerTest,ContextRetrievalServiceTest,SchemaRetrievalServiceTest" test`
 - resource/project knowledge/runtime grounding: `mvn "-Dtest=AgenticAuthoringApiMetadataCandidateCatalogTest,AgenticAuthoringResourceDiscoveryServiceTest,AgenticAuthoringProjectKnowledgeServiceTest,VectorRankedProjectKnowledgeCandidateRetrieverTest,AgenticAuthoringRuntimeComponentGroundingServiceTest" test`
 - RAG/vector changes: `mvn "-Dtest=RagVectorStoreServiceTest,RagVectorStoreConfigurationTest,RagProjectKnowledgeMetadataTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
-- Domain Catalog prompt/RAG grounding: `mvn "-Dtest=DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,RagVectorStoreServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest" test`
+- Domain Catalog prompt/RAG grounding: `mvn "-Dtest=DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,DomainCatalogRagPublicationStateServiceTest,RagPublicationFailureClassifierTest,RagVectorStoreServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest" test`
 - Angular AI-context consumer: `npm run test:praxis-ai:backend-api`
 
 Review `docs/ai/**`, `docs/domain-catalog/**`, API contract docs, quickstart ingestion/smoke scripts, and Angular AI context consumers when public grounding changes.
