@@ -153,6 +153,63 @@ BulkSnapshotStorageCodecTest, including concurrent migration/insertion, rollback
 scoped lookup, immutable rows and corrupted content. Update this guidance as evaluated
 facts, target manifests and execution state are actually implemented.
 
+## Compose A Durable Per-Item Execution In Metadata
+
+`JdbcBulkDurableExecution` is a protected Metadata kernel composed explicitly with the
+same operational `BulkExecutionInfrastructure`; it does not register an operation,
+authorize the actor, establish eligibility, publish HTTP, or start workers. This cut
+only supports stored-evidence `EXPLICIT`/`SYNC`/`PER_ITEM` proposals. Verify the exact
+current contracts in Metadata `docs/spec/BULK-DURABLE-EXECUTION.md` and its V3 migration
+before adopting it; do not infer readiness from this class existing.
+
+Reserve with a stable server-authorized scope, proposal ID, caller's idempotency key,
+owner ID, structural revision, and execution deadline. Only the key digest is persisted.
+The unique database constraints bind one execution to a proposal and one scoped key to
+one binding. Resolve a replay and compare the proposal/evidence fingerprints before
+applying the proposal's initial expiry gate. Same key with changed binding conflicts;
+a second key for a consumed proposal returns its existing execution. A timeout or
+ambiguous reservation commit requires scoped readback and must never mint a replacement
+key or execution.
+
+Call `executeUnit(control, expectedOrdinal, callback)` for one explicitly identified
+unit. Do not implement `executeNext` loops: a retry for A must never dispatch B. The
+kernel commits a durable attempt barrier before the callback, then commits the local
+domain mutation and append-only receipt in the same physical JDBC/JPA transaction, then
+acknowledges progress separately. The callback's return is limited to `CONFIRMED` or
+`UNCHANGED`; it is provisional until the receipt and domain mutation commit together.
+Keep domain repository work on the bound manager/datasource and verify this with an
+independent PostgreSQL observer. Never use `REQUIRES_NEW`, another datasource, manual
+commit/rollback, or an external irreversible call inside the callback.
+
+A lost COMMIT acknowledgement is not a domain failure. Stop later ordinals and reconcile
+through the durable receipt/control under lock. A valid earlier receipt remains readable
+after deadline and even when later execution state requires reconciliation. Replaying an
+ordinal already inside the acknowledged prefix, or replaying under
+`RECONCILIATION_REQUIRED`, is read-only: it neither calls the callback nor advances progress.
+A receipt for exactly `nextOrdinal` in `UNIT_COMMITTED_PENDING_ACK` may acknowledge that
+already committed unit and advance progress once, but it never calls the callback again.
+Recovery obtains the same row lock, fences
+old owner/epoch controls, validates receipt/attempt/ordinal/target/version correspondence,
+and performs no domain mutation. Contradictory evidence remains blocked for operator
+reconciliation; absence alone is not proof of failure unless receipt atomicity and fencing
+exclude every earlier writer. When recovery finds an invalid receipt, retain the contiguous
+verified receipt prefix as the safe replay boundary: an intact receipt before that boundary
+may be read, while the inconsistent receipt and every later ordinal stay blocked. Prove both
+replay of an earlier valid receipt and rejection of the corrupted pending receipt without a
+callback. Preserve terminal timestamps on repeated recovery.
+
+Prove same-key/same-binding and conflicting races with two kernel instances and
+independent database connections; two keys for one proposal; JDBC and JPA commit/rollback;
+replay before new-mutation gates; lost COMMIT acknowledgement and confirmed rollback;
+retry A after B and after deadline; recovery racing an open unit; old epoch rejection;
+corrupt receipt handling; migration upgrade and restricted grants. Use
+`BulkDurableExecutionPostgresTest`, `BulkDurableMigrationPostgresTest`,
+`BulkEvaluationStorePostgresTest`, and `JdbcBulkProposalStorePostgresTest`. These prove
+the Metadata kernel only: a real host callback still must demonstrate domain invariants,
+current policy/admission for each unit, external effects, and the host's actual transaction
+composition before a business workflow is exposed. Do not treat a returned status as
+proof that the caller was authorized.
+
 ## Compose A Protected Capture In The Host
 
 For a host entry point whose result must mean the protected capture committed, inspect

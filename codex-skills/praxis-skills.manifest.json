@@ -135,8 +135,8 @@
                                             "praxis-metadata-schema-contracts",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "63B4D1963CA23F1DD49B2FFA07AAEBF584780D7C1995407CCEEF5ADDD10B043B",
-                       "treeSha256":  "00C9905EAB5E1A07022A070AF356A3DC1549768B112D502C6E396DF5DF0E8399"
+                       "skillMdSha256":  "F9B154F8359A58B6F574768DF8466571AE8232E6B82F5A972AD3F38E76A18425",
+                       "treeSha256":  "51569858EC1B6234E57269BA4F508FF90C0C2F34CA632A9E1EC0AC1FB221BF48"
                    },
                    {
                        "name":  "praxis-java-error-response-contracts",
@@ -198,8 +198,8 @@
                                             "praxis-metadata-schema-contracts",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "C391FCD82F55A067EFD627163273E0655EA2A2C1EFCAF9D85253BD754A1B2D8C",
-                       "treeSha256":  "9DA87B8551253FCD9DF38A906E9E52BC8C5DF090A344775759432D3AD45D29E5"
+                       "skillMdSha256":  "218D3C99512CAC30421A732BD47876D3E71A0235C611D0B7A6962E435B1E9DEA",
+                       "treeSha256":  "733BB24F8AFAC0362282A794861C497DD789E09F28C281EE15188AC0F9040EC3"
                    },
                    {
                        "name":  "praxis-java-quickstart-proof",
