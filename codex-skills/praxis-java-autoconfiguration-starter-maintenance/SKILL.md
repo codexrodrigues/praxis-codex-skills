@@ -96,6 +96,38 @@ both immutable triggers. Migrate before enabling the new SDK consumer; adding th
 still registers no READY/public capability. Prove BulkEvaluationStorePostgresTest and see
 Metadata docs/spec/BULK-EVALUATION-EVIDENCE.md.
 
+## Adopt Durable Bulk Execution Explicitly
+
+The V3 migrator adds reservation, mutable execution control and append-only per-item
+receipts; it still registers no bean, registry, capability, readiness signal, endpoint,
+quota, queue or worker. Construction of `JdbcBulkDurableExecution` is explicit and uses
+the operational datasource/manager already validated by
+`BulkExecutionInfrastructure`. Host domain writes and receipt must share that physical
+transaction. Adoption is not complete until the host has tested its concrete callback
+with an independent PostgreSQL observer and proves that transaction propagation, grants,
+recovery and current domain authorization match the promised workflow. Metadata cannot
+introspect and forbid arbitrary host code from opening a second transaction or datasource.
+
+The runtime role needs USAGE on `praxis_bulk`; SELECT on proposal/evaluation; SELECT,
+INSERT, UPDATE on the execution control row; and SELECT, INSERT on receipts. It must have
+no UPDATE/DELETE on proposal/evaluation/receipt, no TRUNCATE/DDL, and no schema CREATE.
+The migration validates the physical schema, immediate validated constraints and
+immutability guards, not only Flyway checksums. Catalog validation must be stable when the
+operational datasource sets `currentSchema=praxis_bulk` and must restore that same connection's
+search path. Reject unowned types, overloads, aggregates, expression/standalone indexes, rules
+and policies. The sole unowned index exception is Flyway's nonunique one-column btree on
+`praxis_bulk_schema_history.success`; validate its owner and shape, not just its name. V1/V2 remain immutable; fresh migration
+applies three versions, V1 upgrade applies two, V2 upgrade applies one, and repeat applies
+zero. Upgrades never synthesize execution/receipt rows. See Metadata
+`docs/spec/BULK-DURABLE-EXECUTION.md` and prove `BulkDurableMigrationPostgresTest` plus
+the upgraded `BulkEvaluationStorePostgresTest` and `JdbcBulkProposalStorePostgresTest`.
+
+A replay reads and validates its receipt before gates that only govern a new mutation.
+Recovery is explicit and never invokes domain callbacks; it fences old owner/epoch controls
+through durable row locking. Commit-uncertain work blocks subsequent units until readback
+or recovery. Do not configure readiness or advertise runtime behavior from starter
+construction or migration success.
+
 ## Prove Bootstrap And Consumers
 
 Prove default context startup, intended host override, absent-required capability,
