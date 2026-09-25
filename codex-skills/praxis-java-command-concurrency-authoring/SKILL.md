@@ -72,11 +72,14 @@ without a separate migration design. Same-version retry tests alone miss this ri
 ## Preserve Boundaries
 
 - `praxis-metadata-starter` owns command execution types, resource version
-  preconditions, action discovery, schemas, and capability projection.
-- The host owns domain transition, transaction boundary, operational datasource and
-  adoption of idempotency storage, external-effect coordination, and authorization.
-  Metadata owns the shared bulk infrastructure described below. Do not leak database version,
-  package, queue, token, or internal exception details.
+  preconditions, action discovery, schemas, capability projection, and the shared
+  governed-bulk persistence kernel: protected proposals/evaluations, execution
+  controls, item receipts, fencing, quota allocations, and retention primitives.
+- The host owns the domain transition, current authorization/policy decision, and
+  composition of the kernel with domain writes in one supported operational
+  transaction. Keep remote effects behind an outbox or another independently
+  idempotent boundary; a PostgreSQL receipt cannot make a remote side effect atomic.
+  Do not leak database version, package, queue, token, or internal exception details.
 - `praxis-ui-angular` consumes action schemas, links, capabilities and safe conflicts.
   It does not infer idempotency or manufacture `If-Match` locally.
 
@@ -86,7 +89,7 @@ text can only rank already-scoped candidates.
 
 ## Bind Bulk JDBC Work To The Operational Transaction
 
-`BulkExecutionInfrastructure(dataSource, transactionManager, namespace)` is the
+`BulkExecutionInfrastructure(dataSource, transactionManager, namespace, deploymentId)` is the
 Metadata-owned explicit integration boundary. It provides transaction participation. Storage is composed explicitly through
 JdbcBulkProposalStore; neither class is an executor, worker or runtime capability. Construction
 performs no database access or DDL. The namespace is explicit and stable; it is not
@@ -118,9 +121,11 @@ bulk execution. Consult Metadata docs/spec/BULK-EXECUTION-INFRASTRUCTURE.md.
 Compose `JdbcBulkProposalStore` with the same BulkExecutionInfrastructure. Persist a
 `BulkStoredProposal` containing the UUID, microsecond timestamps and immutable
 `BulkIntentSnapshot` (trusted context, built-in identity codec, modality and intent).
-This initial adapter accepts EXPLICIT/SYNC inputs in all three modalities. It is not
-a READY evaluation, a captured QUERY manifest, admission/quota control or a receipt.
-Do not persist the redacted public BulkProposal as execution input.
+The adapter accepts EXPLICIT/SYNC inputs in all three modalities. A new proposal
+and its `PROPOSAL_PENDING` quota allocation are inserted in one transaction under
+durable deployment/subject bucket locks. It is still not a READY evaluation or a
+captured QUERY manifest, and storage does not authorize execution. Do not persist
+the redacted public BulkProposal as execution input.
 
 Insert/find join the existing writable transaction. Insert is provisional until commit;
 UUID conflicts never overwrite. Find requires trusted namespace, subject, resource and
@@ -233,13 +238,49 @@ Prove same-key/same-binding and conflicting races with two kernel instances and
 independent database connections; two keys for one proposal; JDBC and JPA commit/rollback;
 replay before new-mutation gates; lost COMMIT acknowledgement and confirmed rollback;
 retry A after B and after deadline; recovery racing an open unit; old epoch rejection;
-corrupt receipt handling; migration upgrade and restricted grants. Use
+corrupt receipt handling; migration upgrade and restricted grants. An authorized replay
+whose retained tombstone proves that detailed terminal evidence was purged is a distinct
+`RESULT_PURGED`/410 condition, not the ordinary key/proposal `CONFLICT`/409; keep the
+lookup bound to the same current namespace, subject, resource and operation scope. Use
+the shared versioned idempotency digest helper so migration fixtures and runtime cannot
+silently drift in framing. Use
 `BulkDurableExecutionPostgresTest`, `BulkDurableMigrationPostgresTest`,
 `BulkEvaluationStorePostgresTest`, and `JdbcBulkProposalStorePostgresTest`. These prove
 the Metadata kernel only: a real host callback still must demonstrate domain invariants,
 current policy/admission for each unit, external effects, and the host's actual transaction
 composition before a business workflow is exposed. Do not treat a returned status as
 proof that the caller was authorized.
+
+## Enforce Durable Bulk Capacity And Retention
+
+Quota is a transactionally maintained lifecycle ledger, not a preflight count or
+an in-memory throttle. The current bounded profile allows at most 100 pending
+proposals per deployment, 10 pending proposals per authenticated subject within
+that deployment, and 80 active executions per deployment. Proposal insertion
+locks namespace binding, operation control, deployment bucket, and subject bucket
+before checking limits and inserting both proposal and pending allocation.
+Reservation resolves a matching durable execution before new-work capacity gates,
+then locks those governance/bucket rows and the proposal before converting pending
+capacity to active capacity. A second idempotency key cannot consume one proposal
+twice.
+
+Terminal acknowledgement releases the active allocation in the same transaction
+as terminal status/evidence. Unknown commit, an active owner, or incomplete evidence
+retains capacity. A restricted `praxis_bulk_retention_executor` may invoke one-item
+`expire_unconsumed_proposal` and `purge_terminal_execution` operations; it receives
+no direct table mutation grants. Expiry removes only an unconsumed expired proposal
+and its pending allocation. Purge accepts complete terminal evidence older than the
+fixed retention interval, writes a minimal idempotency tombstone first, then removes
+detailed proposal/execution/evidence and allocations atomically. Tombstone replay
+returns the distinct `RESULT_PURGED` outcome after payload deletion. The database controls the immutable
+terminal timestamp; never accept a caller-provided retention clock.
+
+Migrate with explicit namespace-to-deployment bindings and exact configured runtime
+and retention roles. Validate the physical catalog, including role ownership,
+membership, narrow lock-column grants, mutation-protection triggers, and definer
+function search paths; a valid Flyway checksum alone is insufficient. Prove both
+retention functions under the effective restricted executor role in PostgreSQL,
+not only by catalog inspection.
 
 ## Compose A Protected Capture In The Host
 
