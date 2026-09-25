@@ -68,6 +68,62 @@ restricted runtime credentials and safe SQL lock failure on real PostgreSQL. A
 persisted snapshot or equivalent recapture is not READY or execution; keep migration
 identity separate and leave uncomposed public capabilities unavailable.
 
+## Protected Bulk Execution Adoption
+
+For an internal host pilot that executes a captured proposal, use the Metadata
+Starter durable-execution contract and the focused host HTTP/PostgreSQL proof. Do
+not recreate reservation, idempotency, per-ordinal admission, receipts, recovery,
+or fencing in Quickstart. Metadata owns those semantics; Config remains the
+separate source of current policy, and the host owns the concrete domain mutation.
+
+For every ordinal, the host must re-read the current Config policy and scoped
+grant, then lock the target row and compare its permitted state and expected
+version under that lock. Only after admission should the callback mutate the
+domain entity and write its transition audit; Metadata persists the receipt in
+the same operational transaction. Do not use `REQUIRES_NEW`, manually commit or
+roll back, or use transition replay as execution authority. Config and API use
+separate databases, so the proof is point-in-time admission, not distributed
+atomicity.
+
+Propagate the kernel's remaining monotonic unit budget into every Config policy read
+and scoped-grant JDBC read. These are sequential parts of one five-second unit budget,
+not independent five-second allowances; round query timeouts down and fail closed when
+the remainder is too small. Bound API and Config connection-pool acquisition separately
+so a saturated pool cannot spend the entire unit budget waiting for a connection. Recheck
+the remaining budget after each external read and immediately before target mutation.
+A timeout or expired budget must leave the domain row, transition audit, and receipt
+unchanged for that ordinal and stop the suffix. PostgreSQL tests must exhaust the budget
+through an independently acquired Config/grant connection, not by sleeping on the API
+transaction itself.
+
+Read an existing receipt before deadline or fresh-governance gates. If commit
+acknowledgement is uncertain, return the confirmed prefix, `UNKNOWN` for the
+current ordinal, and `NOT_PROCESSED` for the suffix; retry must read the receipt
+without rerunning domain or audit callbacks. Recovery fences the previous owner
+and reconstructs recorded outcomes only; it never invokes a mutation callback.
+Common grant/policy loss, timeout, or unavailable governance must stop the
+unstarted suffix. A target-specific state/version conflict remains a durable
+per-item result. Keep reservation/recovery probes test-only until the canonical
+public confirmation protocol and consumer contract are released together.
+
+Until that S4c release, keep every host README, security/migration guide, and runtime smoke explicit
+that the legacy bulk action is absent from discovery, capabilities, and OpenAPI. A Config
+`approval_policy` materialization alone is not host enforcement. Smoke scripts may verify that
+materialization and report host execution as pending, but must not call the retired action or
+claim a runtime approval-policy gate passed. The default/automatic mode should warn honestly;
+an explicitly required host-enforcement gate should fail with the S4c prerequisite. Include a
+negative action-discovery assertion in the host proof.
+
+The focused proof must exercise the real Config and API PostgreSQL stores,
+including grants, a two-item committed prefix, proposal expiry after reservation,
+policy/grant changes between items, a target race, isolated unit rollback,
+commit-acknowledgement loss and receipt readback, Config timeout, replay under
+current authorization, redacted responses, and recovery without mutation. A
+candidate probe is not a production endpoint, published capability, or proof
+that the public workflow is ready. Use
+`praxis-java-command-concurrency-authoring` and the Metadata Starter bulk
+execution contract when reviewing these guarantees.
+
 ## Maven And Bootstrap Discipline
 
 `pom.xml` intentionally pins `praxis.core.version` and `praxis.config.version`. A version change is an integration change, not a dependency-only edit:

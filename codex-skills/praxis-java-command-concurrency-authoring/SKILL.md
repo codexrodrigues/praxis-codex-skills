@@ -171,15 +171,46 @@ a second key for a consumed proposal returns its existing execution. A timeout o
 ambiguous reservation commit requires scoped readback and must never mint a replacement
 key or execution.
 
-Call `executeUnit(control, expectedOrdinal, callback)` for one explicitly identified
-unit. Do not implement `executeNext` loops: a retry for A must never dispatch B. The
-kernel commits a durable attempt barrier before the callback, then commits the local
-domain mutation and append-only receipt in the same physical JDBC/JPA transaction, then
-acknowledges progress separately. The callback's return is limited to `CONFIRMED` or
-`UNCHANGED`; it is provisional until the receipt and domain mutation commit together.
-Keep domain repository work on the bound manager/datasource and verify this with an
-independent PostgreSQL observer. Never use `REQUIRES_NEW`, another datasource, manual
-commit/rollback, or an external irreversible call inside the callback.
+Call `executeUnit(control, expectedOrdinal, admission, mutation)` for one explicitly
+identified unit. Do not implement `executeNext` loops: a retry for A must never dispatch
+B. The kernel commits a durable attempt barrier before running the typed
+`BulkUnitAdmissionCallback`, then runs the domain `BulkUnitMutationCallback` only for
+`BulkUnitAdmission.admit()`. Denied/invalid/conflict outcomes are persisted per ordinal;
+`stop(reason)` closes the execution and prevents the suffix. The mutation callback's
+return is limited to `BulkUnitMutationResult.confirmed()` or `unchanged()`; it is
+provisional until the append-only receipt and domain mutation commit together. Admission
+and mutation callbacks run within the unit transaction after the durable barrier and
+control/receipt checks. Keep domain repository work on the bound manager/datasource and
+verify this with an independent PostgreSQL observer. Never use `REQUIRES_NEW`, another
+datasource, manual commit/rollback, or an external irreversible call inside either
+callback.
+
+The kernel persists one absolute deadline per attempt before admission, bounded by both
+the execution deadline and the configured unit budget. Pass the callback a monotonic
+remaining budget derived from the database deadline; do not restart a fresh timeout for
+Config policy, grant, pool acquisition, target locking, mutation, or receipt work. Every
+external read must consume only the remainder and fail closed when less than its minimum
+usable interval remains. Bound idle transactions as well as statements so waiting in a
+separate Config/grant pool cannot leave the API transaction open for unbounded time.
+Before invoking a domain mutation, re-check the durable unit deadline. A confirmed receipt
+replay is different: read the receipt before rejecting on expiry, because an already
+committed effect remains confirmed after its deadline.
+
+The separate ACK/readback/recovery transaction must have its own short statement and row
+lock limits (at most one second in the current contract). If it cannot acquire the control
+row, preserve the receipt and return a reconcilable/unknown outcome; never call the domain
+callback again or dispatch a suffix. Retrying that ordinal after the lock clears must read
+the receipt and acknowledge it once. These database limits bound lock/statement waits, not
+network failure or physical COMMIT acknowledgement time; ambiguous commit still requires
+receipt reconciliation rather than an assumption of rollback.
+
+The admission callback is the host's per-item gate: re-evaluate the currently authenticated
+binding/grant and governed policy, then lock/read the domain target and compare its state
+and expected version before allowing mutation. A receipt or durable item decision is
+resolved before gates that apply only to a new mutation; confirmed effects remain
+readable after proposal expiry. Config and the operational database do not share a
+distributed transaction: Config is a bounded admission read, while the operational
+database atomically commits domain state, transition audit and Metadata receipt.
 
 A lost COMMIT acknowledgement is not a domain failure. Stop later ordinals and reconcile
 through the durable receipt/control under lock. A valid earlier receipt remains readable
