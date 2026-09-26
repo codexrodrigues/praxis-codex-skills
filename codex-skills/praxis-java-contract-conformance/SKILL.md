@@ -180,6 +180,17 @@ can be captured again. `/schemas/filtered` remains the UI projection and
 `SchemaReferenceResolver` remains its identity/URL owner; neither replaces this
 backend compilation snapshot.
 
+Use `CanonicalOperationResolver.requireResourceOperations(resourceKey, operations,
+snapshot)` to bind the whole set to strict MVC mappings and globally published
+OpenAPI identities without fetching the captured group again. The five lifecycle
+roles are bodyless at both layers: after binding, call
+`snapshot.requireNoRequestBody(operation)` for each lifecycle operation. An MVC
+handler with no `@RequestBody` is insufficient because an OpenAPI customizer can
+add one. The resolver normalizes only the same structural route when groups rename
+template variables; a changed ID on that target route or a duplicate elsewhere
+still fails closed. Evaluation and confirmation retain their DTO and schema checks
+against the same snapshot.
+
 For each request, require the declared 3.0/3.1 dialect, exactly one JSON
 representation of `application/json` or `application/<subtype-token>+json`, where
 the subtype token uses valid ASCII `tchar` characters. Reject wildcard media
