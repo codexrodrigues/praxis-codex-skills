@@ -301,6 +301,21 @@ descriptor was composed, its providers/schemas are valid, or its fingerprint mat
 the local snapshot. Publish READY or advertise an action only after the full S4c
 composition and runtime comparisons are implemented and tested.
 
+V7 binds each proposal and execution to the exact descriptor generation, fingerprint,
+and structural revision that authorized it. Insert guards reject old writers that omit
+the current tuple; historical rows remain unbound and never receive mutation authority
+through backfill. For a unit, resolve an existing receipt/admission replay first, then
+lock operation control before the execution row and require the persisted tuple to
+match the live V6 control row, protected proposal tuple, and execution tuple at
+preparation and again before the domain callback. Keep that shared lock
+through callback and receipt commit: suspension that wins between preparation and
+apply prevents callbacks, while a unit already inside the transaction completes
+atomically before CAS can suspend. Replaying confirmed evidence and recovery stay
+available under suspension; recovery never invokes domain callbacks. Prove this fence
+with PostgreSQL two-connection tests for both CAS interleavings, stale generation after
+READY is republished with the same fingerprint/revision, receipt replay while suspended,
+legacy null tuples, and least-privilege trigger-owner column grants.
+
 ## Compose A Protected Capture In The Host
 
 For a host entry point whose result must mean the protected capture committed, inspect
