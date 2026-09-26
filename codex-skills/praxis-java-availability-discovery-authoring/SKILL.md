@@ -94,6 +94,12 @@ annotation alone and do not publish `READY` until the compositor has independent
 validated all required schemas, provider/infrastructure dependencies, and durable
 control state.
 
+For the current structural composition step, the five lifecycle operations must
+also prove absence of OpenAPI `requestBody` in the captured group snapshot with
+`snapshot.requireNoRequestBody(operation)`. Use the strict batch resolver to bind
+the full operation set without refetching that captured group. This structural
+proof still does not determine action availability or authorize execution.
+
 Run `BulkOperationContractTest`, `BulkResourceOperationBindingsTest`, and
 `OpenApiCanonicalOperationResolverTest`; also run
 `CanonicalResourceOperationBindingTest` when present and
