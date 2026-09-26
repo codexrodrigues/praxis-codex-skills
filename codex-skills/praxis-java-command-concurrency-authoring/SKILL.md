@@ -278,12 +278,28 @@ detailed proposal/execution/evidence and allocations atomically. Tombstone repla
 returns the distinct `RESULT_PURGED` outcome after payload deletion. The database controls the immutable
 terminal timestamp; never accept a caller-provided retention clock.
 
-Migrate with explicit namespace-to-deployment bindings and exact configured runtime
-and retention roles. Validate the physical catalog, including role ownership,
-membership, narrow lock-column grants, mutation-protection triggers, and definer
-function search paths; a valid Flyway checksum alone is insufficient. Prove both
-retention functions under the effective restricted executor role in PostgreSQL,
-not only by catalog inspection.
+Migrate with explicit namespace-to-deployment bindings and exact configured runtime,
+retention, and control-plane roles. V5 is already an applied migration: never edit its
+SQL/checksum to change privileges. V6 adds the operation-control privilege boundary,
+so verify a V5→V6 upgrade keeps the stored V5 checksum and exercises the same ACLs as a
+fresh V1→V6 install. Validate physical catalog ownership, memberships, narrow
+table/column/function grants, mutation-protection triggers, and fixed definer
+search_paths; reject inherited PostgreSQL roles outside the declared retention
+membership closure (including predefined roles such as `pg_write_all_data`); a valid Flyway checksum alone is insufficient. Prove the retention
+functions under the effective restricted executor and control functions under
+separate runtime/control-plane logins in PostgreSQL, not only by catalog inspection.
+
+V6 runtime roles call lock_operation_control through EXECUTE and receive no direct
+SELECT or UPDATE on praxis_bulk_operation_control. The SECURITY DEFINER lock holds a shared row
+lock to transaction end; a governed transition waits for earlier admitted transactions
+before suspending the operation. Separately configured controlPlaneGranteeRoles receive
+EXECUTE on the generation-CAS transition only, never table DML or membership in
+praxis_bulk_control_owner. That owner is NOLOGIN/NOINHERIT with no members and minimal
+column grants. V6 keeps its trigger guards inside the same narrow owner boundary.
+Treat this as the durable fence substrate only: CAS accepting READY does not prove the
+descriptor was composed, its providers/schemas are valid, or its fingerprint matches
+the local snapshot. Publish READY or advertise an action only after the full S4c
+composition and runtime comparisons are implemented and tested.
 
 ## Compose A Protected Capture In The Host
 
