@@ -101,8 +101,8 @@
                                             "praxis-metadata-resource-baseline",
                                             "praxis-api-quickstart-cockpit-http-validation"
                                         ],
-                       "skillMdSha256":  "29BF2D6694B799251C9893D2AD16E64B51A570F0E35731E51505D470CE689D42",
-                       "treeSha256":  "9BAFF725ACD55CADDD3BA65EFCA51663DE7E7863989F134A34F1F3DAB9824AD7"
+                       "skillMdSha256":  "F2F4A834DDEDAE78D3345DEBA6D4A676CB80C0188A9CF2A57F648CA190313F72",
+                       "treeSha256":  "A51B6160FC62E0A6E022D13F232FAB36B972677936FB0C41949EFAB4F8E5366E"
                    },
                    {
                        "name":  "praxis-java-contract-conformance",
@@ -119,8 +119,8 @@
                                             "praxis-api-quickstart-cockpit-http-validation",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "859394891B04832D8811AD3A1EEC796F32EA6C6AAFD22EBA99DD816CA168255B",
-                       "treeSha256":  "10A0DFDA8903FBF2CA932F0E716139EE3D0DE2A78ACC7F0A9893DF88CFCEB171"
+                       "skillMdSha256":  "0B43BD904286FDA094CE746F2FD0EEA65E67533698BD95D431B93D6775A0B755",
+                       "treeSha256":  "D88E66A290034284773492EBD3D34C27D5B02E59F4136E6938F6CA20571C67BC"
                    },
                    {
                        "name":  "praxis-java-command-concurrency-authoring",

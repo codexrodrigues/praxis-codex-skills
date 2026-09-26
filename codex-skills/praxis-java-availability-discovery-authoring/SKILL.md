@@ -67,19 +67,42 @@ choose a handler by path fragments. Custom resolvers must implement the strict
 method; its default throws rather than falling back to permissive lookup.
 
 Global uniqueness is checked before resource/method filtering, including collisions
-with effective legacy Java method IDs. `resolveByOperationId` now rejects duplicate
-IDs; its legacy single-handler fallback is not a strict binding. Require one path
-and method; reject an address shared by another mapping even with a different ID
-or media type. Reject hidden or unrepresentable conditional routing, and do not silently
+with effective legacy Java method IDs. `resolveByOperationId` rejects duplicate IDs;
+its legacy single-handler fallback is not a strict binding. Require one path and
+method; reject an address shared by another mapping even with a different ID or
+media type. Reject hidden or unrepresentable conditional routing, and do not silently
 normalize a different registered path. Check the candidate's tests for these limits.
 
-Run `OpenApiCanonicalOperationResolverTest` and
-`CanonicalResourceOperationBindingTest` when present, plus
+For a governed bulk business action, keep the confirmation as a real
+`@WorkflowAction` and bind it with `@BulkOperation` on that same handler. The
+controller must also declare `@BulkResourceOperations`; its five IDs bind only
+the shared lifecycle handlers, while `@BulkOperation` binds the business
+confirmation/evaluation pair. The method annotation names the bulk mode, the
+distinct evaluation `operationId`, and the collection atomicity. Both confirmation
+and evaluation must be explicit POST operations in the same `@ApiResource` controller,
+with request bodies and globally
+unique operation IDs; the declared atomicity must agree with the workflow action.
+An action annotation without the class-level lifecycle declaration is orphaned:
+the binding diagnostic must reserve its IDs and strict operation resolution must
+fail closed. Do not treat evaluation or confirmation as a bodyless lifecycle operation.
+
+The binding proves identity between real MVC handlers; it does not prove complete
+OpenAPI schema content, evaluation-provider wiring, authorization, descriptor
+fingerprint, durable lifecycle control, readiness, or execution. A missing or
+ambiguous pair must fail closed as a whole. Do not infer bulk support from the
+annotation alone and do not publish `READY` until the compositor has independently
+validated all required schemas, provider/infrastructure dependencies, and durable
+control state.
+
+Run `BulkOperationContractTest`, `BulkResourceOperationBindingsTest`, and
+`OpenApiCanonicalOperationResolverTest`; also run
+`CanonicalResourceOperationBindingTest` when present and
 `ReactiveDeterminationMetadataCompilerTest` for the existing lookup consumer.
 A generated schema reference alone does not prove schema content, evaluation versus
-confirmation role, provider wiring, authorization or execution. The future bulk
-registry must still validate these and fail at bootstrap when dependencies are
-missing. Do not advertise bulk support from this resolver-only foundation.
+confirmation role, provider wiring, authorization or execution. The structural bulk
+binding is only an input to the later concrete compositor, which must validate these
+and fail closed when dependencies are missing. Do not advertise bulk support from
+the binding or resolver alone.
 
 ## Bind The Actual MVC Request DTO
 
