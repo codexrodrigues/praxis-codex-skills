@@ -33,7 +33,11 @@ to select only the evidence required by the resource's actual operations.
    a mutable resource must not hide workflows in generic updates. For shared bulk
    lifecycle handlers, inspect `@BulkResourceOperations` and each handler's
    `@BulkResourceOperation` role. The five declared IDs must bind to one real MVC
-   handler each; do not infer them from Java names, labels, or paths.
+   handler each; do not infer them from Java names, labels, or paths. For a bulk
+   domain command, also inspect the real `@WorkflowAction` confirmation handler's
+   `@BulkOperation` binding and verify that its distinct evaluation operation is
+   a body-bearing POST handler in the same resource controller. Confirm atomicity
+   matches the workflow declaration; an orphan or invalid binding must fail closed.
 2. **Schema:** `/v3/api-docs`, `/schemas/filtered`, `/schemas/catalog`,
    `/schemas/domain`, `/schemas/surfaces`, and `/schemas/actions` agree on
    resource key/path/group, operations, schema references, `x-ui`, option
@@ -49,7 +53,9 @@ to select only the evidence required by the resource's actual operations.
    the same exact-group snapshot validated by the resolver, never a stale cached
    base-document fallback. This binds operation identity only;
    it does not prove a provider, action/capability projection, or executable
-   readiness.
+   readiness. For bulk confirmation/evaluation, validate both request and response
+   schemas from that same snapshot. The operation binding alone does not prove
+   schema validity, provider/infrastructure wiring, a durable descriptor, or `READY`.
 3. **HTTP:** exercise filter/get/write/action/export/stats operations that exist;
    verify `RestApiResponse._links`, structured error shape, validation errors,
    status semantics, ETag, `If-None-Match`, and `X-Schema-Hash`. Capture only
