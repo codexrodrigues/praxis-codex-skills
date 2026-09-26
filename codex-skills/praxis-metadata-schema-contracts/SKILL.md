@@ -49,36 +49,63 @@ different operation from `resourcePath`. If the published URL is missing or
 wrong, repair `SchemaReferenceResolver`/`FilteredSchemaReferenceResolver` or the
 metadata publication that produced it.
 
-## Strict Canonical Request Reading
+## Strict Canonical OpenAPI Reading
 
-Read Metadata `docs/spec/CANONICAL-REQUEST-SCHEMA.md` before using
-`OpenApiDocumentService.requireRequestSchema`. Resolve an explicit operation by
-resource/operation ID/method; the reader verifies the same ID in the cached OpenAPI
-document and returns an isolated schema, concrete JSON media type and SpecVersion.
-The default algorithm also applies to substitute document services through their
-getDocumentForGroup/resolveDocumentPath methods; do not manufacture a trusted snapshot.
-Keep `/schemas/filtered` as the UI projection and SchemaReferenceResolver as its
-identity/URL owner; do not replace them with this backend compilation snapshot.
+Read Metadata `docs/spec/CANONICAL-REQUEST-SCHEMA.md` before composing a
+resource operation. For the S4c composition path, obtain the named group only
+through `OpenApiDocumentService.getDocumentForGroupStrict(group)`. Never call
+`getDocumentForGroup` here: its ungrouped fallback cannot prove that the named
+group exists. Resolve each declared operation explicitly by resource, operation
+ID and method against that exact document.
 
-Require exactly one JSON representation, declared 3.0/3.1 dialect, supported local
-component references and bounded materialization. Unsupported composition, cycles,
-reference siblings, custom dialects and ambiguous JSON media types fail explicitly.
-Defaults/examples/x-ui remain literal data. Do not flatten allOf by dropping constraints.
+Capture one immutable exact-group document snapshot for a descriptor and pass it
+to every request and response reader used for its operations. Do not refetch the
+seven operations independently, and do not treat a cache entry or a later cache
+lookup as that snapshot. Cache invalidation, group replacement, or publication
+failure requires rejecting or suspending composition until one complete snapshot
+can be captured again. `/schemas/filtered` remains the UI projection and
+`SchemaReferenceResolver` remains its identity/URL owner; neither replaces this
+backend compilation snapshot.
 
-The default source fetches SpringDoc over self HTTP: call after the server/document
-is available. This reader does not implement startup readiness or an executable bulk
-registry. Use CanonicalOperationResolver.requireResourceRequestBody with the configured
-mapper.getTypeFactory() to obtain the operation and actual MVC bodyType, including
-controller/interface generics; prove CanonicalRequestBodyBindingTest and its HTTP
-consumer. The binding does not certify custom converters or arbitrary SpringDoc
-overrides. Keep the required concrete DTO subset and fail on raw/wildcard/optional
-bodies instead of guessing a class. A bulk evaluation wrapper is not the unit update DTO;
-never infer the latter from method names or the first PUT/PATCH operation.
+For each request, require the declared 3.0/3.1 dialect, exactly one JSON
+representation of `application/json` or `application/<subtype-token>+json`, where
+the subtype token uses valid ASCII `tchar` characters. Reject wildcard media
+types, parameters, whitespace, invalid Unicode, unsupported composition, cycles,
+reference siblings, external references, custom dialects, and ambiguous content.
+Defaults, examples, descriptions, and `x-ui` remain literal schema data; do not
+flatten `allOf` by dropping constraints.
 
-Prove CanonicalRequestSchemaTest and CanonicalRequestSchemaHttpIntegrationTest,
-inspect reports for both, then regress OpenApiDocsSupport/ApiDocsController and the
-exact candidate JAR in Quickstart. The HTTP fixture proves schema reading and field
-compilation, not persistence, authorization or bulk execution.
+For each successful response, inspect every explicit final status in `200` through
+`299`. `default`, `2XX`, and other status ranges do not establish success, and a
+non-2xx response never proves it. Every accepted 2xx response needs exactly one
+media type from that same JSON allowlist and one resolvable schema. Limit
+resolution to the same local component references and bounds as request reading;
+reject missing, external, cyclic, sibling, or ambiguous references and content.
+Compare the resolved schemas with `SchemaCanonicalizer`. It intentionally preserves metadata
+such as descriptions, examples, and `x-ui`, so equality is conservative and
+metadata drift blocks reuse. A future structural fingerprint must directly include
+the ordered `(status, media type)` variants and the complete shared canonical
+schema. A schema-hash cache is an optimization only and is never fingerprint
+authority.
+
+The self-HTTP source must run after the server/document is available. This
+structural binding does not prove startup readiness, provider availability,
+authorization, capability/action projection, or an executable bulk registry. Use
+`CanonicalOperationResolver.requireResourceRequestBody` with the configured
+`mapper.getTypeFactory()` to obtain the operation and actual MVC body type,
+including controller/interface generics. The binding does not certify custom
+converters or arbitrary SpringDoc overrides. Keep the required concrete DTO
+subset and fail on raw, wildcard, or optional bodies instead of guessing a class.
+A bulk evaluation wrapper is not the unit update DTO; never infer the latter from
+method names or the first PUT/PATCH operation.
+
+Prove strict no-fallback group loading, one shared immutable snapshot, request
+schema reading, and every explicit 2xx response tuple in focused reader and HTTP
+fixtures. Include rejected `default`/`2XX`, non-2xx-only, missing or ambiguous
+content, unsupported refs, and metadata-only schema differences. Then regress
+`OpenApiDocsSupport`/`ApiDocsController` and the exact candidate JAR in
+Quickstart. The HTTP fixture proves schema compilation, not persistence,
+authorization, or bulk execution.
 
 ## Decision Rules
 
