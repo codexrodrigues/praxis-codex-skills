@@ -30,12 +30,26 @@ to select only the evidence required by the resource's actual operations.
 1. **Static:** resource identity, canonical path, selected resource base,
    operation-specific DTOs, mapper/service wiring, annotations, governance, and
    explicit commands are coherent. A read-only resource must not claim writes;
-   a mutable resource must not hide workflows in generic updates.
+   a mutable resource must not hide workflows in generic updates. For shared bulk
+   lifecycle handlers, inspect `@BulkResourceOperations` and each handler's
+   `@BulkResourceOperation` role. The five declared IDs must bind to one real MVC
+   handler each; do not infer them from Java names, labels, or paths.
 2. **Schema:** `/v3/api-docs`, `/schemas/filtered`, `/schemas/catalog`,
    `/schemas/domain`, `/schemas/surfaces`, and `/schemas/actions` agree on
    resource key/path/group, operations, schema references, `x-ui`, option
    sources, field access, and discovery. Catalogs and capabilities are never
-   accepted as alternate structural schemas.
+   accepted as alternate structural schemas. For shared bulk lifecycle handlers,
+   confirm `requireResourceOperation(resourceKey, operationId, method)` returns
+   the expected `CanonicalOperationRef`, the exact named group document preserves
+   that identity, and every currently published group is inspected for rewrites
+   or collisions in paths, callbacks, and webhooks. A group fetch that falls back
+   to the ungrouped document is not proof that the named group exists; unavailable
+   or uninspectable groups must fail closed. Read the group set at validation time
+   when groups can be registered dynamically. Ensure later schema readers consume
+   the same exact-group snapshot validated by the resolver, never a stale cached
+   base-document fallback. This binds operation identity only;
+   it does not prove a provider, action/capability projection, or executable
+   readiness.
 3. **HTTP:** exercise filter/get/write/action/export/stats operations that exist;
    verify `RestApiResponse._links`, structured error shape, validation errors,
    status semantics, ETag, `If-None-Match`, and `X-Schema-Hash`. Capture only
