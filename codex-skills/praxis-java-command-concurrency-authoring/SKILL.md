@@ -164,8 +164,11 @@ facts, target manifests and execution state are actually implemented.
 same operational `BulkExecutionInfrastructure`; it does not register an operation,
 authorize the actor, establish eligibility, publish HTTP, or start workers. This cut
 only supports stored-evidence `EXPLICIT`/`SYNC`/`PER_ITEM` proposals. Verify the exact
-current contracts in Metadata `docs/spec/BULK-DURABLE-EXECUTION.md` and its V3 migration
-before adopting it; do not infer readiness from this class existing.
+contracts in Metadata `docs/spec/BULK-DURABLE-EXECUTION.md` and
+`docs/spec/BULK-GOVERNED-UNIT-ADMISSION.md`; validate the V3→V4 admission migration
+(`V4__bulk_governed_admission.sql`) with `BulkExecutionMigrator.validate(DataSource)`
+and `BulkDurableMigrationPostgresTest`. V3 alone is the prior receipt-only state and
+does not establish S4b readiness; do not infer readiness from this class existing.
 
 Reserve with a stable server-authorized scope, proposal ID, caller's idempotency key,
 owner ID, structural revision, and execution deadline. Only the key digest is persisted.
