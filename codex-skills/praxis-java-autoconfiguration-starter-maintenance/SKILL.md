@@ -76,7 +76,10 @@ baseline an unknown nonempty bulk schema. Existing tables in public remain indep
 
 Run privileged migration/validation outside domain transactions, then construct
 JdbcBulkProposalStore using the operational datasource and transaction binding. Runtime
-credentials need schema USAGE and table SELECT/INSERT, not CREATE/UPDATE/DELETE. Migration
+credentials need schema USAGE and only the exact table/column/function grants in the
+`BulkExecutionMigrator` allowlist for the selected store path. The proposal/admission path
+includes narrowly scoped UPDATE grants needed for PostgreSQL row locks and lifecycle
+columns; never generalize those to unrestricted table UPDATE. Migration
 credentials are not inferred or manufactured by the starter. History checksum validation
 alone is insufficient: validate physical constraints and the enabled immutability trigger.
 No bean, readiness capability or executor is registered automatically by adding the SDK.
@@ -99,8 +102,10 @@ Metadata docs/spec/BULK-EVALUATION-EVIDENCE.md.
 ## Adopt Durable Bulk Execution Explicitly
 
 The V3 migrator adds reservation, mutable execution control and append-only per-item
-receipts; it still registers no bean, registry, capability, readiness signal, endpoint,
-quota, queue or worker. Construction of `JdbcBulkDurableExecution` is explicit and uses
+receipts; V5 adds quota allocations and retention, and V6 splits operation-control
+locking from its governed transition. These migrations register no bean, registry,
+capability, readiness signal, endpoint, queue or worker. Construction of
+`JdbcBulkDurableExecution` is explicit and uses
 the operational datasource/manager already validated by
 `BulkExecutionInfrastructure`. Host domain writes and receipt must share that physical
 transaction. Adoption is not complete until the host has tested its concrete callback
@@ -108,17 +113,31 @@ with an independent PostgreSQL observer and proves that transaction propagation,
 recovery and current domain authorization match the promised workflow. Metadata cannot
 introspect and forbid arbitrary host code from opening a second transaction or datasource.
 
-The runtime role needs USAGE on `praxis_bulk`; SELECT on proposal/evaluation; SELECT,
-INSERT, UPDATE on the execution control row; and SELECT, INSERT on receipts. It must have
-no UPDATE/DELETE on proposal/evaluation/receipt, no TRUNCATE/DDL, and no schema CREATE.
-The migration validates the physical schema, immediate validated constraints and
-immutability guards, not only Flyway checksums. Catalog validation must be stable when the
+Runtime table/function grants depend on the adopted store path and are checked by
+`BulkExecutionMigrator` against explicitly supplied role names. In V6, runtime calls
+`lock_operation_control` but has no direct SELECT or UPDATE on the operation-control
+table; its shared lock remains held until the operational transaction ends. The separately
+configured `controlPlaneGranteeRoles` receive EXECUTE on the CAS transition only, not
+table DML or membership in `praxis_bulk_control_owner`. The dedicated owner is NOLOGIN,
+NOINHERIT, has no members, and has only the columns needed by the lock/CAS and admission
+triggers. Never reuse migration, runtime, retention-executor, and control-plane identities
+implicitly. The migration validates the physical schema, immediate validated constraints,
+immutability guards, function bodies/owners/search_paths and exact ACLs, not only Flyway
+checksums. V5 is already part of the migration line: keep its checksum immutable; V6 is
+the additive privilege correction and proves a V5→V6 upgrade preserves that checksum.
+Reject configured roles that inherit undeclared PostgreSQL roles, including predefined
+privileged roles such as `pg_write_all_data`; permit only the explicitly configured
+retention membership closure.
+Catalog validation must be stable when the
 operational datasource sets `currentSchema=praxis_bulk` and must restore that same connection's
 search path. Reject unowned types, overloads, aggregates, expression/standalone indexes, rules
 and policies. The sole unowned index exception is Flyway's nonunique one-column btree on
-`praxis_bulk_schema_history.success`; validate its owner and shape, not just its name. V1/V2 remain immutable; fresh migration
-applies three versions, V1 upgrade applies two, V2 upgrade applies one, and repeat applies
-zero. Upgrades never synthesize execution/receipt rows. See Metadata
+`praxis_bulk_schema_history.success`; validate its owner and shape, not just its name. V1–V5
+remain immutable; fresh migration applies six versions, V1 upgrade applies five, V2 upgrade
+applies four, V3 upgrade applies three, V5 upgrade applies one, and repeat applies zero.
+Upgrades never synthesize execution/receipt rows. CAS setting READY is not a composition
+proof; the descriptor, provider set and local/durable generation+fingerprint checks must
+be complete before the host publishes readiness or advertises any action. See Metadata
 `docs/spec/BULK-DURABLE-EXECUTION.md` and prove `BulkDurableMigrationPostgresTest` plus
 the upgraded `BulkEvaluationStorePostgresTest` and `JdbcBulkProposalStorePostgresTest`.
 
