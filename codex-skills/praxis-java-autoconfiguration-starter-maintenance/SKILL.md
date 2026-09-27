@@ -170,6 +170,29 @@ runtime/retention roles, expiry and purge. This migration alone adds no bean,
 reader, HTTP endpoint, action/capability or READY; host adoption and public
 authorization remain separate gates.
 
+For the V11 item-integrity migration, verify the exact Metadata source revision
+before adoption. Drain V9 writers and retention executors, await their in-flight
+transactions, and keep both drained until `COMPLETE` plus validation; this is
+not a zero-downtime cutover. Use the explicit privileged migration lane,
+outside domain transactions and Boot's default Flyway path. The PostgreSQL DDL
+must atomically install an owner-only `PENDING` marker, a physical guard blocking
+every new preview parent while pending, and `integrity_version=11` with no
+surviving default; after `COMPLETE`, a V9 writer that omits the version must
+still fail. Bootstrap validates V8 manifest and the complete V9 projection and
+allowlist against protected evidence before deriving per-item checksums from
+persisted bytes. In one transaction it verifies leaves, schema/owner, trigger
+bindings and ACL, then marks `COMPLETE` last. A failed or wrong-role bootstrap
+leaves `PENDING` for retry; after completion, validation must reject drift and
+never regenerate leaves or grants. Runtime roles receive only `SELECT,INSERT`
+on the leaf table; privileged retention removes leaves before preview rows in
+the governed expiry/purge functions, with the FK restricting orphan creation.
+Prove fresh and V10→V11 migration, pending and DDL-wait fences, wrong-role retry,
+no-heal, tampering, restricted grants, 10,000 items and expiry/purge in PostgreSQL.
+Keep an explicit time/memory budget for the full V9/V11 privileged
+`migrate`/`validate` scan; bounded pages do not make that scan cheap. V11
+storage alone grants no reader,
+cursor, HTTP route, authorization, capability or `READY`.
+
 The V10 cancellation design is a candidate until its Metadata PR is integrated and published;
 verify the exact source revision before adoption. It adds durable cancellation to the
 protected execution ledger; it does not add a
