@@ -210,11 +210,18 @@ without choosing 404/410 before the host's current, whole-set authorization.
   compatible outcomes.
 - Require the outcome totals to sum to `targetCount` and reject inconsistent
   status, counts or timestamps as `CORRUPT` without protected causes. Preserve
-  persisted instants in the internal summary. Current terminal writers can set
-  `terminal_at` microseconds after `updated_at` because they call
-  `clock_timestamp()` separately; correct the canonical writer and prove the
-  public temporal invariant before constructing a `BulkExecution` DTO. Do not
-  repair the timestamps by inventing values in the reader.
+  persisted instants in the internal summary. The V5
+  `guard_terminal_execution()` `BEFORE UPDATE` trigger stamps `terminal_at`
+  after the writer supplies `updated_at`; changing only Java writer SQL cannot
+  ensure `terminalAt <= updatedAt`. Before constructing a public
+  `BulkExecution` DTO, evolve the trigger through a new versioned migration
+  rather than editing V5 in place. Update `BulkExecutionMigrator`'s expected
+  function body and retain its trigger/ownership/ACL attestation. Inspect the
+  ordering and timestamp interaction with V10's `protect_cancel_request()`
+  trigger; change V10 behavior only if PostgreSQL evidence requires it. Audit existing
+  terminal rows, repair any violating history through a governed migration or
+  fail adoption until it is resolved, and preserve the retention meaning of
+  `terminal_at`. Never invent replacement instants in the reader.
 
 Prove this projection with focused PostgreSQL tests for initial and partial
 states, receipts/admissions, pending ACK, cancellation before and after
@@ -223,6 +230,10 @@ absence, tombstone and corruption. Reuse the RS3 snapshot, concurrent
 receipt/purge and 10,000-target evidence when that reader is unchanged. Keep
 the summary opaque to Jackson and logs; it introduces no public endpoint,
 cursor, capability, `READY` or host authorization shortcut.
+Before the public DTO gate, add PostgreSQL proofs for terminal transitions,
+cancel/terminal trigger ordering, historical drift repair or refusal, migrator
+attestation and rejection of function/trigger drift, and the DTO's
+`createdAt <= terminalAt <= updatedAt` invariant.
 
 ## Page Internal Durable Execution Results Without Widening The Window
 
