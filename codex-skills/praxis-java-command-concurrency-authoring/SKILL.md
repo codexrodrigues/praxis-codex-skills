@@ -266,6 +266,55 @@ may be read, while the inconsistent receipt and every later ordinal stay blocked
 replay of an earlier valid receipt and rejection of the corrupted pending receipt without a
 callback. Preserve terminal timestamps on repeated recovery.
 
+## Cancel A Durable Bulk Execution Without Reopening Mutation
+
+The V10 cancellation design is a candidate until its Metadata PR is integrated and published;
+verify the exact source revision before using this guidance for adoption. It makes cancellation
+a Metadata-owned durable command, not a host-local interruption or an HTTP promise. Inspect
+`JdbcBulkDurableExecution.requestCancel`, the execution snapshot,
+V10 migration, `BulkExecutionMigrator`, `prepare`, `applyAndReceipt`, ACK and `recover`
+together. The host supplies a current trusted scope before calling the protected kernel;
+the cut creates no endpoint, reader, action/capability, worker, `READY` signal, or host
+authorization substitute. Cross-scope lookup must fail without enumerating an execution.
+
+Persist `cancel_requested_at` once from the database clock. Terminal executions return their
+current terminal snapshot without a write and a repeated request returns the existing marker.
+Only a response after commit is an admitted request; lock timeout or an ambiguous commit is
+`RECONCILIATION_REQUIRED` until scoped readback, never a successful cancellation claim. A
+`RUNNING` execution with no active attempt may terminalize in that same transaction only
+when the verified prefix and the absence of suffix effects are proved. Otherwise retain the
+marker and project `CANCEL_REQUESTED`. `RECONCILIATION_REQUIRED` has public precedence over
+the marker; proven terminal evidence has precedence over `CANCEL_REQUESTED`.
+
+Use one lifecycle lock helper in this exact order whenever cancel or recovery may
+terminalize: namespace binding `FOR SHARE`, operation control `FOR SHARE`, deployment bucket
+`FOR UPDATE`, subject bucket `FOR UPDATE`, proposal `FOR UPDATE`, execution `FOR UPDATE`,
+then receipt/admission. Recheck scope, binding and epoch after the locks. This helper must
+not require operation control `READY`: cancellation and reconciliation remain available while
+`SUSPENDED`. Do not reuse `BulkQuotaLedger.lockProposal()` if it enforces readiness, do not
+add bucket locks after an execution lock in `recover`, and never lock a domain target merely
+to admit cancellation.
+
+Read receipt/admission before any new-mutation gate. `prepare` tests the marker only before a
+new attempt, and `applyAndReceipt` rechecks it under the execution lock before admission or
+the domain callback. If cancellation wins in that gap, no callback runs. If the domain
+transaction already holds the row, cancellation waits, then observes its committed receipt or
+rollback; it never compensates a confirmed effect. A committed receipt with pending ACK may
+advance its already-confirmed prefix, including a V9 ACK, but it must not admit the next unit.
+If that ACK completes `targetCount`, normal `COMPLETED`/`COMPLETED_WITH_ERRORS` wins; with a
+proved excluded suffix, V10 may close `STOPPED` with `CANCELLED_BY_USER`. Unknown or
+contradictory evidence remains `RECONCILIATION_REQUIRED`, with no callback retry and no
+`CANCELLED` assertion.
+
+The V10 physical fence complements Java checks for mixed versions: forbid a new
+`RUNNING`→`UNIT_IN_FLIGHT` transition after the marker, prevent later receipt/admission that
+would defeat a marker, preserve ACK of evidence already committed, and reject an old writer
+that changes a marked execution to `STOPPED` for another reason. Do not treat triggers as a
+replacement for lock/recheck logic. Add `CANCELLED_BY_USER` to persisted reason checks and
+guards; it requires `STOPPED`, a proven incomplete prefix, no active attempt and complete
+terminal evidence. V5's terminal trigger releases active allocation exactly once in the same
+commit. Rollback retains both allocation and prior marker state.
+
 Prove same-key/same-binding and conflicting races with two kernel instances and
 independent database connections; two keys for one proposal; JDBC and JPA commit/rollback;
 replay before new-mutation gates; lost COMMIT acknowledgement and confirmed rollback;
@@ -306,6 +355,13 @@ fixed retention interval, writes a minimal idempotency tombstone first, then rem
 detailed proposal/execution/evidence and allocations atomically. Tombstone replay
 returns the distinct `RESULT_PURGED` outcome after payload deletion. The database controls the immutable
 terminal timestamp; never accept a caller-provided retention clock.
+
+For a V10 user-cancelled `STOPPED`, purge writes `terminal_status='CANCELLED'` in the
+minimal tombstone; historical non-user `STOPPED` rows remain `STOPPED`. Keep payload, target
+and free-form reason out of the tombstone and preserve replay denial. The V10 migration and
+`BulkExecutionMigrator` must validate the new column, immutable/check/transition guards,
+purge mapping, function bodies/owners and exact runtime/retention/control ACLs. Run the
+privileged migration and validator explicitly; do not add automatic DDL or broad runtime DML.
 
 Migrate with explicit namespace-to-deployment bindings and exact configured runtime,
 retention, and control-plane roles. V5 is already an applied migration: never edit its
