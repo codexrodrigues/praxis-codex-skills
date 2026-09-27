@@ -67,6 +67,24 @@ can be captured again. `/schemas/filtered` remains the UI projection and
 `SchemaReferenceResolver` remains its identity/URL owner; neither replaces this
 backend compilation snapshot.
 
+For governed bulk descriptor publication and readiness, compose from an isolated fresh snapshot of the complete published OpenAPI group collision domain; refreshing only the target group leaves duplicate operation IDs in cached non-target groups undetected. Do not replace shared cached group documents while one operation remains READY. When
+the bulk lifecycle is active, `OpenApiDocumentService` must install and enforce its
+durable invalidation guard for both public cache-clear and strict-refresh calls.
+Implementations that cannot enforce the guard fail closed. Lifecycle publication and readiness must read a fresh isolated all-groups snapshot without replacing shared OpenAPI caches; serialize this composition against local invalidation. Return defensive copies of cached JSON trees so callers cannot mutate a shared document behind the fence. The canonical Springdoc
+source caches its generated description by default; hosts that activate governed
+bulk lifecycle must set `springdoc.cache.disabled=true` and retain strict exact-group
+fetching with no fallback. HTTP `Cache-Control` revalidation alone does not bypass
+Springdoc's calculated-description cache. Never let a host call a lower-level cache
+API to skip the durable suspension signal.
+
+Every shared OpenAPI-document and schema-hash cache fill must participate in the
+same read-lock/epoch protocol as invalidation. A fill that began before a clear
+must not repopulate a stale document or hash after the clear completes. The
+standard Springdoc freshness capability rejects any configured external
+`app.openapi.internal-base-url`; custom `OpenApiDocumentService` implementations
+may opt in only with independent freshness proof, rather than relying on
+`Cache-Control` headers.
+
 For each request, require the declared 3.0/3.1 dialect, exactly one JSON
 representation of `application/json` or `application/<subtype-token>+json`, where
 the subtype token uses valid ASCII `tchar` characters. Reject wildcard media
