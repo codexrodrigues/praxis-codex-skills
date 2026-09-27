@@ -520,6 +520,21 @@ HTTP route, action/capability, execution reader, or READY claim. A host still
 needs a real current-grant/domain authorizer before it can expose any result, and
 the later reader must perform its own scoped authorization and cursor proof.
 
+For V11 preview integrity, verify the exact Metadata source revision before
+relying on the storage. Keep the V9 global projection digest as the full audit
+in the migrator's privileged bootstrap and `migrate`/`validate` scan. In the
+evaluation transaction, derive each versioned
+item checksum from the exact persisted V8 manifest identity/version/digest,
+V9 parent context, ordinal, decision and allowlisted diagnostic bytes. Freeze
+the binary framing with an independent golden vector; writer and validator
+using the same helper alone cannot reveal symmetric format drift. A future
+RS2 reader may verify only its bounded `size+1` items inside the same scoped
+`REPEATABLE READ READ ONLY` snapshot; it must not rehash the whole proposal or
+decode protected evaluation for each page. Bound aggregate page bytes as well
+as row count. The checksum relies on ACL and immutability, not on secrecy of
+SHA-256; the schema owner is outside this runtime threat model. V11 does not
+provide that reader, a cursor, HTTP authorization or `READY`.
+
 ## Compose A Protected Capture In The Host
 
 For a host entry point whose result must mean the protected capture committed, inspect
