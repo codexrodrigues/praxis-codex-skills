@@ -815,6 +815,30 @@ different conflicting command; stale/missing `If-Match`; result/status schema;
 action/capability/`_links` alignment; and no repeated external side effect. For collection
 commands, prove mixed outcome and atomicity/ordering rules.
 
+For paged result/read APIs attached to a durable collection command, keep result
+navigation separate from access control:
+
+- Preserve the creator as historical owner where the command contract uses that
+  identity, but authorize every read using the currently authenticated requester.
+  Creation or confirmation authority does not grant permanent result-read access.
+- A cursor proves only continuation position and the fixed result window. It must
+  not authorize access; bind it to the stable requester and effective scope, then
+  re-evaluate current operation and target/field/reference grants on every page.
+- If the requester lacks access to any member of the immutable target set or any
+  field/reference required by the response, deny the whole page. Do not filter,
+  renumber, return partial totals, or reveal inaccessible identities.
+- Compose authorization evidence and the result page from one coherent database
+  snapshot, a server-owned verifiable attestation, or a change-detection scheme
+  that fails closed. Separate `REPEATABLE_READ` transactions do not by themselves
+  prove a shared snapshot.
+- Prove delegated access only when the canonical contract explicitly permits it;
+  otherwise prove that a delegate is rejected. In either case, test a cursor copied
+  between requesters with equivalent grants, grants reduced/revoked between pages,
+  authority-source failure, and concurrent permission/domain-scope changes. Compare
+  status, body, headers, IDs,
+  totals and links for absent, cross-scope and insufficient-coverage cases to
+  prevent an existence oracle.
+
 Use focused command execution, version-precondition, action catalog, capability, and
 negative-path tests. Add quickstart HTTP proof for public commands and Angular action
 runtime tests when metadata or precondition behavior changes.
