@@ -682,7 +682,7 @@ Jackson, logs and `toString`. Do not infer creator-versus-delegate permission,
 current target/field/reference grants, retention HTTP status, or `redactedIntent`
 from the snapshot. The provider must project domain-safe intent/evidence, and
 the host must authorize the entire historical set before a public RS1 route.
-Prove the same-snapshot purge race, cross-scope absence, blob corruption,
+Prove the same-snapshot unconsumed-proposal expiry race, cross-scope absence, blob corruption,
 revoked read grant and serialization boundary against real PostgreSQL. No
 HTTP/cursor/capability or `READY` follows from this reader alone.
 Migration V2 preserves V1, adds the immediate composite FK and immutable companion table;
