@@ -132,6 +132,31 @@ that the public workflow is ready. Use
 `praxis-java-command-concurrency-authoring` and the Metadata Starter bulk
 execution contract when reviewing these guarantees.
 
+## Compose Shared Deadlines Across The Host And Config
+
+The Config Starter owns operational-policy semantics and its read-transaction
+timeout; the Quickstart owns the aggregate unit deadline and its datasource pool
+configuration. For a bounded Config read, treat
+`OperationalPolicyService.resolveOperationalPolicy(..., Duration)` as a
+transaction-query budget, not an end-to-end deadline. Its timeout is floored to
+whole seconds, capped at five seconds, and fails closed below one second; pool
+acquisition and work around that transaction may fall outside the timeout.
+
+Pass a fresh remainder from the monotonic unit deadline at each blocking read.
+Before Config or grant lookup, subtract the configured maximum pool-acquisition
+time plus a small scheduling margin; validate that the effective pool setting
+really enforces that cap. Recheck the unit deadline immediately after each
+external/starter call and before any next read or mutation. If the reserve or
+remainder is insufficient, fail closed without starting that work. Do not reuse a
+stale `Duration` captured before a prior blocking call.
+
+Database timeouts establish bounded local waiting, not the outcome of an
+uncertain commit. After a write or lost acknowledgement, consult the canonical
+receipt/readback path before retrying; never infer rollback or rerun a domain
+callback from timeout alone. Prove budget exhaustion, reserved pool acquisition,
+post-call revalidation, and fail-closed behavior with the host's real Config/API
+PostgreSQL tests.
+
 ## Maven And Bootstrap Discipline
 
 `pom.xml` intentionally pins `praxis.core.version` and `praxis.config.version`. A version change is an integration change, not a dependency-only edit:
