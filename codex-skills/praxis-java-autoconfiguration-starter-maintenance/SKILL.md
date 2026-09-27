@@ -48,11 +48,31 @@ when selecting a condition, property, SPI, ordering rule, or validation gate.
 ## Preserve Explicit Bulk Infrastructure Adoption
 
 `BulkExecutionInfrastructure` is a host-constructed binding of the operational datasource,
-local JDBC/JPA transaction manager and stable namespace. It is not registered automatically
-and does not run DDL or workers. Do not infer its collaborators by Primary, bean name or URL.
-JPA requires the same datasource exposed by EntityManagerFactoryInfo and its manager;
+local JDBC/JPA transaction manager, stable namespace/deployment, and an explicit
+`BulkExecutionRoleConfiguration`. The four-argument constructor has been removed; runtime
+configuration must include the provisioned schema owner and at least one runtime grantee role.
+The role record also carries separate retention membership and control-plane grantee allowlists;
+keep those roles disjoint and sourced from actual provisioning. The binding is not registered
+automatically and does not run DDL or workers. Do not infer its collaborators by Primary, bean
+name or URL. JPA requires the same datasource exposed by EntityManagerFactoryInfo and its manager;
 initialize both first. Opaque managers, routing and datasource wrappers are outside the
-initial demonstrated subset. Do not add a fallback connection when composition fails.
+demonstrated subset. Do not add a fallback connection when composition fails.
+
+Every operational `withConnection` call re-attests `session_user == current_user` against the
+runtime allowlist and checks live protected schema/table/function ACLs, ownership, and V7
+descriptor-fence function/trigger definitions on the exact connection that will perform the
+work. The attestation runs before namespace access and before the caller callback; a role or
+catalog drift denies the operation without running it. `withLifecycleRead` performs the same
+runtime attestation on its short independent lifecycle connection. This is a live drift check,
+not the privileged provisioning/migration lane: it does not run Flyway or DDL, and successful
+attestation alone does not compose a descriptor or prove an operation READY. Each attestation SQL
+uses at most 250 ms while preserving and restoring a stricter prior statement timeout; 250 ms is
+per statement, not a total budget for all checks. Runtime lifecycle reads cap lock and statement
+timeouts at one and two seconds. The control plane separately requires its expected role in the
+configured control-plane allowlist, rechecks its live identity/ACL/owner/V7 fence before CAS work,
+and verifies the runtime connection sees its temporary advisory lock in the same physical
+PostgreSQL database. Runtime and control-plane lifecycle checks preserve stricter configured
+timeouts rather than broadening them.
 
 Its withConnection callback requires a real existing writable transaction (MANDATORY),
 with JdbcTemplate's connection bound to the configured datasource. It does not implement
@@ -62,14 +82,22 @@ optional/asynchronous and tolerates errors, so it is not an admission gate.
 
 Validate BulkExecutionInfrastructureTest and the real-process
 BulkExecutionInfrastructurePostgresTest before a host adoption. The latter proves JPA/JDBC
-commit/rollback and lock contention on fixture tables, not production ledger migration.
-No AutoConfiguration.imports change is needed merely to add this explicit value/participant.
+commit/rollback and lock contention on fixture tables with a restricted PostgreSQL login; the
+control-plane PostgreSQL test proves live identity, ACL/owner/fence drift rejection and timeout
+preservation for restricted runtime/control credentials. These tests do not prove a host's
+production ledger migration or establish backend/API READY. No AutoConfiguration.imports change
+is needed merely to add this explicit value/participant.
 
 ## Adopt The Protected Proposal Migration Lane
 
-`BulkExecutionMigrator.migrate(dataSource)` is explicit and separate from host Flyway
-startup. Metadata supplies optional Flyway core/PostgreSQL dependencies (11.17.0 in the
-reference candidate); consumers choosing this adapter must supply these dependencies.
+Run the explicit bulk migration outside Spring transactions with
+`BulkExecutionMigrator.migrate(dataSource, namespaceToDeploymentId, roleConfiguration,
+operationIdentities)`. Supply the complete namespace-to-deployment map, a
+`BulkExecutionRoleConfiguration` populated from actual PostgreSQL provisioning, and the
+declared `BulkOperationControlIdentity` values for confirmation operations. This overload
+is separate from host Flyway startup. Metadata supplies optional Flyway core/PostgreSQL
+dependencies (11.17.0 in the reference candidate); consumers choosing this adapter must
+supply these dependencies.
 Use `classpath:db/praxis-bulk-migrations`, schema `praxis_bulk`, and history
 `praxis_bulk_schema_history`; do not put the SQL in the default db/migration lane or
 baseline an unknown nonempty bulk schema. Existing tables in public remain independent.
@@ -132,9 +160,10 @@ Catalog validation must be stable when the
 operational datasource sets `currentSchema=praxis_bulk` and must restore that same connection's
 search path. Reject unowned types, overloads, aggregates, expression/standalone indexes, rules
 and policies. The sole unowned index exception is Flyway's nonunique one-column btree on
-`praxis_bulk_schema_history.success`; validate its owner and shape, not just its name. V1–V5
-remain immutable; fresh migration applies six versions, V1 upgrade applies five, V2 upgrade
-applies four, V3 upgrade applies three, V5 upgrade applies one, and repeat applies zero.
+`praxis_bulk_schema_history.success`; validate its owner and shape, not just its name. V1–V6
+remain immutable; V7 adds the proposal/execution descriptor fence. Verify migration counts:
+fresh install=7, V1 upgrade=6, V2 upgrade=5, V3 upgrade=4, V5 upgrade=2, V6 upgrade=1,
+and repeat=0.
 Upgrades never synthesize execution/receipt rows. CAS setting READY is not a composition
 proof; the descriptor, provider set and local/durable generation+fingerprint checks must
 be complete before the host publishes readiness or advertises any action. See Metadata
