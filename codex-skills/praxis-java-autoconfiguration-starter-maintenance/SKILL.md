@@ -90,12 +90,14 @@ is needed merely to add this explicit value/participant.
 
 ## Adopt The Protected Proposal Migration Lane
 
-Run the explicit bulk migration outside Spring transactions with
+Run the explicit bulk migration outside Spring transactions. For a fresh schema,
+migrate without configured runtime roles, provision the exact PostgreSQL roles/grants,
+then call `BulkExecutionMigrator.validate(dataSource, roleConfiguration)` before runtime.
+For an upgrade from V7 with existing exact evaluation grants, drain old writers and use
 `BulkExecutionMigrator.migrate(dataSource, namespaceToDeploymentId, roleConfiguration,
-operationIdentities)`. Supply the complete namespace-to-deployment map, a
-`BulkExecutionRoleConfiguration` populated from actual PostgreSQL provisioning, and the
-declared `BulkOperationControlIdentity` values for confirmation operations. This overload
-is separate from host Flyway startup. Metadata supplies optional Flyway core/PostgreSQL
+operationIdentities)`. Supply the complete namespace-to-deployment map and declared
+`BulkOperationControlIdentity` values. This lane is separate from host Flyway startup.
+Metadata supplies optional Flyway core/PostgreSQL
 dependencies (11.17.0 in the reference candidate); consumers choosing this adapter must
 supply these dependencies.
 Use `classpath:db/praxis-bulk-migrations`, schema `praxis_bulk`, and history
@@ -111,6 +113,24 @@ columns; never generalize those to unrestricted table UPDATE. Migration
 credentials are not inferred or manufactured by the starter. History checksum validation
 alone is insufficient: validate physical constraints and the enabled immutability trigger.
 No bean, readiness capability or executor is registered automatically by adding the SDK.
+
+V8 adds a private immutable ordinal manifest linked to the exact evaluation, not a
+public results reader. `insertEvaluated` must persist evaluation, manifest and quota
+allocation in one host transaction. The manifest keeps canonical wire identity and
+expected version as lossless bytes; SQL must not cast protected JSON to `jsonb` or
+place a potentially long identity directly in a unique btree index. A deferred
+evaluation guard rejects old writers at commit. V8 Flyway DDL leaves a private
+`PENDING` marker; a retryable Java bootstrap validates/backfills existing evidence,
+grants only the new manifest to explicitly configured runtime roles already holding
+exact evaluation rights, and marks `COMPLETE` in that same transaction. Failed
+bootstrap retries while `PENDING`, even with zero new Flyway migrations. In
+`COMPLETE`, validate all manifest rows against protected evidence without inserting
+missing rows or restoring revoked ACLs, including during later migrations. Drain old writers before
+V8 and reopen admission only after strict validation; the commit guard is a final
+fence, not a rolling-upgrade plan. Keep schema, owner, ACL, retention/quota deletion
+order and marker phase in the migrator's physical validator. The bootstrap marker
+must have no non-owner ACL at all, including retention owner/executor and PUBLIC;
+prove that an accidental UPDATE grant is rejected before it could reset COMPLETE.
 
 The three protected EXPLICIT/SYNC input modalities are the current store subset; QUERY,
 ASYNC, evaluated readiness, quotas, ledger and workers remain separate gates. Test explicit
@@ -163,7 +183,12 @@ and policies. The sole unowned index exception is Flyway's nonunique one-column 
 `praxis_bulk_schema_history.success`; validate its owner and shape, not just its name. V1–V6
 remain immutable; V7 adds the proposal/execution descriptor fence. Verify migration counts:
 fresh install=7, V1 upgrade=6, V2 upgrade=5, V3 upgrade=4, V5 upgrade=2, V6 upgrade=1,
-and repeat=0.
+and repeat=0 for the V7 baseline. With V8, fresh install=8, V1 upgrade=7,
+V2 upgrade=6, V3 upgrade=5, V5 upgrade=3, V6 upgrade=2, V7 upgrade=1,
+and repeat=0. Prove V7 backfill, lossless NUL/long identities and versions,
+10,000-target boundary, old-writer rollback including allocation/quota,
+restricted owner upgrade, failed-bootstrap retry, no ACL healing after COMPLETE,
+and purge/expiry under restricted roles in PostgreSQL.
 Upgrades never synthesize execution/receipt rows. CAS setting READY is not a composition
 proof; the descriptor, provider set and local/durable generation+fingerprint checks must
 be complete before the host publishes readiness or advertises any action. See Metadata
