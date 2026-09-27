@@ -88,6 +88,17 @@ the smallest proof.
   filtered resource query. It does not implicitly govern independent `/by-ids`,
   `/all`, `/filter/cursor`, `/locate`, stats, or option-source by-ids paths;
   audit and enforce each published surface through its canonical contract.
+- A continuation cursor carries page state; it is never an authorization grant.
+  Protect sensitive claims for confidentiality and integrity, bind the token to
+  its purpose and historical resource/query scope, and compare its effective
+  scope with the grant recomputed from the current authenticated server context
+  on every page. Never rebuild authorization from cursor claims or accept a
+  bearer cursor by itself. Perform the normal scoped lookup and current
+  authorization before mapping an authenticated expired cursor to a status that
+  could reveal resource existence. Define TTL, key retention, and fleet-wide
+  rotation before enabling a public cursor; keep tokens and claims out of logs,
+  metrics, and traces. A cursor remains replayable during its validity unless a
+  separate durable single-use contract is explicitly implemented.
 - `praxis-ui-angular` materializes published filter metadata. It does not infer
   a predicate from labels or construct an undocumented payload dialect.
 
