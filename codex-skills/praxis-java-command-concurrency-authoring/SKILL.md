@@ -43,6 +43,16 @@ contracts, never in a host controller convention.
 7. For collection commands, define per-item outcome, atomicity, partial failure, retry,
    and ordering. Never report complete success when targets were denied or conflicted.
 
+For a metadata-driven bulk command, keep composition readiness separate from command
+authorization and execution. The Metadata lifecycle may return a durable expectation
+only after the descriptor is recomposed from fresh published OpenAPI groups; the proposal writer must still revalidate
+that exact namespace/operation generation, fingerprint, and structural revision under
+the V7 transaction/lock before reserving or mutating. Publish and suspend use the
+separate PostgreSQL control-plane credential, while proposal/execution use the runtime
+credential; prove both bindings reach the same database, not merely matching JDBC
+URLs or namespace labels. Fresh lifecycle composition must use isolated exact-group snapshots, and any configurable remote OpenAPI source must be explicitly rejected or independently attested as current; do not let a cache-enabled replica establish READY. A `READY` descriptor does not prove production host handlers,
+domain authorization, or atomic domain-plus-receipt behavior.
+
 Read [command-outcome-matrix.md](references/command-outcome-matrix.md) when selecting
 scope, preconditions, idempotency, result status, or focused proof.
 
