@@ -210,18 +210,25 @@ without choosing 404/410 before the host's current, whole-set authorization.
   compatible outcomes.
 - Require the outcome totals to sum to `targetCount` and reject inconsistent
   status, counts or timestamps as `CORRUPT` without protected causes. Preserve
-  persisted instants in the internal summary. The V5
-  `guard_terminal_execution()` `BEFORE UPDATE` trigger stamps `terminal_at`
-  after the writer supplies `updated_at`; changing only Java writer SQL cannot
-  ensure `terminalAt <= updatedAt`. Before constructing a public
-  `BulkExecution` DTO, evolve the trigger through a new versioned migration
-  rather than editing V5 in place. Update `BulkExecutionMigrator`'s expected
-  function body and retain its trigger/ownership/ACL attestation. Inspect the
-  ordering and timestamp interaction with V10's `protect_cancel_request()`
-  trigger; change V10 behavior only if PostgreSQL evidence requires it. Audit existing
-  terminal rows, repair any violating history through a governed migration or
-  fail adoption until it is resolved, and preserve the retention meaning of
-  `terminal_at`. Never invent replacement instants in the reader.
+  persisted instants in the internal summary. Metadata V13, merged at
+  `46c130494d74188e863c3c0c8bd8e20acffbcb65`, now enforces chronology in
+  `V13__bulk_execution_time_order.sql`; do not normalize timestamps in the
+  reader or edit applied V5/V10 migrations. Before changing this path, inspect
+  V13, `BulkExecutionMigrator`, terminal writers and their PostgreSQL tests.
+  V13 preflights the exact V5 terminal guard and V10 cancellation guard bodies,
+  owner/ACL boundaries and all six execution UPDATE trigger bindings. Its
+  versioned replacement of `guard_terminal_execution()` restores the governed
+  owner and privileges; the migrator attests the V13 body, trigger catalog and
+  chronology constraint, and must reject later drift rather than heal it.
+  Under the migration's transaction and table lock, historical
+  `terminal_at > updated_at` rows receive `updated_at=terminal_at` while the
+  certified triggers are temporarily disabled and then restored. Other
+  impossible history aborts the migration. The CHECK enforces created,
+  updated, terminal and cancellation order for old and new rows.
+  Terminal writers use one SQL statement clock per UPDATE; the database guard
+  still stamps the authoritative retention `terminal_at` and raises
+  `updated_at` to at least that instant. V10's cancellation guard participates
+  in the same UPDATE without a separate assumed rewrite.
 
 Prove this projection with focused PostgreSQL tests for initial and partial
 states, receipts/admissions, pending ACK, cancellation before and after
@@ -230,10 +237,15 @@ absence, tombstone and corruption. Reuse the RS3 snapshot, concurrent
 receipt/purge and 10,000-target evidence when that reader is unchanged. Keep
 the summary opaque to Jackson and logs; it introduces no public endpoint,
 cursor, capability, `READY` or host authorization shortcut.
-Before the public DTO gate, add PostgreSQL proofs for terminal transitions,
-cancel/terminal trigger ordering, historical drift repair or refusal, migrator
-attestation and rejection of function/trigger drift, and the DTO's
-`createdAt <= terminalAt <= updatedAt` invariant.
+Before Flyway V13, drain V12 writers and retention; restart and reopen traffic
+only on V13 binaries because V12 attestation rejects the changed V5 body.
+PostgreSQL 14.22 proof for PR #193 covered terminal transitions and V10/V13
+same-UPDATE ordering, historical repair/refusal, V5 checksum stability, and
+trigger/owner/ACL restoration and drift rejection: 69/69 execution tests,
+22/22 migration tests, 90 affected reader/store passes and 2/2 corrected
+fixture reruns. Repeat the focused affected proofs when this boundary changes.
+The `BulkExecution` public DTO, HTTP handler, release and host
+authorization/redaction remain separate gates.
 
 ## Page Internal Durable Execution Results Without Widening The Window
 
