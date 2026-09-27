@@ -667,6 +667,24 @@ legacy/readback cases in addition to the existing suite.
 existing physical transaction; no attach/update/upsert. Re-evaluation needs a new UUID.
 `findEvaluation` scope-checks the input and verifies the protected companion binding;
 missing evidence is not reconstructed, corrupt linkage is not a fallback to input.
+Those public store calls use separate observations and do not establish an atomic
+proposal/evaluation read. The internal RS1 `BulkProtectedProposalReader` is integrated
+in Metadata source at merge `712eb13f1bad382b8cb6f4a57ae619d24e8e7c1b`,
+but is not published; verify the published revision before host adoption. It
+shares the existing protected decoders inside one physical
+`REPEATABLE READ READ ONLY` snapshot, scopes by namespace, historical subject,
+resource and operation, and distinguishes internal absent, not-evaluated and
+evaluated observations. A proposal without evaluation must not have manifest,
+preview or integrity dependents; corruption fails closed without protected
+payload in diagnostics, and SQL/ACL/timeout failures are unavailable. The
+package-private observation is not a response DTO and must stay opaque to
+Jackson, logs and `toString`. Do not infer creator-versus-delegate permission,
+current target/field/reference grants, retention HTTP status, or `redactedIntent`
+from the snapshot. The provider must project domain-safe intent/evidence, and
+the host must authorize the entire historical set before a public RS1 route.
+Prove the same-snapshot purge race, cross-scope absence, blob corruption,
+revoked read grant and serialization boundary against real PostgreSQL. No
+HTTP/cursor/capability or `READY` follows from this reader alone.
 Migration V2 preserves V1, adds the immediate composite FK and immutable companion table;
 runtime needs SELECT/INSERT on both. One bounded payload (8 MiB) is not proof of efficient
 paged/per-item execution. Review access/indexing with those future consumers.
