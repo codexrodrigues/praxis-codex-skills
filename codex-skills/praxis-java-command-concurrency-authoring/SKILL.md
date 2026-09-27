@@ -365,6 +365,65 @@ retention deletion order. Prove NUL/long wire values, 10,000-target boundary,
 retry after failed bootstrap, no healing, restricted PostgreSQL owner/roles,
 expiry and purge. This storage cut alone publishes no reader, endpoint or READY.
 
+## Prepare A Safe Evaluation Preview Candidate
+
+The V9/RS2 preview design is a candidate until its Metadata PR is integrated and
+published. Verify the exact starter revision before relying on these types or
+tables. It adds a provider-approved public projection by **ordinal**, alongside
+the protected evaluation and V8 manifest. It is neither an execution outcome,
+an authorization decision, nor permission to expose a reader. The protected
+evaluation remains the replay authority.
+
+For a typed evaluation, the provider must choose one of two deliberate paths in
+the same transaction that inserts proposal, evaluation, manifest, allocation and
+quota: persist a `COMPLETE` projection, or persist `UNAVAILABLE` with no public
+row. A complete projection preserves only the protected eligibility decision and
+the order/count of diagnostic categories and codes. It replaces diagnostic text
+only through a versioned provider allowlist; it never copies target identity,
+facts, plan, protected text, target pointer, metadata, or an unlisted diagnostic.
+Bind the stored rows to the exact evaluation fingerprint and manifest ordinal,
+and validate a canonical digest over the revision, allowlist, decisions and
+per-ordinal public payload. Do not derive a “safe” result by serializing the
+protected blob or by redacting it after the fact.
+
+Enforce the item-state fence in PostgreSQL before every target-preview INSERT:
+the parent preview state must already be `COMPLETE`. Later SQL must therefore
+fail closed when it tries to add an item under `UNAVAILABLE` or
+`UNAVAILABLE_LEGACY`. Do not teach an explicit `FOR KEY SHARE` lock for this
+runtime path: the least-privilege runtime role does not receive the `UPDATE`
+privilege that PostgreSQL requires for that lock. Use the composite referential
+binding to the parent state so a concurrent retention/purge delete cannot leave
+an orphan item; prove both a later transaction and an insert-versus-delete race
+in PostgreSQL.
+
+Legacy evaluations lacking typed eligibility are `UNAVAILABLE_LEGACY`, never
+silently backfilled into public items. A legacy or otherwise unavailable preview
+is an explicit storage state with no per-target rows; it is not `READY`,
+`BLOCKED`, a page with guessed emptiness, or a reason to weaken current
+authorization. Preserve the states exactly: `COMPLETE`, `UNAVAILABLE`, and
+`UNAVAILABLE_LEGACY`.
+
+Treat V8→V9 like the V8 cutover: drain writers that cannot create preview state,
+migrate/backfill only the safe state permitted by immutable evidence, validate
+the exact role/grant closure and physical rows, then reopen admission. A failed
+bootstrap may retry only before its durable completion marker; after `COMPLETE`,
+missing preview state for any evaluation, missing target rows for a `COMPLETE`
+projection, digest drift or revoked grants are faults to reject rather than data
+or ACLs to heal. For `UNAVAILABLE` and `UNAVAILABLE_LEGACY`, zero items is the
+invariant; an item is corruption, not a missing-row repair request. Retention
+and purge must delete preview rows in the same
+referential/quota-safe order as their proposal; the restricted retention executor
+receives no new direct preview mutation privilege. Prove all of this in PostgreSQL: complete
+allowlisted projection, unlisted/private-diagnostic rejection, ordinal/digest
+tampering, late target-preview rejection, insert-versus-retention/delete race,
+full transaction rollback, V8→V9 legacy state, retry/no-heal, least-privilege
+ACL drift, expiry and purge.
+
+This candidate deliberately ships no proposal-results reader, secure cursor,
+HTTP route, action/capability, execution reader, or READY claim. A host still
+needs a real current-grant/domain authorizer before it can expose any result, and
+the later reader must perform its own scoped authorization and cursor proof.
+
 ## Compose A Protected Capture In The Host
 
 For a host entry point whose result must mean the protected capture committed, inspect
