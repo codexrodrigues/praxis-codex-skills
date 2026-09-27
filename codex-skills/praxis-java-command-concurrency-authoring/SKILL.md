@@ -185,6 +185,56 @@ The RS3 internal foundation is integrated in Metadata source, but source integra
 does not prove a published starter or a public capability. Compare the current
 Metadata main and adopted revision before relying on it.
 
+### Derive An Internal Summary From The Certified RS3 Snapshot
+
+Metadata merge `766bd6b586331949d1fcf3d405be3bd3e5a59b4c` adds the
+package-private `BulkExecutionSummary` and
+`JdbcBulkDurableExecution.summarizeConsistent`. Inspect those sources and the
+RS3 section of `docs/spec/BULK-H1B-READ-MODEL.md` before changing a status or
+total. Derive the summary only from `inspectConsistent` in its physical
+snapshot; do not re-read mutable control or infer an outcome from raw ledger
+row counts. Preserve `ABSENT`, `LIVE` and `TOMBSTONE` as internal observations,
+without choosing 404/410 before the host's current, whole-set authorization.
+
+- Count `CONFIRMED`, `UNCHANGED` and governed admissions only in the certified
+  prefix below `nextOrdinal`. For `RUNNING`, `UNIT_IN_FLIGHT` and
+  `UNIT_COMMITTED_PENDING_ACK`, keep the remainder `pending`; an unacknowledged
+  receipt does not become a certified success. Project `CANCEL_REQUESTED` only
+  when persisted `cancelRequestedAt` exists. A request for cancellation alone
+  does not prove a terminal `CANCELLED` state.
+- In `RECONCILIATION_REQUIRED`, count the whole suffix as `UNKNOWN`, even if a
+  physical receipt is present. For terminal `STOPPED`, count the suffix as
+  `NOT_PROCESSED` only after RS3 proves physical absence of receipts and
+  admissions there. Map `CANCELLED_BY_USER` to `CANCELLED` only after that
+  terminal proof. Completed states require an integral certified prefix and
+  compatible outcomes.
+- Require the outcome totals to sum to `targetCount` and reject inconsistent
+  status, counts or timestamps as `CORRUPT` without protected causes. Preserve
+  persisted instants in the internal summary. The V5
+  `guard_terminal_execution()` `BEFORE UPDATE` trigger stamps `terminal_at`
+  after the writer supplies `updated_at`; changing only Java writer SQL cannot
+  ensure `terminalAt <= updatedAt`. Before constructing a public
+  `BulkExecution` DTO, evolve the trigger through a new versioned migration
+  rather than editing V5 in place. Update `BulkExecutionMigrator`'s expected
+  function body and retain its trigger/ownership/ACL attestation. Inspect the
+  ordering and timestamp interaction with V10's `protect_cancel_request()`
+  trigger; change V10 behavior only if PostgreSQL evidence requires it. Audit existing
+  terminal rows, repair any violating history through a governed migration or
+  fail adoption until it is resolved, and preserve the retention meaning of
+  `terminal_at`. Never invent replacement instants in the reader.
+
+Prove this projection with focused PostgreSQL tests for initial and partial
+states, receipts/admissions, pending ACK, cancellation before and after
+reconciliation, `STOPPED` suffix absence, completed outcomes, cross-scope
+absence, tombstone and corruption. Reuse the RS3 snapshot, concurrent
+receipt/purge and 10,000-target evidence when that reader is unchanged. Keep
+the summary opaque to Jackson and logs; it introduces no public endpoint,
+cursor, capability, `READY` or host authorization shortcut.
+Before the public DTO gate, add PostgreSQL proofs for terminal transitions,
+cancel/terminal trigger ordering, historical drift repair or refusal, migrator
+attestation and rejection of function/trigger drift, and the DTO's
+`createdAt <= terminalAt <= updatedAt` invariant.
+
 ## Page Internal Durable Execution Results Without Widening The Window
 
 The RS4 `BulkExecutionResultsReader` is integrated in Metadata source at merge
