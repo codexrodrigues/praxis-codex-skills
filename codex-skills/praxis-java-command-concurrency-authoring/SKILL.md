@@ -99,11 +99,15 @@ text can only rank already-scoped candidates.
 
 ## Bind Bulk JDBC Work To The Operational Transaction
 
-`BulkExecutionInfrastructure(dataSource, transactionManager, namespace, deploymentId)` is the
-Metadata-owned explicit integration boundary. It provides transaction participation. Storage is composed explicitly through
-JdbcBulkProposalStore; neither class is an executor, worker or runtime capability. Construction
-performs no database access or DDL. The namespace is explicit and stable; it is not
-authentication or authorization and must not be inferred from untrusted headers.
+`BulkExecutionInfrastructure(dataSource, transactionManager, namespace, deploymentId,
+roleConfiguration)` is the Metadata-owned explicit integration boundary. The former four-argument
+constructor is removed: provide a `BulkExecutionRoleConfiguration` with an expected schema owner
+and at least one explicit runtime grantee role, populated from real database provisioning. Keep
+runtime, control-plane and retention identities disjoint. It provides transaction participation;
+storage is composed explicitly through `JdbcBulkProposalStore`. Neither class is an executor,
+worker or runtime capability. Construction performs no database access or DDL. The namespace is
+explicit and stable; it is not authentication or authorization and must not be inferred from
+untrusted headers.
 
 Use the actual shared datasource instance with a local JDBC manager or a JPA manager
 whose EntityManagerFactory exposes the same datasource through EntityManagerFactoryInfo.
@@ -111,20 +115,35 @@ Initialize the beans first. The initial subset rejects opaque/mismatched manager
 routing and datasource wrappers; do not compare URLs or choose a Primary bean.
 
 `withConnection(ConnectionCallback)` joins MANDATORY, writable, existing physical
-transactions through JdbcTemplate. No independent transaction is started. The callback
-must not commit/rollback, change auto-commit or retain the connection. Its return is
-provisional until the outer owner commits; authorization, deadlines and receipt semantics
-remain separate. Manager-visible rollback-only is rejected; a local outer status mark
-may not yet be visible to a participant. Stop mutations when the owner decides rollback.
-The binding rejects globalRollbackOnParticipationFailure=false at construction and before
-work, preserving the required rollback-only behavior when a callback fails.
+transactions through JdbcTemplate. Before the namespace read and callback, it attests the
+authenticated/effective identity (`session_user == current_user`) against the configured runtime
+roles and rechecks live protected-table/function ACLs, schema/table/function ownership and V7
+descriptor-fence definitions on that same transaction connection. Drift or an unconfigured role
+fails closed before the caller's callback. `withLifecycleRead` repeats the runtime attestation
+inside its separate short transaction. These live checks do not run Flyway or DDL and do not
+replace the explicit privileged migration/physical-validation step. Each attestation SQL is
+bounded to 250 ms, preserving any stricter existing statement timeout and restoring the previous
+setting; this bounds each SQL separately, not the total sequence. Lifecycle reads also cap lock
+and statement timeouts at one and two seconds without increasing stricter configured values.
+
+No independent transaction is started by `withConnection`. The callback must not commit/rollback,
+change auto-commit or retain the connection. Its return is provisional until the outer owner
+commits; domain authorization, deadlines and receipt semantics remain separate. Manager-visible
+rollback-only is rejected; a local outer status mark may not yet be visible to a participant. Stop
+mutations when the owner decides rollback. The binding rejects
+`globalRollbackOnParticipationFailure=false` at construction and before work, preserving the
+required rollback-only behavior when a callback fails.
 
 Prove the adopted pair with real PostgreSQL/JPA: same backend PID for JPA/JDBC, independent
 observer before/after commit, both writes rolled back, deferred constraint failing at
 COMMIT after callback completion, manager mismatch, and two-connection lock contention.
-Use BulkExecutionInfrastructureTest and BulkExecutionInfrastructurePostgresTest. Fixture
-tables are not the production ledger DDL; this gate does not certify fencing/replay or
-bulk execution. Consult Metadata docs/spec/BULK-EXECUTION-INFRASTRUCTURE.md.
+Use BulkExecutionInfrastructureTest, BulkExecutionInfrastructurePostgresTest, and
+BulkControlPlaneInfrastructurePostgresTest as required real-PostgreSQL gates. The control-plane
+proof must cover live runtime/control-plane identity and ACL/owner/fence drift rejection, the
+runtime/control-plane advisory-lock witness on the same physical database, and preservation of
+stricter statement/lock timeouts. Fixture tables are not the production ledger DDL; these gates
+do not certify the host's production migration or bulk execution. Consult Metadata
+docs/spec/BULK-EXECUTION-INFRASTRUCTURE.md.
 
 ## Persist Protected Bulk Inputs Explicitly
 
@@ -290,9 +309,9 @@ terminal timestamp; never accept a caller-provided retention clock.
 
 Migrate with explicit namespace-to-deployment bindings and exact configured runtime,
 retention, and control-plane roles. V5 is already an applied migration: never edit its
-SQL/checksum to change privileges. V6 adds the operation-control privilege boundary,
-so verify a V5→V6 upgrade keeps the stored V5 checksum and exercises the same ACLs as a
-fresh V1→V6 install. Validate physical catalog ownership, memberships, narrow
+SQL/checksum to change privileges. V6 adds the operation-control privilege boundary and V7
+adds the descriptor fence, so verify a V5→V6 upgrade keeps the stored V5 checksum and exercises
+the same ACLs as a fresh V1→V7 install. Validate physical catalog ownership, memberships, narrow
 table/column/function grants, mutation-protection triggers, and fixed definer
 search_paths; reject inherited PostgreSQL roles outside the declared retention
 membership closure (including predefined roles such as `pg_write_all_data`); a valid Flyway checksum alone is insufficient. Prove the retention
