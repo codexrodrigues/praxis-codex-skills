@@ -132,9 +132,10 @@ order and marker phase in the migrator's physical validator. The bootstrap marke
 must have no non-owner ACL at all, including retention owner/executor and PUBLIC;
 prove that an accidental UPDATE grant is rejected before it could reset COMPLETE.
 
-The V9/RS2 preview migration is a candidate until its Metadata PR is integrated
-and published; verify the starter revision before treating it as an available
-contract. It keeps a separately persisted, provider-approved public preview by
+The V9 preview migration is integrated in Metadata source, but host availability
+still depends on the exact published starter revision; verify it before treating
+this storage as an available contract. It keeps a separately persisted,
+provider-approved public preview by
 V8 manifest ordinal. The migration/bootstrap must create a preview state for
 every evaluation: `COMPLETE` only for a typed evaluation with an explicitly
 allowlisted projection, `UNAVAILABLE` when the provider deliberately declines a
@@ -192,6 +193,24 @@ Keep an explicit time/memory budget for the full V9/V11 privileged
 `migrate`/`validate` scan; bounded pages do not make that scan cheap. V11
 storage alone grants no reader,
 cursor, HTTP route, authorization, capability or `READY`.
+
+The RS2 reader's separate V12 bootstrap gate is integrated in Metadata source
+at merge `17d102ec69c5e00c4b75101ad8c6f0f9652bb228`, but is not published.
+Inspect the exact published Metadata revision before host adoption.
+Keep the V11 marker owner-only; do not grant runtime
+roles `SELECT` on either bootstrap marker. Flyway V12 installs a restricted
+`SECURITY DEFINER` boolean function and owner-only `PENDING` marker. In the
+explicit privileged lane, grant `EXECUTE` only to configured runtime roles
+while V12 is pending; validate function signature/body/owner/search path,
+`STABLE` volatility, effective ACL and role memberships, then mark `COMPLETE`
+in the same transaction. Retry a failed pending bootstrap, but after completion
+reject missing/revoked grants or catalog drift without healing. Live runtime
+attestation must repeat the function/ACL checks, and the reader must call the
+gate in its own read-only snapshot before any proposal rows. Drain older hosts
+and retention workers through DDL, bootstrap and validation; the older binary
+is not a rolling-upgrade participant. Prove fresh and V11→V12 migrations,
+wrong-role rollback/retry, marker denial, drift/no-heal and old-binary catalog
+rejection in PostgreSQL. V12 is an internal read gate, not HTTP/READY.
 
 The V10 cancellation design is a candidate until its Metadata PR is integrated and published;
 verify the exact source revision before adoption. It adds durable cancellation to the
