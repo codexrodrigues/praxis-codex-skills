@@ -170,6 +170,45 @@ runtime/retention roles, expiry and purge. This migration alone adds no bean,
 reader, HTTP endpoint, action/capability or READY; host adoption and public
 authorization remain separate gates.
 
+The V10 cancellation design is a candidate until its Metadata PR is integrated and published;
+verify the exact source revision before adoption. It adds durable cancellation to the
+protected execution ledger; it does not add a
+bean, endpoint, reader, capability, worker or `READY` signal. Treat
+`cancel_requested_at` as a database-clock marker written once, with no historical
+backfill/reclassification. The protected `requestCancel(scope, executionId)` command
+is idempotent: an out-of-scope reference does not enumerate, a terminal execution
+returns its terminal snapshot without writing, and a repeat preserves the timestamp.
+Only a post-commit response admits the marker; timeout or lost acknowledgement requires
+scoped readback/reconciliation, never a false accepted cancellation.
+
+Migrate through the same explicit privileged lane and extend `BulkExecutionMigrator`
+validation for V10's column, CHECKs/transition triggers, `CANCELLED_BY_USER` reason,
+purge mapping, function ownership/search paths and exact ACLs. Preserve V1–V9 checksums.
+Runtime access remains only the table/column operations necessary for the protected
+command; do not grant broad DML. The migration/bootstrap never heals drift, never runs
+DDL from a starter bean, and keeps V5's one-time terminal allocation release and
+retention deletion order intact. A user-cancelled `STOPPED` writes a `CANCELLED`
+tombstone status on purge; historical `STOPPED` stays `STOPPED`.
+
+The cancel/recovery lifecycle lock order is namespace binding `FOR SHARE`, operation
+control `FOR SHARE`, deployment bucket `FOR UPDATE`, subject bucket `FOR UPDATE`,
+proposal `FOR UPDATE`, execution `FOR UPDATE`, then receipt/admission. Recheck scope,
+binding and epoch under those locks. The helper must permit `SUSPENDED` control so
+cancel/recovery can complete; do not reuse a quota helper that requires `READY`, or
+add governance locks after locking execution. Java and physical V10 fences both matter:
+the marker closes new attempt/admission/callback work, yet a receipt-first ACK already
+committed before the marker may advance only that prefix. If it reaches the final ordinal,
+normal completion wins; uncertain evidence remains reconciliation-required.
+
+Prove fresh V10 and V9→V10 upgrade/retry/no-heal with real PostgreSQL, including two
+connections for cancel before prepare, cancel between prepare/apply, callback commit and
+rollback, committed receipt pending ACK (including final ordinal), duplicate/terminal/
+cross-scope request, recovery/epoch and `SUSPENDED` races, timeout without false admission,
+and a V9 writer against V10. Verify domain effect and no extra callback, not just returned
+state. Also prove allocation release once with rollback, retention/purge tombstone mapping,
+and migrator rejection of CHECK/trigger/ACL/owner drift. This is Metadata kernel evidence;
+HTTP, host adoption and public authorization remain separate gates.
+
 The three protected EXPLICIT/SYNC input modalities are the current store subset; QUERY,
 ASYNC, evaluated readiness, quotas, ledger and workers remain separate gates. Test explicit
 migration with a nonempty host public schema, repeat/concurrent invocation, unsupported
