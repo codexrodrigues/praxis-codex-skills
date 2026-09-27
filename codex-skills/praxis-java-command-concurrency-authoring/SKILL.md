@@ -185,6 +185,45 @@ The RS3 internal foundation is integrated in Metadata source, but source integra
 does not prove a published starter or a public capability. Compare the current
 Metadata main and adopted revision before relying on it.
 
+### Derive An Internal Summary From The Certified RS3 Snapshot
+
+Metadata merge `766bd6b586331949d1fcf3d405be3bd3e5a59b4c` adds the
+package-private `BulkExecutionSummary` and
+`JdbcBulkDurableExecution.summarizeConsistent`. Inspect those sources and the
+RS3 section of `docs/spec/BULK-H1B-READ-MODEL.md` before changing a status or
+total. Derive the summary only from `inspectConsistent` in its physical
+snapshot; do not re-read mutable control or infer an outcome from raw ledger
+row counts. Preserve `ABSENT`, `LIVE` and `TOMBSTONE` as internal observations,
+without choosing 404/410 before the host's current, whole-set authorization.
+
+- Count `CONFIRMED`, `UNCHANGED` and governed admissions only in the certified
+  prefix below `nextOrdinal`. For `RUNNING`, `UNIT_IN_FLIGHT` and
+  `UNIT_COMMITTED_PENDING_ACK`, keep the remainder `pending`; an unacknowledged
+  receipt does not become a certified success. Project `CANCEL_REQUESTED` only
+  when persisted `cancelRequestedAt` exists. A request for cancellation alone
+  does not prove a terminal `CANCELLED` state.
+- In `RECONCILIATION_REQUIRED`, count the whole suffix as `UNKNOWN`, even if a
+  physical receipt is present. For terminal `STOPPED`, count the suffix as
+  `NOT_PROCESSED` only after RS3 proves physical absence of receipts and
+  admissions there. Map `CANCELLED_BY_USER` to `CANCELLED` only after that
+  terminal proof. Completed states require an integral certified prefix and
+  compatible outcomes.
+- Require the outcome totals to sum to `targetCount` and reject inconsistent
+  status, counts or timestamps as `CORRUPT` without protected causes. Preserve
+  persisted instants in the internal summary. Current terminal writers can set
+  `terminal_at` microseconds after `updated_at` because they call
+  `clock_timestamp()` separately; correct the canonical writer and prove the
+  public temporal invariant before constructing a `BulkExecution` DTO. Do not
+  repair the timestamps by inventing values in the reader.
+
+Prove this projection with focused PostgreSQL tests for initial and partial
+states, receipts/admissions, pending ACK, cancellation before and after
+reconciliation, `STOPPED` suffix absence, completed outcomes, cross-scope
+absence, tombstone and corruption. Reuse the RS3 snapshot, concurrent
+receipt/purge and 10,000-target evidence when that reader is unchanged. Keep
+the summary opaque to Jackson and logs; it introduces no public endpoint,
+cursor, capability, `READY` or host authorization shortcut.
+
 ## Page Internal Durable Execution Results Without Widening The Window
 
 The RS4 `BulkExecutionResultsReader` is integrated in Metadata source at merge
