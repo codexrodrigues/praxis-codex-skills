@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-java-command-concurrency-authoring/
-- Descricao atual: Use when implementing, auditing, or migrating a Praxis Java business command with state changes: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, action availability, and safe Angular/runtime handoff.
+- Descricao atual: Use when implementing, auditing, or migrating a Praxis Java business command with state changes or its internal durable bulk-read foundation: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, action availability, REPEATABLE READ read-only MVCC snapshots, and safe Angular/runtime handoff.
 
 ## Classificacao inicial
 

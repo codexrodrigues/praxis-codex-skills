@@ -1,6 +1,6 @@
 ---
 name: praxis-java-command-concurrency-authoring
-description: Use when implementing, auditing, or migrating a Praxis Java business command with state changes: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, action availability, and safe Angular/runtime handoff.
+description: Use when implementing, auditing, or migrating a Praxis Java business command with state changes or its internal durable bulk-read foundation: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, action availability, REPEATABLE READ read-only MVCC snapshots, and safe Angular/runtime handoff.
 ---
 
 # Praxis Java Command Concurrency Authoring
@@ -144,6 +144,46 @@ runtime/control-plane advisory-lock witness on the same physical database, and p
 stricter statement/lock timeouts. Fixture tables are not the production ledger DDL; these gates
 do not certify the host's production migration or bulk execution. Consult Metadata
 docs/spec/BULK-EXECUTION-INFRASTRUCTURE.md.
+
+## Build An Internal Durable Bulk Read Before A Public Reader
+
+Treat a durable execution read as an internal consistency boundary, not as a shortcut to an
+HTTP resource. Inspect the live `JdbcBulkDurableExecution`, `BulkExecutionInfrastructure`,
+protected evaluation/manifest codecs, receipt/admission ledger, allocation lifecycle, retention
+and tombstone paths, PostgreSQL tests, and the current `docs/spec/BULK-H1B-READ-MODEL.md` before
+changing a reader or its projection. The Metadata starter owns this read kernel; a host performs
+current authorization before using any future public projection.
+
+1. Open one independent, short transaction before the first data query. It must be physically
+   `REPEATABLE READ` and `READ ONLY` on the runtime PostgreSQL connection, with bounded local
+   lock/statement timeouts, namespace/role attestation, and a closed transaction. Do not reuse an
+   ambient writer transaction or rely only on Spring/JPA flags: prove
+   `transaction_isolation=repeatable read` and `transaction_read_only=on`, including with a
+   `JpaTransactionManager`.
+2. Read execution, proposal/evaluation, ordinal manifest, receipts/admissions, both allocation
+   records, and tombstone in that one MVCC snapshot. Revalidate scope, fingerprints, digests,
+   structural versions, cardinality, uniqueness, manifest binding, ledger form, and legal
+   status/allocation combinations. Missing, duplicate, cross-scope, drifted, or impossible state
+   is `CORRUPT`/unavailable and fails closed; never fabricate a partial aggregate.
+3. In `RECONCILIATION_REQUIRED`, count only the certified contiguous prefix below `nextOrdinal`.
+   A physically present receipt or admission at or after that ordinal remains `UNKNOWN`: validate
+   it for corruption, but never turn it into `CONFIRMED`, another completed outcome, or public
+   `NOT_PROCESSED`. Keep the conservative suffix as
+   `unknown = targetCount - nextOrdinal` even when the physical ledger contains more rows.
+4. Keep the result package-private and protected. An internal `ABSENT`, `LIVE`, or `TOMBSTONE`
+   observation does not decide 404/410, does not expose protected blobs/facts/plans/diagnostics,
+   does not acquire write locks, call domain code, mutate quota or epochs, or serialize a response.
+   Do not add HTTP, cursor, public reader, `READY`, Angular, corpus, or playground work until the
+   separate authorized reader contract, redaction, authorization, pagination, and cost proof exist.
+5. Prove on real PostgreSQL, not a mock or only context startup: physical write rejection
+   (`SQLSTATE 25006`), JPA-manager isolation, cross-scope invisibility, receipt commit racing the
+   snapshot, purge racing a tombstone, manifest/receipt/allocation corruption, and the 10,000-target
+   boundary. A paused reader after its first snapshot-fixing SELECT must never return a mixture of
+   epochs; a new read may observe the later commit or tombstone.
+
+This guidance is an RS3 candidate while the corresponding Metadata change has not been integrated
+and published. Before relying on it, compare the current Metadata main and published starter to
+the candidate evidence; do not present this internal foundation as a released public capability.
 
 ## Persist Protected Bulk Inputs Explicitly
 
