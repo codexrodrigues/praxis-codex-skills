@@ -98,7 +98,14 @@ transaction itself.
 
 Read an existing receipt before deadline or fresh-governance gates. If commit
 acknowledgement is uncertain, return the confirmed prefix, `UNKNOWN` for the
-current ordinal, and `NOT_PROCESSED` for the suffix; retry must read the receipt
+current ordinal, and preserve the unresolved execution state. Do not label the
+suffix `NOT_PROCESSED` merely because this request stopped dispatching units:
+that result requires a durable, reconciled terminal boundary proving that those
+targets will not be executed by this execution. While it remains active or needs
+reconciliation, use only the unresolved/pending representation supported by the
+canonical contract; never fabricate certainty or a new item status. A partial
+commit must remain discoverable through its execution identity and confirmed
+results, not disappear behind a generic error. Retry must read the receipt
 without rerunning domain or audit callbacks. Recovery fences the previous owner
 and reconstructs recorded outcomes only; it never invokes a mutation callback.
 Common grant/policy loss, timeout, or unavailable governance must stop the
@@ -106,7 +113,8 @@ unstarted suffix. A target-specific state/version conflict remains a durable
 per-item result. Keep reservation/recovery probes test-only until the canonical
 public confirmation protocol and consumer contract are released together.
 
-Until that S4c release, keep every host README, security/migration guide, and runtime smoke explicit
+Until the production handlers and their complete lifecycle are proved against the published
+starter artifacts, keep every host README, security/migration guide, and runtime smoke explicit
 that the legacy bulk action is absent from discovery, capabilities, and OpenAPI. A Config
 `approval_policy` materialization alone is not host enforcement. Smoke scripts may verify that
 materialization and report host execution as pending, but must not call the retired action or
