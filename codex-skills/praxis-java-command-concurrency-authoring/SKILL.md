@@ -1,6 +1,6 @@
 ---
 name: praxis-java-command-concurrency-authoring
-description: Use when implementing, auditing, or migrating a Praxis Java business command with state changes or its internal durable bulk-read foundation: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, action availability, REPEATABLE READ read-only MVCC snapshots, and safe Angular/runtime handoff.
+description: Use when implementing, auditing, or migrating a Praxis Java business command with state changes or its internal durable bulk-read foundation: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, bounded execution-result paging, action availability, REPEATABLE READ read-only MVCC snapshots, and safe Angular/runtime handoff.
 ---
 
 # Praxis Java Command Concurrency Authoring
@@ -181,9 +181,58 @@ current authorization before using any future public projection.
    boundary. A paused reader after its first snapshot-fixing SELECT must never return a mixture of
    epochs; a new read may observe the later commit or tombstone.
 
-This guidance is an RS3 candidate while the corresponding Metadata change has not been integrated
-and published. Before relying on it, compare the current Metadata main and published starter to
-the candidate evidence; do not present this internal foundation as a released public capability.
+The RS3 internal foundation is integrated in Metadata source, but source integration
+does not prove a published starter or a public capability. Compare the current
+Metadata main and adopted revision before relying on it.
+
+## Page Internal Durable Execution Results Without Widening The Window
+
+The RS4 `BulkExecutionResultsReader` is integrated in Metadata source at merge
+`ff0d6b074c0d7922cc887340b01edec81285417e`, but is package-private and not
+a published host reader. Inspect it with `docs/spec/BULK-H1B-READ-MODEL.md`, the
+V8 target manifest, V3 receipts, V4 admissions, scoped tombstone, and RS3
+`inspectConsistent`. RS3 audits the whole execution, counts and allocations;
+RS4 proves only the returned items and minimum terminal state in a bounded
+page. Do not use RS3's 10,000-target scan to serve a small page or claim that
+an RS4 page proves the whole ledger.
+
+1. Use the existing `withConsistentRead` physical `REPEATABLE READ READ ONLY`
+   transaction. Read header, scoped tombstone and ordinal keyset with the
+   manifest and receipt/admission joins in one snapshot; order by ordinal and
+   select at most `size+1` rows. Bind namespace, subject, resource, operation,
+   execution and proposal scope, then verify evaluation fingerprint, target
+   count, wire identity, version and digests for each selected row.
+2. The first page returns `watermarkExclusive`. Require the caller to carry
+   that fixed value on every continuation; reject continuation without it and
+   never widen the old window after ACK or `STOPPED`. A new read may observe a
+   later status or tombstone. Status and totals can advance independently of an
+   older page.
+3. Below `nextOrdinal`, require exactly one coherent receipt or governed
+   admission per item. An uncertain suffix during `RECONCILIATION_REQUIRED`
+   stays outside the window: never materialize `UNKNOWN`. In terminal
+   `STOPPED`, return `NOT_PROCESSED` only for an ordinal from `nextOrdinal`
+   onward with physical absence of both receipt and admission on that row.
+   Nonterminal states do not invent future results.
+4. Require `COMPLETED` and `COMPLETED_WITH_ERRORS` to have
+   `nextOrdinal=targetCount`; the former has no admission and the latter has at
+   least one. Reject contradictory terminal state, gaps, duplicate evidence or
+   binding drift as `CORRUPT`; SQL, ACL and timeout failures are `UNAVAILABLE`
+   without protected payload or private reason in the exception.
+5. Count selected header and row bytes against 20 MiB per call, including the
+   `size+1` lookahead row. Accept exact equality; reject the first excess byte
+   without returning a partial page. Set `fetchSize(1)` before query execution
+   as a conservative fetch strategy, not proof of a heap bound or production
+   latency. Benchmark representative data before public exposure.
+
+Prove RS4 with focused real-PostgreSQL tests for fixed-watermark continuation
+across ACK and `STOPPED`, no `UNKNOWN` in reconciliation, terminal admission
+consistency, cross-scope absence, drift, concurrent ACK and purge across
+connections, 10,000-target keysets and lookahead byte overflow. Reuse RS3's
+physical JDBC/JPA snapshot proof when that infrastructure is unchanged, while
+retaining RS3 for full audits. Keep the value opaque to Jackson and logs.
+Current granular authorization, identity/reason redaction, protected cursor,
+HTTP, capability and `READY` need separate reviewed gates; this internal
+reader supplies none of them.
 
 ## Persist Protected Bulk Inputs Explicitly
 
