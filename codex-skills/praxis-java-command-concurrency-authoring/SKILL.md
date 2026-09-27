@@ -223,12 +223,15 @@ without choosing 404/410 before the host's current, whole-set authorization.
   Under the migration's transaction and table lock, historical
   `terminal_at > updated_at` rows receive `updated_at=terminal_at` while the
   certified triggers are temporarily disabled and then restored. Other
-  impossible history aborts the migration. The CHECK enforces created,
-  updated, terminal and cancellation order for old and new rows.
+  violations of the V13 chronology CHECK abort the migration. The CHECK
+  enforces created, updated, terminal and cancellation order for old and new rows.
   Terminal writers use one SQL statement clock per UPDATE; the database guard
-  still stamps the authoritative retention `terminal_at` and raises
-  `updated_at` to at least that instant. V10's cancellation guard participates
-  in the same UPDATE without a separate assumed rewrite.
+  remains authoritative for retention:
+  `new.terminal_at := greatest(clock_timestamp(), old.updated_at, old.cancel_requested_at)`
+  and `new.updated_at := greatest(new.updated_at, new.terminal_at)`. This may
+  preserve a later old timestamp rather than the current database instant.
+  V10's cancellation guard participates in the same UPDATE without a separate
+  assumed rewrite.
 
 Prove this projection with focused PostgreSQL tests for initial and partial
 states, receipts/admissions, pending ACK, cancellation before and after
