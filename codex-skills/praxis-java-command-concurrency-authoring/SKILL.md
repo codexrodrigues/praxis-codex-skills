@@ -463,9 +463,10 @@ expiry and purge. This storage cut alone publishes no reader, endpoint or READY.
 
 ## Prepare A Safe Evaluation Preview Candidate
 
-The V9/RS2 preview design is a candidate until its Metadata PR is integrated and
-published. Verify the exact starter revision before relying on these types or
-tables. It adds a provider-approved public projection by **ordinal**, alongside
+The V9 preview storage is integrated in Metadata source, but availability in a
+host still depends on the exact published starter revision. Verify that revision
+before relying on these types or tables. V9 adds a provider-approved public
+projection by **ordinal**, alongside
 the protected evaluation and V8 manifest. It is neither an execution outcome,
 an authorization decision, nor permission to expose a reader. The protected
 evaluation remains the replay authority.
@@ -534,6 +535,47 @@ decode protected evaluation for each page. Bound aggregate page bytes as well
 as row count. The checksum relies on ACL and immutability, not on secrecy of
 SHA-256; the schema owner is outside this runtime threat model. V11 does not
 provide that reader, a cursor, HTTP authorization or `READY`.
+
+The internal RS2 page reader below is integrated in Metadata source at merge
+`17d102ec69c5e00c4b75101ad8c6f0f9652bb228`, but is not published. Do not
+present it as available in the host before adopting a published revision. Inspect Metadata's
+`BulkPreviewPageReader`, `BulkPreviewItemIntegrity`, `BulkExecutionInfrastructure`
+and `docs/spec/BULK-H1B-READ-MODEL.md` at the exact source revision before
+using the path. Keep the reader package-private and its result out of JSON/HTTP.
+Use the existing scoped `withConsistentRead` transaction, physically
+`REPEATABLE READ READ ONLY`, for parent/evaluation state, V8 manifest, V9
+preview and V11 leaves in one snapshot. Before reading the header, call the
+V12 governed `SECURITY DEFINER` gate on that connection and require exactly
+one `true` result: V11/V12 bootstrap must both be `COMPLETE`. Runtime must
+not get marker-table `SELECT`; missing function/grant, altered owner/body/ACL,
+`PENDING`, false/null/duplicate result or SQL failure closes the read. Include
+the V12 function in live role/ACL/body attestation, not only startup validation.
+The V12 grant-once bootstrap is privileged and must never repair drift after
+`COMPLETE`. Page by manifest ordinal with an
+exclusive lower bound, immutable `targetCount` watermark, size 1–200 and
+`LIMIT size+1`; missing preview/leaf, duplicate or noncontiguous ordinal,
+binding mismatch and checksum drift are corruption. Verify diagnostics against
+the versioned public allowlist. Never return wire identity, expected version,
+target digest, protected evaluation, facts or plan. Distinguish absent,
+not-evaluated, `UNAVAILABLE` and `UNAVAILABLE_LEGACY` internally, and reject
+ghost rows; none of these states chooses a public HTTP status before the
+host's current authorization.
+
+Budget every selected header and row column in bytes, including manifest
+fields, digests/fingerprints, fixed-size fields and the extra lookahead row, as
+well as row count. V8 permits large wire/version values: configure JDBC fetch
+size before query execution as a bounded-fetch strategy; prove PostgreSQL heap
+behavior separately because fetch size and a payload counter are not a heap
+guarantee.
+The conservative fetch size may cost one round trip per row; benchmark page
+latency and the full privileged startup scan on representative data before
+release or public API. A budget refusal is fail-closed, not a truncated page.
+Prove PostgreSQL 10,000-target keysets, exact byte-budget boundary and
+lookahead overflow, V11/V12 `PENDING` denial, tampered diagnostics/leaf/manifest,
+legacy/unavailable ghost rows, cross-scope invisibility and purge concurrency;
+reuse RS3's JPA/read-only infrastructure proof if that plumbing is unchanged.
+This internal reader does not supply an authenticated cursor, granular host
+authorization, endpoint, capability or `READY`.
 
 ## Compose A Protected Capture In The Host
 
