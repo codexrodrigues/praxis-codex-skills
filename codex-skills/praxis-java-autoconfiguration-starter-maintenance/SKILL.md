@@ -132,6 +132,44 @@ order and marker phase in the migrator's physical validator. The bootstrap marke
 must have no non-owner ACL at all, including retention owner/executor and PUBLIC;
 prove that an accidental UPDATE grant is rejected before it could reset COMPLETE.
 
+The V9/RS2 preview migration is a candidate until its Metadata PR is integrated
+and published; verify the starter revision before treating it as an available
+contract. It keeps a separately persisted, provider-approved public preview by
+V8 manifest ordinal. The migration/bootstrap must create a preview state for
+every evaluation: `COMPLETE` only for a typed evaluation with an explicitly
+allowlisted projection, `UNAVAILABLE` when the provider deliberately declines a
+safe projector, and `UNAVAILABLE_LEGACY` for historical non-typed evidence. Do
+not backfill public rows from protected payloads. For `COMPLETE`, validate the
+exact evaluation fingerprint, ordinal count/coverage, provider revision,
+canonical allowlist and projection digest; only decision plus allowlisted
+diagnostic category/code/message can enter the public rows. Targets, facts,
+plans, protected text and metadata must remain absent.
+
+Keep the state fence in the physical schema: a target-preview INSERT must verify
+first that its parent preview state is `COMPLETE`, rejecting a later insert into
+`UNAVAILABLE` or `UNAVAILABLE_LEGACY`. Do not add an explicit `FOR KEY SHARE`
+runtime lock as a shortcut; it requires PostgreSQL `UPDATE` privilege and would
+break the restricted runtime ACL. The composite foreign-key binding must instead
+protect concurrent parent deletion, so migration proof includes a later
+transactional insert rejection and an insert-versus-retention/delete race.
+
+Run V8→V9 through the existing explicit privileged migration lane, with old
+writers drained and the exact configured runtime roles verified before admission
+reopens. The durable bootstrap phase may retry only while pending. Once complete,
+missing preview state for any evaluation, missing target rows for `COMPLETE`,
+altered digest, or revoked ACL is physical drift and must fail closed;
+`UNAVAILABLE` and `UNAVAILABLE_LEGACY` instead require zero target-preview rows,
+and any such row is corruption. Later migration invocations must validate rather
+than recreate rows or privileges. Extend the
+physical validator and retention/purge path in
+the same cut, preserving foreign-key and quota deletion order and owner-only
+bootstrap control. Prove V8→V9 upgrade/retry/no-heal, state coverage, allowlist
+and ordinal/digest corruption, late target-preview rejection, concurrent
+insert-versus-retention/delete, transaction rollback, restricted PostgreSQL
+runtime/retention roles, expiry and purge. This migration alone adds no bean,
+reader, HTTP endpoint, action/capability or READY; host adoption and public
+authorization remain separate gates.
+
 The three protected EXPLICIT/SYNC input modalities are the current store subset; QUERY,
 ASYNC, evaluated readiness, quotas, ledger and workers remain separate gates. Test explicit
 migration with a nonempty host public schema, repeat/concurrent invocation, unsupported
