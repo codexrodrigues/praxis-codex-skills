@@ -345,6 +345,26 @@ with PostgreSQL two-connection tests for both CAS interleavings, stale generatio
 READY is republished with the same fingerprint/revision, receipt replay while suspended,
 legacy null tuples, and least-privilege trigger-owner column grants.
 
+V8's private ordinal manifest is an index over protected evaluation evidence, not
+an execution result or permission grant. Before readers use it, prove every ordinal,
+wire identity, expected version and digest matches the immutable evaluation. Use
+lossless bytes for wire identity/version and a compact framed identity digest; do
+not parse protected JSON through PostgreSQL `jsonb` or index a long wire ID
+directly. `insertEvaluated` writes proposal, evaluation, manifest and pending
+allocation in one transaction. A deferred guard rejects older writers that omit
+the manifest; drain those writers for the cutover and prove full rollback on a
+mixed-version attempt. Upgrade V7→V8 with exact existing runtime roles/grants;
+fresh installation provisions roles after migration and validates before use.
+The V8 bootstrap marker permits backfill and focal manifest grants only while
+`PENDING`, with the configured runtime grantees matching actual evaluation
+grantees before `COMPLETE`. After `COMPLETE`, missing rows or revoked grants are
+drift to reject, never material to regenerate. The marker is private to its
+schema owner; even retention owner/executor must have no direct grant on it.
+Preserve quota release and
+retention deletion order. Prove NUL/long wire values, 10,000-target boundary,
+retry after failed bootstrap, no healing, restricted PostgreSQL owner/roles,
+expiry and purge. This storage cut alone publishes no reader, endpoint or READY.
+
 ## Compose A Protected Capture In The Host
 
 For a host entry point whose result must mean the protected capture committed, inspect
