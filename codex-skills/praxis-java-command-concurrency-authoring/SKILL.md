@@ -859,45 +859,88 @@ all receive deliberate safe behavior.
 
 ## Compose Authorized Bulk Result Reads
 
-For G3a, use the Metadata-owned `BulkAuthorizedProposalResultsReader` Java
-first-page composition and the concrete host `BulkReadAuthorizationProvider`.
-Verify the artifact revision first: rc.136 does not contain this new API.
-When the required Metadata artifact is not yet published, use a distinct local
-candidate coordinate, an isolated Maven repository and an explicit host version
-override for consumer proof; never replace bytes of a published coordinate with an
-unpublished build. After the artifact is published, pin that exact released
-`praxis.core.version`, resolve it in an isolated Maven repository and remove the
-candidate override. A source-only host change is not an adoptable release until its
-dependency resolves from the intended repository.
+For G3b proposal-results, use the Metadata-owned `BulkAuthorizedProposalResultsReader`,
+`BulkReadCursorConfiguration` and `BulkProposalItemResult<WI>` with the host's concrete
+`BulkReadAuthorizationProvider`. Verify the exact dependency first. A candidate
+`SNAPSHOT` is not a published artifact: prove it with its distinct candidate coordinate,
+an isolated Maven repository and an explicit host version override. Never replace bytes
+under a published coordinate. For later adoption, wait until the required release resolves
+from its intended repository, pin that exact `praxis.core.version`, use an isolated cache,
+and remove the candidate override. Source integration and candidate tests do not prove
+published adoption.
 
-Fix resource and operation through trusted server wiring. Do not add empty MVC
-handlers or readiness registrations merely to exercise this Java boundary.
-Global operation authority precedes lookup; full authorization covers every
-historical target, including targets outside the returned page. The protected
-Target view contains ordinal, wire identity and facts, not a fabricated execution
-plan. Preserve creator identity while authorizing the authenticated requester.
-Missing evaluation or historical facts cannot fall back to current domain state,
-creator ownership or global grant alone.
+Fix the resource and operation through trusted host wiring. The `@ApiResource` resource
+key and `CanonicalOperationResolver.requireResourceOperation` must identify the exact
+GET mapping and its OpenAPI operation; continuation is bodyless. Do not add placeholder
+handlers, infer operation identity from route text, or declare `READY` to exercise this
+read path. The proposal-results handler does not create execution, cancel execution,
+read tombstones, or make the bulk lifecycle ready.
 
-The host adapter must verify the bound ConnectionHolder before obtaining the
-connection, join the exact operational infrastructure and physical connection,
-and preserve the owner's transaction. Matching JDBC URLs or independent RR/RO
-transactions do not establish a common snapshot. Reuse the existing JDBC proxy's
-transaction timeout; pass only the remaining monotonic budget to the host, retain
-smaller SQL timeouts and discard output after completion if the deadline elapsed.
-This is a publication deadline, not an instantaneous wall-clock cancellation promise.
+The requester is the authenticated server principal. Preserve the proposal creator as
+historical owner, but bind the cursor's effective authorization fingerprint to the
+current requester as well as the host's full-set authorization result. Every page
+reauthorizes every historical target, including off-page targets, in the same
+Metadata-owned `REPEATABLE READ READ ONLY` snapshot as the protected evaluation and
+bounded page projection. Missing evaluation, incomplete historical facts, reduced or
+failed coverage, and copied requester/scope tokens must not fall back to creator
+ownership, current domain state, or operation-wide permission. A small page never
+reduces the set that must be authorized.
+
+The host adapter must verify the bound `ConnectionHolder` before obtaining its
+connection, join the exact operational infrastructure and physical connection, and
+preserve the owner's transaction. Matching JDBC URLs or independent RR/RO transactions
+do not establish one snapshot. Reuse the existing JDBC proxy's transaction timeout,
+retain smaller SQL timeouts, and pass only the remaining monotonic budget to host work.
+Include acquisition/setup, CPU and final publication in the budget; discard output if
+the deadline elapsed after completion. This is a publication deadline, not an
+instantaneous wall-clock cancellation promise.
 
 Persist the explicit allowlisted preview atomically with evaluation through the
-canonical store. Do not copy protected facts, plans or parameters into responses.
-Keep provider, evaluator and projector revisions separate, changing the revision
-whose behavior actually changed. A proposal's execution expiry alone must not
-hide results still retained for authorized reading.
+canonical store. Keep provider, evaluator and projector revisions distinct, changing
+only the revision whose behavior changed. Execution expiry alone must not hide retained
+results that remain authorized for reading.
 
-Require real PostgreSQL proof through the public Java reader in a host package:
-delegated access, an unauthorized off-page target denying the entire page,
-ambient transaction suspension/restoration and old/new observations during concurrent
-grant and assignment changes. Complement this with canonical PostgreSQL reader tests
-for retained results after expiry and late-output discard.
-Standalone authorizer tests or a recording provider do not replace consumer proof.
-Keep cursor, HTTP status mapping, RS1 redaction and tombstone gates explicit;
-no endpoint or READY follows from this first-page Java API.
+The cursor is AEAD-protected, purpose-bound, requester-bound and fixed-window. Keep
+claims internal. Require the same page size (1–200) on every continuation; do not
+renew `issuedAt` or `expiresAt` when issuing the next token. Recheck token expiry after
+the read transaction completes, before publishing the page. Configure an explicit
+active key ID, AES-256 key set and positive TTL no greater than 15 minutes; provide no
+default or ephemeral key and never expose or log key material or tokens. Provision the
+new key on every replica before switching the active key ID, and retain old keys until
+the maximum lifetime of their issued tokens has elapsed. Tests that construct a new
+reader with the rotated key set prove reader reconstruction in one process, not an
+operating-system process restart. Before enabling issuance, establish a fleet-wide
+operational rotation policy before 2^32 aggregate emissions per key and observability
+of issuance/rotation across the fleet without logging tokens or secrets; a stateless
+codec alone does not prove this gate.
+
+Keep the public item contract exact: `BulkProposalItemResult` supports only String or
+Integer wire identities; the concrete host API must prove its actual Integer identity
+through OpenAPI. Each item contains only `id`, `decision` (`EXECUTABLE` or `BLOCKED`)
+and safe diagnostics. `BLOCKED` requires diagnostics, `EXECUTABLE` has none, and public
+diagnostics have null `target`, empty `metadata`, nonblank code/message and at most 16
+entries. Do not emit ordinal, facts, plan, versions, digests, authorization fingerprints,
+parameters, or generic before/after values. RS1 `BulkProposal.redactedIntent` is a
+separate unresolved projection; do not imply this RS2 route exposes it.
+
+Use the public status matrix deliberately: malformed/authentication-invalid cursors are
+400 before SQL; global denial is 403 and global-authorizer unavailability is 503 before
+proposal lookup. Proposal-specific storage failure before full authorization, absence,
+incomplete set, other requester/scope/proposal or changed effective fingerprint all
+produce indistinguishable 404 responses without page data. Only after the proposal is
+live and the complete set is authorized may expiry or incompatible cursor shape/size
+produce 412. An unavailable legacy preview on the first page is 409. Corruption after
+authorization and operational/deadline failures are 503. Keep `Cache-Control: no-store`
+and compare the negative response body and sensitive headers so the route is not an
+existence oracle.
+
+For the host proof, exercise the real HTTP/OpenAPI mapping and PostgreSQL-backed
+authorization provider, not only an authorizer unit test or recording provider. Cover
+delegated requester access, requester-copied cursor, grant reduction/revocation,
+off-page denial, first/next page, changed size, cursor tampering/expiry, key rotation,
+full-set privacy, status/body/header equivalence for negative cases, and the exact
+Integer/bodyless OpenAPI operation. Metadata's continuation PostgreSQL tests prove
+bounded same-snapshot paging and cursor reconstruction/rotation; do not describe them
+as a process-restart proof. Distinguish candidate-SNAPSHOT host proof from tests against
+the released artifact. A passing G3b result read does not prove execution, tombstones,
+`READY`, Angular materialization, or RS1 redaction.

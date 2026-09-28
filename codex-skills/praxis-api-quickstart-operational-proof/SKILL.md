@@ -414,24 +414,75 @@ Do not choose resource, schema, action, capability, security policy, domain deci
 
 ## Prove The Authorized Bulk Read Consumer
 
-Follow `praxis-java-command-concurrency-authoring` for the canonical G3a reader,
-protected Target view, shared snapshot, budget, projection and deferred HTTP gates.
-The operational proof must call `BulkAuthorizedProposalResultsReader` from the real
-host package with `EventosFolhaBulkReadAuthorizationProvider`, not only call G2
-inside a test-owned transaction or substitute a recording provider.
+Follow `praxis-java-command-concurrency-authoring` for the G3b proposal-results
+reader, cursor, item projection and status matrix. The concrete route is
+`GET /api/human-resources/eventos-folha/bulk/proposals/{proposalId}/results` with
+`size` and optional `after`; its resource key and exact GET operation must agree
+between the `@ApiResource` controller, `CanonicalOperationResolver` and the named
+OpenAPI document. Prove bodyless continuation and the concrete Integer/int32 item
+identity in OpenAPI. The host endpoint is a read path: it does not declare `READY`,
+execute, cancel, or expose tombstones.
 
-First verify whether the required Metadata artifact is published; rc.136 lacks this
-API. While it remains unpublished, use a distinct candidate coordinate, an isolated
-Maven cache and an explicit `praxis.core.version` override, recording exact artifact
-and source evidence. Once it is published, pin the exact released
-`praxis.core.version`, resolve it in an isolated cache and remove the candidate
-override. Keep Config's separate version intact. Do not integrate a host change that
-depends on overwritten release bytes or an unavailable artifact.
+Treat a Metadata candidate `SNAPSHOT` as candidate-only. Use its distinct coordinate,
+an isolated Maven repository and explicit `praxis.core.version` override for local
+consumer proof; record the exact source and resolved JAR. Do not overwrite a published
+coordinate. For later adoption, require the released artifact to resolve from the
+intended repository, pin that exact version, use an isolated cache and remove the
+candidate override. Candidate source/tests and an HTTP proof against a candidate do
+not establish published adoption. Keep Config's pin independent.
 
-Exercise explicit host wiring and the real proposal writer's atomic allowlisted
-preview. Keep provider/evaluator/projector revisions distinct. Prove delegated
-access, denial caused by an off-page target, ambient transaction restoration and
-old/new observations while both department assignment and grant change. Preserve
-existing fixture identities: additional employees/departments belong to the test
-that needs them. Reuse canonical PostgreSQL expiry/deadline proofs where still valid.
-No HTTP result route, cursor or READY follows from this Java consumer alone.
+Use the real controller, authenticated non-anonymous principal, configured cursor
+keys and PostgreSQL-backed authorizer. Each first or continuation page must reauthorize
+the whole immutable target set in the same snapshot as projection. Preserve the
+historical creator while binding continuation to the current requester and effective
+authorization fingerprint. The cursor is AEAD-protected; require the same size on every
+page, retain the original issue/expiry instants without TTL renewal, and recheck expiry
+after transaction completion before returning the page. Configure positive TTL up to
+15 minutes, no default/ephemeral key, and no token/key logging. For rotation, provision
+the new key across every replica before changing the active key and retain old keys
+through the maximum issued-token lifetime. A test constructing a new reader with a
+rotated key set proves reader reconstruction in the same process; do not claim that an
+OS process restart was tested. Before enabling issuance, establish a fleet-wide
+operational rotation policy before 2^32 aggregate emissions per key and observability
+of issuance/rotation across the fleet without logging tokens or secrets; a stateless
+codec alone does not prove this gate.
+
+The host adapter must verify the bound `ConnectionHolder` before obtaining its
+connection and join the exact physical connection used by the operational transaction;
+matching JDBC URLs or independent RR/RO transactions do not prove one snapshot. Preserve
+the owner's transaction, reuse its timeout, retain smaller SQL timeouts and pass only
+the remaining monotonic budget to host work. Include acquisition/setup, CPU and final
+publication in the budget and discard output after the deadline; this is a publication
+deadline, not instantaneous cancellation. Persist the allowlisted preview atomically
+with evaluation, keep provider/evaluator/projector revisions separate, and let execution
+expiry leave otherwise-authorized retained results readable.
+
+Verify the response contains only Integer `id`, `EXECUTABLE`/`BLOCKED` decision and
+public diagnostics. Do not expose ordinals, totals, identities beyond the authorized
+page, facts, plan, versions, fingerprints, or protected authorization context. The
+proposal's `redactedIntent` remains a distinct RS1 concern. Require `Cache-Control:
+no-store` and no domain mutation.
+
+Prove the deliberate public matrix and compare negative responses for non-enumeration:
+invalid cursor 400 before SQL; global denial 403; global-authorizer failure 503 before
+lookup; pre-full-authorization proposal-specific storage failure, absence, incomplete
+coverage, copied requester/scope/proposal and changed fingerprint as indistinguishable
+404; authorized live proposal with expired or incompatible cursor as 412; unavailable
+legacy preview on the first page as 409; and corruption after authorization or bounded
+operational/deadline failure as 503. No negative response may contain page data, totals,
+cursor, or sensitive identifying headers.
+
+Use the real PostgreSQL/HTTP fixture in `EventosFolhaApprovalEvaluationHttpTest` for
+delegated access, paging, requester-copied cursor, revoked/reduced grants, privacy and
+OpenAPI. Keep `SecurityConfigBulkProposalResultsPolicyTest` and
+`BulkReadCursorPropertiesTest` focused on matcher and key/TTL configuration behavior;
+they do not replace the end-to-end proof. Metadata's
+`BulkAuthorizedProposalResultsContinuationPostgresTest` proves same-snapshot bounded
+continuation, scope reauthorization, expiry and same-process reader reconstruction.
+Re-run the exact host tests against the chosen candidate or released artifact and
+record which it was. Keep evidence in the execution record: distinguish Metadata core
+proof from host HTTP, controller/security/OpenAPI proof, identify the exact candidate or
+released artifact, and do not claim statuses or scenarios unless that layer's test
+demonstrates them. A candidate can pass technical review without being published or
+adopted. Do not infer execution, tombstone, `READY`, Angular, or RS1 coverage from these
+read tests.
