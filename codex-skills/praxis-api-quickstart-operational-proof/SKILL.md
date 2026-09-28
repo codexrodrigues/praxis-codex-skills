@@ -68,6 +68,33 @@ restricted runtime credentials and safe SQL lock failure on real PostgreSQL. A
 persisted snapshot or equivalent recapture is not READY or execution; keep migration
 identity separate and leave uncomposed public capabilities unavailable.
 
+## Preserve Historical Authorization Dependencies
+
+Before composing historical bulk readers, trace target identity through mutable
+parents to the facts needed for authorization. A target ETag does not attest an
+unversioned parent. For payroll, the event links to a payroll sheet whose employee
+and year/month determine the employee and first day of the competence month.
+Capture those minimal dependencies in protected, provider-versioned evidence from
+one consistent query, reusing Metadata evidence codecs and digests. Reject missing
+relationships, invalid identities and invalid calendar values; never repair them
+from today's entity or a demonstration department scope.
+
+Do not copy whole domain entities or salaries into evidence for convenience, and
+do not serialize protected facts into results, diagnostics or logs. Historical
+employee/competence links are not historical permissions: current grants and the
+authoritative temporal assignment still require the read composition's coherent
+snapshot. Old evidence without required dependencies cannot silently acquire them
+from current rows; preserve confirmed receipt replay independently of new-mutation
+gates and leave unsupported public projections closed.
+
+Prove persistence and reload after changing the parent without changing the target
+version, strict invalid-input failure, and existing execution/replay regressions.
+Capturing evidence alone does not stabilize the parent until commit. Before using
+these dependencies to authorize mutations, separately define the lock order,
+revalidation and concurrency proof across the target and its mutable parents.
+Keep that gate explicit; this capture increment does not certify granular access,
+public readback, or READY.
+
 ## Protected Bulk Execution Adoption
 
 For an internal host pilot that executes a captured proposal, use the Metadata
