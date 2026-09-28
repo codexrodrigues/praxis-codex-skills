@@ -923,6 +923,34 @@ the host must authorize the entire historical set before a public RS1 route.
 Prove the same-snapshot unconsumed-proposal expiry race, cross-scope absence, blob corruption,
 revoked read grant and serialization boundary against real PostgreSQL. No
 HTTP/cursor/capability or `READY` follows from this reader alone.
+
+The first EventosFolha approval projector is a host-owned candidate, not an
+implemented or accepted RS1 facade. Its public `redactedIntent` is deliberately
+only `{selection:{mode:"EXPLICIT",targetCount:<certified full historical count>}}`.
+The count must match the complete immutable certified target set; never compute
+it from an authorized subset. The projector accepts only its exact historical
+producer tuple: `DOMAIN_COMMAND`, integer identity codec, the fixed resource and
+operation group/id/path/POST binding, `PER_ITEM`, a syntactically valid
+lowercase 64-hex historical schema digest, evaluator revision
+`eventos-folha.approval-evaluation/2`, synchronous explicit selection, and the
+exact supported input/selection/target shapes with typed eligibility on every
+target. Compare against this semantic producer tuple, not today’s descriptor or
+schema hash; valid old schema digests remain projectable. Incompatible shapes,
+legacy evaluations without typed eligibility, or uncertified counts fail
+closed—do not substitute `{}` or a reconstructed preview. No permission to
+reveal parameters, IDs/versions, facts, plans, business values or policy
+references follows from `PAYROLL_APPROVE` or from hiding a field in this
+projection. The projector emits only `redactedIntent`; it does not compose
+evidence or diagnostics. A future P1 composition must omit evidence unless it
+has an explicit evidence allowlist, and may derive diagnostics only from the
+persisted allowlisted preview projection, never protected message, target or
+metadata values. These rules are not implemented by the projector. A retained
+expired proposal maps to 410 only after current full-set authorization; removed
+proposals remain 404. The projector itself makes neither decision. Authorized
+facade wiring, HTTP, expiry/auth behavior and PostgreSQL proof remain separate
+pending gates; this work does not expose an endpoint, certify `READY`, or
+complete the P1 protocol.
+
 Migration V2 preserves V1, adds the immediate composite FK and immutable companion table;
 runtime needs SELECT/INSERT on both. One bounded payload (8 MiB) is not proof of efficient
 paged/per-item execution. Review access/indexing with those future consumers.
