@@ -410,3 +410,25 @@ Do not choose resource, schema, action, capability, security policy, domain deci
 - Use `praxis-metadata-resource-baseline`, `praxis-metadata-schema-contracts`, `praxis-metadata-discovery-capabilities`, and `praxis-metadata-domain-option-sources` when the root cause is metadata-owned.
 - Use `praxis-config-agentic-authoring-streaming`, `praxis-config-domain-decisions`, `praxis-config-runtime-persistence`, and `praxis-config-api-metadata-grounding` when the root cause is config-owned.
 - Use `praxis-http-examples-contract-surfaces` and `praxis-http-examples-llm-smoke` for the external executable corpus.
+
+
+## Prove The Authorized Bulk Read Consumer
+
+Follow `praxis-java-command-concurrency-authoring` for the canonical G3a reader,
+protected Target view, shared snapshot, budget, projection and deferred HTTP gates.
+The operational proof must call `BulkAuthorizedProposalResultsReader` from the real
+host package with `EventosFolhaBulkReadAuthorizationProvider`, not only call G2
+inside a test-owned transaction or substitute a recording provider.
+
+Use a distinct candidate coordinate and isolated Maven cache; rc.136 lacks this API.
+Pass the existing `praxis.core.version` override explicitly and record exact artifact
+and source evidence. Keep Config's separate version intact. Do not integrate a host
+change that silently depends on overwritten release bytes or an unavailable artifact.
+
+Exercise explicit host wiring and the real proposal writer's atomic allowlisted
+preview. Keep provider/evaluator/projector revisions distinct. Prove delegated
+access, denial caused by an off-page target, ambient transaction restoration and
+old/new observations while both department assignment and grant change. Preserve
+existing fixture identities: additional employees/departments belong to the test
+that needs them. Reuse canonical PostgreSQL expiry/deadline proofs where still valid.
+No HTTP result route, cursor or READY follows from this Java consumer alone.
