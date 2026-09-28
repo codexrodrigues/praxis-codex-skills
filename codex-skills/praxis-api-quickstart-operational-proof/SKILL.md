@@ -420,10 +420,13 @@ The operational proof must call `BulkAuthorizedProposalResultsReader` from the r
 host package with `EventosFolhaBulkReadAuthorizationProvider`, not only call G2
 inside a test-owned transaction or substitute a recording provider.
 
-Use a distinct candidate coordinate and isolated Maven cache; rc.136 lacks this API.
-Pass the existing `praxis.core.version` override explicitly and record exact artifact
-and source evidence. Keep Config's separate version intact. Do not integrate a host
-change that silently depends on overwritten release bytes or an unavailable artifact.
+First verify whether the required Metadata artifact is published; rc.136 lacks this
+API. While it remains unpublished, use a distinct candidate coordinate, an isolated
+Maven cache and an explicit `praxis.core.version` override, recording exact artifact
+and source evidence. Once it is published, pin the exact released
+`praxis.core.version`, resolve it in an isolated cache and remove the candidate
+override. Keep Config's separate version intact. Do not integrate a host change that
+depends on overwritten release bytes or an unavailable artifact.
 
 Exercise explicit host wiring and the real proposal writer's atomic allowlisted
 preview. Keep provider/evaluator/projector revisions distinct. Prove delegated
