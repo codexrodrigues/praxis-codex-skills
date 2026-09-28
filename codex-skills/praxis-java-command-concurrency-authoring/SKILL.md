@@ -336,6 +336,44 @@ create an `EXECUTION_RESULTS`-specific quota. This Java facade adds no HTTP rout
 `READY`, capability, or public host adoption. Require PostgreSQL proof and independent
 review; publication, adoption and future HTTP mapping remain separate gates.
 
+### Expose Authorized Execution Reads Over Host HTTP (G3c-HTTP)
+
+Compose the host's two bodyless GETs from the authorized Metadata readers; do not add
+host-owned result DTOs, a parallel registry, capability, cancel route, or claim the
+remaining lifecycle bindings are complete. The planned resource is the existing
+`human-resources.eventos-folha`: `GET R/bulk/executions/{executionId}` with operationId
+`human-resources.eventos-folha.bulk-execution-read`, and `GET
+R/bulk/executions/{executionId}/results` with operationId
+`human-resources.eventos-folha.bulk-execution-results`. Keep `ApiPaths`, the real
+controller mapping, `CanonicalOperationResolver`, and the named OpenAPI document in
+agreement. Both requests are bodyless; only results accepts `size` (1–200) and an
+optional opaque `after` continuation.
+
+Map only the approved host states: 200 for an authorized live summary or results page;
+400 for malformed cursor/page size; 403 for global authorization denial; indistinguishable
+404 for absence, denial or a specific failure before full authorization; payload-free
+410 for an authorized creator tombstone; 412 only for a live, fully authorized resource
+with a stale continuation; and generic 503 for global unavailability or protected-read
+failure after full authorization. Do not reuse proposal preview's 409. Apply
+`Cache-Control: no-store` to success and errors. Use `RestApiResponse` and
+`CustomProblemDetail`; publish result identity as strict `Integer`/OpenAPI `int32`,
+rejecting type drift instead of coercing. The summary reader emits no cursor and
+consumes no issuance budget. Results reserve the shared G3b-O ledger before entering
+the core reader, never refund the reservation, and create no purpose-specific quota.
+After that outer reservation, decode `EXECUTION_RESULTS` inside the core before any
+protected SQL or authorization; perform global authorization before protected lookup.
+
+Both GET and HEAD matchers must require authentication before any broad `readOpen`
+rule. Prove anonymous denial under `readOpen`, full-set reauthorization for live
+results, uniform absence/cross-scope/delegation negatives, and that a retained
+tombstone yields only the documented creator-only 410. After purge there are no
+targets to reauthorize: do not claim live-page anti-copy guarantees for tombstones.
+Keep path/query parse failures non-enumerating as well. Verify bodyless operations,
+exact operation IDs, resolved response schemas, `int32` identity, and the canonical
+resource/method binding in OpenAPI tests. Do not mark HTTP acceptance, publication,
+adoption, any lifecycle `READY`, or Angular readiness from this implementation plan;
+those remain separate evidence gates.
+
 ## Page Internal Durable Execution Results Without Widening The Window
 
 The RS4 `BulkExecutionResultsReader` is integrated in Metadata source at merge
