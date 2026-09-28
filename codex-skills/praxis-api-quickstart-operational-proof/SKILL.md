@@ -132,6 +132,42 @@ that the public workflow is ready. Use
 `praxis-java-command-concurrency-authoring` and the Metadata Starter bulk
 execution contract when reviewing these guarantees.
 
+## Avoid Nested Acquisition From The Domain Pool
+
+When a bulk unit already holds an API connection, audit every independent read in
+its admission callback. A bounded connection timeout does not prevent structural
+starvation if grants or facts need a second connection from that same pool.
+Do not fix this solely by increasing the pool or limiting bulk threads while
+unrelated API traffic can still occupy the required connections.
+
+Keep proposal capture/storage anchored to the operational API datasource and keep
+domain mutation, transition audit and receipt in the Metadata transaction. Use a
+separate bounded governance reader pool for current grants and the facts read by
+`evaluateUnit`; do not borrow Config/control-plane connections or reuse an ambient
+transaction to simulate a fresh authorization read. Preserve autocommit,
+READ_COMMITTED, exact namespace/tenant/environment checks and runtime-role checks.
+
+Derive the reader from the effective authoritative API connection configuration,
+including SSL, JDBC/driver properties, schema/catalog and initialization settings.
+Copying only URL/user/password is insufficient. Do not expose a separate reader
+origin or silently route to a replica. Audit datasource wrappers, shared backing
+pools and overrides; distinct bean names alone do not prove physical separation.
+Complete pool initialization during bootstrap, outside request deadlines; lazy Hikari
+initialization can run checkFailFast before the acquisition timeout starts. Reject
+pool suspension where it would bypass bounded acquisition. Keep acquisition bounded
+by the aggregate deadline. Document total configured
+connections per instance (API + governance + Config + control plane) multiplied by
+the maximum replicas; separation removes the dependency cycle, not all overload.
+
+On real PostgreSQL, retain API connections while a unit holds the last slot and
+prove admission can still read grants/facts and make progress. Separately exhaust
+the reader and prove bounded fail-closed behavior without a new domain effect,
+audit or receipt. Preserve capture/storage identity, externally committed grant
+revocation, replay and transactional rollback proofs. Distinguish controlled pool
+occupancy from multiple complete concurrent HTTP executions and from a production
+capacity certification. Release retained connections and await pending requests
+before clearing shared test hooks.
+
 ## Compose Shared Deadlines Across The Host And Config
 
 The Config Starter owns operational-policy semantics and its read-transaction
