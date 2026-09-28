@@ -855,3 +855,45 @@ runtime tests when metadata or precondition behavior changes.
 Close with transition matrix, idempotency/precondition policy, outcome contract, stress
 evidence, and platform gaps. A command is ready when retry, stale, and denied callers
 all receive deliberate safe behavior.
+
+
+## Compose Authorized Bulk Result Reads
+
+For G3a, use the Metadata-owned `BulkAuthorizedProposalResultsReader` Java
+first-page composition and the concrete host `BulkReadAuthorizationProvider`.
+Verify the artifact revision first: rc.136 does not contain this new API.
+Use a distinct local candidate coordinate and an isolated Maven repository for
+consumer proof; never replace published rc.136 bytes with an unpublished build.
+A source-only host change is not an adoptable release until its dependency resolves.
+
+Fix resource and operation through trusted server wiring. Do not add empty MVC
+handlers or readiness registrations merely to exercise this Java boundary.
+Global operation authority precedes lookup; full authorization covers every
+historical target, including targets outside the returned page. The protected
+Target view contains ordinal, wire identity and facts, not a fabricated execution
+plan. Preserve creator identity while authorizing the authenticated requester.
+Missing evaluation or historical facts cannot fall back to current domain state,
+creator ownership or global grant alone.
+
+The host adapter must verify the bound ConnectionHolder before obtaining the
+connection, join the exact operational infrastructure and physical connection,
+and preserve the owner's transaction. Matching JDBC URLs or independent RR/RO
+transactions do not establish a common snapshot. Reuse the existing JDBC proxy's
+transaction timeout; pass only the remaining monotonic budget to the host, retain
+smaller SQL timeouts and discard output after completion if the deadline elapsed.
+This is a publication deadline, not an instantaneous wall-clock cancellation promise.
+
+Persist the explicit allowlisted preview atomically with evaluation through the
+canonical store. Do not copy protected facts, plans or parameters into responses.
+Keep provider, evaluator and projector revisions separate, changing the revision
+whose behavior actually changed. A proposal's execution expiry alone must not
+hide results still retained for authorized reading.
+
+Require real PostgreSQL proof through the public Java reader in a host package:
+delegated access, an unauthorized off-page target denying the entire page,
+ambient transaction suspension/restoration and old/new observations during concurrent
+grant and assignment changes. Complement this with canonical PostgreSQL reader tests
+for retained results after expiry and late-output discard.
+Standalone authorizer tests or a recording provider do not replace consumer proof.
+Keep cursor, HTTP status mapping, RS1 redaction and tombstone gates explicit;
+no endpoint or READY follows from this first-page Java API.
