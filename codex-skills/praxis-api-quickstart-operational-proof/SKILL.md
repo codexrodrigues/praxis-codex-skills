@@ -337,6 +337,32 @@ Do not claim granular enforcement, safe public pages or READY from persistence
 alone. Update fixtures through the official migration lane and preserve the
 independent current-grant connection used by mutation admission.
 
+## Prove Temporal Read Authorization On One Snapshot
+
+For payroll result access, resolve department assignment from protected historical
+employee/competence dependencies, not the current event or employee department.
+Require exactly one assignment in the half-open interval at competence day one and
+explicit current coverage for every target. Missing, overlapping or partial coverage
+must not authorize a filtered subset. Keep unavailable distinct internally from deny.
+
+Use the same physically attested REPEATABLE READ READ ONLY connection for grant,
+coverage and scalar assignments. JDBC flags alone are not proof of server settings.
+Do not acquire an independent grant connection, change isolation, or commit/rollback/
+close the caller's transaction. Attestation and queries share one monotonic budget;
+preserve smaller server limits and do not reserve pool acquisition time again.
+
+Bind the read fingerprint to the authenticated requester, binding, current grant and
+coverage, ordered complete dependencies and assignment identity/department/interval.
+Grant revision does not version assignment changes. Do not replace evaluation's
+global authorization fingerprint with this whole-set digest: unit execution recaptures
+one target and would no longer compare with the original multi-target evaluation.
+
+Prove the profile's full target limit, missing/multiple/partial assignments, two
+requesters, reduction/revocation, concurrent grant and assignment changes, bad physical
+transaction settings, bounded failure and sanitized outputs on PostgreSQL. A coherent
+host snapshot is not yet proof of sharing the Metadata reader snapshot or wiring a
+public API; keep that integration and mutation admission as explicit later gates.
+
 ## Adherence Inventory
 
 Before adding a property, endpoint, DTO, dependency override, test fixture, controller adapter, security exception, or example, ask what the platform already publishes and classify:
