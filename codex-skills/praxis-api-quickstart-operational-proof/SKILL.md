@@ -95,6 +95,36 @@ revalidation and concurrency proof across the target and its mutable parents.
 Keep that gate explicit; this capture increment does not certify granular access,
 public readback, or READY.
 
+## Stabilize Mutable Parent Dependencies During Admission
+
+For a new payroll mutation, compare the protected attribution tuple from the
+proposal with fresh evidence and scalar rows read under transaction-bound locks.
+Use the Metadata unit's operational connection: durable control/execution locks,
+then the historical payroll parent `FOR SHARE`, then the event `FOR UPDATE`.
+Keep both domain locks until domain, transition audit and receipt commit together.
+A parent `FOR KEY SHARE` does not protect non-key attribution fields; a parent
+`FOR UPDATE` unnecessarily conflicts with the FK `KEY SHARE` used by reparenting.
+Do not substitute a cached JPA parent for the locked scalar observation.
+
+Inventory every parent/child writer first, including generated mappers and delete
+paths. An update DTO that omits children must not clear an owning child collection
+through a generated merge mapper. Prove the real JPA path and preserve children
+explicitly where they are outside that update contract. Test with the production
+FK/NOT NULL behavior, not only unconstrained fixture tables. Provision the minimum
+row-lock privilege explicitly; PostgreSQL requires UPDATE privilege on at least
+one parent column in addition to the applicable SELECT privileges.
+
+Missing or malformed protected dependency facts fail closed. A changed tuple uses
+the existing `TARGET_DEPENDENCY_CHANGED` result, without a domain effect; distinguish
+its durable admission/decision record from a confirmed mutation receipt. Preserve deadline limits,
+rollback and receipt-first replay. Reapply the remaining unit budget on the bound
+connection immediately before each parent/child lock and refresh, preserving stricter
+database limits: governance reads may already have consumed most of the initial budget.
+Prove both concurrent writer orders, parent-lock
+timeout, FK reparent compatibility, stale JPA context and replay after parent change.
+This lock proof does not grant departments/fields/references or complete the public
+reader's authorization snapshot.
+
 ## Protected Bulk Execution Adoption
 
 For an internal host pilot that executes a captured proposal, use the Metadata
