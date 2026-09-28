@@ -114,6 +114,7 @@ Spring matcher order is policy. Review the complete ordered chain, not the one m
 - Keep `/actuator/env` and sensitive actuator diagnostics authenticated and non-exposed even when `read-open` is enabled.
 - `OPTIONS` is a CORS preflight concern, not authorization evidence. Test preflight separately from the actual credentialed request.
 - Do not route policy by URL labels, aliases, keyword checks, or ad hoc regexes. Use explicit Spring path patterns, methods, canonical `ApiPaths`, and property-backed policy decisions.
+- Scope authentication entry points with the same care as authorization matchers. In Spring Security, a lone `defaultAuthenticationEntryPointFor(entryPoint, matcher)` mapping can be promoted to the default entry point for the whole filter chain; do not assume its matcher will constrain it. When an entry point is meant for one surface, configure an explicit fallback that preserves the legacy response elsewhere and test both an in-scope anonymous request and an out-of-scope protected route/method.
 
 ## CORS And Contract Headers
 
