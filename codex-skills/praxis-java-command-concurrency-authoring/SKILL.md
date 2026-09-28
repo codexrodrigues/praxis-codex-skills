@@ -527,6 +527,31 @@ readable after proposal expiry. Config and the operational database do not share
 distributed transaction: Config is a bounded admission read, while the operational
 database atomically commits domain state, transition audit and Metadata receipt.
 
+If revocation or coverage changes must serialize with an already admitted domain mutation,
+an independent current-grant read is insufficient: it proves a decision but owns no lock in
+the Metadata unit's commit. Revalidate and retain the authorization fence inside the same
+bound writable transaction as domain state, audit and receipt. When the runtime must remain
+read-only on authorization tables and PostgreSQL `SELECT ... FOR SHARE` is not permitted by
+the deployed ACL, a narrowly scoped host `SECURITY DEFINER` function may acquire the row lock
+and return only an allow/deny verdict. Fix its `search_path`, schema-qualify objects, close
+default and direct `EXECUTE` grants to an explicit allowlist, and bind invocation to the
+expected runtime login identity so role inheritance cannot use it as another principal.
+Keep its migration owner separate from application identities. Do not use it to return
+grant, coverage or domain facts.
+When the migration system substitutes the runtime role both as a SQL identifier (`GRANT`/`REVOKE`)
+and as an identity value (`session_user`), use distinct identifier-quoted and SQL-literal-quoted
+placeholders; never interpolate the identifier form inside a string comparison. Prove the rendered
+migration with a PostgreSQL role name that requires identifier quoting.
+Define the linearization point: a revocation that wins the lock prevents admission; one that
+arrives after the unit owns it waits for that unit's commit, then blocks the next admission.
+This does not cancel an admitted unit retroactively or prove absence of deadlocks. Inventory
+all known writers (including operational SQL, jobs and other applications), establish a
+consistent lock order, and prove contention with two-connection PostgreSQL tests that observe
+the writer actually waiting on a lock. Also prove a revoked/reduced grant blocks the next
+unit, coverage/temporal scope cannot transfer a target, and receipt replay skips every
+mutation-only authorization callback. Record external writers and production ownership as
+adoption gates when they cannot be inspected in the development host.
+
 A lost COMMIT acknowledgement is not a domain failure. Stop later ordinals and reconcile
 through the durable receipt/control under lock. A valid earlier receipt remains readable
 after deadline and even when later execution state requires reconciliation. Replaying an
