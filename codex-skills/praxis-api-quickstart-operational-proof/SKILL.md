@@ -308,6 +308,35 @@ call count, usage origin, sanitized provider metadata, cancellation/fallback,
 and dedicated AI rate-limit evidence; do not treat a successful LLM response as
 the only connectivity or security proof.
 
+## Prove Persisted Department Coverage Before Public Readers
+
+For the host-owned operational grant, reuse its immutable identity and revision.
+Do not turn a global authority, demo scope, empty coverage or a JWT role into
+implicit department access. Inspect the operational migrations, grant repository,
+focused PostgreSQL proof and `docs/OPERATIONAL-GRANTS-CONTEXT.md` together.
+
+Before implementing an administrative writer, record the lock order, CAS revision,
+revocation behavior and effective privileges. Lock the grant before child DML;
+lock referenced departments in stable order before replacing coverage. A child
+trigger that updates the parent may invert the intended order. Read revision and
+coverage in one SQL statement or verified snapshot, not two READ COMMITTED reads.
+
+Prove no default grants, constrained references, stale-writer rejection, atomic
+revision/coverage/audit rollback and revocation without silent restoration. Runtime
+must not write authorization state or execute administrative functions; table
+privilege checks alone do not cover SECURITY DEFINER. Verify fixed search_path,
+qualified objects and effective EXECUTE privileges, including inherited grants.
+Record the authenticated database actor; in SECURITY DEFINER, current_user is the
+function owner, while session_user identifies the session login. An external
+approval reference records provenance, not enforcement of human approval.
+
+Keep these guarantees separate: persisted coverage; temporal department resolution
+for the historical employee/competence; and authorization of the complete result
+set in the Metadata reader snapshot. Grant revision does not version assignments.
+Do not claim granular enforcement, safe public pages or READY from persistence
+alone. Update fixtures through the official migration lane and preserve the
+independent current-grant connection used by mutation admission.
+
 ## Adherence Inventory
 
 Before adding a property, endpoint, DTO, dependency override, test fixture, controller adapter, security exception, or example, ask what the platform already publishes and classify:
