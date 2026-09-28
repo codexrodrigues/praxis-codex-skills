@@ -288,6 +288,54 @@ separate host contract and redaction decision. Require PostgreSQL proof and inde
 review for this composition; integration, publication and adoption remain separate
 gates.
 
+### Compose Authorized Execution Result Pages (G3c-b)
+
+Reuse G3c-a protected execution/proposal correlation helpers and the internal RS4 page reader; do not
+duplicate the keyset, fixed-watermark or byte-budget rules in the RS4 section below.
+The public Java facade accepts only authenticated subject, execution UUID, size (1–200) and optional
+continuation, with trusted server bindings for infrastructure, resource, provider and
+cursor configuration. Decode with purpose `EXECUTION_RESULTS` before protected lookup;
+on every live page perform global authorization, correlate the execution's input and
+evaluation fingerprints to the decoded historical proposal, then authorize every
+historical target from the host's current authoritative grant/coverage source. Full-set
+authorization and RS4 certification must share one physical `REPEATABLE READ READ ONLY`
+connection/snapshot; use the connection-taking RS4 seam, never nest its transaction or
+run RS3's full scan to serve a page.
+
+Bind proposal/execution, creator scope, current requester/provider fingerprint,
+position, size, fixed `watermarkExclusive`, `execution-results-v1` projection revision,
+and original issue/expiry times in the authenticated cursor. Keep the watermark, size
+and expiry fixed across continuation; initial watermark zero returns an empty page with
+no cursor. A new read may observe a later STOPPED suffix, but an open window never widens
+across ACK, cancellation, or reconciliation. Project only certified wire identity and
+status. CONFIRMED/UNCHANGED have no diagnostics; DENIED/INVALID/CONFLICT/NOT_PROCESSED
+use closed generic diagnostics by status, without raw reason, cause, version, facts,
+parameters, target pointers or extra identifiers. This is execution evidence, not an
+evaluation preview: do not require a V9 preview association.
+
+For live executions, mismatched requester/scope/fingerprint remains
+`NOT_FOUND_OR_DENIED`; after full authorization, expiry/size/projector mismatch is
+`PRECONDITION_FAILED`, impossible claims normalize to a negative result, an old
+watermark beyond the current certified prefix is `UNAVAILABLE`, and post-auth RS4 item
+corruption is `UNAVAILABLE`. A purged tombstone is a separate minimal authorization:
+the historical creator plus current global grant may receive payload-free `GONE` after
+the scoped digest check. With a cursor, bind purpose, execution, namespace/resource/
+operation and requester equal to its creator; purged data cannot revalidate proposal ID
+or target authorization fingerprint. A delegated cursor copied to the creator may
+therefore yield the same empty `GONE` the creator can obtain without it. Claim full
+anti-copy protection only for live pages, not this post-purge exception. Enforce the
+three-second monotonic publication deadline after transaction completion. Before
+publishing, verify the continuation token is still sendable: an initially issued `next`
+token already expired at completion is `UNAVAILABLE`; an expired continuation is
+`PRECONDITION_FAILED`. Preserve the original expiry and never renew TTL.
+
+If Quickstart hosts issuance, reuse its G3b-O durable budget and the same immutable
+`BulkReadCursorProperties.Provisioned` key-material snapshot and ledger. Count possible
+cursor issuance against the shared material quota regardless of AEAD purpose; do not
+create an `EXECUTION_RESULTS`-specific quota. This Java facade adds no HTTP route,
+`READY`, capability, or public host adoption. Require PostgreSQL proof and independent
+review; publication, adoption and future HTTP mapping remain separate gates.
+
 ## Page Internal Durable Execution Results Without Widening The Window
 
 The RS4 `BulkExecutionResultsReader` is integrated in Metadata source at merge
