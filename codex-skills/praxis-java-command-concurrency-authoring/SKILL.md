@@ -924,8 +924,9 @@ Prove the same-snapshot unconsumed-proposal expiry race, cross-scope absence, bl
 revoked read grant and serialization boundary against real PostgreSQL. No
 HTTP/cursor/capability or `READY` follows from this reader alone.
 
-The first EventosFolha approval projector is a host-owned candidate, not an
-implemented or accepted RS1 facade. Its public `redactedIntent` is deliberately
+The EventosFolha approval projector owns only the domain intent projection;
+the canonical RS1 facade composes authorization and the proposal DTO. Its
+`redactedIntent` is deliberately
 only `{selection:{mode:"EXPLICIT",targetCount:<certified full historical count>}}`.
 The count must match the complete immutable certified target set; never compute
 it from an authorized subset. The projector accepts only its exact historical
@@ -941,15 +942,51 @@ closed—do not substitute `{}` or a reconstructed preview. No permission to
 reveal parameters, IDs/versions, facts, plans, business values or policy
 references follows from `PAYROLL_APPROVE` or from hiding a field in this
 projection. The projector emits only `redactedIntent`; it does not compose
-evidence or diagnostics. A future P1 composition must omit evidence unless it
-has an explicit evidence allowlist, and may derive diagnostics only from the
+evidence or diagnostics. The RS1 facade uses empty evidence under the current non-disclosure policy
+and derives diagnostics only from the
 persisted allowlisted preview projection, never protected message, target or
-metadata values. These rules are not implemented by the projector. A retained
+metadata values. These rules belong to the facade, not the intent projector. A retained
 expired proposal maps to 410 only after current full-set authorization; removed
 proposals remain 404. The projector itself makes neither decision. Authorized
-facade wiring, HTTP, expiry/auth behavior and PostgreSQL proof remain separate
-pending gates; this work does not expose an endpoint, certify `READY`, or
+facade adoption and HTTP remain separate gates; the facade must retain its
+PostgreSQL expiry/auth proof. This work does not expose an endpoint, certify `READY`, or
 complete the P1 protocol.
+
+For the canonical authorized RS1 composition, inspect
+`BulkAuthorizedProposalReader`, `BulkProposalProjectionProvider` and the
+concrete host projection provider together. Bind the pure projection provider
+by exact resource/confirmation-operation and revision; it supplies only
+redacted intent and does not authorize or query current domain/Config state.
+Do not compose through `find` plus a separate `findEvaluation` transaction.
+Global grant, protected lookup, full historical target authorization and public
+projection must share the Metadata-owned REPEATABLE READ read-only snapshot.
+Expired retained proposals are GONE only after full authorization; a missing
+or removed proposal has no reconstructed execution tombstone.
+
+Validate the complete persisted V11 preview with bounded internal pages,
+matching each ordinal, wire identity, decision and diagnostic category/code
+sequence to typed historical eligibility. Public text comes from the persisted
+allowlist. Aggregate at most64 distinct category/code/text triples without
+truncation; target and metadata stay empty, and evidence remains empty under
+this cut's explicit non-disclosure policy. Legacy or unavailable/incompatible
+projection after full authorization is UNAVAILABLE, not an invented BLOCKED
+proposal or the RS2 preview409. Pre-authorization corruption stays the same
+non-enumerating absence as missing/denied.
+
+Preserve both the monotonic3s publication budget and conservative20MiB total
+preview selected-byte limit, including repeated page headers/lookahead. The
+protected lookup retains its own codec/storage byte bounds and is not included
+in this preview budget. Constrain SQL
+by remaining time before every page and recheck after transaction completion.
+Discard COMPLETE if proposal validity expires before publication; do not turn
+403/404 into GONE. These limits can deny availability and are not a corporate
+SLA, total process-memory limit or promise of absolute query cancellation.
+Prove paginated aggregation, semantic corruption, decoded legacy, full-set
+revocation/retention in one snapshot, expiry and late completion with real
+PostgreSQL before accepting the facade. Validate the concrete host against the
+exact controlled candidate artifact, then publish/adopt only at the authorized
+release milestone. A Java reader and bean wiring do not expose an HTTP route,
+capability or READY, and do not close the backend gate for Angular.
 
 Migration V2 preserves V1, adds the immediate composite FK and immutable companion table;
 runtime needs SELECT/INSERT on both. One bounded payload (8 MiB) is not proof of efficient
