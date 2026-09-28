@@ -593,3 +593,46 @@ released artifact, and do not claim statuses or scenarios unless that layer's te
 demonstrates them. A candidate can pass technical review without being published or
 adopted. Do not infer execution, tombstone, `READY`, Angular, or RS1 coverage from these
 read tests.
+
+## Prove Host Execution Summary and Result HTTP Reads (G3c-HTTP)
+
+Use the adopted Metadata G3c-a/b readers behind the existing resource's two planned
+bodyless GETs: `/api/human-resources/eventos-folha/bulk/executions/{executionId}`
+(`human-resources.eventos-folha.bulk-execution-read`) and its `/results` child
+(`human-resources.eventos-folha.bulk-execution-results`). Before treating these as
+adopted behavior, inspect the actual pinned artifact, host controller, `ApiPaths`,
+security matchers and named OpenAPI document; a candidate controller or guidance
+does not establish host HTTP acceptance or publication.
+
+Prove the closed status contract: 200 live summary/results; 400 invalid cursor/size; 403 global
+denial; 404 indistinguishable absence, cross-scope or post-lookup denial; 410 only for
+the historical creator with a current global grant and no execution/item payload;
+412 stale continuation after full authorization; 503 generic unavailability. There
+is no preview 409. Both endpoints return `Cache-Control: no-store` and canonical
+`RestApiResponse` envelopes. The summary has no cursor and reserves no budget. Results
+reserve once in the shared G3b-O key-material ledger before core access, even when the
+page has no continuation; never refund, renew the cursor TTL, or create a separate
+AEAD-purpose quota. After the outer reservation, the core decodes the
+`EXECUTION_RESULTS` purpose before protected SQL or authorization, and checks global
+authorization before protected lookup. Check Integer wire identity as `int32`, bodyless query parameters,
+the exact operation IDs and `CanonicalOperationResolver` resource/method binding.
+
+Exercise the routes with a real authenticated principal and PostgreSQL-backed reader.
+Explicit GET/HEAD authorization must beat `readOpen`; anonymous requests must remain
+denied. Prove live full-set reauthorization and requester-bound continuation, invalid
+token behavior, expiry/size preconditions, current revocation, protected negatives,
+reservation committed before the reader and tombstone purge/copy boundaries. A tombstone
+returns only creator-authorized payload-free 410; delegates and unknown/cross-scope IDs
+receive the same 404. Since purge removes target evidence, do not promise full cursor
+anti-copy protection in that tombstone exception. Keep malformed path/query handling
+non-enumerating and assert no cacheable response or protected diagnostics.
+
+Only after the host HTTP/OpenAPI/PostgreSQL proof is accepted, document the routes in
+Quickstart's README and add manual reference-only corpus requests with the verified
+controller as source. Mark each manifest entry `referenceOnly: true`, `public: false`,
+`authRequired: true`, and `llmOperational: false`; do not add credentials, real
+execution IDs, fabricated response payloads, or expose these examples in
+`LLM_SURFACE.md`. Run the corpus's official manifest validator after edits; it checks
+file references and generated LLM surface parity. Do not claim `READY`,
+published host adoption, or Angular readiness from route-level success; the remaining
+bulk lifecycle and later gates are separate.
