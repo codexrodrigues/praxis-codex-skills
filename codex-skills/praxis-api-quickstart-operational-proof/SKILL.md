@@ -412,6 +412,51 @@ Do not choose resource, schema, action, capability, security policy, domain deci
 - Use `praxis-http-examples-contract-surfaces` and `praxis-http-examples-llm-smoke` for the external executable corpus.
 
 
+## Compose An Authorized Bulk Execution Summary (G3c-a)
+
+Before adding any host surface, inspect Metadata's `BulkAuthorizedExecutionReader`,
+`BulkExecutionSummary`, and G3c-a in `docs/spec/BULK-H1B-READ-MODEL.md`. The public SDK
+reader is a server-side composition, not an HTTP endpoint; its protected lookup helpers
+remain package-private. Bind a trusted resource key, confirmation operation and host
+authorization provider; accept only the authenticated subject and execution UUID from
+the request. Use one Metadata-owned `REPEATABLE READ READ ONLY`
+physical snapshot for global authorization, execution/proposal lookup, full current
+authorization of every historical target, the certified RS3 summary and projection.
+Do not add another reader transaction, reconstruct proposal metadata or execution
+results from current descriptors/domain rows, or reduce authorization to the summary
+fields. The host authorization provider must consult its current authoritative
+grant/coverage source within that same snapshot.
+
+For a retained execution, project metadata operation/mode/atomicity only from the
+durable validated intent; project status, totals and persisted timestamps only from
+the certified RS3 summary. Preserve the confirmed prefix and pending-ACK boundary.
+Use the fixed sanitized STOPPED diagnostic; never expose its internal reason, protected
+facts, target identities, arbitrary metadata or stored causes. Retention after execution
+expiry permits reads only while current authorization and retained evidence still allow
+them.
+
+If there is no live execution, the reader uses the scoped historical tombstone digest:
+only the matching historical creator after the current global grant may observe its
+internal `GONE`; delegate, other scope and unknown ID must remain indistinguishable
+`NOT_FOUND_OR_DENIED`. Keep global denial/unavailability before protected lookup;
+keep proposal/lookup/decode/correlation failure before full target authorization
+non-enumerating; map summary corruption after authorization and expired read budget to
+unavailable. Scope identities must be strict nonblank UTF-8 with NUL and
+malformed-surrogate input rejected before SQL. After decoding the protected proposal,
+compare the locator's input and evaluation fingerprints with the decoded proposal's
+snapshot and evaluation fingerprints before constructing the target list or invoking
+authorization; mismatch stays non-enumerating.
+
+Require PostgreSQL proof and independent review for the composition, including
+same-snapshot authorization and summary,
+creator-versus-delegate tombstone behavior, unknown/cross-scope non-enumeration,
+pre-authorization storage failure, post-authorization summary corruption, strict UTF-8,
+sanitized STOPPED projection and deadline enforcement after transaction completion.
+Integration, publication and adoption remain separate gates. The DTO/route/security/OpenAPI
+contract and redaction review are also separate host gates. This
+cut adds no HTTP route, RS4 item results/cursor, worker, capability or `READY`; leave
+those decisions closed until separately specified and proved.
+
 ## Prove The Authorized Bulk Read Consumer
 
 Follow `praxis-java-command-concurrency-authoring` for the G3b proposal-results
