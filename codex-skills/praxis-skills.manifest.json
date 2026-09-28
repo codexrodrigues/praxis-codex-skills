@@ -2488,8 +2488,8 @@
                                             "praxis-config-agentic-authoring-streaming",
                                             "praxis-metadata-schema-contracts"
                                         ],
-                       "skillMdSha256":  "B65AEAD7207ACD5AFE3AB161FAC1423DD1682EC0B0A763CB06EC4BFE71BF5518",
-                       "treeSha256":  "BF0925567E1061C2E2E1B6143997F019DB28E6C39351D071F1C06E896547A396"
+                       "skillMdSha256":  "B88944FBB549992D8CEF57D5CB36DDC1CAF65E80F0C054AC3DAFF9CCA6D084F7",
+                       "treeSha256":  "D638056D4D352CC8AEF98B654DFA3A3716E1E3E051490492B949BF3A7DD97D44"
                    },
                    {
                        "name":  "praxis-api-quickstart-domain-pilots",
