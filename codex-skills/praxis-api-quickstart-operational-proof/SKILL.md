@@ -457,6 +457,39 @@ contract and redaction review are also separate host gates. This
 cut adds no HTTP route, RS4 item results/cursor, worker, capability or `READY`; leave
 those decisions closed until separately specified and proved.
 
+## Adopt Authorized Execution Result Pages (G3c-b)
+
+For a future Quickstart consumer, follow the G3c-b section in
+`praxis-java-command-concurrency-authoring` and inspect the Metadata facade, G3c-a
+protected execution/proposal correlation helpers, and connection-taking RS4 seam. Do
+not call the G3c-a summary reader as a helper that opens a separate transaction. The
+facade accepts authenticated subject, execution UUID, size and opaque continuation only.
+The outer Quickstart G3b-O issuance reservation happens first. Inside the core reader,
+decode the `EXECUTION_RESULTS` purpose before protected SQL or authorization; global
+authorization precedes protected lookup. On live pages,
+correlate execution/proposal fingerprints and reauthorize the full historical target
+set from the current authoritative source in the same physical RR/RO connection that
+certifies the RS4 page. Do not nest a second reader transaction or perform RS3's full
+scan for a page.
+
+Preserve the cursor's execution/scope/requester fingerprint, fixed watermark, size,
+projector revision and original expiry; initial watermark zero has no next cursor.
+Project only certified wire identity and status with fixed generic diagnostics by
+status, never raw reason or protected details. Reuse G3b-O's shared durable issuance
+budget and the same `BulkReadCursorProperties.Provisioned` key-material snapshot;
+AEAD purpose does not create a new quota. Apply the G3c-b tombstone exception exactly:
+creator plus current global grant may get payload-free GONE, and a delegated token copied
+to the creator may produce that same minimal result. Do not claim live-page anti-copy
+guarantees for purged executions; no target fingerprint remains to validate.
+
+After transaction completion, verify the continuation is still sendable: if the initial
+page's newly issued token expired before publication, return `UNAVAILABLE`; an expired
+continuation returns `PRECONDITION_FAILED`. Preserve original expiry and never renew TTL.
+
+Require PostgreSQL proof and independent review before adoption. This facade adds no
+HTTP route or `READY`; publication, host adoption and any future HTTP status mapping
+remain separate gates.
+
 ## Prove The Authorized Bulk Read Consumer
 
 Follow `praxis-java-command-concurrency-authoring` for the G3b proposal-results
