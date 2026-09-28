@@ -442,10 +442,31 @@ after transaction completion before returning the page. Configure positive TTL u
 the new key across every replica before changing the active key and retain old keys
 through the maximum issued-token lifetime. A test constructing a new reader with a
 rotated key set proves reader reconstruction in the same process; do not claim that an
-OS process restart was tested. Before enabling issuance, establish a fleet-wide
-operational rotation policy before 2^32 aggregate emissions per key and observability
-of issuance/rotation across the fleet without logging tokens or secrets; a stateless
-codec alone does not prove this gate.
+OS process restart was tested. The Quickstart host implementation protects issuance
+around the stateless codec: reserve a
+durable attempt in one ledger shared by that database authority and fleet before every
+reader call. This is host operational policy, not a universal Metadata consumer
+contract. Commit in its own `REQUIRES_NEW` transaction before the reader's single RR/RO
+authorization/projection snapshot. Key the lifetime quota by SHA-256 of the decoded
+32-byte AES material, not `kid`, and cap it at 2^31 reservations per material. Keep
+reader configuration and budget digest derived from the same immutable
+`BulkReadCursorProperties.Provisioned` key-material snapshot; never derive them
+independently from mutable properties.
+the material and ledger exclusive to this host database authority and fleet; do not
+reuse them across services, environments, or independent databases. Authorization,
+protected evaluation and page projection still share one immutable reader snapshot. The
+reservation precedes cursor decoding/core protected SQL and is never refunded, including
+outer rollback, uncertain commit, invalid or denied reads, and final pages. Missing,
+exhausted, expired, or unavailable budget returns generic 503
+before the reader. The absolute `issuance_not_after` gates reservation time, not later
+encryption; the core read deadline begins inside the reader, so include host pool
+acquisition and reservation commit separately in end-to-end timing. On database restore,
+clone, or known/uncertain loss of committed ledger state, provision fresh key material
+before reopening issuance; never reset/reuse the old material's quota. Emit only a
+bounded metric outcome (`reserved`, `denied`, `unavailable`) with no key, digest, user,
+proposal, token, claim, nonce or fingerprint tags. These controls exist in the candidate
+implementation, but candidate tests do not prove real-fleet provisioning, monitoring,
+alerts or runbook exercise; neither publication nor adoption is implied.
 
 The host adapter must verify the bound `ConnectionHolder` before obtaining its
 connection and join the exact physical connection used by the operational transaction;
@@ -464,7 +485,9 @@ proposal's `redactedIntent` remains a distinct RS1 concern. Require `Cache-Contr
 no-store` and no domain mutation.
 
 Prove the deliberate public matrix and compare negative responses for non-enumeration:
-invalid cursor 400 before SQL; global denial 403; global-authorizer failure 503 before
+after a successful issuance reservation, an invalid cursor is 400 before protected
+SQL; an unavailable/exhausted/expired budget returns 503 before cursor decoding or
+reader entry. Then prove global denial 403; global-authorizer failure 503 before
 lookup; pre-full-authorization proposal-specific storage failure, absence, incomplete
 coverage, copied requester/scope/proposal and changed fingerprint as indistinguishable
 404; authorized live proposal with expired or incompatible cursor as 412; unavailable
@@ -476,7 +499,13 @@ Use the real PostgreSQL/HTTP fixture in `EventosFolhaApprovalEvaluationHttpTest`
 delegated access, paging, requester-copied cursor, revoked/reduced grants, privacy and
 OpenAPI. Keep `SecurityConfigBulkProposalResultsPolicyTest` and
 `BulkReadCursorPropertiesTest` focused on matcher and key/TTL configuration behavior;
-they do not replace the end-to-end proof. Metadata's
+they do not replace the end-to-end proof. The host's
+`durableCursorReservationIsCommittedBeforeReadAndNeverRefunded` covers route ordering,
+including terminal-page consumption and fail-closed behavior when reservation authority
+is unavailable; `BulkCursorIssuanceBudgetPostgresTest` covers cross-instance durable
+quota, rollback/uncertain commit, expiry, bounded telemetry and runtime privileges.
+Neither test proves provisioning, alerts or recovery procedures in a deployed fleet.
+Metadata's
 `BulkAuthorizedProposalResultsContinuationPostgresTest` proves same-snapshot bounded
 continuation, scope reauthorization, expiry and same-process reader reconstruction.
 Re-run the exact host tests against the chosen candidate or released artifact and
