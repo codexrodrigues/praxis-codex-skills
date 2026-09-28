@@ -250,6 +250,44 @@ fixture reruns. Repeat the focused affected proofs when this boundary changes.
 The `BulkExecution` public DTO, HTTP handler, release and host
 authorization/redaction remain separate gates.
 
+### Compose an Authorized Execution Summary (G3c-a)
+
+The public SDK `BulkAuthorizedExecutionReader` is a server-side composition, not an
+HTTP surface. It composes a trusted resource key, confirmation operation and
+authorization provider; its protected lookup helpers remain package-private. Callers
+supply only the authenticated subject and execution UUID. Use its single Metadata-owned `REPEATABLE READ READ ONLY`
+snapshot for global authorization, retained-execution lookup, protected proposal and
+full current authorization of every historical target, then RS3 `summarizeConsistent`
+and projection. These observations must share the same physical connection and snapshot;
+do not add a second reader transaction, reconstruct proposal metadata or execution
+results from current descriptors/domain rows, or authorize only the displayed summary.
+The host authorization provider must consult its current authoritative grant/coverage
+source within the same snapshot. Derive status/totals/timestamps only from the
+certified RS3 summary and durable validated intent. Preserve the certified prefix; do
+not count pending ACK receipts as confirmed, and map `STOPPED`'s internal reason to its
+fixed sanitized diagnostic rather than returning a stored cause.
+
+For an absent live execution, use the scoped historical tombstone digest. Only its
+matching creator with current global grant can observe `GONE`; delegated requesters,
+other scope and unknown IDs share `NOT_FOUND_OR_DENIED`. Before full set authorization,
+lookup/decode/correlation and proposal-specific storage failures remain non-enumerating
+`NOT_FOUND_OR_DENIED`; after successful authorization, summary corruption or deadline
+expiry is `UNAVAILABLE`. Global denial/unavailability precede protected lookup. Validate
+namespace, resource, operation and authenticated subject as nonblank strict UTF-8 scope
+text with no NUL before SQL; reject malformed surrogate input, never let replacement
+encoding alias a different identity. After decoding the protected proposal, compare
+the execution locator's input and evaluation fingerprints with the decoded proposal's
+snapshot and evaluation fingerprints before building targets or calling `authorize`;
+mismatch remains `NOT_FOUND_OR_DENIED`. Preserve execution-retention
+reads past execution expiry only while authorization and retained evidence still permit
+them.
+
+This composition creates no route, result-item endpoint/cursor, RS4 behavior, worker,
+capability or `READY`; do not treat internal `GONE` as a public HTTP status before a
+separate host contract and redaction decision. Require PostgreSQL proof and independent
+review for this composition; integration, publication and adoption remain separate
+gates.
+
 ## Page Internal Durable Execution Results Without Widening The Window
 
 The RS4 `BulkExecutionResultsReader` is integrated in Metadata source at merge
