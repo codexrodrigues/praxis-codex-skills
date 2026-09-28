@@ -862,9 +862,13 @@ all receive deliberate safe behavior.
 For G3a, use the Metadata-owned `BulkAuthorizedProposalResultsReader` Java
 first-page composition and the concrete host `BulkReadAuthorizationProvider`.
 Verify the artifact revision first: rc.136 does not contain this new API.
-Use a distinct local candidate coordinate and an isolated Maven repository for
-consumer proof; never replace published rc.136 bytes with an unpublished build.
-A source-only host change is not an adoptable release until its dependency resolves.
+When the required Metadata artifact is not yet published, use a distinct local
+candidate coordinate, an isolated Maven repository and an explicit host version
+override for consumer proof; never replace bytes of a published coordinate with an
+unpublished build. After the artifact is published, pin that exact released
+`praxis.core.version`, resolve it in an isolated Maven repository and remove the
+candidate override. A source-only host change is not an adoptable release until its
+dependency resolves from the intended repository.
 
 Fix resource and operation through trusted server wiring. Do not add empty MVC
 handlers or readiness registrations merely to exercise this Java boundary.
