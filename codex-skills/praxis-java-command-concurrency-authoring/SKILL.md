@@ -909,10 +909,31 @@ default or ephemeral key and never expose or log key material or tokens. Provisi
 new key on every replica before switching the active key ID, and retain old keys until
 the maximum lifetime of their issued tokens has elapsed. Tests that construct a new
 reader with the rotated key set prove reader reconstruction in one process, not an
-operating-system process restart. Before enabling issuance, establish a fleet-wide
-operational rotation policy before 2^32 aggregate emissions per key and observability
-of issuance/rotation across the fleet without logging tokens or secrets; a stateless
-codec alone does not prove this gate.
+operating-system process restart. Because the Metadata codec is stateless, the host
+must protect issuance. The Quickstart host implementation reserves each possible
+issuance against one durable ledger shared by exactly that database authority and
+fleet; this is host operational policy, not a universal Metadata consumer contract.
+Do not share that key material or ledger with another service, environment, or
+independent database authority. Commit the reservation in its own `REQUIRES_NEW`
+transaction before the reader's single RR/RO snapshot; authorization, protected
+evaluation and page projection must share that immutable reader snapshot. Bind its
+lifetime quota to SHA-256 of the
+decoded 32-byte key material (not `kid`); cap it at 2^31 reservations per key material.
+Build reader configuration and budget digest from the same immutable
+`BulkReadCursorProperties.Provisioned` key-material snapshot; do not derive them
+independently from mutable properties.
+The reservation precedes cursor decoding and core protected SQL, and is never refunded, including
+outer rollback, uncertain commit, invalid/denied reads, or final pages. An absent,
+exhausted, expired or unavailable budget returns generic 503 before the reader. The
+absolute reservation deadline limits admission, not subsequent encryption; the core
+read deadline starts later, so account separately for host pool acquisition and
+reservation commit. The host's candidate runbook uses a protected shared operational
+database ledger and a bounded `outcome` metric (`reserved`, `denied`, `unavailable`)
+without key, digest, user, proposal or token tags. Database restore/clone or lost/uncertain
+ledger commits require fresh cryptographic key material before issuance resumes. These
+controls are implemented in the candidate, but do not prove fleet provisioning,
+monitoring/alerts or an operational exercise; record those and released-artifact
+adoption separately.
 
 Keep the public item contract exact: `BulkProposalItemResult` supports only String or
 Integer wire identities; the concrete host API must prove its actual Integer identity
@@ -924,8 +945,10 @@ parameters, or generic before/after values. RS1 `BulkProposal.redactedIntent` is
 separate unresolved projection; do not imply this RS2 route exposes it.
 
 Use the public status matrix deliberately: malformed/authentication-invalid cursors are
-400 before SQL; global denial is 403 and global-authorizer unavailability is 503 before
-proposal lookup. Proposal-specific storage failure before full authorization, absence,
+400 before protected SQL in the core when issuance reservation succeeds; if the host budget is unavailable,
+exhausted or expired, its 503 gate precedes cursor decoding and the reader. Global
+denial is 403 and global-authorizer unavailability is 503 before proposal lookup.
+Proposal-specific storage failure before full authorization, absence,
 incomplete set, other requester/scope/proposal or changed effective fingerprint all
 produce indistinguishable 404 responses without page data. Only after the proposal is
 live and the complete set is authorized may expiry or incompatible cursor shape/size
