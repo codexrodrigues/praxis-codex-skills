@@ -282,6 +282,51 @@ For metadata integration, prove the chain:
 
 `@ApiResource`/path -> OpenAPI group -> `/schemas/catalog` -> `/schemas/filtered` -> `x-ui`/schema headers -> actions/surfaces/capabilities/links -> downstream consumer evidence.
 
+When a resource controller delegates route behavior to an application handler, keep Spring MVC
+mapping and OpenAPI parameter annotations on the actual mapped controller method. An annotation on
+the delegated handler does not describe the HTTP route to Springdoc. Verify the rendered OpenAPI
+group for path parameter names, requiredness and formats (including UUIDs), and for each mapped
+error response; do not weaken the HTTP/OpenAPI assertion to accommodate missing metadata. When a
+confirmation can return `202 Accepted`, document its `Location` response header as the tracking URI
+and test the actual header/body pair against the production mapping; describe the execution status
+as observed rather than assuming that a lost acknowledgement already changed durable status to a
+reconciliation-required state.
+
+For a bulk-operation readiness/composition proof, use the production `ActionDefinitionRegistry`
+discovered from the real `@WorkflowAction` controller. A hand-built or mocked action catalog can
+prove a small isolated rule, but cannot prove the host's canonical composition. Assert that the
+action points to the exact confirmation `CanonicalOperationRef` and that its schema links equal the
+resolver's action projection, including resource `idField` and `readOnly=false`; these are not the
+generic schema references for the operation. Keep `ActionDefinition.group` (the `@ApiGroup`
+catalog/business category) distinct from `CanonicalOperationRef.group` (the exact OpenAPI document
+group). The action operation identity must still match exactly, and the seven bulk operation
+references must still resolve from one strict group snapshot.
+
+Do not flatten, strip, or replace an unsupported schema composition such as `oneOf` in the host to
+make readiness pass. Keep the compiler fail-closed, identify the affected role and operation ID,
+then inspect the canonical OpenAPI fragment and its DTO/annotations at the owning source. The
+descriptor fingerprint must include the action schema projections and catalog group so changes to
+either invalidate a prior structural revision.
+
+When adapting a canonical bulk request into a host/provider DTO, preserve nullable optional members
+exactly as the public contract defines them. In particular, do not collapse omitted `excludedIds`
+into an empty list unless the contract specifies that equivalence; handle `null` before iterating.
+Prove the real HTTP request with optional members omitted as well as explicitly present when both
+forms are supported.
+
+When a real `@WorkflowAction` must remain registered for structural composition but is
+operationally unavailable until a durable bulk lifecycle is ready, project that state through
+the existing `ActionAvailabilityRule` path. Scope the rule to the exact resource key and
+operation identity; use the server-owned namespace and current `BulkOperationLifecycle` readiness
+check. Fail closed when the opt-in lifecycle/binding is absent or readiness is uncomposed,
+suspended, stale, or otherwise unavailable. Keep the action registered, apply the same existing
+availability projection to `/schemas/actions` and resource capabilities, and recheck readiness before
+admitting a new proposal or a fresh domain mutation. Discovery availability is a hint, never
+authorization or a reservation; do not cache it or create a parallel capability/flag. Preserve
+receipt-before-gate replay of already-confirmed effects and cooperative cancellation of an existing
+execution during suspension. Prove the real discovery and capability responses before/after publish,
+suspend and external cache refresh, plus the opt-in-off case.
+
 For hosted option-source integration, prove the chain:
 
 `canonical descriptor/provider -> OpenAPI generic route -> /schemas/filtered for option-source endpoints -> x-ui.optionSource metadata -> authenticated filter/by-ids HTTP execution -> stable OptionDTO/entity metadata -> no provider class or execution context leaked in public docs`.
@@ -329,6 +374,12 @@ qualified objects and effective EXECUTE privileges, including inherited grants.
 Record the authenticated database actor; in SECURITY DEFINER, current_user is the
 function owner, while session_user identifies the session login. An external
 approval reference records provenance, not enforcement of human approval.
+
+PostgreSQL fixtures must seed or change coverage through the migration-owned writer
+function rather than direct child-table DML. Follow its compare-and-swap `row_version`
+through every change: a changed replacement advances the expected version for the next
+fixture mutation, while an identical replacement is an idempotent no-op. Otherwise a stale
+fixture can fail before the test reaches the intended revocation or reduction assertion.
 
 Keep these guarantees separate: persisted coverage; temporal department resolution
 for the historical employee/competence; and authorization of the complete result

@@ -109,6 +109,7 @@ Spring matcher order is policy. Review the complete ordered chain, not the one m
 
 - Start from deny/authenticated-by-default; document every `permitAll`, method exception, and public POST.
 - `read-open` is a demonstration policy, not generic authorization. Scope it by HTTP method and canonical endpoint class; public filter/options/locate/export/stats calls need explicit data-sensitivity and rate-limit evidence.
+- When a governed mutation shares a path pattern with a broad demo exception (for example, a POST action wildcard), place the explicit mutation matcher first. Require a non-anonymous authenticated principal and apply the global write kill switch before the application performs current-grant and resource-scope authorization; do not let the demo exception bypass either gate. Prove anonymous requests receive the canonical 401 and authenticated requests under the write-disabled policy receive 403 on every governed mutation route.
 - `write-disabled` deny rules interact with earlier exceptions. Prove which public query/config/workflow calls intentionally win and which writes remain denied.
 - `schemasAggregatorEnabled` may expose only the metadata routes required for the structural contract. It does not make all metadata or actuator routes public.
 - Keep `/actuator/env` and sensitive actuator diagnostics authenticated and non-exposed even when `read-open` is enabled.
