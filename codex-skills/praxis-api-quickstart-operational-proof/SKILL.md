@@ -68,6 +68,18 @@ restricted runtime credentials and safe SQL lock failure on real PostgreSQL. A
 persisted snapshot or equivalent recapture is not READY or execution; keep migration
 identity separate and leave uncomposed public capabilities unavailable.
 
+Before inserting a proposal or consuming any proposal/quota allocation, authorize the
+entire explicit target set against the current scoped grant and temporal assignments.
+Read the target facts and make that complete authorization decision in one consistent
+read-only database snapshot. A target that is absent and one outside current scope must
+produce the same redacted response, and neither may leave a proposal, evaluation,
+manifest, preview or quota allocation. Do not rely on a later proposal/result reader to
+make an already-persisted capture safe. A comparison-only revalidation of a creator-owned
+proposal may return only whether evidence still matches and must not persist new evidence,
+consume quota or authorize execution. If it refreshes/persists a proposal or allocates
+quota, it is a new capture and must perform the same full-set authorization first;
+execution still rechecks current governance under each unit's lock.
+
 ## Preserve Historical Authorization Dependencies
 
 Before composing historical bulk readers, trace target identity through mutable
@@ -170,14 +182,17 @@ unstarted suffix. A target-specific state/version conflict remains a durable
 per-item result. Keep reservation/recovery probes test-only until the canonical
 public confirmation protocol and consumer contract are released together.
 
-Until the production handlers and their complete lifecycle are proved against the published
-starter artifacts, keep every host README, security/migration guide, and runtime smoke explicit
-that the legacy bulk action is absent from discovery, capabilities, and OpenAPI. A Config
-`approval_policy` materialization alone is not host enforcement. Smoke scripts may verify that
-materialization and report host execution as pending, but must not call the retired action or
-claim a runtime approval-policy gate passed. The default/automatic mode should warn honestly;
-an explicitly required host-enforcement gate should fail with the S4c prerequisite. Include a
-negative action-discovery assertion in the host proof.
+Until the durable proposal protocol and its complete lifecycle are proved against the published
+starter artifacts, distinguish it from any legacy direct bulk action that exists in the base
+host. Inspect the current controller, action annotations, discovery and OpenAPI before making
+availability claims: do not document a legacy route as absent when the integrated host still
+exposes it. State explicitly that a direct legacy command is not the persisted proposal/receipt
+protocol, and that a candidate replacement is not integrated or deployed. A Config
+`approval_policy` materialization alone does not prove that the new durable protocol is live.
+Smoke scripts may verify that materialization and report the new protocol as pending, but must
+not claim its host gate passed. When a change actually removes or disables the legacy action,
+prove that removal in its own discovery/capability/OpenAPI contract test; until then, test and
+document the behavior that the current source really provides.
 
 The focused proof must exercise the real Config and API PostgreSQL stores,
 including grants, a two-item committed prefix, proposal expiry after reservation,
@@ -188,6 +203,35 @@ candidate probe is not a production endpoint, published capability, or proof
 that the public workflow is ready. Use
 `praxis-java-command-concurrency-authoring` and the Metadata Starter bulk
 execution contract when reviewing these guarantees.
+
+## Preserve Confirmation Outcomes After Proposal Purge
+
+When a confirmation retry arrives after retention removed its proposal/evaluation,
+do not add a host-side tombstone query or restore a proposal from execution storage.
+Let the host confirmation service reject the absent proposal, then resolve only
+that absence through the existing `BulkAuthorizedProposalReader`. Distinguish its
+`TOMBSTONED` state (purged proposal plus retained tombstone, after current global
+operation grant and historical creator-scope digest match) from `GONE` (a live
+proposal whose TTL elapsed after full-set authorization). Within this absence
+fallback, only `TOMBSTONED` maps to payload-free `410`; `GONE`, `COMPLETE`, unknown
+IDs, and cross-scope requests keep the same redacted `404`. The normal creator-scoped
+confirmation path still returns its existing `410` for a retained expired proposal
+that it can find; a delegated confirmation remains `404`. The proposal-read route may
+map both `GONE` and `TOMBSTONED` to `410`. An unavailable reader fails closed. Prove the actual
+purge procedure and retry through the production HTTP mapping, and prove that a
+delegated reader of both live and expired proposals cannot confirm another creator's
+proposal. Include unchanged receipts, audit and domain state. Keep the cancellation
+route's OpenAPI response set aligned with its actual `410` mapping.
+
+Validate client-supplied `X-Correlation-ID` and `X-Request-ID` before proposal
+reservation or any durable admission. Enforce the persisted storage limit (255 Unicode
+code points here), reject control characters and noncanonical surrounding whitespace,
+and keep absent or blank values on the server-generated/absent fallback path. Do not
+invent a UUID-only format when the trace contract does not require one. Prove that
+255-character values persist, 256-character or control-bearing values return a
+sanitized `400`, and rejected requests create no execution, receipt, transition audit,
+or domain mutation. This prevents an invalid trace header from consuming an
+idempotency reservation and failing later during audit persistence.
 
 ## Avoid Nested Acquisition From The Domain Pool
 
