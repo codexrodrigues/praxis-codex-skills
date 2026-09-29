@@ -204,6 +204,35 @@ that the public workflow is ready. Use
 `praxis-java-command-concurrency-authoring` and the Metadata Starter bulk
 execution contract when reviewing these guarantees.
 
+## Preserve Confirmation Outcomes After Proposal Purge
+
+When a confirmation retry arrives after retention removed its proposal/evaluation,
+do not add a host-side tombstone query or restore a proposal from execution storage.
+Let the host confirmation service reject the absent proposal, then resolve only
+that absence through the existing `BulkAuthorizedProposalReader`. Distinguish its
+`TOMBSTONED` state (purged proposal plus retained tombstone, after current global
+operation grant and historical creator-scope digest match) from `GONE` (a live
+proposal whose TTL elapsed after full-set authorization). Within this absence
+fallback, only `TOMBSTONED` maps to payload-free `410`; `GONE`, `COMPLETE`, unknown
+IDs, and cross-scope requests keep the same redacted `404`. The normal creator-scoped
+confirmation path still returns its existing `410` for a retained expired proposal
+that it can find; a delegated confirmation remains `404`. The proposal-read route may
+map both `GONE` and `TOMBSTONED` to `410`. An unavailable reader fails closed. Prove the actual
+purge procedure and retry through the production HTTP mapping, and prove that a
+delegated reader of both live and expired proposals cannot confirm another creator's
+proposal. Include unchanged receipts, audit and domain state. Keep the cancellation
+route's OpenAPI response set aligned with its actual `410` mapping.
+
+Validate client-supplied `X-Correlation-ID` and `X-Request-ID` before proposal
+reservation or any durable admission. Enforce the persisted storage limit (255 Unicode
+code points here), reject control characters and noncanonical surrounding whitespace,
+and keep absent or blank values on the server-generated/absent fallback path. Do not
+invent a UUID-only format when the trace contract does not require one. Prove that
+255-character values persist, 256-character or control-bearing values return a
+sanitized `400`, and rejected requests create no execution, receipt, transition audit,
+or domain mutation. This prevents an invalid trace header from consuming an
+idempotency reservation and failing later during audit persistence.
+
 ## Avoid Nested Acquisition From The Domain Pool
 
 When a bulk unit already holds an API connection, audit every independent read in
