@@ -99,9 +99,17 @@ non-2xx response never proves it. Every accepted 2xx response needs exactly one
 media type from that same JSON allowlist and one resolvable schema. Limit
 resolution to the same local component references and bounds as request reading;
 reject missing, external, cyclic, sibling, or ambiguous references and content.
+Request schemas remain composition-free. Response schemas may preserve only a
+non-empty `oneOf` list whose every variant resolves recursively against the same
+snapshot; keep the operator and variant order in the canonical schema, and reject
+non-array or empty `oneOf` lists, invalid variants, composition operators other
+than `oneOf`, cyclic or external refs,
+and depth/node budget violations. This supports canonical response shapes such as
+`RestApiLinks`, where one relation serializes as one link object or a list when
+multiple links share that relation. Never flatten or remove this `oneOf` in a host.
 Compare the resolved schemas with `SchemaCanonicalizer`. It intentionally preserves metadata
 such as descriptions, examples, and `x-ui`, so equality is conservative and
-metadata drift blocks reuse. A future structural fingerprint must directly include
+metadata drift blocks reuse. The structural fingerprint must directly include
 the ordered `(status, media type)` variants and the complete shared canonical
 schema. A schema-hash cache is an optimization only and is never fingerprint
 authority.
