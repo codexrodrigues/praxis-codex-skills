@@ -49,6 +49,27 @@ different operation from `resourcePath`. If the published URL is missing or
 wrong, repair `SchemaReferenceResolver`/`FilteredSchemaReferenceResolver` or the
 metadata publication that produced it.
 
+For durable bulk-operation composition, the action registry's references are
+canonical projections of its `CanonicalOperationRef`: they include the resource
+`idField` and `readOnly=false`, so they are intentionally not byte-equal to the
+generic OpenAPI operation references. Validate the action references by resolving
+the full schemaId/type/URL tuple through the same `SchemaReferenceResolver` for
+that exact action operation and variant. Do not loosen operation, resource,
+workflow, group-snapshot, or seven-binding identity checks to accommodate the
+projection.
+
+The canonical OpenAPI response reader may preserve a bounded, non-empty `oneOf`
+only on response schemas when a real wire response has object-or-array shape
+(such as repeated HATEOAS links). Resolve each variant recursively from the same
+strict group snapshot and preserve the `oneOf` operator in structural evidence.
+Request schemas remain composition-free; empty/malformed variants, cycles,
+external references, and exceeded depth/node/byte budgets fail closed. When an
+action schema reference or response schema enters a durable structural
+descriptor, include it in the versioned digest. Changing digest inputs requires
+a new framing version and focused sensitivity tests; the durable lifecycle must
+suspend/recompose and pass its current CAS fence before readiness can be
+republished.
+
 ## Strict Canonical OpenAPI Reading
 
 Read Metadata `docs/spec/CANONICAL-REQUEST-SCHEMA.md` before composing a
@@ -172,6 +193,7 @@ Only `lacuna-real-de-contrato` justifies a new public schema contract. In that c
 
 Use focused local gates:
 
+- bulk structural composition and schema variants: `mvn "-Dtest=BulkOperationStructuralCompilerTest,CanonicalRequestSchemaTest,CanonicalResponseSchemaTest" test`
 - docs/schema refs/hash: `mvn "-Dtest=ApiDocsControllerTest,ApiDocsControllerPathResolutionTest,ApiDocsControllerSchemaHashTest,DomainCatalogControllerTest,FilteredSchemaReferenceResolverTest,OpenApiCanonicalOperationResolverTest" test`
 - quickstart downstream proof for public schema changes: `QuickstartMetadataMigrationIntegrationTest`, `EventosFolhaPilotIntegrationTest`, and `OpenApiGroupResolutionIsolatedIntegrationTest`
 - Angular consumer proof when schema runtime changes: `schema-metadata-client.spec.ts`, `fetch-with-etag.util.spec.ts`, and `generic-crud.service.spec.ts`
