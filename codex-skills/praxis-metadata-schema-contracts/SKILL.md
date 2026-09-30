@@ -17,6 +17,8 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/uischema/controller/docs/DomainCatalogController.java`
 - `src/main/java/org/praxisplatform/uischema/controller/docs/SemanticDomainCatalogController.java`
 - `src/main/java/org/praxisplatform/uischema/openapi/OpenApiDocumentService.java`
+- `src/main/java/org/praxisplatform/uischema/openapi/GenerationScopedGenericResponseService.java`
+- `src/main/java/org/praxisplatform/uischema/configuration/OpenApiResponseGenerationAutoConfiguration.java`
 - `src/main/java/org/praxisplatform/uischema/openapi/CanonicalOperationResolver.java`
 - `src/main/java/org/praxisplatform/uischema/schema/SchemaReferenceResolver.java`
 - `src/main/java/org/praxisplatform/uischema/schema/FilteredSchemaReferenceResolver.java`
@@ -86,6 +88,59 @@ suspend/recompose and pass its current CAS fence before readiness can be
 republished.
 
 ## Strict Canonical OpenAPI Reading
+
+When repeated Springdoc generations accumulate generic-response advice, inspect
+the generation-scoped response builder before changing freshness or schema
+semantics. `GenerationScopedGenericResponseService` uses a fresh upstream
+`GenericResponseService` delegate for each generation. Generic preparation and
+operation builds require the same `Components` object identity and thread;
+equal JSON is not a generation identity. The explicitly disabled-generic path
+uses an empty delegate and needs no prepared frame. Preserve full success/error
+responses and their component schemas instead of suppressing advice.
+
+Check `OpenApiResponseGenerationAutoConfiguration` and its auto-configuration
+imports registration: servlet only, API docs enabled by default, core
+`SpringDocConfiguration` bean required, and ordering before
+`SpringDocWebMvcConfiguration`. A host `GenericResponseService` override must
+prevent adapter installation. The concrete bean also supplies the global
+customizer; prove that the actual grouped resources receive that same adapter.
+
+Servlet frames are retained per request until their global cleanup callback
+after paths or request completion, without a fixed frame-count cap. Group
+customizers can run after the globals and must not reinvoke the builder after
+release. Direct non-servlet calls retain at most one frame per thread; observable
+build failures or the callback release it, while an external failure may retain
+it until the next generation replaces it. That bounded direct-call behavior
+does not certify the complete preload flow, arbitrary nested generations, or
+cross-thread continuation.
+
+Use `GenerationScopedGenericResponseServiceTest` for serial/concurrent isolation
+and full `ApiResponses` plus `Components` parity with the original Springdoc
+builder, including referenced success and global/local error schemas. Use
+`OpenApiResponseGenerationAutoConfigurationTest` for installation and override
+conditions. Keep fixtures faithful to MVC media-type resolution; the
+context runner must include real MVC infrastructure, and operation fixtures
+must calculate `MethodAttributes` consumes/produces before building responses. Then compare the identified candidate artifact in the
+real host. Advice-list growth alone does not quantify a timeout campaign's cause;
+unit parity does not establish HTTP group coverage, bulk readiness, or release
+adoption. Do not disable `springdoc.cache.disabled=true` to mask retained state
+when the governed lifecycle requires fresh generation.
+
+Preserve the explicit `@Order(Ordered.HIGHEST_PRECEDENCE)` on
+`OpenApiUiSchemaAutoConfiguration.modelResolver`. Springdoc registers the injected
+converter list through Swagger's prepend operation: the canonical resolver must
+be registered first so it executes after Springdoc's response/file/additional
+model decorators and before the plain `ModelResolver`. Moving the terminal
+`CustomOpenApiResolver` ahead of those decorators can expose transport wrappers
+as schemas; do not remove converters or UI enrichment to recover performance.
+
+Use `OpenApiModelConverterOrderingTest` to exercise two real bean-definition
+orders with the canonical bean and its annotations. Check the effective chain,
+DTO unwrapping from `ResponseEntity<DTO>`, preserved `x-ui` and error-schema refs,
+and parity with the original response builder. The focused Metadata classpath
+does not include Reactor; absence of `WebFluxSupportConverter` there is not proof
+of its order. In a Reactor-enabled host, verify it also precedes the custom
+resolver, and compare the actual generated document with the identified baseline.
 
 Read Metadata `docs/spec/CANONICAL-REQUEST-SCHEMA.md` before composing a
 resource operation. For the S4c composition path, obtain the named group only
