@@ -40,6 +40,21 @@ Do not transfer that conditional-cache contract to `/schemas/catalog`, capabilit
 
 Surfaces/actions/capabilities should reference canonical `schemaUrl`/`requestSchemaUrl`/`responseSchemaUrl` values produced by the resolver. They must not reconstruct schema URLs by concatenating paths, copy inline schema fragments, or treat a `schemaId` from another structural variant as equivalent.
 
+The convenience `SchemaReferenceResolver.resolve(CanonicalOperationRef, schemaType)`
+does not itself infer the `idField` or `readOnly` values that `/schemas/filtered`
+derives from the selected UI schema and operation. For a published descriptor that
+embeds a `CanonicalSchemaRef`, do not assume this syntactic default resolves to the
+same identity variant the endpoint serves. Derive the selected component, `idField`,
+and `readOnly` from the same immutable OpenAPI snapshot used to compose the descriptor,
+share that projection rule with `/schemas/filtered`, and call the resolver with those
+explicit dimensions. Validate the complete `schemaId`/type/URL tuple by fetching the
+published URL and comparing it with the returned UI variant; include ETag/hash checks
+when the endpoint publishes them. Derive these values per operation role: a workflow
+confirmation schema does not supply the identity defaults for its evaluation, proposal,
+execution, or result DTOs. Keep the raw HTTP response schema as a separate transport
+contract and fingerprint input. If the same selector/default derivation cannot be
+shared faithfully, do not publish the embedded reference until the contract is redesigned.
+
 When a consumer receives `schemaUrl`, `requestSchemaUrl`, or `responseSchemaUrl`
 from surfaces/actions/capabilities, treat that URL as the canonical structural
 reference for the already-resolved operation variant. Consumers may resolve the
@@ -105,6 +120,28 @@ standard Springdoc freshness capability rejects any configured external
 `app.openapi.internal-base-url`; custom `OpenApiDocumentService` implementations
 may opt in only with independent freshness proof, rather than relying on
 `Cache-Control` headers.
+
+Governed bulk lifecycle requires two distinct proofs from an
+`OpenApiDocumentService`: `supportsFreshBulkLifecycleComposition()` and
+`supportsFreshBulkLifecyclePublicCacheCoherence()`. The latter must compare the
+fresh exact-group snapshot with the documents the public `/schemas/filtered`
+endpoint actually serves before invoking readiness, publication, or action
+projection callbacks. If any public cached document differs, call the durable
+invalidation guard first, clear document and schema-hash caches only after the
+suspension commits, then fail closed. Do not return `READY`, invoke the callback,
+retry publication, or synthesize a new generation automatically; an operator or
+governed host flow must explicitly recompose and publish against the new CAS
+generation. A custom implementation's default `false` capability is not proof.
+
+The standard `/schemas/filtered` path must hold the shared cache read lock from
+operation/schema selection through document materialization and hash/ETag/304
+response creation. Strict document replacement and hash invalidation use the
+exclusive side of that same lock, so an in-flight old request cannot repopulate
+a stale hash after suspension. Verify this property at the actual controller
+callsite, not only in a cache unit test. When query selectors such as `idField`
+contain a literal plus, encode it as `%2B` (and spaces as `%20`) so servlet query
+decoding preserves the same selector and `schemaId`; prove URL, response body,
+schema hash, ETag, and conditional 304 agree.
 
 For each request, require the declared 3.0/3.1 dialect, exactly one JSON
 representation of `application/json` or `application/<subtype-token>+json`, where
