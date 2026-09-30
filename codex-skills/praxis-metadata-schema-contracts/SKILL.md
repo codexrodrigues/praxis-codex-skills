@@ -113,6 +113,43 @@ fetching with no fallback. HTTP `Cache-Control` revalidation alone does not bypa
 Springdoc's calculated-description cache. Never let a host call a lower-level cache
 API to skip the durable suspension signal.
 
+For the official multigroup composition, keep HTTP preparation outside the public
+cache write lock. Serialize preparations separately, capture local invalidation epoch
+and public entries under short read locking, then recheck epoch and public/fresh parity
+under the write lock before installing complete cold entries and invoking the callback.
+A clear/refresh attempt advances the epoch even if its durable guard fails. Do not
+confuse that local epoch with upstream authority or use it to cache the source forever.
+Cold preparation must independently fetch ordinary public and fresh documents; never
+install fresh merely to compare it to itself. Keep the complete published collision domain.
+
+Inspect `OpenApiInternalRestTemplate` and the official client bean. Defaults are
+`praxis.openapi.http.connect-timeout=1s`, `praxis.openapi.http.read-timeout=10s`
+(complete HTTP response, headers and body), and
+`praxis.openapi.bulk-composition-timeout=60s` (aggregate preparation/admission).
+Use positive Duration values in the supported millisecond range. The shared JDK client
+waits for the complete response with the smaller request/remaining budget, requests
+best-effort cancellation, and must not follow redirects. An opaque host RestTemplate
+or replaced factory cannot silently prove bounded fresh composition. Prove factory
+swap/restore rejection and preserve legitimate interceptors/error handlers; those
+custom hooks are not covered by a forced cancellation guarantee.
+
+Recheck admission after obtaining the control-plane connection and before the actual
+READY transition. Distinguish failure before attempting CAS from uncertain confirmation
+after the attempt: a pre-CAS timeout must not reconcile another publisher's READY as its
+own success. Do not check expiration after a confirmed READY and convert its effect to
+failure. If drift is already known under the write lock, perform the durable guard before
+cache eviction even after new-admission budget expiry; guard/pool/transaction/reconciliation
+have their own bounds. Explicit strict refresh retains its historical exclusive section;
+this change does not prove every cache fill or business operation has a hard wall-clock
+bound or that server-side work stops when the client cancels.
+
+Prove off-lock readers, epoch clear/refresh races, cold parity, failed guard, timed
+preparation/write-lock waits, slow headers/body, factory replacement and pre-CAS failure
+with focused composition/transport/lifecycle tests. Then run the identified candidate JAR
+against the real host 53-group diagnostic before the workflow HTTP suite. A diagnostic
+with a local observer does not prove PostgreSQL suspension, execution, readiness or
+release adoption; record candidate, integrated, published and adopted states separately.
+
 Every shared OpenAPI-document and schema-hash cache fill must participate in the
 same read-lock/epoch protocol as invalidation. A fill that began before a clear
 must not repopulate a stale document or hash after the clear completes. The
