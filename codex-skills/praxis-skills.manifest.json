@@ -851,8 +851,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "A2A6B8977150FCDB3B0FA89EDD86F31996772492F209C10511FD727396B2647F",
-                       "treeSha256":  "7B836D117038F6AF94728F94D08713C23ADFC06700BD60E9155D96F195A54605"
+                       "skillMdSha256":  "1E91D70A1C0B6ACB3587BE202644C8F7BF7BE3E940F87A015DCBE9F24A72A537",
+                       "treeSha256":  "03F3A08610FDCB9E1BE302592B0FC2975025A076A6E499BE0BD4F22F26994211"
                    },
                    {
                        "name":  "praxis-metadata-resource-baseline",
@@ -873,8 +873,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "39CDC5E37A94309F04AA0FB1613C400E73B7CF98BEF303DD98DF05F071D62AD1",
-                       "treeSha256":  "5F606B09A9AB4070A07DEE4115B9574C081D0A6F4DC913245B60C9E3BFAD6BC1"
+                       "skillMdSha256":  "47B373F0336C9726A0199CDB06E7FD6D855CC58A21F55B7AEACDACED98598F77",
+                       "treeSha256":  "DD3E53FC5D0E78AE1D28E7B25A1884E620B4DC9902EE5F0597D8C56AFD9B72ED"
                    },
                    {
                        "name":  "praxis-metadata-domain-option-sources",

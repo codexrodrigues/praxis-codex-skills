@@ -351,3 +351,10 @@ Review `README.md`, `CHANGELOG.md`, `docs/index.md`, `docs/guides/**`, `docs/spe
 - Use `praxis-http-examples-contract-surfaces` when the public executable HTTP corpus for `/schemas/**`, headers, or schema examples is affected.
 - Use `praxis-core-resource-runtime` for Angular consumption of these contracts.
 - Use `praxis-landing-public-docs-contracts` and `praxis-landing-registries-sitemap-playgrounds` when public landing/docs, guides, sitemap, LLM files, examples, or playgrounds publish `/schemas/filtered`, `x-ui`, schema hash, or metadata grounding claims.
+
+
+### Reusing a fresh snapshot for one discovery response
+
+Fresh preparation and its publication callback retain their existing lock protocol. Do not expand that callback to run arbitrary availability rules. Capture the concrete ephemeral snapshot read fence while the fresh snapshot is active, then release preparation/cache locks before response assembly. The fence carries the existing cache epoch, transport revision, owner thread and remaining composition deadline; short reads validate before and after acquisition/use and use the original deadline for lock admission. It is validity evidence for that captured snapshot, not source authority or permission to mutate. Provider recapture/composition and admitted database reads still execute under the short read section; custom code or a transaction already started is not forcibly interrupted. Do not describe this as a hard duration bound or SLA.
+
+The lifecycle consumer must close its fence and private response scope on every exit. Revalidate provider and durable generation/fingerprint/revision at each scoped readiness query and once after response assembly. Never reuse this structural snapshot between requests or remove transactional admission checks. Test invalidation and strict refresh, failed invalidation guards, transport ABA, deadline exhaustion, another thread, cleanup after exceptions and a subsequent independent request.
