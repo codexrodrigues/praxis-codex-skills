@@ -133,6 +133,17 @@ retry publication, or synthesize a new generation automatically; an operator or
 governed host flow must explicitly recompose and publish against the new CAS
 generation. A custom implementation's default `false` capability is not proof.
 
+Treat `getDocumentForGroupStrict` as a read, not an implicit refresh. A cold
+strict load is supported; promotion of a public non-strict entry must preserve
+the identical document. Reject a different exact document before changing
+public JSON or cached hashes. Use the existing guarded explicit refresh or
+invalidation path for replacement, followed by lifecycle republication where
+required. Never upgrade a read lock while an HTTP schema materialization holds
+its enclosing read lock. Prove changed-source rejection, identical promotion,
+cold strict loading, and the existing guard/hash refresh behavior with
+`CachedOpenApiDocumentServiceStrictPromotionTest` and
+`CachedOpenApiDocumentServiceRefreshTest`.
+
 The standard `/schemas/filtered` path must hold the shared cache read lock from
 operation/schema selection through document materialization and hash/ETag/304
 response creation. Strict document replacement and hash invalidation use the
