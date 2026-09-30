@@ -84,6 +84,18 @@ catalog instead of treating the inferred key as canonical.
 - Keep HATEOAS alternatives coherent with availability: a denied `filter`, `cursor`, `all`, stats, or export operation must not be advertised as an executable link for that principal.
 - If a runtime needs a button, drawer, tab, related list, or workflow affordance, first check surfaces/actions/capabilities before inventing host UI metadata.
 
+## Bulk discovery composition
+
+`ActionCatalogService` must assemble each synchronous response inside the lifecycle's response scope while keeping contextual availability outside document-cache and preparation locks. Resource, group, item and collection entrypoints preserve the original action definitions, principal and availability contexts. Reuse only the structural descriptor captured for that response; `execution.bulk` is descriptive evidence and never a readiness or authorization token.
+
+Scoped `requireReady` must recheck namespace/operation, current provider composition and the durable READY row against the captured generation, fingerprint and structural revision. It may reuse the structural snapshot, but must not memoize availability or share that scope across requests, threads or asynchronous continuations. Suspend/republish with identical content still changes the generation and must reject the old response.
+
+After leaving fresh preparation, use the concrete ephemeral snapshot read fence to bound short read-lock acquisition by the original composition deadline and check cache epoch and transport revision before and after provider/durable reads. Capture only from the actual fresh callback; dispose the fence and private response frame in `finally`. Never retain a public cache lock or a JDBC transaction around host rules or the response builder.
+
+Preparation failure may invoke the builder once with an empty bulk projection and a denying scope. Once the builder starts, its exception or a failed final coherence check must propagate; do not repeat the builder or convert its failure into a second composition. Always run the final fence/provider/durable check after the builder returns, including when a host rule caught a readiness exception and returned denied.
+
+Prove all four catalog entrypoints, exception cleanup, independent following requests, cache/transport changes (including transport replacement/restoration), deadlines, thread confinement, provider changes and durable generation changes. The concrete multigroup HTTP proof must preserve the authorized bulk body and references while demonstrating one fresh composition per catalog or collection-capabilities GET. A selective proof does not certify the complete backend, load performance or the full HTTP campaign.
+
 ## No Keyword Routing
 
 Do not route action, surface, cockpit, related-resource, export, or stats intent through labels, command words, regexes, aliases, or local fuzzy matching as the primary decision. Use `@UiSurface`, `@WorkflowAction`, canonical operations, capabilities, `_links`, availability contexts, and declared tools for grounding; textual matching may only rank already-scoped candidates.
