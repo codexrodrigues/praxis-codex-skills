@@ -101,8 +101,28 @@ operational proof, never the canonical owner of a starter or runtime semantic.
    and prove they compile. A workflow command is not a generic update source;
    keep its action contract separate. Inspect Metadata
    `BulkResourceOperationBindings`, `BulkOperationStructuralCompiler`, and
-   `docs/spec/BULK-CRUD-STRUCTURE.md` before applying the opt-in. Structural
-   compilation alone does not publish bulk CRUD capabilities, operational
+   `docs/spec/BULK-CRUD-STRUCTURE.md` before applying the opt-in.
+   For a bulk update candidate, reconstruct the complete prior update state
+   from the protected domain snapshot before applying only the declared field
+   changes. Do not bind a changes fragment to a DTO whose defaults could turn
+   omission into a write. Prefer a dedicated full update DTO over inheritance
+   from the read/create model; preserve the existing lookup/control metadata.
+   Use the compiled per-mode writable/clearable sets with `BulkFieldChanges`,
+   then validate exact wire value types before Jackson binding and validate
+   both the prior aggregate and the candidate. Neither that SDK nor DTO
+   annotations authorize fields, validate candidate values, or make permissive
+   Jackson coercion safe. A nullable enum must admit JSON null in its structural
+   enumeration before CLEAR is eligible; null is not a domain option to add
+   to `x-ui.options`. Prove the generated schema rather than repairing only
+   a test fixture. Keep identities and the prior state from one protected
+   source; reject a corrupt aggregate rather than repairing it implicitly.
+   Distinguish explicit SET/CLEAR intent from a full-state ordinary PUT: when
+   the domain restricts editing a field by lifecycle state, an explicit bulk
+   field operation must pass that boundary even if its value is unchanged.
+   Preserve omitted values, `false`, zero and allowed null distinctly. Prove
+   the canonical schema and configured mapper, both modes, invalid types and
+   operators, aggregate invariants and ordinary writer/version behavior.
+   Structural compilation alone does not publish bulk CRUD capabilities, operational
    readiness, or an executor; require those separate contracts and proofs
    before advertising availability. The lifecycle compiles all declarations
    before filtering operational modes: a valid structural UPDATE without a
