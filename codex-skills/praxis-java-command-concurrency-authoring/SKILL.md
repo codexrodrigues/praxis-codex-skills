@@ -109,6 +109,25 @@ order to create, update, delete, batch delete, and parent lifecycle writers. Ins
 whether the base
 batch path bypasses per-item hooks; a correct single-item hook does not cover it.
 
+For a multi-parent aggregate such as a mission team, discover the complete union of
+current and proposed references before the first shared lock, then lock distinct
+employees, missions, and participants in that order, sorting IDs within each set.
+Use scalar reads with `FlushModeType.COMMIT`, reject an already-dirty persistence
+context, and recheck the discovered memberships and statuses after locking. A newly
+discovered dependency is a conflict, not permission to acquire a late parent lock.
+Apply the same fence to item/batch CRUD, team planning, mission status/deletion,
+and employee deletion; do not let ordinary CRUD bypass a workflow transition.
+
+When retained participants exchange references, a PostgreSQL uniqueness constraint
+may need `DEFERRABLE INITIALLY IMMEDIATE` while ordinary writers keep immediate
+enforcement. Defer that named constraint only in the protected planning transaction
+that actually changes retained references; validate the entire proposed team first,
+flush the final state, and set the constraint back to `IMMEDIATE` before returning
+from the transaction. Do not add an engine-specific fallback that silently weakens
+the invariant. Inspect `db/operational-migrations/V20261001_004__mission_team_reference_uniqueness.sql`
+and `operations/service/MissaoService#planTeam` in the quickstart before reusing this
+pattern elsewhere.
+
 Before locking or refreshing managed entities, reject a dirty persistence context so
 pending caller changes cannot be flushed prematurely or erased. Under the row locks,
 compare the database parent and version with any already-managed entity. Reject a
