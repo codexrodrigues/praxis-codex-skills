@@ -53,8 +53,8 @@
                                             "praxis-metadata-domain-option-sources",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "E460C1197F4B9AF90596569EC4515B30EA9DC2B722F29C0B5CF6128E2EC50DA5",
-                       "treeSha256":  "16EDBA6FE962F541EA1C87C5301F7D2FFEC7CF81793F4C1B835DF62F540A6CC8"
+                       "skillMdSha256":  "DB07567A5092C72EB4F63F5719D79D3BD001F8ED65D79F94B09BE1533331A3BD",
+                       "treeSha256":  "F88743D3426E1304FCF8910FFF97739F3AEB9F6F153428B5EEF18BDE163470EF"
                    },
                    {
                        "name":  "praxis-java-filter-query-authoring",
@@ -873,8 +873,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "47B373F0336C9726A0199CDB06E7FD6D855CC58A21F55B7AEACDACED98598F77",
-                       "treeSha256":  "DD3E53FC5D0E78AE1D28E7B25A1884E620B4DC9902EE5F0597D8C56AFD9B72ED"
+                       "skillMdSha256":  "BBDFE15CE4C76BB364044CC913749299F9F6B6AE0F694D9A9A4C2186D7713E7E",
+                       "treeSha256":  "24262ACCFAD0B57E2F94567B289D391A7B57A738B9EA53FF5CFA546BF4859EA2"
                    },
                    {
                        "name":  "praxis-metadata-domain-option-sources",
