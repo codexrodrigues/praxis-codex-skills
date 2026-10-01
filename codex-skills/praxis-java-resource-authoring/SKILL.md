@@ -1,6 +1,6 @@
 ---
 name: praxis-java-resource-authoring
-description: Use when implementing, auditing, or migrating a complete Java/Spring Praxis resource in a host or praxis-api-quickstart: choose read-only versus mutable resource hierarchy, author resource identity and DTO contracts, controller/service/mapper integration, filters, lookups, actions, surfaces, capabilities, and focused HTTP or runtime proof.
+description: Use when implementing, auditing, or migrating a complete Java/Spring Praxis resource in a host or praxis-api-quickstart: choose read-only versus mutable resource hierarchy, author resource identity and DTO contracts, controller/service/mapper integration, optional structural bulk CRUD update source, filters, lookups, actions, surfaces, capabilities, and focused HTTP or runtime proof.
 ---
 
 # Praxis Java Resource Authoring
@@ -86,6 +86,29 @@ operational proof, never the canonical owner of a starter or runtime semantic.
    with two PostgreSQL connections and barriers around GET projection and PUT
    response assembly, plus rollback when a versioned service captures no
    revision; this does not certify related graphs or links.
+   If the same resource opts into structural bulk CRUD update, inventory its
+   real PUT and concrete update DTO first. On `@BulkResourceOperations`, declare
+   the PUT's canonical `updateSourceOperationId` and all identity, version, and
+   workflow-state wire names accepted by that update DTO/schema in
+   `protectedUpdateFields`; omitted semantic roles
+   cannot be inferred from naming. The canonical base PUT already carries
+   `@BulkResourceOperation(UPDATE_SOURCE)`; preserve its merged annotation on a
+   real override and do not create an override only to repeat metadata. Verify
+   unique exact operation ID, resource key, OpenAPI group, request `JavaType`,
+   and resolved update schema. Compile `@BulkEditable` on that same DTO using
+   the configured `ObjectMapper`, not a separate bulk DTO or an isolated
+   `TypeFactory`. Migrate constructor consumers to the `ObjectMapper` signature
+   and prove they compile. A workflow command is not a generic update source;
+   keep its action contract separate. Inspect Metadata
+   `BulkResourceOperationBindings`, `BulkOperationStructuralCompiler`, and
+   `docs/spec/BULK-CRUD-STRUCTURE.md` before applying the opt-in. Structural
+   compilation alone does not publish bulk CRUD capabilities, operational
+   readiness, or an executor; require those separate contracts and proofs
+   before advertising availability. The lifecycle compiles all declarations
+   before filtering operational modes: a valid structural UPDATE without a
+   provider need not degrade a coexisting READY command, while an invalid
+   source, schema, or UPDATE binding fails the composition closed. Do not
+   promise per-operation error isolation for a malformed declaration.
 5. Add relations only through governed option/lookup contracts. A resource entity
    lookup must prove its source key, `x-ui.optionSource`, filter endpoint,
    selected-value reload, dependencies, authorization, and human display value.
