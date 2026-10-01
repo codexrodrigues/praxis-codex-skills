@@ -1,6 +1,6 @@
 ---
 name: praxis-metadata-discovery-capabilities
-description: "Use when Codex must work on praxis-metadata-starter semantic discovery: /schemas/surfaces, /schemas/actions, resource/item capabilities, @UiSurface, @WorkflowAction, availability contexts, ResourceStateSnapshot, relatedResource surfaces, collection export, stats capabilities, HATEOAS operation availability, or cockpit discovery."
+description: "Use when Codex must work on praxis-metadata-starter semantic discovery: /schemas/surfaces, /schemas/actions, resource/item capabilities, bulk CRUD update discovery, @UiSurface, @WorkflowAction, availability contexts, ResourceStateSnapshot, relatedResource surfaces, collection export, stats capabilities, HATEOAS operation availability, or cockpit discovery."
 ---
 
 # Praxis Metadata Discovery Capabilities
@@ -85,6 +85,33 @@ catalog instead of treating the inferred key as canonical.
 - If a runtime needs a button, drawer, tab, related list, or workflow affordance, first check surfaces/actions/capabilities before inventing host UI metadata.
 
 ## Bulk discovery composition
+
+For candidate bulk CRUD UPDATE discovery, inspect Metadata
+`docs/spec/BULK-CRUD-STRUCTURE.md` and `BULK-CRUD-OPERATIONS.md` before
+projecting a capability. A complete operational UPDATE projects `bulk-update`
+or `bulk-update-items` as a `COLLECTION` `POST` at `.bulk`, with seven canonical
+cycle references and ordered `editableFields` (`sourceOperation` as a
+`CanonicalOperationRef`, `requestSchema`, `writableFields`, `clearableFields`). Reuse the same response frame and
+readiness fence as the action; neither a real PUT source nor a structural
+allowlist alone makes UPDATE READY. A valid UPDATE without a provider must not
+degrade an independent command READY, but malformed declarations fail the
+whole composition. `publish` and `requireReady` reject orphaned identities
+before durable I/O; response preparation may read durable evidence before
+compilation. Removing a provider makes `requireReady` deny but does not
+automatically change the durable READY row; `suspend` or invalidation follows
+its own close protocol. Keep availability outside preparation/cache locks and preserve the
+final poison check and cleanup on all exits. The UPDATE profile is only
+`SYNC`/`EXPLICIT`/`PER_ITEM`; do not infer selection queries, async, atomic
+batch behavior, host grants, or domain mutation from discovery. Verify source,
+schema, frame coherence, provider removal, orphan denial, and a following clean
+request before teaching consumers to display the capability.
+`collectionOperationAvailability` is a contextual provider decision, even for
+unknown operation IDs; it does not prove structural support or READY. In this
+cut, the capability snapshot under that frame is the only READY projection for
+the `.bulk` operation and its seven canonical references. Resource bases do
+not add bulk `_links` automatically. If a later cut adds them, derive them from
+the operation in the same snapshot/fence, without a separate lookup or a URL
+convention.
 
 `ActionCatalogService` must assemble each synchronous response inside the lifecycle's response scope while keeping contextual availability outside document-cache and preparation locks. Resource, group, item and collection entrypoints preserve the original action definitions, principal and availability contexts. Reuse only the structural descriptor captured for that response; `execution.bulk` is descriptive evidence and never a readiness or authorization token.
 

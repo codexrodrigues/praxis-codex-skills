@@ -109,6 +109,19 @@ operational proof, never the canonical owner of a starter or runtime semantic.
    provider need not degrade a coexisting READY command, while an invalid
    source, schema, or UPDATE binding fails the composition closed. Do not
    promise per-operation error isolation for a malformed declaration.
+   For candidate operational UPDATE composition, require a singleton profile
+   with `SYNC` execution, `EXPLICIT` selection, and `PER_ITEM` outcomes.
+   Keep `parametersPointer` on domain commands only; UPDATE supplies none.
+   The provider still supplies `identitySchemaPointer` for the appropriate
+   explicit target or per-item ID path. Check `capabilities.operations` for `bulk-update` or
+   `bulk-update-items` only after provider and durable readiness agree with
+   the structural source, schema, and field policy. The capability is a
+   `COLLECTION` `POST` with seven lifecycle references and sorted editable
+   fields, not proof that the host grants or domain mutation exist. Removing a
+   provider makes `requireReady` deny but does not automatically suspend its
+   durable READY row; never execute from a stale
+   capability snapshot. Follow Metadata `docs/spec/BULK-CRUD-OPERATIONS.md`
+   and prove source/consumer discovery plus denial paths before adoption.
 5. Add relations only through governed option/lookup contracts. A resource entity
    lookup must prove its source key, `x-ui.optionSource`, filter endpoint,
    selected-value reload, dependencies, authorization, and human display value.
