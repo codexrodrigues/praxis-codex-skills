@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-java-resource-authoring/
-- Descricao atual: Use when implementing, auditing, or migrating a complete Java/Spring Praxis resource in a host or praxis-api-quickstart: choose read-only versus mutable resource hierarchy, author resource identity and DTO contracts, controller/service/mapper integration, filters, lookups, actions, surfaces, capabilities, and focused HTTP or runtime proof.
+- Descricao atual: Use when implementing, auditing, or migrating a complete Java/Spring Praxis resource in a host or praxis-api-quickstart: choose read-only versus mutable resource hierarchy, author resource identity and DTO contracts, controller/service/mapper integration, optional structural bulk CRUD update source, filters, lookups, actions, surfaces, capabilities, and focused HTTP or runtime proof.
 
 ## Classificacao inicial
 
