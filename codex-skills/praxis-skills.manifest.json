@@ -135,8 +135,8 @@
                                             "praxis-metadata-schema-contracts",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "35604A2D08BD2F119237DB353A4857EDF168AEF17E1E8DB2675EB63D99186C52",
-                       "treeSha256":  "62F952516CC1105CEFAC4DDCC76D35357F2C59723085E2EBDC6649A2F685C8EE"
+                       "skillMdSha256":  "19F1155226A3DEF62AD8E8A782F9F875D70FC54633B765E307A8818BFAB630A3",
+                       "treeSha256":  "9DA84FAA080A70ABA456845E5B3842C259559EFDA3AA2B2243D11E1443254A25"
                    },
                    {
                        "name":  "praxis-java-error-response-contracts",
