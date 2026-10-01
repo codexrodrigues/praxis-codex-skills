@@ -53,8 +53,8 @@
                                             "praxis-metadata-domain-option-sources",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "857180530CDB629D44AA7B887222D2966366831233F2C4C922E265AC55E1D22D",
-                       "treeSha256":  "6ED1CCAED63A9BCC9EBB3A47759A9E0567AE607667F0444E95626497156BC5E8"
+                       "skillMdSha256":  "02A783C39D77D1046A2A5EBF4967D2BEEBE471AEA9661D8F23EA85E32FC30FEA",
+                       "treeSha256":  "48F10D7E76D81369F56E85D0D5E3A85B21BE3F5E914C860C965B5ED685A26800"
                    },
                    {
                        "name":  "praxis-java-filter-query-authoring",

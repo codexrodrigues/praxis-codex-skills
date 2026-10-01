@@ -55,6 +55,18 @@ operational proof, never the canonical owner of a starter or runtime semantic.
    Resource generators and scaffolds must emit this rule and keep a focused
    generated-source gate that rejects technical-identity assignment in update
    merges.
+   For a persisted resource version, `getResourceVersion` emits an item ETag but
+   does not opt the inherited PUT into `If-Match`. Use the Metadata
+   `VersionedCreateUpdateResourceService` contract consumed by
+   `AbstractCreateUpdateResourceController`: its three-argument update must, in
+   one transaction, call `precondition.requireMatch` on the managed persisted
+   version before applying the mapper, then flush so `@Version` provides CAS.
+   Override any inherited two-argument Java update entry point to reject with
+   `428`, and keep the mapper from accepting a payload version. Prove HTTP
+   missing `If-Match` (`428`), malformed (`400`), stale and wrong binding or
+   resource ID (`412`), and a fresh successful token; also prove the direct
+   Java entry point cannot bypass the precondition and two PostgreSQL writers
+   cannot commit updates from the same version.
 5. Add relations only through governed option/lookup contracts. A resource entity
    lookup must prove its source key, `x-ui.optionSource`, filter endpoint,
    selected-value reload, dependencies, authorization, and human display value.
