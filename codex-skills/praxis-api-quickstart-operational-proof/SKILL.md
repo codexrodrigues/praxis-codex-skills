@@ -68,6 +68,11 @@ restricted runtime credentials and safe SQL lock failure on real PostgreSQL. A
 persisted snapshot or equivalent recapture is not READY or execution; keep migration
 identity separate and leave uncomposed public capabilities unavailable.
 
+When a SQL timeout proof also performs readiness/discovery, follow
+[the bulk SQL phase proof](references/bulk-sql-phase-proof.md) to observe the actual
+blocked statement, separate HTTP preparation from storage timing, and preserve
+evidence before cleaning stale compiled diagnostics.
+
 Before inserting a proposal or consuming any proposal/quota allocation, authorize the
 entire explicit target set against the current scoped grant and temporal assignments.
 Read the target facts and make that complete authorization decision in one consistent
