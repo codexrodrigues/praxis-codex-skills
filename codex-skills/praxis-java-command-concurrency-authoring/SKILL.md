@@ -591,6 +591,32 @@ readable after proposal expiry. Config and the operational database do not share
 distributed transaction: Config is a bounded admission read, while the operational
 database atomically commits domain state, transition audit and Metadata receipt.
 
+For a host that shares one concrete domain decision between an item command and a
+bulk unit, keep its inputs as immutable copies of authorized facts and parameters.
+Capture the server-selected `evidenceDate` once in the protected evaluation plan;
+confirmation reads that date from the persisted plan, not the wall clock or client
+payload. Preparing that plan must not mutate domain rows. At admission, recheck the
+current grant and recompute the decision from freshly protected facts. For a
+current-department scope such as absence coverage, recheck each referenced parent's
+current department and lock the grant before sorted parent IDs and then child IDs.
+Bound JPA/JDBC waits and independent policy/grant reads by the callback's
+remaining budget, including a usable floor before starting another read. Apply the
+domain append and Metadata receipt on the same physical transaction; consult an
+existing receipt before gates for a new mutation. This composition uses the published
+kernel and policy contracts, not a host-local receipt or Config schema.
+For the Quickstart example, inspect `praxis-api-quickstart/src/main/java/com/example/praxis/apiquickstart/hr/service/AbsenceCoverageDecision.java`
+and `FeriasAfastamentoService.prepareCoverage`/`applyCoverage`; use
+`praxis-api-quickstart/src/test/java/com/example/praxis/apiquickstart/config/BulkAbsenceCoverageHttpTest.java`
+as the focused HTTP proof of the composed path.
+
+For protected result reads, authorize the complete retained target set in the same
+read-only snapshot as the result page. In a current-department scope, bind the current
+grant and coverage to both the captured parent and any changed current parent, plus
+each referenced parent; missing rows or reduced coverage deny the whole set without
+partial output. This does not replace a domain's historical-assignment policy, such
+as payroll's competence-based scope. Keep private notes out of authorization
+fingerprints and public diagnostics.
+
 A lost COMMIT acknowledgement is not a domain failure. Stop later ordinals and reconcile
 through the durable receipt/control under lock. A valid earlier receipt remains readable
 after deadline and even when later execution state requires reconciliation. Replaying an
@@ -949,6 +975,13 @@ It performs no reads and cannot detect reused stale observations. Call only afte
 policy/grant/domain reads and checks; true is not permission/READY. Invalid current shape
 throws validation errors which the orchestrator must treat as an impediment; context/TTL
 mismatch returns false. Re-evaluate under a new UUID when evidence changes.
+
+For a host's per-unit admission, compare a closed, typed set of protected facts and
+plan fields, including field presence and exact integral values. The published codec
+may load an integer as `BigInteger` while the fresh value is `Integer` or `Long`; prove
+the comparison across that round trip without equating integers to decimals. Do not
+recapture other targets inside one unit merely to call full-snapshot
+`matchesCurrentEvidence`, or add a general JSON-semantic equality rule.
 
 When evidence comes from a separately recaptured snapshot, first require its protected
 `BulkIntentSnapshot.fingerprint()` to equal the stored proposal's intent fingerprint,
