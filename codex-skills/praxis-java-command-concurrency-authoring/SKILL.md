@@ -56,6 +56,49 @@ domain authorization, or atomic domain-plus-receipt behavior.
 Read [command-outcome-matrix.md](references/command-outcome-matrix.md) when selecting
 scope, preconditions, idempotency, result status, or focused proof.
 
+## Fence Cross-Resource Authority And Writers
+
+When a command's decision depends on a current grant and mutable related rows,
+inventory every writer of that predicate before choosing locks: item and batch CRUD,
+the command itself, parent state and scope changes, and privileged direct SQL. Action
+availability is a UI hint, not authorization; a JWT authority alone cannot prove the
+current persisted grant or scope. Resolve the authenticated operational context and
+recheck the current grant and target scope at execution, without leaking the existence
+of out-of-scope rows.
+
+Keep the authorization fence and domain mutation in one writable transaction on the
+same physical database connection. Establish a shared lock order across participating
+writers: a governed command locks its current grant first, then distinct parent IDs
+in sorted order, then distinct child IDs in sorted order. Ordinary CRUD and batch
+writers enter at their first shared resource lock (parent, then child); they do not
+acquire the grant after locking a parent. Discover parent IDs with scalar reads that
+do not auto-flush; acquire the locks before staging changes. Apply the shared resource
+order to create, update, delete, batch delete, and parent lifecycle writers. Inspect
+whether the base
+batch path bypasses per-item hooks; a correct single-item hook does not cover it.
+
+Before locking or refreshing managed entities, reject a dirty persistence context so
+pending caller changes cannot be flushed prematurely or erased. Under the row locks,
+compare the database parent and version with any already-managed entity. Reject a
+stale or missing row, including any missing batch member, instead of refreshing it
+into an apparently current command; refresh only clean, matching entities. Stage the
+mutation after these checks and preserve the transaction's rollback on denial or
+conflict. Keep denial, conflict, and unexpected infrastructure outcomes sanitized;
+verify their actual HTTP mapping in the host and canonical command executor.
+
+Prove the protocol with real PostgreSQL and two independent connections: revoke or
+change the grant while a command waits, interleave parent and child writers in both
+directions, exercise batch deletion and missing IDs, and assert rollback leaves no
+partial domain change. Include stale and dirty managed-entity cases; exercise
+representative opposing interleavings and report any observed deadlocks. Verify the
+actual JDBC identity and database
+role (`session_user` and `current_user`) of each test connection, along with the
+runtime role's function permissions; matching JDBC URLs do not prove the binding.
+A test of the command alone cannot establish
+that all writers participate. Direct SQL and imports remain outside an application
+lock protocol unless they explicitly follow it or a database-enforced boundary covers
+them; record that limit rather than claiming global serialization.
+
 ## Refactor Command Parameters Without Invalidating Existing Work
 
 Before separating selection/version transport from shared business parameters,
