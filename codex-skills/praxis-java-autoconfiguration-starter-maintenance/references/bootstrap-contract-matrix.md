@@ -25,6 +25,24 @@ algorithm, reflectively clear its private lists, or disable generic error respon
    before `SpringDocWebMvcConfiguration`. Require the core configuration bean,
    the relevant classes, a servlet application, and enabled API docs (enabled by
    default). Class presence alone does not prove that the host enabled the core.
+   Also inspect `PraxisMetadataAutoConfiguration`: its two static `GroupedOpenApi`
+   definitions must precede `SpringDocConfiguration` during bean registration.
+   Springdoc 2.6 conditionally registers `springdocBeanFactoryPostProcessor` only
+   when its REGISTER_BEAN condition sees grouped definitions (or the supported
+   cache-disabled path). Keep registered auto-configurations out of the principal
+   `@ComponentScan` with Boot's `AutoConfigurationExcludeFilter`; they belong to
+   `AutoConfiguration.imports`, whose ordering and conditions must remain in charge.
+   Inventory every excluded auto-configuration against that manifest before editing.
+   Preserve ordinary scanned configuration such as `DynamicSwaggerConfig`. Merely
+   moving the principal configuration before the core while scanning the response
+   auto-configuration early can satisfy prototype scope but skip the response
+   adapter's core-presence condition. Require both guarantees in the same context.
+   That processor makes `OpenAPIService` prototype. An
+   ordering edge that moves the core ahead of these definitions can leave the
+   builder singleton; its locale cache then returns the first group's document
+   for another group. Dynamically registered PostConstruct groups are too late
+   to prove this condition. Preserve the canonical ordering edge rather than
+   disabling the response adapter, generic responses or cache in a host.
 2. Preserve `@ConditionalOnMissingBean(GenericResponseService.class)`. A host
    override remains authoritative; do not install a competing builder. Keep the
    adapter's concrete `@Bean` return type so the same bean is discoverable as a
@@ -51,6 +69,19 @@ algorithm, reflectively clear its private lists, or disable generic error respon
    Compare complete `ApiResponses` and `Components` against the original service,
    including success and global/local error refs, repeated generations, isolated
    concurrent groups, disabled generics, and cleanup after observable failures.
+
+Prove grouping with the default enabled Springdoc cache in
+`OpenApiGroupRegistrationE2ETest`: require the processor, the actual
+`openAPIBuilder` prototype scope and the canonical response adapter, then read
+multiple real HTTP group documents and require their own paths and absence of
+another group's paths. Pair this with the resource unit-delete OpenAPI test;
+run the discovery/schema/capability consumers affected by the ordering edge.
+A synthetic context or HTTP200 alone cannot prove group isolation. When a
+failure appears only in a full suite, preserve its document and test order,
+then compare focused cases before blaming a removed route or rewriting asserts.
+Recheck absent core, disabled docs and host overrides with the response
+bootstrap tests. A cache-disabled reference host proof does not replace this
+cache-enabled default proof.
 
 Also inspect `OpenApiUiSchemaAutoConfiguration.modelResolver`: keep its explicit
 `@Order(Ordered.HIGHEST_PRECEDENCE)`. Springdoc's `ModelConverterRegistrar`
