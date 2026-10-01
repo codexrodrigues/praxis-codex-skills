@@ -55,8 +55,8 @@ operational proof, never the canonical owner of a starter or runtime semantic.
    Resource generators and scaffolds must emit this rule and keep a focused
    generated-source gate that rejects technical-identity assignment in update
    merges.
-   For a persisted resource version, `getResourceVersion` emits an item ETag but
-   does not opt the inherited PUT into `If-Match`. Use the Metadata
+   Publishing an item ETag alone does not opt the inherited PUT into `If-Match`.
+   Use the Metadata
    `VersionedCreateUpdateResourceService` contract consumed by
    `AbstractCreateUpdateResourceController`: its three-argument update must, in
    one transaction, call `precondition.requireMatch` on the managed persisted
@@ -67,6 +67,25 @@ operational proof, never the canonical owner of a starter or runtime semantic.
    resource ID (`412`), and a fresh successful token; also prove the direct
    Java entry point cannot bypass the precondition and two PostgreSQL writers
    cannot commit updates from the same version.
+   For the B4-R1 candidate Java migration, inspect Metadata
+   `ResourceRepresentationResult`, `AbstractBaseQueryResourceService.findById`,
+   and the versioned three-argument update before changing a host override.
+   Remove old `getResourceVersion(id)` overrides in favor of
+   `getEntityResourceVersion(entity)`; migrate Java callers of `findById` to
+   unwrap `.body()` and versioned three-argument PUT implementations to return
+   the body/revision pair. Do not retain an alias or second version-query API.
+   Capture response DTO and persisted revision from the same managed entity in
+   the read transaction or, for PUT, after the last modifying hook and flush.
+   Require the captured revision **inside the write transaction** before return:
+   `toResourceRepresentation` guards services implementing the versioned
+   interface, while a custom implementation must call `requirePersistedVersion`
+   itself. The controller's later guard cannot roll back a committed write.
+   Do not reread the current version for the header, infer it from client
+   `If-Match`, or add a wire field. Inventory security and scope overrides, map
+   all Java consumers, and migrate the beta API cleanly. Prove paired body/ETag
+   with two PostgreSQL connections and barriers around GET projection and PUT
+   response assembly, plus rollback when a versioned service captures no
+   revision; this does not certify related graphs or links.
 5. Add relations only through governed option/lookup contracts. A resource entity
    lookup must prove its source key, `x-ui.optionSource`, filter endpoint,
    selected-value reload, dependencies, authorization, and human display value.

@@ -38,6 +38,17 @@ contracts, never in a host controller convention.
    version support exists. Reject stale or required-missing conditions canonically;
    never compare versions only in Angular or silently overwrite. Schema and resource
    version ETags solve different problems.
+   For B4-R1 candidate resource responses, pair the DTO with the persisted
+   revision captured from that same entity, then emit the ETag from the pair;
+   a second lookup after projection or commit can sign a newer version onto an
+   older body. A versioned PUT must validate the input precondition and require
+   a nonempty captured result inside its write transaction after the last
+   hook/flush; the controller's post-commit guard does not roll back arbitrary
+   custom services. Historical action replay uses its captured revision or
+   omits ETag, never the current row's revision. Prove GET/PUT interleavings
+   with two PostgreSQL connections, DTO token/header agreement when a DTO
+   token exists, stale token `412`, empty-revision rollback, and replay without
+   token renewal. Do not infer a snapshot of links or related entities.
 6. Align action catalog, capabilities, `ResourceStateSnapshot`, endpoint enforcement,
    and `_links`. Availability is not security; execution enforces the same decision.
 7. For collection commands, define per-item outcome, atomicity, partial failure, retry,
