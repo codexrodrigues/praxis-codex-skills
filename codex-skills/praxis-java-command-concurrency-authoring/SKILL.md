@@ -550,9 +550,27 @@ a second key for a consumed proposal returns its existing execution. A timeout o
 ambiguous reservation commit requires scoped readback and must never mint a replacement
 key or execution.
 
+For the B3 candidate synchronous composition, `JdbcBulkDurableExecution.advance(
+reservation, admission, mutation)` takes only the protected reservation returned by
+`reserve(scope, ...)` in the same host call; it is not a wire credential or an extra
+subject-authorization gate. Before even a terminal no-op, reject an ambient Spring
+transaction. Under a bounded operational transaction and the existing control lock,
+verify namespace, owner/epoch, immutable proposal/target-count binding, and the
+reservation ordinal against durable `nextOrdinal`. The kernel may call `executeUnit`
+to recognize an existing receipt or admission, but any replay ends that invocation;
+a retry of A must never dispatch B. Only a non-replay result in `RUNNING` permits the
+next ordinal, and only a fresh admitted unit invokes domain callbacks. Keep each
+unit's own transaction and remaining budget, stopping on terminal, cancel, stop,
+uncertainty or replay, including lost ACK on the second of three units. Do not add
+automatic retry/recovery or a transaction around the whole sequence. The host
+retains the execution UUID and projects results through the authorized durable
+reader, not a synthetic suffix. Verify the Metadata PostgreSQL advance cases and
+both host HTTP consumers against the exact candidate or released artifact; a
+passing kernel candidate alone does not establish published adoption or HTTP readiness.
+
 Call `executeUnit(control, expectedOrdinal, admission, mutation)` for one explicitly
-identified unit. Do not implement `executeNext` loops: a retry for A must never dispatch
-B. The kernel commits a durable attempt barrier before running the typed
+identified unit. Do not implement a host-local `executeNext` loop that dispatches B
+from a retry of A. The kernel commits a durable attempt barrier before running the typed
 `BulkUnitAdmissionCallback`, then runs the domain `BulkUnitMutationCallback` only for
 `BulkUnitAdmission.admit()`. Denied/invalid/conflict outcomes are persisted per ordinal;
 `stop(reason)` closes the execution and prevents the suffix. The mutation callback's
