@@ -56,6 +56,27 @@ domain authorization, or atomic domain-plus-receipt behavior.
 Read [command-outcome-matrix.md](references/command-outcome-matrix.md) when selecting
 scope, preconditions, idempotency, result status, or focused proof.
 
+## Bind Resource-Version ETags To The Operational Scope
+
+When a host must separate resource-version ETags across operational bindings, inspect
+the published `ResourceVersionScopeProvider` and use one server-owned, immutable
+binding scope for item GET/body ETags, action responses, and `If-Match` evaluation.
+Changing only an action's precondition leaves GET and command tokens inconsistent;
+a global provider also affects other versioned resources, so inventory their GET,
+update, action, anonymous-read, and direct-consumer paths before enabling it. Do not
+derive the ETag scope from request headers, a mutable principal/grant, or an authority
+hint. A GET with a configured scope proves token composition, not database identity
+or authorization; verify the actual binding separately.
+
+After a composed host adopts binding scope, reject old `GLOBAL` tokens rather than
+accepting both scopes or silently retrying them. `GLOBAL` may remain legitimate in an
+uncomposed, non-operational host; do not invent a binding there. Prove GET/action
+agreement and rejection of the old token, then compare two real bindings/databases
+with the same signing secret, resource key, ID, and version: a token from one must not
+satisfy the other's precondition. Keep GET token generation bounded; avoid a new
+database query per resource read merely to compute the scope. These checks do not
+replace current grant or target authorization, receipt/replay, or deployment proof.
+
 ## Fence Cross-Resource Authority And Writers
 
 When a command's decision depends on a current grant and mutable related rows,
