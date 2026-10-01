@@ -559,7 +559,8 @@ verify namespace, owner/epoch, immutable proposal/target-count binding, and the
 reservation ordinal against durable `nextOrdinal`. The kernel may call `executeUnit`
 to recognize an existing receipt or admission, but any replay ends that invocation;
 a retry of A must never dispatch B. Only a non-replay result in `RUNNING` permits the
-next ordinal, and only a fresh admitted unit invokes domain callbacks. Keep each
+next ordinal. A fresh unit may invoke admission; only `admit()` permits mutation.
+Receipt/admission replay invokes neither callback. Keep each
 unit's own transaction and remaining budget, stopping on terminal, cancel, stop,
 uncertainty or replay, including lost ACK on the second of three units. Do not add
 automatic retry/recovery or a transaction around the whole sequence. The host
