@@ -118,6 +118,29 @@ that proves the complete executable protocol. Programmatic decimal changes must
 use exact decimal nodes; reject binary Float/Double values that may already have
 lost precision.
 
+## Independent Artifact Proof Provenance
+
+Before accepting `BulkConsumerArtifactIntegrationTest`, inspect its archive source:
+`archiveCommittedCandidate` builds production from Git `HEAD`, not dirty `src/main`
+or the caller's compiled classes. Commit the intended production/POM before this
+proof, or use a clean checkout of that exact commit; preserve unrelated local drift.
+Verify `candidate.gitRevision`, `candidate.gitSrcMainTree`, `candidate.gitPomBlob`,
+JAR/POM hashes and the copied consumer fixture hash in
+`target/b1f-consumer-artifact-evidence.properties` against the intended tree. A green
+suite or matching working-tree hashes cannot substitute for these identities.
+The provenance guard must reject changed tracked production/POM and non-ignored
+untracked production before archiving;
+checkout line endings alone may be ignored. Prove that rejection with a real temporary
+Git repository, without changing global Git configuration or weakening the artifact gate.
+
+When lifecycle DDL changes, migrate the independent fixture too: narrow grants to
+the current function signatures and runtime/control-plane roles, retain cold reads
+as unavailable, and publish through the real HTTP/nonce path before structural reads.
+Do not seed a fictional READY photograph, bypass the failing consumer test, rerun an
+unchanged failed tag or move a release tag. If release validation fails before upload,
+record the failed run and actual registry availability separately, correct and review
+the fixture, then obtain any required authorization for the next immutable version.
+
 ## Bulk Snapshots And Result Schemas
 
 For `BulkIntentSnapshot`, `BulkProposal`, `BulkExecution` or `BulkItemResult`,
