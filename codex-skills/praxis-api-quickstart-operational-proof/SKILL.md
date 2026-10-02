@@ -299,6 +299,17 @@ callback from timeout alone. Prove budget exhaustion, reserved pool acquisition,
 post-call revalidation, and fail-closed behavior with the host's real Config/API
 PostgreSQL tests.
 
+Pair the negative timeout proof with a positive read near the transaction's
+one-second boundary on the resolved consumer runtime. Use a duration accepted by
+the canonical read API whose effective transaction allowance is about one second;
+hold contention from an independent PostgreSQL connection for less than the
+remaining allowance and require the valid read to continue. Then hold contention
+beyond the original deadline and require denial without domain, audit or receipt
+effects. Record the absolute deadline, fresh remaining duration and actual wait;
+recheck after the read and before mutation. A negative-only test can hide premature
+expiration caused by framework rounding. Keep databases/connections isolated and
+release waits on failure; preserve the existing budgets and fail-closed gates.
+
 ## Maven And Bootstrap Discipline
 
 `pom.xml` intentionally pins `praxis.core.version` and `praxis.config.version`. A version change is an integration change, not a dependency-only edit:
@@ -308,6 +319,17 @@ PostgreSQL tests.
 3. Run the focused downstream tests for that surface.
 4. Run `mvn -B verify` when changing either Praxis starter version, dependency topology, bootstrap, or host packaging.
 5. For an unpublished config-starter change, use the starter's documented local install/Quickstart packaging flow; do not edit the host POM into a permanent local workaround.
+
+For starter adoption or transaction-budget failures, compare the BOM, Spring Boot,
+Spring Framework and Hibernate versions effectively resolved by the canonical
+owner's tests, downstream tests and packaged host. Inspect dependency trees and
+the effective POM; declared starter pins alone do not show host dependency
+mediation. Correlate an unavailable result with the actual remaining budget and
+the resolved framework's timeout behavior before attributing it to exhaustion.
+Prove any runtime difference with the positive/negative PostgreSQL pair above and
+the affected HTTP flow. Correct compatibility in the owning baseline; do not add
+a host Hibernate override, increase budgets or weaken denial for convenience.
+Keep candidate proof separate from published-artifact adoption.
 
 Keep API and config datasource properties, Flyway policy, AI provider properties, RAG/vector-store switches, and test isolation explicit. Test profiles may disable external services or use H2, but must preserve the host/starter wiring being proven. Never use an in-memory shortcut as proof that deployed config persistence, origin policy, or streaming works.
 
