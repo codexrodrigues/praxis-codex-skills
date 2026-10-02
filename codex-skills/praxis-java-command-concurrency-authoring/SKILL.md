@@ -624,6 +624,18 @@ Before invoking a domain mutation, re-check the durable unit deadline. A confirm
 replay is different: read the receipt before rejecting on expiry, because an already
 committed effect remains confirmed after its deadline.
 
+When proving a received remaining budget under lock contention, keep the real blocker
+held until the waiter finishes and correlate PostgreSQL waiter/blocker PIDs and the
+intended lock phase. Cancellation alone, or merely observing calls to the budget
+supplier, does not prove the received budget was applied: an ordinary longer timeout
+can produce the same cancellation. Use an oracle that distinguishes the smaller
+received remainder from a restarted timeout, such as a calibrated monotonic upper
+bound with explicit scheduling tolerance or observed JDBC timeout configuration.
+Verify rollback and unchanged domain state; do not advertise a local timing oracle
+as a precise deadline or HTTP SLA. A controlled test-only counterexample using the
+ordinary timeout can validate that oracle; restore the accepted source exactly and
+rerun the positive focal before accepting evidence or packaging classes.
+
 The separate ACK/readback/recovery transaction must have its own short statement and row
 lock limits (at most one second in the current contract). If it cannot acquire the control
 row, preserve the receipt and return a reconcilable/unknown outcome; never call the domain
