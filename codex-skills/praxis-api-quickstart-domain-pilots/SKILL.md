@@ -143,7 +143,23 @@ facts, request references, actors, amounts, exception messages, secrets, or
 snapshot payloads. Unit/integration proof establishes only `Shadow Implemented`;
 live baseline evidence is required for `Shadow Running` or `Shadow Passed`.
 
-If `DomainRuleService` is unavailable, the materialization store is missing, or no valid `applied` materialization exists for the target layer/artifact, treat that as missing operational proof for this host execution. The quickstart may return no optional policy or mark the proof unavailable according to the existing resolver contract, but it must not synthesize a fallback business rule from DTO labels, prompt text, demo data, Java defaults, or migration-specific assumptions. `DomainRuleOptionSourcePolicyResolver`, `DomainRuleBackendValidationPolicyResolver`, and `DomainRuleWorkflowActionPolicyResolver` are the reference boundary: they select the latest valid applied materialization from Config Starter and otherwise return empty. Empty means "no governed materialization available to this host now", not "the semantic rule is absent", not "the consumer can decide locally", and not "the pilot owns the policy".
+For operational validation and workflow pilots, inspect Config's `OperationalPolicyService`,
+`OperationalPolicyResolution` and the host's `OperationalPolicyGate`. Consult the exact
+canonical target mandatorily. Preserve all four states: a proved `NEVER_APPLIED` permits
+continuation only when that caller explicitly declares `ALLOW_IF_NEVER_APPLIED`;
+`ELIGIBLE_APPLIED_HEAD` supplies the validated policy; withdrawn, inconsistent, missing
+infrastructure or failed reads deny operational continuation. ALLOW only clears this gate,
+never authority, scope, version or domain invariants. Retain the resolution fingerprint for
+capture and later rechecks. `DomainRuleBackendValidationPolicyResolver` and
+`DomainRuleWorkflowActionPolicyResolver` use this typed gate; do not teach a generic
+latest-or-empty fallback. Interpret a specialized BLOCK only through its actual supported
+governed domain evaluator; unknown or unsupported semantics fail closed, without borrowing
+another pilot's resolver or treating it as initial absence.
+
+`DomainRuleOptionSourcePolicyResolver` retains a separate optional lookup projection through
+`DomainRuleService`. Its empty result is not operational mutation authorization or proof that
+a rule never existed. Do not synthesize fallback rules from labels, prompts, demo data, Java
+defaults or migration assumptions, and do not generalize lookup absence to operational gates.
 
 The quickstart may demonstrate a materialization, but no pilot may route rules through command words, local keyword rules, or copied assistant text. Governed semantic resolution remains the primary path.
 
