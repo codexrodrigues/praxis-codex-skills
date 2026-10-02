@@ -851,8 +851,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "1E91D70A1C0B6ACB3587BE202644C8F7BF7BE3E940F87A015DCBE9F24A72A537",
-                       "treeSha256":  "03F3A08610FDCB9E1BE302592B0FC2975025A076A6E499BE0BD4F22F26994211"
+                       "skillMdSha256":  "3DB2E51684A7A6B1C008E672F095D04B1F40D774756F3E3942097136435BAB02",
+                       "treeSha256":  "3412B723F33F4D63C0653B8A61F522386891BFA2D641330A37B3638D8C2F1636"
                    },
                    {
                        "name":  "praxis-metadata-resource-baseline",
