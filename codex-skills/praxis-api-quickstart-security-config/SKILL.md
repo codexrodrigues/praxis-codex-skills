@@ -54,15 +54,17 @@ Do not use token authorities or the demo catalog as a revocable authorization so
   properties explicitly; absence blocks resolution, partial values fail bean creation.
   Future registry readiness must verify persisted binding before advertising availability.
 - Provision binding/grants administratively after the official migration. Runtime needs
-  schema USAGE and only SELECT on the two authorization tables, with no owner/admin role
+  schema USAGE and only SELECT on the authorization tables, with no owner/admin role
   membership. Reads reject effective table/column write privileges; this is not a universal
   proof against role escalation or an administrator disabling triggers.
 - Revoke by deactivation, preserving UUID/subject/namespace and monotonic row version.
   Administrative UPDATE must condition on the expected version and verify one returned row;
   the trigger increments versions but cannot enforce an administrator's WHERE predicate.
 - Resolve the authenticated subject, reject divergent/repeated identity headers, and load
-  the current grant on a separate READ COMMITTED `apiDataSource` connection. Never reuse an
-  ambient REPEATABLE READ snapshot or the Config datasource; account for an extra pool connection.
+  the current grant on a separate READ COMMITTED `governanceReaderDataSource` connection.
+  Never reuse an ambient transaction or the Config datasource for admission; account for
+  an extra pool connection. Authorized result readers use `readCurrentInSnapshot` on their
+  caller-owned physical read-only REPEATABLE READ connection, preserving one coherent snapshot.
   Publish Config server attributes only after authorization and clear previous bridge values
   on every attempt. Missing grants deny; infrastructure/binding failures stay unavailable.
 - Validate well-formed Unicode scalar values before JDBC and identity hashing. Isolated
@@ -86,6 +88,53 @@ Do not label other platforms as PG16/17 without runtime evidence. EmbeddedPostgr
 with owner credentials accidentally. The HTTP fixture proves context resolution only;
 write admission/CSRF, domain effects, replay/status/cancel and worker delegation need their
 own integration gates. Existing route policies and demo grounding are not replaced by this source.
+
+## Mission Participant Grants
+
+When extending mission-participant update authorization, inspect the host's
+`QuickstartPrincipalGrantRepository`, `V20261002_001__mission_participant_grants.sql`,
+mission grant PostgreSQL proofs and `OPERATIONAL-GRANTS-CONTEXT.md`. These are host-owned
+operational entitlements; Metadata owns the bulk protocol and Config the governed policy.
+
+- Reuse the revocable parent grant and its revision. `MISSION_PARTICIPANT_UPDATE` requires
+  explicit mission coverage, wire fields (`funcionarioId`, `papel`, `ordem`, `principal`,
+  `resultado`) and employee-reference coverage. Department coverage or JWT authorities
+  cannot grant this access. Empty references deny access to references; they never mean all.
+- Persist employee references as relational rows with individual FK `RESTRICT`, not only
+  arrays. Require administrative revocation before mission/employee deletion. Audit keeps
+  historical identifiers without domain FKs so deletion cannot erase evidence. Keep the
+  grant identity and append-only audit protected; do not provision grants through demo seeds.
+- Administrative replacement requires expected revision and evidence, locks grant before
+  the sorted union of old/new employees and mission, increments the parent once and records
+  before/after scope atomically. Canonical no-op changes neither revision nor audit. Grant
+  deactivation/authority removal clears mission scope before changing the parent and keeps
+  departmental authorization/audit behavior intact. Mixed revocation uses grant → employees
+  → missions → departments. Do not silently replace existing applied migrations.
+- Keep runtime SELECT-only for coverage and without admin function, audit or sequence access.
+  Harden new-object default/PUBLIC ACLs and provision administrator EXECUTE explicitly for
+  the new P3 replacement function. Preserve intentional P1/P2 administrator grants.
+  The reader must check unsafe effective privileges, use one SQL instruction for all scope
+  in both RC admission and RR result reads, and avoid Cartesian products that duplicate rows.
+  Validate exact typed rows/collections and fail closed on inconsistent or orphan scope.
+- Prove real PostgreSQL FK denial followed by governed revocation/deletion with retained
+  audit, stale revision/no-op, rollback, runtime privilege denial and coherent immutable
+  scope reads. Update every constructor and fixture that consumes the extended grant.
+  Schema-only fixtures still need domain key tables and the real migration; do not mask a
+  missing migration by fabricating an empty mission scope in the reader. Run the official
+  migrator PostgreSQL proof with separate migration/runtime identities; a Docker skip is
+  not this proof. The host uses EmbeddedPostgres for this gate, including concurrent
+  hosted bootstrap and migration history. Check actual baseline/version ordering before
+  changing expected counts; do not weaken assertions to hide a missing or duplicate migration.
+
+The SQL timeout bounds the instruction, not the number of authorization rows or Java
+materialization time. IAM coverage is not the bulk target limit. Before P3 execution/READY
+or B7 closure, prove expected scope volume, pool pressure and memory limits; do not claim
+an end-to-end SLA from setQueryTimeout alone.
+
+This persistence/read foundation does not expose READY, execute a bulk mutation, authorize
+peer editing, or prove an HTTP adapter. Evaluation and execution must still authorize all
+current/proposed references, share grant fencing and protect domain+receipt in one physical
+transaction. Do not infer deployment/public adoption from local candidate proofs.
 
 ## Exposure Matrix Before Editing
 
