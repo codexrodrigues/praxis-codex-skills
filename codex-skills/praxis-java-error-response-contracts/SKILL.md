@@ -51,6 +51,39 @@ an alternate problem envelope for one resource.
 Read [failure-mapping-matrix.md](references/failure-mapping-matrix.md) when
 choosing response category, evidence, or client behavior.
 
+## Governed OpenAPI Publication Unavailability — Candidate
+
+For the R2/V15 candidate under audit in `praxis-metadata-starter`, inspect
+`CachedOpenApiDocumentService.requirePublishedSnapshot`,
+`GovernedOpenApiPublicationUnavailableException`,
+`GlobalExceptionHandler.handleGovernedOpenApiPublicationUnavailable`, and
+`docs/spec/BULK-OPERATION-LIFECYCLE.md`. The dedicated exception remains an
+`IllegalStateException` subtype with its original private cause. Classify only
+failures at the published-snapshot guard into that subtype; do not broadly map
+`IllegalStateException`, callback failures, or programming errors to availability.
+Unexpected failures outside that boundary retain sanitized HTTP 500.
+
+Map the dedicated subtype through the canonical handler to HTTP 503, envelope
+`failure`, category `SYSTEM`, and stable code
+`GOVERNED_OPENAPI_PUBLICATION_UNAVAILABLE` (typed field and problem properties).
+Use the fixed public message `Governed OpenAPI publication is temporarily unavailable.`
+Never derive public message/detail from the cause or expose SQL, credentials,
+stack traces, or private generation/digest diagnostics. Cold, suspended, or stale
+publication denies structural serving without fresh HTTP or fallback. The 503
+outcome authorizes neither automatic recapture nor a domain mutation retry:
+`publish` and `reconcilePublished` remain explicit governed recovery operations
+with their existing state/generation rules. Do not teach consumers to parse the
+message, infer the private cause, or repeat a command because this code appeared.
+
+Use `GovernedOpenApiPublicationUnavailableExceptionTest` to assert 503,
+`failure`/`SYSTEM`, exact code and safe message, full public JSON without private
+cause details, and cause identity retained for diagnostics. Preserve
+`GlobalExceptionHandlerTest.shouldKeepGenericExceptionAsInternalServerError` as
+the counterexample for unexpected `IllegalStateException`; validate actual
+cold/suspended serving separately. Direct handler coverage does not prove HTTP
+dispatch, host security, adoption, or release. Record this as candidate guidance,
+not as a contract already published in `rc.146`.
+
 ## Preserve Platform Boundaries
 
 - `praxis-metadata-starter` owns canonical exception mapping, response shape,
