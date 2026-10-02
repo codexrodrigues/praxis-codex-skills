@@ -322,6 +322,27 @@ construction or migration success.
 
 ## Prove Bootstrap And Consumers
 
+Before accepting a manually composed host facade, inspect the complete
+`@ConditionalOnBean` prerequisites of its canonical auto-configuration. A collaborator
+constructed only as a local variable inside another `@Bean` factory is not itself a
+Spring bean and does not satisfy that condition. The facade may exist while the
+associated filter, serving guard, or initialization hook is entirely absent.
+Register required infrastructure as real beans with the actual datasource,
+transaction manager and role bindings; retain the canonical auto-configuration
+rather than treating manual facade construction as proof that it ran. An explicit
+host composition may remain where intentional, but it must not hide missing
+conditioned infrastructure or replace the canonical document transport/serving.
+
+Assert the conditioned bean's presence and identity, then verify initialization
+and ordering of any registered filter or serving guard. When HTTP behavior is
+claimed, prove the actual Servlet registration and cold denial followed by
+publication/restoration through the real HTTP path and canonical security/filter chain. Context startup alone
+or a mocked filter is insufficient. Keep PostgreSQL/kernel fixtures with empty MVC
+separate from full host HTTP proof: preserve the real prerequisite bean graph and
+lifecycle, assert zero mappings/providers where intended, and require publication
+to remain denied rather than creating a fake provider or READY row.
+
+
 Prove default context startup, intended host override, absent-required capability,
 and duplicate/ambiguous provider behavior. Assert bean identity/ordering rather
 than only context success. For public effects, add focused schema/HTTP proof plus
