@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-metadata-schema-contracts/
-- Descricao atual: Use when Codex must work on praxis-metadata-starter structural schema contracts: x-ui, /schemas/filtered, /schemas/catalog, /schemas/domain, OpenAPI operation resolution, schema references, ETag, X-Schema-Hash, schemaId/schemaUrl, docs/spec schemas, or Angular schema consumption.
+- Descricao atual: Use when Codex must work on praxis-metadata-starter structural schema contracts: x-ui, /schemas/filtered, /schemas/catalog, /schemas/domain, OpenAPI operation resolution, governed bulk lifecycle/publication, immutable published photographs and bound transactional schema reads, schema references, ETag, X-Schema-Hash, schemaId/schemaUrl, docs/spec schemas, or Angular schema consumption.
 
 ## Classificacao inicial
 

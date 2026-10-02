@@ -736,3 +736,9 @@ execution IDs, fabricated response payloads, or expose these examples in
 file references and generated LLM surface parity. Do not claim `READY`,
 published host adoption, or Angular readiness from route-level success; the remaining
 bulk lifecycle and later gates are separate.
+
+## Governed Bulk Published-Photograph Proof
+
+For bulk unit admission, inspect the Metadata-owned published-photograph path before adding a host workaround. The durable kernel owns the physical unit transaction and receipt; host admission callbacks run under that unit, and operational datasource reads/writes use its attested writable connection. Policy/grant authorities may use independent databases; their decisions must complete before the kernel rechecks control and invokes domain mutation. Published structural reads must retain the global SHARE on the same attested connection, with no cache lock or `REQUIRES_NEW` inside the unit. Readiness and capability/action response frames remain outside operational transactions. Receipt replay must precede new-mutation gates and must not invoke those callbacks again.
+
+Prove uniform and per-item HTTP+PostgreSQL flows against the exact candidate artifact with the unchanged execution budget: positive domain/audit/receipt commit, stale-target denial without mutation, authorized delegated reads, unauthorized reads, and replay without another domain call. A getter that copies only its requested group does not prove the complete multi-group resolver fits the budget. Record source/artifact hashes and admission reasons; do not raise timeouts or claim adoption from compile-only/local-override evidence. Published dependency validation without an override remains a separate release/adoption gate.
