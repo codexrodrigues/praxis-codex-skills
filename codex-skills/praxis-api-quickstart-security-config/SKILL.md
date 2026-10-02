@@ -151,6 +151,21 @@ on the caller's session and require no private projection before denial. Verify 
 with a temporary test-only negative control that attempts the forbidden projection, fails
 that specific assertion, and is restored byte for byte; never add a production bypass.
 
+For the concrete mission protected-read provider, inspect
+`MissionParticipantBulkReadAuthorizationProvider` and its unit/PostgreSQL proofs.
+Capture and readback must reuse the caller-owned physical read-only REPEATABLE READ
+connection. Reload the grant in that snapshot and use its actual revision and complete
+scope evidence in the authorization fingerprint; an earlier READ COMMITTED admission
+fingerprint cannot certify captured facts. Authorize the complete target set, explicit
+fields and captured/current/proposed employee references using scalar coordinates before
+any private team projection. A different reader may access results only with full current
+coverage; creator identity alone neither grants access nor forbids an authorized delegate.
+Keep namespace, operation and subject bound to trusted composition, reject unsupported
+connections, and consume the caller's live deadline without renewing it. A tested provider
+without concrete wiring does not expose an endpoint or certify READY. Distinguish these
+public-release proofs from a later evaluator that requires an explicitly named candidate
+Metadata coordinate; never install candidate code under the public version number.
+
 The SQL timeout bounds the instruction, not the number of authorization rows or Java
 materialization time. IAM coverage is not the bulk target limit. Before P3 execution/READY
 or B7 closure, prove expected scope volume, pool pressure and memory limits; do not claim
