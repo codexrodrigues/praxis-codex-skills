@@ -166,6 +166,33 @@ without concrete wiring does not expose an endpoint or certify READY. Distinguis
 public-release proofs from a later evaluator that requires an explicitly named candidate
 Metadata coordinate; never install candidate code under the public version number.
 
+For mission bulk mutation, distinguish that complete read-scope fingerprint from
+`BulkEvaluationGovernance.authorizationFingerprint`. The latter must identify the grant
+revision observed by the evaluator's RR capture through the existing
+`Grant.fingerprint(MISSION_PARTICIPANT_UPDATE)`, never the earlier admission RC grant.
+It is not field/reference coverage. All governed coverage/authority writers must bump that
+revision by CAS; retain the exact revision by G in the operational transaction and check
+captured/current/proposed coverage before private facts. A fingerprint incorporating every
+target's mutable version cannot serve as per-unit grant evidence: a confirmed earlier item
+would invalidate unrelated later items. Keep the read provider's complete fingerprint intact.
+
+Revalidate a unit from its immutable intent through the Metadata protocol reader/codec;
+compare structural binding, typed policy state/fingerprint and complete protected domain
+facts. Acquire G→E→M→P once, reuse the protected graph for candidate validation and JPA
+flush, and keep the SDK receipt on that same physical transaction. Do not recapture domain
+in REQUIRES_NEW to pretend the mutation is fenced. Compare integral values by their exact
+validated domain types across storage round trips, without JsonNode implementation equality
+or a host canonical-JSON protocol. Preserve cohort versions: an earlier confirmed write in
+the same mission may conflict with the next unit; never absorb that drift to allow a joint
+leader swap. Unrelated missions must remain independently executable.
+
+Use the SDK's protected reservation and advance flow. Receipt/admission replay precedes
+gates exclusive to new effects; recovery reconciles evidence without dispatching fresh
+mutations. Prove real domain+receipt commit/rollback, no repeated callback on replay,
+revocation waiting for retained G, stale facts/policy rejection and the unchanged live unit
+budget with PostgreSQL/JPA. Internal adapters and test-only composition do not prove HTTP,
+production READY, public dependency adoption or cross-database atomicity with Config.
+
 The SQL timeout bounds the instruction, not the number of authorization rows or Java
 materialization time. IAM coverage is not the bulk target limit. Before P3 execution/READY
 or B7 closure, prove expected scope volume, pool pressure and memory limits; do not claim
