@@ -56,12 +56,12 @@ contracts, never in a host controller convention.
 
 For a metadata-driven bulk command, keep composition readiness separate from command
 authorization and execution. The Metadata lifecycle may return a durable expectation
-only after the descriptor is recomposed from fresh published OpenAPI groups; the proposal writer must still revalidate
+only after the descriptor is recomposed from the installed, durably validated published photograph; the proposal writer must still revalidate
 that exact namespace/operation generation, fingerprint, and structural revision under
 the V7 transaction/lock before reserving or mutating. Publish and suspend use the
 separate PostgreSQL control-plane credential, while proposal/execution use the runtime
 credential; prove both bindings reach the same database, not merely matching JDBC
-URLs or namespace labels. Fresh lifecycle composition must use isolated exact-group snapshots, and any configurable remote OpenAPI source must be explicitly rejected or independently attested as current; do not let a cache-enabled replica establish READY. A `READY` descriptor does not prove production host handlers,
+URLs or namespace labels. Prepare or explicitly reconcile the complete photograph through attested exact-group producer captures outside JDBC transactions. Ordinary readiness must not regenerate SpringDoc or use a configurable remote source as current authority; cold/stale replicas fail closed until explicit reconciliation. Bound structural reads within a unit use the same attested operational connection and no cache lock or REQUIRES_NEW. A `READY` descriptor does not prove production host handlers,
 domain authorization, or atomic domain-plus-receipt behavior.
 
 Read [command-outcome-matrix.md](references/command-outcome-matrix.md) when selecting
@@ -179,9 +179,12 @@ without a separate migration design. Same-version retry tests alone miss this ri
   preconditions, action discovery, schemas, capability projection, and the shared
   governed-bulk persistence kernel: protected proposals/evaluations, execution
   controls, item receipts, fencing, quota allocations, and retention primitives.
-- The host owns the domain transition, current authorization/policy decision, and
-  composition of the kernel with domain writes in one supported operational
-  transaction. Keep remote effects behind an outbox or another independently
+- The host owns the domain transition and current authorization/policy decision.
+  In the durable bulk path the Metadata kernel owns the physical operational unit
+  transaction and atomic receipt; host admission runs under that unit. Operational
+  datasource reads/writes and published structural reads use its attested writable
+  connection. Policy/grant authorities may use independent databases and must
+  complete before control recheck and domain mutation. Keep remote effects behind an outbox or another independently
   idempotent boundary; a PostgreSQL receipt cannot make a remote side effect atomic.
   Do not leak database version, package, queue, token, or internal exception details.
 - `praxis-ui-angular` consumes action schemas, links, capabilities and safe conflicts.
