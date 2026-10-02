@@ -158,24 +158,26 @@ can be captured again. `/schemas/filtered` remains the UI projection and
 `SchemaReferenceResolver` remains its identity/URL owner; neither replaces this
 backend compilation snapshot.
 
-For governed bulk descriptor publication and readiness, compose from an isolated fresh snapshot of the complete published OpenAPI group collision domain; refreshing only the target group leaves duplicate operation IDs in cached non-target groups undetected. Do not replace shared cached group documents while one operation remains READY. When
+For governed bulk descriptor publication and explicit reconciliation, prepare an isolated fresh snapshot of the complete published OpenAPI group collision domain; refreshing only the target group leaves duplicate operation IDs in cached non-target groups undetected. Fresh preparation alone is not READY and does not install a photograph. After the exact global/operation tuple commits, readiness and response composition use the installed, durably guarded photograph through `withPublishedBulkOpenApiPublication`, without fetching or regenerating OpenAPI. Do not replace shared cached group documents while one operation remains READY. When
 the bulk lifecycle is active, `OpenApiDocumentService` must install and enforce its
 durable invalidation guard for both public cache-clear and strict-refresh calls.
-Implementations that cannot enforce the guard fail closed. Lifecycle publication and readiness must read a fresh isolated all-groups snapshot without replacing shared OpenAPI caches; serialize this composition against local invalidation. Return defensive copies of cached JSON trees so callers cannot mutate a shared document behind the fence. The canonical Springdoc
+Implementations that cannot enforce the guard fail closed. Serialize preparation against local invalidation and return defensive copies of cached JSON trees so callers cannot mutate a shared document behind the fence. The canonical Springdoc
 source caches its generated description by default; hosts that activate governed
 bulk lifecycle must set `springdoc.cache.disabled=true` and retain strict exact-group
 fetching with no fallback. HTTP `Cache-Control` revalidation alone does not bypass
 Springdoc's calculated-description cache. Never let a host call a lower-level cache
 API to skip the durable suspension signal.
 
-For the official multigroup composition, keep HTTP preparation outside the public
-cache write lock. Serialize preparations separately, capture local invalidation epoch
-and public entries under short read locking, then recheck epoch and public/fresh parity
-under the write lock before installing complete cold entries and invoking the callback.
-A clear/refresh attempt advances the epoch even if its durable guard fails. Do not
-confuse that local epoch with upstream authority or use it to cache the source forever.
-Cold preparation must independently fetch ordinary public and fresh documents; never
-install fresh merely to compare it to itself. Keep the complete published collision domain.
+When lifecycle is inactive, the official multigroup fresh-composition helper keeps
+HTTP preparation outside the public cache write lock. Serialize preparations separately,
+capture local invalidation epoch and public entries under short read locking, then
+recheck epoch and public/fresh parity under the write lock before installing complete
+cold entries and invoking the callback. A clear/refresh attempt advances the epoch even
+if its durable guard fails. Do not confuse that local epoch with upstream authority or
+use it to cache the source forever. Cold preparation must independently fetch ordinary
+public and fresh documents; never install fresh merely to compare it to itself. Keep the
+complete published collision domain. R2 publication and reconciliation do not use this
+public-cache parity algorithm.
 
 Inspect `OpenApiInternalRestTemplate` and the official client bean. Defaults are
 `praxis.openapi.http.connect-timeout=1s`, `praxis.openapi.http.read-timeout=10s`
@@ -198,12 +200,14 @@ have their own bounds. Explicit strict refresh retains its historical exclusive 
 this change does not prove every cache fill or business operation has a hard wall-clock
 bound or that server-side work stops when the client cancels.
 
-Prove off-lock readers, epoch clear/refresh races, cold parity, failed guard, timed
-preparation/write-lock waits, slow headers/body, factory replacement and pre-CAS failure
-with focused composition/transport/lifecycle tests. Then run the identified candidate JAR
-against the real host 53-group diagnostic before the workflow HTTP suite. A diagnostic
-with a local observer does not prove PostgreSQL suspension, execution, readiness or
-release adoption; record candidate, integrated, published and adopted states separately.
+For the inactive fresh-composition helper, prove off-lock readers, epoch clear/refresh
+races, cold parity, failed guard, timed preparation/write-lock waits, slow headers/body,
+factory replacement, and pre-CAS failure with focused composition/transport/lifecycle
+tests. Then run the identified candidate JAR against the real host 53-group diagnostic
+before the workflow HTTP suite. A diagnostic with a local observer does not prove
+PostgreSQL suspension, execution, readiness, or release adoption; record candidate,
+integrated, published, and adopted states separately. R2 instead proves the complete
+attested photograph and its exact durable tuple before installation.
 
 Every shared OpenAPI-document and schema-hash cache fill must participate in the
 same read-lock/epoch protocol as invalidation. A fill that began before a clear
@@ -213,28 +217,40 @@ standard Springdoc freshness capability rejects any configured external
 may opt in only with independent freshness proof, rather than relying on
 `Cache-Control` headers.
 
-Governed bulk lifecycle requires two distinct proofs from an
-`OpenApiDocumentService`: `supportsFreshBulkLifecycleComposition()` and
-`supportsFreshBulkLifecyclePublicCacheCoherence()`. The latter must compare the
-fresh exact-group snapshot with the documents the public `/schemas/filtered`
-endpoint actually serves before invoking readiness, publication, or action
-projection callbacks. If any public cached document differs, call the durable
-invalidation guard first, clear document and schema-hash caches only after the
-suspension commits, then fail closed. Do not return `READY`, invoke the callback,
-retry publication, or synthesize a new generation automatically; an operator or
-governed host flow must explicitly recompose and publish against the new CAS
-generation. A custom implementation's default `false` capability is not proof.
+The declared `OpenApiDocumentService` capabilities
+`supportsFreshBulkLifecycleComposition()` and
+`supportsFreshBulkLifecyclePublicCacheCoherence()` are admission claims only; they do
+not prove a candidate, public-cache relation, READY state, or authorization. In R2,
+candidate preparation and explicit reconciliation capture the complete producer-attested
+root/config/group photograph and prove its source fence. Initial publication binds the
+global/operation CAS transitions to that photograph in the same transaction; only after
+the exact tuple is committed or reconciled may a node verify it and install locally.
+They must not compare an old local public cache with that candidate, clear caches, or
+suspend durable state to recover a replica: a divergent old local view is precisely what
+reconciliation repairs.
+After the proof, installation replaces the local document/hash view with the
+authoritative complete photograph. If a candidate or durable check fails, deny and
+leave the node closed; do not invoke a response callback, retry publication, or
+synthesize a generation. Once installed, readiness and action projection use that
+guarded photograph rather than `withFreshBulkLifecycleDocuments`. A custom
+implementation's default `false` capability is not proof.
 
-Treat `getDocumentForGroupStrict` as a read, not an implicit refresh. A cold
-strict load is supported; promotion of a public non-strict entry must preserve
-the identical document. Reject a different exact document before changing
-public JSON or cached hashes. Use the existing guarded explicit refresh or
-invalidation path for replacement, followed by lifecycle republication where
-required. Never upgrade a read lock while an HTTP schema materialization holds
-its enclosing read lock. Prove changed-source rejection, identical promotion,
-cold strict loading, and the existing guard/hash refresh behavior with
+When lifecycle is inactive, treat `getDocumentForGroupStrict` as a read, not an
+implicit refresh. A cold strict load is supported; promotion of a public non-strict
+entry must preserve the identical document. Reject a different exact document before
+changing public JSON or cached hashes. Use the existing guarded explicit refresh or
+invalidation path for replacement, followed by lifecycle republication where required.
+Never upgrade a read lock while an HTTP schema materialization holds its enclosing read
+lock. Prove changed-source rejection, identical promotion, cold strict loading, and the
+existing guard/hash refresh behavior with
 `CachedOpenApiDocumentServiceStrictPromotionTest` and
 `CachedOpenApiDocumentServiceRefreshTest`.
+
+With a publication guard installed, do not use strict loading or promotion to recover a
+cold/stale node or to prove a global photograph: cold or missing installation denies,
+and public snapshot reads use the installed photograph. Explicit reconciliation captures
+a complete attested photograph and checks the exact durable tuple; it performs no global
+public-cache comparison, cache clear, or durable suspension.
 
 The standard `/schemas/filtered` path must hold the shared cache read lock from
 operation/schema selection through document materialization and hash/ETag/304
@@ -293,6 +309,18 @@ content, unsupported refs, and metadata-only schema differences. Then regress
 `OpenApiDocsSupport`/`ApiDocsController` and the exact candidate JAR in
 Quickstart. The HTTP fixture proves schema compilation, not persistence,
 authorization, or bulk execution.
+
+## Governed OpenAPI Publication — R2/V15 Candidate
+
+Treat the current governed-lifecycle implementation as an R2/V15 **candidate under audit**, not as the published `rc.146` artifact, complete readiness, host adoption, or an Angular release. Start with `docs/spec/BULK-OPERATION-LIFECYCLE.md`, `BulkOperationLifecycle`, `OpenApiDocumentService`, and `CachedOpenApiDocumentService`; derive lifecycle claims from those sources and their exact evidence rather than from capabilities, a local cache entry, or an action projection.
+
+Before a durable publication, prepare one immutable photograph from attested producer captures of the root, `swagger-config`, and the complete published group set. The digest binds the canonical ordered bytes of that full photograph. Each capture needs its own single-use attested nonce/lease, bound to the local Servlet context, path, GET request, and deadline. Do not treat an HTTP 200, a reusable internal header, a subset of groups, or a cached target group as that proof. A candidate whose producer, transport revision, context, source bytes, root, config, or group set cannot be attested fails closed.
+
+Use fresh HTTP only to prepare or explicitly reconcile a candidate. `requireReady`, capability/action projection, and composition over an installed photograph must not fetch or regenerate OpenAPI. Candidate composition stays outside JDBC transactions; the short admission section performs the global `PUBLISHED` CAS and operation `READY` CAS atomically against the same generation/digest. A lost commit acknowledgement permits only an independent readback of that exact global and operation tuple. Never retry the CAS, mutation, or provider callback because acknowledgement was uncertain. Install the local photograph only after that commit is confirmed or reconciled, under its local source/transport and durable guards.
+
+A cold or stale node remains closed until `reconcilePublished(identity, readyGeneration)` explicitly recaptures and verifies the durable photograph, descriptor, generation, and digest. That path is read-only: it neither clears caches nor suspends a global publication owned by another replica. `clearCaches` and strict refresh are invalidation paths, not local recovery tools; with the lifecycle installed they must first run the durable suspension guard, and a failed guard leaves the cache unmodified while invalidating prior local authority.
+
+Require evidence tied to the exact candidate tree for paired global/operation rollback, stale-replica reconciliation, lost-commit readback, final fence rejection, provider removal, cold/stale photographs, and shared-photograph publication by multiple operations. Such PostgreSQL evidence does **not** prove real host security-chain installation, a fresh HTTP lifecycle run, the required HTTP+PostgreSQL host proof within 8 seconds in both modes, integration/adoption, or release publication. Keep those as explicit gates; do not label the candidate as `rc.146`, READY-complete, or adopted.
 
 ## Decision Rules
 
@@ -353,8 +381,10 @@ Review `README.md`, `CHANGELOG.md`, `docs/index.md`, `docs/guides/**`, `docs/spe
 - Use `praxis-landing-public-docs-contracts` and `praxis-landing-registries-sitemap-playgrounds` when public landing/docs, guides, sitemap, LLM files, examples, or playgrounds publish `/schemas/filtered`, `x-ui`, schema hash, or metadata grounding claims.
 
 
-### Reusing a fresh snapshot for one discovery response
+### Installed photograph and one discovery-response frame
 
-Fresh preparation and its publication callback retain their existing lock protocol. Do not expand that callback to run arbitrary availability rules. Capture the concrete ephemeral snapshot read fence while the fresh snapshot is active, then release preparation/cache locks before response assembly. The fence carries the existing cache epoch, transport revision, owner thread and remaining composition deadline; short reads validate before and after acquisition/use and use the original deadline for lock admission. It is validity evidence for that captured snapshot, not source authority or permission to mutate. Provider recapture/composition and admitted database reads still execute under the short read section; custom code or a transaction already started is not forcibly interrupted. Do not describe this as a hard duration bound or SLA.
+Prepare a fresh candidate only for publication or explicit reconciliation. `withFreshBulkLifecycleDocuments` does not make an operation READY and, once the governed publication guard is installed, must not be used as the ordinary readiness path. After the matching durable tuple has committed and the candidate is installed, `withPublishedBulkOpenApiPublication` may serve independent requests from that immutable photograph without HTTP fetch or SpringDoc regeneration; each scope still validates the durable tuple and local source/transport fence.
 
-The lifecycle consumer must close its fence and private response scope on every exit. Revalidate provider and durable generation/fingerprint/revision at each scoped readiness query and once after response assembly. Never reuse this structural snapshot between requests or remove transactional admission checks. Test invalidation and strict refresh, failed invalidation guards, transport ABA, deadline exhaustion, another thread, cleanup after exceptions and a subsequent independent request.
+For one capability or action response, capture an ephemeral `BulkLifecycleDocumentFence` while the installed-photograph scope is active, then release cache/preparation locks before response assembly. The fence carries the cache epoch, transport revision, owner thread, and remaining composition deadline; its short reads validate before and after use. It is validity evidence for that response, not source authority, readiness itself, or permission to mutate. Provider recapture/composition and admitted database reads still execute under the short read section; custom code or a transaction already started is not forcibly interrupted. Do not describe this as a hard duration bound or SLA.
+
+The lifecycle consumer must close its per-response fence and private response frame on every exit. Revalidate provider and durable generation/fingerprint/revision at each scoped readiness query and once after response assembly. Do not reuse a response frame, fence, or its approved projection across requests; the installed photograph is reusable only through a new guarded `withPublishedBulkOpenApiPublication` scope. Do not remove transactional admission checks. Test invalidation and strict refresh, failed invalidation guards, transport ABA, deadline exhaustion, another thread, cleanup after exceptions, and a subsequent independent request.
