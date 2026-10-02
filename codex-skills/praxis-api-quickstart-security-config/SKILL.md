@@ -126,6 +126,31 @@ operational entitlements; Metadata owns the bulk protocol and Config the governe
   hosted bootstrap and migration history. Check actual baseline/version ordering before
   changing expected counts; do not weaken assertions to hide a missing or duplicate migration.
 
+For the mission-participant mutation fence, inspect the additive
+`V20261002_002__mission_participant_authorization_fence.sql`,
+`MissionParticipantScopeAuthorizer` and the concrete bulk preparation before wiring adapters.
+Retain the exact authenticated grant revision with a boolean-only SECURITY DEFINER function
+on the same writable physical transaction. Check the real runtime login, binding, subject,
+UUID, active authority and revision; runtime EXECUTE is restricted and defaults/PUBLIC are
+revoked. Administrative G1 writers must acquire this parent grant before changing scope.
+
+Require coverage of every target mission, explicit field (including SET to the same value)
+and both current/proposed employee references. Bulk omission preserves intent; ordinary PUT
+has separate effective-change semantics and must not be inferred from a mapper. Initial
+missing and out-of-scope targets share one sanitized 404. Drift after authorized coordinate
+discovery conflicts without acquiring a late employee or mission lock. Discover only scalar
+target/population coordinates before E; fix the authorized missions, acquire sorted E→M,
+recheck targets, then read/lock P and private team facts. Do not reread full target facts and
+compare only afterwards: that leaves a reparenting window. Peers needed for aggregate checks
+are not automatically editable. Prove the concrete preparation, grant fence and domain
+mutation together on PostgreSQL with two connections; separate mock/lock tests alone do not
+prove the complete chain. Keep the caller's live deadline throughout.
+A scope-race oracle must distinguish forbidden private reads from rejection after such a
+read: an HTTP conflict and absence of new locks alone are insufficient. Inspect prepared SQL
+on the caller's session and require no private projection before denial. Verify the oracle
+with a temporary test-only negative control that attempts the forbidden projection, fails
+that specific assertion, and is restored byte for byte; never add a production bypass.
+
 The SQL timeout bounds the instruction, not the number of authorization rows or Java
 materialization time. IAM coverage is not the bulk target limit. Before P3 execution/READY
 or B7 closure, prove expected scope volume, pool pressure and memory limits; do not claim
