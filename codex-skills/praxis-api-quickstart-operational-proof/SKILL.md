@@ -353,6 +353,25 @@ For metadata integration, prove the chain:
 
 `@ApiResource`/path -> OpenAPI group -> `/schemas/catalog` -> `/schemas/filtered` -> `x-ui`/schema headers -> actions/surfaces/capabilities/links -> downstream consumer evidence.
 
+### Prove Bulk Restart Across OS Processes
+
+When claiming durable bulk continuity across a host restart, pair the existing
+`ReferenceConsumerHttpPostgresTest` with `ReferenceConsumerRestartHttpPostgresTest` when the latter
+is available. Use the published Metadata `BulkOperationLifecycle.reconcilePublished` and durable
+execution readers; a test-only helper route is not a production API. Prove distinct OS process IDs:
+finish `COMPLETED` and receive the HTTP response, forcibly stop the first test process, verify it
+is dead, then start the second. Keep the same two databases, namespace/deployment, identity,
+proposal/idempotency key, cursor material and origin. Perform administrative migration, grants and
+seed only once; the second process must not run DDL or reseed.
+
+Require a cold denial before explicit reconciliation through the existing SDK, without a new
+publish or CAS. Then continue the old cursor and replay the terminal request after its deadline;
+assert unchanged execution, domain state, versions and receipts. Redact logs and clean up both
+processes and databases. This proves terminal acknowledged replay across processes, not lost ACK,
+`PENDING_ACK`, incomplete execution or suffix recovery, cancellation while running, or `ATOMIC`.
+Record those as separate gates rather than treating a new reader or Spring context in one JVM as
+an OS restart.
+
 When a resource controller delegates route behavior to an application handler, keep Spring MVC
 mapping and OpenAPI parameter annotations on the actual mapped controller method. An annotation on
 the delegated handler does not describe the HTTP route to Springdoc. Verify the rendered OpenAPI
