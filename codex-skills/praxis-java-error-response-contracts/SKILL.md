@@ -51,9 +51,54 @@ an alternate problem envelope for one resource.
 Read [failure-mapping-matrix.md](references/failure-mapping-matrix.md) when
 choosing response category, evidence, or client behavior.
 
-## Governed OpenAPI Publication Unavailability — Candidate
+## Keep The Error Wire Single-Sourced — Candidate
 
-For the R2/V15 candidate under audit in `praxis-metadata-starter`, inspect
+The `CustomProblemDetail` wire correction in `praxis-metadata-starter` is a
+candidate, not a published contract. Inspect `CustomProblemDetail`, the
+Spring/Boot-configured Jackson mapper and MVC serialization path,
+`GlobalExceptionHandler`, the generated error schema, and focused
+serialization and HTTP tests before adopting it. A typed `code` or `target`
+must produce one flat `errors[]` member; the inherited
+`ProblemDetail.properties` map must not be a second authority for either
+value. Null or blank `target` clears the typed field and must not leave a stale
+extension that reappears after serialization or round-trip. Reserve
+`type`, `title`, `status`, `detail`, `instance`, `message`, `category`, `code`,
+`target`, and `properties`: `setProperty` rejects these keys and
+`setProperties` validates and copies the caller's map before atomically
+replacing it. `getProperties()` must not expose a mutable alias; distinguish
+its empty `Map.of()` view from a map containing null extension values. Preserve
+the public object shape and the property-based `message` creator on round-trip,
+without reintroducing a legacy delegating-string form. The private JSON setter
+must reject any incoming `properties` wrapper, including null, object, array,
+or scalar, while legitimate Java `setProperties` remains available. Hide only
+the Java container getter from the OpenAPI schema: the public schema still
+declares flat `code`, `target`, `category`, and `status`, and must not become a
+closed object that rejects legitimate flat extensions. Handle `traceId` and a
+declared outcome according to their explicit contracts, without letting either
+replace a typed field or expose a private cause.
+
+Prove the raw response JSON with the corresponding Spring/Boot-configured
+mapper and MVC infrastructure: enable strict duplicate-member detection on
+emitted bytes **before** `readTree`, which can discard a duplicate. Assert one
+flat `errors[].code` and, when applicable, one
+`errors[].target`; verify field clearing and round-trip, reserved-extension
+rejection, all shapes of incoming `properties` wrapper, safe `traceId`/outcome,
+and agreement with the declared schema fields. Include a real validation-field
+error and a sanitized non-field failure. A focused Spring MVC test with its
+real Jackson mix-in proves that
+configuration, not an entire Boot host. Do not use `getProperties()` assertions
+or a hand-built JSON tree as proof of the public wire. Record owner fix, HTTP
+consumer proof, schema/corpus updates, and publication status separately.
+Use `CustomProblemDetailTest` for constructor, map, clear, wrapper, and
+round-trip behavior; `CustomProblemDetailHttpSerializationTest` for raw MVC
+serialization; and
+`AbstractResourceControllerJpaWriteIntegrationTest.resourceWritesPublishCanonicalStructuredFailureSchema`
+for the served schema. Count only evidence actually run on the final source.
+
+## Governed OpenAPI Publication Unavailability
+
+For the governed 503 behavior published in Metadata `rc.149` and exercised by
+the host in PR 340, inspect
 `CachedOpenApiDocumentService.requirePublishedSnapshot`,
 `GovernedOpenApiPublicationUnavailableException`,
 `GlobalExceptionHandler.handleGovernedOpenApiPublicationUnavailable`, and
@@ -65,7 +110,9 @@ Unexpected failures outside that boundary retain sanitized HTTP 500.
 
 Map the dedicated subtype through the canonical handler to HTTP 503, envelope
 `failure`, category `SYSTEM`, and stable code
-`GOVERNED_OPENAPI_PUBLICATION_UNAVAILABLE` (typed field and problem properties).
+`GOVERNED_OPENAPI_PUBLICATION_UNAVAILABLE` in the published response. The
+single-source wire correction above remains a separate candidate; do not infer
+from this 503's published status that its serialization change is published.
 Use the fixed public message `Governed OpenAPI publication is temporarily unavailable.`
 Never derive public message/detail from the cause or expose SQL, credentials,
 stack traces, or private generation/digest diagnostics. Cold, suspended, or stale
@@ -80,9 +127,10 @@ Use `GovernedOpenApiPublicationUnavailableExceptionTest` to assert 503,
 cause details, and cause identity retained for diagnostics. Preserve
 `GlobalExceptionHandlerTest.shouldKeepGenericExceptionAsInternalServerError` as
 the counterexample for unexpected `IllegalStateException`; validate actual
-cold/suspended serving separately. Direct handler coverage does not prove HTTP
-dispatch, host security, adoption, or release. Record this as candidate guidance,
-not as a contract already published in `rc.146`.
+cold/suspended serving separately. Direct handler coverage alone does not prove
+HTTP dispatch or host security; use the host's actual cold/suspended HTTP proof
+for those claims. Do not describe this published 503 as an unpublished
+`rc.146` candidate.
 
 ## Preserve Platform Boundaries
 
