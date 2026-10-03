@@ -115,16 +115,15 @@ not add bulk `_links` automatically. If a later cut adds them, derive them from
 the operation in the same snapshot/fence, without a separate lookup or a URL
 convention.
 
-The subsequent `ATOMIC` CRUD composition is a **candidate under validation**, not
-part of published rc.150. In that candidate, derive one capability identity from
+Metadata rc.151 publishes `ATOMIC` CRUD composition. Derive one capability identity from
 the pair `(mode, atomicity)`: `UNIFORM_UPDATE/PER_ITEM` → `bulk-update`,
 `PER_ITEM_UPDATE/PER_ITEM` → `bulk-update-items`, `UNIFORM_UPDATE/ATOMIC` →
 `bulk-update-atomic`, and `PER_ITEM_UPDATE/ATOMIC` → `bulk-update-items-atomic`.
 Reject duplicate `(resourceKey, mode, atomicity)` declarations, missing or
 ambiguous exact confirmation providers, and a mismatch of operation, schema,
-or provider against the one published OpenAPI photograph. Only CRUD UPDATE
-may compose `ATOMIC`, with `EXPLICIT`/`SYNC`, 1–50 targets and an aggregate unit
-deadline no greater than five seconds; `DOMAIN_COMMAND/ATOMIC` remains closed.
+or provider against the one published OpenAPI photograph. CRUD UPDATE composes
+`ATOMIC` with `EXPLICIT`/`SYNC`, 1–50 targets and an aggregate unit deadline no
+greater than five seconds.
 Each variant has its own confirmation operation/control identity and seven
 canonical references; the five bodyless proposal, proposal-results, execution,
 execution-results and cancel handlers are shared. The publication fence is
@@ -135,9 +134,20 @@ others remain absent until their own publication. Contextual
 availability is neither execution authorization nor a proof of host `READY`.
 Consult `praxis-java-command-concurrency-authoring` for whole-set admission,
 transactional mutation, receipt and recovery proof. Do not teach consumers
-these candidate IDs as a published or host-adopted capability until the
-composition is integrated, its exact artifact is published, and downstream
-readiness is separately proved.
+these IDs as host-adopted capabilities until the exact artifact is consumed and
+downstream readiness is separately proved.
+
+For a candidate `DOMAIN_COMMAND/ATOMIC`, inspect the real `@WorkflowAction`,
+its action-registry binding, typed parameters, and `BulkOperation` declaration
+before projecting discovery. Their atomicity must agree; the exact provider,
+confirmation operation and seven canonical references must resolve in the same
+published photograph. Preserve the action identity and request/response schemas;
+do not manufacture a CRUD capability or editable fields for a command. The
+operational profile remains `EXPLICIT`/`SYNC`, at most 50 targets, an aggregate
+unit deadline no greater than five seconds and any stricter action `maxItems` limit. A mismatch
+fails closed. This composition candidate does not establish a host command
+provider, executable HTTP route, domain authorization, outbox, `READY`, or
+public adoption; prove those separately against the exact published artifact.
 
 `ActionCatalogService` must assemble each synchronous response inside the lifecycle's response scope while keeping contextual availability outside document-cache and preparation locks. Resource, group, item and collection entrypoints preserve the original action definitions, principal and availability contexts. Reuse only the structural descriptor captured for that response; `execution.bulk` is descriptive evidence and never a readiness or authorization token.
 
