@@ -11,6 +11,18 @@
 | Legacy integration failure | Stable business error plus protected evidence reference | ORA/JDBC/package text in client output |
 | Unexpected failure | Sanitized category and correlation/diagnostic route | Stack trace, token, session, secrets |
 
+The pending Metadata error-wire correction makes typed `errors[].code` and
+`errors[].target` the single source for those flat JSON members. During its
+review, inspect the raw Boot MVC response with strict duplicate-member
+detection before parsing a tree; a `ProblemDetail.properties` lookup cannot
+prove the wire has no duplicate or stale field. Keep extension names away from
+typed, RFC 7807, and envelope members, and verify field clearing and declared
+trace/outcome behavior. An incoming JSON `properties` wrapper is rejected in
+every value shape; legitimate Java map extensions remain flat. The served
+schema must show flat typed fields without exposing the Java map container or
+closing the object against allowed extensions. This is candidate guidance
+until the owner publishes and a consumer proves the changed wire.
+
 ## Minimum Negative Proof
 
 For every changed write or command, test one valid outcome and one expected
