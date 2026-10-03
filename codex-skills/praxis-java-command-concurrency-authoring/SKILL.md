@@ -1165,6 +1165,36 @@ different conflicting command; stale/missing `If-Match`; result/status schema;
 action/capability/`_links` alignment; and no repeated external side effect. For collection
 commands, prove mixed outcome and atomicity/ordering rules.
 
+For the private V16 `ATOMIC` bulk candidate, inspect the canonical
+`praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/bulk/`
+sources `JdbcBulkDurableExecution.java`, `BulkExecutionResultsReader.java`
+and `BulkExecutionMigrator.java`, plus
+`praxis-metadata-starter/src/main/resources/db/praxis-bulk-migrations/V16__bulk_atomic_set_execution.sql`
+before asserting a contract. Verify whole-set
+admission before mutation; one bounded transaction for domain writes, outbox,
+one receipt header and ordered child evidence; and rollback of all of them
+when the last target or evidence append fails. The current candidate bounds
+the entire set to 50 targets and one aggregate five-second unit deadline,
+including evidence append. A commit with lost acknowledgement requires
+receipt-first recovery without invoking the mutation again. Absence of a
+receipt after an uncertain commit, while the active deadline is still open,
+remains `RECONCILIATION_REQUIRED`; only a fenced post-deadline recovery may
+certify that absence. The reader must publish zero children until the whole set is
+certified, then the complete ordered set, never a partial prefix. Compare
+these guarantees with `praxis-metadata-starter/src/test/java/org/praxisplatform/uischema/bulk/`
+`BulkAtomicExecutionPostgresTest.java` and `BulkDurableMigrationPostgresTest.java`;
+a callback return or a green happy path alone does not prove them.
+
+For V16 storage review, verify that the cutover suspends existing publication
+and operation controls, new runtime grants on atomic evidence are limited to
+the four evidence tables and required evidence function, and both `migrate` and
+`validate` reject ACL drift after bootstrap `COMPLETE` without silently
+repairing it. Historical protocol-one fixtures must use genuine historical
+storage and must not fabricate post-cutover `READY`. This is candidate
+guidance, not an assertion of public `READY`, a working host consumer, B4
+completion, or exactly-once external effects. Those require their own
+authorized release and consumer evidence.
+
 For paged result/read APIs attached to a durable collection command, keep result
 navigation separate from access control:
 
