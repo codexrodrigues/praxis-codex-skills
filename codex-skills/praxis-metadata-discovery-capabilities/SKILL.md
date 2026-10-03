@@ -86,10 +86,12 @@ catalog instead of treating the inferred key as canonical.
 
 ## Bulk discovery composition
 
-For candidate bulk CRUD UPDATE discovery, inspect Metadata
+For bulk CRUD UPDATE discovery, inspect Metadata
 `docs/spec/BULK-CRUD-STRUCTURE.md` and `BULK-CRUD-OPERATIONS.md` before
-projecting a capability. A complete operational UPDATE projects `bulk-update`
-or `bulk-update-items` as a `COLLECTION` `POST` at `.bulk`, with seven canonical
+projecting a capability. Metadata rc.150 publishes the protected V16 `ATOMIC`
+kernel, while its existing discovery projects a complete operational UPDATE as `bulk-update` or `bulk-update-items`
+(`UNIFORM_UPDATE` or `PER_ITEM_UPDATE`) as a `COLLECTION` `POST` at `.bulk`,
+with seven canonical
 cycle references and ordered `editableFields` (`sourceOperation` as a
 `CanonicalOperationRef`, `requestSchema`, `writableFields`, `clearableFields`). Reuse the same response frame and
 readiness fence as the action; neither a real PUT source nor a structural
@@ -100,9 +102,9 @@ before durable I/O; response preparation may read durable evidence before
 compilation. Removing a provider makes `requireReady` deny but does not
 automatically change the durable READY row; `suspend` or invalidation follows
 its own close protocol. Keep availability outside preparation/cache locks and preserve the
-final poison check and cleanup on all exits. The UPDATE profile is only
-`SYNC`/`EXPLICIT`/`PER_ITEM`; do not infer selection queries, async, atomic
-batch behavior, host grants, or domain mutation from discovery. Verify source,
+final poison check and cleanup on all exits. The published rc.150 UPDATE
+composition is `SYNC`/`EXPLICIT`/`PER_ITEM`; do not infer selection queries,
+async or atomic batch behavior, host grants, or domain mutation from it. Verify source,
 schema, frame coherence, provider removal, orphan denial, and a following clean
 request before teaching consumers to display the capability.
 `collectionOperationAvailability` is a contextual provider decision, even for
@@ -112,6 +114,30 @@ the `.bulk` operation and its seven canonical references. Resource bases do
 not add bulk `_links` automatically. If a later cut adds them, derive them from
 the operation in the same snapshot/fence, without a separate lookup or a URL
 convention.
+
+The subsequent `ATOMIC` CRUD composition is a **candidate under validation**, not
+part of published rc.150. In that candidate, derive one capability identity from
+the pair `(mode, atomicity)`: `UNIFORM_UPDATE/PER_ITEM` → `bulk-update`,
+`PER_ITEM_UPDATE/PER_ITEM` → `bulk-update-items`, `UNIFORM_UPDATE/ATOMIC` →
+`bulk-update-atomic`, and `PER_ITEM_UPDATE/ATOMIC` → `bulk-update-items-atomic`.
+Reject duplicate `(resourceKey, mode, atomicity)` declarations, missing or
+ambiguous exact confirmation providers, and a mismatch of operation, schema,
+or provider against the one published OpenAPI photograph. Only CRUD UPDATE
+may compose `ATOMIC`, with `EXPLICIT`/`SYNC`, 1–50 targets and an aggregate unit
+deadline no greater than five seconds; `DOMAIN_COMMAND/ATOMIC` remains closed.
+Each variant has its own confirmation operation/control identity and seven
+canonical references; the five bodyless proposal, proposal-results, execution,
+execution-results and cancel handlers are shared. The publication fence is
+global: suspending one variant invalidates the photograph and readiness of all
+variants. Republishing one variant recaptures and validates the global
+photograph but returns only that variant to `READY` and capabilities; the
+others remain absent until their own publication. Contextual
+availability is neither execution authorization nor a proof of host `READY`.
+Consult `praxis-java-command-concurrency-authoring` for whole-set admission,
+transactional mutation, receipt and recovery proof. Do not teach consumers
+these candidate IDs as a published or host-adopted capability until the
+composition is integrated, its exact artifact is published, and downstream
+readiness is separately proved.
 
 `ActionCatalogService` must assemble each synchronous response inside the lifecycle's response scope while keeping contextual availability outside document-cache and preparation locks. Resource, group, item and collection entrypoints preserve the original action definitions, principal and availability contexts. Reuse only the structural descriptor captured for that response; `execution.bulk` is descriptive evidence and never a readiness or authorization token.
 
