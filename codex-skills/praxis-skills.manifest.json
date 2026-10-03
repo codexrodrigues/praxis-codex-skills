@@ -873,8 +873,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "BBDFE15CE4C76BB364044CC913749299F9F6B6AE0F694D9A9A4C2186D7713E7E",
-                       "treeSha256":  "24262ACCFAD0B57E2F94567B289D391A7B57A738B9EA53FF5CFA546BF4859EA2"
+                       "skillMdSha256":  "2763293D931FF0CADD0B218EEAC83A829ADD4916992ACE858E1A4E4290C251D1",
+                       "treeSha256":  "B38BA522C79AC582ECDD9C774FE78F80DC8CDA47C9428A69855202EE0350E52E"
                    },
                    {
                        "name":  "praxis-metadata-domain-option-sources",
