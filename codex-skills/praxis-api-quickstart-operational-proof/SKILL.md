@@ -355,7 +355,7 @@ For metadata integration, prove the chain:
 
 ### Prove Bulk Restart Across OS Processes
 
-When claiming durable bulk continuity across a host restart, pair the existing
+For the case where the client received the response, pair the existing
 `ReferenceConsumerHttpPostgresTest` with `ReferenceConsumerRestartHttpPostgresTest` when the latter
 is available. Use the published Metadata `BulkOperationLifecycle.reconcilePublished` and durable
 execution readers; a test-only helper route is not a production API. Prove distinct OS process IDs:
@@ -367,10 +367,21 @@ seed only once; the second process must not run DDL or reseed.
 Require a cold denial before explicit reconciliation through the existing SDK, without a new
 publish or CAS. Then continue the old cursor and replay the terminal request after its deadline;
 assert unchanged execution, domain state, versions and receipts. Redact logs and clean up both
-processes and databases. This proves terminal acknowledged replay across processes, not lost ACK,
-`PENDING_ACK`, incomplete execution or suffix recovery, cancellation while running, or `ATOMIC`.
-Record those as separate gates rather than treating a new reader or Spring context in one JVM as
-an OS restart.
+processes and databases. This proves response-observed terminal replay across processes.
+
+For a terminal execution whose HTTP response was not observed, start a raw-socket observer before
+the confirmation POST and require zero response bytes through EOF or reset observed after termination
+is requested, with process death confirmed. Use a private test gate after response serialization
+and before committing response bytes; correlate its body UUID marker
+with the terminal execution and effects observed through private SQL. Kill the first OS process
+while that gate remains closed and verify it is dead. Start the second process with the same origin
+and durable identities, explicitly reconcile through the existing SDK, then replay after the
+deadline; assert the execution, receipts and domain state are unchanged. Keep the gate and any
+helper route test-only, redact logs and clean up sockets, processes and databases. This proves
+HTTP response non-observation. Neither restart scenario proves TCP acknowledgement loss,
+`PENDING_ACK`, uncertain database commit, incomplete execution or suffix recovery, cancellation
+while running, or `ATOMIC`; keep those and B6/B7 completion as separate gates. A new reader or
+Spring context in one JVM is not an OS restart.
 
 When a resource controller delegates route behavior to an application handler, keep Spring MVC
 mapping and OpenAPI parameter annotations on the actual mapped controller method. An annotation on
