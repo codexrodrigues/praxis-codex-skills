@@ -44,6 +44,9 @@ override is not a replacement for an ambiguous starter contract.
 
 Read [bootstrap-contract-matrix.md](references/bootstrap-contract-matrix.md)
 when selecting a condition, property, SPI, ordering rule, or validation gate.
+Before changing Springdoc wiring, confirm the resolved Boot/Springdoc versions in
+both the starter and its consumer, then inspect the builder's public constructor
+and context initialization for each generation using that matrix.
 
 ## Preserve Explicit Bulk Infrastructure Adoption
 
@@ -194,8 +197,9 @@ Keep an explicit time/memory budget for the full V9/V11 privileged
 storage alone grants no reader,
 cursor, HTTP route, authorization, capability or `READY`.
 
-The RS2 reader's separate V12 bootstrap gate is integrated in Metadata source
-at merge `17d102ec69c5e00c4b75101ad8c6f0f9652bb228`, but is not published.
+The RS2 reader's separate V12 bootstrap gate was introduced in Metadata source
+at merge `17d102ec69c5e00c4b75101ad8c6f0f9652bb228` and is included in the verified
+Maven Central artifact `8.0.0-rc.149`.
 Inspect the exact published Metadata revision before host adoption.
 Keep the V11 marker owner-only; do not grant runtime
 roles `SELECT` on either bootstrap marker. Flyway V12 installs a restricted
