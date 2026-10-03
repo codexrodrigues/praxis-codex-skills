@@ -51,10 +51,10 @@ an alternate problem envelope for one resource.
 Read [failure-mapping-matrix.md](references/failure-mapping-matrix.md) when
 choosing response category, evidence, or client behavior.
 
-## Keep The Error Wire Single-Sourced — Candidate
+## Keep The Error Wire Single-Sourced — Published In Metadata rc.150
 
-The `CustomProblemDetail` wire correction in `praxis-metadata-starter` is a
-candidate, not a published contract. Inspect `CustomProblemDetail`, the
+The `CustomProblemDetail` wire correction is published in
+`praxis-metadata-starter` rc.150. Inspect `CustomProblemDetail`, the
 Spring/Boot-configured Jackson mapper and MVC serialization path,
 `GlobalExceptionHandler`, the generated error schema, and focused
 serialization and HTTP tests before adopting it. A typed `code` or `target`
@@ -122,8 +122,9 @@ Unexpected failures outside that boundary retain sanitized HTTP 500.
 Map the dedicated subtype through the canonical handler to HTTP 503, envelope
 `failure`, category `SYSTEM`, and stable code
 `GOVERNED_OPENAPI_PUBLICATION_UNAVAILABLE` in the published response. The
-single-source wire correction above remains a separate candidate; do not infer
-from this 503's published status that its serialization change is published.
+single-source wire correction above was published separately in Metadata
+rc.150; the host must still prove adoption against that released artifact. Do not
+infer rc.150 host behavior from this earlier 503 proof.
 Use the fixed public message `Governed OpenAPI publication is temporarily unavailable.`
 Never derive public message/detail from the cause or expose SQL, credentials,
 stack traces, or private generation/digest diagnostics. Cold, suspended, or stale

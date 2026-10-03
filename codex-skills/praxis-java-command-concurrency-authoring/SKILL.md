@@ -1165,7 +1165,8 @@ different conflicting command; stale/missing `If-Match`; result/status schema;
 action/capability/`_links` alignment; and no repeated external side effect. For collection
 commands, prove mixed outcome and atomicity/ordering rules.
 
-For the private V16 `ATOMIC` bulk candidate, inspect the canonical
+For the protected V16 `ATOMIC` bulk kernel published in Metadata rc.150,
+inspect the canonical
 `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/bulk/`
 sources `JdbcBulkDurableExecution.java`, `BulkExecutionResultsReader.java`
 and `BulkExecutionMigrator.java`, plus
@@ -1173,7 +1174,7 @@ and `BulkExecutionMigrator.java`, plus
 before asserting a contract. Verify whole-set
 admission before mutation; one bounded transaction for domain writes, outbox,
 one receipt header and ordered child evidence; and rollback of all of them
-when the last target or evidence append fails. The current candidate bounds
+when the last target or evidence append fails. The published kernel bounds
 the entire set to 50 targets and one aggregate five-second unit deadline,
 including evidence append. A commit with lost acknowledgement requires
 receipt-first recovery without invoking the mutation again. Absence of a
@@ -1208,10 +1209,11 @@ and operation controls, new runtime grants on atomic evidence are limited to
 the four evidence tables and required evidence function, and both `migrate` and
 `validate` reject ACL drift after bootstrap `COMPLETE` without silently
 repairing it. Historical protocol-one fixtures must use genuine historical
-storage and must not fabricate post-cutover `READY`. This is candidate
-guidance, not an assertion of public `READY`, a working host consumer, B4
-completion, or exactly-once external effects. Those require their own
-authorized release and consumer evidence.
+storage and must not fabricate post-cutover `READY`. V16 storage and the
+protected kernel are published in Metadata rc.150; publication alone does not
+prove a working host consumer, composition/lifecycle/HTTP `ATOMIC`, B4 completion,
+or exactly-once external effects. Host adoption and those separate gates require
+their own evidence.
 
 For paged result/read APIs attached to a durable collection command, keep result
 navigation separate from access control:
