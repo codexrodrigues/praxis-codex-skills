@@ -79,6 +79,15 @@ Keep these owners and lifecycles distinct:
 2. `POST /domain-rules/intake` persists a `draft` definition and returns grounding plus `decisionDiagnostics`. Do not treat the prompt or assistant text copied into the definition as durable Domain Knowledge evidence.
 3. `POST /domain-rules/simulations` may use a persisted definition or an ad hoc request. The current simulation detects approved/active overlapping coverage, predicts target materializations, derives required approvals and publication readiness; it does **not** execute the rule condition against business records or prove business outcomes.
 4. Review `existingCoverage`, `predictedMaterializations`, `requiredApprovals`, warnings, explainability, and timeline evidence before publication. Existing approved/active coverage and declared approvals block publication.
+   To approve a governed definition, the authenticated reviewer needs the official
+   `RULE_DEFINITION_APPROVER` role **and** an `actorRef` listed in
+   `governance.requiredApprovals` or `governance.authorizedApprovers`; the
+   reviewer must differ from the server-authenticated author. Preserve the
+   author/reviewer/publisher separation. Verify the persisted definition
+   approval against `DomainRuleDefinitionFingerprint.sha256` and the actual
+   derived artifact through their canonical owners; do not normalize a hash's
+   letter case or change production to satisfy a legacy fixture. Definition
+   approval and RuleSet snapshot/composition approvals are distinct gates.
 5. `POST /domain-rules/publications` requires a persisted definition. Only `approved` or `active` satisfies the publication approval gate; `draft` and `proposed` return `approval_required`, while terminal/inactive states are blocked. Governed definitions must be created as `draft` or `proposed` and pass explicit authorized transitions before publication. Do not relax this lifecycle to repair an outdated smoke fixture.
 6. Publish or create target materializations and preserve stable key, target identity, `sourceHash`, validation result, status, and materialization outcome diagnostics. A stable-key collision with another definition or changed derived source hash must fail instead of silently overwriting a projection.
 
