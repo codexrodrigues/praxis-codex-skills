@@ -398,10 +398,30 @@ while that gate remains closed and verify it is dead. Start the second process w
 and durable identities, explicitly reconcile through the existing SDK, then replay after the
 deadline; assert the execution, receipts and domain state are unchanged. Keep the gate and any
 helper route test-only, redact logs and clean up sockets, processes and databases. This proves
-HTTP response non-observation. Neither restart scenario proves TCP acknowledgement loss,
+HTTP response non-observation. Neither terminal-restart scenario proves TCP acknowledgement loss,
 `PENDING_ACK`, uncertain database commit, incomplete execution or suffix recovery, cancellation
 while running, or `ATOMIC`; keep those and B6/B7 completion as separate gates. A new reader or
 Spring context in one JVM is not an OS restart.
+
+Prove a crash at `UNIT_COMMITTED_PENDING_ACK` separately: hold JVM1 after the first unit's real
+commit and receipt but before ACK, independently verify cursor zero and the untouched suffix,
+then kill it and confirm process death. Start JVM2 on the same stores and published origin; require
+cold denial before explicit `reconcilePublished`. Authenticate and scope any private test-only
+recovery command to the trusted subject, namespace, operation, proposal and execution before an
+SDK lookup. A current-grants reader is an additional guard, not recovery authority. The published
+protected proposal store needs an operational writable transaction even for lookup: use the
+existing bounded `REQUIRES_NEW`/repeatable-read boundary, not a read-only consistent reader.
+Observe a real public control in JVM2 before calling the existing `JdbcBulkDurableExecution.recover`
+with the proposal's exact `BulkFingerprintContext` and a JVM2-owned recovery identity; do not
+pretend a JVM1 token survived. Require verified receipt prefix one, increased `owner_epoch`, old
+control `FENCED`, `STOPPED`/`RECOVERY_STOPPED`, unchanged suffix and release of only the bound
+allocation's `state`/`released_at`/`release_reason` to `RELEASED`/timestamp/
+`TERMINAL_RECONCILED`. Waiting for the stored unit deadline may be a harness safety gate, not an
+SDK recovery precondition. After the execution deadline, prove receipt-first SDK replay with zero
+callbacks counted by the SDK harness, and HTTP terminal retry
+with an unchanged full 24-table protected snapshot and inspected terminal branch; those harness
+counters do not measure every HTTP callback. Do not present the private command as an endpoint.
+This is not proof of uncertain JDBC commit, `ATOMIC`, or B6/B7 completion.
 
 When a resource controller delegates route behavior to an application handler, keep Spring MVC
 mapping and OpenAPI parameter annotations on the actual mapped controller method. An annotation on
