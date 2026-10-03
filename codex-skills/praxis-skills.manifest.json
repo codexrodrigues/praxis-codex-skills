@@ -2473,7 +2473,7 @@
                                             "praxis-http-examples-llm-smoke"
                                         ],
                        "skillMdSha256":  "877F65054113B334717835440DAE29D02423ACADDF2E4E6DD7655BF468362924",
-                       "treeSha256":  "EFF9302FAA4C8D69F26D2F42D2029121AAF1B21AC530126958ACB6213C7C15B3"
+                       "treeSha256":  "D461A3A1EEB8F1AB30F886587A8BDC13D9781A5D79601C9A77E5AB9B101DE245"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
