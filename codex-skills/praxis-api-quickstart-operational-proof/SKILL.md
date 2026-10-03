@@ -187,6 +187,26 @@ unstarted suffix. A target-specific state/version conflict remains a durable
 per-item result. Keep reservation/recovery probes test-only until the canonical
 public confirmation protocol and consumer contract are released together.
 
+To prove cancellation while an incomplete execution has a committed unit awaiting ACK, keep
+the real transaction manager, datasource and existing listeners. Append only a test-scoped Spring
+transaction listener: `beforeCommit` identifies the intended writable unit transaction on its
+Spring-bound connection. In a fresh, bounded disposable PostgreSQL fixture, `xmin`/XID may bind
+the observed attempt to that transaction; this is neither an SDK contract nor a production
+identification technique. `afterCommit` with no commit error holds the return before ACK, without
+changing the commit. Independently verify the first domain effect and receipt,
+`UNIT_COMMITTED_PENDING_ACK`, cursor zero and pending suffix.
+
+Call the real HTTP cancellation route while confirmation remains held: it records intent but
+does not yet release the execution's quota allocation. After the stored unit deadline, release
+the gate and require receipt-first ACK, `STOPPED`/`CANCELLED_BY_USER`, cursor one and the suffix
+`NOT_PROCESSED` without another mutation. On the allocation bound to that execution,
+terminalization changes only `state`, `released_at` and `release_reason` to `RELEASED`/a
+timestamp/`TERMINAL_RECONCILED`, preserving its other binding fields and unrelated allocations;
+replay leaves the full recorded durable state unchanged, including execution, domain, receipts
+and allocation.
+Keep the listener and gate test-only. This does not prove a two-JVM crash, uncertain JDBC commit,
+`ATOMIC`, or B6/B7 completion.
+
 Until the durable proposal protocol and its complete lifecycle are proved against the published
 starter artifacts, distinguish it from any legacy direct bulk action that exists in the base
 host. Inspect the current controller, action annotations, discovery and OpenAPI before making
