@@ -834,3 +834,39 @@ bulk lifecycle and later gates are separate.
 For bulk unit admission, inspect the Metadata-owned published-photograph path before adding a host workaround. The durable kernel owns the physical unit transaction and receipt; host admission callbacks run under that unit, and operational datasource reads/writes use its attested writable connection. Policy/grant authorities may use independent databases; their decisions must complete before the kernel rechecks control and invokes domain mutation. Published structural reads must retain the global SHARE on the same attested connection, with no cache lock or `REQUIRES_NEW` inside the unit. Readiness and capability/action response frames remain outside operational transactions. Receipt replay must precede new-mutation gates and must not invoke those callbacks again.
 
 Prove uniform and per-item HTTP+PostgreSQL flows against the exact candidate artifact with the unchanged execution budget: positive domain/audit/receipt commit, stale-target denial without mutation, authorized delegated reads, unauthorized reads, and replay without another domain call. A getter that copies only its requested group does not prove the complete multi-group resolver fits the budget. Record source/artifact hashes and admission reasons; do not raise timeouts or claim adoption from compile-only/local-override evidence. Published dependency validation without an override remains a separate release/adoption gate.
+
+## Prove Candidate ATOMIC Bulk HTTP
+
+For the Mission Participant pilot, inspect `MissaoParticipanteController`,
+`MissionParticipantAtomicEvaluationProvider`, `MissionParticipantAtomicConsumer`,
+`MissionParticipantBulkOperationsHandler`, and Metadata's
+`BulkOperationalDescriptorComposer`/`BulkOperationLifecycle`. Bind the two ATOMIC
+confirmation IDs (`operations.missao-participantes.bulk-update-atomic` and
+`operations.missao-participantes.bulk-update-items-atomic`) and their evaluation refs
+to the exact `(mode, atomicity)` descriptors, concrete provider and published
+seven-reference photograph. Keep the two PER_ITEM identities distinct; never borrow
+their proposal, reader binding or operation control as ATOMIC authority; revalidate
+shared domain grants under the exact operation scope. Reuse the five shared
+proposal, proposal-results, execution, execution-results and cancel HTTP paths, with
+their existing cursor, one issuance reservation per results request and
+`NOT_FOUND_OR_DENIED` fallback.
+
+Prove native ATOMIC `EXPLICIT`/`SYNC` selection at 1 and 50 targets and rejection at
+51, the canonical lexical wire-ID order against the protected stored selection,
+one receipt with ordered children, untouched non-target rows and replay without new
+writes. Suspend one control and verify the global photograph closes every variant;
+republication of one control restores only that identity to `READY`. Prove cancellation
+of a real reservation before its first unit separately from concurrent cancellation:
+known and random IDs must have the same public error for a delegate or revoked creator,
+without IDs or protected facts. Confirmation of a multi-target stale version or a
+proposal from the older photograph must add no domain writes or receipts. Use
+`MissionParticipantBulkOperationsHttpPostgresTest` and its official PostgreSQL fixture;
+use `praxis-java-command-concurrency-authoring` for set transaction, deadline,
+receipt-first replay and recovery. For an old proposal against a newly `READY`
+control, trace Metadata's `BulkQuotaLedger.lockProposal` through
+`JdbcBulkDurableExecution.reserve` to the host handler: `NOT_EXECUTABLE` maps to
+safe `409`/`BULK_CONFLICT`; an unavailable current operation remains a separate
+generic `503` path. A Git-addressed candidate dependency is local evidence only;
+separately prove the published artifact and host adoption without an override. Do not
+infer public host ATOMIC `READY`, T14/T15, B7 or
+concurrent-cancel coverage from a focused HTTP test.
