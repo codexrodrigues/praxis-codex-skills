@@ -27,12 +27,21 @@ budget, capture has an 8s budget, and storage uses a five-second transaction tim
 `SET LOCAL statement_timeout='5s'`. These limits belong to different boundaries;
 the storage assertion must not include all earlier HTTP preparation.
 
-The fixture's external client uses a finite 90s read timeout, preserving its
-factory, authentication, converters and interceptors, and restoring the original
-setting after the test and setup failure. This is an observation allowance, not
-an end-to-end SLA or server cancellation deadline. Do not increase Metadata's
-internal connect/read/composition limits or change global clients to repair a
-test's phase selection.
+The fixture's external client uses a finite 90s read timeout. On Boot 3.5, derive
+a per-test client through the public
+`original.withRequestFactorySettings(settings -> settings.withReadTimeout(Duration.ofSeconds(90)))`
+API and assert the public read-timeout setting. Preserve and verify authentication,
+converters, interceptors, root URI/URI handler, connect timeout, redirects and SSL
+builder settings. Audit any configuration applied to the original RestTemplate
+after construction: builder cloning alone does not preserve those mutations;
+carry required settings through public APIs and prove their behavior. Keep the
+original client and factory untouched; restore the original client reference on
+setup failure and in `AfterEach`, asserting the original factory identity. Do not
+cast to OkHttp or inspect a private HTTP client's timeout through reflection.
+This restriction does not prohibit separate clock or business-oracle reflection.
+The 90s observation allowance is not an end-to-end SLA or server cancellation
+deadline. Do not increase Metadata's internal connect/read/composition limits or
+change global clients to repair a test's phase selection.
 
 ## Observe the real blocked statement
 
