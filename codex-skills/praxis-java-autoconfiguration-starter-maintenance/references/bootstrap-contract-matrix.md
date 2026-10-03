@@ -13,7 +13,10 @@ SPI and ordered provider or a clearly documented override condition.
 
 ## Springdoc Response Generation
 
-When maintaining Metadata's Springdoc 2.6 response builder, inspect
+When maintaining Metadata's Springdoc response builder, verify the resolved
+Boot/Springdoc baseline first. The inspected Metadata `8.0.0-rc.149` reference uses
+Boot 3.5.15 and Springdoc 2.8.17; these versions identify the inspected API and are
+not a permanent minimum. Inspect
 `openapi/GenerationScopedGenericResponseService.java`,
 `configuration/OpenApiResponseGenerationAutoConfiguration.java`, and
 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`.
@@ -21,13 +24,20 @@ The adapter delegates the public `buildGenericResponse` and `build` operations t
 a fresh `GenericResponseService` per generation; do not copy Springdoc's parsing
 algorithm, reflectively clear its private lists, or disable generic error responses.
 
+The inspected service and generation adapter use the three-argument constructor
+`(OperationService, SpringDocConfigProperties, PropertyResolverUtils)`. The adapter
+captures the Spring-managed `ApplicationContext` via `setApplicationContext` and
+initializes every fresh delegate with that same public setter before either build
+operation. Direct fixtures and the original service used for parity comparison
+also need an initialized Spring context containing their advice beans.
+
 1. Verify imports registration and ordering after `SpringDocConfiguration` and
    before `SpringDocWebMvcConfiguration`. Require the core configuration bean,
    the relevant classes, a servlet application, and enabled API docs (enabled by
    default). Class presence alone does not prove that the host enabled the core.
    Also inspect `PraxisMetadataAutoConfiguration`: its two static `GroupedOpenApi`
    definitions must precede `SpringDocConfiguration` during bean registration.
-   Springdoc 2.6 conditionally registers `springdocBeanFactoryPostProcessor` only
+   Springdoc conditionally registers `springdocBeanFactoryPostProcessor` only
    when its REGISTER_BEAN condition sees grouped definitions (or the supported
    cache-disabled path). Keep registered auto-configurations out of the principal
    `@ComponentScan` with Boot's `AutoConfigurationExcludeFilter`; they belong to
@@ -65,7 +75,15 @@ algorithm, reflectively clear its private lists, or disable generic error respon
    before operation builds and declare exception-handler media types when
    asserting them: Springdoc's generic default is `*/*`, and method-level
    `@RequestMapping(produces = "application/json")` establishes JSON explicitly.
-   `ReturnTypeParser` 2.6 is not a functional interface; use a concrete instance.
+   Keep the published OAS 3.0 baseline explicit with the existing Springdoc property
+   `springdoc.api-docs.version=OPENAPI_3_0`. Direct runners set
+   `SpringDocConfigProperties.ApiDocs.OpenApiVersion.OPENAPI_3_0`; a mocked
+   `PropertyResolverUtils.getSpecVersion()` must return the coherent `SpecVersion.V30`.
+   Springdoc 2.8's 3.1 default is not proof of OAS 3.0 document/hash parity, and
+   OAS 3.1 is not certified in this inspected cut. Direct builder tests must
+   release request frames and call `SpringDocAnnotationsUtils.clearCache(null)`
+   during cleanup, matching the per-thread model-context cleanup in the HTTP
+   generation's finally block.
    Compare complete `ApiResponses` and `Components` against the original service,
    including success and global/local error refs, repeated generations, isolated
    concurrent groups, disabled generics, and cleanup after observable failures.
