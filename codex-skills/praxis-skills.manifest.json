@@ -2472,8 +2472,8 @@
                                             "praxis-http-examples-contract-surfaces",
                                             "praxis-http-examples-llm-smoke"
                                         ],
-                       "skillMdSha256":  "43771D881F1A84403868CA1DF6F1ABFD7FFBFAC797862E2550B28B2BE1B08E71",
-                       "treeSha256":  "86B67A64F8A15E8BDCCD07678628771F71F876AE8FCF091D76EB5BA4B24243F6"
+                       "skillMdSha256":  "873B82F9F44159DB28002AF24F26B2A7970D80C8E97ED347D2C32DAF82964100",
+                       "treeSha256":  "6B210A40D879D04CB99927AB94D6B15256C9AB85216A79794921BC31FD2B799B"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
