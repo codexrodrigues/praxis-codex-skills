@@ -110,7 +110,26 @@ execution or HTTP availability. Prove the packaged lane and the actual drift che
 with `MissionTeamLeaderUniquenessPostgresTest` and
 `OperationalDatasourceMigratorPostgresTest`, including a concurrent writer blocked
 until the migration commits, incompatible objects preserved, both bootstrap modes,
-and a second migration run that changes nothing. Use
+and a second migration run that changes nothing. For collective update-only staging,
+inspect `MissaoParticipanteService`'s prepared-set path and the shared
+`MissionTeamReferenceConstraint` with `MissaoService#planTeam`. Validate every
+selected preimage/version and every complete final team before the first write.
+Prove the retained JPA graph shares the kernel's actual JDBC connection; an active
+JPA transaction alone is insufficient. Bind the transient prepared set to
+`pg_current_xact_id()::text` on that connection and reject reuse in a later
+transaction, even when the connection and EntityManager are reused. Verify that
+every selected entity belongs to the service persistence context that will flush;
+ownership by the retained graph alone is insufficient. Recheck every managed preimage/version
+before the first mutation and reject a different physical connection with zero
+writes. Reject prepared-state reuse after any apply attempt, including an all-no-op
+set or an intermediate failure; preserve unchanged members and no-op versions. Apply the complete final state of outgoing
+leaders before the first flush, then other selected final states; defer only the
+reference constraint and restore IMMEDIATE before return. All stages share the
+caller's transaction and live budget; never create a transaction per member or
+commit inside this writer. Prove this domain boundary with PostgreSQL/JPA staging
+tests; those do not certify the later domain/receipt/HTTP ATOMIC composition. Validate global selection
+cardinality, duplicate targets and ordinals before mapping or partitioning in the
+coordinator; a map alone cannot certify those original inputs. Use
 `praxis-api-quickstart-operational-proof` for the wider host/starter adoption gate.
 
 Scope an idempotency key by resource key, collection/item target, action and authenticated actor, and fingerprint the complete command. Persist the domain mutation, append-only transition/effect ledger and completed idempotent response in one operational transaction; a committed mutation without a replayable result is not an acceptable corporate proof. A batch that promises partial success must declare itself non-atomic, preserve input order and run each item in its own transaction. If an effect leaves the operational database, replace direct remote execution with a transactional outbox and an idempotent consumer; same-database ledgers prove local atomicity only.
