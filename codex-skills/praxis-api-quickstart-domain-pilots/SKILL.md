@@ -88,6 +88,31 @@ When that persistent resource has a mutable lifecycle but ordinary CRUD would by
 
 For the quickstart's mission team pilot, inspect `operations/service/MissionTeamConcurrency`, `MissionTeamRules`, `MissaoService#planTeam`, and `MissaoParticipanteService` together. The current/proposed employee union, missions, and participants share one sorted lock order across planning, item/batch CRUD, mission lifecycle, and employee deletion. Every non-empty team must retain exactly one leader in every status; planning status determines when composition may change. Historical team composition or removal, participant reparenting, and status changes through ordinary CRUD are denied; they are not alternate workflow routes. A result may be updated or cleared only in a terminal mission, after validating the current team and reference. A retained-reference swap may defer only the named team uniqueness constraint inside the protected `planTeam` transaction, then flush and restore immediate checking before return. This is domain integrity, not P3 bulk admission or a new authority grant.
 
+
+For the host-owned mission leadership index, inspect
+`db/operational-migrations/V20261003_001__mission_team_leader_uniqueness.sql`,
+`config/OperationalDatasourceMigrator`, and
+`scripts/ApiOperationalSchemaDriftCheck.java` together. Use the deploy-time migration
+identity and packaged operational lane; do not grant runtime DDL or apply it on startup.
+The migration holds `SHARE ROW EXCLUSIVE` before data/catalog reads, then creates a
+missing index or validates the exact existing `ux_miss_part_principal_por_missao`.
+Require immediate valid/ready/live unique btree, one nonnull int32 `missao_id` key,
+`pg_catalog.int4_ops`, default collation/options, no INCLUDE/expression, and the
+canonical `principal IS TRUE` predicate. A namesake alone does not prove integrity.
+Duplicate leaders or mismatched topology must abort without rewriting data or
+silently replacing an object. Diagnose and remediate through the approved maintenance
+procedure before retry; migration rollback must also roll back newly created DDL.
+The index guarantees at most one leader, while `MissionTeamRules` requires exactly
+one in each nonempty final team. Do not defer the partial index to make a collective
+swap pass; validate immutable before/after candidates and stage the writer under the
+existing team locks. Candidate preparation is not proof of ATOMIC domain/receipt
+execution or HTTP availability. Prove the packaged lane and the actual drift checker
+with `MissionTeamLeaderUniquenessPostgresTest` and
+`OperationalDatasourceMigratorPostgresTest`, including a concurrent writer blocked
+until the migration commits, incompatible objects preserved, both bootstrap modes,
+and a second migration run that changes nothing. Use
+`praxis-api-quickstart-operational-proof` for the wider host/starter adoption gate.
+
 Scope an idempotency key by resource key, collection/item target, action and authenticated actor, and fingerprint the complete command. Persist the domain mutation, append-only transition/effect ledger and completed idempotent response in one operational transaction; a committed mutation without a replayable result is not an acceptable corporate proof. A batch that promises partial success must declare itself non-atomic, preserve input order and run each item in its own transaction. If an effect leaves the operational database, replace direct remote execution with a transactional outbox and an idempotent consumer; same-database ledgers prove local atomicity only.
 
 ## Metadata, Governance, And Lookup
