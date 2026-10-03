@@ -226,6 +226,36 @@ last-known-good on an invalid candidate, and expose only sanitized health. Prove
 the operation-specific Metadata projection and Angular/HTTP consumer rather than
 embedding the formula in the demo controller.
 
+
+For the private ATOMIC mission kernel consumer, preserve the public PER_ITEM adapter.
+Resolve the two adapters through the concrete shared canonical contract resolver,
+with their own Metadata bindings and explicit expected atomicity; never reinterpret
+a PER_ITEM proposal as an ATOMIC photograph. The canonical profile already validates
+SYNC/EXPLICIT and hard request/deadline ceilings; enforce the contextual ATOMIC limit
+of 50 before protected capture and before maps or team partitioning. Retain one
+decoded ordered input together with the transient prepared updates for the callback
+attempt. Recheck the whole grant, policy, facts, versions and collective candidates
+under one G→E→M→P fence, physical connection and live set budget. Outcome ordinals
+come from the original kernel units, not sorted domain IDs.
+
+Read detailed admission reasons from the immutable atomic rejection record. The
+execution terminal is aggregated as UNIT_ROLLED_BACK except deadline; a policy BLOCK
+must preserve POLICY_BLOCKED in the detailed rejection, while domain dependency
+conflicts retain their own reason. Prove real last-write rollback, zero domain/header/
+child prefix and receipt-first replay without admission/mutation reentry after grant
+or policy changes. Inject the same transaction-bound EntityManager into both graph
+and domain service in isolated JPA fixtures; a manually constructed service does not
+receive production injection automatically. A test-only compiled MVC binding with
+mocked OpenAPI resolution proves only kernel consumption. It does not certify
+producer grounding, lifecycle, HTTP, composer or READY. Keep these gates closed
+until their concrete consumer proofs and exact public artifact adoption are complete.
+Recover a genuinely reserved RUNNING execution through the canonical SDK: require
+STOPPED/RECOVERY_STOPPED, an advanced owner epoch, FENCED for the old control and zero
+admission/mutation callbacks or domain/evidence writes. Do not fabricate ledger state
+with SQL. This proves neither in-flight nor uncertain-commit recovery; in-flight
+recovery must respect the SDK unit deadline. Include effect references only for real
+durable effects committed in the same transaction; never invent an outbox.
+
 ## Persistence And Demo Data
 
 Operational migrations and deterministic demo data support proof; they do not define canonical platform semantics. Preserve resource relationships, lifecycle states, and representative data needed for filters, lookups, actions, analytics, governance, and negative paths. Update `docs/DEMO-DATABASE.md` when the operational model or seed assumptions change.
