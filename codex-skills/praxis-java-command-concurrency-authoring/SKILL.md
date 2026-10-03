@@ -1185,6 +1185,24 @@ these guarantees with `praxis-metadata-starter/src/test/java/org/praxisplatform/
 `BulkAtomicExecutionPostgresTest.java` and `BulkDurableMigrationPostgresTest.java`;
 a callback return or a green happy path alone does not prove them.
 
+For V16 protected proposal metadata, preserve the opaque payload and fingerprint
+byte for byte. PostgreSQL `json` operators can de-escape unrelated strings too;
+changing `jsonb` to `json` alone does not preserve canonical escaped NUL input.
+Inspect the migration's lexical-copy projection: replace escaped NUL with U+FFFD
+only in the derived copy used to extract `atomicity`, then parse with `json`.
+Never rewrite the stored payload, use a regex JSON parser, or convert the whole
+opaque snapshot to `jsonb`, whose numeric/Unicode domain is narrower. Keep the
+column non-null and use `IS NOT DISTINCT FROM` in the metadata CHECK so missing
+or null metadata cannot pass through SQL UNKNOWN. Attest the exact catalog
+expression. Prove real PostgreSQL upgrade/backfill and protocol-two inserts with
+NUL in unrelated keys/values, literal backslash sequences, unchanged raw bytes,
+invalid/missing/null/type-mismatched atomicity and invalid JSON/UTF-8. Use the
+existing READY/publication tuple for insert fixtures, and a separate empty
+database for catalog-drift tests; do not disable admission/delete guards to make
+a synthetic snapshot pass full storage validation. Compare
+`BulkAtomicProposalJsonConstraintPostgresTest` and `BulkEvaluationStorePostgresTest`.
+This projection preserves the canonical codec language, not arbitrary JSON.
+
 For V16 storage review, verify that the cutover suspends existing publication
 and operation controls, new runtime grants on atomic evidence are limited to
 the four evidence tables and required evidence function, and both `migrate` and

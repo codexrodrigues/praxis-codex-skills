@@ -77,6 +77,17 @@ closed object that rejects legitimate flat extensions. Handle `traceId` and a
 declared outcome according to their explicit contracts, without letting either
 replace a typed field or expose a private cause.
 
+The DTO must flatten legitimate extensions independently of an external
+ProblemDetail mix-in: explicit `@JsonAnyGetter` on the immutable container view
+and `@JsonAnySetter` on the validated extension setter preserve the same wire
+and flat round-trip. Keep the explicit incoming `properties` rejection setter.
+Test a plain `new ObjectMapper()` with no mix-in as well as the Spring-configured
+mapper. A builder that installs the mix-in can mask a defect in the starter's
+fallback ObjectMapper or a host-supplied mapper. Require absent container output
+even for an empty extension map, null extension preservation, reserved-key
+rejection and exact flat round-trip. Do not remove the no-wrapper HTTP oracle or
+change a global mapper to hide a DTO contract inconsistency.
+
 Prove the raw response JSON with the corresponding Spring/Boot-configured
 mapper and MVC infrastructure: enable strict duplicate-member detection on
 emitted bytes **before** `readTree`, which can discard a duplicate. Assert one
