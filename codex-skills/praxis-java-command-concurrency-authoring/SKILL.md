@@ -1,6 +1,6 @@
 ---
 name: praxis-java-command-concurrency-authoring
-description: "Use when implementing, auditing, or migrating a Praxis Java business command with state changes or its internal durable bulk-read foundation: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, bounded execution-result paging, action availability, REPEATABLE READ read-only MVCC snapshots, and safe Angular/runtime handoff."
+description: "Use when implementing, auditing, or migrating a Praxis Java business command with state changes or its internal durable bulk-read foundation: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, bounded execution-result paging, action availability, REPEATABLE READ read-only MVCC snapshots, durable writable proposal capture under control/grant locks, and safe Angular/runtime handoff."
 ---
 
 # Praxis Java Command Concurrency Authoring
@@ -1048,7 +1048,9 @@ their owner, not an assumption of atomic multi-target Config reads.
 Preserve the real evaluation window: record proposal `createdAt` before policy and
 factual observations, retain the owner's `policy.observedAt` unchanged, and close
 `evaluatedAt` after all evidence and authorization reads. Keep one factual `asOf`
-per capture and derive proposal expiry from the completed evaluation. The canonical
+per capture. Standalone evaluation may derive proposal expiry from the completed
+evaluation; durable locked capture fixes the proposal expiry before capture and must
+not renew it while waiting or evaluating. The canonical
 invariant is `createdAt <= policy.observedAt <= evaluatedAt < expiresAt`; creating
 both proposal and evaluation timestamps after resolving policy rejects valid input.
 Follow the host's `EventosFolhaApprovalEvaluationProvider` composition. Prove the
@@ -1174,6 +1176,68 @@ legacy/readback cases in addition to the existing suite.
 
 `JdbcBulkProposalStore.insertEvaluated` inserts input plus evidence atomically in the
 existing physical transaction; no attach/update/upsert. Re-evaluation needs a new UUID.
+
+Do not accept row-lock plus COUNT as a sufficient quota proof under REPEATABLE READ:
+an immutable bucket can serialize waiters while the losing transaction retains an
+older allocation snapshot. Inspect the canonical V17 identity-preserving deployment
+MVCC touch, its migration preflight and the capacity-edge PostgreSQL proofs. Apply the
+touch only when `enforcePendingCapacity=true`; preserve SELECT FOR UPDATE for
+reservation/replay. A serialization loser must not run or retry the callback internally.
+The API returns sanitized UNAVAILABLE; CAPACITY requires a new transaction with a
+fresh snapshot. Prove subject9/deployment99 with a prior losing RR snapshot, actual
+transactionid wait and direct blocker, raw ledger SQLSTATE40001, zero loser callback,
+all seven artifacts and bucket identities, and fresh CAPACITY without new rows.
+
+V17 must reject prior V5 guard drift before CREATE OR REPLACE, preserving history and
+the corrupted object rather than healing it. Inspect its transactional preflight for
+schema ownership/function attributes/exact V5 body, owner-only ACL and exactly two
+canonical active bucket triggers, including the global guard-binding count. Runtime
+column UPDATE(deployment_id) already exists; do not add broad grants or a quota counter.
+Prove cutover from the checksum-pinned public V16 SDK, unchanged historical checksums,
+OID/ACL/bindings and runtime no-op identity preservation. Test prior body/ACL/disabled/
+rebound/third-binding corruption with SQLSTATE55000, no history17 and no healing.
+The old SDK expects the V5 guard and refuses V17: plan drain and coordinated cutover,
+not concurrent-version compatibility. Keep API availability/publication and host HTTP
+proofs as separate gates; a passing private core does not close the backend.
+
+When authoritative capture must follow the control/quota locks, inspect the Metadata
+candidate `captureAndInsertEvaluated(proposal, capture, project, callerRemaining)` and
+the concrete MissionParticipant proposal service/provider. Verify the installed
+artifact actually contains the API before adoption; a private candidate proves source
+integration, not publication. Reuse the existing intent, evaluation, manifest and safe
+preview; do not introduce a second population DTO or persist QUERY under an EXPLICIT
+descriptor. Preserve `PER_ITEM_UPDATE`'s canonical `items` shape, which has no selection
+object. QUERY requires a separate vertical contract/provider/kernel proof.
+
+Create one monotonic deadline before pool/TX acquisition and immutable proposal before
+capture. Join a writable physical RR transaction with MANDATORY; control/deployment/
+subject quota locks precede the host's current grant G, then domain evidence. MissionParticipant
+retains its 200-target/eight-second nominal limit; the store's nonrenewable 30-second
+ceiling does not expand it. Pool/attestation/Java time is accounted and may cause late
+refusal, not preemptive cancellation or a hard end-to-end guarantee. Tighten LOCAL
+statement/lock timeouts without widening a lower caller limit, then restore when
+possible. Require exact proposal/evaluation binding and safe preview before inserting
+proposal/evaluation/manifest/preview/allocation together. Unexpected callback or
+supplier exceptions become canonical UNAVAILABLE without protected text or cause;
+even a caught outer exception must leave the participating transaction rollback-only.
+
+For JdbcTemplate callbacks, unwrap the close-suppressing Connection proxy with
+`DataSourceUtils.getTargetConnection` before `isConnectionTransactional`; compare that
+physical target with the physical target of the Spring `ConnectionHolder`. Preserve
+active writable RR, JDBC read-only/autocommit and datasource affinity checks. A raw
+proxy can report nontransactional while its target is the bound connection; prove
+raw/target observations and shared PID before changing a guard, then rerun the
+affected capture paths. Do not remove the guard or expose protected exception causes.
+
+Prove real PostgreSQL pre-TX elapsed budget, expiry by database clock, lower-GUC
+preservation/restoration, control/quota before G, same callback PID/XID/role/RR across
+JPA/JDBC and all seven physical tables, full readback and late-write rollback. Preview
+state/item/integrity are separate physical dependents, not just one preview count.
+Compare full existing rows on negative cases, not counts alone. A reduced scope during
+capture conservatively fails as unavailable; the store must not interpret host HTTP
+exceptions or unwrap protected causes. Distinguish host kernel proofs from real HTTP
+403/503/cache/privacy proofs. Retained quota locks serialize related captures; do not
+infer scale/fairness, QUERY/ASYNC, READY, release or backend closure from this prerequisite.
 `findEvaluation` scope-checks the input and verifies the protected companion binding;
 missing evidence is not reconstructed, corrupt linkage is not a fallback to input.
 Those public store calls use separate observations and do not establish an atomic
