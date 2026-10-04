@@ -1238,6 +1238,21 @@ Do not claim a per-candidate failure metric from this scan-level outcome. Inspec
 `ExtraordinaryBenefitStatementOutboxReconcilerTest` for matching, absent,
 mismatched and mixed-candidate scans.
 
+For the host statement outbox `JsonNode` payload, prove the persistence boundary
+before introducing content fingerprints: default Hibernate JSON mapping can lose
+decimal precision during persistence, before a fresh read. Use a converter scoped
+to that field, with exact decimal/integer parsing and a node-preserving mutable
+snapshot (`JsonNode.deepCopy`), rather than changing the global mapper or marking
+mutable JSON immutable. Converter round-trip snapshots can change IntNode/LongNode
+types and trigger an unwanted UPDATE after INSERT; keep the producer role insert-only
+to expose this regression. Reject write values that cannot pass the same bounded
+reader, reject non-finite numeric type changes, and sanitize exception chains so they
+do not retain payload fragments. In real PostgreSQL, check native `payload->>` numeric
+values and `jsonb_typeof(payload)`, fresh JPA/wire values and a legitimate claim/flush
+state update; revalidate affected rollback/replay proofs. Grant UPDATE only within
+the isolated state-update characterization, never to hide a producer regression.
+Preserving persisted numbers does not certify ACK fingerprint binding or delivery.
+
 A committed outbox row certifies durable intent, not external delivery. The
 approval event must not be presented as externally supported merely because
 the existing statement transport accepts its JSON. Before certifying delivery,
