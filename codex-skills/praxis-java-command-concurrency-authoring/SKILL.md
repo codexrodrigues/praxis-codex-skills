@@ -1201,6 +1201,33 @@ these guarantees with `praxis-metadata-starter/src/test/java/org/praxisplatform/
 `BulkAtomicExecutionPostgresTest.java` and `BulkDurableMigrationPostgresTest.java`;
 a callback return or a green happy path alone does not prove them.
 
+Keep the host admission decision distinct from the durable protocol result.
+A current grant check returning false is denial; dependency failure is not a
+business denial. In the published ATOMIC kernel, unavailable budget detected
+before SQL can produce `DEPENDENCY_UNAVAILABLE` / `UNIT_ROLLED_BACK` without
+invoking mutation. A real PostgreSQL error such as permission denied (42501)
+can instead abort the transaction: a wrapper returning `UNAVAILABLE` does not
+restore it, and the kernel's following budget query can fail with 25P02 before
+normal rejection is persisted. Preserve the canonical conservative
+`RECONCILIATION_REQUIRED` result; do not change the kernel, clear the transaction,
+or add a savepoint just to make the test expect a normal dependency rejection.
+
+For this pre-mutation SQL failure, prove zero domain callbacks, domain changes,
+audit, outbox, receipt headers, children, effect references and rejection rows.
+Observe the retained `UNIT_IN_FLIGHT` state and active execution allocation;
+verify a bounded independent lock attempt succeeds after rollback without
+changing the grant. Await the real `active_unit_deadline_at` used by
+`recoverAtomic`, with a bounded observer and the existing reservation lifetime
+overload when a short-lived fixture is needed. Never edit persisted deadlines
+or raise unit budgets to make recovery pass. With certified receipt absence,
+in this case without a cancellation request, fenced recovery must give
+`STOPPED` / `RECOVERY_STOPPED`, advance the owner epoch, release the allocation as `TERMINAL_RECONCILED`, fence the old owner and
+allow terminal replay without readmission or mutation. A fresh grant read is a
+separate authorization step and cannot revive the stopped unit. This local SQL
+error before mutation is not evidence of a lost COMMIT response or public HTTP
+behavior. Validate against the concrete host fence and PostgreSQL consumer
+before publishing guidance or accepting its adoption.
+
 For a domain approval producer, keep the event contract owned by the domain
 transition, not by the bulk kernel. In the RuleLab reference host, inspect
 `ExtraordinaryBenefitApprovalOutboxPayload` and `ExtraordinaryBenefitApprovalOutboxWriter`:
