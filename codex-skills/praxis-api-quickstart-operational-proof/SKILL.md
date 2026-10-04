@@ -423,6 +423,43 @@ with an unchanged full 24-table protected snapshot and inspected terminal branch
 counters do not measure every HTTP callback. Do not present the private command as an endpoint.
 This is not proof of uncertain JDBC commit, `ATOMIC`, or B6/B7 completion.
 
+### Prove Outbox ACK Reconciliation Across Worker Processes
+
+Use `ExtraordinaryBenefitStatementOutboxProcessRestartTest` and its test-only
+`RuleLabOutboxWorkerProcess` for the host outbox protocol. Keep the two independent
+EmbeddedPostgres fixtures alive while replacing clients; seed the outbox once. Run
+the production dispatcher in worker JVM1 with the real repository, minimal EMF,
+`JpaTransactionManager` and proxied `REQUIRES_NEW` lease service. The existing HTTPS
+consumer commits its inbox before withholding the response past the complete-body
+deadline. Require `RETRY_SCHEDULED`, attempt one, `HTTP_TIMEOUT`, persisted inbox one
+and outbox `PENDING` without a lease or delivered timestamp. End worker JVM1 and the
+consumer, confirm process exit, then replace both with distinct PIDs on the same
+stores. This is graceful process replacement and ACK-response non-observation, not
+a crash, uncertain JDBC commit or Metadata kernel `PENDING_ACK` recovery.
+
+Run the reconciler first in worker JVM2: require the exact message UUID, immutable
+envelope fingerprint and persisted acknowledgement timestamp, `RECONCILED`, then
+dispatcher `EMPTY`, with attempt one and one inbox/outbox row. Execute deliberate
+duplicate `200/DUPLICATE` and changed-envelope same-UUID `409` probes only after
+reconciliation; both must preserve the inbox row. These probes are protocol checks,
+not dispatcher redelivery. Domain/audit row-count equality is a limited oracle, not
+a full content snapshot. Keep the child's role restricted to SELECT/UPDATE on the
+private outbox fixture; no shared producer-grant change. Use loopback HTTPS with
+temporary trust material and private environment secrets, without changing parent
+JSSE defaults or setting the Neon ephemeral-branch flag for local PostgreSQL.
+
+Apply the PID, redaction and cleanup discipline of the bulk process proof above.
+Resolve Java/keytool and the Surefire classpath portably; bound readiness, result
+files, logs and process waits. Run this focal test with
+`-Dpraxis.outbox.restart.evidence-directory=<fresh-owned-directory>` to preserve
+the safe JSON and checked child logs after successful temporary-directory cleanup.
+Publish evidence only after workers, consumer, both stores and temporary TLS files
+are closed/removed; bind it to source/artifact hashes and the selected XML report.
+This does not prove host bootstrap/restart, PostgreSQL restart, Neon deployment,
+provider/IAM governance, `approved.v1` business fulfillment, exactly-once business
+effects, complete T15 or B7. Keep the controlled destination proof distinct from
+choosing a real corporate adapter and its authorized effect.
+
 When a resource controller delegates route behavior to an application handler, keep Spring MVC
 mapping and OpenAPI parameter annotations on the actual mapped controller method. An annotation on
 the delegated handler does not describe the HTTP route to Springdoc. Verify the rendered OpenAPI
