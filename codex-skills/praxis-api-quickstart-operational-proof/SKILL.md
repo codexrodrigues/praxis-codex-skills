@@ -248,6 +248,32 @@ delegated reader of both live and expired proposals cannot confirm another creat
 proposal. Include unchanged receipts, audit and domain state. Keep the cancellation
 route's OpenAPI response set aligned with its actual `410` mapping.
 
+Prove first confirmation of an unused retained proposal separately from terminal
+receipt-first replay. In the concrete RuleLab capture, `expiresAt` is `evaluatedAt`
+plus two minutes, not `createdAt` plus two minutes. Compare the public expiry, SQL
+`praxis_bulk_proposal.expires_at`, and protected evaluation root `expiresAt` as
+instants, including the exact interval from protected `evaluatedAt`. Keep operation
+control, current grant and the governed ALLOW policy healthy. Capture complete bulk,
+domain, facts, grant, protected proposal, Config, approval-audit and outbox baselines
+before waiting. Require the initial PostgreSQL `clock_timestamp()` observation to
+be strictly before expiry, then poll that clock read-only until it is at least
+the expiry, with a bounded monotonic harness deadline and a total test timeout that
+includes setup. Then make the first confirmation with the original creator and an
+unused idempotency key; do not issue an expired proposal GET first. Require a JSON `failure` envelope with exactly one error
+(`status=410`, `code=BULK_PROPOSAL_GONE`), absent/null `data`, `Cache-Control: no-store`
+and no Location/ETag. Exclude UUIDs, proposal/execution/target identities, counts,
+scope, fingerprints, schema, cursor and protected facts from that response. Require
+no new execution reservation/allocation/admission/rejection/receipt/children or
+approval effects, and unchanged baselines after both the wait and confirmation.
+Preserve the legitimate pending-proposal allocation; zero execution allocation
+does not mean the proposal-allocation table is empty.
+Keep the cursor budget separate; this sequence does not issue results reads and must
+not consume cursor reservations. Do not alter persisted expiry or protected digests,
+substitute a fake Clock, shorten TTL or inflate execution deadlines for the proof.
+Two minutes is RuleLab-specific: this case does not certify a generic profile TTL,
+purge races, an already used proposal, an execution crossing TTL, or replay after
+authorization changes. Record a served PostgreSQL focal before claiming this gate.
+
 Validate client-supplied `X-Correlation-ID` and `X-Request-ID` before proposal
 reservation or any durable admission. Enforce the persisted storage limit (255 Unicode
 code points here), reject control characters and noncanonical surrounding whitespace,
