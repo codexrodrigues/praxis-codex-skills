@@ -137,7 +137,7 @@ transactional mutation, receipt and recovery proof. Do not teach consumers
 these IDs as host-adopted capabilities until the exact artifact is consumed and
 downstream readiness is separately proved.
 
-For a candidate `DOMAIN_COMMAND/ATOMIC`, inspect the real `@WorkflowAction`,
+For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, inspect the real `@WorkflowAction`,
 its action-registry binding, typed parameters, and `BulkOperation` declaration
 before projecting discovery. Their atomicity must agree; the exact provider,
 confirmation operation and seven canonical references must resolve in the same
@@ -145,7 +145,7 @@ published photograph. Preserve the action identity and request/response schemas;
 do not manufacture a CRUD capability or editable fields for a command. The
 operational profile remains `EXPLICIT`/`SYNC`, at most 50 targets, an aggregate
 unit deadline no greater than five seconds and any stricter action `maxItems` limit. A mismatch
-fails closed. This composition candidate does not establish a host command
+fails closed. The published composition does not establish a host command
 provider, executable HTTP route, domain authorization, outbox, `READY`, or
 public adoption; prove those separately against the exact published artifact.
 

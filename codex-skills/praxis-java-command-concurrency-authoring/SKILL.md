@@ -1,6 +1,6 @@
 ---
 name: praxis-java-command-concurrency-authoring
-description: Use when implementing, auditing, or migrating a Praxis Java business command with state changes or its internal durable bulk-read foundation: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, bounded execution-result paging, action availability, REPEATABLE READ read-only MVCC snapshots, and safe Angular/runtime handoff.
+description: "Use when implementing, auditing, or migrating a Praxis Java business command with state changes or its internal durable bulk-read foundation: @WorkflowAction, command request/response schemas, ResourceCommandExecutionRequest and Result, idempotency, item or collection scope, resource version ETag, If-Match preconditions, conflict/denial outcomes, bounded execution-result paging, action availability, REPEATABLE READ read-only MVCC snapshots, and safe Angular/runtime handoff."
 ---
 
 # Praxis Java Command Concurrency Authoring
@@ -64,7 +64,7 @@ credential; prove both bindings reach the same database, not merely matching JDB
 URLs or namespace labels. Prepare or explicitly reconcile the complete photograph through attested exact-group producer captures outside JDBC transactions. Ordinary readiness must not regenerate SpringDoc or use a configurable remote source as current authority; cold/stale replicas fail closed until explicit reconciliation. Bound structural reads within a unit use the same attested operational connection and no cache lock or REQUIRES_NEW. When one execution unit rechecks multiple strict MVC request bodies and group identities, run the whole structural recheck inside one `OpenApiDocumentService.withPublishedBulkOpenApiPublication` scope on its already-bound writable transaction, preserving the durable guard before and after the callback, the operation fence, and the unit budget. Do not nest that scope or use the photograph as a grant or policy cache. A mocked scope proves callback placement, not the durable publication guard; verify the real path through PostgreSQL and HTTP, and measure cost without treating one timing sample as a guarantee. A `READY` descriptor does not prove production host handlers,
 domain authorization, or atomic domain-plus-receipt behavior.
 
-For candidate `DOMAIN_COMMAND/ATOMIC` composition, start with the real
+For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
 binding and provider, confirmation operation and all seven operation references
@@ -75,7 +75,7 @@ aggregate unit deadline no greater than five seconds and the action's stricter `
 The profile constructor itself rejects a deadline above five seconds, before
 composition; test that boundary with a valid construction path, not an invalid
 profile injected by spy or reflection. Mismatched bindings fail closed. The
-protected ATOMIC kernel and candidate descriptor composition do not supply the
+protected ATOMIC kernel and published descriptor composition do not supply the
 host's domain command provider, mutation/authorization proof, transactional
 outbox or public `READY`; verify each against the exact artifact before adoption.
 
