@@ -460,6 +460,53 @@ provider/IAM governance, `approved.v1` business fulfillment, exactly-once busine
 effects, complete T15 or B7. Keep the controlled destination proof distinct from
 choosing a real corporate adapter and its authorized effect.
 
+### Prove A Controlled Approval Fact With The Existing Outbox
+
+For F-OUTBOX, distinguish generic transport/inbox acceptance from an observable
+projection of `human-resources.extraordinary-benefit.approved.v1`. Inspect the
+existing workflow approval, `ResourceActionTransition`, typed approval payload,
+writer and `ExtraordinaryBenefitBulkCommandOutboxPostgresTest` before changing
+the destination. Reuse the real kernel, writer, audit and receipt helpers; do not
+copy execution logic, fabricate an approval identity, or call the separate
+simulated `apply` effect to make the test appear complete. Metadata retains
+execution/receipt ownership. A controlled fact projection is not payroll/ERP.
+
+Provision the destination's exact synthetic scope at startup and validate the
+closed six-field payload with canonical UUIDs, bounded integral values and
+operationId equal to transitionId before writing. Keep the source audit's global
+transition identity as the fact's unique causal key, and bind one fact to one
+inbox message. One destination JDBC transaction inserts the inbox and fact, then
+commits before ACK. A different message for the same transition must conflict
+without leaving an orphan inbox. A duplicate must verify the complete stored
+fact and never repair missing evidence by inference.
+
+Persist event type so GET/probe can determine which delivery requires a fact.
+Reconstruct the approved payload and immutable envelope from persisted typed
+fields, context and correlation, then compare their fingerprint and identity
+bindings to the inbox. A missing/corrupt fact cannot produce positive ACK; GET
+reports unavailability rather than 404 absence that could authorize redelivery.
+Fail closed on incomplete startup scope or incompatible scaffold schema,
+including wrong columns/constraint definitions; do not invent legacy backfill.
+
+Inject failure at the final fact INSERT for the actual committed source approval
+and independently read both stores: destination inbox/fact must roll back while
+source domain, audit, receipt and immutable outbox evidence remain unchanged.
+Confront all six payload fields, operation/event/context/correlation, receipt
+effectRef and message identity. After ACK-response non-observation and client
+process replacement, reconcile first and compare full causal source content and
+destination projection; source replay must invoke no admission/mutation. Keep
+mutable delivery state separate from immutable content comparisons. Exercise
+input/scope/duplicate/corruption negatives and export the actual selected child
+logs with the PID, redaction and cleanup discipline above. Sequential causal
+conflict checks do not certify a concurrent two-connection race.
+
+Use the existing restart harness and consumer rather than another worker/SPI.
+Revalidate its generic transport test and changed producer helpers as needed.
+Bind selected reports to the accepted source/artifacts. The controlled fixture
+fits B0's destination proof; choosing an authoritative corporate effect, adapter
+and IAM is a separate extension. Neither a local projection nor this guidance
+alone closes T15, B5/B6/B7, deployed governance, exactly-once or Angular readiness.
+
 When a resource controller delegates route behavior to an application handler, keep Spring MVC
 mapping and OpenAPI parameter annotations on the actual mapped controller method. An annotation on
 the delegated handler does not describe the HTTP route to Springdoc. Verify the rendered OpenAPI
