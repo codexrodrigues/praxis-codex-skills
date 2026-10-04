@@ -976,3 +976,29 @@ generic `503` path. A Git-addressed candidate dependency is local evidence only;
 separately prove the published artifact and host adoption without an override. Do not
 infer public host ATOMIC `READY`, T14/T15, B7 or
 concurrent-cancel coverage from a focused HTTP test.
+
+## Prove Overlapping ATOMIC Domain Sets
+
+For the private Mission Participant kernel proof, inspect
+`MissionParticipantAtomicConsumerPostgresTest`, `MissionParticipantBulkPreparation`
+and `MissionTeamConcurrency` before inventing another lock protocol. Evaluate and
+reserve two distinct proposals at the same versions with reversed target ordinals;
+use independent consumers and the existing G→E→M→P locks. Hold the first actual
+participant UPDATE at a disposable test trigger/advisory gate. Observe its exact
+PostgreSQL PID and advisory key, then observe the competing PID blocked directly
+on that writer's employee `FOR UPDATE` transactionid lock. Release the gate only
+after this causal observation, within the native lock and aggregate unit budgets;
+a sleep or two submitted futures alone is not concurrency evidence.
+
+Require one complete domain commit and ordered receipt children bound to the
+protected manifest, while the contender rechecks and leaves only its canonical
+rejection, with no receipt, children or effects. Compare full selected rows with
+the expected final state and unselected rows with their original state. Replay
+both terminal controls and compare relevant execution/proposal evidence and both
+proposal and execution allocations; `EXECUTION_ACTIVE` has a null proposal ID,
+so a proposal-only snapshot misses its quota state. Keep protected snapshots in
+memory and export only safe PID/status/count evidence. Close gates, triggers,
+connections, futures and the fixture on failure as well as success. Run the new
+method alone when previous helpers are unchanged, retaining source/XML/artifact
+hashes. This proves the bounded private overlap case, not concurrent cancellation,
+real uncertain COMMIT, HTTP readiness, global B4 completion or Angular readiness.
