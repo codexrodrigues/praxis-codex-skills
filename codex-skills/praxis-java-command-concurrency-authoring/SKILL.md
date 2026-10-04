@@ -1045,6 +1045,16 @@ revocable grants from a JWT or static authority catalog. A test fingerprint is n
 production authorization provider. Multiple observations require consistency proof from
 their owner, not an assumption of atomic multi-target Config reads.
 
+Preserve the real evaluation window: record proposal `createdAt` before policy and
+factual observations, retain the owner's `policy.observedAt` unchanged, and close
+`evaluatedAt` after all evidence and authorization reads. Keep one factual `asOf`
+per capture and derive proposal expiry from the completed evaluation. The canonical
+invariant is `createdAt <= policy.observedAt <= evaluatedAt < expiresAt`; creating
+both proposal and evaluation timestamps after resolving policy rejects valid input.
+Follow the host's `EventosFolhaApprovalEvaluationProvider` composition. Prove the
+SDK constructor boundary separately from a real HTTP evaluation/confirmation/replay
+regression; neither proof closes the accumulated SQL/lock/flush deadline budget.
+
 `matchesCurrentEvidence` compares the full trusted current context, validity window,
 target evidence and governance using `praxis.bulk.revalidation/1`; only observation and
 evaluation timestamps are excluded. A loaded integer and the same fresh integer must
