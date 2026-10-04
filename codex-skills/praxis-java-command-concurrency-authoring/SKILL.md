@@ -1095,8 +1095,30 @@ of an already stopped execution; no-header recovery has its separate proof.
 Restore fixture objects in unconditional cleanup, preserve failed runs separately,
 and distinguish this approval fixture from the local apply ledger it does not
 contain. Validate unchanged ITEM lifecycle/apply and the old writer with their
-existing canonical pilots. This proof does not close JPA prior-250ms, public
+existing canonical pilots. That last-outbox proof alone does not close JPA prior-250ms, public
 receipt-present recovery, direct callbacks, old-control fencing or full IAM gates.
+
+For the reference JPA prior-250ms proof, configure only the HTTP fixture's API
+PostgreSQL with an activity-query text budget large enough for the actual Hibernate
+SELECT (8 KiB); retain defaults for other fixtures and leave Config PostgreSQL
+unchanged. Assert the effective setting on the API database. A truncated activity
+query can hide the table and locking suffix; do not weaken the SQL oracle to make
+that failure pass. Instrument only the success return of the existing F fixture
+function to install LOCAL250 after SDK deadline setup. Preserve and restore its
+exact definition, OID, owner and ACL in unconditional cleanup.
+
+Observe the same unit PID's SELECT FOR UPDATE/NO KEY UPDATE, its ungranted
+transactionid ShareLock and the direct publisher blocker. Measure statement start
+through wait end using PostgreSQL query_start and a conservative server-clock end
+bound; detecting wait entry or timing the HTTP response is insufficient. The
+reference journey (`395be088` freeze) observed 261 ms, followed by public 202/RUNNING
+and durable UNIT_IN_FLIGHT. These are different canonical status projections.
+Require the live durable deadline, then recovery after its actual expiry to STOPPED,
+RECOVERY_STOPPED, epoch+1/new owner, released allocation and stable replay with zero
+approval effects. Preserve domain/fact and immutable evidence snapshots, restore
+fixture catalog state and close workers/blockers. This is a bounded JPA row-wait
+and no-receipt recovery proof, not total HTTP latency, uncertain COMMIT, public
+receipt-present recovery, old-control fencing or complete IAM certification.
 
 `matchesCurrentEvidence` compares the full trusted current context, validity window,
 target evidence and governance using `praxis.bulk.revalidation/1`; only observation and
