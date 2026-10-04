@@ -88,6 +88,18 @@ the smallest proof.
   filtered resource query. It does not implicitly govern independent `/by-ids`,
   `/all`, `/filter/cursor`, `/locate`, stats, or option-source by-ids paths;
   audit and enforce each published surface through its canonical contract.
+- For a governed bulk QUERY candidate, reuse the resource's canonical
+  `GenericFilterDTO` and predicate semantics, but do not treat
+  `ResourceFilterAccessScope`, a public `/filter/cursor` keyset, or `includeIds`
+  hydration as authorization or population evidence for a bulk command. The
+  host must independently combine the strict functional filter with its current
+  grant, apply exclusions, order IDs numerically, and freeze the complete
+  authorized manifest in the same writable RR capture transaction after the
+  durable control/quota locks. In the MissionParticipant pilot, wire exclusions
+  use its Integer codec's full int32 range, including zero and negative values;
+  missing IDs are bounded no-ops, while that domain's FK filter IDs require
+  positive integers. Other resources follow their own identity codec. A public
+  page cursor never becomes a bulk selection or authorization token.
 - A continuation cursor carries page state; it is never an authorization grant.
   Protect sensitive claims for confidentiality and integrity, bind the token to
   its purpose and historical resource/query scope, and compare its effective
@@ -122,6 +134,16 @@ fixture with at least two scopes. Prove the normal page, an authorized
 authorized/external request, null or empty IDs, denied scope, explicit global
 scope, and a read-only resource. Keep option-source tests green and validate the
 downstream host against the exact published starter artifact.
+
+For bulk QUERY adoption, additionally prove original-token rejection before
+Jackson coercion, frozen filter/exclusions and numeric ordinal/ETag manifest,
+grant before ordered bounded SQL, no filter rerun on confirmation, and safe
+whole-manifest read denial after coverage loss. Inspect
+`MissionParticipantQueryFilter`, `MissionParticipantUniformQueryShapeTest`,
+`MissionParticipantUniformQueryHttpPostgresTest` and the Metadata
+`JdbcBulkUniformQueryPostgresTest`; distinguish private candidate evidence
+from public SDK availability. The host's 200-target capture is not proof of a
+200-target confirmation or a higher execution budget.
 
 Use focused starter tests for `GenericSpecificationsBuilder`, range/relative
 normalizers, `PageableBuilder`, `FilterRequestBodyAdvice`, and affected resource

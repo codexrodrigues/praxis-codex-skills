@@ -70,8 +70,8 @@
                                             "praxis-metadata-domain-option-sources",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "D3B09729C56DD3EC2E78928B2A4B0957E993E6B9526E0CF7E2B8D3350FC9CFD2",
-                       "treeSha256":  "D1A7FE85DB3DE558FBB15EE4B9F8D2427FCC67AD94A912A630CF45EFEDD85987"
+                       "skillMdSha256":  "C072492B320EC93E67B6A06D374DDDCA469449671041E074B07F1ACC0CAB848A",
+                       "treeSha256":  "DBA650C7BF9468F5B0D2ABEBED928DB0CE97877D9EB481AE7033665F531D0EAB"
                    },
                    {
                        "name":  "praxis-java-option-source-provider-authoring",
@@ -135,8 +135,8 @@
                                             "praxis-metadata-schema-contracts",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "557607C0ABCED72D04DF09779FF0475EE69F2CE0D6EA5CA42BAF2C1937AAA2A3",
-                       "treeSha256":  "875494A2ECB33AA7478BD51E0104B18F9662BDB15EA42F43ABD9FB61190EB2BE"
+                       "skillMdSha256":  "B527DA515DAF253B2FFB04361040118825CB4A953BB7452A6B4918DE9C64ED9A",
+                       "treeSha256":  "A839FF891947BFA9578F7A0DBD183F5F3002146BEB68FBCBA2F46ADB26C2B1EA"
                    },
                    {
                        "name":  "praxis-java-error-response-contracts",
