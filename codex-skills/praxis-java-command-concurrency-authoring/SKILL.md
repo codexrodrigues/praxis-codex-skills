@@ -1070,6 +1070,34 @@ workflow/audit/final-flush/outbox path. To certify a prior LOCAL250ms JPA limit,
 observe it inside the unit after SDK deadline setup: a role default can be
 replaced by the SDK's LOCAL control timeout and is not that proof.
 
+For a bulk domain approval, propagate one live unit supplier and the exact bound
+operational datasource through consumer, workflow, audit and outbox. Use bulk-only
+MANDATORY seams without changing the existing ITEM calls or constructors. Reject
+missing budget arguments; tighten the PostgreSQL budget immediately before and
+after find, request persistence, audit persistence, explicit flush and outbox work,
+and check before returning the mutation. An assigned-ID audit `save` may defer SQL:
+the bulk path uses `saveAndFlush` inside the budget, while ordinary ITEM persistence
+retains its previous behavior. Preserve runtime/SQL failures for the kernel; never
+clear an aborted transaction or restart a budget to reach a later write.
+
+Prove the last outbox SQL uses the remainder, not merely the SDK's existing lock
+limit. In the reference HTTP/PostgreSQL journey (`a4d827ff` source freeze), a
+fixture-only first INSERT consumes part of its observed statement timeout; two
+transaction advisory markers encode the initial and last LOCAL GUC on one backend.
+The last INSERT's SQL wait exceeds the reduced limit and fails with 57014 after
+both domain/audit writes and the first outbox have executed inside that transaction.
+Verify whole request/fact snapshots, zero committed audit/outbox/admission/receipt
+children/effect references, and one scoped atomic rejection `UNIT_ROLLED_BACK`.
+That rejection is canonical rollback evidence, not a partial approval effect.
+Require immediate `STOPPED/UNIT_ROLLED_BACK`, cleared attempt/deadline, released
+allocation and same-key terminal replay with stable epoch. Do not force recovery
+of an already stopped execution; no-header recovery has its separate proof.
+Restore fixture objects in unconditional cleanup, preserve failed runs separately,
+and distinguish this approval fixture from the local apply ledger it does not
+contain. Validate unchanged ITEM lifecycle/apply and the old writer with their
+existing canonical pilots. This proof does not close JPA prior-250ms, public
+receipt-present recovery, direct callbacks, old-control fencing or full IAM gates.
+
 `matchesCurrentEvidence` compares the full trusted current context, validity window,
 target evidence and governance using `praxis.bulk.revalidation/1`; only observation and
 evaluation timestamps are excluded. A loaded integer and the same fresh integer must
