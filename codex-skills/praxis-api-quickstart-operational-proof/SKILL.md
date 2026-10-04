@@ -1,6 +1,6 @@
 ---
 name: praxis-api-quickstart-operational-proof
-description: Use when Codex must implement, audit, or diagnose Praxis API Quickstart as the real Spring Boot reference host: Maven starter composition and versions, bootstrap/properties/datasources, security and browser policy, metadata/config/runtime HTTP integration, schemas and discovery, agentic authoring/SSE host proof, deployment identity, or ownership routing between quickstart, metadata starter, config starter, and Angular consumers.
+description: "Use when Codex must implement, audit, or diagnose Praxis API Quickstart as the real Spring Boot reference host: Maven starter composition and versions, bootstrap/properties/datasources, security and browser policy, metadata/config/runtime HTTP integration, schemas and discovery, agentic authoring/SSE host proof, deployment identity, or ownership routing between quickstart, metadata starter, config starter, and Angular consumers."
 ---
 
 # Praxis API Quickstart Operational Proof
@@ -499,6 +499,28 @@ mutable delivery state separate from immutable content comparisons. Exercise
 input/scope/duplicate/corruption negatives and export the actual selected child
 logs with the PID, redaction and cleanup discipline above. Sequential causal
 conflict checks do not certify a concurrent two-connection race.
+
+For a deterministic destination concurrency proof, use the existing HTTPS consumer
+and two real JDBC transactions. A fixture owner may hold private exclusive advisory
+gates: a BEFORE inbox INSERT acquires a shared start gate, and an AFTER fact INSERT
+acquires a shared finish gate. Observe two distinct consumer backend PIDs blocked
+at start before releasing it. Shared start locks must coexist; an exclusive gate
+that serializes the requests would not prove the constraint race. Then observe the
+winner blocked at finish and the loser blocked on the winner's transaction by the
+inbox message key or fact transition key. Release finish only after recording that
+chain with PostgreSQL activity/lock evidence. Futures or elapsed sleeps are not
+proof of overlapping database transactions.
+
+Keep the combined observation budget below the existing HTTP deadline rather than
+raising it for the fixture. The same message/envelope yields PROCESSED plus DUPLICATE
+with identical ACK identity, fingerprint and persisted time. Different message IDs
+for the same transition yield PROCESSED plus conflict; independently assert one fact,
+one inbox and no losing inbox. Compare complete source evidence and receipt-first
+replay with zero new callbacks. Install fixture triggers after consumer startup and
+remove triggers/functions, release gates and close/cancel requests, JDBC connections
+and child processes in every failure path. Export safe backend PIDs and phases,
+not raw queries or sensitive payloads. These interleavings prove destination unique
+constraint contention, not uncertain source commit, database restart or corporate IAM.
 
 Use the existing restart harness and consumer rather than another worker/SPI.
 Revalidate its generic transport test and changed producer helpers as needed.
