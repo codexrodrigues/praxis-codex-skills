@@ -1239,7 +1239,7 @@ exceptions or unwrap protected causes. Distinguish host kernel proofs from real 
 403/503/cache/privacy proofs. Retained quota locks serialize related captures; do not
 infer scale/fairness, QUERY/ASYNC, READY, release or backend closure from this prerequisite.
 
-For a **private QUERY candidate**, inspect Metadata
+For governed QUERY adoption, inspect Metadata
 `BulkOperationLifecycle.requireReady(identity, SYNC, QUERY)`, its opaque
 `ReadyAdmission`, `JdbcBulkProposalStore.captureAndInsertEvaluated`, and
 `JdbcBulkDurableExecution` together. A published, durably validated profile
@@ -1276,8 +1276,14 @@ not prove a 200-target confirmation, 10,000-target or 30-second host budget,
 complete IAM, ASYNC, Angular, or public QUERY availability. The current host
 QUERY cap is 200 targets with its existing eight-second nominal budget; neither
 the SDK's 10,000 exclusions nor 30-second store ceiling expands that cap.
-Public rc153 remains EXPLICIT; `8.0.0-b5a-uniform-query-20261004-SNAPSHOT`
-is private until its own publication and downstream adoption gates pass.
+Historical public rc153 remains EXPLICIT. QUERY is published in Metadata
+`8.0.0-rc.154`, tag `7c974b5228d1f78fb82f3bc180c1940a886c6275`,
+via official run `37236119846` (1,530 tests, zero failures/errors, three skips);
+its POM/JAR are available on Maven Central. The earlier
+`8.0.0-b5a-uniform-query-20261004-SNAPSHOT` remains private development evidence.
+A host must independently pass adoption against the public rc154 POM without
+version override or installation of the public SDK coordinate; publication alone
+does not certify downstream adoption, deployment or backend closure.
 
 `findEvaluation` scope-checks the input and verifies the protected companion binding;
 missing evidence is not reconstructed, corrupt linkage is not a fallback to input.
