@@ -1270,10 +1270,19 @@ Authorization is point-in-time, not atomic with recovery; reader/kernel have the
 own budgets, so surrounding supplier checks do not prove a global HTTP latency cap.
 Prove real F-lock failure, early retry retaining owner/epoch/deadline, post-deadline
 `STOPPED/RECOVERY_STOPPED` with epoch advancement/allocation release and terminal
-replay without effects. That no-header HTTP journey does not prove a present-header
-pending-ACK recovery, direct callback counts, old-control fencing through HTTP,
-revoked-grant/provenance denial, concurrent retries or the full corporate matrix;
-retain and close those as separate gates rather than relabeling the happy path.
+replay without effects. The initial no-header HTTP journey (source freeze `be65cd72`)
+proved that lifecycle only. The subsequent journey (`f6339ddb`) also proves denial
+for a revoked current grant, changed target provenance and another creator. The
+denied HTTP calls add no execution/evidence/approval effects; the fixture changes
+and restores provenance externally to those requests. Compare known and random references through
+complete errors, absent/null data, UUID non-disclosure and sensitive headers; restore
+grants through the canonical monotonic-version function, without resetting versions.
+Two HTTP callers released through one barrier converge to the same stopped execution
+with one epoch increment and allocation release. This proves concurrent dispatch and
+observable convergence, not forced PostgreSQL lock interleaving. Neither journey
+proves present-header pending-ACK recovery, direct callback counts, old-control fencing
+through HTTP, JPA prior-250ms preservation, the remaining workflow/audit/final-flush/
+outbox budget phase or the full corporate IAM matrix; retain those as separate gates with their own source evidence.
 
 For a domain approval producer, keep the event contract owned by the domain
 transition, not by the bulk kernel. In the RuleLab reference host, inspect
