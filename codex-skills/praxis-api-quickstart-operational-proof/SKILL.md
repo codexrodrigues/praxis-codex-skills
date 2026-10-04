@@ -1002,3 +1002,26 @@ connections, futures and the fixture on failure as well as success. Run the new
 method alone when previous helpers are unchanged, retaining source/XML/artifact
 hashes. This proves the bounded private overlap case, not concurrent cancellation,
 real uncertain COMMIT, HTTP readiness, global B4 completion or Angular readiness.
+
+## Prove Cancellation During an ATOMIC Domain Transaction
+
+For the private Mission Participant cancellation proof, hold the real first
+participant UPDATE at the disposable domain gate. Observe the writer there, then
+require the cancel PID waiting directly on that writer's execution row: an active
+transaction, the execution `FOR UPDATE` query, a granted tuple AccessExclusiveLock
+on the execution relation, and an ungranted transactionid ShareLock. The queued
+tuple lock establishes cancel-before-ACK for this PostgreSQL test; a wait on an
+earlier bucket/proposal is not the same proof. Release within the existing budgets.
+
+Do not report this confirmed set as cancelled. Require the committed receipt and
+all children, `RECONCILIATION_REQUIRED` with its cancel marker, and an active
+execution allocation. Receipt-first recovery must certify the complete set, finish
+`COMPLETED`, preserve the marker as history, advance the owner epoch, fence the old
+control and release the allocation with `TERMINAL_RECONCILED`. A spy around the
+real domain service may count calls but must not replace actual PostgreSQL writes.
+Compare domain and protected evidence across recovery and replay, excluding only
+expected lifecycle changes during recovery; the final replay must change nothing
+and must invoke no admission or mutation callback. Preserve source/XML/artifact
+hashes, export safe lock/status evidence and close all private gates/resources.
+This covers cancel-before-ACK during a real collective mutation in one JVM/database;
+ACK-first cancellation, HTTP/IAM, process loss and uncertain COMMIT remain separate.
