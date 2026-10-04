@@ -1224,12 +1224,17 @@ behavior. Compare `ExtraordinaryBenefitBulkCommandOutboxPostgresTest` and its
 fixture in the reference host.
 
 Preserve tenant/environment/correlation exactly after their governing owner
-has resolved them. Validate nonblank values and storage bounds before writing;
-the outbox entity must not trim them or silently merge different scopes.
+has resolved them. Validate nonblank values and storage bounds before writing. This reference
+uses Java String.length (UTF-16), a conservative bound for supplementary
+Unicode characters compared with PostgreSQL varchar; do not infer ASCII-only
+identities or exact database character capacity. The outbox entity must not
+trim identity values or silently merge different scopes.
 Normalize only at the canonical context owner when its contract requires it.
 An ACK from a custom probe must match the queried messageId before changing
-local delivery state; a mismatched ACK schedules reconciliation and records a
-probe failure without confirming or resending that candidate. Inspect
+local delivery state. A mismatched ACK schedules reconciliation without
+confirming or resending that candidate. The scan returns PROBE_FAILED if no
+subsequent candidate reconciles; a later valid ACK can yield RECONCILED instead.
+Do not claim a per-candidate failure metric from this scan-level outcome. Inspect
 `ExtraordinaryBenefitStatementOutboxReconcilerTest` for matching, absent,
 mismatched and mixed-candidate scans.
 
