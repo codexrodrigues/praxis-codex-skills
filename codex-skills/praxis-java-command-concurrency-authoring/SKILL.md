@@ -1253,6 +1253,22 @@ state update; revalidate affected rollback/replay proofs. Grant UPDATE only with
 the isolated state-update characterization, never to hide a producer regression.
 Preserving persisted numbers does not certify ACK fingerprint binding or delivery.
 
+For the host statement envelope, inspect `ExtraordinaryBenefitStatementEnvelopeFingerprint`
+and the independent literal-vector tests before changing the content identity. Its
+versioned framing covers operationId, eventType, tenantId, environment, correlationId
+and payload; messageId remains a separate binding and delivery attempt is mutable
+retry state, whereas payload attemptId remains immutable content. Preserve JSON types,
+exact decimal value, array order and opaque Unicode; schema canonicalizers that sort
+`required` arrays are not appropriate for domain payloads. Check numeric coefficient
+and scale budgets before rendering a large number and tree/member/string budgets before
+copying or sorting. The delivery constructor validates the entire envelope before its
+defensive copy and validates the stored snapshot again; payload-only validation cannot
+account for envelope overhead. Exercise the independent bytes/SHA vector, boundary
+counterexamples, no-copy rejection and mutable snapshot isolation. Compare fingerprint
+values across the real JSONB/fresh JPA/wire round trip before attaching this evidence
+to ACK/state transitions. A tested helper and immutable delivery record alone do not
+prove fingerprint-bound ACKs, consumer business effects or process restart.
+
 A committed outbox row certifies durable intent, not external delivery. The
 approval event must not be presented as externally supported merely because
 the existing statement transport accepts its JSON. Before certifying delivery,
