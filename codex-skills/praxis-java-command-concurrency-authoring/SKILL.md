@@ -1055,6 +1055,21 @@ Follow the host's `EventosFolhaApprovalEvaluationProvider` composition. Prove th
 SDK constructor boundary separately from a real HTTP evaluation/confirmation/replay
 regression; neither proof closes the accumulated SQL/lock/flush deadline budget.
 
+For host factual capture, reuse `QuickstartUnitBudget.constrainedBudget` with the
+already-bound operational datasource and one monotonic remaining-budget supplier.
+Before each SQL, constrain LOCAL statement/lock timeouts to the smaller nonzero
+current setting and live remaining time; verify physical RO/RW mode and check the
+supplier again after work. Build the RR/read-only capture template per invocation
+from the remaining budget after context/schema/policy work and pool reserve, never
+mutate a shared template. The concrete JDBC factual-provider overload must join
+that caller transaction without `REQUIRES_NEW`; keep the unary ITEM path intact.
+Prove two successive queries consume one window with real PostgreSQL blockers,
+read-your-own-uncommitted facts/dates in RW, and SQL capture failure publishes no
+proposal or domain writes. Helper tests alone do not prove JPA locks or the
+workflow/audit/final-flush/outbox path. To certify a prior LOCAL250ms JPA limit,
+observe it inside the unit after SDK deadline setup: a role default can be
+replaced by the SDK's LOCAL control timeout and is not that proof.
+
 `matchesCurrentEvidence` compares the full trusted current context, validity window,
 target evidence and governance using `praxis.bulk.revalidation/1`; only observation and
 evaluation timestamps are excluded. A loaded integer and the same fresh integer must
@@ -1237,6 +1252,28 @@ separate authorization step and cannot revive the stopped unit. This local SQL
 error before mutation is not evidence of a lost COMMIT response or public HTTP
 behavior. Validate against the concrete host fence and PostgreSQL consumer
 before publishing guidance or accepting its adoption.
+
+For a public host confirm adapter using Metadata rc.152, receipt-first execution
+is not automatic recovery of a no-header `UNIT_IN_FLIGHT` attempt. Compose the
+existing `JdbcBulkDurableExecution.recover` only in POST confirmation after a direct
+`RECONCILIATION_REQUIRED` failure: refresh and compare the full current trusted
+lookup scope, require the existing authorized execution reader's `COMPLETE`
+observation for the full manifest, then inspect the scoped durable state. Admit
+only `UNIT_IN_FLIGHT`, `UNIT_COMMITTED_PENDING_ACK` or `RECONCILIATION_REQUIRED`;
+never recover a clean `RUNNING` reservation or mutate from GET. Use a new opaque
+server owner, let the SDK guard the real active deadline and receipts, and never
+call the domain consumer again after recovery. Failures retain the existing safe
+durable projection. Reader `COMPLETE` means authorized reading, not terminality;
+normal domain state/version changes do not invalidate scope evidence, but target
+absence/provenance drift may prevent public finalization without deleting a receipt.
+Authorization is point-in-time, not atomic with recovery; reader/kernel have their
+own budgets, so surrounding supplier checks do not prove a global HTTP latency cap.
+Prove real F-lock failure, early retry retaining owner/epoch/deadline, post-deadline
+`STOPPED/RECOVERY_STOPPED` with epoch advancement/allocation release and terminal
+replay without effects. That no-header HTTP journey does not prove a present-header
+pending-ACK recovery, direct callback counts, old-control fencing through HTTP,
+revoked-grant/provenance denial, concurrent retries or the full corporate matrix;
+retain and close those as separate gates rather than relabeling the happy path.
 
 For a domain approval producer, keep the event contract owned by the domain
 transition, not by the bulk kernel. In the RuleLab reference host, inspect
