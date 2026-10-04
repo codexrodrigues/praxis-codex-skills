@@ -1120,6 +1120,26 @@ fixture catalog state and close workers/blockers. This is a bounded JPA row-wait
 and no-receipt recovery proof, not total HTTP latency, uncertain COMMIT, public
 receipt-present recovery, old-control fencing or complete IAM certification.
 
+Distinguish a known committed receipt resuming its ACK from explicit kernel
+recovery. In the public reference journey (`6719640d` freeze), a fixture-only
+trigger blocks then fails only the separate PENDING_ACK-to-COMPLETED certification
+UPDATE. An independent owner connection first observes the full committed header,
+children/effect references and approved domain/audit/outbox while that ACK is
+blocked. Never inject a COMMIT failure or fabricate receipt/control rows for this
+proof. The valid SDK readback returns public 202/RUNNING and durable
+UNIT_COMMITTED_PENDING_ACK. Revoke the grant through the official function, prove
+retry/read denial without enumeration or changes to committed evidence, and restore
+the grant with its monotonic version. After the original deadline elapses on the
+database clock, remove the fixture fault and repeat the same proposal/key: expect
+200/COMPLETED with the same execution, owner and epoch, cleared active attempt,
+identical full receipt/children/effects and domain/audit/outbox snapshots at ACK
+resumption. The terminal replay checks execution ID, domain versions/status and
+outbox count; it does not repeat the full receipt/control snapshot oracle. Unlock the gate before bounded worker shutdown and unconditional
+fixture cleanup. This proves receipt-first ACK resumption, not recoverAtomic,
+epoch+1, direct callback counters, uncertain COMMIT or complete IAM. A readable
+receipt normally takes this ACK path; do not force corrupt/unreadable evidence to
+make the public handler enter a different recovery branch.
+
 `matchesCurrentEvidence` compares the full trusted current context, validity window,
 target evidence and governance using `praxis.bulk.revalidation/1`; only observation and
 evaluation timestamps are excluded. A loaded integer and the same fresh integer must
