@@ -1238,6 +1238,47 @@ capture conservatively fails as unavailable; the store must not interpret host H
 exceptions or unwrap protected causes. Distinguish host kernel proofs from real HTTP
 403/503/cache/privacy proofs. Retained quota locks serialize related captures; do not
 infer scale/fairness, QUERY/ASYNC, READY, release or backend closure from this prerequisite.
+
+For a **private QUERY candidate**, inspect Metadata
+`BulkOperationLifecycle.requireReady(identity, SYNC, QUERY)`, its opaque
+`ReadyAdmission`, `JdbcBulkProposalStore.captureAndInsertEvaluated`, and
+`JdbcBulkDurableExecution` together. A published, durably validated profile
+must admit `UNIFORM_UPDATE`/`SYNC`/`PER_ITEM`/`QUERY`; neither the host nor a
+test may forge the admission. Existing execution replay is resolved before a
+fresh `READY` gate. An absent QUERY reservation probes existing state, obtains
+admission outside the transaction, then rechecks publication and binding in its
+fresh reservation transaction; EXPLICIT keeps its existing single-transaction
+path. The old proposal APIs must still deny QUERY. Do not add readiness gates
+to receipts, recovery or readback.
+
+The concrete host freezes its strict filter, exclusions, operation and
+fingerprint before capture. In one writable physical RR transaction, acquire
+CONTROL and quota before the current grant G, then resolve authorized SQL
+population and evidence on the same JDBC/JPA connection. Apply functional
+filter, current grant and exclusions before ordered `LIMIT 201`; retain numeric
+ID order and store the selected IDs, expected ETags and ordinal manifest.
+Confirmation reads that manifest without rerunning the filter, while current
+grant, policy, references and version remain unit admission gates. If current
+target coverage disappears while the global grant remains valid, the kernel can
+durably stop with `AUTHORIZATION_REVOKED` and zero ordinal admissions; the HTTP
+reader must still authorize the whole frozen manifest and answer with safe
+`BULK_NOT_FOUND`/404, not disclose STOPPED. Global denial or global authorizer
+unavailability retain their distinct pre-lookup outcomes; do not map every
+authorization loss to 404.
+
+Reproduce the boundary with Metadata `BulkUniformQueryContractTest` and
+`JdbcBulkUniformQueryPostgresTest`, host
+`MissionParticipantUniformQueryShapeTest`, and
+`MissionParticipantUniformQueryHttpPostgresTest`. The private SDK candidate has
+25 composed focal cases; the host has 49 composed focal cases and HTTP evidence for a
+200-target capture plus a separate one-target confirmation/replay. These do
+not prove a 200-target confirmation, 10,000-target or 30-second host budget,
+complete IAM, ASYNC, Angular, or public QUERY availability. The current host
+QUERY cap is 200 targets with its existing eight-second nominal budget; neither
+the SDK's 10,000 exclusions nor 30-second store ceiling expands that cap.
+Public rc153 remains EXPLICIT; `8.0.0-b5a-uniform-query-20261004-SNAPSHOT`
+is private until its own publication and downstream adoption gates pass.
+
 `findEvaluation` scope-checks the input and verifies the protected companion binding;
 missing evidence is not reconstructed, corrupt linkage is not a fallback to input.
 Those public store calls use separate observations and do not establish an atomic
