@@ -1269,6 +1269,47 @@ values across the real JSONB/fresh JPA/wire round trip before attaching this evi
 to ACK/state transitions. A tested helper and immutable delivery record alone do not
 prove fingerprint-bound ACKs, consumer business effects or process restart.
 
+For the host ACK protocol, require the exact four wire fields messageId, status,
+acknowledgedAtUtc and envelopeFingerprint, a non-null SPI result, canonical UUID,
+lowercase SHA-256 and closed PROCESSED/DUPLICATE status. Reject duplicate, unknown,
+missing, trailing or mistyped fields. A POST response must bind the delivered UUID
+and immutable content; a foreign UUID from a GET/custom probe is a probe failure,
+not proof that the queried row is corrupt. Preserve the identity guard above.
+Compare same-UUID content evidence again under the existing row lock, with dispatcher
+lease authority checked before any mutation. Recovery must never revoke a live lease.
+Do not demote DELIVERED; validate evidence even when recording a positive audit for
+an already-delivered row. Preserve the failure observed before external I/O.
+
+Keep integrity quarantine distinct from temporal replay eligibility: reserved
+OUTBOX_ENVELOPE_INVALID/MISMATCH dead letters cannot dispatch, reconcile or replay.
+Use scalar bounded raw projections under the same API JPA transaction and row lock
+before a legacy payload can fail entity conversion. Quarantine only the locked,
+authorized row; preserve active leases and confirmed rows, and prove rollback and
+progress of the next valid candidate. Do not catch all persistence failures as
+integrity errors or commit uncertainty. A native JSONB text CASE bounds transfer
+and Java parsing, not PostgreSQL's internal materialization work.
+
+Certify PostgreSQL's expanded numeric representation before writing, not merely
+compact exponent JSON: the scoped codec reader's 512-character token budget must
+also constrain expanded numeric write text without rounding or allocating it.
+Prove both exponent signs, the negative-sign boundary and rejection before INSERT.
+The persistence codec is narrower than the transport helper: a compact exponent
+such as 1E+4096 may fit the helper but exceed JSONB's expanded read representation.
+The expanded-size calculation is conservative for zero with extreme scale; do not
+claim PostgreSQL corruption or silently normalize values to broaden acceptance.
+For fingerprinting,
+bound raw numeric rendering before allocation, then apply precision256 to the
+normalized coefficient so JSONB's equivalent trailing-zero representation retains
+the same identity. Check actual ORM/raw claim and the independent vector.
+
+The HTTP ACK budget must cover both bytes and elapsed time through complete EOF:
+16 KiB with bounded subscription/backpressure and the configured total request
+deadline, cancellation on timeout/interruption, and POST/GET stalled-body tests.
+Request timeout plus BodyHandlers.ofInputStream alone is insufficient. Preserve
+HTTP error status without trusting its body. X-Correlation-ID is an optional ASCII
+observability projection; the opaque body value remains canonical, with no trim,
+encoding alias or use of the header for fingerprint/authorization.
+
 A committed outbox row certifies durable intent, not external delivery. The
 approval event must not be presented as externally supported merely because
 the existing statement transport accepts its JSON. Before certifying delivery,
