@@ -1201,6 +1201,47 @@ these guarantees with `praxis-metadata-starter/src/test/java/org/praxisplatform/
 `BulkAtomicExecutionPostgresTest.java` and `BulkDurableMigrationPostgresTest.java`;
 a callback return or a green happy path alone does not prove them.
 
+For a domain approval producer, keep the event contract owned by the domain
+transition, not by the bulk kernel. In the RuleLab reference host, inspect
+`ExtraordinaryBenefitApprovalOutboxPayload` and `ExtraordinaryBenefitApprovalOutboxWriter`:
+the per-item `approved.v1` payload contains only executionId, attemptId, ordinal,
+requestId, resultVersion and transitionId. Preserve the real resulting version;
+do not assume every approval starts at version zero. The envelope operationId
+is the persisted domain transitionId; the generated messageId is the item's
+receipt effect reference. Neither UUID replaces the collective bulk execution
+or the Metadata semantic operation identifier. Do not put justification,
+request text or internal snapshots in the delivery payload.
+
+The producer must join the same operational transaction with
+`@Transactional(transactionManager="apiTransactionManager", propagation=MANDATORY)`.
+Prove the managed bean rejects a valid call outside a transaction, and prove
+inside the kernel that domain, audit, outbox and receipt share the physical
+PostgreSQL PID/XID. When replacing a shared mutation helper, revalidate every
+case that uses it, including the 50-target aggregate deadline, late append
+rollback, denied whole-set admission, terminal replay and durable recovery.
+A direct Java unit call or annotation inspection does not prove transactional
+behavior. Compare `ExtraordinaryBenefitBulkCommandOutboxPostgresTest` and its
+fixture in the reference host.
+
+Preserve tenant/environment/correlation exactly after their governing owner
+has resolved them. Validate nonblank values and storage bounds before writing;
+the outbox entity must not trim them or silently merge different scopes.
+Normalize only at the canonical context owner when its contract requires it.
+An ACK from a custom probe must match the queried messageId before changing
+local delivery state; a mismatched ACK schedules reconciliation and records a
+probe failure without confirming or resending that candidate. Inspect
+`ExtraordinaryBenefitStatementOutboxReconcilerTest` for matching, absent,
+mismatched and mixed-candidate scans.
+
+A committed outbox row certifies durable intent, not external delivery. The
+approval event must not be presented as externally supported merely because
+the existing statement transport accepts its JSON. Before certifying delivery,
+require a consumer that handles the event and validates authenticated scope,
+and ACK/probe evidence bound to the immutable envelope and payload. A UUID-only
+ACK, a generic inbox, or a fresh adapter in the same JVM does not establish
+that guarantee or a process-restart proof. Reuse the existing transport;
+do not create a parallel dispatcher to hide an unfinished consumer contract.
+
 For V16 protected proposal metadata, preserve the opaque payload and fingerprint
 byte for byte. PostgreSQL `json` operators can de-escape unrelated strings too;
 changing `jsonb` to `json` alone does not preserve canonical escaped NUL input.
