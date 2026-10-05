@@ -246,6 +246,24 @@ subset and fail on raw, wildcard, or optional bodies instead of guessing a class
 A bulk evaluation wrapper is not the unit update DTO; never infer the latter from
 method names or the first PUT/PATCH operation.
 
+For the private bulk-candidate batch/index path, first prove the exact candidate
+JAR/version with a distinct coordinate; Metadata rc.154 does not publish this path.
+Where that candidate supplies `requireResourceRequestBodies`, pass the ordered
+operation references, one exact-group snapshot and the configured `TypeFactory`.
+Require an immutable result with exactly one binding per requested operation in
+the same order, and recheck each current MVC handler and full generic body type;
+the batch is no authority or body-type cache. Its publication-local document index
+must cover every published group, including paths, callbacks and webhooks, and
+reject global operation-ID ambiguity or a changed identity at an aliased route.
+If the resolver does not implement the strict batch, fail closed; repeated singular
+or permissive lookups are not an equivalent substitute.
+The selected snapshot must retain its document-service source and equal the full
+published group document under the candidate/generation guard; digest or group
+name alone is insufficient. An alias callback receives a defensive paths copy
+and cannot mutate the index. Prove these boundaries with the exact candidate's
+focused tests and host binding, without treating passing SDK tests as HTTP 200,
+durable `READY`, authorization, or throughput evidence.
+
 Prove strict no-fallback group loading, one shared immutable snapshot, request
 schema reading, and every explicit 2xx response tuple in focused reader and HTTP
 fixtures. Include rejected `default`/`2XX`, non-2xx-only, missing or ambiguous
