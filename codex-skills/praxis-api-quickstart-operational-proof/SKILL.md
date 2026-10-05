@@ -75,8 +75,11 @@ evidence before cleaning stale compiled diagnostics.
 
 Before inserting a proposal or consuming any proposal/quota allocation, authorize the
 entire explicit target set against the current scoped grant and temporal assignments.
-Read the target facts and make that complete authorization decision in one consistent
-read-only database snapshot. A target that is absent and one outside current scope must
+A separate EXPLICIT preflight may read target facts in one consistent read-only
+database snapshot; it does not replace the capture authorization. The protected
+capture itself uses one writable repeatable-read transaction, acquiring durable
+CONTROL/quota before current grant locks and target selection. A target that is
+absent and one outside current scope must
 produce the same redacted response, and neither may leave a proposal, evaluation,
 manifest, preview or quota allocation. Do not rely on a later proposal/result reader to
 make an already-persisted capture safe. A comparison-only revalidation of a creator-owned
@@ -84,6 +87,21 @@ proposal may return only whether evidence still matches and must not persist new
 consume quota or authorize execution. If it refreshes/persists a proposal or allocates
 quota, it is a new capture and must perform the same full-set authorization first;
 execution still rechecks current governance under each unit's lock.
+
+When a host first migrates protected storage without runtime roles and then
+attests configured roles, a completed V16 atomic bootstrap will not grant
+later runtime permissions automatically. Inspect Metadata
+`BulkExecutionMigrator.ATOMIC_RUNTIME_TABLES`,
+`provisionAtomicRuntimeGrants`, and `validateAtomicBootstrap`; provision
+exact `SELECT, INSERT` on the four atomic evidence relations and `EXECUTE`
+on `atomic_evidence_complete(uuid,integer)` for the runtime role before
+the configured-role migration. The Quickstart
+`ReferenceConsumerHttpFixture.initializeOperational` and
+`ReferenceReadAuthorizationPostgresTest.provisionMetadataRoles` show this
+host-owned fixture boundary. Do not loosen the migrator validator or add
+`PUBLIC`, `UPDATE`, `DELETE`, or owner membership. Require separate
+PostgreSQL 16 HTTP evidence for the B6 consumer; an ACL bootstrap repair
+alone does not prove its bulk behavior.
 
 ## Preserve Historical Authorization Dependencies
 

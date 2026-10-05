@@ -70,8 +70,8 @@
                                             "praxis-metadata-domain-option-sources",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "C072492B320EC93E67B6A06D374DDDCA469449671041E074B07F1ACC0CAB848A",
-                       "treeSha256":  "DBA650C7BF9468F5B0D2ABEBED928DB0CE97877D9EB481AE7033665F531D0EAB"
+                       "skillMdSha256":  "2B1A2006939D7883118AD301CB848570A5347780E3D2B7AEF8F9D8A8EDF5904C",
+                       "treeSha256":  "82D56D13511CEAB3694C570D97A34F3259D1DF710FB07ACC182BA05A1E8E9390"
                    },
                    {
                        "name":  "praxis-java-option-source-provider-authoring",
@@ -135,8 +135,8 @@
                                             "praxis-metadata-schema-contracts",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "8EEEE8DAC171B788FBAE5AA86DC056D05681024A8FA0ACA01DDD3905DC30A835",
-                       "treeSha256":  "AE5FBCB45DF6B594B7AB536B066414FD5D7E64E834440D6F5CF7B69DE5A5EBD3"
+                       "skillMdSha256":  "708E20DDA2C3DC319EFBDA90113103E716A02A1F4EEE350458C0B5310789E41D",
+                       "treeSha256":  "484760B17DC2F9D19D41895D6CF91210D75DB29A3C28526EE902CE7D25E90D1D"
                    },
                    {
                        "name":  "praxis-java-error-response-contracts",
@@ -2472,8 +2472,8 @@
                                             "praxis-http-examples-contract-surfaces",
                                             "praxis-http-examples-llm-smoke"
                                         ],
-                       "skillMdSha256":  "624CD0F62ECE17A570CC332F1B6974CC84EA8816989609F5C202BB8CA246F76C",
-                       "treeSha256":  "63335A2C7359734949CF5F128358EA87CFDA78B180E6B9E92758AE7F026B2E18"
+                       "skillMdSha256":  "42396C3B47114DF9154FBA3A79064BC1AF31D0E2B00F392363301AF81E4AD261",
+                       "treeSha256":  "6255C09A97180F9BA58FC99B8E047393B6A2973B9B51E746A2082ED3297EA68A"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",

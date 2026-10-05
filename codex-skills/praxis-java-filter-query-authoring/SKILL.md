@@ -89,7 +89,12 @@ the smallest proof.
   `/all`, `/filter/cursor`, `/locate`, stats, or option-source by-ids paths;
   audit and enforce each published surface through its canonical contract.
 - For a governed bulk QUERY candidate, reuse the resource's canonical
-  `GenericFilterDTO` and predicate semantics, but do not treat
+  `GenericFilterDTO` and predicate semantics when they exist. For a new
+  resource without that DTO, use one closed typed filter with a single
+  predicate interpretation for its selection; if it also exposes a resource
+  filter, keep those predicates aligned rather than adding a parallel dialect.
+  The Quickstart `ReferenceCatalogItemProvider.Filter` is a
+  candidate example, pending its own HTTP proof. Do not treat
   `ResourceFilterAccessScope`, a public `/filter/cursor` keyset, or `includeIds`
   hydration as authorization or population evidence for a bulk command. The
   host must independently combine the strict functional filter with its current

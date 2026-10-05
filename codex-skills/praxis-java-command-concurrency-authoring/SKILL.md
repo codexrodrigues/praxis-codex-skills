@@ -23,7 +23,7 @@ contracts, never in a host controller convention.
 
 ## Author The Command Contract
 
-1. Model the transition with `@WorkflowAction`, stable ID, collection/item scope,
+1. Model a business transition with `@WorkflowAction`, stable ID, collection/item scope,
    schemas, side effect, authorization/state boundary, HTTP outcome, and negative path.
    Keep ordinary CRUD on the resource base.
 2. Use dedicated request/response DTOs. Document intent, targets, validation,
@@ -1250,6 +1250,15 @@ admission outside the transaction, then rechecks publication and binding in its
 fresh reservation transaction; EXPLICIT keeps its existing single-transaction
 path. The old proposal APIs must still deny QUERY. Do not add readiness gates
 to receipts, recovery or readback.
+
+For an independent bulk update of ordinary resource fields, keep the source on
+the resource with `@BulkResourceOperations` and `UPDATE_SOURCE`; do not invent
+a `@WorkflowAction` or borrow a workflow approval policy. Inspect the
+resource's versioned GET/PUT, editable fields, operation bindings, and
+resource-validation policy before composing the bulk operation. The
+`ReferenceCatalogItemController` and `ReferenceCatalogItemProvider` in the
+Quickstart bulk reference consumer are a candidate for this route, not an
+accepted HTTP or deployment proof.
 
 The concrete host freezes its strict filter, exclusions, operation and
 fingerprint before capture. In one writable physical RR transaction, acquire
