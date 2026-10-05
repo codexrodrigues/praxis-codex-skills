@@ -64,6 +64,29 @@ credential; prove both bindings reach the same database, not merely matching JDB
 URLs or namespace labels. Prepare or explicitly reconcile the complete photograph through attested exact-group producer captures outside JDBC transactions. Ordinary readiness must not regenerate SpringDoc or use a configurable remote source as current authority; cold/stale replicas fail closed until explicit reconciliation. Bound structural reads within a unit use the same attested operational connection and no cache lock or REQUIRES_NEW. When one execution unit rechecks multiple strict MVC request bodies and group identities, run the whole structural recheck inside one `OpenApiDocumentService.withPublishedBulkOpenApiPublication` scope on its already-bound writable transaction, preserving the durable guard before and after the callback, the operation fence, and the unit budget. Do not nest that scope or use the photograph as a grant or policy cache. A mocked scope proves callback placement, not the durable publication guard; verify the real path through PostgreSQL and HTTP, and measure cost without treating one timing sample as a guarantee. A `READY` descriptor does not prove production host handlers,
 domain authorization, or atomic domain-plus-receipt behavior.
 
+For the private candidate's `BulkExecutionUnit.certifiedPrefix`, first verify the
+exact distinct candidate JAR/version; Metadata rc.154 does not publish this API.
+The kernel builds a contiguous ordered prefix from earlier durable receipts and
+admissions under the current unit's locks. Only `CONFIRMED` entries can justify
+this execution's own prior effects; `UNCHANGED` and denied/invalid/conflict
+admissions cannot. Frozen evidence is neither an after-image nor a grant, and
+cannot replace current authority or external-dependency checks. `ATOMIC` callbacks
+receive an empty prefix. The kernel's decoded-evaluation memo lasts for one
+`advance` only. Under each fresh unit's control/execution locks, it re-reads all
+eleven protected proposal/evaluation columns and checks the execution binding.
+It reuses decoded data only when immutable headers and both payload byte arrays
+match; changed payload bytes take the original decoder, while changed immutable
+headers are `CORRUPT`. Standalone units, `ATOMIC`, recovery, readers and replay
+keep their fresh decode and certification paths.
+
+A host's advance-local schema memo is separate. For every unit, retain required
+domain/grant locks and recheck the fresh published candidate/generation, exact
+document, current MVC operation references, complete generic body types, current
+policy, grants and domain/dependency state before mutation. Reuse only immutable
+schemas after those checks, never the publication as authority. Do not infer
+200-item completion, performance or host `READY` from focused SDK/host tests;
+prove them by exact-artifact HTTP and PostgreSQL evidence before teaching adoption.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
