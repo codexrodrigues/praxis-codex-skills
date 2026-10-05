@@ -91,6 +91,40 @@ preservation for restricted runtime/control credentials. These tests do not prov
 production ledger migration or establish backend/API READY. No AutoConfiguration.imports change
 is needed merely to add this explicit value/participant.
 
+The private B5b.1a capacity-authority candidate is a third, separate
+database boundary, not a replacement for this local control plane. Inspect
+`BulkCapacityAuthorityMigrator`, its V1 under
+`db/praxis-bulk-capacity-migrations`, and
+`BulkCapacityAuthorityMigrationPostgresTest` before wiring or migration
+advice. Metadata rc.154 does not publish this candidate. Its migrator is
+explicit and public in candidate source; the issuer, JDBC infrastructure
+and catalog are package-private. Provision one non-routing JDBC datasource
+and transaction manager for the authority of a fixed deployment/environment,
+with an expected UUID/epoch from outside that database. Do not infer it from
+`@Primary`, a URL, a local namespace, or the operational datasource; do
+not register it through auto-configuration or run its DDL on host startup.
+The authority uses its own schema/history and privileged migration lane,
+separate from `praxis_bulk` and host Flyway. For PostgreSQL 14, provision the
+dedicated database and its `public` schema as owned by the migration login:
+`LOGIN INHERIT CREATEROLE`, without `SUPERUSER` or `BYPASSRLS`. Leave
+`praxis_bulk_capacity` absent on a fresh database; the explicit Flyway lane
+creates it under that owner, while a pre-existing schema without history is
+unmanaged and must fail closed. Supply exact owner, provisioner, allocator
+and reader logins. During V1, temporary definer `CREATE` on the capacity
+schema and owner membership permit function ownership transfer;
+`SET LOCAL ROLE` establishes the protected function ACL grantor. V1 must
+remove those temporary privileges and membership before committing its catalog photograph.
+Bootstrap and validation must reject unexpected PostgreSQL 14-compatible
+memberships both to and from each operational login, database/schema/table/
+column/function ACLs and catalog drift without healing. A failed bootstrap
+must roll back identity, bucket and new grants together; a repeat validates rather than
+repairing revoked privileges or changed DDL. A declared binding is not
+physical database attestation. Use `BulkCapacityAuthorityMigrationPostgresTest`
+with a real restricted owner and `JdbcBulkCapacityIssuerPostgresTest` for the
+respective migration and issuer gates; their focused PostgreSQL results do
+not certify host wiring or publication.
+No job installation, ASYNC, endpoint, worker or `READY` follows from V1.
+
 ## Adopt The Protected Proposal Migration Lane
 
 Run the explicit bulk migration outside Spring transactions. For a fresh schema,
