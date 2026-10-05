@@ -87,6 +87,27 @@ schemas after those checks, never the publication as authority. Do not infer
 200-item completion, performance or host `READY` from focused SDK/host tests;
 prove them by exact-artifact HTTP and PostgreSQL evidence before teaching adoption.
 
+For the private B5b.1a candidate, inspect Metadata
+`BulkCapacityAuthorityMigrator`, `BulkCapacityAuthorityInfrastructure`,
+`BulkCapacityAuthorityCatalog`, `JdbcBulkCapacityIssuer`, its isolated V1
+migration and focused PostgreSQL tests before changing capacity behavior.
+Metadata rc.154 does not publish this issuer: only the explicit migrator is a
+public Java type in the candidate; issuer, infrastructure and catalog remain
+package-private. The issuer uses a separate PostgreSQL authority per logical
+deployment with a fixed environment and an externally supplied authority
+UUID/epoch. Binding enrollment is an immutable administrative declaration,
+not proof of a physical operational database. Keep local `BulkQuotaLedger`
+SYNC allocations and the same-database `BulkControlPlaneInfrastructure`
+distinct from global rights. Pending requests are durable and idempotent;
+each `allocateNext` emits at most one token and advances the persisted
+per-class tenant cursor in the same transaction. Check 2 ACTIVE/20 QUEUE
+rights per tenant and 8 ACTIVE/80 QUEUE per deployment across bindings,
+including rights in transit. A token is not a job or local admission.
+Prove limits, replay, rollback, two-client contention and cursor persistence
+with `JdbcBulkCapacityIssuerPostgresTest` before teaching adoption. This
+cut has no install, enqueue, retirement, worker, ASYNC, HTTP `202`, or
+`READY`; neither issuer construction nor focused tests certify those paths.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
