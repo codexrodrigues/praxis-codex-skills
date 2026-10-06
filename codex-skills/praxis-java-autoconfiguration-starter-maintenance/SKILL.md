@@ -91,6 +91,46 @@ preservation for restricted runtime/control credentials. These tests do not prov
 production ledger migration or establish backend/API READY. No AutoConfiguration.imports change
 is needed merely to add this explicit value/participant.
 
+For the internal B5b.1b.A installation candidate, inspect authority
+`V2__capacity_binding_attestation.sql`, operational `V18__bulk_capacity_installation.sql`,
+`JdbcBulkCapacityInstallation` and the existing explicit migrators before wiring anything.
+Keep V1–V17 immutable and preserve the two existing Flyway lanes; do not auto-discover
+these migrations, publish a host bean or announce a capability from compilation alone.
+The candidate remains unadopted until its frozen source and focused PostgreSQL proofs
+are reviewed. The authority and local owner transactions must never overlap.
+
+V18's owner-only `praxis_bulk_capacity_read_bootstrap` is a real completion witness.
+PENDING requires exact base catalog, zero runtime grants across the two capacity tables,
+no partial or rogue privilege, and empty marker/installation tables. After governed
+lifecycle initialization, lock its singleton FOR UPDATE; sorted SELECT grants, exact
+ACL validation and the PENDING→COMPLETE CAS share one TransactionTemplate. Roll back
+SQL and runtime failures together. COMPLETE validates only, even before any marker
+exists: do not repair removed grants because tables are empty. Empty-role configuration
+must complete or be deliberately rejected, never leave a silent PENDING state. The
+installer requires COMPLETE and never grants runtime DML or bootstrap-table access.
+Live runtime/control-plane role attestation must not query owner-only Flyway history
+or the latch. Detect the source-owned physical catalog and require exact committed
+read grants on the live path; the owner separately reconciles applied history with
+physical storage and reads PENDING/COMPLETE. Missing all V18 storage with history18
+must fail, not fall back to V17. Prove live RW/RO work with history/latch SELECT denied.
+
+Attest full source-owned constraint definitions, key arrays, FK target/action/match and
+index definitions/keys/flags/predicate/expression/width. Names, CHECK substrings or index
+uniqueness alone can accept weakened constraints or wrong keys. Preserve parentheses
+and quoted-string semantics during normalization. Match the actual search_path or
+compare catalog OIDs with narrowly qualified definitions; the database's photograph
+is supplementary, not a source that can legitimize itself. A development PG catalog
+capture supplies rendering references only, not ACL, restricted-owner or behavior proof.
+
+Prove fresh and V1→V2/V17→V18 history/checksum preservation, failed-bootstrap retry,
+rollback after real GRANT before CAS, two actual concurrent migrators converging on one
+COMPLETE state, and COMPLETE with removed SELECT while capacity tables remain empty.
+PENDING with partial grants must fail rather than finish them. Keep marker identity,
+authority UUID/epoch and terminal FENCED protected; no succession/reattestation in this
+initial-install slice. Reference tables, helpers or compilation do not certify jobs,
+workers, HTTP, ASYNC/READY or restore safety. Document proof scope and the next owning
+gate in the same cycle as canonical skills, manifests and selective installation.
+
 The private B5b.1a capacity-authority candidate is a third, separate
 database boundary, not a replacement for this local control plane. Inspect
 `BulkCapacityAuthorityMigrator`, its V1 under

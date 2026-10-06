@@ -108,6 +108,42 @@ with `JdbcBulkCapacityIssuerPostgresTest` before teaching adoption. This
 cut has no install, enqueue, retirement, worker, ASYNC, HTTP `202`, or
 `READY`; neither issuer construction nor focused tests certify those paths.
 
+For the B5b.1b.A internal installation candidate, inspect
+`JdbcBulkCapacityInstallation`, `JdbcBulkCapacityIssuer.CapacityReader`, authority V2
+and operational V18 with their PostgreSQL tests. Source compilation or the existence
+of these types is not functional acceptance or publication in rc.154. Establish the
+exact frozen implementation and focused evidence before teaching adoption. Installation
+is trusted owner provisioning, not runtime authorization to invent a right: runtime
+SQL receives only local SELECT, and the global reader receives only bounded read
+functions, without allocator credentials. Never accept a caller's verified token DTO.
+
+Pin deployment, tenant, environment, binding/generation, database and attestation UUIDs,
+and authority UUID/epoch in the immutable local marker and installation FK. Read the
+real issued token and complete the global transaction before opening the local owner
+transaction. Reject ambient Spring transactions, including another manager. A
+same-database owner/runtime advisory witness is the only deliberate overlap; it proves
+that live association, not absence of a writable clone. Test alternate real authorities
+with copied remaining fields so the constructor succeeds and the old marker itself
+rejects reassociation, rather than proving only a configuration mismatch.
+
+Keep PROVISIONED→ACTIVE/FENCED and ACTIVE→FENCED exact; FENCED never reopens, including
+in a new process. ACTIVE requires authenticated matching attestation readback. Token UUID
+remains the installation PK. Rights stay globally counted through failed installation;
+there is no refund by timeout, deletion, occupancy placeholder or generation succession.
+Use explicit remaining local time budgets, preserve smaller SQL timeouts and reject
+expired work before the owner transaction callback returns. This is not a COMMIT
+acknowledgment or instantaneous cancellation guarantee. Use known rollback and readback
+after observed commit; do not repackage T08 as an uncertain-commit proxy experiment.
+
+Require real PostgreSQL upgrade, privilege, rollback/replay, PID/XID transaction-order
+and fence/install interleaving proofs. A four-process owner installation test must run
+two JVMs per local database, observe four distinct PIDs and exit0, exactly one insertion
+and one replay per database, and the authoritative full row. A new owner JVM must also
+be denied after persistent FENCED. Threads or object reconstruction do not establish
+process restart. This slice does not create QUEUED, accept jobs, occupy execution slots,
+fence domain executors, enable HTTP202/ASYNC/READY or prove restore/cutover safety;
+those remain B5b.1b.B/C and worker/consumer gates.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
