@@ -179,6 +179,32 @@ integration authorization after independent review; do not substitute B6 fixture
 Private workflows and tests referencing them must remain excluded from the public
 snapshot. Never describe unexecuted packaging code as an installed/proven container.
 
+Do not infer base-image provenance from optional digest text in BuildKit progress
+logs. Use the official Dockerfile unchanged with Buildx `--load --metadata-file --pull`
+and `BUILDX_METADATA_PROVENANCE=max`, recording client/builder identities. Require
+the two canonical Docker source steps to report registry `image.resolvemode=pull`
+and the known platform; local resolver materials are not registry witnesses.
+Require each source identifier to be the exact canonical name/tag plus `@sha256`
+root verified from that base's registry graph; require its material digest to equal
+that same root. Do not strip the pin or accept another valid manifest/config node. Verify
+the typed output config digest against the actual loaded image ID. For each exact
+Docker base material, check its canonical Docker Hub name, tag, platform and
+digest against the pulled immutable reference and its verified OCI chain:
+hash the registry response bytes for the index, selected platform manifest and
+config, and link the config to the pulled image ID/OS/architecture. Index,
+manifest and config digests are distinct identities; a digest-shaped string or
+a hash found somewhere in a log is insufficient. Known canonical official-image
+reference spellings may be normalized explicitly; never use fuzzy aliases.
+Missing/duplicate/unknown metadata, wrong digest or platform must deny the gate,
+without a text-log fallback. Keep offline negative cases for the verifier and
+preserve the real graph/metadata plus source freeze and owned-resource cleanup.
+Local-context `completeness.materials=false` does not certify hermetic builds,
+complete SLSA provenance or reproducibility. A failed pre-launch provenance gate
+does not certify wrapper execution; diagnose it before a single corrected retry,
+and reuse unchanged Java/HTTP/JAR proofs rather than repeating their suites.
+The reference procedure is in the host's
+`scripts/workspace/bulk_capacity_image_provenance.py` and its offline tests.
+
 ## Preserve Historical Authorization Dependencies
 
 Before composing historical bulk readers, trace target identity through mutable
