@@ -1987,6 +1987,41 @@ while the temporary role is active. Keep the advertised PostgreSQL 14 LOGIN/INHE
 CREATEROLE profile separate from the unresolved PostgreSQL 16 role-membership
 compatibility risk and from superuser HTTP fixtures. Do not generalize to NOINHERIT.
 
+For repeated capacity catalog attestation, distinguish immutable bundled SQL
+expectations from live authority. The private development candidate materializes
+V19 expected raw/normalized function bodies once per ClassLoader; missing resource,
+missing expected body or duplicate name fails initialization closed for that
+ClassLoader lifetime. Do not cache successful catalog validation, role/ACL grants,
+publication tuples or execution authority. Every live comparison and per-unit fence
+still runs. Prove concurrent source/body loading, quoted/escaped normalization and
+committed PostgreSQL body/ACL drift after warming the expectation holder. Do not
+advertise this candidate behavior as a published release or host adoption.
+
+For a consumer that resolves several request bodies and group schemas into one
+structural contract, first inspect the existing
+`OpenApiDocumentService.withSchemaCacheReadLock` and its Cached implementation.
+Compose the complete structural materialization in that bounded scope, preserving
+cheap invalid binding/profile rejection before document reads. This reuses an
+existing prepared or published photograph and retains published live checks before
+and after composition; it grants no domain authority. Do not indiscriminately nest
+`withPublishedBulkOpenApiPublication`: published revision/unit callers already
+own that scope, and prepared lifecycle callers must retain their prepared snapshot.
+Preserve the active-transaction path that avoids cache-lock inversion. Test nested
+published/prepared reads, authority change during composition, exception cleanup
+and a controlled competing cache writer during an active transaction; simulated
+tuple tests are not PostgreSQL ACL evidence. Verify the real consumer without task
+instrumentation and with its original deadline. A private focal success does not
+close public dependency adoption, the complete backend or frontend readiness.
+Inspect Metadata `BulkCapacityOccupancyCatalog`,
+`BulkCapacityOccupancySourceExpectationsTest` and
+`BulkCapacityOccupancyLiveExpectationsPostgresTest` for the immutable/live boundary;
+`OpenApiPublicationInstallationTest` for scope, tuple drift and cleanup.
+The concrete host materialization is
+`MissionParticipantBulkCanonicalContract`; its operational proof is
+`MissionParticipantUniformQueryHttpPostgresTest.queryOnePersistsItsProtectedManifestAndReplayNeverSelectsASecondEligibleRow`.
+Keep those private-candidate test sources separate from what the current published
+artifact actually contains.
+
 When atomicity fixtures run with V19, set both the execution_mode column and stored
 intent.executionMode to SYNC. Assert `praxis_bulk_proposal_atomicity_check` for the
 negative atomicity case, so a mode constraint cannot mask the intended failure.
