@@ -156,6 +156,29 @@ POM/JAR provenance and the host dependency without a local override. Non-superus
 OWNER PostgreSQL 14 evidence and superuser PostgreSQL 16 HTTP evidence certify
 different profiles; neither closes the OWNER-16 membership compatibility risk.
 
+Prove administrative image packaging separately from standalone consumer HTTP tests.
+Use the official host Dockerfile and a manual, reviewed-SHA workflow with read-only
+permissions, no persisted checkout credentials and public committed dependency pins.
+Require public Central POM/JAR provenance and exact nested Metadata/Config JAR bytes,
+image/base identities, wrapper bytes and mode0755. A network-none container with no
+ports or mounts may run INSPECT against a proved-absent absolute configuration path:
+assert exit64, empty stderr and the exact five-field INVALID_INPUT JSON without
+startup output. This proves COPY, PropertiesLauncher and the SDK Main; it does not
+prove PostgreSQL OWNER, FENCE, runtime serving, custody or continuity. Keep the
+packaged-JAR PostgreSQL proof and host verify separate. Select
+BulkCapacityLocalAdministrationPackagedJarPostgresProof explicitly after package;
+default verify does not run the Proof suffix. Supply `praxis.bulk.admin.packagedJar`,
+`praxis.bulk.admin.metadataCentralJar` and `praxis.bulk.proof.directory`: absolute
+paths, with the evidence directory already existing and exclusive. compare the POM's public pin and all three SDK
+byte origins. Byte equality alone does not establish Central provenance: retain
+independent resolution evidence. Capture source drift, raw
+output and cleanup of only owned image/container resources; upload evidence rather
+than caches, JARs or credentials. Do not deploy or push an image for this gate. If
+Docker is absent locally, the required official remote proof follows the existing
+integration authorization after independent review; do not substitute B6 fixtures.
+Private workflows and tests referencing them must remain excluded from the public
+snapshot. Never describe unexecuted packaging code as an installed/proven container.
+
 ## Preserve Historical Authorization Dependencies
 
 Before composing historical bulk readers, trace target identity through mutable
