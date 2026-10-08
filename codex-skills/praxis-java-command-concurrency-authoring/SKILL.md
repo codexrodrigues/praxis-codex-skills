@@ -87,6 +87,41 @@ schemas after those checks, never the publication as authority. Do not infer
 200-item completion, performance or host `READY` from focused SDK/host tests;
 prove them by exact-artifact HTTP and PostgreSQL evidence before teaching adoption.
 
+## Prove A Private Durable Worker Before Teaching Adoption
+
+For a B5b.2 candidate, inspect `BulkDurableWorker`, `JdbcBulkDurableExecution`
+worker helpers and the worker PostgreSQL/lifecycle/process tests in the exact
+candidate tree. These are internal candidates, not APIs available from public
+Metadata rc.155. Do not teach an import, Spring auto-start, ASYNC/202 or host recipe
+from their presence. Trusted host composition and off-request domain authorization
+still require their own consumer gates.
+
+Queue and free-slot hints never authorize mutation. Require the complete resource
+and canonical operation tuple to match before durable claim. Bound cursor scans and
+wraps, and inspect progress with an older rejected entry and another healthy
+operation. A scan failure must not recover an unrelated owned handle. Recovery
+must compare the durable execution/proposal/owner/epoch tuple and never call domain
+callbacks or authorize a new suffix.
+
+Prove queue expiry under FENCED and operation SUSPENDED without restoring authority,
+changing publication/control or refunding global rights. Verify confirmed domain
+and receipt pairs in the same physical transaction. Keep lifecycle stop distinct
+from expiry/recovery: no new ordinal after stop, callbacks only after actual thread
+exit. A Spring phase timeout can close the datasource while an uncooperative worker
+remains alive; SQL timeout alone does not bound connection acquisition or Java callbacks.
+
+Namespace and tenant proofs are separate. Two namespaces in one deployment share
+one OpenAPI publication keyed by deployment; never create or republish a namespace
+photo to prepare another operation control. A namespace-isolation test must use the
+same physical database, official migration map, explicit per-namespace runtime/TM
+and a preserved shared publication. Handler mismatch alone cannot prove isolation.
+
+For retained history, inspect the actual initial/keyset PostgreSQL plans and index
+catalog under the selector's real statement/lock budgets, recording settings and
+runtime role from that connection. `LIMIT 1` bounds output, not scanned rows or cost.
+A finite fixture is diagnostic, not a load/SLO certificate or grounds for an index
+migration without a separate impact review.
+
 For the private B5b.1a candidate, inspect Metadata
 `BulkCapacityAuthorityMigrator`, `BulkCapacityAuthorityInfrastructure`,
 `BulkCapacityAuthorityCatalog`, `JdbcBulkCapacityIssuer`, its isolated V1
