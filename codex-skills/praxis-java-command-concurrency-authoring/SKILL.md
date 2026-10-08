@@ -144,6 +144,80 @@ process restart. This slice does not create QUEUED, accept jobs, occupy executio
 fence domain executors, enable HTTP202/ASYNC/READY or prove restore/cutover safety;
 those remain B5b.1b.B/C and worker/consumer gates.
 
+The V19 occupancy described below is an internal source candidate, unavailable in Metadata
+`8.0.0-rc.154`. Confirm the exact SHA, diff/source freeze and matching proofs before use.
+A host must not access or copy package-private `enqueue`/`claim` through reflection,
+bridges or local SQL as a shortcut to public admission.
+
+For the protected B5b.1b.B occupancy increment, inspect `JdbcBulkDurableExecution`,
+`JdbcBulkCapacityOccupancy`, `BulkCapacityOccupancyCatalog`, operational V19 and
+`BulkCapacityOccupancyPostgresTest` with its authenticated fixture. Reuse the existing
+execution ledger, codecs, full control expectation and immutable expected binding.
+Internal ASYNC construction is not public capture or a READY descriptor: the initial
+subset is UNIFORM_UPDATE/EXPLICIT/PER_ITEM, at most 10,000 targets, absolute deadline
+at most 30 minutes including queue time, and unit budget at most five seconds.
+Public BulkStoredProposal constructors and capture/reservation remain SYNC-only until
+their own gates close.
+
+Enqueue must consume the pending proposal, create one QUEUED execution/allocation and
+occupy one installed QUEUE slot in one local transaction. Replay preserves identity
+and deadline; a second key must not duplicate the proposal's execution. Claim uses the
+minimal NOLOGIN definer entrypoint, not a caller boolean, GUC or direct runtime UPDATE.
+Preserve marker→control→quota/proposal→execution→slot lock order, full READY tuple and
+owner epoch 1→2. Transfer the same EXECUTION_ASYNC allocation QUEUED→ACTIVE; release
+QUEUE and occupy ACTIVE atomically. Slot sequence persists through release and reuse;
+occupation history is append-only with controlled retention, not runtime DML.
+
+Do not repair claim failures by granting unrelated ATOMIC helpers to the capacity owner.
+A PER_ITEM trigger must branch before preparing ATOMIC expressions; preserve and test
+ATOMIC commit/rollback gates. Terminal ASYNC release is certified after its materializer,
+while SYNC keeps its existing local quota path. Reject nullable invalid slot transitions
+in the trigger itself; distinguish this hardening from corruption already denied by CHECK.
+Require domain/receipt transaction proof, replay before new-mutation gates, old-owner
+fencing, confirmed-prefix recovery without callbacks, deadline/cancel/release, retention,
+ACL drift and concurrent/process proofs before accepting the whole cut. Initial enqueue,
+claim and cancellation tests alone do not prove that matrix, a worker, HTTP202, restore
+safety or backend closure. Beta cutover is non-rolling: drain old executors and suspend
+controls before migration; certify old-binary rejection using genuine ASYNC bytes before
+consumer adoption. Never manufacture T08 or uncertain-commit proxy experiments.
+
+For global occupancy conformance, distinguish issued/installed rights from occupied
+execution slots. A local tenant's two ACTIVE/twenty QUEUE ceiling cannot prove the
+global eight/eighty ceiling. Reuse one genuine authority with at least four distinct
+trusted local bindings and databases; compare full issued identities through local
+installation, current slot, execution, allocation and append-only history. Reuse
+released QUEUE rights after claim, and consume each pending proposal before creating
+the next so the pending quota is preserved. A later fifth binding must obtain no
+new rights and must not install or enqueue another binding's genuine token.
+`BulkCapacityGlobalOccupancyPostgresTest` demonstrates that internal candidate path.
+
+Follow the canonical allocation shape: EXECUTION_ASYNC is owned by execution_id
+(allocation_id equals execution_id, proposal_id is null). Link execution.proposal_id
+to the unique consumed PROPOSAL_PENDING allocation and compare transferred scope
+digests/versions; do not invent a second proposal link on the execution allocation.
+Check the real stored proposal's context and fingerprint using the existing codec.
+Serial quiescent reads across databases are not a distributed atomic snapshot or
+four runtime OS processes. Keep the separate two-database/two-runtime-process gate;
+OWNER provisioner JVMs, threads and reconstructed objects do not certify runtime
+execution across processes. These internal proofs do not permit a host to copy
+package-private APIs or enable public ASYNC/READY before its own composition gates.
+
+For runtime-process conformance, use real runtime-only JVMs with genuine
+enqueue/claim controls and authenticated bindings; keep OWNER provisioning in the
+parent. Match every child event to its actual Process PID and verify class origin.
+`BulkCapacityOccupancyProcessesPostgresTest` provides the finite candidate harness.
+Prepare all children outside unit transactions, then exercise one database pair
+at a time. Observe causal marker blockers with `pg_blocking_pids`; release the
+observed callback before waiting for the other blocker, an ACK or child exit.
+Do not increase unit or owner lock budgets to accommodate a test barrier.
+Prove external absence before commit and matching callback XID/domain/receipt
+`xmin` after commit. Test old-control fencing before marker fencing, then fresh
+unit/claim/enqueue rejection and confirmed replay without callbacks. Compare full
+binary rows by content, not Java array identity. Release barriers before cleanup
+waits, join/kill owned children, remove private credentials and close the cluster.
+Four passing runtime JVMs do not certify restart recovery, a product worker,
+distributed atomic snapshots, global caps or public ASYNC/READY.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry

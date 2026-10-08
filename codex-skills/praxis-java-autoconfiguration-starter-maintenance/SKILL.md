@@ -131,6 +131,108 @@ initial-install slice. Reference tables, helpers or compilation do not certify j
 workers, HTTP, ASYNC/READY or restore safety. Document proof scope and the next owning
 gate in the same cycle as canonical skills, manifests and selective installation.
 
+The V19 occupancy described below is an internal source candidate, unavailable in Metadata
+`8.0.0-rc.154`. Confirm the exact SHA, diff/source freeze and matching proofs before use.
+A host must not access or copy package-private `enqueue`/`claim` through reflection,
+bridges or local SQL as a shortcut to public admission.
+
+For protected operational V19 occupancy, inspect `BulkCapacityOccupancyCatalog`,
+`BulkExecutionMigrator`, `JdbcBulkCapacityOccupancy` and the initial occupancy PostgreSQL
+fixture. Keep V1–V18 and the separate authority lane immutable. Preserve mode from the
+canonical encoded proposal; reject historical ASYNC without the new authority before
+backfill. Do not default it to SYNC, change bytes/fingerprints or create a parallel ledger.
+Define explicit constraint identifiers within PostgreSQL's 63-byte limit and source-owned
+full definitions; do not weaken attestation to accept a captured live catalog.
+
+Installation creates owner-mediated free slots. Runtime reads slots/history and invokes
+bounded marker/claim functions; it receives no slot/history writes, owner membership or
+owner-only bootstrap SELECT. Attest function bodies, owners, search_path, ACLs, full FK/key
+arrays, constraints, columns and trigger topology. The state-neutral marker statement
+barrier also runs on zero-row writes; ACTIVE is required only by new ASYNC mutation.
+Preserve SYNC operation without a marker and after FENCED. Explicitly attest the AFTER
+materializer-before-release order and certify one released ASYNC allocation with no
+occupied slot; do not apply the SYNC EXECUTION_ACTIVE release to ASYNC a second time.
+
+V19 PENDING grant provisioning and completion CAS share the existing owner transaction.
+COMPLETE validates only; live role checks must not require owner-only bootstrap.
+Missing or partial physical V19, wrong privileges, extra membership, weakened guards or
+changed COMPLETE grants must fail without healing. Prefer an early PER_ITEM branch in
+an ATOMIC-only trigger over expanding the minimal claim owner's privileges, and prove
+ATOMIC behavior remains intact. Separate migration/catalog, domain/receipt, concurrency,
+recovery, retention and genuine process proofs; initial in-process tests do not certify
+four runtime JVMs, public ASYNC, a worker, a release or host adoption. Maintain non-rolling
+cutover requirements and scoped negative evidence alongside the implementation.
+
+Owner migration resource proofs are separate from catalog correctness. The current
+V18→V19 coordinator retains an owner connection under the existing transaction
+advisory lock and re-reads history before historical preflight. A historical
+validator must validate the adopted historical checksum/catalog and exact pending
+bootstrap without requiring the next migration already applied. Public serving
+validation stays strict; never skip all pending migrations or heal COMPLETE drift.
+
+The internal owner-preflight candidate was implemented and proved by packages35–37;
+it remains unintegrated and unreleased. It makes a migration configuration requirement explicit:
+owner loans start in auto-commit mode, outside caller transactions, from a provider
+that keeps an exclusive, stable PostgreSQL backend for every concurrent loan to the
+same endpoint/database. Reject initial manual-commit loans before SQL/configuration;
+never enable auto-commit or roll back a transaction the migrator did not initiate.
+Before coordination/locks/DDL, compare observed backend PIDs while two clean owner
+loans coexist, check the expected owner and database, and close the temporary probe
+before Flyway. A shared observed PID denies migration specifically; acquisition,
+query and close errors are separate failures, not alias evidence. Bound probe
+Statements while preserving a shorter JDBC/native host policy and the existing
+acquisition budget. Do not clone a pool, add a session lock or invent fallback loans.
+
+This check detects an observed alias; it does not certify arbitrary providers,
+cluster identity, routed datasources, transaction pooling or multiplexers. Those
+owner topologies are outside the demonstrated subset. SingleConnectionDataSource
+migration becomes unsupported, but serving validation of the same original
+connection/search_path remains a separate required positive proof after real
+independent-connection migration. Prove exact early rejection, absent schema/history,
+original PID/settings, manual-commit caller sentinel intact and externally invisible,
+probe-acquisition cleanup, and the affected public-pool/concurrent-owner/budget bridge
+on the new freeze. Campaign35 proves caller-transaction preservation and pool1
+probe-acquisition cleanup; campaign36 proves six affected owner-resource cases;
+campaign37 proves scoped migration/serving and same-four-backend settings after a
+committed FK corruption is rejected without healing, then exact fixture repair/retry0.
+V19 bootstrap uses pg_catalog only locally inside its own PostgreSQL transaction,
+with outside-Spring, PostgreSQL, manual-owned-TX and explicit-role guards. Commit or
+rollback restores the session path without reset SQL. The demonstrated negative is
+a catalog-comparison exception in a valid SQL transaction, not SQL-aborted or uncertain
+COMMIT. Source829/freeze5bea69f9 binds that cut; older proofs keep their own source
+provenance. Keep the operational/breaking precondition in Javadoc and the candidate
+guide; this candidate guidance does not announce a released adapter.
+
+Measure the actual resolved Flyway configuration with a bounded real host pool.
+Flyway may open an event connection in addition to history/migration connections;
+waiting owners retain connections too. In the candidate's Flyway 11.17.0/PG14.22
+single-owner proofs, baseline pool2 and coordinated pool3 failed event acquisition,
+while baseline3 and coordinated4 passed without increasing acquisition1000ms.
+Those sizes are specific demonstrated cases, not universal minimums or concurrency
+ceilings. State any external read-only observer separately. Preserve original failed
+campaigns and distinguish typed resource insufficiency from catalog rejection;
+prove released loans/transactions, committed phase and retry before acceptance.
+The raw coordinator JDBC advisory Statement does not inherit a separate bootstrap
+transaction timeout. At campaign26, the internal candidate capped that new advisory Statement query
+timeout at ten seconds, keeping a shorter positive JDBC timeout and stricter native
+host limits. Package35 separately applies the same bounded policy to its read-only
+owner probes; its preservation/acquisition gates and resource bridge passed by
+composition35–37. Two causal PostgreSQL holder tests prove SQLSTATE57014, native250ms
+versus driver cancellation with native0, rollback/released loans, unchanged native
+settings on the same returned connection and successful retry on the same pool.
+This is not a whole-migration/Flyway-DDL/legacy-initializer deadline. JdbcTemplate's
+callback Statement already inherits its transaction budget: inspect the resolved
+Spring proxy before adding timeout helpers. The two-owner shared-pool candidate
+proof observes two actual advisory waiters before releasing an external holder:
+pool5 completes with migration results19/0; pool4 observes peer blocking plus four
+active loans and one acquisition waiter, then exactly one typed event-acquisition
+failure and peer completion19. Same-pool retry0 preserves history and bootstrap
+rows. These are two in-JVM owners, not distributed runtime processes, a universal
+pool formula or a global occupancy proof;
+never disable Flyway transactional locking, clone a datasource or raise host budgets
+to hide starvation. This guidance is for the unintegrated internal candidate and
+does not announce a public ASYNC profile or release availability.
+
 The private B5b.1a capacity-authority candidate is a third, separate
 database boundary, not a replacement for this local control plane. Inspect
 `BulkCapacityAuthorityMigrator`, its V1 under
