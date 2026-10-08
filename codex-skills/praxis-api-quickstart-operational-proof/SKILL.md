@@ -58,6 +58,42 @@ Route by evidence, not by the route name alone:
 
 Do not add endpoint aliases, DTO copies, Spring overrides, local manifest validators, local AI orchestration, browser bypasses, or schema patches to cover a starter gap. Correct the owner and keep only the smallest quickstart proof.
 
+## Prove A Packaged Administrative Entry
+
+For capacity-local INSPECT/FENCE, reuse Metadata's public administrative Main and
+`BULK-CAPACITY-LOCAL-ADMINISTRATION.md`; the host only selects that entry through
+its existing PropertiesLauncher. Inspect the exact nested SDK artifact and class
+origin. For unpublished code, use a distinct private GAV/cache and the actual host
+property `praxis.core.version`; never install candidate bytes under a public
+coordinate or call an override proof public adoption.
+
+Run `BulkCapacityLocalAdministrationPackagedJarPostgresProof` explicitly AFTER
+packaging with an absolute `praxis.bulk.admin.packagedJar`, a fresh absolute
+`praxis.bulk.proof.directory` and fail-if-no-specified-tests. The Proof name keeps
+it out of the default pre-package lane; missing inputs must fail, not skip or
+substitute classes. Its disposable owner fixture must migrate owner-only, grant
+exact host-owned runtime ACLs, then attest configured roles through the public
+migrator. That fixture seed is not production enrollment or a restore recipe.
+
+Preserve stdout as the closed SDK JSON, with no warning filtering. If spring-jcl
+reports duplicate commons-logging in the packaged classpath, trace every actual
+Maven edge (including omitted duplicate branches), exclude only the redundant
+implementation on those consumer edges and retain spring-jcl/SLF4J, provider and
+HTTP-client versions. Freeze the new POM/tree and repackage; verify the final
+nested JAR inventory and exact SDK hash before repeating only affected proofs.
+Check binary logging compatibility or an existing safe offline consumer proof;
+mocked provider tests alone do not prove the actual bridge. Do not make network
+AI calls or use credentials merely to test logging composition.
+
+Require separate JVMs, unique SDK Main origin, safe current binding/role/ACL
+negatives, confirmed FENCE/replay and artifact/PID/exit/cleanup evidence. Preserve
+failed raw privately and always remove credential input; write success evidence
+after owned PostgreSQL closes. Distinguish real JAR launcher proof from Docker
+wrapper COPY/execution: no installed container command is certified by launcher
+success. SDK SCRAM/D0-outage tests retain their own scope; a trusted local host
+fixture does not inherit those guarantees. Keep independent review, canonical
+guidance integration and selective local sync separate from publication/adoption.
+
 ## Protected Bulk Capture Adoption
 
 For protected proposal capture and recapture in the host, use
