@@ -1973,6 +1973,25 @@ prove a working host consumer, composition/lifecycle/HTTP `ATOMIC`, B4 completio
 or exactly-once external effects. Host adoption and those separate gates require
 their own evidence.
 
+For V19 capacity occupancy bootstrap, use the existing owned transaction and exact
+PENDING catalog. Grant slot/history SELECT as schema owner; temporarily grant
+`praxis_bulk_capacity_owner` membership and use `SET LOCAL ROLE praxis_bulk_capacity_owner` only for the
+marker/claim EXECUTEs. Restore the initial local role and revoke temporary membership
+before final catalog/ACL validation, then publish COMPLETE. Never persist owner membership, grant options or
+PUBLIC privileges; COMPLETE only validates. Propagate failures to transaction rollback
+without finally-block SQL in an aborted transaction or session-wide RESET ROLE.
+Review `BulkCapacityOccupancyCatalog` and the non-superuser OWNER and pooled tests in
+`BulkDurableMigrationPostgresTest`. The pooled cases are DDL-only bootstrap proofs,
+not serving/public-migrate evidence; a failure after COMPLETE does not prove failure
+while the temporary role is active. Keep the advertised PostgreSQL 14 LOGIN/INHERIT/
+CREATEROLE profile separate from the unresolved PostgreSQL 16 role-membership
+compatibility risk and from superuser HTTP fixtures. Do not generalize to NOINHERIT.
+
+When atomicity fixtures run with V19, set both the execution_mode column and stored
+intent.executionMode to SYNC. Assert `praxis_bulk_proposal_atomicity_check` for the
+negative atomicity case, so a mode constraint cannot mask the intended failure.
+Preserve all escaped-NUL/raw-payload assertions and historical migration checksums.
+
 For paged result/read APIs attached to a durable collection command, keep result
 navigation separate from access control:
 
