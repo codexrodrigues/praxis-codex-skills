@@ -218,6 +218,23 @@ waits, join/kill owned children, remove private credentials and close the cluste
 Four passing runtime JVMs do not certify restart recovery, a product worker,
 distributed atomic snapshots, global caps or public ASYNC/READY.
 
+For clone/restore characterization, inspect `BulkCapacityCloneBaselinePostgresTest`
+and the owning C plan before writing a new protocol. This internal test copies a
+quiescent PostgreSQL database with the same ExpectedBinding, genuine tokens and
+confirmed receipt. TEMPLATE does not copy database ACLs or settings: capture the
+observed owner, grantor/grantee/options and role/database settings; transfer only
+those values, fail unknown cases and compare the complete envelope before kernel
+construction. Compare full binary rows, Flyway history, catalog/ACLs and roles by
+content; do not migrate/heal the copy, generate new IDs or fabricate CONNECT grants.
+Prove the original's fenced denial before callback separately from the copied
+baseline's ability to commit domain and receipt in one physical transaction. Replay
+confirmed receipts without mutation, keep the original authority unchanged and
+restore connection policy/close only owned resources. No callback transaction spans
+the copy. A passing C1a test characterizes a limitation; it does not prove anti-clone,
+physical cluster restore, authority continuity, succession or public ASYNC/READY.
+Keep frozen C1a evidence when C1b changes the expectation to rejection by a real
+mechanism; never teach a host to call these internal APIs as a recovery workaround.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
