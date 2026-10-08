@@ -255,6 +255,37 @@ from connection denial, promote a copy or reissue rights as a repair. Keep priva
 configuration out of argv/logs and release/abort held probes before cleanup waits.
 This internal proof is not a public host administration API or deployment recipe.
 
+For external connection quarantine, inspect the internal
+`BulkCapacityExternalQuarantinePostgresTest` and its authenticated `SharedScope`
+overload. Trusted administration does not mean a runtime client cannot select an
+administrative username: use distinct SCRAM credentials for owner, each authority
+role and runtime. Scope role/database/transport permissions explicitly. In this
+harness, only the initial embedded healthcheck uses temporary owner-only loopback
+trust; close it and attest real authentication before creating authority, migrations
+or domain state. Keep the default fixture route unchanged and test its regression.
+
+Authenticate the original positively; reject administrative/issuer impersonation
+using the runtime password. Distinguish wrong-password 28P01 (and PGJDBC's exact
+empty-password SCRAM 08004 branch) from native HBA quarantine 28000 with the CORRECT
+runtime credential. A failed classpath, missing password or dead endpoint is not a
+quarantine oracle. Seed all six role credentials before the baseline. Compare real
+`pg_authid` verifiers and attributes only in private parent memory through a boolean
+assertion; `pg_roles` masks passwords and cannot certify their preservation. Never
+emit secrets, verifiers or full protected snapshots in assertion failures or logs.
+
+Give child JVMs only the runtime credential in an owned private file, never owner
+or issuer secrets in argv, environment, URLs or manifests. Read back the applied
+external HBA path outside PGDATA, exact first-match rules and disabled/denied unused
+transports. Preserve the genuine TEMPLATE copy's envelope, ACTIVE marker, rows,
+receipts, controls and grants; separately compare shared cluster-wide credentials
+unchanged (TEMPLATE does not copy roles). Certify child PID/class origin, original
+receipt replay, native denial and zero callbacks before/after JVM restart. A held
+session can still write after HBA reload: demonstrate UPDATE/rollback, then terminate
+only its attested tuple and read back absence. Close children, private configurations
+and the owned cluster. This proof covers an enumerated same-cluster copy and JVM
+restart/HBA reload, not PostgreSQL restart, HA, physical cluster restore, monotonic
+external continuity, C0/C1b/C2 completion or a public deployment recipe.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
