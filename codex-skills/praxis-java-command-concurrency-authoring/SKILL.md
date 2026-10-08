@@ -316,6 +316,38 @@ antirollback, monotonic continuity, power-loss, network storage, HA, PostgreSQL
 restart or C0/C1b/C2 completion. Invalid boot provenance does not evict existing
 writers. Public provisioning/worker/host recipes require separate design and proof.
 
+For administered cold whole-cluster copies, inspect the internal
+`BulkCapacityTwoClusterQuarantinePostgresTest` and
+`docs/spec/BULK-CAPACITY-OCCUPANCY.md`. Run only its cold-copy method on Java 21
+with official Maven settings/cache/resource ownership and a NEW absolute proof
+directory. Reuse existing C0-03 Journal/ProvisioningAgent and C0-02 RuntimeProcess;
+do not duplicate installation or authority protocols. Establish native clean
+shutdown and actual postmaster absence before copying all PGDATA/WAL/transaction
+status bytes and permissions. Distinct postmasters must restart through the
+official fixture, with external clone HBA denying every non-admin login from its
+first start, including copied authority roles. Correct credentials must receive
+28000; ADMIN compares full copied binding/OIDs/roles/private verifiers/catalog/
+ledger separately. Equal copied system_identifier is not continuity authority.
+
+Require a genuine original domain/receipt commit and positive replay before
+retirement, intent before denial, complete-tuple exclusion of a retained real
+UPDATE session and physical absence before retirement. Original and restarted
+runtime JVMs must deny with zero new callbacks/admissions; restarted administrative
+agent cannot reopen. Keep budgets unchanged. Preserve failed campaigns under
+distinct names; incomplete cleanup retains 0600 private native logs and removes
+child credential handoffs, exporting only fixed classification codes. Unknown
+records cannot justify PASS or a fallback. Avoid whitespace in Zonky native
+configuration arguments that its pg_ctl launcher does not quote; a missing
+run1 native log makes the diagnosis an inference, not an observed server error.
+
+This bounded proof includes cold physical copy and PostgreSQL/JVM restart under
+explicit quarantine, not clone promotion, authority succession, independent
+antirollback custody, HA, power-loss durability, production supervision or full
+C0/C1b/C2/public ASYNC/READY. Seven owned processes were absent in the corrective
+campaign; one test passed without skips against 840 frozen sources/POM. Do not
+rerun unrelated suites for documentation alone or turn this internal fixture into
+a public deployment recipe.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
