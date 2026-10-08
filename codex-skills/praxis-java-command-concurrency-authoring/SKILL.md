@@ -277,7 +277,8 @@ Give child JVMs only the runtime credential in an owned private file, never owne
 or issuer secrets in argv, environment, URLs or manifests. Read back the applied
 external HBA path outside PGDATA, exact first-match rules and disabled/denied unused
 transports. Preserve the genuine TEMPLATE copy's envelope, ACTIVE marker, rows,
-receipts, controls, grants and credentials; certify child PID/class origin, original
+receipts, controls and grants; separately compare shared cluster-wide credentials
+unchanged (TEMPLATE does not copy roles). Certify child PID/class origin, original
 receipt replay, native denial and zero callbacks before/after JVM restart. A held
 session can still write after HBA reload: demonstrate UPDATE/rollback, then terminate
 only its attested tuple and read back absence. Close children, private configurations
