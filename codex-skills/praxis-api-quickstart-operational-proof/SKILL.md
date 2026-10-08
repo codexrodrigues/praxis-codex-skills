@@ -205,6 +205,26 @@ and reuse unchanged Java/HTTP/JAR proofs rather than repeating their suites.
 The reference procedure is in the host's
 `scripts/workspace/bulk_capacity_image_provenance.py` and its offline tests.
 
+## Keep Private Worker Proofs Separate From Host Adoption
+
+When reviewing a Metadata worker candidate, freeze its source and private coordinate
+before Maven, then require a different author's source review. Preserve each run's
+actual exit, fresh XML, full source snapshot and owned-process cleanup. A predecessor
+suite does not certify bytecode changed later; repeat only the cases affected by a
+reviewed correction. Count one JUnit method with five scenarios as one test.
+
+Use finite causal probes on the actual JDBC path when ordering cannot be established
+from a snapshot. Delegate original SQL unchanged, retain its original exception,
+and distinguish a marker after the handler decision from an early selection marker.
+Verify physical domain/receipt commits independently. A fixture flag about built-in
+barriers does not prove that custom instrumentation was absent.
+
+SDK process/queue/lifecycle proofs do not certify host HTTP/JWT authorization,
+background domain grants, public readiness or auto-configuration. Keep those
+consumer gates pending until implemented and proven with the supported public
+artifact. Namespace filtering in the same database is also distinct from tenant
+or grant isolation. Do not expose a private internal worker as a public recipe.
+
 ## Preserve Historical Authorization Dependencies
 
 Before composing historical bulk readers, trace target identity through mutable
