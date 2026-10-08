@@ -385,6 +385,37 @@ power-loss durability, production start/restore supervision, full C0/C1b/C2,
 public worker/ASYNC/READY or Angular readiness. Update this existing skill in the
 same cycle; a new test does not justify a new skill or public deployment recipe.
 
+## Compose Local Administrative Inspection And Fencing
+
+For local administration without available D0, inspect Metadata's
+`BULK-CAPACITY-LOCAL-ADMINISTRATION.md`, `BulkCapacityLocalAdministrationMain`,
+`JdbcBulkCapacityLocalAdministration` and its focused PostgreSQL/CLI tests.
+First verify that the chosen artifact actually contains the entry; a private
+candidate is not a published/adopted release. Use the SDK entry from the packaged
+consumer, not reflection, a copied installation implementation or Spring startup.
+
+Supply only INSPECT/FENCE and an absolute trusted ADMIN JSON file: private
+0600/0700, bounded strict input, explicit owner credentials, four role declarations
+and all nine binding components. No inferred identity, URL credential override,
+secret argv or permissive parsing. INSPECT observes without initialization or
+boot permission. FENCE locks the marker, rechecks owner/catalog and full binding
+before its terminal mutation, then requires known commit and fresh independent
+readback. Preserve the aggregate 20-second budget, stricter driver limits and
+three-second lock budget; check remaining time after acquisition before SQL.
+A late/uncertain result is denial requiring explicit reconciliation, never proof
+of rollback, a refund, automatic retry/reopening or global retirement.
+
+Require exactly the documented five-field JSON and exit status. In a fat JAR,
+check the complete dependency classpath: duplicate logging bridges can prepend
+stdout warnings even when the SDK operation succeeds. Fix the consumer's proven
+Maven dependency edge, retaining Spring's spring-jcl bridge; never strip output,
+redirect global stdout or weaken the closed result parser. Prove real owner
+credentials, D0 denial, binding/catalog negatives, actual unit/marker contention,
+receipt replay, fresh physical readback and deadline expiry in their owning layer.
+Separate SDK evidence from packaged-consumer proof and container-wrapper execution.
+Local FENCED does not stop SYNC, exclude sessions/copies, certify journal custody,
+authority continuity/start/restore, full C0/C2 or public worker/Angular readiness.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
