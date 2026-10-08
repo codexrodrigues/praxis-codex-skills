@@ -286,6 +286,36 @@ and the owned cluster. This proof covers an enumerated same-cluster copy and JVM
 restart/HBA reload, not PostgreSQL restart, HA, physical cluster restore, monotonic
 external continuity, C0/C1b/C2 completion or a public deployment recipe.
 
+For a private cooperative provisioning interlock, inspect
+`BulkCapacityProvisioningInterlockPostgresTest`. Reuse the full existing
+`ExpectedBinding`; do not invent another authority, quota, epoch or permission.
+Keep a stable lock file separate from the replaceable versioned journal and perform
+all authoritative read/validation/CAS under one exclusive cross-JVM FileLock.
+Persist intent before HBA/fence. Confirm retirement only after native connection
+denial, selective attested-tuple exclusion/physical absence, marker readback and
+unchanged genuine SYNC/ASYNC prefix and authority. Incomplete intent can repeat
+exclusion/readbacks, never reopen, promote a copy, reissue rights or mutate domain.
+Missing, corrupt, unsupported/overflow format, wrong digest/binding or stale CAS
+must deny new starts without healing or administrative SQL.
+
+The C0-03 children are trusted ADMINISTRATIVE agents, with private owner/provisioner
+credentials. This does not relax the C0-02 runtime-only credential rule and must
+never be copied into an HTTP worker. Keep credentials/configuration out of argv,
+logs and exported manifests. Exercise real process death at three barriers outside
+unit transactions; two JVMs must attest actual contention, finite timeout, holder
+death and reread/CAS. Require non-null file identity before claiming stable inode.
+Test force-file/atomic-replace/force-directory/readback on the observed local store;
+unsupported operations fail closed without a fallback or silent skip. Preserve
+fixture and parent evidence under DISTINCT names; refuse overwrite and retain failed
+campaigns. Close owned children, private files and PostgreSQL before success export.
+
+This proof is private/cooperative. FileLock is advisory, and same UID does not prove
+custody separation. A valid old journal restored with its custodian remains
+indistinguishable without an independent anchor. Hash/CAS/force do not certify
+antirollback, monotonic continuity, power-loss, network storage, HA, PostgreSQL
+restart or C0/C1b/C2 completion. Invalid boot provenance does not evict existing
+writers. Public provisioning/worker/host recipes require separate design and proof.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
