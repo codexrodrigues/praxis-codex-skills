@@ -348,6 +348,43 @@ campaign; one test passed without skips against 840 frozen sources/POM. Do not
 rerun unrelated suites for documentation alone or turn this internal fixture into
 a public deployment recipe.
 
+For restored-authority rollback characterization, inspect the private
+`BulkCapacityAuthorityRollbackPostgresTest`, its C2-a plan and the occupancy spec.
+Keep two independent objects: the controlled counterexample and external quarantine.
+Back up the same second PENDING demand after one installed ACTIVE right. Commit
+and independently read its second genuine token, still in transit, BEFORE starting
+the old authority clone. Issuing the same pending request there yields three
+distinct known rights above tenant limit two, despite unchanged UUID/epoch/full
+binding/catalog. This is a counterexample to continuity, never a restore recipe.
+
+In the separate quarantine object, deny every non-admin clone login from first
+start with external HBA and correct-credential native 28000. Reuse C0-03 CAS_INTENT
+sequence one BEFORE origin denial. When D0 is already unavailable, the existing
+retire agent accesses authority before fence/exclusion: preserve pending INTENT,
+never fabricate RETIRED sequence two or certified local fencing. Trusted ADMIN
+separately attests the complete session tuple, observes real uncommitted UPDATE,
+rollback, physical exclusion and fresh readback. Old/new runtimes deny with zero
+admissions/callbacks; administrative BOOT denies with zero actions. Preserve the
+confirmed prefix and known in-transit token. Transient authority outage by itself
+never fences installed local rights.
+
+Freeze each actual source/POM, raw/XML and sanitized manifest; use new proof paths.
+The counterexample passed in the initial campaign, whose quarantine failed before
+origin denial due to IntNode/LongNode equality in the test reader. Harmonize the
+reader with the reused C0-03 strict duplicate/long-integer/trailing-token policy;
+do not relax full binding or digest equality or call this a production defect.
+Reuse that immutable counterexample evidence; the quarantine-only corrective run
+passed without failures/errors/skips against 842 frozen files, eight owned PIDs
+absent. These are separate source photographs, not a two-test passing rerun.
+Preserve failed campaigns and private 0700/0600 diagnostics without child credential
+handoffs. Keep native cold-copy/start/stop evidence and all budgets unchanged.
+
+This bounded proof teaches risk and administered quarantine under trusted ADMIN,
+not monotonic continuity, antirollback journal custody, authority succession, HA,
+power-loss durability, production start/restore supervision, full C0/C1b/C2,
+public worker/ASYNC/READY or Angular readiness. Update this existing skill in the
+same cycle; a new test does not justify a new skill or public deployment recipe.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
