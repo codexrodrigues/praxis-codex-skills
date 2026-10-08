@@ -180,8 +180,10 @@ Private workflows and tests referencing them must remain excluded from the publi
 snapshot. Never describe unexecuted packaging code as an installed/proven container.
 
 Do not infer base-image provenance from optional digest text in BuildKit progress
-logs. Use the official Dockerfile unchanged with Buildx `--load --metadata-file`
-and `BUILDX_METADATA_PROVENANCE=max`, recording client/builder identities. Verify
+logs. Use the official Dockerfile unchanged with Buildx `--load --metadata-file --pull`
+and `BUILDX_METADATA_PROVENANCE=max`, recording client/builder identities. Require
+the two canonical Docker source steps to report registry `image.resolvemode=pull`
+and the known platform; local resolver materials are not registry witnesses. Verify
 the typed output config digest against the actual loaded image ID. For each exact
 Docker base material, check its canonical Docker Hub name, tag, platform and
 digest against the pulled immutable reference and its verified OCI chain:
