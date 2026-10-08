@@ -1,6 +1,6 @@
 ---
 name: praxis-java-autoconfiguration-starter-maintenance
-description: Use when implementing, auditing, or evolving praxis-metadata-starter Spring Boot auto-configuration: @AutoConfiguration, @ConditionalOnMissingBean, configuration properties, SPI extension points, bean ordering, OptionSourceProvider/registry/executor wiring, AutoConfiguration.imports, starter bootstrap tests, host compatibility, and public contract impact.
+description: Use when implementing, auditing, or evolving praxis-metadata-starter Spring Boot auto-configuration: @AutoConfiguration, @ConditionalOnMissingBean, configuration properties, SPI extension points, bean ordering, OptionSourceProvider/registry/executor wiring, AutoConfiguration.imports, starter bootstrap tests, opt-in bulk owner migrations, interrupted bootstrap recovery, packaged migration resources, host compatibility, and public contract impact.
 ---
 
 # Praxis Java Auto Configuration Starter Maintenance
@@ -531,6 +531,15 @@ fallback beans merely to conceal a failed contract.
 
 Use auto-configuration and bootstrap tests first; run focused resource/schema/
 option/discovery tests for affected behavior. State when no public artifact changes.
+
+## Opt-In Bulk Owner Migrations
+
+For a bulk schema upgrade, inspect `BulkExecutionMigrator`, initializer phase
+markers, immutable SQL history, configured owner/runtime/control roles, and the
+exact artifact consumed. Read [bulk-owner-migration.md](references/bulk-owner-migration.md)
+for staged upgrade, phase-aware attestation, reject-only completed installations,
+pool/resource proof and packaged-consumer evidence. A private candidate or passing
+kernel test does not enable public ASYNC, autostart, HTTP202 or fleet readiness.
 
 ## Companion Skills
 
