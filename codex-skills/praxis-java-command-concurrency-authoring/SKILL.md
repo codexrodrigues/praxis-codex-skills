@@ -1927,6 +1927,8 @@ from its intended repository, pin that exact `praxis.core.version`, use an isola
 and remove the candidate override. Source integration and candidate tests do not prove
 published adoption.
 
+For bounded RS2 capacity evidence, run `mvn -B -Dpraxis.bulk.capacity=true -Dtest=BulkAuthorizedProposalResultsCapacityPostgresTest -DfailIfNoTests=true -DargLine=-Xmx256m test` in the assigned isolated checkout/target. This composition proof chains 50 pages of 200 over 10,000 targets, reauthorizes the full PostgreSQL grant set on the bound RR/RO connection per request, and revokes an off-page grant while the global decision remains ALLOWED. Initial and continuation reads must deny without output or effects; keep the native three-second publication budget. Direct storage capacity tests do not prove this composition. Freeze the actual source/POM and record runtime, cursor, heap and cleanup evidence; measurements include the harness and do not certify HTTP, RSS, O(page), SLO or universal authorization. Public-tag source evidence and current-private-main evidence are separate: preserve the former, review dependency/schema differences and validate the integration tree when they change. Neither source campaign proves adoption of a published JAR; never install candidate bytes under its public coordinate. See `docs/spec/BULK-H1B-READ-MODEL.md` in Metadata for the bounded evidence and limits.
+
 Fix the resource and operation through trusted host wiring. The `@ApiResource` resource
 key and `CanonicalOperationResolver.requireResourceOperation` must identify the exact
 GET mapping and its OpenAPI operation; continuation is bodyless. Do not add placeholder
