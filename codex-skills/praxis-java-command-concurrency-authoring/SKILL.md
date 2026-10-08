@@ -235,6 +235,26 @@ physical cluster restore, authority continuity, succession or public ASYNC/READY
 Keep frozen C1a evidence when C1b changes the expectation to rejection by a real
 mechanism; never teach a host to call these internal APIs as a recovery workaround.
 
+For controlled withdrawal of an accessible origin, inspect
+`BulkCapacityControlledWithdrawalPostgresTest` before defining a new shutdown proof.
+Certify the real callback/fence blocking edge with PostgreSQL PIDs and release the
+callback immediately within its original budget. Prove domain and receipt share
+the committed XID. Capacity fence stops new ASYNC units but does not stop SYNC:
+retain a genuine SYNC positive and receipt replay without mutation.
+Blocking new database connections does not remove an existing physical session.
+Use a genuine UPDATE with rollback and an independent observer before terminating
+only attested PID/database OID/role/backend_start tuples; verify exit, not just a
+sent signal. Test original and restarted runtime JVMs with matching class hashes,
+native SQLSTATE 55000, denied administrative reopening (42501) and zero callbacks.
+Reconcile through a separately attested, preopened read-only lease, preserve the
+confirmed prefix and authority, then close it to prove zero origin backends.
+Owner/superuser remains trusted. The test certifies only its enumerated unpooled
+runtime plus held session, not arbitrary pools, HA, PostgreSQL restart, clones,
+lost authority or uncertain-commit recovery. Never infer absence of prior effects
+from connection denial, promote a copy or reissue rights as a repair. Keep private
+configuration out of argv/logs and release/abort held probes before cleanup waits.
+This internal proof is not a public host administration API or deployment recipe.
+
 For `DOMAIN_COMMAND/ATOMIC` composition published in Metadata `8.0.0-rc.152`, start with the real
 `@WorkflowAction`, typed command parameters and `BulkOperation` declaration.
 Require matching action/bulk atomicity, the exact canonical action-registry
