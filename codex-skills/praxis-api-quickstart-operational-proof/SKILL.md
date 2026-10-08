@@ -338,6 +338,37 @@ occupancy from multiple complete concurrent HTTP executions and from a productio
 capacity certification. Release retained connections and await pending requests
 before clearing shared test hooks.
 
+## Prove Real Config Outage Between Confirmed Units
+
+For T06, use `ReferenceConsumerConfigOutageHttpPostgresTest` with the published
+Metadata/Config artifacts and an isolated empty Maven cache. The existing
+`config-outage` workflow selector executes only this HTTP focal and attests the
+exact candidate, source, public JAR hashes and bounded sanitized evidence.
+
+Publish a real ALLOW policy, then independently observe physical domain+receipt
+commit of unit zero at the existing afterCommit barrier. It can still be
+UNIT_COMMITTED_PENDING_ACK there: do not fabricate an ACK-certified prefix or
+public admission before ACK. Stop ONLY Config; probe its ORIGINAL URL with correct
+credentials for native SQLState class08 and independently prove operational DB
+healthy. This focal composes connectTimeout/socketTimeout of1s on the Config
+JDBC URL for both probe and runtime, without raising the native5s unit ceiling;
+it does not certify default timeouts, pool behavior or general performance.
+Release the barrier without cancel, runtime kill, transport fault or ACK
+failure. The historical `releaseAfterCancel` name only opens the barrier; it does
+not authorize calling cancel. Observe sufficient remaining execution deadline
+before release, greater than the unchanged native unit ceiling; do not inflate
+budgets or wait for expiry to make the scenario pass.
+
+Require STOPPED/COMMON_GOVERNANCE_UNAVAILABLE, certified next ordinal1, unchanged
+first physical receipt/domain and zero suffix receipt/admission/mutation. Authorized
+reads and replay must leave protected state unchanged while Config stays offline.
+Inspect source, XML, public bytes, manifest causal fields, images and owned cleanup
+independently; the manifest is exported only after assertions and resource closure.
+An abort, exception, pool saturation, policy denial or lost ACK is not a T06 PASS.
+This focal does not certify uncertain commit, recovery, HA, worker, B6/B7 completion
+or Angular readiness. Keep protected snapshots/settings/credentials private and
+close only owned Spring, executor and containers before success export.
+
 ## Compose Shared Deadlines Across The Host And Config
 
 The Config Starter owns operational-policy semantics and its read-transaction
