@@ -139,6 +139,23 @@ host-owned fixture boundary. Do not loosen the migrator validator or add
 PostgreSQL 16 HTTP evidence for the B6 consumer; an ACL bootstrap repair
 alone does not prove its bulk behavior.
 
+When fresh runtime roles are attested after V18/V19 storage was completed without
+roles, provision the exact additional read boundary: SELECT on capacity marker,
+installation, slot and occupation relations, plus EXECUTE on the canonical marker
+and claim functions. Read the exact relation/function names from Metadata's existing
+catalog and consumer fixture. Do not add DML, PUBLIC, grant options, bootstrap access
+or owner membership, and never weaken COMPLETE validation to repair drift. Preserve
+configured-role negatives and the bounded control/fence callbacks.
+
+The independent fresh-JAR consumer must assert the packaged V18/V19 resources and
+current migration count, preserve historical checksums and bind codeSource/private
+classpath evidence to the committed candidate. Do not copy SDK helpers or classes
+into the consumer, replace HTTP evidence with kernel assertions, or count the nested
+consumer test twice in outer suite totals. Public adoption still requires Central
+POM/JAR provenance and the host dependency without a local override. Non-superuser
+OWNER PostgreSQL 14 evidence and superuser PostgreSQL 16 HTTP evidence certify
+different profiles; neither closes the OWNER-16 membership compatibility risk.
+
 ## Preserve Historical Authorization Dependencies
 
 Before composing historical bulk readers, trace target identity through mutable
