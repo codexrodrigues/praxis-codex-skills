@@ -168,7 +168,7 @@
                                             "praxis-java-contract-conformance"
                                         ],
                        "skillMdSha256":  "C302AD3BB60530F66F983317FDFB1E75AFC461D1303C7E1B43D683EDC2A9DEB2",
-                       "treeSha256":  "FC594696DC3E18537F391908A302D598500946D88C6B82946774D4CFBB83BD8C"
+                       "treeSha256":  "06E4655C95912C615E72D01B7A656E3404219C5C8F3CEF2A1BADFE6FBA63E4BD"
                    },
                    {
                        "name":  "praxis-java-domain-governance-field-access",
@@ -1113,7 +1113,7 @@
                                             "praxis-ui-product-design"
                                         ],
                        "skillMdSha256":  "AC890D8554CCBC4A75CDCE2B18BF0BDC8CF3E20ABDE1EEECDDD7EA1BB8B65120",
-                       "treeSha256":  "A3AE091C59459865DA8982AFF43E47925C0995EAE0F0D41ADB5100BE8D30EE0C"
+                       "treeSha256":  "E8CA07B688F7C1AAA0BCA69C536ED85F9B5A582ABBCEE6D149ABDC02EB16487E"
                    },
                    {
                        "name":  "praxis-dynamic-fields-editorial",
