@@ -70,3 +70,9 @@ When changing a release route, inventory existing Java and Python workflow
 contract tests before release. Update obsolete publisher literals to assert the
 retained signed test gates, ordering, custody and unique upload; do not delete
 those tests or weaken the release gates to obtain a green job.
+
+The separately reviewed Config total-operation deadline candidate uses the same
+own-Python POSIX guard, while retaining Config's45-minute job/180-second custody
+reserve and its own GAV. Inspect the actual immutable source and corresponding
+Java/Python convention proofs before relying on it; Metadata's90-minute budget
+and public availability checks must not be copied as Config guarantees.
