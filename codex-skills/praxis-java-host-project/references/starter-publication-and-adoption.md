@@ -49,3 +49,24 @@ artifact and packaged nested JAR, then prove the affected protected HTTP path.
 Publication does not certify operational migrations, hosted role provisioning,
 deployment, Angular or whole-backend readiness. Keep those gates explicit and
 reuse valid source-bound tests without reflexively repeating complete suites.
+
+For Metadata's separately reviewed bundle-gate candidate, retain its Maven 3.9.6
+wrapper, full signed `clean verify`, public contract hygiene gate and documentation
+job dependency. Its 90-minute job budget is measured from the first step; upload,
+status and public availability share the remaining deadline and custody reserve.
+Do not copy Config's 45-minute value or add independent propagation windows.
+Verify the actual public POM and main JAR plus their SHA-512 checksums against the
+validated archive, without installing that public coordinate locally. Wrong bytes
+or exhausted availability retain the deployment and prevent adoption. Inspect
+these helpers in the immutable source before relying on this candidate path;
+offline fixtures still do not certify the official signature or publication.
+
+A socket timeout does not bound the whole open/read operation. The Metadata
+candidate also guards the complete call with a POSIX timer in its own Python main
+thread, restores the signal handler, refuses an existing timer and rejects a late
+return before certifying availability. Verify blocking-operation and final-read
+deadline tests; do not claim these controls from fixtures that only mock a clock.
+When changing a release route, inventory existing Java and Python workflow
+contract tests before release. Update obsolete publisher literals to assert the
+retained signed test gates, ordering, custody and unique upload; do not delete
+those tests or weaken the release gates to obtain a green job.
