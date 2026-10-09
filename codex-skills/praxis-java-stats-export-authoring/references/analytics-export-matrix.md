@@ -20,3 +20,7 @@ because they can be aggregated or serialized.
 Prove a denied field, unsupported scope/format, or server-truncated limit. Verify
 the response reports the effective policy and does not silently export a broader
 default. CSV and XLSX paths must retain formula-injection protection.
+
+## Contextual Statistical Discovery
+
+`GET /{resource}/stats/capabilities` publishes the statistical projection of the same contextual collection capability snapshot. `_links.stats` points to that discovery route when declared statistical fields and composed capability discovery allow it. It does not calculate aggregates or authorize subsequent operations; registry/support mode and each operation policy remain authoritative. Do not invent `GET /{resource}/stats` as an aggregate route. Prove route/link/snapshot alignment separately from the allowed and denied aggregate HTTP paths in the real host.
