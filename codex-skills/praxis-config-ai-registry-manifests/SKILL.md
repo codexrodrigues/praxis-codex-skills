@@ -197,15 +197,20 @@ Run the smallest local gate that proves the changed boundary:
   `npm run validate:authoring-contracts`; use `npm run generate:registry:ingestion` when aggregate
   publication must be regenerated.
 
-Template service changes also affect the Java compiler receipt in
-`docs/ai/agentic-authoring/proofs/ui-composition-compiler-parity-corpus.v1.json`.
-Run `UiCompositionGoldenCorpusRunnerTest` alongside the template tests: its execution closure
-includes `AiRegistryTemplateService` even though the runner mocks the repository boundary.
+Changes to any source in the eleven-source Java compiler closure also affect the receipt in
+`docs/ai/agentic-authoring/proofs/ui-composition-compiler-parity-corpus.v1.json`, including
+`CanonicalJsonHashService` and `AiRegistryTemplateService` (whose repository boundary is mocked).
+Run `UiCompositionGoldenCorpusRunnerTest` alongside the affected service tests; a service-only
+green result does not establish source/class closure integrity.
 When source/class hashes change, regenerate only `compilerReceipts.java` from the runner report's
 `compilerIdentity.sourceReceipt`; review the closure and keep all corpus cases and expected
 projections intact. Re-run the golden/compiler/template-resolver/snapshot gate documented in
 `docs/ai/agentic-authoring/ui-composition-compiler-parity-corpus-v1.md`, including deliberate
-mismatch tests. Do not weaken receipt validation to publish a release.
+mismatch tests. Do not weaken receipt validation to publish a release. When the first run detects stale receipt
+hashes, preserve its RED report and require every semantic case to pass before deriving the new
+receipt; any semantic failure requires diagnosis rather than a receipt refresh. The release
+profile also requires classification tags on every JUnit `*Test.java` class. Explicit focal
+execution does not replace `CiSmokeUnitConventionTest` or the official release gate.
 
 For templates, prove object validation, default description, identity-preserving upsert, semantic
 search scoping/limits, payload mapping, bulk partial failure, delete/not-found, and HTTP behavior.
