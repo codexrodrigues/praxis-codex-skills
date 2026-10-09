@@ -90,6 +90,34 @@ real runtime EXPLAIN plans with canonical seed, existing rights and timeouts; do
 force the planner. Parent buffer counts are inclusive; Index Only Scan can still
 perform heap fetches. Finite cached PG14 measurements do not certify SLO, T13 or PG16.
 
+## Historical producer and evidence reconciliation
+
+Before transplanting a consumer fixture to a historical published SDK, inspect the
+immutable published POM and corresponding tag, including the Spring Boot,
+Springdoc and migration dependency baseline. A current consumer parent can be
+incompatible with a historical SDK even when compilation succeeds. Keep the
+historical producer dependency set coherent with that published baseline; do not
+force execution by overriding the SDK dependencies or disabling converters.
+Prove the actual JAR/POM/GAV, native SQL resource bytes and runtime CodeSource,
+and exclude current candidate classes from the producer classpath. Create retained
+state through the historical public APIs, not raw rows or fabricated phase markers.
+
+Compare artifact paths by physical identity as well as spelling. Resolve existing
+paths and verify same-file identity, content hash and the actual CodeSource/classpath;
+filesystem aliases such as `/tmp` and `/private/tmp` can refer to one file. Do not
+invent an alias or accept a different artifact merely because its filename matches.
+Qualify hashes collected after execution as after-run observations.
+
+Record Maven's numeric process exit, the nested consumer exit and the collector's
+exit separately. A collector path-comparison failure is not a Maven or runtime
+failure. Preserve the original failed receipt and RED result; if independent
+read-only reconciliation proves the physical artifact and all affected gates,
+retain that supplemental review alongside the original evidence. Never rewrite
+receipts, relabel the original collector as passing or repeat an already valid
+runtime campaign solely to erase an evidence-collection defect. A characterization
+of a blocked upgrade does not prove successful historical adoption or authorize
+ACL/ledger repair; identify the first reached rejection and unreached gates.
+
 ## Packaged consumption and delivery
 
 After source proof, build the private candidate into an isolated cache, verify
