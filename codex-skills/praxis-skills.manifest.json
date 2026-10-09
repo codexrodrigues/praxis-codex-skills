@@ -2413,8 +2413,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "82176D20EEB93CFC6076BD436FBC92E60807001E5056084E0DBEA825E0A07AC3",
-                       "treeSha256":  "B9A8123CA51A88E9DFC39B3B3A7156F3314653AC49ADC2C1724F2949D8A1B6E2"
+                       "skillMdSha256":  "2F01CB9243B61A52ED753085225399B2FE4E3086C3C02BA0F2A14643236323A5",
+                       "treeSha256":  "FDAEAF3A4490ECBFB07816D563A3A565380C30FEB01471CBEF8E67049DFA8AAF"
                    },
                    {
                        "name":  "praxis-config-api-metadata-grounding",
