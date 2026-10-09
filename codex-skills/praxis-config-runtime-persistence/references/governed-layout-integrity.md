@@ -64,9 +64,40 @@ published version has all of these protections.
 Read the current opt-in test/runbook before reserving a database. The metadata
 capture gate requires an existing exclusive `b1a_it_*` schema migrated through
 V68, and the documented `PRAXIS_UI_LAYOUT_PG_*` inputs. Never print credentials.
-It does not authorize creating a remote schema, EmbeddedPostgres or Docker as a
-substitute for that gate. The lifecycle gate has different migration effects;
-do not combine them by reflex.
+The reader gate itself does not authorize creating a remote schema,
+EmbeddedPostgres or Docker as a substitute for its admitted window. The
+lifecycle gate has different migration effects; do not combine them by reflex.
+
+For an authorized native PostgreSQL preparation, inspect the actual
+`.github/workflows/domain-catalog-postgres-migration.yml` and both
+`ui-layout-metadata-postgres-gate.md` and
+`ui-layout-create-key-lookup-postgres-gate.md` in the exact Config candidate.
+Confirm that the workflow contains separate lifecycle preparation, admission
+and existing-schema reader phases before relying on it. An older workflow
+running only catalog/template tests does not prove UI-layout persistence.
+
+- Keep the official PostgreSQL service and its original catalog/template
+  database. Allocate the UI-layout database separately from `template0`, with
+  the documented owner and UTF8, and admit it as empty before lifecycle.
+- Use the exclusive documented `b1a_it_*` schema in JDBC `currentSchema` without
+  `public` fallback. Let canonical lifecycle/Flyway install extensions naturally;
+  verify actual vector/pgcrypto namespaces, required types/opclasses, owner,
+  encoding, V65/V68 history and creation-key index before readers. Do not move an
+  extension, manually bootstrap vector, repair or clean to make admission pass.
+- The two existing-schema readers may run together after lifecycle completes;
+  neither may migrate or mutate schema/history. Preserve per-phase actual Maven
+  and tee exits, fresh exact XML suites and skip reasons, source/workflow hashes
+  and PostgreSQL logs. Require executed tests and zero failures/errors/skips.
+- Capture the registered catalog fields and history/checksums before and after
+  readers. Once admitted readers start, capture the latter even if tests fail;
+  keep capture, comparison and XML-validation exits distinct and record not-run
+  separately. A matching snapshot proves its recorded fields, not all database
+  data or every catalog property. A privileged disposable owner is not a proof
+  of least-privilege Neon roles, producer admission or live host HTTP.
+- Before dispatch, verify the real triggers and immutable source/workflow/run
+  SHAs; a checkout override must not execute an older workflow unnoticed. Use
+  the reviewed official resource window and evidence gate, not a tag as a CI
+  probe. Static workflow review is not PostgreSQL execution or release approval.
 
 V68's NOT VALID constraint protects new inserts without certifying incomplete
 historical rows. Do not backfill or VALIDATE CONSTRAINT to manufacture missing
