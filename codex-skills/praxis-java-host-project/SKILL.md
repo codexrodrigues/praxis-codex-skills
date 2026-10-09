@@ -13,6 +13,12 @@ Before changing this skill or implementing a Java host, audit the resolved start
 
 When local source is available, start with `praxis-metadata-starter/AGENTS.md`, `praxis-config-starter/AGENTS.md`, and `praxis-api-quickstart/AGENTS.md` to confirm the current starter and reference-host boundaries. When source is absent, use released dependency metadata, generated docs, Maven artifacts, and HTTP behavior instead of requiring the monorepo.
 
+When preparing a starter publication required for public host adoption, read
+[starter-publication-and-adoption.md](references/starter-publication-and-adoption.md).
+Keep signed source, validated bundle, Central deployment, artifact availability
+and consumer adoption as separate evidence gates. Follow the owning repository's
+actual release workflow; this skill does not authorize a release.
+
 ## Required Classification
 
 Classify the request before editing:
