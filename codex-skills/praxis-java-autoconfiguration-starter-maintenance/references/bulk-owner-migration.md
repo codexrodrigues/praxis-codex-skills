@@ -36,6 +36,55 @@ initializer and explicit deployment map; never overwrite existing values or inve
 published authority. COMPLETE V8 with other pending markers and current V20 must
 reject missing global identity without repairing it. READY remains a separate gate.
 
+## Publication identity at the V14 creation boundary
+
+For the C17 candidate, inspect `PublicationCreationCallback` in
+`BulkExecutionMigrator` before adopting a historical pre-V14 upgrade. This is
+an instance-local Flyway callback on the canonical owner migration lane, not a
+host repair command, SPI or a new SQL migration. Immutable SQL/checksums remain
+unchanged. Check the actual released artifact before claiming this behavior is
+publicly available.
+
+BEFORE/AFTER events must identify the exact V14 script and checksum. Both run on
+the same transactional PostgreSQL connection, backend and transaction, as the
+configured authenticated owner (`session_user == current_user`), distinct from
+the coordinator connection but in its database. BEFORE attests the protected
+predecessor, locks namespace bindings in stable namespace order, validates the
+explicit deployment map and requires their durable deployment buckets. AFTER
+requires the same witness and unchanged bindings, then inserts one deny-only
+`UNCOMPOSED / 0 / null` global identity per distinct bound deployment, in stable
+deployment order. Empty bindings seed no synthetic deployment. Subsequent canonical
+initialization remains responsible for configured fresh identities.
+
+The identity inserts share the physical V14 DDL transaction. Flyway may use its
+main connection for history: do not claim a single physical transaction for DDL,
+seed and history. Prove rollback/retry for callback failure and deterministic
+history INSERT failure separately; this does not establish uncertain-commit
+reconciliation. Do not use `ON CONFLICT`, additional connections, manual commits, raw ledger repair,
+publication or READY as a fallback. An already-applied V14 installation never
+runs this creation callback: a missing ledger there is rejected, including when
+another bootstrap latch is pending. Raw Flyway calls are not the canonical owner
+entry point and do not acquire this creation authority.
+
+Attest trigger semantics through PostgreSQL catalog fields, not the rendered
+`pg_get_triggerdef` string: function qualification can depend on visibility and
+search_path. Require the expected BEFORE/ROW/UPDATE/DELETE bits, normal enablement,
+no arguments, column restriction, WHEN clause or constraint, and the exact function
+identity/body/owner/schema/fixed search_path and remaining attributes. An enabled
+`WHEN(false)` trigger is not an immutability guard. Do not alter the connection's
+search_path or relax function/ACL attestation to accommodate rendering differences.
+
+Focused proof includes `BulkPublicationCreationPostgresTest` (fresh/empty,
+rollback and retry, deterministic history INSERT failure, wrong predecessor,
+transaction/backend/owner witness and enabled conditional-trigger rejection),
+authentic public pre-V14 producers in `BulkHistoricalPre14UpgradePostgresTest`
+and `BulkHistoricalPre14ProvisionedUpgradePostgresTest`, and the pool4 proof.
+Retain already-applied V14/V15 and current V19/V20 no-heal negatives when their
+source/paths remain valid. A deterministic failure before history insertion
+commits does not prove an uncertain commit, lost acknowledgement or reconciliation;
+those remain separate proofs. A candidate source-classpath pass does not prove
+packaged or published host adoption, HTTP readiness, or whole-backend closure.
+
 ## Concurrent owner initialization
 
 In the private C1 correction, `initializeGovernedLifecycle` takes the existing
