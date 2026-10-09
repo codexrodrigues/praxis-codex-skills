@@ -527,6 +527,46 @@ recheck after the read and before mutation. A negative-only test can hide premat
 expiration caused by framework rounding. Keep databases/connections isolated and
 release waits on failure; preserve the existing budgets and fail-closed gates.
 
+## Govern Missing Operational Migration History
+
+Inspect `docs/OPERATIONAL-DATASOURCE-MIGRATIONS.md`,
+`db/operational-migrations/README.md`, the normal operational migrator and the
+candidate `OperationalDatasourceHistoryRecovery*` source/tests before choosing a
+recovery procedure. This is host-owned operational history, not Metadata or Config
+history. Manual `JdbcSqlRunner` examples execute selected SQL without maintaining
+Flyway history; an old file list is not a complete installation or recovery lane.
+Do not reconstruct unavailable historical SQL or bypass strict validation with
+`repair`, schema reset or missing-migration ignore patterns.
+
+Treat the current recovery command as a candidate until its exact operational
+gates are accepted. Build its proposal from a fresh complete history snapshot:
+all ten columns, including installed_by and microsecond-precise installed_on,
+and the canonical missing tuples. Bind approved bytes/digests to the actual
+packaged host, loaded Flyway, JDK/truststore, endpoint, database, role and bounded
+quiescence window. A manifest assertion alone does not establish exclusive access.
+
+Rehearse first on an owned non-default copy-on-write child. Use official control
+plane metadata to verify parent/child/endpoint identity, actual roles, limits and
+cost; explicitly set and read back expiration before SQL because API creation
+need not set it. Expiration cleanup is asynchronous and does not prove quiescence.
+Capture receipts and before/after history, domain, grants and catalog snapshots
+with explicit scope. Preserve the parent and third-party resources; obey the
+selected deletion tool's approval rule rather than promising automatic cleanup.
+
+Prove append-only markers preserve original history, atomic rollback, bounded
+lock/window gates and uncertain-commit reconciliation without blind mutation
+retry. Then use the normal strict migrator: check the exact actual pending tuples,
+apply only approved migrations, validate and repeat with no work. Explicit
+validate may report pending migrations as well as missing ones; do not confuse
+that diagnostic with migrate's internal pending handling or weaken validation.
+
+Keep focused JDBC tests, contention, packaged read-only inspection, real TLS/JDBC
+rehearsal, public dependency adoption/verify and deployment as separate evidence.
+Synthetic historical rows and column/sentinel snapshots do not certify a complete
+hosted corporate database. Preserve failed runs, bind evidence to the tested tree,
+require another reviewer, and leave unproved gates pending. A private JAR inspector
+that never connects is not a database recovery, release or Angular-readiness proof.
+
 ## Maven And Bootstrap Discipline
 
 `pom.xml` intentionally pins `praxis.core.version` and `praxis.config.version`. A version change is an integration change, not a dependency-only edit:
