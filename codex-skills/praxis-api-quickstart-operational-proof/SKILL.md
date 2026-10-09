@@ -527,6 +527,34 @@ recheck after the read and before mutation. A negative-only test can hide premat
 expiration caused by framework rounding. Keep databases/connections isolated and
 release waits on failure; preserve the existing budgets and fail-closed gates.
 
+## Repair Runtime Governance ACLs With Forward Migrations
+
+Inspect actual table ACLs as well as the migration's GRANT statements. PostgreSQL
+`GRANT SELECT` is additive: permissive owner default privileges can leave INSERT,
+UPDATE and DELETE on newly created governance tables. A passing Flyway validation
+or unchanged domain rows does not certify least privilege. For the host binding
+and principal-grant tables, runtime access is read-only; administrator provisioning
+and explicitly granted SECURITY DEFINER writers remain separate.
+
+Use `V20261009_001__operational_governance_runtime_read_only.sql` and
+`QuickstartPrincipalGrantRepositoryPostgresTest` as the forward correction/proof.
+Revoke the configured runtime role's table privileges and restore SELECT only on
+the affected objects. Do not rewrite an already applied migration/checksum, widen
+runtime privileges to finish a probe, alter owner defaults globally, or replace
+an auditable migration with an ad hoc production REVOKE. Ownership, superuser and
+inherited administrative roles bypass a direct role revoke: keep runtime role
+attestation and never certify those configurations from table ACL text alone.
+
+Reproduce permissive default table DML before the original CREATE in a disposable
+PostgreSQL fixture. Verify the gap before the forward repair, then execute actual
+runtime INSERT/UPDATE/DELETE negatives on both tables with SQLSTATE42501. Preserve
+SELECT, owner provisioning, and the explicitly authorized writer's version/audit
+behavior. Review the new pending version/checksum and exact packaged SQL before
+an owned hosted rehearsal; retain successful historical migration/data proofs,
+but keep ACL acceptance and subsequent migrate-zero pending until the correction
+has been applied and independently checked. This does not certify a public
+starter pair, application deployment or an HTTP authorization surface.
+
 ## Govern Missing Operational Migration History
 
 Inspect `docs/OPERATIONAL-DATASOURCE-MIGRATIONS.md`,
