@@ -126,7 +126,9 @@ For disposable PostgreSQL clusters, process ancestry alone is insufficient:
 `pg_ctl` may daemonize the server before a sampler observes it. Capture each
 owned cluster's launcher/server PID, data directory, port and actual Unix socket
 from the test's logs or process receipts; then verify process identity and absence,
-data-directory removal, TCP refusal and socket absence. Preserve the identity of
+data-directory removal and socket absence. Keep the resource collector passive:
+use OS identity, ancestry, exclusive paths, raw logs and socket files; do not add
+TCP connections or SQL probes to infer cleanup. Preserve the identity of
 protected third-party clusters. Never infer ownership from a matching executable,
 port or generic process name, or signal an unattested process.
 
@@ -262,3 +264,30 @@ job role keeps its existing ACLs; this does not claim online index-drift detecti
 Inspect `BulkExecutionMigrator` and V20 SQL, `BulkWorkerQueueIndexPostgresTest`,
 retained/COMPLETE negatives in `BulkDurableMigrationPostgresTest`, and
 `BulkOwnerMigrationResourcesPostgresTest` in the same candidate source.
+
+
+### Parent and historical child JDK attestation
+
+For `BulkHistoricalPre14UpgradePostgresTest`,
+`BulkHistoricalPre14ProvisionedUpgradePostgresTest`,
+`BulkHistoricalInterruptedPrefix14PostgresTest` and
+`BulkHistoricalPublicationIdentityMissingPostgresTest`, inspect the actual parent
+JVM and each historical producer's `ProcessBuilder`, XML and receipt writer. Require
+Java major 21 in the parent, bind the child's `JAVA_HOME` to the parent's
+`java.home`, and compare the complete reported child `java.version` with the
+parent's `java.version`. Never hardcode a workstation's patch release, downgrade
+the official toolchain, or remove the child identity assertion to make CI pass.
+Keep the historical public JAR, coherent dependency baseline, SQL bytes, test
+selection, deadlines and business oracles unchanged.
+
+A collector must parse the fields emitted by the current writer, not a remembered
+receipt shape. Successful `child-exit.properties` records carry numeric
+`actualExit=0`, positive `pid`, and ordered `startedMillis`/`finishedMillis`.
+The current writer emits `child-cleanup.properties` only when an exceptional path
+finds the child still alive; its absence on a natural successful exit is expected.
+If present, require the same PID, false timeout/interruption/alive-after-cleanup
+flags, and `observedExitAfterCleanup=0`. Never fabricate a cleanup receipt. Pair
+numeric exits with fresh XML, raw logs and an independent final OS identity census;
+successful child exit alone does not prove native PostgreSQL cleanup. Reconcile
+raw cluster startup/shutdown identities with sampled observations, and state
+coverage limits rather than claiming a sampled cluster list is complete.
