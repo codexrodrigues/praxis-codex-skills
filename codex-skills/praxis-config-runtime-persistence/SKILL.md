@@ -1,6 +1,6 @@
 ---
 name: praxis-config-runtime-persistence
-description: Use when Codex must implement, audit, or consume praxis-config-starter runtime configuration persistence: /api/praxis/config/ui, ui_user_config scope and environment resolution, ETag conditional requests, payload secret protection, Angular ApiConfigStorage, or /api/praxis/runtime/** enterprise context projections.
+description: Use when Codex must implement, audit, or consume praxis-config-starter runtime configuration persistence: /api/praxis/config/ui, ui_user_config scope and environment resolution, ETag conditional requests, payload secret protection, Angular ApiConfigStorage, governed UI-layout lifecycle, exact revision identity, immutable metadata evidence, or /api/praxis/runtime/** enterprise context projections.
 ---
 
 # Praxis Config Runtime Persistence
@@ -38,6 +38,21 @@ Inspect the owner before editing:
 `/api/praxis/runtime/**` exposes safe enterprise runtime projections for context, tenant choices, navigation, context switches, and security/runtime events. It must not leak private entitlement internals, raw roles, policies, tokens, prompts, SQL, or private audit data.
 
 Keep these boundaries separate: `ui_user_config` persists component runtime state; enterprise runtime endpoints project effective host context. Runtime context is not another config store, and config headers are not proof of authorization.
+
+## Governed Layout Lifecycle
+
+For `/api/praxis/config/ui-layouts/**`, use the existing Config lifecycle rather
+than treating a draft, release or published head as ordinary `ui_user_config`.
+Inspect the command/read services, frozen workspace resolver, selection verifier,
+private codecs and current migration/contracts before changing the host adapter.
+Follow [governed-layout-integrity.md](references/governed-layout-integrity.md)
+for invocation/authority, null and numeric identity, historical reads, V68
+metadata evidence, quotas and evidence-qualified validation.
+
+A source merge or a passing MockMvc fixture does not prove a published Maven
+artifact, PostgreSQL persistence, a live host or browser rendering. Pin and
+verify public artifacts separately; do not install a candidate under a public
+coordinate to manufacture adoption.
 
 ## Scope And Resolution
 
