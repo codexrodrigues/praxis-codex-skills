@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-config-runtime-persistence/
-- Descricao atual: Use when Codex must implement, audit, or consume praxis-config-starter runtime configuration persistence: /api/praxis/config/ui, ui_user_config scope and environment resolution, ETag conditional requests, payload secret protection, Angular ApiConfigStorage, or /api/praxis/runtime/** enterprise context projections.
+- Descricao atual: Use when Codex must implement, audit, or consume praxis-config-starter runtime configuration persistence: /api/praxis/config/ui, ui_user_config scope and environment resolution, ETag conditional requests, payload secret protection, Angular ApiConfigStorage, governed UI-layout lifecycle, exact revision identity, immutable metadata evidence, or /api/praxis/runtime/** enterprise context projections.
 
 ## Classificacao inicial
 
