@@ -36,6 +36,37 @@ initializer and explicit deployment map; never overwrite existing values or inve
 published authority. COMPLETE V8 with other pending markers and current V20 must
 reject missing global identity without repairing it. READY remains a separate gate.
 
+## Concurrent owner initialization
+
+In the private C1 correction, `initializeGovernedLifecycle` takes the existing
+transaction advisory `(1347574124,5)`, then singleton row latches in order
+V8→V9→V11→V12→V16→V18→V19 before READ_COMMITTED phase/ACL attestation.
+Read and lock each whole marker table; validate exactly one row, its version and
+PENDING/COMPLETE phase. A filtered query must not hide an extra marker row.
+The separate capacity-read and occupancy bootstrap transactions hold only their
+respective V18 and V19 latches. Never add the coordinator advisory to those
+transactions: the coordinator may already hold it while waiting for a separate
+bootstrap connection. Do not introduce V19→V18 lock acquisition.
+
+A committed grant-before-COMPLETE transaction must be visible before initializer
+attestation; a rollback must leave the coherent PENDING/zero-controlled-ACL state
+for canonical retry. Keep serving/preflight REPEATABLE_READ validation unchanged,
+without write locks or additional grantee privileges. Preserve native waits,
+existing pool budgets, search_path/role restoration and transaction cleanup;
+this ordering does not add a whole-migration or initializer deadline.
+
+Inspect the causal PostgreSQL tests
+`BulkDurableMigrationPostgresTest#initializerWaitsForOccupancyPhaseAndAclCommitBeforeAttestation`
+and `#initializerWaitsForOccupancyRollbackThenCanonicalRetryCompletes`. A test-only
+barrier holds the actual bootstrap row lock; an external observer identifies the
+initializer's exact SQL, distinct PID and `pg_blocking_pids` edge before releasing
+commit or rollback. Bound observation below the holder budget; an elapsed-time
+assertion alone is insufficient. Keep revoked-COMPLETE ACL rejection, V18 rollback
+and two-owner V18 convergence alongside the pool4/pool5 proofs. The focused C1
+campaign passed ten cases on PG14.22/Java21; it does not replace the preserved RED
+full verify, prove packaged adoption, repair historical ledger provenance, or
+certify ASYNC, a fleet or backend READY. Check the exact tree and artifact first.
+
 ## Evidence and honest scope
 
 Use real PostgreSQL and immutable source/ZIP hashes, fresh XML, actual Maven exit,
