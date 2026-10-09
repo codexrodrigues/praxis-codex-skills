@@ -234,6 +234,17 @@ recipes, release/deploy and Angular handoff require their own authorized gates.
 
 ## Maintenance cutover and scope of attestation
 
+Live function catalog attestation may bound expensive identity decoding with the
+already resolved canonical schema and function names before checking exact
+signatures. Names are a query prefilter, never authority or a substitute for full
+signature, expected-set equality, body, owner, attributes, fixed search_path and
+ACL tuples. Preserve native live-attestation statement and reader deadlines;
+do not cache authority or increase budgets to hide catalog cost. A healthy
+EXPLAIN/rowset comparison is supplemental evidence: require the actual cursor
+continuation and live corruption/membership/ACL/owner/search_path/missing-identity
+negatives before accepting a query change. A finite isolated timing observation
+is not a load/SLO, complete timeout cause or public artifact adoption proof.
+
 The private candidate adds V20 while the public host still adopts rc.155/V19.
 Stop admission and drain old executors before owner maintenance; perform the
 canonical upgrade and strict V20 validation before admitting the candidate.
