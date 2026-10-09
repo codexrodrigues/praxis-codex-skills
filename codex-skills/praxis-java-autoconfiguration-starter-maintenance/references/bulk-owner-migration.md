@@ -166,6 +166,18 @@ Prove the actual JAR/POM/GAV, native SQL resource bytes and runtime CodeSource,
 and exclude current candidate classes from the producer classpath. Create retained
 state through the historical public APIs, not raw rows or fabricated phase markers.
 
+For historical SDK fixtures required by the official `clean verify` gate, use
+Metadata's pinned `download-maven-plugin` executions in `generate-test-resources`
+and the test's canonical default under `target/historical-bulk-sdk`. The V19
+fixture is `metadata-v19-rc155.jar`, verified against its fixed Central SHA-256
+before loading the native SDK. An explicit fixture property may support a scoped
+historical campaign but must not be required to make the release workflow work.
+Missing or changed bytes remain a failing gate; never skip the historical test,
+install a current public GAV as a replacement, or fall back to current classes.
+Inspect `pom.xml`, `BulkWorkerQueueIndexPostgresTest` and the workflow's actual
+`clean verify` command together before claiming release-test preparation complete.
+This wiring proof does not replace the official complete release verify.
+
 Compare artifact paths by physical identity as well as spelling. Resolve existing
 paths and verify same-file identity, content hash and the actual CodeSource/classpath;
 filesystem aliases such as `/tmp` and `/private/tmp` can refer to one file. Do not
