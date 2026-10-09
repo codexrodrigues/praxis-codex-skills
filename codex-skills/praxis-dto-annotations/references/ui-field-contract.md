@@ -9,6 +9,7 @@ Use this reference when choosing `@UISchema` metadata for DTO fields that publis
 - [Groups And Order](#groups-and-order)
 - [Control Selection](#control-selection)
 - [Presentation Presets](#presentation-presets)
+- [Declarative MicroVisualization](#declarative-microvisualization)
 - [Layout And Value Presentation](#layout-and-value-presentation)
 - [Semantic Formatting Decision](#semantic-formatting-decision)
 - [Table Display Formatting](#table-display-formatting)
@@ -429,3 +430,7 @@ Keep UI hints aligned with Bean Validation:
 
 Use `extraProperties` sparingly for public `custom.*` or runtime-supported keys. Never put private
 provider, SQL, adapter, endpoint secret, package name, or cache details there.
+
+## Declarative MicroVisualization
+
+`@MicroVisualization` seeds `x-ui.presentation` after UI presets and before explicit final `@UISchema.extraProperties`. Use dotted leaf overrides to retain canonical kind/target and co-annotation metadata; whole-object replacement replaces that object. Validate the final effective contract through the real converter, including co-annotations and array option propagation. For fields annotated with `@MicroVisualization`, when the effective presenter remains `microVisualization`, its visualization must contain a nonblank string `fallbackText`, supplied by the annotation or final overrides. Never invent business text or stringify boolean/numeric fallback values. An explicitly different presenter may replace this base without requiring microvisualization fallback. Schema emission proof is separate from public artifact, host HTTP and official Angular consumer proof.
