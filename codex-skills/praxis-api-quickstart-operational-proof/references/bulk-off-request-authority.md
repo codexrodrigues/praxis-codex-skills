@@ -11,7 +11,11 @@ callbacks and JdbcBulkDurableExecution; then host QuickstartOperationalContextRe
 QuickstartPrincipalGrantRepository, MissionParticipantScopeAuthorizer,
 MissionParticipantEvaluationProvider and MissionParticipantExecutionService. Verify the
 actual pinned artifact exposes the intended entry point. Internal/package-private pilot
-methods and protected worker internals are not public extension APIs. If an external
+methods and protected worker internals are not public extension APIs. The B5b.3
+private candidate adds explicit public composition; inspect its exact artifact and read
+`praxis-java-autoconfiguration-starter-maintenance/references/bulk-worker-composition.md`
+for binding provenance, fresh callback pairs and independent JAR consumer proof. This
+seam does not itself make ASYNC ingress or current host adoption operational. If an external
 host cannot compose the worker, record the real Metadata contract gap; do not use
 reflection, direct kernel SQL, a fake request, a host bridge or a duplicate registry.
 
@@ -82,3 +86,24 @@ operator diagnosis, supported limits and reproducible scoped tests. Update this 
 skill when the procedure changes; do not create a skill for each phase. Final acceptance
 requires independent source/evidence review and any public integration/adoption gate
 that remains open; hashes alone do not certify the business guarantee.
+
+## Candidate Worker Consumption Is a Separate Proof
+
+For the B5b.3 private seam, construct infrastructure and all nine provisioned binding
+coordinates using public APIs; keep protected owner/job seeding in the canonical test
+harness. Never import a package-private kernel factory into a host or expose enqueue
+just to run the consumer. A source-package helper alone is insufficient: compile the
+consumer against the private JAR without SDK class/test output, check exact CodeSource
+and byte provenance, then run real domain/receipt units and terminate exclusive resources.
+
+Keep callback preparation fresh per unit across concurrent worker invocations. Factory
+only allocates local state after receipt-first lookup; admission receives the real unit
+and resolves current database grants. Cleanup only discards local state, never performs
+policy/domain/TX work, and cannot mask confirmed effects. Stop callback acknowledges
+actual termination, not a timed-out join. Runtime JDBC evidence does not imply JPA or HTTP.
+
+Reuse the host's qualified off-request grants evidence only when its source/dependencies
+remain unchanged. SDK worker composition and its private packaged-consumer proof do not
+resolve a current-main host dependency incompatibility, publish a release, enable ASYNC202
+or close B7. Separate original RED fixture campaigns, targeted repairs and reused PG
+proofs; do not announce a fresh green full verify from their combined test counts.

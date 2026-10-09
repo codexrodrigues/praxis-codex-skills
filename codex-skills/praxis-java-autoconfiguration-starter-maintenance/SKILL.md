@@ -541,6 +541,15 @@ for staged upgrade, phase-aware attestation, reject-only completed installations
 pool/resource proof and packaged-consumer evidence. A private candidate or passing
 kernel test does not enable public ASYNC, autostart, HTTP202 or fleet readiness.
 
+## Explicit Bulk Worker Composition
+
+When composing the durable worker in an external host, read
+[bulk-worker-composition.md](references/bulk-worker-composition.md). Prefer the
+canonical public infrastructure/binding/operation seam in the exact candidate artifact,
+fresh lazy callback pairs and receipt-first replay. Prove independent JAR consumption,
+current per-unit authority, transaction integrity and truthful lifecycle separately from
+public ASYNC admission, publication and host adoption; do not expose protected claims.
+
 ## Companion Skills
 
 - `praxis-java-host-project`: host dependency, scan, and composition proof.
