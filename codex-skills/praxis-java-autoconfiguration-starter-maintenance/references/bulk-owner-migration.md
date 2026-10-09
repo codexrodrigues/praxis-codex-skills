@@ -73,6 +73,21 @@ Use real PostgreSQL and immutable source/ZIP hashes, fresh XML, actual Maven exi
 artifact/dependency identity and before/after cleanup census. Preserve RED runs,
 diagnose the first failed gate, and repeat only affected tests after correction.
 
+For disposable PostgreSQL clusters, process ancestry alone is insufficient:
+`pg_ctl` may daemonize the server before a sampler observes it. Capture each
+owned cluster's launcher/server PID, data directory, port and actual Unix socket
+from the test's logs or process receipts; then verify process identity and absence,
+data-directory removal, TCP refusal and socket absence. Preserve the identity of
+protected third-party clusters. Never infer ownership from a matching executable,
+port or generic process name, or signal an unattested process.
+
+Keep the actual Maven/child exits separate from collector exits. If tests pass
+but the collector misses a cluster, retain the original failed collector receipt.
+A separately versioned, independently reviewed read-only supplement may establish
+cleanup from existing exact receipts and current checks without rerunning valid
+tests. Corrections must preserve earlier supplements and state which observation
+was wrong; incomplete cleanup evidence is not a passing collector or backend gate.
+
 Focused examples in the candidate are `BulkWorkerQueueIndexPostgresTest`, retained
 row/binding/COMPLETE negatives in `BulkDurableMigrationPostgresTest`, and the retained
 V7 upgrade in `BulkEvaluationStorePostgresTest`. Assert full retained content (including
