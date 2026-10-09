@@ -154,6 +154,30 @@ real runtime EXPLAIN plans with canonical seed, existing rights and timeouts; do
 force the planner. Parent buffer counts are inclusive; Index Only Scan can still
 perform heap fetches. Finite cached PG14 measurements do not certify SLO, T13 or PG16.
 
+## Causal historical backfill fixtures
+
+A fixture proving a backfill must reach that gate with the protected predecessor
+catalog, durable deployment binding, role ACLs and normal trigger enablement intact.
+Assert the first rejection actually reached in the canonical migrator; a failure
+in an earlier Flyway callback or catalog/role attestation does not prove data
+backfill rejection. Preserve exception wrapping and the exact cause, history
+prefix, pending markers, absent later migration and unchanged grants.
+
+Inject corrupted legacy payloads only inside a test-owned disable/update/enable
+window with re-enablement in finally, completed before invoking any migrator or
+validation callback. Use the same bounded window to restore the valid payload.
+Do not weaken production trigger/catalog guards or grant additional runtime
+privileges to make the test reach a preferred error.
+
+A rollback proof with a valid row followed by a corrupt row must fix their ordered
+identities and assert their database order matches the canonical traversal. Random
+UUIDs can make the corrupt row first and leave zero derived rows without exercising
+rollback of preceding work. Require the error to identify the later corrupt row,
+zero committed derived rows and the pending phase; then canonical retry and exact
+zero-work replay must preserve the historical prefix and provision only intended
+new privileges. Deterministic order and a focused pass do not alone establish
+public artifact adoption, whole-backend readiness or uncertain-commit recovery.
+
 ## Historical producer and evidence reconciliation
 
 Before transplanting a consumer fixture to a historical published SDK, inspect the
