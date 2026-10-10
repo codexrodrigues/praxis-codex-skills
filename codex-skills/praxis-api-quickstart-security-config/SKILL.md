@@ -344,3 +344,34 @@ grants or installation errors, infer rollback, or retry publication automaticall
 Document the logical-deployment-wide suspension effect and a protected generation/evidence
 procedure before administrative commands or basic operational availability acceptance. Strict original JSON and generation bounds
 belong to admission; existing SDK publication semantics remain canonical.
+
+## Managed bulk roles and effective SESSION privileges
+
+Inspect the Metadata-owned managed migration and role preflights before changing
+host IAM. PostgreSQL 17 automatic ADMIN-only membership is role administration,
+not inherited data access or SET authority. Only the exact canonical administrative edge with the schema owner as MEMBER
+is admitted: trusted bootstrap-superuser GRANTOR, ADMIN true, INHERIT false, SET
+false and canonical multiplicity. The target ROLE must belong to the applicable
+canonical check; this includes runtime/control roles created by that owner and
+internal owner roles where the actual predicate admits them. This never allows
+a runtime/control MEMBER to reach an internal owner.
+Check the exact artifact before relying on it; rc.155 lacks this correction.
+
+Temporary function-owner SET authority and schema CREATE must be scoped to the
+actual owning role and restored transactionally. Explicit grantor provenance
+matters: revoke only the temporary self-issued edge, preserving the trusted
+administrative edge. Reject unsafe pre-state before entering scopes; do not
+silently remove unexpected grants, memberships or role attributes. Runtime and
+control identities must remain separated from internal owner reachability.
+Never substitute a host superuser, arbitrary SET ROLE or broad grant recipe for
+a canonical starter correction. Capacity authority has a separate catalogue and
+must not be certified from execution-storage proof.
+
+For SESSION failures, derive the required columns from actual store SQL and
+inspect effective table **or column** privileges, role closure, schema USAGE and
+grant options. Column-scoped INSERT/UPDATE can satisfy the canonical store even
+when table-level checks are false. Do not infer missing access from table ACLs
+alone or promote least-privilege column grants to table-wide writes. Bind the
+catalogue observation to the exact database/role and follow with real SESSION/HTTP
+proof; SQL permission evidence alone does not certify authentication or browser
+policy. Keep credentials and private connection settings out of logs/reports.
