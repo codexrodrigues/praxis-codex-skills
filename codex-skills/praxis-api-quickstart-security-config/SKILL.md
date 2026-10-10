@@ -319,3 +319,28 @@ mvn "-Dtest=AiPatchSchemaResolutionIsolatedIntegrationTest,AgenticAuthoringStrea
 Add negative tests for blocked origin, forged forwarded host/proto/client IP, missing/invalid provenance, wildcard credentials, absent exposed `ETag`/`X-Schema-Hash`, protected actuator, CSRF mismatch, write-disabled precedence, excessive public/AI calls, and malformed encoded paths. Use real HTTP/browser evidence when the changed behavior is cross-origin; same-origin MockMvc alone cannot prove CORS header visibility.
 
 Review public docs, properties, quickstart HTTP examples, config/metadata downstream consumers, and any related starter smoke after a public exposure change. State exactly which owner was changed and why the remaining derived artifacts were unaffected.
+
+## Administrative Bulk Publication Exposure
+
+For the three basic bulk publication POSTs, inspect the controller and exact host
+`ApiPaths.Operations` matchers before changing security exposure. Each command needs
+its own current grant permission (`BULK_PUBLICATION_PUBLISH`, `_RECONCILE`, `_SUSPEND`),
+active SESSION admission and configured binding; ADMIN/JWT authorities and demo
+read-open/bulk settings cannot substitute authorization. Preserve the write-disabled
+matcher for all three paths and keep current grant reads outside SDK control locks.
+
+`ConfigOriginRestrictionFilter` governs Config paths, not these operations paths.
+Use the existing CORS and CSRF chain: credentialed official Origin, actual cookie
+repository emission via authenticated `/auth/session`, and raw `X-XSRF-TOKEN` equal
+to the `XSRF-TOKEN` cookie. Bearer SESSION has no automatic CSRF exemption. Test
+missing/mismatched XSRF on all commands, successful cookie/header pairs, allowed
+preflight and actual credentialed request, foreign preflight/POST rejection, and
+write-disabled rejection with valid XSRF. Do not use a CSRF postprocessor to claim
+real repository issuance. MVC policy with simulated SESSION and mocked SDK/grant
+is server-filter proof, not browser execution, persistence or deployed availability.
+
+Keep the minimal no-store response and generic 503. Do not leak fingerprints, current
+grants or installation errors, infer rollback, or retry publication automatically.
+Document the logical-deployment-wide suspension effect and a protected generation/evidence
+procedure before administrative commands or basic operational availability acceptance. Strict original JSON and generation bounds
+belong to admission; existing SDK publication semantics remain canonical.
