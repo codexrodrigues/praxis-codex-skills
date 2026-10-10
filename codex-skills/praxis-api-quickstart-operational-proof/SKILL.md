@@ -1328,3 +1328,42 @@ MVC mocked-boundary, server CORS/CSRF, real HTTP/PG, final public JAR/loaded ori
 full bootstrap and deployed Neon/Render evidence. Combined accepted focal cases do
 not erase a failed broader verify. Reuse unaffected valid cases; do not repeat them
 merely to produce a new aggregate count.
+
+## Managed-owner bulk execution adoption
+
+For bulk installation by a non-superuser CREATEROLE database owner, inspect the
+Metadata-owned `BulkExecutionMigrator`, `BulkMigrationLineage`, migration-lineage
+catalogue/archive and `BulkManagedOwnerPostgresTest` before adapting Quickstart.
+Verify that the exact publicly resolved artifact contains the managed-owner fix;
+rc.155 does not. Source proof and a local installed coordinate do not establish
+public host adoption.
+
+The corrected execution-storage path requires PostgreSQL 17 or later. This is an
+optional bulk execution boundary requirement, not a universal Metadata REST,
+Config or capacity-authority database baseline. Check the concrete host wiring;
+do not impose an optional authority/jobs campaign on BASIC HTTP proof.
+
+Resolve the complete successful Flyway history. Applied original resources keep
+their exact bytes/checksums; only pending resources use corrected canonical SQL.
+Unknown identities, failed rows, holes or noncanonical mixtures are denied. Never
+repair/clean history or manually complete bootstrap markers. Original V1–V4 may
+continue; original V5–V16 are explicitly unsupported automatic predecessors.
+V17/V18/V19/V20 retain their existing strict predecessor/catalogue checks; do not
+claim that the V1–V4 or original V5 cutoff tests certify every historical prefix.
+
+Fresh base grants are permitted only for the canonical managed-V5 witness, all
+five bootstrap phases PENDING, empty configured host ACLs and intact physical
+preflights. Existing base/derived grants and latch completion share the existing
+transaction and fence. PENDING alone is insufficient. Partial ACLs, completed
+bootstrap with revoked permissions and newly added grantees are not healed.
+
+Require focused PostgreSQL proof using an actual non-superuser role creator:
+fresh/strict/repeat-zero, original-prefix and managed-intermediate conservation,
+DDL19 retry, unsafe memberships/CREATE/PUBLIC ACL rejection without cleanup, and
+Error rollback after a real grant. SUPERUSER may prepare an isolated adversarial
+or historical fixture but must not execute the product path being certified.
+Record source, dependencies, SQL catalogue and raw test evidence; independently
+review the actual result. Reuse unchanged accepted cases rather than repeating
+all suites. Follow the official release's required gates, then resolve Central
+POM/JAR provenance and validate the host without a version override before
+claiming public or hosted adoption.
