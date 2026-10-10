@@ -1298,3 +1298,33 @@ and must invoke no admission or mutation callback. Preserve source/XML/artifact
 hashes, export safe lock/status evidence and close all private gates/resources.
 This covers cancel-before-ACK during a real collective mutation in one JVM/database;
 ACK-first cancellation, HTTP/IAM, process loss and uncertain COMMIT remain separate.
+
+## Basic Bulk Publication Admission
+
+Inspect the host's `MissionParticipantBulkPublicationController`, original-JSON
+`MissionParticipantBulkPublicationShapeAdvice`, explicit SecurityConfig POST matchers
+and `docs/operational-bulk-publication.md`. Metadata owns publish/reconcile/suspend
+and durable CONTROL/global publication semantics; the host supplies one fixed basic
+operation identity and the current server-configured binding. Do not create a second
+registry, annotations or lifecycle implementation in the host.
+
+Resolve each distinct current administrative permission, complete the separate grant
+read before SDK control locks, and recheck the exact active SESSION. Never retain a
+grant lock while calling lifecycle, infer authorization from JWT ADMIN, or use internal
+delegation in this administrative entry. Publishing structure does not grant business
+mutation or scoped target access. Suspension affects the global photograph of the logical deployment bound to the namespace.
+
+Require exact integral `expectedGeneration`: publish/suspend permit 0 through MAX-1;
+reconcile permits 1 through MAX. Reject duplicates/coercions/extras/trailing JSON. Do
+not retry or rebase mutating commands on 503: it does not prove rollback or failed
+durable publication. Reconcile only an already confirmed READY publication at its
+exact generation. Identify an authorized protected evidence reader before administrative commands or basic operational
+availability acceptance; fixture SQL and guessed zero are not an operational recovery procedure.
+
+Prove the three HTTP commands with persisted SESSION/current grants/owned PostgreSQL,
+stale CAS, revocation and delegation negatives, business-permission separation, and
+served typed OpenAPI tied to the durable global generation/digest. Preserve distinct
+MVC mocked-boundary, server CORS/CSRF, real HTTP/PG, final public JAR/loaded origins,
+full bootstrap and deployed Neon/Render evidence. Combined accepted focal cases do
+not erase a failed broader verify. Reuse unaffected valid cases; do not repeat them
+merely to produce a new aggregate count.
