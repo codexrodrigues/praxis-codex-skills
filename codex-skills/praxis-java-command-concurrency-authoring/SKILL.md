@@ -299,6 +299,14 @@ harness, only the initial embedded healthcheck uses temporary owner-only loopbac
 trust; close it and attest real authentication before creating authority, migrations
 or domain state. Keep the default fixture route unchanged and test its regression.
 
+This embedded HBA/`pg_authid` recipe is historical local evidence under the current
+Praxis remote-Neon validation rule. It cannot be rerun unchanged as new database
+acceptance. Adapt externally observable authentication and permission assertions to
+an assigned Neon branch with its actual TLS, roles and administrative capabilities;
+do not assume loopback trust, HBA-file access, SUPERUSER or `pg_authid` access there.
+Leave cluster-internal verifier/HBA claims pending if no equivalent remote witness
+is available; do not silently fall back to the local fixture.
+
 Authenticate the original positively; reject administrative/issuer impersonation
 using the runtime password. Distinguish wrong-password 28P01 (and PGJDBC's exact
 empty-password SCRAM 08004 branch) from native HBA quarantine 28000 with the CORRECT
@@ -1421,25 +1429,38 @@ facts for inaccessible targets, or encode policy absence as an allow boolean. Co
 remains the owner of operational policy resolution; readiness awaits governed provider
 composition, real current grants and current-context revalidation.
 
-Capture mandatory `BulkEvaluationGovernance` from the trusted evaluator revision,
-current authorization fingerprint and nonempty `BulkPolicyObservation` list. Observations
-retain tenant/environment, canonical Config layer/type/key, opaque resolution state,
-resolution fingerprint and observedAt. Metadata rejects duplicate coordinates and binds
-this evidence; it does not interpret Config states, duplicate policy payload/head identity,
-or check provider target completeness. The host must validate the full Config resolution
-and all required targets, including an explicit lookup for NEVER_APPLIED. Do not fabricate
-revocable grants from a JWT or static authority catalog. A test fingerprint is not a
-production authorization provider. Multiple observations require consistency proof from
-their owner, not an assumption of atomic multi-target Config reads.
+Capture mandatory `BulkEvaluationGovernance` from the trusted evaluator revision and
+current authorization fingerprint, with `0..64` `BulkPolicyObservation` coordinates.
+An explicit empty list is valid only when the server's governed domain/admission
+decision requires no additional Config policy; null or missing policies are invalid.
+Empty is not a fallback for an unavailable resolver, failed lookup, withdrawal,
+timeout, or grant denial. For each required coordinate, retain tenant/environment,
+canonical Config layer/type/key, opaque resolution state, resolution fingerprint and
+observedAt. Metadata rejects duplicate coordinates and binds this evidence; it does
+not interpret Config states, duplicate policy payload/head identity, or check provider
+target completeness. The host must resolve every required Config target, including
+an explicit lookup when its result is NEVER_APPLIED, under that domain's business
+policy. Do not fabricate revocable grants from a JWT or static authority catalog.
+A test fingerprint is not a production authorization provider. Multiple observations
+require consistency proof from their owner, not an assumption of atomic multi-target
+Config reads.
 
-Preserve the real evaluation window: record proposal `createdAt` before policy and
-factual observations, retain the owner's `policy.observedAt` unchanged, and close
-`evaluatedAt` after all evidence and authorization reads. Keep one factual `asOf`
+This optional-coordinate contract requires an updated Metadata binary: existing
+published constructors and the storage codec reject an empty list. Do not teach or
+attempt empty evidence on older releases, and retain required policy coordinates in
+pilots that mandate them. Prove the updated constructor and persisted readback for
+empty and populated lists, plus rejection of null/missing, over-limit, duplicate and
+missing required-policy evidence before host adoption.
+
+Preserve the real evaluation window: record proposal `createdAt` before required
+policy and factual observations, retain each owner's `policy.observedAt` unchanged,
+and close `evaluatedAt` after all evidence and authorization reads. Keep one factual `asOf`
 per capture. Standalone evaluation may derive proposal expiry from the completed
 evaluation; durable locked capture fixes the proposal expiry before capture and must
 not renew it while waiting or evaluating. The canonical
-invariant is `createdAt <= policy.observedAt <= evaluatedAt < expiresAt`; creating
-both proposal and evaluation timestamps after resolving policy rejects valid input.
+invariant is `createdAt <= evaluatedAt < expiresAt` and, for each present policy,
+`createdAt <= policy.observedAt <= evaluatedAt`; creating both proposal and
+evaluation timestamps after resolving a required policy rejects valid input.
 Follow the host's `EventosFolhaApprovalEvaluationProvider` composition. Prove the
 SDK constructor boundary separately from a real HTTP evaluation/confirmation/replay
 regression; neither proof closes the accumulated SQL/lock/flush deadline budget.
@@ -1535,7 +1556,7 @@ evaluation timestamps are excluded. A loaded integer and the same fresh integer 
 compare equal even if Jackson uses different integer node classes; integer and decimal
 remain distinct. Use canonical typed digests, never JsonNode.equals for this comparison.
 It performs no reads and cannot detect reused stale observations. Call only after fresh
-policy/grant/domain reads and checks; true is not permission/READY. Invalid current shape
+required-policy/grant/domain reads and checks; true is not permission/READY. Invalid current shape
 throws validation errors which the orchestrator must treat as an impediment; context/TTL
 mismatch returns false. Re-evaluate under a new UUID when evidence changes.
 
