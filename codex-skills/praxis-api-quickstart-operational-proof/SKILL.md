@@ -1403,8 +1403,9 @@ in the checkout or uploaded evidence.
 For the rc.158 lifecycle OpenAPI on Render, merge `springdoc.cache.disabled=true`
 and an empty `app.openapi.internal-base-url` into the existing
 `SPRING_APPLICATION_JSON` overlay, then check the served document after READY.
-Inspect Metadata's `docs/technical/AUTO-CONFIGURACAO.md` and the host's
-`src/main/resources/application.properties` and README: its shared
+Inspect Metadata's `docs/spec/BULK-OPERATION-LIFECYCLE.md` and
+`docs/technical/AUTO-CONFIGURACAO.md`, plus the host's
+`src/main/resources/application-prod.properties` and README: its shared
 `APP_OPENAPI_INTERNAL_BASE_URL` also feeds AI schema/capability URLs. Do not clear
 that shared environment variable to fix the lifecycle lookup.
 
