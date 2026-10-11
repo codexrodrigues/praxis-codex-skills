@@ -620,6 +620,39 @@ hosted corporate database. Preserve failed runs, bind evidence to the tested tre
 require another reviewer, and leave unproved gates pending. A private JAR inspector
 that never connects is not a database recovery, release or Angular-readiness proof.
 
+## Compose Bulk Installation In The Existing Predeploy Command
+
+Inspect `OperationalDatasourceMigrator`, `BulkOperationalMigrationConfiguration`,
+the packaged `/app/bin/praxis-operational-migrate` wrapper and
+`docs/OPERATIONAL-DATASOURCE-MIGRATIONS.md`. Verify that the tested checkout actually
+contains this integration: an older command may migrate only the host schema.
+Do not treat a source patch, an available overload in an old starter, or successful
+compilation as evidence that the published Metadata contains later installation fixes.
+
+The existing `praxis.bulk.lifecycle.enabled` adoption property selects bulk
+installation. Resolve its namespace/deployment/role properties through the same
+Spring environment naming and Boot conversion used by runtime, without starting
+the application. The CLI reads its process environment, not application profiles
+or ConfigData. Validate the whole enabled composition before the first host write.
+Reuse the explicit operational migration credential; require its owner identity
+and the configured runtime/control roles. Do not invent another owner credential,
+infer grants from HTTP, copy Metadata SQL, or perform deployment DDL at startup.
+
+The host Flyway history and Metadata bulk history are separate and not globally
+atomic. The command must propagate failure after either phase and must not claim
+rollout success after only the first one. The declared BASIC confirmation identity
+starts deny-only/UNCOMPOSED; installation does not publish readiness or business
+authorization. Preserve normal strict retry behavior without repair/clean fallback.
+
+Prove the packaged entrypoint on an assigned Neon branch with the exact host and
+Metadata artifacts, direct TLS connection, non-superuser owner and real runtime/
+control identities. Check both histories, no-work repetition and the resulting
+privileges. Binding/unit tests and existing storage proofs are complementary; they
+do not replace invoking the packaged command. After each authorized Quickstart
+main update, follow its automatic Render deploy to a terminal result and correlate
+the source commit with the served build and health. An older healthy instance,
+or an unchanged application version string alone, cannot certify the new deploy.
+
 ## Maven And Bootstrap Discipline
 
 `pom.xml` intentionally pins `praxis.core.version` and `praxis.config.version`. A version change is an integration change, not a dependency-only edit:
