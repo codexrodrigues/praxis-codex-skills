@@ -1400,6 +1400,14 @@ Neon child branches.
 Keep their child-only credentials in the runner's private mode-0600 input, never
 in the checkout or uploaded evidence.
 
+For the rc.158 lifecycle OpenAPI on Render, merge `springdoc.cache.disabled=true`
+and an empty `app.openapi.internal-base-url` into the existing
+`SPRING_APPLICATION_JSON` overlay, then check the served document after READY.
+Inspect Metadata's `docs/technical/AUTO-CONFIGURACAO.md` and the host's
+`src/main/resources/application.properties` and README: its shared
+`APP_OPENAPI_INTERNAL_BASE_URL` also feeds AI schema/capability URLs. Do not clear
+that shared environment variable to fix the lifecycle lookup.
+
 Accept only the selected test's zero-failure XML and a reviewed, sanitized v1
 receipt bound to the candidate/workflow SHA, assignment and branch attestation
 hashes, and host/nested JAR hashes. Require all nine named phases, including
