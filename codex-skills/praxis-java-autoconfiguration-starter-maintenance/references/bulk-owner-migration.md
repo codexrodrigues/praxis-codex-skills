@@ -244,6 +244,36 @@ URI uses a pooler. Operator control-plane attestation is not a fresh runner API
 lookup; state that boundary. Keep owner and fixture credentials in private files
 outside the checkout and evidence uploads.
 
+### Managed owner provisioning before a remote proof
+
+Inspect the authenticated migration owner's attributes and incoming membership
+edges before spending a CI run. PostgreSQL 17 can grant the non-superuser creator
+an ADMIN-only membership in a role created through SQL, even when INHERIT and SET
+are false. Metadata's owner guard rejects incoming membership; checking SET ROLE
+reachability alone is insufficient. A bootstrap-superuser grant is not necessarily
+revocable by the managed administrator. Do not weaken the owner guard or retry
+blind REVOKE commands to accommodate a test fixture.
+
+For an exclusively assigned Neon child, the reviewed alternative is a new owner
+created through Neon's role API, followed by an authenticated direct-TLS preflight
+proving `session_user == current_user`, the actual attribute set and zero incoming
+memberships. This is a provisioning path, not a guarantee about every Neon role:
+verify the returned role and branch. API-created managed owners can belong to
+`neon_superuser` and have CREATEDB, CREATEROLE, REPLICATION and BYPASSRLS while
+remaining NOSUPERUSER. Record those attributes explicitly; they describe the
+installation credential, never the ordinary runtime or control credential. Create
+and attest the latter with their exact intended privileges. Keep the child owner
+secret separate from inherited parent credentials and out of uploaded evidence.
+
+See PostgreSQL's [role attributes](https://www.postgresql.org/docs/17/role-attributes.html)
+and Neon's [role management](https://neon.com/docs/manage/roles), then compare the
+actual guard and current provider behavior before applying this procedure.
+Preserve a rejected fixture and its first reached failure. Installation, live
+attestation, persisted execution and host deployment are separate gates; a faster
+CI-to-Neon path does not turn a local timeout into a pass or establish Render
+runtime behavior. Reuse valid phase evidence with exact provenance, and diagnose
+the next reached error before dispatching another proof.
+
 Keep no-database and Neon XML/logs separate. Preserve run/attempt, source and test
 hashes, resolved dependency hashes, JDK/PostgreSQL/TLS identity and the sanitized
 assignment with raw case results. Compare executed production classes/resources
