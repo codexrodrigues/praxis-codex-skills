@@ -136,9 +136,15 @@ Validação por Escopo Mínimo
 - Não rodar suites integrais por reflexo quando existirem comandos focais confiáveis.
 - Quando escolher uma validação parcial, o agente deve deixar explícito o motivo.
 
+Banco Remoto nas Validações Praxis
+- Em qualquer subprojeto Praxis, toda validação que dependa de banco deve usar banco remoto Neon em branch isolada e explicitamente atribuída ao trabalhador ou ensaio. Testes unitários sem banco podem rodar localmente. PostgreSQL local/embutido não substitui a prova remota; se a branch ou as credenciais não estiverem disponíveis, registrar a pendência sem fallback silencioso e continuar apenas o trabalho independente.
+- Antes de conectar ou mutar, confirmar projeto e branch Neon, endpoint, versão PostgreSQL, TLS e perfis reais de owner, runtime e control plane quando aplicáveis. Provar com as identidades e privilégios exigidos pelo fluxo; não presumir SUPERUSER nem aceitar uma fixture privilegiada como prova do caminho operacional.
+- Coordenar a atribuição exclusiva da branch e limitar migrações, dados de teste e limpeza ao recurso designado. Autorização de validação não autoriza mutar a branch pai ou produção, nem publicar, implantar ou lançar release. Preservar segredos e vincular resultado bruto, árvore de fonte, dependências e identidade da branch.
+- Evidência histórica de banco local permanece identificada como local e não conta como nova prova remota Neon.
+
 Autonomia de Execução e Uso Econômico de GitHub Actions
 - A economia de Actions orienta a escolha dos meios, sem paralisar implementação, testes, integração ou deploy dentro do escopo autorizado. Não exigir nova confirmação apenas porque uma etapa necessária consome minutos.
-- Preferir validações locais e focais quando forem suficientes. Usar os workflows existentes quando forem gates obrigatórios ou quando a validação remota for indispensável à entrega autorizada e não houver alternativa local equivalente; explicar brevemente a necessidade e prosseguir, inclusive durante desenvolvimento.
+- Preferir validações focais; as que não dependem de banco podem ser locais. Para validações dependentes de banco, seguir a regra Neon acima. Usar os workflows existentes quando forem gates obrigatórios ou quando a validação remota for indispensável à entrega autorizada e não houver alternativa local equivalente; explicar brevemente a necessidade e prosseguir, inclusive durante desenvolvimento.
 - A autorização de integração, deploy ou release abrange os workflows e smokes necessários àquela operação. Respeitar autorizações já dadas na conversa. Um pedido de implementação, teste ou commit, por si só, não autoriza presumir deploy ou criar uma nova release.
 - Antes de push, PR, tag ou dispatch, conferir os gatilhos relevantes e seus encadeamentos. Aproveitar a configuração de economia dos repositórios e os resultados válidos do mesmo commit; evitar duplicar execuções automáticas com disparos manuais. Preservar proteções de branch e checks obrigatórios.
 - Evitar execuções exploratórias desnecessárias e reruns sem diagnóstico. Em caso de falha, consultar os logs, identificar a causa e corrigir/validar localmente o que for possível antes de repetir apenas o necessário para concluir a operação autorizada.
