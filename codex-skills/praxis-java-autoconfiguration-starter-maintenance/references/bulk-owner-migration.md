@@ -192,17 +192,75 @@ Prove the actual JAR/POM/GAV, native SQL resource bytes and runtime CodeSource,
 and exclude current candidate classes from the producer classpath. Create retained
 state through the historical public APIs, not raw rows or fabricated phase markers.
 
-For historical SDK fixtures required by the official `clean verify` gate, use
-Metadata's pinned `download-maven-plugin` executions in `generate-test-resources`
-and the test's canonical default under `target/historical-bulk-sdk`. The V19
-fixture is `metadata-v19-rc155.jar`, verified against its fixed Central SHA-256
-before loading the native SDK. An explicit fixture property may support a scoped
-historical campaign but must not be required to make the release workflow work.
-Missing or changed bytes remain a failing gate; never skip the historical test,
-install a current public GAV as a replacement, or fall back to current classes.
-Inspect `pom.xml`, `BulkWorkerQueueIndexPostgresTest` and the workflow's actual
-`clean verify` command together before claiming release-test preparation complete.
-This wiring proof does not replace the official complete release verify.
+For each historical SDK fixture selected by the reviewed release impact matrix,
+inspect Metadata's pinned `download-maven-plugin` executions in
+`generate-test-resources` and the canonical default under
+`target/historical-bulk-sdk`. For example, `metadata-v19-rc155.jar` has a fixed
+Central SHA-256 which must be checked before loading that historical SDK. A
+scoped fixture property must not become an undocumented manual release step.
+Missing or changed bytes fail the selected gate; never replace a historical GAV
+with current classes or a locally overwritten public coordinate. Inspect the
+actual producer fixture, POM and workflow together. The presence of historical
+resources does not authorize a fixture that starts a local database.
+
+## Release validation on assigned Neon branches
+
+Classify changes against the last published artifact and inspect the integrated
+diff before selecting the release proof. The canonical release mechanism belongs
+to Metadata's `.github/workflows/release.yml`, `tools/release/`, POM and
+`RELEASING.md`; this guidance does not waive their checks. A legacy `clean verify`
+that starts Embedded PostgreSQL, H2 or Testcontainers is incompatible with the
+Neon-only database rule, including on a CI runner. Correct and review the release
+mechanism before publishing; do not silently skip tests or claim an integral
+suite passed when only an impact gate ran.
+
+Use an exhaustive versioned inventory of test sources, resources and nested
+fixtures. Trace inheritance, Spring contexts and indirect database creation, not
+just test class names. Execute the audited no-database selection and require
+explicit remote cases for the affected invariants: fresh/repeat installation and
+retention; interrupted recovery and rollback; ACL/membership topology; catalog,
+function and trigger integrity; runtime/control identity and atomic effects;
+persisted policy evidence; and representative supported historical prefixes.
+Reuse assertions and combine scenarios when their evidence remains attributable.
+Tests outside the affected scope need a reviewed exclusion rationale, not a
+fabricated passing result or an automatic new migration campaign. Historical
+reuse supports the impact review and exclusions only with raw results and matching
+production, test, resource and dependency provenance. Each required remote group
+still needs its explicit Neon testcase in the tagged job; history alone cannot
+fill a required cell. A superseded local fixture must point
+to a real remote assertion. Provisional or empty required cells, unknown sources,
+stale hashes, missing cases and skipped required tests block release.
+
+Before dispatch, assign an exclusive disposable Neon child through the control
+plane. Preserve its actual project, parent, branch, endpoint and protection
+receipt, then bind the reviewed assignment to an immutable source base, intended
+tag/version, run attempt and bounded expiry. A release-only POM version bump may
+be allowed only by the reviewed validator. Provision a credential scoped to that
+child; never pass a parent's inherited administrator credential to CI. Validate
+the direct endpoint and TLS identity, database and authenticated role, then
+revalidate the assignment immediately before database tests with enough remaining
+time. An endpoint's pooled-connection availability flag does not prove the actual
+URI uses a pooler. Operator control-plane attestation is not a fresh runner API
+lookup; state that boundary. Keep owner and fixture credentials in private files
+outside the checkout and evidence uploads.
+
+Keep no-database and Neon XML/logs separate. Preserve run/attempt, source and test
+hashes, resolved dependency hashes, JDK/PostgreSQL/TLS identity and the sanitized
+assignment with raw case results. Compare executed production classes/resources
+with the staged JAR, then sign, bundle and publish those same bytes without a
+silent rebuild. Scan raw logs, XML and assignment evidence before adding them to publication
+custody. Preserve the final custody scan after publication, including failure
+paths. The reviewed bundle builder accepts only its declared artifact inputs; do
+not describe that allowlist plus the earlier raw-evidence scan as a scan of the
+entire directory immediately before its first upload. A receipt saying PASS alone
+is insufficient. Public
+contract and packaging gates remain required. Prove the published coordinate in
+the packaged Quickstart separately after publication; that downstream proof must
+not create a circular prerequisite for the upload itself.
+
+Report the exact gate and its limits, such as Neon PostgreSQL 17 coverage rather
+than all supported PostgreSQL versions. Offline gate tests approve the mechanism,
+not its unresolved matrix, real database execution or public artifact adoption.
 
 Compare artifact paths by physical identity as well as spelling. Resolve existing
 paths and verify same-file identity, content hash and the actual CodeSource/classpath;
