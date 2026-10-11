@@ -1425,6 +1425,17 @@ lifecycle's distinct stages; this is not a new SDK deadline or permission to ret
 an uncertain publish. Confirm the setting in the exact deployed host artifact
 and require the full cold capture/READY/HTTP evidence before calling it sufficient.
 
+For this journey, use the bounded code-only terminal event emitted by the host's
+publication controller, not mass `JavaExceptionThrow` recording. The first valid
+publish observation must retain its exact private log offsets, time window, source
+and host JAR hashes. Export only the closed diagnostic projection: class/method/line
+and bounded cause/suppressed references, never throwable messages, SQL or request
+data. Distinguish one terminal event, absence, ambiguity and unavailable capture;
+none of these states proves rollback. Numeric completed SpringDoc durations may
+support diagnosis, but caught framework exceptions and static group counts alone
+do not establish a performance bottleneck. Keep raw logs private and preserve the
+original HTTP outcome when the diagnostic sink fails.
+
 Accept only the selected test's zero-failure XML and a reviewed, sanitized v1
 receipt bound to the candidate/workflow SHA, assignment and branch attestation
 hashes, and host/nested JAR hashes. Require all nine named phases, including
