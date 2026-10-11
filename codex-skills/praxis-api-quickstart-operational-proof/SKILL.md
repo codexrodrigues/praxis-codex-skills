@@ -1409,6 +1409,22 @@ Inspect Metadata's `docs/spec/BULK-OPERATION-LIFECYCLE.md` and
 `APP_OPENAPI_INTERNAL_BASE_URL` also feeds AI schema/capability URLs. Do not clear
 that shared environment variable to fix the lifecycle lookup.
 
+When diagnosing a publish 503, distinguish the control/runtime transaction deadline
+from fresh OpenAPI capture. Inspect the exact released
+`OpenApiInternalRestTemplate`, `CachedOpenApiDocumentService` and
+`OpenApiDocsSupport` sources and the host's
+`docs/operational-bulk-publication.md`. A response timeout while the root document
+is still being generated is not evidence of a database privilege failure. The
+host configures `praxis.openapi.http.read-timeout=60s`; this also affects ordinary
+internal OpenAPI reads. Governed capture still uses the lesser of that response
+budget and the remaining aggregate `praxis.openapi.bulk-composition-timeout`
+(default 60s across root, groups and swagger-config). Do not renew the aggregate
+budget per document, weaken transaction deadlines, or remove schemas/advice to
+make capture pass. The administrative proof client allows 120s to observe the
+lifecycle's distinct stages; this is not a new SDK deadline or permission to retry
+an uncertain publish. Confirm the setting in the exact deployed host artifact
+and require the full cold capture/READY/HTTP evidence before calling it sufficient.
+
 Accept only the selected test's zero-failure XML and a reviewed, sanitized v1
 receipt bound to the candidate/workflow SHA, assignment and branch attestation
 hashes, and host/nested JAR hashes. Require all nine named phases, including
