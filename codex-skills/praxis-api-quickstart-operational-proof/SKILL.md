@@ -34,6 +34,31 @@ Read the host composition and the exact downstream proof before deciding where t
 
 For a suspected starter defect, inspect the owner repository before proposing a host adaptation. The quickstart test is downstream evidence, not a replacement for the owner test.
 
+## Remote Database Proof For Praxis
+
+For every Praxis validation that depends on a database, run the focused test or
+smoke against a remote Neon branch isolated and explicitly assigned to its worker
+or run. Test code may run locally, and unit tests without a database may stay local;
+an embedded/local PostgreSQL fixture is not a substitute for the remote proof.
+If the branch, credentials or required role profile is unavailable, record the
+pending gate without a silent local fallback.
+
+Before connecting or mutating, verify Neon project/branch, endpoint, PostgreSQL
+version, TLS and the concrete owner, runtime and control-plane identities and
+grants when applicable. Exercise the same privileges required by the host; do not
+infer SUPERUSER or treat a privileged setup identity as the product path. Mutate
+and clean up only the assigned branch, never its parent or production database;
+test authorization does not authorize deployment or release. Bind raw evidence to
+source/dependency/binary hashes and branch identity. Prior local PostgreSQL results
+remain historical local evidence, not a new remote Neon result.
+
+This rule takes precedence over historical recipes below that start
+`EmbeddedPostgres`, local fixtures or privileged setup roles. Adapt their causal
+assertions to the assigned Neon branch and available permissions before counting
+new database acceptance; if that is impossible, leave the specific gate pending.
+Do not run an unchanged local recipe as replacement evidence or assume Neon exposes
+SUPERUSER, host-based authentication files or cluster-internal catalogues.
+
 ## Integration Topology And Owners
 
 The quickstart owns Spring Boot composition, pinned Maven versions, host properties, concrete pilot domains, operational datasource/migrations, host security, and integration tests.
@@ -941,7 +966,7 @@ Only `lacuna-real-de-contrato` permits a new public contract. Name missing behav
 
 Run the narrowest reliable gate first:
 
-| Changed surface | Minimum local proof |
+| Changed surface | Minimum focused proof |
 | --- | --- |
 | metadata/schema/discovery downstream contract | `mvn "-Dtest=OpenApiGroupResolutionIsolatedIntegrationTest,QuickstartMetadataMigrationIntegrationTest,EventosFolhaPilotIntegrationTest" test` |
 | hosted option-source endpoint contract | `mvn "-Dtest=ResourceEntityLookupGovernanceIntegrationTest,ProcurementExternalOptionSourceProviderIntegrationTest,VwStatsSmokeHttpTest" test` plus the affected pilot test |
@@ -953,7 +978,7 @@ Run the narrowest reliable gate first:
 | targeted pilot resource | its focused pilot/lookup/stats/export test with `praxis-api-quickstart-domain-pilots` |
 | starter version, Maven/bootstrap, broad cross-cutting host change | Maven resolution plus `mvn -B verify` |
 
-Use Cockpit, HTTP corpus, and published-host checks only after local proof is green. They are release/downstream evidence, not the ordinary development loop. State exactly what did not run and why.
+Use Cockpit, HTTP corpus, and published-host checks only after focused proof is green. They are release/downstream evidence, not the ordinary development loop. State exactly what did not run and why.
 
 ## Derived Evidence
 
@@ -1357,11 +1382,14 @@ preflights. Existing base/derived grants and latch completion share the existing
 transaction and fence. PENDING alone is insufficient. Partial ACLs, completed
 bootstrap with revoked permissions and newly added grantees are not healed.
 
-Require focused PostgreSQL proof using an actual non-superuser role creator:
+Require focused remote Neon PostgreSQL proof using an actual non-superuser role creator:
 fresh/strict/repeat-zero, original-prefix and managed-intermediate conservation,
 DDL19 retry, unsafe memberships/CREATE/PUBLIC ACL rejection without cleanup, and
-Error rollback after a real grant. SUPERUSER may prepare an isolated adversarial
-or historical fixture but must not execute the product path being certified.
+Error rollback after a real grant. Earlier SUPERUSER-prepared fixtures are local
+historical evidence only. Any new adversarial or historical preparation on Neon
+must use an explicitly authorized administrator actually available on the assigned
+branch; a privileged setup identity must not execute the product path. If the
+required privilege is unavailable, leave that focal gate pending.
 Record source, dependencies, SQL catalogue and raw test evidence; independently
 review the actual result. Reuse unchanged accepted cases rather than repeating
 all suites. Follow the official release's required gates, then resolve Central
