@@ -1387,6 +1387,38 @@ full bootstrap and deployed Neon/Render evidence. Combined accepted focal cases 
 not erase a failed broader verify. Reuse unaffected valid cases; do not repeat them
 merely to produce a new aggregate count.
 
+For the packaged BASIC/READY host proof, inspect the
+`quickstart-basic-ready-neon` cut in
+`.github/workflows/bulk-reference-consumer-proof.yml` and its
+`BulkBasicReadyPackagedNeonProof` test. Dispatch from the reviewed branch or tag
+ref resolved to the full candidate SHA, and require `GITHUB_SHA`,
+`GITHUB_WORKFLOW_SHA` and `CANDIDATE_SHA` to match that commit; the historical
+Docker/local-Postgres lane is separate. Require the packaged public Metadata
+`8.0.0-rc.158` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
+bytes, and a current exclusive control-plane assignment for the API and Config
+Neon child branches.
+Keep their child-only credentials in the runner's private mode-0600 input, never
+in the checkout or uploaded evidence.
+
+Accept only the selected test's zero-failure XML and a reviewed, sanitized v1
+receipt bound to the candidate/workflow SHA, assignment and branch attestation
+hashes, and host/nested JAR hashes. Require all nine named phases, including
+SESSION/current-grant checks, publication CAS and cold-node reconcile, BASIC
+HTTP commit/read/replay and revocation, plus two started and terminated host
+processes with private class-load evidence. Diagnose a failed phase against its
+private logs and exact source before any new dispatch; a protected SQL-readback
+recipe failure before host startup, including a `psql` meta-command mismatch,
+is not an HTTP result and must not be bypassed by retrying publish or confirm.
+Preserve the failed receipt and use a new reviewed exact SHA for a corrected run.
+The protected readback alone cannot certify HTTP, SESSION or READY behavior.
+
+Even a passing isolated-child receipt does not certify Config policy outage or
+mutation, cancellation before the first unit, browser navigation, ASYNC/ATOMIC,
+or Render HTTPS deployment. Keep the deployed Render gate and its actual
+credentials, session and publication evidence separate from the Neon fixture;
+do not report BASIC/READY operational acceptance until the remote run and its
+independent review have passed.
+
 ## Managed-owner bulk execution adoption
 
 For bulk installation by a non-superuser CREATEROLE database owner, inspect the
