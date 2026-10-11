@@ -1418,12 +1418,16 @@ is still being generated is not evidence of a database privilege failure. The
 host configures `praxis.openapi.http.read-timeout=60s`; this also affects ordinary
 internal OpenAPI reads. Governed capture still uses the lesser of that response
 budget and the remaining aggregate `praxis.openapi.bulk-composition-timeout`
-(default 60s across root, groups and swagger-config). Do not renew the aggregate
-budget per document, weaken transaction deadlines, or remove schemas/advice to
-make capture pass. The administrative proof client allows 120s to observe the
-lifecycle's distinct stages; this is not a new SDK deadline or permission to retry
-an uncertain publish. Confirm the setting in the exact deployed host artifact
-and require the full cold capture/READY/HTTP evidence before calling it sufficient.
+(SDK default 60s). The Quickstart configures that existing composition property
+at 120s for its complete root, groups and swagger-config capture. This property
+also governs other composition scopes, including lock acquisition, descriptor
+composition, installation and reads; it is not a single whole-publish deadline.
+Do not renew the aggregate budget per document, weaken transaction deadlines, or
+remove schemas/advice to make capture pass. The administrative proof client allows
+180s to observe the lifecycle's distinct stages, while the diagnostic validator
+accepts a window up to 240s; neither changes SDK semantics or permits retrying an
+uncertain publish. Confirm both settings in the exact deployed host artifact and
+require full cold capture/READY/HTTP evidence before calling the sizing sufficient.
 
 For this journey, use the bounded code-only terminal event emitted by the host's
 publication controller, not mass `JavaExceptionThrow` recording. The first valid
