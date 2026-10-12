@@ -743,6 +743,19 @@ these bindings with local installs, another valid build, or an older BASIC recei
    reads in the same SESSION. Require denial while invalid and fresh readiness after
    restoration; preserve organization B and BASIC grants. Capture the protected
    before snapshot only after the final restoration and readiness read.
+   For `CONTINUE_BROWSER`, bind the prior run/source/frontend and its closed receipt
+   proving `ENTERPRISE_NEGATIVES` and `BEFORE` passed, plus a fresh full-row snapshot
+   of the restored membership and unchanged domain/grants/bulk stores. Mark those
+   historical negatives `REUSED` with explicit provenance, never as newly executed.
+   Reconcile the same READY pair in a new JVM, create a fresh SESSION and perform
+   current context/Config reads and the before snapshot; then run the unchanged
+   browser, preconfirmation and effect/replay oracles. Do not repeat the four CAS,
+   reset memberships or silently extend their validity. A task lease does not
+   extend actual authority, which must remain valid throughout the new journey.
+   If an isolated fixture needs an explicit administrative renewal, stop its
+   consumers first, perform revision CAS with complete before/after comparisons
+   and a separate committed receipt, then bind that transition and its resulting
+   snapshot to the continuation. Never rewrite the historical negative proof.
 3. Run the official Angular server on 4003 with explicit proxy to 127.0.0.1:8088.
    Use the real `parent-child-related` recipe, team outlet and
    `quickstart-mission-team` table, selecting only target 37. Do not mock, rewrite
