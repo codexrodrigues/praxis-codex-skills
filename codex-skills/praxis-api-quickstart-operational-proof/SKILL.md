@@ -1430,9 +1430,13 @@ uncertain publish. Confirm both settings in the exact deployed host artifact and
 require full cold capture/READY/HTTP evidence before calling the sizing sufficient.
 
 For this journey, use the bounded code-only terminal event emitted by the host's
-publication controller, not mass `JavaExceptionThrow` recording. The first valid
-publish observation must retain its exact private log offsets, time window, source
-and host JAR hashes. Export only the closed diagnostic projection: class/method/line
+publication controller, not mass `JavaExceptionThrow` recording. Collect two fixed
+windows: the first valid PUBLISH from host 1 and the cold RECONCILE from host 2.
+Bind `publish-diagnostics.json` and `reconcile-diagnostics.json` respectively to
+the expected command, process, private log offsets, time window, source and host
+JAR hashes. A sidecar cannot borrow another host's log or a phase that was never
+reached. These windows do not cover every other HTTP call or assertion.
+Export only the closed diagnostic projection: class/method/line
 and bounded cause/suppressed references, never throwable messages, SQL or request
 data. Distinguish one terminal event, absence, ambiguity and unavailable capture;
 none of these states proves rollback. Numeric completed SpringDoc durations may
