@@ -106,6 +106,47 @@ schemas after those checks, never the publication as authority. Do not infer
 200-item completion, performance or host `READY` from focused SDK/host tests;
 prove them by exact-artifact HTTP and PostgreSQL evidence before teaching adoption.
 
+## Public ASYNC Admission Candidate
+
+Before teaching ASYNC adoption, inspect the exact Metadata candidate's
+`BulkOperationalProfile`, `BulkOperationDescriptorProvider`,
+`BulkOperationLifecycle.ReadyAdmission`, `BulkStoredProposal`,
+`JdbcBulkProposalStore` and `JdbcBulkDurableExecution`. Published rc.164 SYNC
+acceptance does not establish this newer public admission path. Keep candidate
+source, packaged consumer, Neon proof, publication and host HTTP adoption separate.
+
+Use only the approved UNIFORM_UPDATE/EXPLICIT/PER_ITEM shape. An ASYNC-only
+profile binds the provisioned capacity through the descriptor provider; all nine
+binding coordinates participate in its operational fingerprint, without exposing
+private coordinates in discovery. Durable READY records the governed descriptor;
+it is not an instantaneous capacity guarantee. Admission and executable projection
+must verify the live ACTIVE binding, followed by capture/enqueue transaction
+checks. Preserve the existing SYNC fingerprint and 200-target ceiling. The ASYNC protocol ceiling of 10,000 is a structural bound,
+not evidence that the workload finishes within the existing deadline.
+
+Mint the opaque admission through the lifecycle. Match the exact infrastructure,
+resource, complete operation reference, codec, control expectation and profile.
+Construct the proposal through the admission-taking factory, then capture its
+evaluation in the caller's writable REPEATABLE_READ transaction. Recheck live
+capacity and control before callbacks; commit proposal, evaluation, ordinal
+manifest, preview and pending allocation together, without domain effects.
+Never manufacture an admission or use internal factories to prove public adoption.
+
+The public enqueue takes no caller-selected queue token. Resolve durable replay
+before new READY, active-capacity, expiry and free-slot gates; retain the original
+identity and deadline. For new work, recheck admission under the existing lock
+order and let the canonical occupancy trigger arbitrate the bounded queue hint.
+An uncertain outcome requires readback of the same identity, not a fresh key.
+
+Prove an external-package consumer, real runtime credentials and two worker JVMs
+on an exclusively assigned Neon branch. Cover capture without effects, one queued
+execution, replay after suspension/full capacity, current-grant revocation,
+rollback after mutation failure, queue time in the deadline and restart without
+duplicate effects. Tie source, dependencies, raw results and cleanup to the same
+candidate. This component proof does not replace host HTTP202/Location/read/cancel
+or the global multi-database capacity and scale gates. Earlier private-worker
+sections below describe narrower historical cuts, not an alternate ingress recipe.
+
 ## Prove A Private Durable Worker Before Teaching Adoption
 
 For a B5b.2 candidate, inspect `BulkDurableWorker`, `JdbcBulkDurableExecution`
