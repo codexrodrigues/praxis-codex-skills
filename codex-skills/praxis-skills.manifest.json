@@ -547,7 +547,7 @@
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
                        "skillMdSha256":  "A97BC8D7639E0F22CD086B21B70151A1D29B08B6B9550C5E32F5392B594C685F",
-                       "treeSha256":  "582D6EEA63611D47A03D7CEB5E3EC536551DEA40AED9E95E7E3304BFF2CD507F"
+                       "treeSha256":  "1F366EC078841F915CA36CEB6F7E5C16057C6B047E754180623E493A19ED2797"
                    },
                    {
                        "name":  "praxis-angular-i18n-governance",
@@ -2260,8 +2260,8 @@
                        "dependencies":  [
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "A772F2101D41507E3705FAD968D55A79982D0CD81F686CAF087206F7AC5AE13F",
-                       "treeSha256":  "E541FC92C9192313D35872BDAD47978CB2350D9D18CA8194F4DE3E90F895C396"
+                       "skillMdSha256":  "0E11B36B581343CC1A70BF7F7F266E3873C1EAD4EA53BF71E7CBCFD5896D8B53",
+                       "treeSha256":  "D3561E149E083A884CF1A463F2D425A9832540B075EA73159AD4F95F1AF33D68"
                    },
                    {
                        "name":  "praxis-charts-analytics-interactions",
