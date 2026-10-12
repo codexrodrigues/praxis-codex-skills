@@ -250,3 +250,27 @@ npm run start:local-praxis -- --host 127.0.0.1 --port 4301
 ```
 
 For normal app scaffolding, install published `@praxisui/*` packages from npm.
+
+## Host Appearance Validation
+
+Inspect the installed Core/Charts implementation before assuming theme support.
+Native AppShell should consume host sidebar/card, surface/command gradient,
+primary foreground and semantic status roles; fix missing materialization in Core
+rather than targeting private shell DOM from a consumer.
+
+For Charts builds that include host color materialization, existing palette and
+series color strings may bind to host CSS properties with bounded fallbacks.
+They are resolved by the renderer, not persisted as the current theme's computed
+RGB. Preserve authored literal colors as fixed choices. Validate a theme switch
+with the same data/document, open overlays, narrow layout and a real chart; a
+matching shell background alone does not prove Canvas colors changed. Do not use
+`var()` in Canvas colors with an older package that lacks the resolver.
+
+Validate the library-owned fallback with no host theme tokens as well as custom
+light/dark pairs; a themed screenshot cannot prove the default brand contrast.
+When documenting adoption, compare package.json/lockfile, installed package content
+and the actual build source. A local tarball version label does not prove that its
+modified source is available from npm. Keep local validation, source integration,
+official release and consumer pin alignment explicit; do not claim npm ci reproduces
+unpublished runtime changes. Public guides may be editorial materializations rather
+than automatic README imports: inspect their registry/source and update them explicitly.
