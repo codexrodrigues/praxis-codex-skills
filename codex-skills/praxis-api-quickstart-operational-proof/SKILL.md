@@ -1299,8 +1299,11 @@ the published scope's two durable guards. Reusing this immutable structural phot
 is not permission to cache grant/policy decisions or remove the independent pool reserve.
 Prove order and fail-closed behavior with the real resolver and shared BASIC/ATOMIC paths;
 reduced collision-domain scans or passing SQL fixtures do not certify the full five-second
-host unit. Pin the eventual public artifact and prove commit/read/replay through the full
-HTTP journey and separate deployed Render gate before claiming operational acceptance.
+host unit. The public Metadata `8.0.0-rc.162` SDK gate passed on isolated Neon,
+including the deadline SQL oracles and commit/receipt/replay. That SDK evidence does not
+accept host HTTP9 or deployed Render H5; adoption of this change remains pending at
+those consumer boundaries. Pin the exact public artifact and prove commit/read/replay
+through both gates before claiming operational acceptance.
 
 ## Bound BASIC Proposal Preparation and Capture Separately
 
@@ -1475,7 +1478,7 @@ For the packaged BASIC/READY host proof, inspect the
 ref resolved to the full candidate SHA, and require `GITHUB_SHA`,
 `GITHUB_WORKFLOW_SHA` and `CANDIDATE_SHA` to match that commit; the historical
 Docker/local-Postgres lane is separate. Require the packaged public Metadata
-`8.0.0-rc.161` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
+`8.0.0-rc.162` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
 bytes, and a current exclusive control-plane assignment for the API and Config
 Neon child branches.
 Keep their child-only credentials in the runner's private mode-0600 input, never
