@@ -693,6 +693,104 @@ Keep candidate proof separate from published-artifact adoption.
 
 Keep API and config datasource properties, Flyway policy, AI provider properties, RAG/vector-store switches, and test isolation explicit. Test profiles may disable external services or use H2, but must preserve the host/starter wiring being proven. Never use an in-memory shortcut as proof that deployed config persistence, origin policy, or streaming works.
 
+For proposed enterprise-context activation, audit `EnterpriseContextSessionService`,
+`JdbcEnterpriseMembershipSource`, `EnterpriseRuntimeReferences` and
+`QuickstartEnterpriseRuntimeContextProvider` before adding host beans. Compose the
+operational session store/transaction, current membership, managed opaque-reference
+keys, safe `PresentationSource` and clock explicitly; no default selection or header
+identity repairs missing authority. Confirmed context is not Config UI or BASIC
+admission. Keep the PurchaseOrder laboratory behind explicit import, and prove that
+context composition alone does not register its layout lifecycle. This host activation
+remains candidate until its exact source/composition and protected HTTP proof are reviewed;
+published Config162 contracts and the independently accepted BASIC proof stay separate.
+
+### Prove Enterprise Context With The Real Angular Consumer
+
+Use the manual `Bulk reference consumer proof` cut
+`enterprise-angular-uniform-neon` for the finite enterprise/BASIC integration.
+Inspect its workflow, `scripts/enterprise-angular-proof/run.py`, closed receipt
+validator and `docs/enterprise-context-downstream-proof.md` before dispatch. Require
+the complete reviewed `candidate_sha` to equal both workflow and backend checkout;
+pin the Angular checkout to `491725d3be7e9a79d30348ff095e1410bff004b1` for this cut.
+Resolve only public Metadata `8.0.0-rc.164` and Config `0.1.0-rc.162`, and verify the
+exact nested JAR hashes against their public custody receipts. Do not replace
+these bindings with local installs, another valid build, or an older BASIC receipt.
+
+1. Prepare exclusive API/Config Neon children and the private
+   `ENTERPRISE_ANGULAR_NEON_INPUT` envelope: `assignment`, `private`, `controlPlane`
+   and the three committed preparation receipts for Config runtime, cursor budget
+   and enterprise membership. Renew controls by actual service reads, then verify
+   lease, branches/endpoints, PostgreSQL 17, TLS and real ordinary runtime/control/
+   Config privileges. Bind hashes to the job's materialized JSON bytes; do not
+   reuse a historical raw-file hash after reserialization. Use owner only in
+   trusted fixture orchestration, readback and membership transitions. The host
+   receives runtime/control/Config credentials; the browser receives only real
+   SESSION/XSRF cookies. Reuse the installed enterprise schema and its preparation
+   evidence, without startup DDL or a claim that this cut proves schema installation.
+2. Bind `enterprise_start` to the identical `assignment.enterpriseStart` value.
+   `FRESH` requires UNCOMPOSED and publishes once. `CONTINUE_READY` requires the
+   private `continuationBinding` envelope field, tying the prior proof, source,
+   artifact and complete-row hashes to the assigned operation and publication.
+   Compare fresh read-only snapshots of domain, grants, memberships and all seven
+   bulk stores against those hashes before starting the host. Reuse the same
+   deterministic JSON normalization, preserving duplicates and nulls; counts
+   alone are insufficient. A new JVM reconciles exactly once with expected
+   generation 1, then verifies unchanged READY1/PUBLISHED2 and publication identity.
+   Stop on mismatch or failure, without reset, new publication or implicit retry.
+   Authenticate through the real session/CSRF flow, read choices and prove switch CAS with one winner and one
+   conflict, ending in organization A. Perform the four bounded membership CAS
+   transitions (revoke, restore, expire, restore) with fresh protected context/Config
+   reads in the same SESSION. Require denial while invalid and fresh readiness after
+   restoration; preserve organization B and BASIC grants. Capture the protected
+   before snapshot only after the final restoration and readiness read.
+   For `CONTINUE_BROWSER`, bind the prior run/source/frontend and its closed receipt
+   proving `ENTERPRISE_NEGATIVES` and `BEFORE` passed, plus a fresh full-row snapshot
+   of the restored membership and unchanged domain/grants/bulk stores. Mark those
+   historical negatives `REUSED` with explicit provenance, never as newly executed.
+   Reconcile the same READY pair in a new JVM, create a fresh SESSION and perform
+   current context/Config reads and the before snapshot; then run the unchanged
+   browser, preconfirmation and effect/replay oracles. Do not repeat the four CAS,
+   reset memberships or silently extend their validity. A task lease does not
+   extend actual authority, which must remain valid throughout the new journey.
+   If an isolated fixture needs an explicit administrative renewal, stop its
+   consumers first, perform revision CAS with complete before/after comparisons
+   and a separate committed receipt, then bind that transition and its resulting
+   snapshot to the continuation. Never rewrite the historical negative proof.
+3. Run the official Angular server on 4003 with explicit proxy to 127.0.0.1:8088.
+   Use the real `parent-child-related` recipe, team outlet and
+   `quickstart-mission-team` table, selecting only target 37. Do not mock, rewrite
+   requests or fall back to Render. Require the exact strong target ETag and
+   `no-transform`, fresh context, one UNIFORM evaluation, READY proposal with one
+   executable and zero blocked targets, and authorized preview with zero effects.
+4. Pause before confirmation for the reviewed automatic SQL verifier. Pin its code
+   digest, receipt/snapshot hashes, source/JAR, SESSION fingerprint, proposal and
+   target. Require zero effects/receipts/executions and unchanged full authority and
+   domain snapshots. `staticallyReviewed` describes the verifier's prior review;
+   `AUTOMATIC_PRECONFIRMATION_PASS` is an automated result, not a human review at
+   runtime. Only that valid gate releases one confirmation, followed by one exact
+   replay using the original body and idempotency key; no implicit retry on uncertainty.
+5. Require COMPLETED, protected result/status reads and all nine totals. Verify
+   the entire 195-row domain: only target 37 changes to SUPORTE with version +1;
+   preserve the other rows, operator grant, control and publication. Require one
+   execution, one confirmed receipt, zero admissions and one total effect after
+   replay. Public DTO/ETag checks do not substitute for the SQL version oracle.
+6. Terminate owned backend, Angular and browser processes even on failure. Keep
+   raw logs, HTTP bodies, cookies, keys and full SQL rows in private 700/600 paths,
+   then remove them at job closure. Publish only the independently validated closed
+   receipt (bounded hashes/counts/booleans and code-only diagnostics); validate raw
+   and decoded strings against sensitive values. A FAILED receipt or rejected
+   scanner output keeps the job red and never accepts the journey. For private
+   Angular checkout, use a temporary read-only deploy key without credential
+   persistence; the coordinator removes its deploy key and secret after the run,
+   including failure/cancellation, and never passes it to proof processes.
+
+Accept this candidate procedure only from the observed exact-source consumer
+receipt. It does not run or replace the nine-phase BASIC proof, certify enterprise
+activation on Render, publish Angular, reinstall enterprise schema, or prove layout
+authoring, ASYNC/ATOMIC or a different latency topology. Preserve earlier failed
+local evidence and original deadlines rather than treating a remote success as
+permission to relax authority checks or infer unmeasured performance.
+
 ## Host Security Is Integration, Not A Starter Override
 
 The quickstart owns CORS, CSRF, cookies, origin restriction, firewall policy, rate limiting, and public/read/write exposure. These policies constrain hosted starter endpoints without redefining their semantics.
