@@ -223,6 +223,16 @@ V1 may leave only Flyway's schema marker: continuation requires exact history an
 catalog checks before DDL, not treating the database as fresh. These instructions
 describe the candidate's gates, not a completed release or ASYNC host activation.
 
+When authority attestation times out, count the complete path before the business
+callback, including catalog, caller and effective-privilege checks. Batch bounded
+catalog reads on the same physical connection while retaining fresh validation on
+every operation, exact manifests, result cardinality and fail-closed NULL handling.
+Do not cache successful authorization or extend transaction, statement or lock
+budgets to hide round-trip cost. Keep identity verification before the callback and
+check the remaining transaction deadline after decoding. Source-level query counts
+are not measured latency: prove the actual JDBC transport and ordinary caller path
+on the assigned Neon branch before accepting the optimization.
+
 For the B5b.1b.A internal installation candidate, inspect
 `JdbcBulkCapacityInstallation`, `JdbcBulkCapacityIssuer.CapacityReader`, authority V2
 and operational V18 with their PostgreSQL tests. Source compilation or the existence
