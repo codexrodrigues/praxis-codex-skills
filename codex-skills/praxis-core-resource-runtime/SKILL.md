@@ -33,6 +33,10 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/src/lib/models/record-related-surface.model.ts`
 - `projects/praxis-core/src/lib/models/option-source.model.ts`
 - `projects/praxis-core/src/lib/models/query-context.model.ts`
+- `projects/praxis-core/src/lib/models/bulk-operation.model.ts`
+- `projects/praxis-core/src/lib/services/bulk-operation-client.service.ts` and its spec
+- `projects/praxis-core/src/lib/services/bulk-sync-state.service.ts` and its spec
+- `projects/praxis-core/src/lib/models/enterprise-runtime-context.model.ts` for complete scope identity
 
 Also read nearby specs for the exact behavior being changed. They are often the clearest contract for edge cases such as related resources, denied actions, schema operation resolution, and selected-value reload.
 
@@ -84,6 +88,35 @@ Keep the Angular models aligned with the real backend payloads. `ResourceSchemaC
 - Treat `x-ui.resource.identity` as the canonical structured identity of a record. `keyField`, `titleField`, ordered `metadataFields`, and `displayLabelField` come from `@ApiResource(identity = @ResourceIdentity(...))`; Angular must not infer these roles from property names or split a concatenated `displayLabel`.
 - For list/detail continuity, prefer the `resourceIdentity` already materialized on Praxis Table row/selection events and render it with `PraxisResourceIdentityComponent`. Re-fetching schema in the host, duplicating field-role config in CRUD metadata, or composing a screen-specific identifier header is a platform bypass.
 - Preserve field-level `x-ui.presentation` when materializing identity parts. A visual key may inherit prefix/appearance from its field while title and metadata remain structurally governed by `x-ui.resource.identity`.
+
+## BASIC Bulk Intent and Authorized Projection
+
+For BASIC, consume the published `SYNC / EXPLICIT / PER_ITEM` descriptor through
+`BulkOperationClientService` and `BulkSyncStateService`; do not infer support for
+QUERY, ASYNC or ATOMIC from enum members. Retain exact operation/group/method/path,
+resource, configured origin and wire IDs. Read each selected resource's original
+strong ETag from its canonical self GET with the published identity accessor;
+reject weak, missing or cross-identity tokens, and never substitute a schema ETag.
+Evaluate an immutable selection/intent without domain effects, then read the
+protected preview and require a separate explicit confirmation of its proposal.
+Keep one original Idempotency-Key for confirmation uncertainty and replay of that
+same intent; changed intent needs a separately initiated evaluation, never an
+automatic replacement proposal or a retry that resubmits successful targets.
+
+Separate proposal/execution/key custody from permission to display retained data.
+On protected 401/403/404/410 or scope loss, the consuming workflow invalidates its projection;
+retained state is not current authorization or proof that no effect committed.
+The consuming workflow uses an authorization epoch so late successes cannot restore data after denial or
+context change. Before redisplay, require complete fresh authorized reads for the
+same resource/operation, actor, tenant, environment and organization scope, including
+`effectiveContext.activeOrganizationId`. Do not replace the original proposal/key,
+change actor to regain permission, or use local persistence as authority.
+
+Prove protocol/ETag/key/identity in the client/state specs and denial-versus-late-200
+interleavings in the owning Table consumer. Mocks prove controlled transport
+and UI behavior; require distinct real protected HTTP/backend commit/read/replay
+receipts before claiming operational effects or deployed acceptance. Review the
+exact runtime source and its focused evidence before adopting this workflow.
 
 ## No Keyword Routing
 
