@@ -107,3 +107,24 @@ remain unchanged. SDK worker composition and its private packaged-consumer proof
 resolve a current-main host dependency incompatibility, publish a release, enable ASYNC202
 or close B7. Separate original RED fixture campaigns, targeted repairs and reused PG
 proofs; do not announce a fresh green full verify from their combined test counts.
+
+## Rebase the adapter onto the current host
+
+Inspect the current resolver and execution service before reusing a historical
+off-request patch. Preserve connection-acquisition reserves, the current-grant
+query deadline, diagnostic reasons, HTTP header checks and Config attribute
+hygiene. Share the admission body instead of replacing the current classes with
+an older candidate.
+
+A callback factory must perform no I/O and allocate independent prepared state
+for each pair. Admission resolves the persisted kernel subject with the complete
+server-bound operation and namespace; an unrelated SecurityContext must have no
+effect. Mutation consumes prepared state once, and cleanup only clears that
+state. Test two interleaved pairs, failed admission and cleanup, plus the existing
+HTTP path. Unit doubles establish adapter behavior, not a physical grant lock or
+domain/receipt atomicity; those require the scoped Neon consumer proof.
+
+An adapter can be prepared while the host still accepts only SYNC. Do not silently
+open ASYNC in unit-input validation or wire an automatic worker as part of the
+extraction. Public SDK admission, authenticated capacity provisioning, the host
+HTTP contract and exact-artifact deployment each retain their own acceptance.
