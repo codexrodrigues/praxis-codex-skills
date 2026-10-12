@@ -1295,10 +1295,13 @@ sequence, including the authorized read after commit. A sum of phase limits is n
 an enforced global deadline. Distinguish this host preparation boundary from the
 unchanged SDK mutation-unit budget; the BASIC change does not certify ATOMIC.
 Prove phase isolation, one capture clock, expired capture denial and preservation of
-expectation/validity with focused tests. Then require an isolated Neon evaluation
-that returns its persisted proposal through the authorized reader, with unchanged
-domain/control state, before repeating the complete HTTP journey. Preserve any
-proposal produced by an uncertain response; do not automatically retry or reset it.
+expectation/validity with focused tests. Require an isolated Neon evaluation that
+returns its persisted proposal through the authorized reader, with unchanged
+domain/control state. Prefer a focused probe; an explicit stage of the existing
+remote HTTP journey may provide this proof when a local probe stops upstream of
+the changed path. Keep that local failure recorded as inconclusive for the patch,
+not passing. Investigate any new failure before another run. Preserve any proposal
+produced by an uncertain response; do not automatically retry or reset it.
 
 ## Prove Candidate ATOMIC Bulk HTTP
 
