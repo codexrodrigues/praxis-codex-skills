@@ -1484,6 +1484,18 @@ bytes, and a current exclusive control-plane assignment for the API and Config
 Neon child branches.
 Keep their child-only credentials in the runner's private mode-0600 input, never
 in the checkout or uploaded evidence.
+Use one reviewed artifact expectation for both packaged-JAR and JVM class-origin
+checks, and validate it against the host POM during dependency adoption. On host
+shutdown, retain bounded log/classload hashes and termination evidence even when
+origin validation fails; preserve the primary failure and release the owned process
+reference without turning an origin mismatch into PASS. Test this failure path offline.
+If the public scanner rejects evidence, keep its result failed. A separate closed
+`REJECTED` scanner receipt may expose only fixed checkpoint/component names, bound
+source/run identities and hashes, plus failed-proof context that already passed
+schema and raw/decoded secret checks. It is diagnostic metadata, never accepted
+HTTP or backend proof. Do not upload raw logs or rejected sidecars; if privacy inputs
+or fallback validation are unavailable, emit no fallback artifact. Diagnose the
+recorded rejection and correct its cause before rerunning the remote journey.
 
 For lifecycle OpenAPI on Render, merge `springdoc.cache.disabled=true`
 and an empty `app.openapi.internal-base-url` into the existing
