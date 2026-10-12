@@ -1442,12 +1442,15 @@ baseline. Require cold-node reconcile in the real HTTP journey; an offline
 ordering test does not certify the whole READY flow.
 
 For this journey, use the bounded code-only terminal event emitted by the host's
-publication controller, not mass `JavaExceptionThrow` recording. Collect two fixed
-windows: the first valid PUBLISH from host 1 and the cold RECONCILE from host 2.
-Bind `publish-diagnostics.json` and `reconcile-diagnostics.json` respectively to
-the expected command, process, private log offsets, time window, source and host
-JAR hashes. A sidecar cannot borrow another host's log or a phase that was never
-reached. These windows do not cover every other HTTP call or assertion.
+publication controller, not mass `JavaExceptionThrow` recording. Collect the five
+fixed positive administrative stages: initial PUBLISH, warm RECONCILE, SUSPEND and
+republish on host 1, then cold RECONCILE on host 2. Keep each stage in a separate
+allowlisted sidecar, including successful commands, so a later failure does not
+lose the preceding timings. Expected negative requests such as stale CAS remain
+outside these windows. Bind every sidecar to its closed stage/command pair,
+process, private log offsets, time window, reached prerequisite, source and host
+JAR hashes. A sidecar cannot borrow another stage's or host's log or a phase that
+was never reached. These windows do not cover other HTTP calls or assertions.
 Export only the closed diagnostic projection: class/method/line
 and bounded cause/suppressed references, never throwable messages, SQL or request
 data. Distinguish one terminal event, absence, ambiguity and unavailable capture;
