@@ -72,6 +72,47 @@ comparison only from renderer-neutral Praxis config. Keep ECharts series/options
 derived and transient. Preserve feature-injector locale, accessible table
 contrast, semantic point identity, and deterministic resize/dispose behavior.
 
+## Host Theme Color Materialization
+
+When implementing CSS-driven chart appearance, inspect the private
+`adapters/echarts/echarts-host-colors.ts` path and the component's ancestor theme
+observer. Existing canonical palette, series, surface and gauge color fields
+already accept strings; do not add a parallel theme input or raw engine options
+only to carry host colors.
+
+Resolve CSS custom properties in the actual chart host and project modern CSS
+colors into Canvas-compatible sRGB at render time. Copy only canonical color
+fields; preserve authored documents, rows, valid literal colors and explicit
+series overrides. Cache within one render, clean probes in all exit paths and
+use bounded field-appropriate fallbacks for missing/cyclic tokens or unavailable
+DOM/Canvas. Clear CSSOM probe values before assignments that the browser may reject;
+isolate the probe's color assignment from host/global descendant selectors,
+including `!important`, while preserving inherited custom properties. Prove this
+with `var()`, OKLCH/color-mix and tooltip foreground/background under hostile CSS.
+Treat persisted JSON as untyped: canonical palette validation must reject non-string,
+blank or invalid-container values before mapping; the private renderer must also
+narrow color values before trimming and use bounded fallbacks for malformed direct
+runtime inputs. Include validator/mapper and adapter tests, not only typed fixtures.
+
+Classify renderer compatibility with its actual color parser, not an alphabetic or
+regex guess that would mistake CSS system colors for engine-supported names.
+Semantic gauge tones should follow host status colors while valid explicit colors
+retain precedence.
+
+Tooltip chrome should consume existing host popover/foreground/border roles through
+the same private resolver. Materialize only tooltips enabled by the option compiler;
+preserve trigger, formatter, disabled absence and responsive base/media options.
+Do not introduce persisted tooltip color fields to repair engine light defaults.
+
+A class/style/data-theme change must repaint even if the inherited theme document
+or text color is unchanged. Prove token changes, separate hosts, cleanup, alpha,
+SSR/import safety and color-document immutability. Palette editors must split
+only top-level separators so `rgb(...)` and nested `var(..., fallback)` survive
+edit/apply/reopen. Confirm the consumed package contains this materialization
+before advising a host to use token-bound colors; older packages may forward
+`var()` directly to the engine. Fixed palette literals remain intentional and
+must not be silently replaced on theme changes.
+
 ## Event Materialization
 
 - Convert series clicks to `PraxisChartPointEvent`; never emit raw ECharts params.
