@@ -1272,6 +1272,37 @@ For bulk unit admission, inspect the Metadata-owned published-photograph path be
 
 Prove uniform and per-item HTTP+PostgreSQL flows against the exact candidate artifact with the unchanged execution budget: positive domain/audit/receipt commit, stale-target denial without mutation, authorized delegated reads, unauthorized reads, and replay without another domain call. A getter that copies only its requested group does not prove the complete multi-group resolver fits the budget. Record source/artifact hashes and admission reasons; do not raise timeouts or claim adoption from compile-only/local-override evidence. Published dependency validation without an override remains a separate release/adoption gate.
 
+## Bound BASIC Proposal Preparation and Capture Separately
+
+For `MissionParticipantProposalService`, distinguish preliminary authenticated
+admission/readiness, preparation, and the writable capture unit. Inspect the exact
+host source before diagnosing an evaluation 503: a pool-reserve guard may reject
+before opening SQL, after the same clock was consumed by readiness composition.
+Correlate the request stage, monotonic remainder and final durable state. A local
+instrumented reproduction does not establish the cause or timing of a prior CI run.
+
+Keep preliminary authorization before expensive readiness composition, and readiness
+before preparing the intent. Give preparation a finite deadline. Start the capture
+unit's deadline once after preparation; share it through pool acquisition, writable
+RR storage, retained current-grant authorization, projection and precommit checks.
+Do not renew it inside callbacks. Preserve the prepared proposal's created/expiry
+timestamps and the exact readiness expectation: locked checks must reject a changed
+publication and require current authorization and sufficient target coverage. Do not reuse discovery response
+frames as a capture authorization cache or enlarge SQL/transaction deadlines.
+
+Verify the implemented limits in source and size the HTTP observer for the complete
+sequence, including the authorized read after commit. A sum of phase limits is not
+an enforced global deadline. Distinguish this host preparation boundary from the
+unchanged SDK mutation-unit budget; the BASIC change does not certify ATOMIC.
+Prove phase isolation, one capture clock, expired capture denial and preservation of
+expectation/validity with focused tests. Require an isolated Neon evaluation that
+returns its persisted proposal through the authorized reader, with unchanged
+domain/control state. Prefer a focused probe; an explicit stage of the existing
+remote HTTP journey may provide this proof when a local probe stops upstream of
+the changed path. Keep that local failure recorded as inconclusive for the patch,
+not passing. Investigate any new failure before another run. Preserve any proposal
+produced by an uncertain response; do not automatically retry or reset it.
+
 ## Prove Candidate ATOMIC Bulk HTTP
 
 For the Mission Participant pilot, inspect `MissaoParticipanteController`,
@@ -1458,9 +1489,25 @@ paths or cause/suppressed graphs. Empty or absent frames do not prove a cause, a
 a test call site identifies where the assertion failed, not the SDK failure cause.
 The defensive projection must preserve the primary test outcome and pass the same
 closed-shape and raw/decoded-secret checks as the receipt.
-Export only the closed diagnostic projection: class/method/line
+For BASIC evaluation, collect a separate bounded host scope for the same request,
+process and exact source/artifact. Retain the first availability failure observed
+at the host interception point before safe wrappers replace it, with monotonic
+phase intervals and the existing reader outcome. Diagnostics must not add budget
+getter calls, grant/policy reevaluation or storage probes. When a storage or reader
+boundary hides the origin, retain `originLost` and `opaqueBoundary`; the boundary
+and host call site do not recover an SDK exception or establish SDK causality.
+`commitAcknowledged=false` means no acknowledgement was observed, not rollback;
+confirm durable proposal/control/domain state with protected read-only readback.
+This scope supplements the five administrative windows and preserves the primary
+test-frame limits; it must not change the original HTTP outcome or work.
+Export only the closed diagnostic projection: class/method/line, nullable SQLSTATE
 and bounded cause/suppressed references, never throwable messages, SQL or request
-data. Distinguish one terminal event, absence, ambiguity and unavailable capture;
+data. Each primary/cause/suppressed graph node must include `sqlState`: only a
+SQLException's SQLSTATE matching five ASCII characters `[0-9A-Z]{5}`, otherwise
+`null` for non-SQL exceptions, absent or invalid values. SQLSTATE categorizes an
+observed failure; it does not prove the emitter, query or historical cause. Keep
+existing graph limits and privacy checks; never inspect server-error fields or
+traverse `nextException` chains. Distinguish one terminal event, absence, ambiguity and unavailable capture;
 none of these states proves rollback. Numeric completed SpringDoc durations may
 support diagnosis, but caught framework exceptions and static group counts alone
 do not establish a performance bottleneck. Keep raw logs private and preserve the
