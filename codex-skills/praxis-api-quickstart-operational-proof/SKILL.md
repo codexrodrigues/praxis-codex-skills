@@ -1445,13 +1445,13 @@ For the packaged BASIC/READY host proof, inspect the
 ref resolved to the full candidate SHA, and require `GITHUB_SHA`,
 `GITHUB_WORKFLOW_SHA` and `CANDIDATE_SHA` to match that commit; the historical
 Docker/local-Postgres lane is separate. Require the packaged public Metadata
-`8.0.0-rc.158` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
+`8.0.0-rc.160` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
 bytes, and a current exclusive control-plane assignment for the API and Config
 Neon child branches.
 Keep their child-only credentials in the runner's private mode-0600 input, never
 in the checkout or uploaded evidence.
 
-For the rc.158 lifecycle OpenAPI on Render, merge `springdoc.cache.disabled=true`
+For lifecycle OpenAPI on Render, merge `springdoc.cache.disabled=true`
 and an empty `app.openapi.internal-base-url` into the existing
 `SPRING_APPLICATION_JSON` overlay, then check the served document after READY.
 Inspect Metadata's `docs/spec/BULK-OPERATION-LIFECYCLE.md` and
