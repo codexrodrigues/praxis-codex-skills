@@ -135,8 +135,8 @@
                                             "praxis-metadata-schema-contracts",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "34F3A57FF23DDA362A0EB41229B4494617DF91DB804428AEA73F2624C343EF91",
-                       "treeSha256":  "5AD5B3957361B7A98721CB31E61931B11AE80CE6F26BC101807AF60A76F3F662"
+                       "skillMdSha256":  "8A7A10ABC07F40FE0F7DACF349E51C9757E54BC6879F15749D1B2F45FE27582C",
+                       "treeSha256":  "064B2BFEC8C509BE00FEE0ECCBBD9F6173BA35D870A9689015F1BCD13F94397E"
                    },
                    {
                        "name":  "praxis-java-error-response-contracts",
@@ -2473,8 +2473,8 @@
                                             "praxis-http-examples-llm-smoke",
                                             "praxis-java-autoconfiguration-starter-maintenance"
                                         ],
-                       "skillMdSha256":  "80300E0AABD008B9F143D9E4D2B1A0078C4332D655C95412F90BFE8B5A4398BC",
-                       "treeSha256":  "2C606E28189A2C9434C27E3CFD16D47C108D72383A5996D02BEBEBAA9F8A3903"
+                       "skillMdSha256":  "B952191350D77D758F26E88B8B039AA78F5A5C759FB4BBB814EECD1093ED0238",
+                       "treeSha256":  "B57EFFA55BBA3ACF31E11F8583348C30C8ACF09FBC7144202E6648F99015106C"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
