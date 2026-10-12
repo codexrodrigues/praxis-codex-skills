@@ -1289,6 +1289,19 @@ For bulk unit admission, inspect the Metadata-owned published-photograph path be
 
 Prove uniform and per-item HTTP+PostgreSQL flows against the exact candidate artifact with the unchanged execution budget: positive domain/audit/receipt commit, stale-target denial without mutation, authorized delegated reads, unauthorized reads, and replay without another domain call. A getter that copies only its requested group does not prove the complete multi-group resolver fits the budget. Record source/artifact hashes and admission reasons; do not raise timeouts or claim adoption from compile-only/local-override evidence. Published dependency validation without an override remains a separate release/adoption gate.
 
+For `MissionParticipantBulkCanonicalContract`, resolve the trusted registered MVC refs
+and check declared IDs, methods, resource and group, capture one exact group snapshot,
+then call `requireResourceOperations` for the complete batch BEFORE resolving the three
+bodies with `requireResourceRequestBody(resourceKey, CanonicalOperationRef, TypeFactory)`.
+That overload requires a snapshot-validated ref. Preserve full generic DTO resolution,
+returned-ref equality, cross-group operation-ID collisions, fields/revision evidence and
+the published scope's two durable guards. Reusing this immutable structural photograph
+is not permission to cache grant/policy decisions or remove the independent pool reserve.
+Prove order and fail-closed behavior with the real resolver and shared BASIC/ATOMIC paths;
+reduced collision-domain scans or passing SQL fixtures do not certify the full five-second
+host unit. Pin the eventual public artifact and prove commit/read/replay through the full
+HTTP journey and separate deployed Render gate before claiming operational acceptance.
+
 ## Bound BASIC Proposal Preparation and Capture Separately
 
 For `MissionParticipantProposalService`, distinguish preliminary authenticated
