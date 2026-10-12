@@ -1387,6 +1387,94 @@ full bootstrap and deployed Neon/Render evidence. Combined accepted focal cases 
 not erase a failed broader verify. Reuse unaffected valid cases; do not repeat them
 merely to produce a new aggregate count.
 
+For the packaged BASIC/READY host proof, inspect the
+`quickstart-basic-ready-neon` cut in
+`.github/workflows/bulk-reference-consumer-proof.yml` and its
+`BulkBasicReadyPackagedNeonProof` test. Dispatch from the reviewed branch or tag
+ref resolved to the full candidate SHA, and require `GITHUB_SHA`,
+`GITHUB_WORKFLOW_SHA` and `CANDIDATE_SHA` to match that commit; the historical
+Docker/local-Postgres lane is separate. Require the packaged public Metadata
+`8.0.0-rc.158` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
+bytes, and a current exclusive control-plane assignment for the API and Config
+Neon child branches.
+Keep their child-only credentials in the runner's private mode-0600 input, never
+in the checkout or uploaded evidence.
+
+For the rc.158 lifecycle OpenAPI on Render, merge `springdoc.cache.disabled=true`
+and an empty `app.openapi.internal-base-url` into the existing
+`SPRING_APPLICATION_JSON` overlay, then check the served document after READY.
+Inspect Metadata's `docs/spec/BULK-OPERATION-LIFECYCLE.md` and
+`docs/technical/AUTO-CONFIGURACAO.md`, plus the host's
+`src/main/resources/application-prod.properties` and README: its shared
+`APP_OPENAPI_INTERNAL_BASE_URL` also feeds AI schema/capability URLs. Do not clear
+that shared environment variable to fix the lifecycle lookup.
+
+When diagnosing a publish 503, distinguish the control/runtime transaction deadline
+from fresh OpenAPI capture. Inspect the exact released
+`OpenApiInternalRestTemplate`, `CachedOpenApiDocumentService` and
+`OpenApiDocsSupport` sources and the host's
+`docs/operational-bulk-publication.md`. A response timeout while the root document
+is still being generated is not evidence of a database privilege failure. The
+host configures `praxis.openapi.http.read-timeout=60s`; this also affects ordinary
+internal OpenAPI reads. Governed capture still uses the lesser of that response
+budget and the remaining aggregate `praxis.openapi.bulk-composition-timeout`
+(SDK default 60s). The Quickstart configures that existing composition property
+at 120s for its complete root, groups and swagger-config capture. This property
+also governs other composition scopes, including lock acquisition, descriptor
+composition, installation and reads; it is not a single whole-publish deadline.
+Do not renew the aggregate budget per document, weaken transaction deadlines, or
+remove schemas/advice to make capture pass. The administrative proof client allows
+180s to observe the lifecycle's distinct stages, while the diagnostic validator
+accepts a window up to 240s; neither changes SDK semantics or permits retrying an
+uncertain publish. Confirm both settings in the exact deployed host artifact and
+require full cold capture/READY/HTTP evidence before calling the sizing sufficient.
+
+Cold reconciliation compares the exact producer response bytes with the durable
+publication digest. The reference host enables the existing SpringDoc
+`springdoc.writer-with-order-by-keys=true` so map/property insertion order does
+not change that photograph across JVMs. Inspect SpringDoc's actual OpenAPI writer
+and test typed OpenAPI/Schema documents with nested extension maps in opposite
+orders; verify identical sorted bytes while preserving array order and values.
+A generic map serializer alone does not prove the production writer. Do not
+normalize only the digest, ignore differing fields, or replace a stored digest.
+Changed producer bytes require a new authorized publication on the applicable
+baseline. Require cold-node reconcile in the real HTTP journey; an offline
+ordering test does not certify the whole READY flow.
+
+For this journey, use the bounded code-only terminal event emitted by the host's
+publication controller, not mass `JavaExceptionThrow` recording. Collect two fixed
+windows: the first valid PUBLISH from host 1 and the cold RECONCILE from host 2.
+Bind `publish-diagnostics.json` and `reconcile-diagnostics.json` respectively to
+the expected command, process, private log offsets, time window, source and host
+JAR hashes. A sidecar cannot borrow another host's log or a phase that was never
+reached. These windows do not cover every other HTTP call or assertion.
+Export only the closed diagnostic projection: class/method/line
+and bounded cause/suppressed references, never throwable messages, SQL or request
+data. Distinguish one terminal event, absence, ambiguity and unavailable capture;
+none of these states proves rollback. Numeric completed SpringDoc durations may
+support diagnosis, but caught framework exceptions and static group counts alone
+do not establish a performance bottleneck. Keep raw logs private and preserve the
+original HTTP outcome when the diagnostic sink fails.
+
+Accept only the selected test's zero-failure XML and a reviewed, sanitized v1
+receipt bound to the candidate/workflow SHA, assignment and branch attestation
+hashes, and host/nested JAR hashes. Require all nine named phases, including
+SESSION/current-grant checks, publication CAS and cold-node reconcile, BASIC
+HTTP commit/read/replay and revocation, plus two started and terminated host
+processes with private class-load evidence. Diagnose a failed phase against its
+private logs and exact source before any new dispatch; a protected SQL-readback
+recipe failure before host startup, including a `psql` meta-command mismatch,
+is not an HTTP result and must not be bypassed by retrying publish or confirm.
+Preserve the failed receipt and use a new reviewed exact SHA for a corrected run.
+The protected readback alone cannot certify HTTP, SESSION or READY behavior.
+
+Even a passing isolated-child receipt does not certify Config policy outage or
+mutation, cancellation before the first unit, browser navigation, ASYNC/ATOMIC,
+or Render HTTPS deployment. Keep the deployed Render gate and its actual
+credentials, session and publication evidence separate from the Neon fixture;
+do not report BASIC/READY operational acceptance until the remote run and its
+independent review have passed.
+
 ## Managed-owner bulk execution adoption
 
 For bulk installation by a non-superuser CREATEROLE database owner, inspect the
