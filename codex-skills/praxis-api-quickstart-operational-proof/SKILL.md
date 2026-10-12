@@ -727,8 +727,17 @@ these bindings with local installs, another valid build, or an older BASIC recei
    receives runtime/control/Config credentials; the browser receives only real
    SESSION/XSRF cookies. Reuse the installed enterprise schema and its preparation
    evidence, without startup DDL or a claim that this cut proves schema installation.
-2. Bootstrap one canonical publication and inspect READY. Authenticate through the
-   real session/CSRF flow, read choices and prove switch CAS with one winner and one
+2. Bind `enterprise_start` to the identical `assignment.enterpriseStart` value.
+   `FRESH` requires UNCOMPOSED and publishes once. `CONTINUE_READY` requires the
+   private `continuationBinding` envelope field, tying the prior proof, source,
+   artifact and complete-row hashes to the assigned operation and publication.
+   Compare fresh read-only snapshots of domain, grants, memberships and all seven
+   bulk stores against those hashes before starting the host. Reuse the same
+   deterministic JSON normalization, preserving duplicates and nulls; counts
+   alone are insufficient. A new JVM reconciles exactly once with expected
+   generation 1, then verifies unchanged READY1/PUBLISHED2 and publication identity.
+   Stop on mismatch or failure, without reset, new publication or implicit retry.
+   Authenticate through the real session/CSRF flow, read choices and prove switch CAS with one winner and one
    conflict, ending in organization A. Perform the four bounded membership CAS
    transitions (revoke, restore, expire, restore) with fresh protected context/Config
    reads in the same SESSION. Require denial while invalid and fresh readiness after
