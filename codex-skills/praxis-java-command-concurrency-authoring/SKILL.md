@@ -49,6 +49,17 @@ contracts, never in a host controller convention.
    with two PostgreSQL connections, DTO token/header agreement when a DTO
    token exists, stale token `412`, empty-revision rollback, and replay without
    token renewal. Do not infer a snapshot of links or related entities.
+   Preserve the strong token through the deployed HTTP path. Compression proxies
+   can weaken an origin ETag: compare the actual GET under identity and supported
+   compressed encodings before blaming database version drift. Never strip `W/`,
+   accept weak tokens as strong, or synthesize a token in the consumer. Inspect
+   Metadata `AbstractResourceQueryController.withResourceVersion` as the canonical
+   response owner: versioned responses require `Cache-Control: no-transform`
+   without discarding existing cache policy or the host's no-store defaults.
+   Verify GET/create/update/historical replay, responses without a captured version,
+   quoted and multiple Cache-Control values, and the real security header chain.
+   A local header test does not prove the deployed proxy preserves the token;
+   close with an unchanged strong GET token accepted by the real command path.
 6. Align action catalog, capabilities, `ResourceStateSnapshot`, endpoint enforcement,
    and `_links`. Availability is not security; execution enforces the same decision.
 7. For collection commands, define per-item outcome, atomicity, partial failure, retry,
