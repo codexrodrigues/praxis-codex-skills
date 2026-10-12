@@ -1056,7 +1056,7 @@ Before invoking a domain mutation, re-check the durable unit deadline. A confirm
 replay is different: read the receipt before rejecting on expiry, because an already
 committed effect remains confirmed after its deadline.
 
-When reducing JDBC roundtrips, inspect `JdbcBulkDurableExecution.setControlLockBudget`
+When reducing JDBC executions, inspect `JdbcBulkDurableExecution.setControlLockBudget`
 and `setDeadlineBudget`. Group the unit's three LOCAL timeout updates in one statement
 using one materialized PostgreSQL `clock_timestamp()` sample against the original
 absolute deadline: floor the remaining milliseconds, cap the lock limit at one second,
@@ -1067,11 +1067,31 @@ unit ceiling; fewer statements do not authorize renewal, cached authorization or
 lock order. Prove the actual SQL's clock/expiry/rollback semantics on isolated Neon.
 A passing timeout fixture or static SQL count is not a complete host-unit, HTTP or Render
 acceptance and does not prove a performance gain or historical timeout cause.
-The published rc.162 SDK gate passed these SQL/deadline and commit/receipt/replay
+Historically, the published rc.162 SDK gate passed these SQL/deadline and commit/receipt/replay
 oracles on isolated Neon. This SDK evidence does not itself accept host HTTP9 or
 deployed Render H5. Each adoption requires independent consumer receipts bound to
 its exact source, public artifact bytes and deployment; do not reuse an earlier
 consumer receipt as acceptance.
+
+For ordered unit batches, inspect `JdbcBulkDurableExecution` and `JdbcBulkUnitBatch`.
+For PER_ITEM prepare, return the persisted unit deadline and a fresh database clock
+in the same marker UPDATE `RETURNING`. Anchor monotonic timing before JDBC execute
+and deduct its transport, decoding and result-close time from that returned balance;
+do not issue a tail clock query or renew the original five-second deadline.
+Keep dependent commands sequential and SQL-gated by the exact prior identity/attempt
+or receipt. On the accepted path, validate every rowset/update count in `getMoreResults`
+order, rejecting wrong cardinality and unexpected trailing results. Preserve priority
+negatives: reject immediately without decoding later results or changing their failure class.
+Recheck the original monotonic remainder after JDBC returns and decoding, before each
+callback; never renew the persisted five-second deadline or widen stricter/one-second
+SQL and lock limits. A missing receipt must not promote pending. Domain, receipt and
+pending must commit together or roll back; ACK stays after commit and replay repeats
+no domain effect. Count JDBC executions separately from wire RTT and elapsed time.
+The public Metadata `8.0.0-rc.164` SDK gate passed the ordered-unit expiry, fencing,
+receipt-prefix and finite latency-profile oracles on isolated Neon, through real
+commit/readback/replay with the original bounds. This accepts the SDK profile only;
+narrower PER_ITEM/SYNC evidence does not certify ASYNC, complete host latency or
+deployed Render behavior. Bind host adoption to separate exact-artifact receipts.
 
 When proving a received remaining budget under lock contention, keep the real blocker
 held until the waiter finishes and correlate PostgreSQL waiter/blocker PIDs and the

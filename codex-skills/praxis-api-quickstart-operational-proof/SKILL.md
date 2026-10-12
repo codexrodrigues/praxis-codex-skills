@@ -1299,12 +1299,30 @@ the published scope's two durable guards. Reusing this immutable structural phot
 is not permission to cache grant/policy decisions or remove the independent pool reserve.
 Prove order and fail-closed behavior with the real resolver and shared BASIC/ATOMIC paths;
 reduced collision-domain scans or passing SQL fixtures do not certify the full five-second
-host unit. The public Metadata `8.0.0-rc.162` SDK gate passed on isolated Neon,
+host unit. Historically, the public Metadata `8.0.0-rc.162` SDK gate passed on isolated Neon,
 including the deadline SQL oracles and commit/receipt/replay. That SDK evidence does not
 itself accept host HTTP9 or deployed Render H5. Each adoption requires independent
 consumer receipts bound to its exact source, public artifact bytes and deployment;
 do not reuse an earlier consumer receipt as acceptance. Prove commit/read/replay
 through both gates before claiming operational acceptance.
+
+For ordered-batch adoption, reuse the Metadata `BulkOptionalPoliciesNeonTest` on its
+assigned Neon branch and ordinary runtime/control identities. Use a finite test-only
+latency profile on the same physical unit connection: record JDBC executes, real SQL
+time, imposed delay and the original live remainder. Include the prepare marker UPDATE
+whose `RETURNING` supplies deadline/clock; its pre-execute monotonic anchor consumes
+transport, decode and close without a tail clock read or deadline renewal. Fixture
+checkpoint counts are instrumentation of that exact test, not a public count contract
+or SLA. A per-execute floor includes real
+time already spent; do not add that delay blindly or instrument the product. Before
+the unchanged independent Config policy pool reserve, require a remainder strictly
+above 2.1 seconds, then continue through real commit and independent domain/receipt
+readback plus replay without a second effect. Synthetic host cost and JDBC counts are
+not wire RTT, a Render SLA or complete host evidence. Preserve five-second/one-second
+bounds; do not accept a candidate from reaching admission or a passing mock alone.
+The public Metadata `8.0.0-rc.164` SDK gate passed this physical Neon profile, including
+the pre-policy reserve, commit/readback/replay and the four ordered-unit markers.
+Require separate exact-artifact HTTP and deployed Render proof before claiming adoption.
 
 ## Bound BASIC Proposal Preparation and Capture Separately
 
@@ -1479,7 +1497,7 @@ For the packaged BASIC/READY host proof, inspect the
 ref resolved to the full candidate SHA, and require `GITHUB_SHA`,
 `GITHUB_WORKFLOW_SHA` and `CANDIDATE_SHA` to match that commit; the historical
 Docker/local-Postgres lane is separate. Require the packaged public Metadata
-`8.0.0-rc.162` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
+`8.0.0-rc.164` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
 bytes, and a current exclusive control-plane assignment for the API and Config
 Neon child branches.
 Keep their child-only credentials in the runner's private mode-0600 input, never
