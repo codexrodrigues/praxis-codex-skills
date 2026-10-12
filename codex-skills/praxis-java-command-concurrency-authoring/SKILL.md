@@ -206,6 +206,23 @@ with `JdbcBulkCapacityIssuerPostgresTest` before teaching adoption. This
 cut has no install, enqueue, retirement, worker, ASYNC, HTTP `202`, or
 `READY`; neither issuer construction nor focused tests certify those paths.
 
+The managed PostgreSQL 17 authority increment is a separate candidate from the
+accepted execution-storage installation. Inspect its migration lineage, V1/V2
+resources and live membership checks before adoption. Applied published resources
+must retain their exact bytes and checksums; only pending versions select corrected
+resources through the internal lineage resolver. Do not repair Flyway history or
+remove inherited grants to make installation pass. An administrative membership
+exception must confer neither INHERIT nor SET, identify the trusted schema owner
+and superuser grantor, and reject unexpected edges. Temporary ownership grants must
+be revoked using the same grantor, preserving the managed administrative edge.
+Prove installation, validation, unchanged replay and unsafe-edge rejection on an
+assigned Neon branch with actual ordinary caller credentials. A newly installed
+managed V1-to-V2 proof is not proof of adoption from the original published V1;
+keep that historical adoption pending without a genuine predecessor. A rolled-back
+V1 may leave only Flyway's schema marker: continuation requires exact history and
+catalog checks before DDL, not treating the database as fresh. These instructions
+describe the candidate's gates, not a completed release or ASYNC host activation.
+
 For the B5b.1b.A internal installation candidate, inspect
 `JdbcBulkCapacityInstallation`, `JdbcBulkCapacityIssuer.CapacityReader`, authority V2
 and operational V18 with their PostgreSQL tests. Source compilation or the existence
