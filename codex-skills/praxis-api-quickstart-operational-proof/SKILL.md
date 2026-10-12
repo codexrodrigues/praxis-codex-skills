@@ -1500,9 +1500,14 @@ and host call site do not recover an SDK exception or establish SDK causality.
 confirm durable proposal/control/domain state with protected read-only readback.
 This scope supplements the five administrative windows and preserves the primary
 test-frame limits; it must not change the original HTTP outcome or work.
-Export only the closed diagnostic projection: class/method/line
+Export only the closed diagnostic projection: class/method/line, nullable SQLSTATE
 and bounded cause/suppressed references, never throwable messages, SQL or request
-data. Distinguish one terminal event, absence, ambiguity and unavailable capture;
+data. Each primary/cause/suppressed graph node must include `sqlState`: only a
+SQLException's SQLSTATE matching five ASCII characters `[0-9A-Z]{5}`, otherwise
+`null` for non-SQL exceptions, absent or invalid values. SQLSTATE categorizes an
+observed failure; it does not prove the emitter, query or historical cause. Keep
+existing graph limits and privacy checks; never inspect server-error fields or
+traverse `nextException` chains. Distinguish one terminal event, absence, ambiguity and unavailable capture;
 none of these states proves rollback. Numeric completed SpringDoc durations may
 support diagnosis, but caught framework exceptions and static group counts alone
 do not establish a performance bottleneck. Keep raw logs private and preserve the
