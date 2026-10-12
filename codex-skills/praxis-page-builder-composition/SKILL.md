@@ -98,6 +98,40 @@ matrix-owned production-like scenario for the exact archetype.
 Do not persist factory projections or readiness/receipt state in
 `WidgetPageDefinition`. Those remain derived execution evidence.
 
+## Dashboard Host And Persistence Ownership
+
+A dashboard is a `WidgetPageDefinition` consumed by Dynamic Page/Page Builder; do
+not introduce a dashboard-specific public wrapper merely to repeat a toolbar,
+identity or persistence workflow. Keep domain presentation in the host and fix
+reusable lifecycle behavior in Core. Inspect the resolved library version before
+using lifecycle APIs; previously published packages may not contain them.
+
+For manual pages, the builder can opt in to Core persistence with `autoPersist` and
+`pageIdentity`. Its default is false, preserving host-owned persistence. Do not
+also save `pageChange` in the host. Runtime `persistenceChange` is operational
+feedback, not a persisted page field or AI `runtimeInputs` entry. Show success only
+after storage acknowledgement; distinguish loading, saved, idle/factory and error.
+Forward identity before loading another owner's page and restore the host seed on
+a miss. Never copy a shared persona cache into a new owner's configuration.
+
+`resetPersistedPage(defaultPage)` restores the supplied default only after clear
+acknowledgement. `reloadPersistedPage(defaultPage)` explicitly discards a draft and
+reloads storage; a missing document uses that default. Surface this intent in UX.
+For transient save failures, offer `retryPersistedPage()` to retain the current draft,
+including an empty page, without emitting host save lifecycle events. Conflicts still
+require explicit reload; do not make discarding a draft the only recovery choice.
+Core serializes mutations, ignores obsolete identity responses, retains edits made
+while loading/resetting and blocks conflicted writes until an explicit reload.
+Persisted empty pages are valid; do not append factory widgets or overwrite saved
+child inputs during rehydration. Test child `enableCustomization` with a stored
+value different from the host seed and assert there is no load-to-save echo.
+
+Keep automatic generic persistence disabled for `authoringDocument` and agentic
+previews. Governed apply owns revision/provenance; enabling a generic autosave must
+not bypass it. Use focused Core and builder persistence specs plus real host UI
+save/reopen/reset and identity-switch proof. Mocked HTTP browser tests do not prove
+remote database behavior; database-dependent proof requires an isolated Neon branch.
+
 ## Public API
 
 Treat `projects/praxis-page-builder/src/public-api.ts` as public contract. Changes can affect hosts, AI registry ingestion, `@praxisui/core`, Settings Panel bridge, child component config editors, docs, and examples. Map those consumers before changing exports.
