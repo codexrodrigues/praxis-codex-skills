@@ -22,6 +22,9 @@ Inspect before editing:
 - `projects/praxis-table/src/lib/ai/table-context-pack.ts`
 - `projects/praxis-table/src/lib/ai/table-agentic-authoring-turn-flow.ts`
 - focused selection, bulk, export, global action, config editor, and AI context specs.
+- `projects/praxis-table/src/lib/bulk-sync/table-bulk-sync-workflow.component.ts`, its template and spec
+- `projects/praxis-table/src/lib/praxis-table.bulk-sync.spec.ts`
+- `projects/praxis-table/test-dev/e2e/table-bulk-sync-governed.playwright.spec.ts`
 
 Inspect `@praxisui/core` collection export models/services and global action payload contracts when export or actions cross package boundaries.
 
@@ -44,6 +47,43 @@ Inspect `@praxisui/core` collection export models/services and global action pay
 Selection and filter announcements use semantic record/point identity and
 current governed state. Preserve focus across CRUD overlays and data refresh;
 do not rebuild selection from rendered row indexes.
+
+## BASIC Uniform Bulk Workflow
+
+For the first uniform UI, consume `UNIFORM_UPDATE / SYNC / EXPLICIT / PER_ITEM`
+through the existing Core bulk client/session and published editable-field schema.
+Capture selection by exact wire identity, canonical self links and strong resource
+ETags, with complete operation/resource and enterprise scope, including organization.
+Evaluation prepares a protected preview without domain effects. Confirmation is a
+separate explicit action using the original proposal and one stable key per intent;
+uncertain responses/replay do not authorize a fresh proposal or automatic mutation.
+
+Keep intent custody separate from the currently authorized screen projection. A
+401/403/404/410 from proposal, preview, execution or results must hide retained
+intent/form values, diagnostics, totals, rows and cursors and disable confirmation.
+Invalidate the projection epoch on denial or context loss; ignore every late response
+from an earlier epoch, including 200. Returning to the same scope requires complete
+fresh authorized proposal/preview or execution/results reads before any redisplay.
+An organization A → unavailable → B transition must not show or confirm A's intent.
+For an intent with uncertain confirmation or a pending execution, returning to A
+retains original custody/key but requires that fresh reauthorization. An unconfirmed
+proposal may be discarded on context change; do not promise universal retention.
+Do not treat a refreshed metadata label as a different business intent.
+
+Render all nine global execution totals from the authorized backend snapshot:
+`targetCount`, `pending`, `confirmed`, `unchanged`, `denied`, `invalid`, `conflict`,
+`notProcessed`, and `unknown`. A partial results page never determines those totals
+or proves that unloaded targets succeeded. Keep cursor pages bound to the intent
+and context; the legacy `details[{id,ok,error}]` collection outcome is a separate path.
+
+Prove open-screen revocation for all four statuses, late-200 epoch rejection,
+organization transitions, complete reauthorization and mixed global totals with an
+incomplete page in the workflow/Table specs. Use the existing governed Playwright
+fixture for keyboard/narrow-screen UI proof, and record it as mocked transport;
+real protected HTTP and backend effect/replay proof require separate receipts.
+Review Core/Table READMEs and the real host composition as derived references.
+Review the exact runtime source and focused evidence before adoption; real HTTP
+acceptance remains a separate gate from these UI proofs.
 
 ## Per-Item Collection Outcomes
 
