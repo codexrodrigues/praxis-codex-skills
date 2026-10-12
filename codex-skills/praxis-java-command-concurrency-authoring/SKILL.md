@@ -139,7 +139,10 @@ order and let the canonical occupancy trigger arbitrate the bounded queue hint.
 An uncertain outcome requires readback of the same identity, not a fresh key.
 
 Prove an external-package consumer, real runtime credentials and two worker JVMs
-on an exclusively assigned Neon branch. Cover capture without effects, one queued
+on an exclusively assigned Neon branch. For a fresh installation, inspect inherited
+cluster roles and memberships as well as empty database schemas: a new database
+still shares those cluster roles. Use a compatible clean baseline instead of
+rewriting inherited grants to satisfy the installer. Cover capture without effects, one queued
 execution, replay after suspension/full capacity, current-grant revocation,
 rollback after mutation failure, queue time in the deadline and restart without
 duplicate effects. Tie source, dependencies, raw results and cleanup to the same
