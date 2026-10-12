@@ -1429,6 +1429,18 @@ accepts a window up to 240s; neither changes SDK semantics or permits retrying a
 uncertain publish. Confirm both settings in the exact deployed host artifact and
 require full cold capture/READY/HTTP evidence before calling the sizing sufficient.
 
+Cold reconciliation compares the exact producer response bytes with the durable
+publication digest. The reference host enables the existing SpringDoc
+`springdoc.writer-with-order-by-keys=true` so map/property insertion order does
+not change that photograph across JVMs. Inspect SpringDoc's actual OpenAPI writer
+and test typed OpenAPI/Schema documents with nested extension maps in opposite
+orders; verify identical sorted bytes while preserving array order and values.
+A generic map serializer alone does not prove the production writer. Do not
+normalize only the digest, ignore differing fields, or replace a stored digest.
+Changed producer bytes require a new authorized publication on the applicable
+baseline. Require cold-node reconcile in the real HTTP journey; an offline
+ordering test does not certify the whole READY flow.
+
 For this journey, use the bounded code-only terminal event emitted by the host's
 publication controller, not mass `JavaExceptionThrow` recording. Collect two fixed
 windows: the first valid PUBLISH from host 1 and the cold RECONCILE from host 2.
