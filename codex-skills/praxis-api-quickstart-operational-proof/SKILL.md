@@ -1442,12 +1442,22 @@ baseline. Require cold-node reconcile in the real HTTP journey; an offline
 ordering test does not certify the whole READY flow.
 
 For this journey, use the bounded code-only terminal event emitted by the host's
-publication controller, not mass `JavaExceptionThrow` recording. Collect two fixed
-windows: the first valid PUBLISH from host 1 and the cold RECONCILE from host 2.
-Bind `publish-diagnostics.json` and `reconcile-diagnostics.json` respectively to
-the expected command, process, private log offsets, time window, source and host
-JAR hashes. A sidecar cannot borrow another host's log or a phase that was never
-reached. These windows do not cover every other HTTP call or assertion.
+publication controller, not mass `JavaExceptionThrow` recording. Collect the five
+fixed positive administrative stages: initial PUBLISH, warm RECONCILE, SUSPEND and
+republish on host 1, then cold RECONCILE on host 2. Keep each stage in a separate
+allowlisted sidecar, including successful commands, so a later failure does not
+lose the preceding timings. Expected negative requests such as stale CAS remain
+outside these windows. Bind every sidecar to its closed stage/command pair,
+process, private log offsets, time window, reached prerequisite, source and host
+JAR hashes. A sidecar cannot borrow another stage's or host's log or a phase that
+was never reached. These windows do not cover other HTTP calls or assertions.
+For failures outside those windows, retain at most eight ordered primary test
+frames from the exact two allowlisted harness/fixture classes, bound to the source
+SHA. Export only class, bounded method identifier and line; never messages, file
+paths or cause/suppressed graphs. Empty or absent frames do not prove a cause, and
+a test call site identifies where the assertion failed, not the SDK failure cause.
+The defensive projection must preserve the primary test outcome and pass the same
+closed-shape and raw/decoded-secret checks as the receipt.
 Export only the closed diagnostic projection: class/method/line
 and bounded cause/suppressed references, never throwable messages, SQL or request
 data. Distinguish one terminal event, absence, ambiguity and unavailable capture;
