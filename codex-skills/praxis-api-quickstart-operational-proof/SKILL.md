@@ -704,6 +704,71 @@ context composition alone does not register its layout lifecycle. This host acti
 remains candidate until its exact source/composition and protected HTTP proof are reviewed;
 published Config162 contracts and the independently accepted BASIC proof stay separate.
 
+### Prove Enterprise Context With The Real Angular Consumer
+
+Use the manual `Bulk reference consumer proof` cut
+`enterprise-angular-uniform-neon` for the finite enterprise/BASIC integration.
+Inspect its workflow, `scripts/enterprise-angular-proof/run.py`, closed receipt
+validator and `docs/enterprise-context-downstream-proof.md` before dispatch. Require
+the complete reviewed `candidate_sha` to equal both workflow and backend checkout;
+pin the Angular checkout to `64527bd104c98766e25fd6233c88efbf95491d3c` for this cut.
+Resolve only public Metadata `8.0.0-rc.164` and Config `0.1.0-rc.162`, and verify the
+exact nested JAR hashes against their public custody receipts. Do not replace
+these bindings with local installs, another valid build, or an older BASIC receipt.
+
+1. Prepare exclusive API/Config Neon children and the private
+   `ENTERPRISE_ANGULAR_NEON_INPUT` envelope: `assignment`, `private`, `controlPlane`
+   and the three committed preparation receipts for Config runtime, cursor budget
+   and enterprise membership. Renew controls by actual service reads, then verify
+   lease, branches/endpoints, PostgreSQL 17, TLS and real ordinary runtime/control/
+   Config privileges. Bind hashes to the job's materialized JSON bytes; do not
+   reuse a historical raw-file hash after reserialization. Use owner only in
+   trusted fixture orchestration, readback and membership transitions. The host
+   receives runtime/control/Config credentials; the browser receives only real
+   SESSION/XSRF cookies. Reuse the installed enterprise schema and its preparation
+   evidence, without startup DDL or a claim that this cut proves schema installation.
+2. Bootstrap one canonical publication and inspect READY. Authenticate through the
+   real session/CSRF flow, read choices and prove switch CAS with one winner and one
+   conflict, ending in organization A. Perform the four bounded membership CAS
+   transitions (revoke, restore, expire, restore) with fresh protected context/Config
+   reads in the same SESSION. Require denial while invalid and fresh readiness after
+   restoration; preserve organization B and BASIC grants. Capture the protected
+   before snapshot only after the final restoration and readiness read.
+3. Run the official Angular server on 4003 with explicit proxy to 127.0.0.1:8088.
+   Use the real `parent-child-related` recipe, team outlet and
+   `quickstart-mission-team` table, selecting only target 37. Do not mock, rewrite
+   requests or fall back to Render. Require the exact strong target ETag and
+   `no-transform`, fresh context, one UNIFORM evaluation, READY proposal with one
+   executable and zero blocked targets, and authorized preview with zero effects.
+4. Pause before confirmation for the reviewed automatic SQL verifier. Pin its code
+   digest, receipt/snapshot hashes, source/JAR, SESSION fingerprint, proposal and
+   target. Require zero effects/receipts/executions and unchanged full authority and
+   domain snapshots. `staticallyReviewed` describes the verifier's prior review;
+   `AUTOMATIC_PRECONFIRMATION_PASS` is an automated result, not a human review at
+   runtime. Only that valid gate releases one confirmation, followed by one exact
+   replay using the original body and idempotency key; no implicit retry on uncertainty.
+5. Require COMPLETED, protected result/status reads and all nine totals. Verify
+   the entire 195-row domain: only target 37 changes to SUPORTE with version +1;
+   preserve the other rows, operator grant, control and publication. Require one
+   execution, one confirmed receipt, zero admissions and one total effect after
+   replay. Public DTO/ETag checks do not substitute for the SQL version oracle.
+6. Terminate owned backend, Angular and browser processes even on failure. Keep
+   raw logs, HTTP bodies, cookies, keys and full SQL rows in private 700/600 paths,
+   then remove them at job closure. Publish only the independently validated closed
+   receipt (bounded hashes/counts/booleans and code-only diagnostics); validate raw
+   and decoded strings against sensitive values. A FAILED receipt or rejected
+   scanner output keeps the job red and never accepts the journey. For private
+   Angular checkout, use a temporary read-only deploy key without credential
+   persistence; the coordinator removes its deploy key and secret after the run,
+   including failure/cancellation, and never passes it to proof processes.
+
+Accept this candidate procedure only from the observed exact-source consumer
+receipt. It does not run or replace the nine-phase BASIC proof, certify enterprise
+activation on Render, publish Angular, reinstall enterprise schema, or prove layout
+authoring, ASYNC/ATOMIC or a different latency topology. Preserve earlier failed
+local evidence and original deadlines rather than treating a remote success as
+permission to relax authority checks or infer unmeasured performance.
+
 ## Host Security Is Integration, Not A Starter Override
 
 The quickstart owns CORS, CSRF, cookies, origin restriction, firewall policy, rate limiting, and public/read/write exposure. These policies constrain hosted starter endpoints without redefining their semantics.
