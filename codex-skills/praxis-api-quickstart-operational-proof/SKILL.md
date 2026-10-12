@@ -1586,6 +1586,22 @@ credentials, session and publication evidence separate from the Neon fixture;
 do not report BASIC/READY operational acceptance until the remote run and its
 independent review have passed.
 
+At the deployed BASIC boundary, retain the exact strong ETag served by the target
+GET and reject a weak or absent token before evaluation; never normalize it to
+force a positive run. If identity/gzip and Brotli produce different ETag strength,
+inspect the canonical versioned response and proxy transformation policy. Preserve
+`no-transform` and existing no-store/cache directives at the response owner, then
+prove the fixed public artifact through the actual deployed encodings.
+An evaluation HTTP 200 is not permission to confirm: require the proposal to be
+READY, with the intended executable count and no blocked items, before submitting
+the idempotency key. Preserve blocked proposals as evidence; do not erase their
+history to obtain a clean positive test. Record the bounded request, proposal and
+idempotency key privately before each one-shot POST, excluding authentication
+secrets, and retain bounded error responses before asserting HTTP status. On an
+uncertain result, inspect the exact durable state before any explicit recovery.
+A new evaluation requires a fresh domain baseline and its own attempt identity;
+do not reuse or overwrite failed confirmation markers.
+
 ## Managed-owner bulk execution adoption
 
 For bulk installation by a non-superuser CREATEROLE database owner, inspect the
