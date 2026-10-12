@@ -711,7 +711,7 @@ Use the manual `Bulk reference consumer proof` cut
 Inspect its workflow, `scripts/enterprise-angular-proof/run.py`, closed receipt
 validator and `docs/enterprise-context-downstream-proof.md` before dispatch. Require
 the complete reviewed `candidate_sha` to equal both workflow and backend checkout;
-pin the Angular checkout to `64527bd104c98766e25fd6233c88efbf95491d3c` for this cut.
+pin the Angular checkout to `491725d3be7e9a79d30348ff095e1410bff004b1` for this cut.
 Resolve only public Metadata `8.0.0-rc.164` and Config `0.1.0-rc.162`, and verify the
 exact nested JAR hashes against their public custody receipts. Do not replace
 these bindings with local installs, another valid build, or an older BASIC receipt.
