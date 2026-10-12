@@ -56,6 +56,14 @@ contracts, never in a host controller convention.
    Metadata `AbstractResourceQueryController.withResourceVersion` as the canonical
    response owner: versioned responses require `Cache-Control: no-transform`
    without discarding existing cache policy or the host's no-store defaults.
+   This directive alone does not prove every proxy/encoding path preserves strength.
+   [Cloudflare's ETag rules](https://developers.cloudflare.com/cache/reference/etag-headers/)
+   distinguish preserving origin Brotli from converting it to gzip. Advertise only
+   codings the client actually supports; decode negotiated `br`/`gzip` with bounds
+   on both encoded and decoded bytes before consuming JSON. Reject unexpected or
+   malformed codings, preserve the exact received strong ETag, and prove the
+   negotiated command path. A strong Brotli result does not certify identity/gzip
+   paths that still return weak validators; retain those limits explicitly.
    Verify GET/create/update/historical replay, responses without a captured version,
    quoted and multiple Cache-Control values, and the real security header chain.
    A local header test does not prove the deployed proxy preserves the token;
