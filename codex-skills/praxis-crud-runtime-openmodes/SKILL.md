@@ -20,6 +20,9 @@ Inspect:
 - `src/public-api.ts`
 - `drawer-adapter/public-api.ts` when drawer adapter changes
 - `src/lib/praxis-crud.component.ts`
+- `src/lib/praxis-resource-page.component.ts` and its focused spec
+- Core's `projects/praxis-core/src/lib/services/enterprise-runtime-context.service.ts`
+  when enterprise context lifecycle is involved
 - `src/lib/crud-launcher.service.ts`
 - `src/lib/dynamic-form-dialog-host.component.ts`
 - `src/lib/drawer.adapter.ts`
@@ -29,6 +32,9 @@ Inspect:
 ## Runtime Boundary
 
 - `PraxisCrudComponent` owns CRUD context, table handoff, selected row, collection links/capabilities, authoring entrypoint, and action dispatch.
+- `PraxisResourcePage` owns the resource-page child lifecycle and scope/filter
+  restoration; Core's `EnterpriseRuntimeContextService` owns confirmed enterprise
+  context snapshots.
 - `CrudLauncherService` owns open-mode resolution and launch behavior.
 - `DynamicFormDialogHostComponent` owns modal/drawer form host wiring to `PraxisDynamicForm`.
 - `CRUD_DRAWER_ADAPTER` is the canonical host adapter seam for real drawer implementations.
@@ -60,6 +66,35 @@ Do not rebuild CRUD drawers, modals, or table/form launchers in apps when the mi
   with `effects: []`. The host still evaluates policy and must not treat a
   matching profile as authorization.
 
+## Resource Page Context Lifecycle
+
+Consume `EnterpriseRuntimeContextService.contextChanges$` rather than a private
+host/global identity event. ResourcePage observes confirmed context; it does not
+load context or infer tenant/persona authority from `context`, `crudContext`,
+storage values or UI labels. Keep host simulations host-owned: their declarative
+remount is not a confirmed platform context.
+
+Distinguish bootstrap from invalidation. An unconfigured runtime's initial null
+snapshots and first ready bootstrap keep the existing child. An unchanged
+confirmed identity also keeps local scope/filter state. Non-ready snapshots, or
+null snapshots after confirmation, hide/destroy the obsolete CRUD until a ready
+effective context is confirmed; do not queue a
+microtask that reopens it regardless of confirmation.
+
+Compare the canonical identity/version fields, including selection version, user,
+tenant, profile and effective context version. A confirmed change recreates the
+child and restores the configured default scope and its actual filter. A render
+counter alone does not recreate Angular children: track the key in the control
+flow that owns the CRUD view. Unsubscribe on destruction and prove that later
+context emissions cannot restore or mutate a destroyed page.
+
+Use the ResourcePage spec to assert actual child destruction/replacement,
+bootstrap/unchanged preservation, context-version changes, invalidation/recovery,
+default-filter restoration and cleanup. Validate the real consuming route/host
+when identity switching changes runtime behavior; a stub spec or a dispatched
+browser event cannot prove consumer adoption. Inspect the installed package and
+integrated source before promising this lifecycle in an older published version.
+
 ## Child Boundaries
 
 CRUD delegates:
@@ -77,6 +112,7 @@ Minimum gates:
 
 - compile: `npm run build:praxis-crud`
 - component/runtime: `npx ng test praxis-crud --watch=false --progress=false --include=projects/praxis-crud/src/lib/praxis-crud.component.spec.ts`
+- resource-page context: `npx ng test praxis-crud --watch=false --progress=false --include=projects/praxis-crud/src/lib/praxis-resource-page.component.spec.ts`
 - table ownership/standalone execution: `npm run test:table -- --include=projects/praxis-table/src/lib/praxis-table.remote-regression.spec.ts --watch=false`
 - launcher/open modes: `src/lib/crud-launcher.service.spec.ts`
 - form host: `src/lib/dynamic-form-dialog-host.component.spec.ts`
