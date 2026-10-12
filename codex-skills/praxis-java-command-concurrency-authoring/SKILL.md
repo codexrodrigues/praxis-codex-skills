@@ -1629,6 +1629,21 @@ proposal/evaluation/manifest/preview/allocation together. Unexpected callback or
 supplier exceptions become canonical UNAVAILABLE without protected text or cause;
 even a caught outer exception must leave the participating transaction rollback-only.
 
+For capture-budget corrections, inspect `JdbcBulkProposalStore.CaptureBudget` and
+its caller sampling point. Keep the store's own 30-second anchor before infrastructure
+participation. Anchor the initial remaining sample immediately before `caller.get()`;
+do not subtract pre-participation time again from a balance that already accounts for
+it. Each internal checkpoint combines LOCAL timeout clamping and a fresh database
+clock in one SELECT; initialization reads prior timeouts and that clock together.
+The callback supplier still clamps through SQL. Preserve lower nonzero limits,
+immutable proposal expiry, nonrenewing budgets and rollback on refusal. Restoration
+failures (`SQLException`, `RuntimeException`, `Error`) must not replace the primary
+failure, including an original Error, or attach raw causes/suppressed details to the
+sanitized storage exception. Without a primary failure, failed restoration must
+reject success. Prove the arithmetic and exception matrix without a database, then
+prove the combined SQL, lower-GUC restoration, expiry and rollback on assigned Neon.
+These unit oracles do not establish an SDK_STORE cause, remote acceptance or publication.
+
 For JdbcTemplate callbacks, unwrap the close-suppressing Connection proxy with
 `DataSourceUtils.getTargetConnection` before `isConnectionTransactional`; compare that
 physical target with the physical target of the Spring `ConnectionHolder`. Preserve
