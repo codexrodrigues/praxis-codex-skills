@@ -82,7 +82,8 @@ incomplete page in the workflow/Table specs. Use the existing governed Playwrigh
 fixture for keyboard/narrow-screen UI proof, and record it as mocked transport;
 real protected HTTP and backend effect/replay proof require separate receipts.
 Review Core/Table READMEs and the real host composition as derived references.
-Keep this guidance candidate pending review of final runtime source and focused proof.
+Review the exact runtime source and focused evidence before adoption; real HTTP
+acceptance remains a separate gate from these UI proofs.
 
 ## Per-Item Collection Outcomes
 

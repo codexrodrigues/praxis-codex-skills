@@ -840,8 +840,8 @@
                                             "praxis-core-i18n-resource-copy",
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "C9DCD1A31F17D669850392ABB122BFCD5149F14CBDEF396997F0F60C51B46A89",
-                       "treeSha256":  "6C4B493403AE6D4D89AA91A362636D6EA7B689F56E4BE943ECA144314579659C"
+                       "skillMdSha256":  "2279B3252F8242D7F9544581A836C24C771E2B0EB401DDEE10E994152281CD0C",
+                       "treeSha256":  "6E7E02A8673E6CD1377FD1F6DDE7AFE5D0DD07252FAC648FEB0BADD7A18DED9B"
                    },
                    {
                        "name":  "praxis-metadata-schema-contracts",
@@ -2605,8 +2605,8 @@
                                             "praxis-table-filter-actions",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "F8CE074DB2C6D02A9C93D801951D503DAD27FD2A342212AA262163D064CDAAFF",
-                       "treeSha256":  "39586B597390D0E4767D4BE5E4204A56962537189200C53541EE47C1CFECF571"
+                       "skillMdSha256":  "34148B0D0D36A74C9B65AFCDB7DFD8C7C74780CD4477C2BA2D9E74988BAB92BC",
+                       "treeSha256":  "3CF004F0E6DBB05EAA3F74B70EFB8CB9978762117BFE5B6BF35196D53A9F529C"
                    },
                    {
                        "name":  "praxis-table-analytics-stats-runtime",

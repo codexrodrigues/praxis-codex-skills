@@ -115,8 +115,8 @@ change actor to regain permission, or use local persistence as authority.
 Prove protocol/ETag/key/identity in the client/state specs and denial-versus-late-200
 interleavings in the owning Table consumer. Mocks prove controlled transport
 and UI behavior; require distinct real protected HTTP/backend commit/read/replay
-receipts before claiming operational effects or deployed acceptance. This guidance
-is a candidate until the final runtime source and its focused proof are reviewed.
+receipts before claiming operational effects or deployed acceptance. Review the
+exact runtime source and its focused evidence before adopting this workflow.
 
 ## No Keyword Routing
 
