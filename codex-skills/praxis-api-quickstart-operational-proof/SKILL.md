@@ -1288,7 +1288,27 @@ RR storage, retained current-grant authorization, projection and precommit check
 Do not renew it inside callbacks. Preserve the prepared proposal's created/expiry
 timestamps and the exact readiness expectation: locked checks must reject a changed
 publication and require current authorization and sufficient target coverage. Do not reuse discovery response
-frames as a capture authorization cache or enlarge SQL/transaction deadlines.
+frames as a capture authorization cache.
+
+Use the host's `QuickstartUnitBudget.captureTransactionTimeoutSeconds` for the
+BASIC capture transaction, not the five-second `queryTimeoutSeconds` cap intended
+for individual protected reads. The capture calculation reserves 1.1 seconds for
+pool acquisition/scheduling and floors the remaining aggregate allowance: a fresh
+eight-second capture unit gives Spring six seconds. Preserve the monotonic
+eight-second deadline, the fixed proposal validity and the final precommit check;
+do not renew the allowance after blocking work. Host query caps stay at five
+seconds. SDK statements inherit the remaining Spring transaction deadline and
+retain any smaller SDK limit, so this correction does change their possible
+transaction-derived allowance. Do not describe every SQL timeout as unchanged or
+infer the cause of an earlier opaque storage failure from this correction.
+Inspect `MissionParticipantProposalService`, `QuickstartUnitBudget` and their
+focused tests. Prove Spring accepts work after five seconds within the six-second
+transaction, rejects an expired six-second transaction even with aggregate time
+left, and rolls back at the eight-second aggregate deadline. A mocked connection
+with the real Spring timeout resource proves host arithmetic/wiring only; require
+the exact corrected artifact's HTTP persistence/read/replay on isolated Neon and
+keep the deployed Render HTTPS proof separate. This does not change the SDK
+execution-unit or ATOMIC budgets.
 
 Verify the implemented limits in source and size the HTTP observer for the complete
 sequence, including the authorized read after commit. A sum of phase limits is not
