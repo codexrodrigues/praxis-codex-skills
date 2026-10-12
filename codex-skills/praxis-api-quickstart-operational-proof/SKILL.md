@@ -527,12 +527,29 @@ whole seconds, capped at five seconds, and fails closed below one second; pool
 acquisition and work around that transaction may fall outside the timeout.
 
 Pass a fresh remainder from the monotonic unit deadline at each blocking read.
-Before Config or grant lookup, subtract the configured maximum pool-acquisition
-time plus a small scheduling margin; validate that the effective pool setting
+Before Config or an independently acquired grant lookup, subtract the configured
+maximum pool-acquisition time plus a small scheduling margin; validate that the effective pool setting
 really enforces that cap. Recheck the unit deadline immediately after each
 external/starter call and before any next read or mutation. If the reserve or
 remainder is insufficient, fail closed without starting that work. Do not reuse a
 stale `Duration` captured before a prior blocking call.
+
+The SDK creates the durable five-second unit deadline before the host admission
+callback; do not assume five seconds remain at callback entry. Inspect the actual
+supplier passed through `MissionParticipantExecutionService` and the LOCK helpers.
+For LOCK/read SQL/JPA on an already-bound operational connection, reading its
+supplier must only sample the live remainder, without hidden SQL, `set_config` or
+pool acquisition.
+Bind each statement/query timeout from that fresh remainder and fail closed below
+its usable granularity. Keep explicit timeout clamps at entry and immediately before
+mutation/flush, whose ORM writes are not all individually wrapped; never widen a
+stricter existing GUC or renew the deadline. A separate Config transaction or other
+pool still requires its original acquisition reserve; an existing API connection
+does not make that reserve redundant. Count actual SQL at getters and explicit
+boundaries, then prove decreasing/subsecond remainder, lower GUC preservation and
+expiry before mutation. Pair the finite tests with real Neon domain/receipt COMMIT
+and rollback; fewer clamp roundtrips or local tests do not certify the complete HTTP
+journey or Render deployment.
 
 Database timeouts establish bounded local waiting, not the outcome of an
 uncertain commit. After a write or lost acknowledgement, consult the canonical
