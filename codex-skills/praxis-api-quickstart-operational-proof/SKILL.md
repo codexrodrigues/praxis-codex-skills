@@ -1591,7 +1591,16 @@ GET and reject a weak or absent token before evaluation; never normalize it to
 force a positive run. If identity/gzip and Brotli produce different ETag strength,
 inspect the canonical versioned response and proxy transformation policy. Preserve
 `no-transform` and existing no-store/cache directives at the response owner, then
-prove the fixed public artifact through the actual deployed encodings.
+prove the public artifact on the transport actually negotiated by the client.
+The directive alone is not a universal proxy guarantee. [Render Docker services](https://render.com/docs/docker)
+include automatic Brotli/gzip compression; inspect the actual `Content-Encoding`
+and ETag rather than assuming identity transport. Advertise only supported codings,
+actually decode negotiated `br`/`gzip`, and bound encoded and decoded bodies before
+parsing JSON; reject unexpected codings or incomplete/invalid streams. Preserve the
+received strong token without stripping `W/` or synthesizing a replacement. If
+identity/gzip paths still yield weak validators, record them as unproved for this
+command case; a strong negotiated Brotli response does not certify those paths.
+Header/encoding observations alone do not establish READY or deployed H5 acceptance.
 An evaluation HTTP 200 is not permission to confirm: require the proposal to be
 READY, with the intended executable count and no blocked items, before submitting
 the idempotency key. Preserve blocked proposals as evidence; do not erase their
