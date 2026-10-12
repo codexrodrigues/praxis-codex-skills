@@ -1462,7 +1462,7 @@ For the packaged BASIC/READY host proof, inspect the
 ref resolved to the full candidate SHA, and require `GITHUB_SHA`,
 `GITHUB_WORKFLOW_SHA` and `CANDIDATE_SHA` to match that commit; the historical
 Docker/local-Postgres lane is separate. Require the packaged public Metadata
-`8.0.0-rc.160` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
+`8.0.0-rc.161` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
 bytes, and a current exclusive control-plane assignment for the API and Config
 Neon child branches.
 Keep their child-only credentials in the runner's private mode-0600 input, never
