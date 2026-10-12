@@ -693,6 +693,17 @@ Keep candidate proof separate from published-artifact adoption.
 
 Keep API and config datasource properties, Flyway policy, AI provider properties, RAG/vector-store switches, and test isolation explicit. Test profiles may disable external services or use H2, but must preserve the host/starter wiring being proven. Never use an in-memory shortcut as proof that deployed config persistence, origin policy, or streaming works.
 
+For proposed enterprise-context activation, audit `EnterpriseContextSessionService`,
+`JdbcEnterpriseMembershipSource`, `EnterpriseRuntimeReferences` and
+`QuickstartEnterpriseRuntimeContextProvider` before adding host beans. Compose the
+operational session store/transaction, current membership, managed opaque-reference
+keys, safe `PresentationSource` and clock explicitly; no default selection or header
+identity repairs missing authority. Confirmed context is not Config UI or BASIC
+admission. Keep the PurchaseOrder laboratory behind explicit import, and prove that
+context composition alone does not register its layout lifecycle. This host activation
+remains candidate until its exact source/composition and protected HTTP proof are reviewed;
+published Config162 contracts and the independently accepted BASIC proof stay separate.
+
 ## Host Security Is Integration, Not A Starter Override
 
 The quickstart owns CORS, CSRF, cookies, origin restriction, firewall policy, rate limiting, and public/read/write exposure. These policies constrain hosted starter endpoints without redefining their semantics.

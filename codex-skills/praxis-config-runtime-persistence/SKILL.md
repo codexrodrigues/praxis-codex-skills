@@ -24,6 +24,8 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/controller/EnterpriseRuntimeContextController.java`
 - `src/main/java/org/praxisplatform/config/service/AiPrincipalContextResolver.java`
 - `src/main/java/org/praxisplatform/config/service/DefaultEnterpriseRuntimeContextProvider.java`
+- `EnterpriseRuntimeContextChoiceProvider`, `EnterpriseRuntimeContextSwitchProvider`, and their fail-closed defaults
+- `dto/EnterpriseRuntimeContextResponse`, `EnterpriseRuntimeContextChoicesResponse`, and `EnterpriseRuntimeContextSwitchCommand`
 - `src/main/resources/db/migration/V5__create_ui_user_config.sql`
 - `src/main/resources/db/migration/V7__migrate_ui_user_config_component_type_selectors.sql`
 - `src/main/resources/db/migration/V9__dedupe_ui_user_config_null_scope_uniques.sql`
@@ -108,17 +110,16 @@ coordinate to manufacture adoption.
 - Do not put page identity, ETag policy, tenant, user, or environment inside component documents when they belong to the config boundary.
 - Keep secret/API-key sanitization in `UserConfigService` and `AiApiKeyProtectionService`; do not duplicate redaction only in UI.
 - In corporate mode, resolve tenant and user from the authenticated server principal. Caller headers are hints only in explicitly configured local mode; host authorization and context-switch validation remain host-owned.
-- Treat default runtime providers as safe baselines: the default context provider exposes minimal context, the default tenant provider only the active tenant, and default navigation/security-event providers empty projections. Rich corporate data requires host-owned providers, not fabricated client data.
+- In public Config `0.1.0-rc.162`, default context/choice/switch providers fail closed: authenticated requests without host authority receive `503 RUNTIME_PROVIDER_UNAVAILABLE`; no ready context or successful empty choices are synthesized. Navigation/security-event providers are separate surfaces and do not activate session/context authority.
 
 ## Enterprise Runtime Context Rules
 
-- `EnterpriseRuntimeContextService.ready()` loads `/api/praxis/runtime/context` and stores the safe snapshot used to derive propagation headers.
-- Runtime context endpoints are configurable per surface, but the default root is `/api/praxis/runtime` under the configured Praxis API root.
-- `EnterpriseRuntimeContextService.headers(fallback)` should merge fallback headers with snapshot-derived headers, with the snapshot winning for tenant, user, environment, locale, timezone, profile, and module when present.
-- `tenants()`, `navigation()`, `securityEvents()`, and `switchContext()` send snapshot-derived headers after context is loaded.
-- `switchContext()` updates the local snapshot only from the server-returned `effectiveContext`; do not accept the requested target tenant/profile as effective until the host provider confirms it.
-- `EnterpriseRuntimeContextController` normalizes locale, timezone, profile, and module headers and delegates tenant/user/environment resolution to `AiPrincipalContextResolver`.
-- Default runtime providers are intentionally minimal. A corporate shell must plug host-owned providers for tenant lists, navigation, context switching, and security events instead of fabricating rich data in Angular.
+- `EnterpriseRuntimeContextService.ready()` loads `/api/praxis/runtime/context`. Config162 returns `selection-required`, `ready`, or `selection-invalid` plus opaque `selectionVersion`; only `ready` carries `effectiveContext` and its confirmed `contextVersion`/organization scope. Gate propagation and display on that confirmed snapshot, not a flat tenant/profile request.
+- `GET /context/choices` returns opaque choice references and bounded opaque cursors. Discovery does not select a default or authorize later operations. `PUT /context` accepts only `choiceRef` and `expectedSelectionVersion`; use the host-returned canonical state after selection CAS, never the requested tuple as effective context.
+- The controller forwards the servlet principal to host-owned providers before tenant selection. `X-Tenant-ID`, `X-User-ID` and profile headers do not establish runtime identity or selection. Locale/timezone/module hints are presentation inputs, not membership authority.
+- `switchContext()` invalidates the old Core snapshot and accepts only a current server response; obsolete responses must not repopulate it. Re-read after selection conflict or revocation instead of falling back to a different tenant/profile.
+- Snapshot-derived propagation headers do not grant Config reads/writes or resource/BASIC commands. Context-scoped Config UI admission uses the current authenticated session and enterprise membership; the existing `UiConfigWriteAuthorizer` write hook alone does not protect GET reads. BASIC commands retain their own operational grant/binding admission; enterprise context neither replaces it nor adds an enterprise-membership prerequisite to BASIC.
+- Default context/choice/switch providers remain unavailable without explicit host composition. Confirmed context, navigation and security events have independent owners/providers; activating one does not certify all runtime surfaces.
 
 ## No Keyword Routing
 
@@ -142,6 +143,7 @@ Use focused local gates:
 - config persistence: `mvn "-Dtest=UserConfigControllerTest,UserConfigServiceTest" test`
 - runtime context: `mvn "-Dtest=AiPrincipalContextResolverTest,EnterpriseRuntimeContextControllerTest,EnterpriseRuntimeAutoConfigurationTest,DefaultEnterpriseRuntimeContextProviderTest" test`
 - Angular consumers: `npm run test:core -- --include=projects/praxis-core/src/lib/services/config-storage.service.spec.ts --include=projects/praxis-core/src/lib/services/enterprise-runtime-context.service.spec.ts`
+- Prove fail-closed defaults, principal-based selection, opaque choices, stale selection CAS, revocation and absent effective context before ready. Add host composition/session/membership and protected Config read/write proof; mocked downstream tests do not establish real persistence or production activation. New database-dependent evidence requires an assigned isolated Neon branch; historical H2 receipts remain historical.
 - broad starter smoke for shared contract changes: `mvn -B -P ci-smoke-unit -T 1C clean verify`
 - For fallback ownership changes, prove tenant seed -> unscoped fallback -> user save -> conditional user read -> user clear -> tenant fallback -> explicit tenant clear. Compare the two scope-specific documents and ETags directly; a single unscoped GET cannot prove ownership isolation.
 - For component preference precedence, prove Apply without persistence, Save acknowledgement, browser reload, reopen, stale-ETag conflict without blind retry, and preservation of unmanaged sibling fields in the complete document.
