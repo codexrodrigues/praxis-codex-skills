@@ -1301,8 +1301,9 @@ Prove order and fail-closed behavior with the real resolver and shared BASIC/ATO
 reduced collision-domain scans or passing SQL fixtures do not certify the full five-second
 host unit. The public Metadata `8.0.0-rc.162` SDK gate passed on isolated Neon,
 including the deadline SQL oracles and commit/receipt/replay. That SDK evidence does not
-accept host HTTP9 or deployed Render H5; adoption of this change remains pending at
-those consumer boundaries. Pin the exact public artifact and prove commit/read/replay
+itself accept host HTTP9 or deployed Render H5. Each adoption requires independent
+consumer receipts bound to its exact source, public artifact bytes and deployment;
+do not reuse an earlier consumer receipt as acceptance. Prove commit/read/replay
 through both gates before claiming operational acceptance.
 
 ## Bound BASIC Proposal Preparation and Capture Separately

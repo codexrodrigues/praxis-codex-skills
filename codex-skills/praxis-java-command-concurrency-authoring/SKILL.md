@@ -1068,8 +1068,10 @@ lock order. Prove the actual SQL's clock/expiry/rollback semantics on isolated N
 A passing timeout fixture or static SQL count is not a complete host-unit, HTTP or Render
 acceptance and does not prove a performance gain or historical timeout cause.
 The published rc.162 SDK gate passed these SQL/deadline and commit/receipt/replay
-oracles on isolated Neon. Host HTTP9 and deployed Render H5 adoption remain separate
-pending gates for this change; do not reuse an earlier consumer receipt as acceptance.
+oracles on isolated Neon. This SDK evidence does not itself accept host HTTP9 or
+deployed Render H5. Each adoption requires independent consumer receipts bound to
+its exact source, public artifact bytes and deployment; do not reuse an earlier
+consumer receipt as acceptance.
 
 When proving a received remaining budget under lock contention, keep the real blocker
 held until the waiter finishes and correlate PostgreSQL waiter/blocker PIDs and the
