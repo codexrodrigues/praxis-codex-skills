@@ -1289,6 +1289,23 @@ For bulk unit admission, inspect the Metadata-owned published-photograph path be
 
 Prove uniform and per-item HTTP+PostgreSQL flows against the exact candidate artifact with the unchanged execution budget: positive domain/audit/receipt commit, stale-target denial without mutation, authorized delegated reads, unauthorized reads, and replay without another domain call. A getter that copies only its requested group does not prove the complete multi-group resolver fits the budget. Record source/artifact hashes and admission reasons; do not raise timeouts or claim adoption from compile-only/local-override evidence. Published dependency validation without an override remains a separate release/adoption gate.
 
+For `MissionParticipantBulkCanonicalContract`, resolve the trusted registered MVC refs
+and check declared IDs, methods, resource and group, capture one exact group snapshot,
+then call `requireResourceOperations` for the complete batch BEFORE resolving the three
+bodies with `requireResourceRequestBody(resourceKey, CanonicalOperationRef, TypeFactory)`.
+That overload requires a snapshot-validated ref. Preserve full generic DTO resolution,
+returned-ref equality, cross-group operation-ID collisions, fields/revision evidence and
+the published scope's two durable guards. Reusing this immutable structural photograph
+is not permission to cache grant/policy decisions or remove the independent pool reserve.
+Prove order and fail-closed behavior with the real resolver and shared BASIC/ATOMIC paths;
+reduced collision-domain scans or passing SQL fixtures do not certify the full five-second
+host unit. The public Metadata `8.0.0-rc.162` SDK gate passed on isolated Neon,
+including the deadline SQL oracles and commit/receipt/replay. That SDK evidence does not
+itself accept host HTTP9 or deployed Render H5. Each adoption requires independent
+consumer receipts bound to its exact source, public artifact bytes and deployment;
+do not reuse an earlier consumer receipt as acceptance. Prove commit/read/replay
+through both gates before claiming operational acceptance.
+
 ## Bound BASIC Proposal Preparation and Capture Separately
 
 For `MissionParticipantProposalService`, distinguish preliminary authenticated
@@ -1462,7 +1479,7 @@ For the packaged BASIC/READY host proof, inspect the
 ref resolved to the full candidate SHA, and require `GITHUB_SHA`,
 `GITHUB_WORKFLOW_SHA` and `CANDIDATE_SHA` to match that commit; the historical
 Docker/local-Postgres lane is separate. Require the packaged public Metadata
-`8.0.0-rc.161` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
+`8.0.0-rc.162` and Config `0.1.0-rc.162` dependencies, unchanged source and JAR
 bytes, and a current exclusive control-plane assignment for the API and Config
 Neon child branches.
 Keep their child-only credentials in the runner's private mode-0600 input, never

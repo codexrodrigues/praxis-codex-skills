@@ -1056,6 +1056,23 @@ Before invoking a domain mutation, re-check the durable unit deadline. A confirm
 replay is different: read the receipt before rejecting on expiry, because an already
 committed effect remains confirmed after its deadline.
 
+When reducing JDBC roundtrips, inspect `JdbcBulkDurableExecution.setControlLockBudget`
+and `setDeadlineBudget`. Group the unit's three LOCAL timeout updates in one statement
+using one materialized PostgreSQL `clock_timestamp()` sample against the original
+absolute deadline: floor the remaining milliseconds, cap the lock limit at one second,
+and reject expired or sub-millisecond balances without applying `0ms`. Grouping the
+fixed control limits must preserve their one-second bounds. Retain the durable deadline
+rereads before mutation and receipt append, receipt-first replay, and the five-second
+unit ceiling; fewer statements do not authorize renewal, cached authorization or changed
+lock order. Prove the actual SQL's clock/expiry/rollback semantics on isolated Neon.
+A passing timeout fixture or static SQL count is not a complete host-unit, HTTP or Render
+acceptance and does not prove a performance gain or historical timeout cause.
+The published rc.162 SDK gate passed these SQL/deadline and commit/receipt/replay
+oracles on isolated Neon. This SDK evidence does not itself accept host HTTP9 or
+deployed Render H5. Each adoption requires independent consumer receipts bound to
+its exact source, public artifact bytes and deployment; do not reuse an earlier
+consumer receipt as acceptance.
+
 When proving a received remaining budget under lock contention, keep the real blocker
 held until the waiter finishes and correlate PostgreSQL waiter/blocker PIDs and the
 intended lock phase. Cancellation alone, or merely observing calls to the budget
