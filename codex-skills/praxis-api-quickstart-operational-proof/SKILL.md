@@ -1520,6 +1520,23 @@ and host call site do not recover an SDK exception or establish SDK causality.
 confirm durable proposal/control/domain state with protected read-only readback.
 This scope supplements the five administrative windows and preserves the primary
 test-frame limits; it must not change the original HTTP outcome or work.
+For BASIC confirmation ending in COMMON_GOVERNANCE_UNAVAILABLE, inspect the host
+admission callback before its exception is discarded into the SDK reason. Retain
+the first failure in memory during the callback; build the graph/JSON and emit
+only after SDK advance returns or throws, outside its transaction. Collect one
+code-only ADMIT_BASIC event without domain/request identities, with fixed flat
+phases CONSTRAINT, CONTRACT_INPUT, CONTEXT, LOCK, AUTHORITY_POLICY and
+RECHECK_PREPARED. Bind the initial positive confirmation to its separate
+confirmation-diagnostics.json window on host 2 after cold RECONCILE, not to an
+evaluation or publication window. An admission event may accompany HTTP200/202
+or HTTP503 if the SDK fails afterward. Event outcome STOP is the callback
+decision, not proof of durable STOP, commit or rollback; durable STOP and zero
+receipts do not identify the discarded exception or its historical cause. Keep
+first-failure provenance, nullable SQLSTATE and explicit originLost/opaqueBoundary
+when wrappers hide the origin. Add no budget reads, SQL or repeated authorization
+work; preserve deadlines, locks, SQL timeouts and returns. Graph/JSON/sink failure
+must preserve the original advance result or Throwable; use protected readback
+for durable execution, receipt and domain evidence.
 Export only the closed diagnostic projection: class/method/line, nullable SQLSTATE
 and bounded cause/suppressed references, never throwable messages, SQL or request
 data. Each primary/cause/suppressed graph node must include `sqlState`: only a
