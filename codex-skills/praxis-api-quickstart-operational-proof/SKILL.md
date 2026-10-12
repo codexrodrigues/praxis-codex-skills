@@ -1489,6 +1489,17 @@ paths or cause/suppressed graphs. Empty or absent frames do not prove a cause, a
 a test call site identifies where the assertion failed, not the SDK failure cause.
 The defensive projection must preserve the primary test outcome and pass the same
 closed-shape and raw/decoded-secret checks as the receipt.
+For BASIC evaluation, collect a separate bounded host scope for the same request,
+process and exact source/artifact. Retain the first availability failure observed
+at the host interception point before safe wrappers replace it, with monotonic
+phase intervals and the existing reader outcome. Diagnostics must not add budget
+getter calls, grant/policy reevaluation or storage probes. When a storage or reader
+boundary hides the origin, retain `originLost` and `opaqueBoundary`; the boundary
+and host call site do not recover an SDK exception or establish SDK causality.
+`commitAcknowledged=false` means no acknowledgement was observed, not rollback;
+confirm durable proposal/control/domain state with protected read-only readback.
+This scope supplements the five administrative windows and preserves the primary
+test-frame limits; it must not change the original HTTP outcome or work.
 Export only the closed diagnostic projection: class/method/line
 and bounded cause/suppressed references, never throwable messages, SQL or request
 data. Distinguish one terminal event, absence, ambiguity and unavailable capture;
