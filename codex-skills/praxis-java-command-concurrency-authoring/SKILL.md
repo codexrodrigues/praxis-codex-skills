@@ -518,6 +518,49 @@ power-loss durability, production start/restore supervision, full C0/C1b/C2,
 public worker/ASYNC/READY or Angular readiness. Update this existing skill in the
 same cycle; a new test does not justify a new skill or public deployment recipe.
 
+## Provision Capacity Through The Administrative Entry Candidate
+
+Inspect `BulkCapacityProvisioningMain`, the installation specification and the exact
+packaged artifact before using the eight administrative commands: BOOTSTRAP,
+ENROLL, REGISTER_ATTESTATION, ACTIVATE, REQUEST, ALLOCATE_NEXT, READ_ISSUE and
+INSTALL. This source candidate requires independent packaged Neon acceptance and
+release; unit input tests do not prove the commands operational. Existing public
+migrators and ordinary runtime/control profiles remain prerequisites. Keep owner,
+provisioner, allocator and authority-reader credentials outside the HTTP host and
+worker. Never copy package-private installation SQL or grant roles manually to
+make the canonical attestation pass.
+
+Run one command per administrative JVM with its exact three-argument protocol:
+command, absolute private input path and a new private receipt path. Follow the
+command-specific closed JSON schema, 32 KiB input bound, 0600 files/0700 parents,
+real paths and TLS verify-full. Preserve credential bytes and stricter native
+connection limits. The entry's constructors require documented credential pairs;
+do not claim that every command uses every supplied credential. Never put secrets
+in argv, stdout or shared evidence.
+
+Fix all nine binding coordinates and request UUIDs before execution. Preserve the
+fsynced pending intent before any connection, then the atomic private result.
+Unconfirmed commit/readback/receipt publication requires inspection of the original
+identity; it is not rollback evidence. In particular, never automatically retry
+ALLOCATE_NEXT or allocate until a preferred tenant wins. Canonical fairness can
+select another pending request. READ_ISSUE verifies the full original request;
+INSTALL uses its authenticated token UUID. Rights in transit remain counted.
+
+Keep the outer 20-second admission/publication budget and the canonical inner
+transaction/lock limits. Preserve failure receipts and perform separate readback
+before any explicit recovery; do not renew deadlines, change identities, refund
+or reissue rights to hide uncertainty. INSPECT/FENCE remain in the separate local
+administrative entry and must work without the authority database. A terminally
+fenced marker cannot be reopened by provisioning.
+
+Prove the commands from the actual JAR in external JVMs on an assigned isolated
+Neon branch, with real non-superuser owner and ordinary callers. Bind the source,
+JAR/dependencies, identity/TLS preflight, receipts and full-row readbacks. Cover
+idempotent replay, divergent request/binding denial, runtime DML denial and
+fencing without fabricating test ACLs or token rows. One QUEUE and one ACTIVE
+right prove this operational path, not global fairness/scale, host HTTP, restore
+continuity or deployment acceptance.
+
 ## Compose Local Administrative Inspection And Fencing
 
 For local administration without available D0, inspect Metadata's
