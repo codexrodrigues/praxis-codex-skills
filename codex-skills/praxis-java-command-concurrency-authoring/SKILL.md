@@ -216,7 +216,17 @@ exception must confer neither INHERIT nor SET, identify the trusted schema owner
 and superuser grantor, and reject unexpected edges. Temporary ownership grants must
 be revoked using the same grantor, preserving the managed administrative edge.
 Prove installation, validation, unchanged replay and unsafe-edge rejection on an
-assigned Neon branch with actual ordinary caller credentials. A newly installed
+assigned Neon branch with actual ordinary caller credentials. Before creating the
+three distinct provisioner, allocator and reader caller LOGINs, inspect
+`BulkCapacityAuthorityMigrator.configureCallers` and `collectCallers`: each requires
+`INHERIT` and ordinary attributes (`NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION
+NOBYPASSRLS`). Check `rolinherit=true` in the actual caller profile. This LOGIN
+attribute differs from the managed administrative membership edge above, whose
+INHERIT and SET options remain false, and from the separate Config runtime LOGIN
+provisioned with `NOINHERIT`. The migrator grants each caller only its canonical
+role with ADMIN false, INHERIT true and SET true; never grant owner or
+`neon_superuser` membership or reuse one role-creation template across these
+boundaries. A newly installed
 managed V1-to-V2 proof is not proof of adoption from the original published V1;
 keep that historical adoption pending without a genuine predecessor. A rolled-back
 V1 may leave only Flyway's schema marker: continuation requires exact history and
