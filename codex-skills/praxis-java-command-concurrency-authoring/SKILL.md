@@ -106,6 +106,50 @@ schemas after those checks, never the publication as authority. Do not infer
 200-item completion, performance or host `READY` from focused SDK/host tests;
 prove them by exact-artifact HTTP and PostgreSQL evidence before teaching adoption.
 
+## Public ASYNC Admission Candidate
+
+Before teaching ASYNC adoption, inspect the exact Metadata candidate's
+`BulkOperationalProfile`, `BulkOperationDescriptorProvider`,
+`BulkOperationLifecycle.ReadyAdmission`, `BulkStoredProposal`,
+`JdbcBulkProposalStore` and `JdbcBulkDurableExecution`. Published rc.164 SYNC
+acceptance does not establish this newer public admission path. Keep candidate
+source, packaged consumer, Neon proof, publication and host HTTP adoption separate.
+
+Use only the approved UNIFORM_UPDATE/EXPLICIT/PER_ITEM shape. An ASYNC-only
+profile binds the provisioned capacity through the descriptor provider; all nine
+binding coordinates participate in its operational fingerprint, without exposing
+private coordinates in discovery. Durable READY records the governed descriptor;
+it is not an instantaneous capacity guarantee. Admission and executable projection
+must verify the live ACTIVE binding, followed by capture/enqueue transaction
+checks. Preserve the existing SYNC fingerprint and 200-target ceiling. The ASYNC protocol ceiling of 10,000 is a structural bound,
+not evidence that the workload finishes within the existing deadline.
+
+Mint the opaque admission through the lifecycle. Match the exact infrastructure,
+resource, complete operation reference, codec, control expectation and profile.
+Construct the proposal through the admission-taking factory, then capture its
+evaluation in the caller's writable REPEATABLE_READ transaction. Recheck live
+capacity and control before callbacks; commit proposal, evaluation, ordinal
+manifest, preview and pending allocation together, without domain effects.
+Never manufacture an admission or use internal factories to prove public adoption.
+
+The public enqueue takes no caller-selected queue token. Resolve durable replay
+before new READY, active-capacity, expiry and free-slot gates; retain the original
+identity and deadline. For new work, recheck admission under the existing lock
+order and let the canonical occupancy trigger arbitrate the bounded queue hint.
+An uncertain outcome requires readback of the same identity, not a fresh key.
+
+Prove an external-package consumer, real runtime credentials and two worker JVMs
+on an exclusively assigned Neon branch. For a fresh installation, inspect inherited
+cluster roles and memberships as well as empty database schemas: a new database
+still shares those cluster roles. Use a compatible clean baseline instead of
+rewriting inherited grants to satisfy the installer. Cover capture without effects, one queued
+execution, replay after suspension/full capacity, current-grant revocation,
+rollback after mutation failure, queue time in the deadline and restart without
+duplicate effects. Tie source, dependencies, raw results and cleanup to the same
+candidate. This component proof does not replace host HTTP202/Location/read/cancel
+or the global multi-database capacity and scale gates. Earlier private-worker
+sections below describe narrower historical cuts, not an alternate ingress recipe.
+
 ## Prove A Private Durable Worker Before Teaching Adoption
 
 For a B5b.2 candidate, inspect `BulkDurableWorker`, `JdbcBulkDurableExecution`
@@ -161,6 +205,33 @@ Prove limits, replay, rollback, two-client contention and cursor persistence
 with `JdbcBulkCapacityIssuerPostgresTest` before teaching adoption. This
 cut has no install, enqueue, retirement, worker, ASYNC, HTTP `202`, or
 `READY`; neither issuer construction nor focused tests certify those paths.
+
+The managed PostgreSQL 17 authority increment is a separate candidate from the
+accepted execution-storage installation. Inspect its migration lineage, V1/V2
+resources and live membership checks before adoption. Applied published resources
+must retain their exact bytes and checksums; only pending versions select corrected
+resources through the internal lineage resolver. Do not repair Flyway history or
+remove inherited grants to make installation pass. An administrative membership
+exception must confer neither INHERIT nor SET, identify the trusted schema owner
+and superuser grantor, and reject unexpected edges. Temporary ownership grants must
+be revoked using the same grantor, preserving the managed administrative edge.
+Prove installation, validation, unchanged replay and unsafe-edge rejection on an
+assigned Neon branch with actual ordinary caller credentials. A newly installed
+managed V1-to-V2 proof is not proof of adoption from the original published V1;
+keep that historical adoption pending without a genuine predecessor. A rolled-back
+V1 may leave only Flyway's schema marker: continuation requires exact history and
+catalog checks before DDL, not treating the database as fresh. These instructions
+describe the candidate's gates, not a completed release or ASYNC host activation.
+
+When authority attestation times out, count the complete path before the business
+callback, including catalog, caller and effective-privilege checks. Batch bounded
+catalog reads on the same physical connection while retaining fresh validation on
+every operation, exact manifests, result cardinality and fail-closed NULL handling.
+Do not cache successful authorization or extend transaction, statement or lock
+budgets to hide round-trip cost. Keep identity verification before the callback and
+check the remaining transaction deadline after decoding. Source-level query counts
+are not measured latency: prove the actual JDBC transport and ordinary caller path
+on the assigned Neon branch before accepting the optimization.
 
 For the B5b.1b.A internal installation candidate, inspect
 `JdbcBulkCapacityInstallation`, `JdbcBulkCapacityIssuer.CapacityReader`, authority V2
@@ -446,6 +517,49 @@ not monotonic continuity, antirollback journal custody, authority succession, HA
 power-loss durability, production start/restore supervision, full C0/C1b/C2,
 public worker/ASYNC/READY or Angular readiness. Update this existing skill in the
 same cycle; a new test does not justify a new skill or public deployment recipe.
+
+## Provision Capacity Through The Administrative Entry Candidate
+
+Inspect `BulkCapacityProvisioningMain`, the installation specification and the exact
+packaged artifact before using the eight administrative commands: BOOTSTRAP,
+ENROLL, REGISTER_ATTESTATION, ACTIVATE, REQUEST, ALLOCATE_NEXT, READ_ISSUE and
+INSTALL. This source candidate requires independent packaged Neon acceptance and
+release; unit input tests do not prove the commands operational. Existing public
+migrators and ordinary runtime/control profiles remain prerequisites. Keep owner,
+provisioner, allocator and authority-reader credentials outside the HTTP host and
+worker. Never copy package-private installation SQL or grant roles manually to
+make the canonical attestation pass.
+
+Run one command per administrative JVM with its exact three-argument protocol:
+command, absolute private input path and a new private receipt path. Follow the
+command-specific closed JSON schema, 32 KiB input bound, 0600 files/0700 parents,
+real paths and TLS verify-full. Preserve credential bytes and stricter native
+connection limits. The entry's constructors require documented credential pairs;
+do not claim that every command uses every supplied credential. Never put secrets
+in argv, stdout or shared evidence.
+
+Fix all nine binding coordinates and request UUIDs before execution. Preserve the
+fsynced pending intent before any connection, then the atomic private result.
+Unconfirmed commit/readback/receipt publication requires inspection of the original
+identity; it is not rollback evidence. In particular, never automatically retry
+ALLOCATE_NEXT or allocate until a preferred tenant wins. Canonical fairness can
+select another pending request. READ_ISSUE verifies the full original request;
+INSTALL uses its authenticated token UUID. Rights in transit remain counted.
+
+Keep the outer 20-second admission/publication budget and the canonical inner
+transaction/lock limits. Preserve failure receipts and perform separate readback
+before any explicit recovery; do not renew deadlines, change identities, refund
+or reissue rights to hide uncertainty. INSPECT/FENCE remain in the separate local
+administrative entry and must work without the authority database. A terminally
+fenced marker cannot be reopened by provisioning.
+
+Prove the commands from the actual JAR in external JVMs on an assigned isolated
+Neon branch, with real non-superuser owner and ordinary callers. Bind the source,
+JAR/dependencies, identity/TLS preflight, receipts and full-row readbacks. Cover
+idempotent replay, divergent request/binding denial, runtime DML denial and
+fencing without fabricating test ACLs or token rows. One QUEUE and one ACTIVE
+right prove this operational path, not global fairness/scale, host HTTP, restore
+continuity or deployment acceptance.
 
 ## Compose Local Administrative Inspection And Fencing
 

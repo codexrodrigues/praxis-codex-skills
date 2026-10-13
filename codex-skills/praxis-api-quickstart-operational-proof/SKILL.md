@@ -1491,6 +1491,12 @@ hashes, export safe lock/status evidence and close all private gates/resources.
 This covers cancel-before-ACK during a real collective mutation in one JVM/database;
 ACK-first cancellation, HTTP/IAM, process loss and uncertain COMMIT remain separate.
 
+For the candidate uniform ASYNC beta migration, follow
+[the host adoption procedure](references/bulk-off-request-authority.md#candidate-uniform-async-host-adoption).
+It preserves the operation identity, retires new uniform SYNC/QUERY admission and
+retains authorized historical reads/replay. Earlier BASIC receipts remain historical;
+the current Angular SYNC consumer, provisioning, HTTP and deployment have separate gates.
+
 ## Basic Bulk Publication Admission
 
 Inspect the host's `MissionParticipantBulkPublicationController`, original-JSON
