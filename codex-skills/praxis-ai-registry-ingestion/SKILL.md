@@ -1,6 +1,6 @@
 ---
 name: praxis-ai-registry-ingestion
-description: Use when implementing, auditing, generating, packaging, or synchronizing Praxis AI registry artifacts: component docs extraction, AI metadata, ingestion corpus/chunks, catalog governance, authoring-contract acceptance, AI-ready docs, RAG/provider projections, package `ai/component-registry.json` assets, or official backend uploads.
+description: "Use when implementing, auditing, generating, packaging, or synchronizing Praxis AI registry artifacts: component docs extraction, AI metadata, ingestion corpus/chunks, catalog governance, authoring-contract acceptance, AI-ready docs, RAG/provider projections, package `ai/component-registry.json` assets, or official backend uploads."
 ---
 
 # Praxis AI Registry Ingestion
@@ -40,7 +40,25 @@ When backend registry persistence, bootstrap, classpath snapshot, template searc
 | provider projection | regenerate from the canonical ingestion corpus for the explicit release; never upload secrets/external IDs into it |
 | backend upload | use `tools/ai-registry/run-all.sh` or `npm run ai:sync-backend` only when a real backend state change is required |
 
-`npm run generate:registry:ingestion` is the standard local pipeline: extract component docs, generate AI metadata, generate ingestion corpus, validate catalog governance, and validate authoring contracts. It is the correct response to a source/manifest/capability/context-pack change; it is not required merely to edit a derived report or inspect a package asset.
+`npm run generate:registry:ingestion` is the standard local pipeline: extract component docs, generate AI metadata, generate ingestion corpus, synchronize the Config classpath snapshot and its contract constants, validate catalog governance, and validate authoring contracts. It is the correct response to a source/manifest/capability/context-pack change; it is not required merely to edit a derived report or inspect a package asset.
+
+## Isolated Worktree Wiring
+
+The snapshot synchronizer and authoring acceptance validator use the existing
+`PRAXIS_CONFIG_STARTER_ROOT` override, otherwise a sibling Config checkout. Before
+running the pipeline in an isolated Angular worktree, point this override to the
+explicitly assigned, clean Config worktree. Inspect both owners' instructions;
+never direct generated writes into another worker's dirty primary checkout or
+create an ad hoc sibling link. The sync writes both `registry-snapshot.json` and
+`AiRegistrySnapshotContractTest` constants, so reserve both files for one writer.
+
+If generation succeeded but sibling discovery failed, preserve the generated
+corpus and its provenance. Resume the failed sync/validation steps with the same
+override instead of regenerating timestamps or weakening the validator. Review
+the complete semantic snapshot delta against current Angular source: a stale
+snapshot may include earlier canonical changes beyond the triggering patch.
+Prove corpus equality, manifest preservation and the focused snapshot contract;
+source synchronization does not establish backend upload or a public release.
 
 ## Canonical Content Rules
 
