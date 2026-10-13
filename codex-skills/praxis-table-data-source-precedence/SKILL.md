@@ -1,6 +1,6 @@
 ---
 name: praxis-table-data-source-precedence
-description: Use when Codex must implement, audit, or debug @praxisui/table data-source runtime precedence: remote versus local data mode, resourcePath, document.bindings.resourcePath, queryContext, filterCriteria compatibility, pagination/sorting projection, local-data pipeline, persisted connection fallback, GenericCrudService handoff, or table authoring apply plans.
+description: "Use when Codex must implement, audit, or debug @praxisui/table data-source runtime precedence: remote versus local data mode, resourcePath, document.bindings.resourcePath, queryContext, filterCriteria compatibility, pagination/sorting projection, local-data pipeline, persisted connection fallback, GenericCrudService handoff, or table authoring apply plans."
 ---
 
 # Praxis Table Data Source Precedence
@@ -44,6 +44,29 @@ Use the documented order:
 - Preserve `config.meta.idField`, schema id/hash, server hash, bindings, and apply-plan diagnostics across authoring round-trip.
 - Do not create host-specific data-source fallback branches when the existing precedence or core service already expresses the operation.
 
+## Contextual Pagination and Sorting
+
+Inspect `createDefaultTableConfig`, `TableDefaultsProvider`, `ensureConfigDefaults`,
+`resolvePagingStrategy` and `resolveSortingStrategy` together. The canonical shared
+defaults leave strategy properties absent: the table infers `server` for a remote
+source and `client` for local data. Preserve explicit choices and existing local
+constraints. Do not fix sparse host metadata by forcing a client default or adding
+a host-specific server override.
+
+The editor's Automatic option deletes the strategy property. Public values remain
+`client` and `server`; never serialize `auto`. Unrelated editor changes preserve
+absence. A partial authoring operation that omits strategy preserves an existing
+explicit choice; omission in a patch is not a reset operation.
+
+For remote acceptance, use the actual Material paginator/data source and wait for
+deferred callbacks plus capability/action materialization. Verify a backend total
+larger than the page size remains stable on page two and after reapplication or
+resubscription. A transient correct range can later collapse when a client
+paginator is incorrectly attached. Include local and explicit-choice controls,
+core defaults/editor round-trip specs and a direct public consumer build. Keep
+pre-existing unrelated suite compilation failures explicit; a focal gate is not
+a full suite result.
+
 ## Aderence Inventory
 
 Classify before adding inputs, config fields, connection models, or runtime branches:
@@ -61,6 +84,7 @@ Use focused proof:
 
 - `local-data/*.spec.ts`
 - `praxis-table.remote-regression.spec.ts`
+- `praxis-table.pagination-context.spec.ts`
 - `praxis-table.persistence-merge.spec.ts`
 - `praxis-table.runtime-operations.spec.ts`
 - `table-editor-capability.spec.ts`
