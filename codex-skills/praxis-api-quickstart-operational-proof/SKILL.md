@@ -1951,3 +1951,21 @@ review the actual result. Reuse unchanged accepted cases rather than repeating
 all suites. Follow the official release's required gates, then resolve Central
 POM/JAR provenance and validate the host without a version override before
 claiming public or hosted adoption.
+
+## Cold Restart and Hero Acceptance
+
+After an authorized official publication and Render restart, record the deployed
+main SHA, exact publicly resolved SDK artifact, instance/recovery result and
+protected publication compatibility. Health/readiness alone does not certify
+schemas or the consumer. Use a fresh Hero load and inspect filtered schemas,
+filters, resource pages, capabilities and actions through completion. For the
+remote table, navigate to page two, wait for deferred Material callbacks and
+late discovery responses, and confirm that the backend total and range remain
+stable before navigating back. An intermediate correct range is not acceptance.
+
+Keep negative receipts and separate source tests, public artifact adoption and
+live proof. An intermittent schema 503 or a total reduced to the page size keeps
+the live gate pending even if a later reload succeeds. Do not silently retry
+publication, cache live ACL/role authority, reset user configuration or increase
+pools/deadlines to turn that negative into a pass. Classify the real canonical
+owner and coordinate a single official release for shared SDK changes.
