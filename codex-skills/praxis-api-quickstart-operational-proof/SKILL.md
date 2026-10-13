@@ -1356,6 +1356,46 @@ demonstrates them. A candidate can pass technical review without being published
 adopted. Do not infer execution, tombstone, `READY`, Angular, or RS1 coverage from these
 read tests.
 
+## Select an Isolated Authorized-reader Composition Cut
+
+For the candidate `AUTHORIZED_READERS` harness cut, inspect
+`scripts/render-composition-proof/{package,inputs,run,controls,boundary}.py`,
+`RenderCompositionNeonFixture`, `RenderReaderCaptureOracle` and the selected
+`RenderCompositionNeonSmoke` method. Metadata owns the two authorized proposal
+facades; this test-only selector changes neither their contract nor their budgets.
+
+Keep `FULL_COMPOSITION` available as its separately pinned full confirmation/replay
+proof. Require the closed workflow selection to match the envelope and BUILD receipt
+before connecting. BUILD uses accepted public artifacts without a dependency override,
+credentials or SDK source build; collect the exact XML counts of the selected guards
+and pin the launcher, classes, resources, nested dependencies and source manifest.
+A pending public artifact or candidate compilation cannot authorize RUN.
+
+When cloning an already provisioned child, retain original Main command/input/receipt
+bytes, source and binary provenance. Require reviewed administrative source/resource
+and public-JAR equivalence for the reader-only delta, plus current child identity and
+resource receipts; do not label inherited commands as new executions. Provision fresh
+cursor material and its own finite ledger without resetting historical quota. Bind the
+current complete domain rows, target/version and effective evaluation intent separately
+from historical assignment; derive HTTP expectedVersion from the real strong GET ETag.
+Counts, generations, roles, lease and snapshot values belong to that reviewed binding.
+
+Log in, reconcile the exact existing READY/publication pair, evaluate one explicit
+target, then call the real proposal and first results-page facades. Do not confirm,
+replay, publish, suspend or send worker/Main commands in this cut. Independently compare
+all named full BEFORE/AFTER sets, including after startup or reconcile failure. Before
+evaluation require exact preservation; after attempted evaluation allow only the bounded
+canonical six-store capture footprint and pending allocation, preserving all historical
+rows and zero domain/execution/receipt/admission/slot/occupation effects. Validate the
+proposal, fingerprint, manifest, preview and version relationships without inventing
+a second cryptographic-digest implementation. Export only the closed bounded reader
+failure projection; raw logs, sessions, HTTP and snapshots remain private.
+
+Offline guards and artifact checks prove preparation only. A passing same-object Neon
+receipt certifies the selected two readers, not full confirmation/replay, scale, Render
+or resolution of an earlier failure. Until that receipt is accepted, keep the reader
+cut remotely pending; failed cleanup or malformed diagnostics cannot produce PASS.
+
 ## Prove Host Execution Summary and Result HTTP Reads (G3c-HTTP)
 
 Use the adopted Metadata G3c-a/b readers behind the existing resource's two planned
