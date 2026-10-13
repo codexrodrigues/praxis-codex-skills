@@ -873,8 +873,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "21B22BD2A679E64178EFA6273384F1DAE6A37C0FC6AEC07C83F40C052F9389DD",
-                       "treeSha256":  "F29FEFC040F7AEF390CF6A94EE06A8700FD3CA15FACE53983C29A1EBC1623EE2"
+                       "skillMdSha256":  "875E8CF4A15E2431710A21734AB84233A747EF26B0CEBC3C2ADB287DAF044E1E",
+                       "treeSha256":  "7FA6585E957EC19025016AE94EF184D174BB40E8685AE220F98CC08393BB023B"
                    },
                    {
                        "name":  "praxis-metadata-domain-option-sources",
@@ -2473,8 +2473,8 @@
                                             "praxis-http-examples-llm-smoke",
                                             "praxis-java-autoconfiguration-starter-maintenance"
                                         ],
-                       "skillMdSha256":  "D5E1320A66A98810134561B867E8AF4B17F8E6B0001A320E052854989FC8E4A0",
-                       "treeSha256":  "29D4F10908323FAAE480E5F1521268BB78B251F8F8CA76F1E29BB2F17C143695"
+                       "skillMdSha256":  "B6F88B01E9DFB39C3950E5CCC6C4E7DF7C5EB3DE81EE1BACDACF09F79617F0A9",
+                       "treeSha256":  "EC7A477A51FF6BD4E378C7A44ECEF43E10952476426CFD8B1E8A80BC5E79A724"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
@@ -2591,8 +2591,8 @@
                                             "praxis-table-runtime-data",
                                             "praxis-core-resource-runtime"
                                         ],
-                       "skillMdSha256":  "A358C3FA8BED4A81EF672A5184364CE64F7B9D558F44FBE98171D56C543CDA9B",
-                       "treeSha256":  "EC1FC99A95CDDB2ECABBDAB4838B7103B464F312007EA5B6243C685DC4B9F08D"
+                       "skillMdSha256":  "AFAF4491093146DA14B6AE94E1B3567C714444052934D15DAFE92465A2CD52C9",
+                       "treeSha256":  "27EC95B4994B37B3D10090CB26E60FF16116B12AED24D18B199F5E59D493B79D"
                    },
                    {
                        "name":  "praxis-table-selection-export-runtime",

@@ -153,7 +153,24 @@ public adoption; prove those separately against the exact published artifact.
 
 Scoped `requireReady` must recheck namespace/operation, current provider composition and the durable READY row against the captured generation, fingerprint and structural revision. It may reuse the structural snapshot, but must not memoize availability or share that scope across requests, threads or asynchronous continuations. Suspend/republish with identical content still changes the generation and must reject the old response.
 
-After leaving fresh preparation, use the concrete ephemeral snapshot read fence to bound short read-lock acquisition by the original composition deadline and check cache epoch and transport revision before and after provider/durable reads. Capture only from the actual fresh callback; dispose the fence and private response frame in `finally`. Never retain a public cache lock or a JDBC transaction around host rules or the response builder.
+After leaving fresh preparation, use the concrete ephemeral snapshot read fence to bound short read-lock acquisition by the original composition deadline and check cache epoch and transport revision before and after provider/durable reads. Capture from an actual prepared or installed published photograph while inside its structural read phase; dispose the fence and private response frame in `finally`. Never retain a public cache lock or a JDBC transaction around host rules or the response builder.
+
+For non-bulk capability and related-resource discovery, inspect
+`DefaultCapabilityService`, `SurfaceCatalogService` and the document-aware
+five-argument auto-configuration wiring. With a local governed photograph,
+resolve structural flags and operations from the same document in a short phase;
+resolve each related resource once per `childResourcePath`, then detach private
+projections. Check
+the presence hint inside that phase, not only before lock acquisition. Run host
+state/availability callbacks after document/preparation locks and JDBC scopes
+have closed, and check existing parent/child read fences after the callbacks.
+Preserve genuine legacy getters, constructors and caller transaction boundaries;
+do not add a mode, TTL, READY cache or cached live role/ACL authority. A publication
+failure must fail closed, not become a silently unsupported child. Guard counts
+are scenario-specific; a selected no-database method in a mixed PostgreSQL test
+class does not make the whole class eligible for the release no-db inventory.
+`DiscoveryPublishedPhotographTest` and the selected compiler seam establish
+structural/callback boundaries, not Neon IAM, throughput or hosted HTTP acceptance.
 
 Preparation failure may invoke the builder once with an empty bulk projection and a denying scope. Once the builder starts, its exception or a failed final coherence check must propagate; do not repeat the builder or convert its failure into a second composition. Always run the final fence/provider/durable check after the builder returns, including when a host rule caught a readiness exception and returned denied.
 
