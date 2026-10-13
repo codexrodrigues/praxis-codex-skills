@@ -1803,6 +1803,31 @@ when wrappers hide the origin. Add no budget reads, SQL or repeated authorizatio
 work; preserve deadlines, locks, SQL timeouts and returns. Graph/JSON/sink failure
 must preserve the original advance result or Throwable; use protected readback
 for durable execution, receipt and domain evidence.
+
+For off-request ASYNC admission, inspect
+`MissionParticipantExecutionService.createUnitCallbacks`,
+`BulkAdmissionDiagnostics` and the released SDK's `BulkDurableWorker.executeOne`.
+The callback factory runs inside the unit transaction, after receipt-first
+preparation; its cleanup runs after `executeUnit` returns or throws. Allocate
+only the bounded in-memory collector in the factory and emit the distinct
+`ADMIT_ASYNC` projection from cleanup outside the transaction. The synchronous
+collector does not propagate to a worker thread. Keep JSON initialization and
+serialization inside the protected emission path, clear thread-local ownership
+on construction failure and cleanup, and preserve the primary outcome when the
+diagnostic sink fails. Do not add SQL, budget sampling or authorization work.
+Prove these boundaries with focal tests, then exercise the actual worker on an
+assigned isolated Neon branch; proposal-reader success alone does not cover it.
+
+After confirmation202 followed by an execution-reader503, retain the exact
+execution identity and inspect durable state before another command. The reader
+failure and an admission STOP may have different causes. Internal
+`UNIT_IN_FLIGHT` is projected as public `RUNNING` unless cancellation was
+requested, when it becomes `CANCEL_REQUESTED`; do not broaden the HTTP oracle
+from a storage row. A durable `STOPPED` execution cannot resume processing.
+Preserve its receipts, allocations and history; a later identity replay cannot
+turn a zero-effect failed intent into positive execution proof. Diagnose and
+validate the correction before a separately identified new intent.
+
 Export only the closed diagnostic projection: class/method/line, nullable SQLSTATE
 and bounded cause/suppressed references, never throwable messages, SQL or request
 data. Each primary/cause/suppressed graph node must include `sqlState`: only a
