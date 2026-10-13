@@ -2334,7 +2334,8 @@ published adoption.
 
 For private read diagnosis, first verify that the adopted release contains the candidate
 `BulkReadFailureDiagnostics` and inspect it with `BulkAuthorizedProposalReader`,
-`BulkAuthorizedProposalResultsReader` and `BulkReadFailureDiagnosticsTest`. Collect
+`BulkAuthorizedProposalResultsReader`, `BulkAuthorizedExecutionReader`,
+`BulkAuthorizedExecutionResultsReader` and `BulkReadFailureDiagnosticsTest`. Collect
 `BULK_READ_FAILURE` only as a bounded administrative projection: closed reader/stage/reason,
 allowlisted exception classes, SQLException-derived SQLSTATE and bounded cause/frames;
 never public responses, throwable messages, SQL, credentials or payloads. Each call retains
