@@ -2332,6 +2332,20 @@ from its intended repository, pin that exact `praxis.core.version`, use an isola
 and remove the candidate override. Source integration and candidate tests do not prove
 published adoption.
 
+For private read diagnosis, first verify that the adopted release contains the candidate
+`BulkReadFailureDiagnostics` and inspect it with `BulkAuthorizedProposalReader`,
+`BulkAuthorizedProposalResultsReader` and `BulkReadFailureDiagnosticsTest`. Collect
+`BULK_READ_FAILURE` only as a bounded administrative projection: closed reader/stage/reason,
+allowlisted exception classes, SQLException-derived SQLSTATE and bounded cause/frames;
+never public responses, throwable messages, SQL, credentials or payloads. Each call retains
+at most its first inner and last outer failure. Emission follows the settled sanitized result
+and completion of the reader's own transaction; a caller's ambient transaction may already
+be restored. A failed logger cannot replace the result, while a slow logger can delay delivery.
+Correlate emission timestamp/threadId with existing host diagnostics; neither proves the
+exact throw time or a request ID. Missing events do not prove absence of failure, and 503
+does not prove timeout. Candidate/unit evidence proves neither published adoption nor a
+correction of historical Render failures.
+
 For bounded RS2 capacity evidence, use the assigned isolated checkout and target:
 
 ```sh
