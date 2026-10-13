@@ -142,3 +142,47 @@ Capture through lifecycle-minted ASYNC ReadyAdmission before preparation, with f
 Keep authorized historical proposal/execution/result reads using their persisted mode and exact evaluator revision, independently of the current ASYNC profile. For a retired SYNC confirmation, use the canonical proposal/key/revision finder only to observe an existing reservation; never call reserve/advance, fabricate an expired deadline, renew validity or insert when it is absent. Current HTTP authorization and full-target reader grants still apply. A lookup may acquire transaction locks; do not label it PostgreSQL READ ONLY. Preserve all historical rows and replay the original key, without granting an unconfirmed historical proposal new admission.
 
 The current Angular BASIC client supports SYNC/EXPLICIT/PER_ITEM and must omit the uniform ASYNC-only capability rather than force SYNC. Its accepted unit/mock receipts and the historical BASIC nine-phase proof do not certify ASYNC UI or the new host adoption. Require independent exact-artifact Neon HTTP receipts for authenticated evaluation with zero effects, durable enqueue/Location, worker commit/read/results/replay, one effect/receipt and the specified negative boundaries. Capacity provisioning, scale8/80 and deployed Render acceptance remain separate. Update consumer docs/corpus only where the actual published reference is affected; keep historical receipts qualified.
+
+## Separate historical SYNC proof from current-candidate continuation
+
+When historical setup runs in CI before a current-candidate host consumes it, use
+separate reviewed product and test-only checkouts. Package only the exact legacy
+product commit/tree with its public dependency versions and checksums; prove that
+additional proof code leaves legacy production, POM and storage resources unchanged.
+Capture tracked checkout bytes before and after packaging alongside HEAD/tree and
+clean status. Respect the checkout's Git filters and line endings: a working-file
+hash need not equal the committed blob hash. Do not overwrite files from Git blobs,
+normalize bytes or exempt changed source to force custody equality.
+
+Build before injecting private inputs, with a public-only mirror and isolated cache.
+Prepare the test provider/executor dependencies without DB work before the remote
+offline invocation. Disable Python bytecode in frozen checkouts with
+`PYTHONDONTWRITEBYTECODE=1` or use an external cache; never ignore newly untracked
+cache files to force clean status. Capture bounded preparation/startup diagnostics
+before cleanup and distinguish dependency/provider failure from HTTP/domain oracles.
+Bind the actual command, governed environment, host/nested JAR hashes, loaded
+CodeSource/classes and test classpath; neither candidate classes nor cached private
+coordinates may substitute for the legacy product. Freeze the proof source too.
+Run only the assigned history cut on isolated Neon with fresh controls and real
+identities/TLS. Compare complete before/after RR/RO snapshots of domain, authority,
+catalogues, grants and historical rows, preserving row strings, duplicates, types
+and UTC transport. Consecutive database snapshots are not a distributed transaction.
+
+Hand off a validated closed receipt plus private IDs/original key and raw custody
+hashes. Stop owned processes and verify cleanup; preserve the primary failure if
+readback or evidence writing also fails. Export only the allowlisted receipt and
+code-only diagnostics; secrets, session/CSRF, HTTP bodies and raw rows remain private.
+Public hashes bind private custody; they do not claim raw export or autonomous offline
+access. Before continuing, freshly match the full snapshots and handoff to the receipt.
+Do not rerun Main, the legacy JVM or completed setup, fabricate history with owner
+DML, restart the whole BASIC proof, renew proposal/execution TTL or use local DB.
+
+For the authorized historical creator after actual proposal expiry, require proposal
+GET410/BULK_GONE while retained proposal-results, execution/results and original-key
+replay remain200 when current full-target authorization permits them. The fresh
+reader/cursor budget does not renew admission validity. Preserve stored mode, exact
+execution identity, domain and receipt; reject new confirmation of the retired
+unconfirmed SYNC proposal. This cut proves historical behavior only: current ASYNC
+HTTP/worker, scale and deployment still need their own exact-artifact receipts.
+Inspect `scripts/sync-history-proof/{package.py,run.py,README.md}` and the host's
+`BulkAsyncUniformPackagedNeonProof` receipt/continuation checks before adapting it.
