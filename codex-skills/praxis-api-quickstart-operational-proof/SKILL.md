@@ -1828,6 +1828,20 @@ Preserve its receipts, allocations and history; a later identity replay cannot
 turn a zero-effect failed intent into positive execution proof. Diagnose and
 validate the correction before a separately identified new intent.
 
+For execution-summary/results failures, first inspect the exact candidate's
+`BulkAuthorizedExecutionReader`, `BulkAuthorizedExecutionResultsReader` and
+`BulkReadFailureDiagnostics`. Proposal-reader diagnostics do not establish execution
+coverage. Reuse the private bounded collector at the existing sanitization boundary;
+record only references inside the owned snapshot and emit after its outcome is
+selected and its transaction ends. Preserve protected denials, invalid cursors and
+public states. A caller transaction may resume, and synchronous logging can still
+add latency; do not claim globally transaction-free or latency-free emission.
+The FULL harness must collect that closed projection in its failure cleanup, with
+matching Java/Python enum validation and exact source/JAR binding. Empty diagnostics
+are not success. A durable COMPLETED row and one effect after a polling503 establish
+the committed outcome, but do not prove terminal HTTP, results or idempotent replay.
+Keep those acceptance steps pending rather than retrying with a new identity.
+
 Export only the closed diagnostic projection: class/method/line, nullable SQLSTATE
 and bounded cause/suppressed references, never throwable messages, SQL or request
 data. Each primary/cause/suppressed graph node must include `sqlState`: only a
