@@ -2473,8 +2473,8 @@
                                             "praxis-http-examples-llm-smoke",
                                             "praxis-java-autoconfiguration-starter-maintenance"
                                         ],
-                       "skillMdSha256":  "2AAABECC636C98FE74275D3855C34DB92C5BBCDF495221B5B3DA15D41834C46B",
-                       "treeSha256":  "7626695C7DF8EBF10E648AC370FC115D327C9BF7BC0D401C5E1EA9C4EEC274EB"
+                       "skillMdSha256":  "0801BF79EF439A799928AE54071488B353B56E373124BFD07666A3F63055B33D",
+                       "treeSha256":  "02366C6A5C11DAC0FF6B341E877446E28596E3D2497AEA5F7CCB62FF226C1213"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
