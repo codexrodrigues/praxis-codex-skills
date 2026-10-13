@@ -1657,6 +1657,17 @@ is not an HTTP result and must not be bypassed by retrying publish or confirm.
 Preserve the failed receipt and use a new reviewed exact SHA for a corrected run.
 The protected readback alone cannot certify HTTP, SESSION or READY behavior.
 
+Before this packaged proof, provision fresh AES material for the isolated child
+and its owner-managed cursor issuance budget through the existing
+`BULK-CURSOR-ISSUANCE-OPERATIONS.md` procedure. Require zero initial reservations,
+a finite quota, expiry covering the assignment lease and runtime EXECUTE on the
+reservation function. The fixture preflight only inspects these prerequisites;
+it must not create, reset, extend or repair a budget. A newly generated key does
+not inherit a copied parent's budget: missing enrollment returns HTTP503 before
+the results reader, even when publication and cold reconciliation passed.
+Preserve that failed campaign; a new full proof needs a fresh UNCOMPOSED API child,
+new cryptographic material and an independently reviewed source/assignment.
+
 Even a passing isolated-child receipt does not certify Config policy outage or
 mutation, cancellation before the first unit, browser navigation, ASYNC/ATOMIC,
 or Render HTTPS deployment. Keep the deployed Render gate and its actual
