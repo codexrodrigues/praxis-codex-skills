@@ -1371,6 +1371,13 @@ credentials or SDK source build; collect the exact XML counts of the selected gu
 and pin the launcher, classes, resources, nested dependencies and source manifest.
 A pending public artifact or candidate compilation cannot authorize RUN.
 
+Select the codec's closed transport profile from the trusted workflow cut before
+decoding, never from envelope contents. Encode and verify the exact-byte roundtrip
+with that same profile; preserve existing default bounds and all rejection checks,
+with no enlarged fallback. Measure the complete real envelope, including every
+attachment, against the canonical codec limits before secret injection; synthetic
+size tests are not that measurement.
+
 When cloning an already provisioned child, retain original Main command/input/receipt
 bytes, source and binary provenance. Require reviewed administrative source/resource
 and public-JAR equivalence for the reader-only delta, plus current child identity and
