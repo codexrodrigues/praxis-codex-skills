@@ -1711,11 +1711,19 @@ host configures `praxis.openapi.http.read-timeout=60s`; this also affects ordina
 internal OpenAPI reads. Governed capture still uses the lesser of that response
 budget and the remaining aggregate `praxis.openapi.bulk-composition-timeout`
 (SDK default 60s). The Quickstart configures that existing composition property
-at 120s for its complete root, groups and swagger-config capture. This property
+at 180s for its complete root, groups and swagger-config capture. This property
 also governs other composition scopes, including lock acquisition, descriptor
 composition, installation and reads; it is not a single whole-publish deadline.
 Do not renew the aggregate budget per document, weaken transaction deadlines, or
-remove schemas/advice to make capture pass. The administrative proof client allows
+remove schemas/advice to make capture pass.
+Render cold capture exhausted the previous 120s aggregate at group `operations`
+after a 42.804s root and sequential groups. The host now budgets 180s for the
+existing complete composition scope and observes startup reconcile for 240s,
+retaining 60s per response and unchanged SQL/control deadlines. Keep the failed
+120s cut separate; configured budgets alone do not certify cold recovery. Require
+a successful complete capture and actual restart on the deployed source.
+The startup observer remains single-shot: an uncertain timeout cannot trigger retry.
+The administrative proof client allows
 180s to observe the lifecycle's distinct stages, while the diagnostic validator
 accepts a window up to 240s; neither changes SDK semantics or permits retrying an
 uncertain publish. Confirm both settings in the exact deployed host artifact and
