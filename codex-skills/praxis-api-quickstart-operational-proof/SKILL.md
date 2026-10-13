@@ -61,6 +61,37 @@ SUPERUSER, host-based authentication files or cluster-internal catalogues.
 
 ## Integration Topology And Owners
 
+### Durable OpenAPI Across Cold Nodes
+
+Inspect the exact deployed Quickstart SHA and Metadata version before diagnosing
+`GOVERNED_OPENAPI_PUBLICATION_UNAVAILABLE`. A READY operation and PUBLISHED ledger
+with matching generation/digest attest durable compatibility, not installation in
+the current JVM or equality of a newly captured document set. The ledger stores
+the aggregate digest, not the original response bodies or producer source SHA;
+retain deployment/JAR provenance and protected capture evidence outside it.
+
+Metadata captures exact bytes of root, every group and `swagger-config` through
+the official local Servlet transport. Springdoc can embed the physical listener
+in generated `servers` and `oauth2RedirectUrl`. Ordering object keys does not
+stabilize these values; fixing only `servers` leaves swagger-config unstable.
+Use the host's standard Springdoc configuration and deployment-relative servers
+to make the producer stable. An OAuth redirect must be an explicit absolute
+deployment URL; Springdoc re-expands a relative redirect against the listener.
+Inspect `OpenApiPublicationOriginConfig` when adopting the host correction, and
+configure native `springdoc.swagger-ui.oauth2-redirect-url` before enabling its
+governed-publication startup gate. Do not redirect the Metadata capture transport,
+rewrite captured bytes, ignore server fields in hashing or fabricate producer leases.
+
+Prove byte equality of root, group and swagger-config with different listener
+addresses/ports, fresh Springdoc contexts and a non-root context. Include an
+uncorrected control that reproduces the varying URLs. A test with no datasource
+can prove producer stability; it cannot certify lifecycle installation. The
+packaged lifecycle proof still needs assigned isolated Neon branches, real SESSION
+and current grants. A cold restart on the same fixed listener does not cover pod
+address changes. For a new producer digest, prepare explicit suspension/publication
+with their global impact and observed CAS generations; reconcile cannot replace
+the old digest and must not be retried after an uncertain response.
+
 The quickstart owns Spring Boot composition, pinned Maven versions, host properties, concrete pilot domains, operational datasource/migrations, host security, and integration tests.
 
 | Concern | Canonical owner | Quickstart responsibility |
@@ -1631,6 +1662,17 @@ recipe failure before host startup, including a `psql` meta-command mismatch,
 is not an HTTP result and must not be bypassed by retrying publish or confirm.
 Preserve the failed receipt and use a new reviewed exact SHA for a corrected run.
 The protected readback alone cannot certify HTTP, SESSION or READY behavior.
+
+Before this packaged proof, provision fresh AES material for the isolated child
+and its owner-managed cursor issuance budget through the existing
+`BULK-CURSOR-ISSUANCE-OPERATIONS.md` procedure. Require zero initial reservations,
+a finite quota, expiry covering the assignment lease and runtime EXECUTE on the
+reservation function. The fixture preflight only inspects these prerequisites;
+it must not create, reset, extend or repair a budget. A newly generated key does
+not inherit a copied parent's budget: missing enrollment returns HTTP503 before
+the results reader, even when publication and cold reconciliation passed.
+Preserve that failed campaign; a new full proof needs a fresh UNCOMPOSED API child,
+new cryptographic material and an independently reviewed source/assignment.
 
 Even a passing isolated-child receipt does not certify Config policy outage or
 mutation, cancellation before the first unit, browser navigation, ASYNC/ATOMIC,
