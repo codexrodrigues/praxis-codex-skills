@@ -17,6 +17,12 @@ Inspect `LocalPublicationRecovery`, `LocalPublicationRecoveryClient`,
 an authorization or promise that reconciliation will succeed.
 
 Use only the fixed host operation/namespace and current durable generation.
+Inspect its actual provider registration before adoption: the official administrative
+endpoint is bound to the uniform operation. The current ASYNC profile requires all
+six provisioned capacity coordinates. Missing registration or a previous SYNC
+photograph stays closed; do not choose another READY provider as an alias for this
+endpoint or copy test capacity into production. A producer/profile change needs
+the existing explicit governed republication, outside the startup runner.
 The startup runner may call the existing real HTTP reconcile once on its own
 native Servlet listener (actual port/context path), using the already configured
 publisher login. Never route through the Render load balancer, synthesize a
@@ -45,6 +51,12 @@ domain inventory, and confirm temporary publisher sessions revoked. Local mocked
 HTTP/runner tests do not certify IAM, Neon, public SDK adoption or Render. A private
 candidate GAV/cache must be recorded separately and never overwrite public coordinates.
 A new public SDK release remains a separate authorized official workflow gate.
+On the ASYNC host, retain six independent RR/READ ONLY snapshots of authority,
+installed rights/slots, domain and empty proposal/execution/receipt/admission stores;
+assert equality across publication/recovery/denial/drift/suspension. An owner
+witness is not product-role evidence: provisioner/allocator/reader and runtime/control
+must satisfy their actual canonical profiles. Invoke capacity provisioning only
+as an external administrative preparation, never as startup automation.
 
 When proving an unpublished SDK change, inspect the existing
 `bulk-reference-consumer-proof.yml` cut `quickstart-startup-recovery-neon` and its
@@ -68,6 +80,14 @@ For a generation/runtime exception, reuse the existing bounded code-only
 `BulkPublicationFailureDiagnostics.failureGraph` projection described below;
 exclude messages/SQL/new diagnostic queries and preserve the original outcome
 even if the diagnostic sink fails.
+
+For failures in the authorized proposal/results readers, inspect Metadata's
+`BulkReadFailureDiagnostics` and `docs/technical/BULK-COMPOSITION-GUIDE.md`, with
+the current `praxis-java-command-concurrency-authoring` guidance. Its capture is
+local to one invocation, bounded first/last and emitted after the owned decision;
+it is distinct from publication diagnostics. Do not add queries or expose SQL,
+messages or identities. A slow sink may delay delivery, and the release B/C/H/P4
+gates do not observe these reader paths; retain that limit in consumer evidence.
 
 ## Classify And Map Impact
 
