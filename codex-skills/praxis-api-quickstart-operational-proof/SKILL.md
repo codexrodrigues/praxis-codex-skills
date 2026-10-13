@@ -87,6 +87,23 @@ Keep the same API endpoint/role, read-only reader, bounded maximum capacity and
 acquisition/SQL budgets. Prove retained startup connectivity on Neon; mocked pool
 configuration alone is not recovery proof. HTTP recovery diagnostics project only
 closed phases/statuses and allowlisted existing API error codes, never raw responses.
+
+A restored publication does not certify the Hero journey. If a fresh schema or
+table read fails, inspect actual API/Config Hikari active/idle/waiting counters
+and the exact pool configuration before attributing it to reconciliation. The
+reference Render deployment exhausted an API pool of three connections with
+four to eight waiters; keep that negative separate from the capture timeout.
+Size finite pools through the existing host environment properties only after
+checking actual Neon endpoint/role limits, other clients and rolling replicas.
+Account for API, its detached governance reader and control plane together;
+Config consumes its own endpoint budget. Keep acquisition <=1000ms and all SQL
+budgets, roles, TLS and six provisioned ASYNC coordinates unchanged. A fixed pool
+(minimumIdle=maximumPoolSize) is a best-effort maintained target, not proof of
+prewarming or throughput. Require effective connections, new deployment/restart,
+fresh schema/filter responses and rendered/paginated Hero rows before acceptance;
+health UP or configured maximum alone is insufficient. Environment-variable
+changes require the official Render deployment flow, not a presumed live update.
+
 For a generation/runtime exception, reuse the existing bounded code-only
 `BulkPublicationFailureDiagnostics.failureGraph` projection described below;
 exclude messages/SQL/new diagnostic queries and preserve the original outcome
