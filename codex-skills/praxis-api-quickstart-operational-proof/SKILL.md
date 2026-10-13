@@ -7,6 +7,99 @@ description: "Use when Codex must implement, audit, or diagnose Praxis API Quick
 
 Use this skill for the Quickstart's role as the operational reference host. It proves that canonical Praxis contracts survive Maven packaging, Spring Boot auto-configuration, security policy, real persistence, and HTTP consumption. It must be a thin, explicit integration point, never a parallel implementation of metadata, configuration, AI, or business-decision semantics.
 
+## Governed cold-node recovery on Render
+
+Inspect `LocalPublicationRecovery`, `LocalPublicationRecoveryClient`,
+`GovernedOpenApiPublicationHealthIndicator` and the host's
+`docs/engineering/render-startup-reconcile.md`. Metadata owns
+`BulkOperationLifecycle.readPublishedReadyGeneration(identity)` and
+`reconcilePublished`; the generation lookup is a fenced momentary hint, never
+an authorization or promise that reconciliation will succeed.
+
+Use only the fixed host operation/namespace and current durable generation.
+Inspect its actual provider registration before adoption: the official administrative
+endpoint is bound to the uniform operation. The current ASYNC profile requires all
+six provisioned capacity coordinates. Missing registration or a previous SYNC
+photograph stays closed; do not choose another READY provider as an alias for this
+endpoint or copy test capacity into production. A producer/profile change needs
+the existing explicit governed republication, outside the startup runner.
+The startup runner may call the existing real HTTP reconcile once on its own
+native Servlet listener (actual port/context path), using the already configured
+publisher login. Never route through the Render load balancer, synthesize a
+Servlet request/SecurityContext/JWT, assign an administrator alias, publish,
+suspend, rebase or retry automatically. Native SSL listeners require their own
+verified binding; never disable certificate verification.
+
+The issued HttpOnly SESSION may use its officially supported Bearer SESSION
+transport without changing Secure cookie attributes. Require the active stored
+session and current RECONCILE grant at the controller, and actual CSRF cookie/header
+when the effective host policy enables CSRF. Preserve logout204 plus GETsession401
+with the same token as revocation proof. Uncertain issuance/cleanup keeps readiness
+closed. Never log credentials, tokens, headers, response bodies or raw causes.
+
+Readiness must include the live published photograph guard and existing dependency
+health checks, veto startup PENDING and uncertain cleanup, and recheck durable
+suspension after a successful recovery. Liveness stays separate. UNCOMPOSED remains
+closed until explicit first publication; digest drift requires authorized
+republication. Automated reconcile cannot approve changed producer bytes.
+
+Prove the executable host JAR on assigned isolated Neon children with ordinary
+runtime/control roles: first explicit publication, cold secure-cookie recovery
+without manual reconcile, current grant revoked, fresh document drift and live
+suspension. Attest exact source/JAR/dependency hashes, compare durable state and
+domain inventory, and confirm temporary publisher sessions revoked. Local mocked
+HTTP/runner tests do not certify IAM, Neon, public SDK adoption or Render. A private
+candidate GAV/cache must be recorded separately and never overwrite public coordinates.
+A new public SDK release remains a separate authorized official workflow gate.
+Before creating a release tag, inspect Metadata `RELEASING.md` and run the official
+`tools/release/neon_gate.py` inventory preflight for all three selections on the
+clean reviewed source, with the full resolved base SHA and its current POM version.
+A passing focal test does not update test-source hashes or broad impact/reuse
+closures. Review affected dispositions against the actual production/dependency
+diff before refreshing hashes; preserve original historical receipts and limits.
+A tag-version-only commit is validated separately by the official assignment guard.
+If a queued publication must be cancelled for stale custody, retain its immutable
+tag and use the next free version after canonical repair; never silently retag,
+substitute public bytes or count cancelled publication as release/adoption.
+
+On the ASYNC host, retain six independent RR/READ ONLY snapshots of authority,
+installed rights/slots, domain and empty proposal/execution/receipt/admission stores;
+assert equality across publication/recovery/denial/drift/suspension. An owner
+witness is not product-role evidence: provisioner/allocator/reader and runtime/control
+must satisfy their actual canonical profiles. Invoke capacity provisioning only
+as an external administrative preparation, never as startup automation.
+
+When proving an unpublished SDK change, inspect the existing
+`bulk-reference-consumer-proof.yml` cut `quickstart-startup-recovery-neon` and its
+same-commit reusable `bulk-startup-recovery-proof.yml`. Pin both source SHAs, build
+the SDK under its private candidate GAV in a job-private cache, and package the
+host before injecting the dedicated child-assignment secret. Never overwrite the
+shared basic-proof secret or reuse another worker's branch. Execute only the
+five-boot method on one assigned fixture; retain sanitized source/package/branch
+receipts and failed cuts separately. This lane proves candidate behavior, not
+published Maven coordinates or live Render adoption.
+
+Inspect the existing governance reader pool before relaxing operational deadlines.
+`DataSourceConfig.governanceReaderConfig` retains one validated ordinary idle
+connection per replica. Hikari fail-fast closes its test connection when minimumIdle
+is zero; a later cold remote TLS connection can exceed the <=1s acquisition budget.
+Keep the same API endpoint/role, read-only reader, bounded maximum capacity and
+acquisition/SQL budgets. Prove retained startup connectivity on Neon; mocked pool
+configuration alone is not recovery proof. HTTP recovery diagnostics project only
+closed phases/statuses and allowlisted existing API error codes, never raw responses.
+For a generation/runtime exception, reuse the existing bounded code-only
+`BulkPublicationFailureDiagnostics.failureGraph` projection described below;
+exclude messages/SQL/new diagnostic queries and preserve the original outcome
+even if the diagnostic sink fails.
+
+For failures in the authorized proposal/results readers, inspect Metadata's
+`BulkReadFailureDiagnostics` and `docs/technical/BULK-COMPOSITION-GUIDE.md`, with
+the current `praxis-java-command-concurrency-authoring` guidance. Its capture is
+local to one invocation, bounded first/last and emitted after the owned decision;
+it is distinct from publication diagnostics. Do not add queries or expose SQL,
+messages or identities. A slow sink may delay delivery, and the release B/C/H/P4
+gates do not observe these reader paths; retain that limit in consumer evidence.
+
 ## Classify And Map Impact
 
 Classify before editing:
