@@ -143,6 +143,23 @@ Keep authorized historical proposal/execution/result reads using their persisted
 
 The current Angular BASIC client supports SYNC/EXPLICIT/PER_ITEM and must omit the uniform ASYNC-only capability rather than force SYNC. Its accepted unit/mock receipts and the historical BASIC nine-phase proof do not certify ASYNC UI or the new host adoption. Require independent exact-artifact Neon HTTP receipts for authenticated evaluation with zero effects, durable enqueue/Location, worker commit/read/results/replay, one effect/receipt and the specified negative boundaries. Capacity provisioning, scale8/80 and deployed Render acceptance remain separate. Update consumer docs/corpus only where the actual published reference is affected; keep historical receipts qualified.
 
+Distinguish declared operation profiles from current READY projections. Inspect Metadata
+`BulkOperationLifecycle.prepareProjection` and `DefaultCapabilityService`: aggregated
+resource capabilities materialize only the approved READY bulk execution contracts.
+An UNCOMPOSED sibling's absence does not prove its SYNC profile changed or its declared
+route disappeared. Assert discovery against the exact operation/publication snapshot;
+verify unchanged sibling profiles and structural routes separately through their canonical
+consumers/tests and OpenAPI. Do not publish siblings merely to fill an expected list.
+
+After an oracle failure on an already published snapshot, preserve the RED and diagnose
+the assertion before repeating setup. Prepare only an explicitly assigned, independently
+reviewed continuation with exact source/JAR, historical identities, capacity and fresh
+full-row snapshots. Reconcile the existing READY/publication pair through the canonical
+lifecycle at the observed generation; require unchanged generations, digests and durable
+state before continuing the missing oracles. Do not repeat publish, Main or historical
+setup to repair a discovery expectation, renew TTL or infer full HTTP acceptance from
+continuation preparation or earlier partial results.
+
 ## Separate historical SYNC proof from current-candidate continuation
 
 When historical setup runs in CI before a current-candidate host consumes it, use
