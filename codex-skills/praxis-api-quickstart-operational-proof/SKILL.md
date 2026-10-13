@@ -51,6 +51,17 @@ domain inventory, and confirm temporary publisher sessions revoked. Local mocked
 HTTP/runner tests do not certify IAM, Neon, public SDK adoption or Render. A private
 candidate GAV/cache must be recorded separately and never overwrite public coordinates.
 A new public SDK release remains a separate authorized official workflow gate.
+Before creating a release tag, inspect Metadata `RELEASING.md` and run the official
+`tools/release/neon_gate.py` inventory preflight for all three selections on the
+clean reviewed source, with the full resolved base SHA and its current POM version.
+A passing focal test does not update test-source hashes or broad impact/reuse
+closures. Review affected dispositions against the actual production/dependency
+diff before refreshing hashes; preserve original historical receipts and limits.
+A tag-version-only commit is validated separately by the official assignment guard.
+If a queued publication must be cancelled for stale custody, retain its immutable
+tag and use the next free version after canonical repair; never silently retag,
+substitute public bytes or count cancelled publication as release/adoption.
+
 On the ASYNC host, retain six independent RR/READ ONLY snapshots of authority,
 installed rights/slots, domain and empty proposal/execution/receipt/admission stores;
 assert equality across publication/recovery/denial/drift/suspension. An owner
