@@ -89,6 +89,14 @@ Keep the Angular models aligned with the real backend payloads. `ResourceSchemaC
 - For list/detail continuity, prefer the `resourceIdentity` already materialized on Praxis Table row/selection events and render it with `PraxisResourceIdentityComponent`. Re-fetching schema in the host, duplicating field-role config in CRUD metadata, or composing a screen-specific identifier header is a platform bypass.
 - Preserve field-level `x-ui.presentation` when materializing identity parts. A visual key may inherit prefix/appearance from its field while title and metadata remain structurally governed by `x-ui.resource.identity`.
 
+## Item Representation And Revision Custody
+
+Use `getByIdHttpResponse` when a consumer must retain the ETag with the exact body that hydrated its edit state; `getByIdResponse` remains the body wrapper API. Use `updateHttpResponse` to consume the mutation representation and headers together. `CrudOperationOptions.resourceVersion` distinguishes undefined (existing cache/body fallback behavior), a strong snapshot token (explicit precondition) and null (omit If-Match, including an inherited configured header). Another consumer advancing the shared cache must not authorize an older edit payload.
+
+`readStrongResourceEtag` validates the item validator; do not substitute schema/cache validators or weak tags. The consumer owns snapshot identity, destination, actor/tenant scope and request epoch. Reconfigure its transport when context changes, including removal of named/custom endpoints, and invalidate pending reads/writes across reset, reload and A→B→A context changes. Compare the operation epoch as well as identity before accepting late responses. A successful same-resource save may replace the body and ETag together; an explicit or cross-resource command precondition does not authorize hydrating the origin form from the command response. Missing/partial mutation representations require explicit reconciliation, not attaching a new token to an old body.
+
+Prove these rules in the Core client and direct Form consumer, with focused builds and real authenticated HTTP/browser evidence. Candidate source APIs are not evidence of published-package adoption; retain that distinction in release and consumer guidance.
+
 ## BASIC Bulk Intent and Authorized Projection
 
 For BASIC, consume the published `SYNC / EXPLICIT / PER_ITEM` descriptor through
