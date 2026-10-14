@@ -66,6 +66,7 @@ Only `lacuna-real-de-contrato` justifies a new canonical contract. In that case 
 - Distinguish shipped, proven, public, beta, and roadmap claims. Do not upgrade aspirational direction into current capability.
 - When public docs disagree with code, backend contracts, or HTTP proof, fix the canonical owner or document drift; do not normalize the landing as truth.
 - If a new public route or guide is created, update registries, sitemap, LLM surfaces, related docs, and validation scope together.
+- When validating a reference consumer after a runtime package update, use fixtures from the current canonical contract. `EnterpriseRuntimeContextService.ready()` completing with a non-null response does not mean the selection is authorized: require `state === 'ready'` and `effectiveContext` before dependent persistence/provider reads. Prove selection-required, selection-invalid and missing effective context remain blocked; do not fabricate browser identity headers to make an obsolete fixture pass.
 - If no derived artifact changes, record the negative evidence: no route, guide, sitemap, LLM surface, registry, example, playground, public API, or canonical contract claim changed.
 
 ## Impact Map
@@ -86,11 +87,11 @@ Use the narrowest landing gate that matches the changed surface:
 - published guide or route: `npm run validate:published-guides` and `npm run validate:sitemap`
 - sitemap drift: `npm run sitemap:sync`, then `npm run validate:sitemap`
 - component docs publication: `npm run docs:validate` and, when needed, `npm run docs:coverage`
-- vendor/generated docs: `npm run validate:vendor-docs`
+- vendor/generated docs: `npm run validate:vendor-docs`. For isolated checkouts, set `PRAXIS_UI_ANGULAR_ROOT` to the exact canonical Angular checkout for `vendor-docs:sync`, `validate:vendor-docs` and `docs:validate`; do not invent filesystem bridges. Keep unrelated preexisting vendor drift separate from the scoped synchronization and never report the full freshness gate as passed when it still lists other stale artifacts.
 - dynamic page examples: `npm run validate:dynamic-page-examples`
 - table manifests/examples in `site.data.ts`: `npm run validate:table-manifests`
 - quickstart domain catalog projection: `npm run validate:quickstart-domain-catalog`
-- broad publication surface: `npm run check:integration`
+- broad publication surface: `npm run check:integration`. In isolated worktrees, the LLM workspace audit accepts `PRAXIS_WORKSPACE_ROOT`, `PRAXIS_UI_ANGULAR_ROOT` and `PRAXIS_HTTP_EXAMPLES_ROOT`; bind them to the real owner workspace and reviewed Angular/HTTP checkouts. Its report records resolved roots and missing sources must still fail. `validate:llm-publication:ci` validates publication only, not workspace evidence.
 
 For browser proof against the public quickstart, use the official landing origins from `AGENTS.md`, especially `127.0.0.1:4301`/`localhost:4301`. Do not invent ports.
 

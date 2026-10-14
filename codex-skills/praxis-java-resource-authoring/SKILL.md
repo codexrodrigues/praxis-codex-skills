@@ -55,14 +55,31 @@ operational proof, never the canonical owner of a starter or runtime semantic.
    Resource generators and scaffolds must emit this rule and keep a focused
    generated-source gate that rejects technical-identity assignment in update
    merges.
+   Audit lifecycle fields in create, update, inherited DTOs, mappers and internal
+   Java writers. A guarded workflow action is ineffective when a cadastral path
+   can set the same status/reason. Keep business transitions in their action
+   boundary; reject forbidden values explicitly instead of silently reporting a
+   successful ignored write. Validate both HTTP binding and direct Java calls,
+   protect merge targets, and prove legitimate cadastral edits still work.
+   Initial state belongs to the domain: choose it from the existing lifecycle
+   and prove the activation/signing journey; do not invent a permissive default.
+   A lock query can return a previously managed stale instance: refresh under
+   the same lock before deciding the transition. Bound lock acquisition and
+   test the actual PostgreSQL behavior; mocks do not prove serialization.
    Publishing an item ETag alone does not opt the inherited PUT into `If-Match`.
    Use the Metadata
    `VersionedCreateUpdateResourceService` contract consumed by
    `AbstractCreateUpdateResourceController`: its three-argument update must, in
    one transaction, call `precondition.requireMatch` on the managed persisted
    version before applying the mapper, then flush so `@Version` provides CAS.
-   Override any inherited two-argument Java update entry point to reject with
-   `428`, and keep the mapper from accepting a payload version. Prove HTTP
+   Inspect the concrete superclass as well as the versioned interface: Java
+   selects a concrete inherited two-argument update over an interface default.
+   The consumed starter must reject the precondition-less entry point before
+   loading, hooks or mapping. Starter rc.169 and rc.170 require an explicit host override;
+   the governance correction adds that guard in `AbstractBaseResourceService`
+   itself, but source/candidate validation is not published adoption. Any custom
+   override remains responsible for rejecting with `428`. Prove concrete/base/
+   interface dispatch, and keep the mapper from accepting a payload version. Prove HTTP
    missing `If-Match` (`428`), malformed (`400`), stale and wrong binding or
    resource ID (`412`), and a fresh successful token; also prove the direct
    Java entry point cannot bypass the precondition and two PostgreSQL writers
@@ -221,3 +238,5 @@ Close with the resource packet, resolved classifications, canonical owner,
 operation matrix, tests run, consumer proof, and outstanding platform gap. A
 resource is not complete because its controller compiles; it is complete when
 its semantic contract is discoverable and its intended operation is proven.
+
+For clean-context write guards, include create as well as update/actions. The base resource create path may query through its mapper and flush the entire persistence context; checking only beforeCreate can be too late. Reject caller-owned dirty or unbound contexts before the first mapper/repository/policy operation, including the NEVER_APPLIED policy branch. Prove that rejected creates do not flush unrelated managed lifecycle changes.
