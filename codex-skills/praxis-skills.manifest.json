@@ -1583,8 +1583,8 @@
                                             "praxis-api-quickstart-cockpit-http-validation",
                                             "praxis-http-examples-llm-smoke"
                                         ],
-                       "skillMdSha256":  "7E89465AFAEB4B71CA0EC97D4B296E72E1E84198D7B9704A5AEC13C2DF760AD8",
-                       "treeSha256":  "BB42D3E7E95E88155B7B948821FFACEF57FCAE12E0FD8A19BA29BBB55188AA2E"
+                       "skillMdSha256":  "92E006CBECE90728483E3DED92DC97F4A04F79352AAFBDF538F17A52041CCA0F",
+                       "treeSha256":  "B91CDB4316886BA3BBCFFC423B84A390A0EA17C818DABC1E6A537C1F23C79A8F"
                    },
                    {
                        "name":  "praxis-landing-registries-sitemap-playgrounds",

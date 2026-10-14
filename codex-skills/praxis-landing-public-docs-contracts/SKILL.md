@@ -91,7 +91,7 @@ Use the narrowest landing gate that matches the changed surface:
 - dynamic page examples: `npm run validate:dynamic-page-examples`
 - table manifests/examples in `site.data.ts`: `npm run validate:table-manifests`
 - quickstart domain catalog projection: `npm run validate:quickstart-domain-catalog`
-- broad publication surface: `npm run check:integration`
+- broad publication surface: `npm run check:integration`. In isolated worktrees, the LLM workspace audit accepts `PRAXIS_WORKSPACE_ROOT`, `PRAXIS_UI_ANGULAR_ROOT` and `PRAXIS_HTTP_EXAMPLES_ROOT`; bind them to the real owner workspace and reviewed Angular/HTTP checkouts. Its report records resolved roots and missing sources must still fail. `validate:llm-publication:ci` validates publication only, not workspace evidence.
 
 For browser proof against the public quickstart, use the official landing origins from `AGENTS.md`, especially `127.0.0.1:4301`/`localhost:4301`. Do not invent ports.
 
