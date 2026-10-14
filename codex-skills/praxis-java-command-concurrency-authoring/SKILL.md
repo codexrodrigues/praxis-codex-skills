@@ -2397,6 +2397,23 @@ Include acquisition/setup, CPU and final publication in the budget; discard outp
 the deadline elapsed after completion. This is a publication deadline, not an
 instantaneous wall-clock cancellation promise.
 
+For the Metadata-owned snapshot, inspect the exact artifact's
+`BulkExecutionInfrastructure.withConsistentRead` and its first physical SQL.
+JDBC isolation/read-only flags and Spring transaction metadata alone do not prove
+the PostgreSQL transaction state through a transaction pooler. Establish
+`SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY` on the bound inner
+connection before the snapshot query, within the original holder's remaining
+three-second deadline. Retain the native state/cardinality guard, fresh runtime
+attestation, lower timeout preservation and caller suspension/restoration; never
+retry with a new transaction or relax isolation to accept a failed setup.
+Prove the boundary under both JPA and JDBC transaction managers on assigned Neon
+with an ordinary runtime role. A controlled READ COMMITTED transaction before its
+first query must become RR/RO; after a snapshot was taken in READ COMMITTED,
+attempting to change to RR must fail without the protected callback. PostgreSQL
+permits an idempotent RR setting, so do not require every preceding SELECT to fail.
+This owned-read correction does not establish caller-owned capture or direct
+installer behavior. Candidate tests do not prove published host adoption.
+
 Persist the explicit allowlisted preview atomically with evaluation through the
 canonical store. Keep provider, evaluator and projector revisions distinct, changing
 only the revision whose behavior changed. Execution expiry alone must not hide retained

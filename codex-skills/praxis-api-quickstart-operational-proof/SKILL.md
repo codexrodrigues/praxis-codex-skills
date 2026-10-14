@@ -1854,6 +1854,19 @@ are not success. A durable COMPLETED row and one effect after a polling503 estab
 the committed outcome, but do not prove terminal HTTP, results or idempotent replay.
 Keep those acceptance steps pending rather than retrying with a new identity.
 
+When `SNAPSHOT_TRANSACTION` fails in the SDK's native RR/RO guard, a 503 or
+`IllegalStateException` does not identify a timeout or the mismatched column.
+Inspect the exact driver, JPA/JDBC transaction manager and pooler path; observe
+the original guard's closed values without inserting a diagnostic SELECT before
+it. A single successful read is inconclusive about an intermittent failure.
+Keep diagnostic prewarming outside the measured transaction explicitly separate
+from full-host evidence. A controlled initial READ COMMITTED state can prove an
+owned-transaction setup correction, but is not a reproduction of the historical
+failure. Require original deadlines, rollback/closure, ordinary runtime identity
+and exact source/artifact binding. Adopt the correction through the canonical
+Metadata artifact, then prove the full HTTP journey and persistence on Neon;
+neither the diagnostic nor a structural fix alone accepts a new Render deploy.
+
 Export only the closed diagnostic projection: class/method/line, nullable SQLSTATE
 and bounded cause/suppressed references, never throwable messages, SQL or request
 data. Each primary/cause/suppressed graph node must include `sqlState`: only a
