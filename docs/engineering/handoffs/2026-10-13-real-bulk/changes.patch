@@ -1,0 +1,1001 @@
+diff --git a/codex-skills/praxis-angular-host-project/SKILL.md b/codex-skills/praxis-angular-host-project/SKILL.md
+index 62a6746..8c1998b 100644
+--- a/codex-skills/praxis-angular-host-project/SKILL.md
++++ b/codex-skills/praxis-angular-host-project/SKILL.md
+@@ -1,6 +1,6 @@
+ ---
+ name: praxis-angular-host-project
+-description: Create or evolve Angular host applications that consume Praxis UI packages. Use when Codex must scaffold a new Angular project using published @praxisui/* packages, adapt a host from praxis-ui-quickstart, wire API_URL/PAX_FETCH_HEADERS/GenericCrudService/providers, create resource-oriented table/form/crud/list routes, configure local or remote Praxis UI runtime config, validate resourcePath/schema-driven integration, or decide which Praxis UI companion skills apply for authoring, dynamic-fields, config storage, or visual QA.
++description: Create or evolve Angular host applications that consume Praxis UI packages. Use when Codex must scaffold a new Angular project using published @praxisui/* packages, adapt a host from praxis-ui-quickstart, wire API_URL/PAX_FETCH_HEADERS/GenericCrudService/providers, consume server-owned cookie sessions and confirmed enterprise context, create resource-oriented table/form/crud/list routes, configure local or remote Praxis UI runtime config, validate resourcePath/schema-driven integration, or decide which Praxis UI companion skills apply for authoring, dynamic-fields, config storage, or visual QA.
+ ---
+ 
+ # Praxis Angular Host Project
+@@ -114,7 +114,7 @@ When updating skills, change the versioned source under `codex-skills/` when it
+ 4. Scaffold or adapt the host with canonical bootstrap:
+    - `API_URL.default.baseUrl` is the single API base.
+    - `resourcePath` values are relative when the API base already includes `/api`.
+-   - Register `PAX_FETCH_HEADERS` with tenant, locale, auth, and user/env headers when available.
++   - Register `PAX_FETCH_HEADERS` only when the consumed fetch path needs it; use confirmed server context for tenant/user/env headers and the host's real authentication transport. Never synthesize a default identity or demo token.
+    - Register Praxis runtime providers and the pipes required by table/form runtime.
+ 5. Add the smallest useful route set:
+    - First adoption path: table, dynamic form, CRUD, and list against the same resource.
+@@ -140,7 +140,7 @@ For a new host, prefer this order:
+ 2. Install Angular Material/CDK and the required `@praxisui/*` packages from npm. Install only the expansion packages that the first route set actually uses.
+ 3. Resolve and install the complete peer graph for the chosen Praxis UI train; the current public graph may require packages such as settings-panel, metadata-editor, dialog, rich-content, visual-builder, table-rule-builder, and ai even when the first route set is narrow.
+ 4. Add an Angular Material theme stylesheet, Material icons/symbols, CDK overlay styles, and `@praxisui/core/theme-bridge.css` or a proven equivalent host bridge before validating Material/Praxis components. `theme-bridge.css` complements the Material theme; it is not a replacement for the base Material component CSS. If a CSS file is not exported as a package subpath in the published train, add it through `angular.json` using the `node_modules/...` file path.
+-5. Create a central platform config file for API origin/base URL, resource paths, tenant/locale defaults, and `GlobalConfig` defaults.
++5. Create a central platform config file for API origin/base URL, resource paths, locale hints, and `GlobalConfig` defaults; resolve tenant and actor from the confirmed session/context.
+ 6. Wire `app.config.ts` with `API_URL`, headers, providers, pipes, logging when appropriate, and route providers.
+ 7. Add the core route set: table, form, CRUD, and list against the same resource.
+ 8. Run build/smoke validation before adding advanced authoring or visual polish.
+@@ -162,6 +162,75 @@ Use these defaults unless the host already has stronger local governance:
+ 
+ Do not prefix resource paths with `/api` when `API_URL` already points at `/api`. Avoid `resourcePath="/api/..."`, `resourcePath=".../filter"`, and duplicated `/api/api/...` paths. CRUD, schema, filter, option, item-id, submit, and capability endpoints are resolved by Praxis runtime services from the base resource and metadata.
+ 
++## Server Session And Confirmed Context
++
++Inspect the actual host auth endpoints, cookie policy, CSRF/CORS/origin gates,
++Core's `EnterpriseRuntimeContextService`, its provider/options and focused specs,
++and the consumer's HTTP chain before implementing authentication. A cookie session
++is a host contract, not a new identity API in a Praxis component. In the API
++Quickstart, `/auth/login` accepts username/password and returns 204 with HttpOnly
++SESSION; `/auth/session` verifies acceptance and current validity; `/auth/logout`
++revokes the session. Keep credentials out of assets, browser storage and logs.
++
++Separate session authentication from corporate runtime context. Register
++`providePraxisEnterpriseRuntimeContext` only when that host declares the integration;
++a root-provided service alone does not make it mandatory. The Quickstart's corporate
++adapter is deliberately not auto-composed; Config's default returns
++`RUNTIME_PROVIDER_UNAVAILABLE` rather than fabricating READY. A verified
++`/auth/session` 204 can remain active when an optional context probe is unavailable.
++Record that limit and keep context-dependent personalization disabled; operation
++authorization still comes from current server session/grants and fresh discovery.
++Do not activate a new grant directory/provider or create a simplified second context
++just to make the existing standalone bulk path work.
++
++Consume the actual server snapshot instead of a persona or locally stored user/tenant.
++Bootstrap without contextual claims; `effectiveContext` and its headers are usable
++only after a ready snapshot. Use
++opaque context choices, `expectedSelectionVersion` and all published cursor pages;
++do not manufacture choice references or infer a tenant from the first option.
++When a fetch path needs `PAX_FETCH_HEADERS`, project confirmed context through Core's
++header methods and keep it symmetric with the HTTP interceptor. The global factory
++alone cannot restrict destination origin; audit each transport before attaching it.
++
++Restrict cookie credentials and contextual headers to the configured API origin and
++its declared paths. Preserve browser Origin in a local proxy, verify upstream TLS,
++and forward auth endpoints when that host uses them. Only the official trusted-proxy
++policy may authorize forwarded headers; proxy headers must not inject credentials or
++identity. Same-origin Angular XSRF reads the readable CSRF cookie and echoes its
++header. Cross-origin `withCredentials` does not provide that echo or make the API's
++cookie readable by the host. Verify the deployment's effective policy; do not disable
++CSRF, rewrite Origin, or relax CORS to make a client work.
++
++Treat login/context/logout as projection transitions. Suspend obsolete routed content
++while changing authentication, invalidate on a current session-expiry response, and use a revision/epoch
++so an old response cannot revoke or restore a newer session. A successful login needs
++a session readback before accepting identity. Failed logout is uncertain: retain a
++blocked projection and expose verify-session/retry-logout until the server confirms
++absence or confirms the actual active session/context. A transport error is not logout
++proof. Do not remount a page under an old cookie during that transition. Once corporate
++context was confirmed, preserve that history in the host session service across
++consumer remounts. Loss blocks corporate projections until ready is reconfirmed or
++the server confirms session absence/revocation. Starting a login attempt or receiving
++401 for rejected login credentials does not prove an existing cookie was revoked;
++failed replacement authentication must not erase that history or unblock old-cookie
++projections. Keep the existing options/history contract instead of adding a compatibility
++flag. When context never existed, optional 503/null must not turn valid SESSION into
++anonymous or synthesize contextual headers.
++
++Bind persistence identity such as Page Builder's `pageIdentity` to confirmed tenant
++and user. Until it exists, disable user customization/auto-persistence rather than
++saving under an invented visitor/demo identity. Resource availability remains governed
++by current metadata/capabilities/actions; a host route, account label or selected
++context never grants an operation.
++
++Prove trusted versus foreign origin, accepted versus blocked cookies, current and
++late 401, logout success/uncertainty, context invalidation and paginated choices in
++focal host specs. Then prove browser cookie/CORS/CSRF behavior with the actual official
++origin; HTTP mocks cannot certify it. For bulk integration use the native Core/Table/
++CRUD path and real published bindings. Protected READ may be delegated by the backend
++to a different authorized requester; it never substitutes for creator-bound confirmation. Remove fictitious containment/reajuste actions
++when the backend has no matching contract; do not replace mocks with guessed URLs.
++
+ ## Route Parity Diagnostics
+ 
+ When table works but form, CRUD, or list fail for the same resource, check whether the table is relying on a local `TableConfig.meta.idField` while the other surfaces consume `/schemas/filtered` through `GenericCrudService` without an explicit `idField` query parameter. Query `/schemas/filtered?path=<base-resource>/filter&operation=post&schemaType=response` and `schemaType=request` exactly as the runtime does. If `x-ui.resource.idField` diverges from the resource DTO key, fix the canonical backend metadata owner, usually `praxis-metadata-starter`, or the host's published OpenAPI/schema metadata. Do not compensate by threading ad hoc `idField` params through Angular runtime calls or by adding frontend aliases.
+diff --git a/codex-skills/praxis-angular-host-project/references/host-bootstrap.md b/codex-skills/praxis-angular-host-project/references/host-bootstrap.md
+index 9150eb4..f8537c6 100644
+--- a/codex-skills/praxis-angular-host-project/references/host-bootstrap.md
++++ b/codex-skills/praxis-angular-host-project/references/host-bootstrap.md
+@@ -138,74 +138,63 @@ Do not use `/api/human-resources/funcionarios` when `API_URL` already includes `
+ 
+ For SSR, use an absolute `API_URL.default.baseUrl`. Relative bases can produce invalid URL errors during server rendering.
+ 
+-For local proxy mode, proxy `/api`, `/schemas`, and `/v3/api-docs` to the backend. Data may work while schema discovery fails if `/schemas` is omitted. When forwarded headers are enabled, backend schema code may resolve OpenAPI discovery through the frontend origin; omitting `/v3/api-docs` can make `/schemas/filtered` fail even though direct backend calls work. If the backend emits absolute HATEOAS links, send forwarded headers from the dev proxy and make sure the backend honors them, otherwise browser clients can follow `http://backend-port/...` links and hit CORS even though ordinary data requests use `/api`.
+-
+-Example dev proxy headers:
+-
+-```json
+-{
+-  "/api": {
+-    "target": "http://127.0.0.1:8091",
+-    "changeOrigin": true,
+-    "headers": {
+-      "Authorization": "Basic <local-dev-token>",
+-      "X-Tenant-ID": "demo",
+-      "X-Tenant": "demo",
+-      "X-Forwarded-Proto": "http",
+-      "X-Forwarded-Host": "127.0.0.1:4301"
+-    }
+-  },
+-  "/schemas": {
+-    "target": "http://127.0.0.1:8091",
+-    "changeOrigin": true,
+-    "headers": {
+-      "Authorization": "Basic <local-dev-token>",
+-      "X-Tenant-ID": "demo",
+-      "X-Tenant": "demo",
+-      "X-Forwarded-Proto": "http",
+-      "X-Forwarded-Host": "127.0.0.1:4301"
+-    }
+-  },
+-  "/v3/api-docs": {
+-    "target": "http://127.0.0.1:8091",
+-    "changeOrigin": true,
+-    "headers": {
+-      "Authorization": "Basic <local-dev-token>",
+-      "X-Tenant-ID": "demo",
+-      "X-Tenant": "demo",
+-      "X-Forwarded-Proto": "http",
+-      "X-Forwarded-Host": "127.0.0.1:4301"
+-    }
+-  }
+-}
+-```
+-
+-## Headers
+-
+-Set `PAX_FETCH_HEADERS` for Praxis runtime fetches. Keep it server-safe if SSR is used and keep it consistent with the host interceptor.
+-
+-Recommended browser shape:
++For local proxy mode, forward `/api` and `/schemas`, plus `/auth` when the host
++uses cookie sessions. Add `/v3/api-docs` only when the official integration consumes
++that surface. Preserve browser Origin and verify TLS for HTTPS targets. Use the host's
++documented target, port and origin. Do not inject Basic/Bearer credentials, a demo
++tenant, or a rewritten Origin in proxy configuration. Forwarded headers may be added
++only through the backend's declared trusted-proxy integration; an absolute HATEOAS
++link is not permission to create that trust locally.
++
++## Headers And Cookie Sessions
++
++Audit whether each consumed transport uses HttpClient, fetch, or `PAX_FETCH_HEADERS`.
++When the host uses a server-owned session, bootstrap authentication without fabricated
++contextual headers. Consume `EnterpriseRuntimeContextService` and confirmed server
++context when the host has that integration, rather than web-storage token/user/tenant
++defaults. Register the enterprise options provider only for an explicitly configured
++corporate integration. The standalone Quickstart can have a valid SESSION while its
++uncomposed Config runtime provider returns 503. Keep the authenticated session and
++report unavailable context without inventing READY or sending contextual identity;
++fresh operation authorization remains server-owned. Keep credentials in the
++HttpOnly cookie; do not copy SESSION or passwords to storage or global factories.
++
++For runtime fetch paths that actually need a header factory, use the existing Core
++projection methods, for example:
+ 
+ ```ts
+-provideEnvironmentInitializer(() => {
+-  (globalThis as any).PAX_FETCH_HEADERS = () => {
+-    if (typeof window === 'undefined') return {};
+-
+-    const tenant = localStorage.getItem('pax.api.tenant') || 'demo';
+-    const token = localStorage.getItem('pax.api.token') || '';
+-    const headers: Record<string, string> = {
+-      'X-Tenant-ID': tenant,
+-      'X-Tenant': tenant,
+-      'Accept-Language': navigator.language || 'pt-BR',
+-    };
+-
+-    if (token) headers['Authorization'] = `Bearer ${token}`;
+-    return headers;
+-  };
+-});
++import { inject } from '@angular/core';
++import { EnterpriseRuntimeContextService } from '@praxisui/core';
++
++const runtime = inject(EnterpriseRuntimeContextService);
++(globalThis as { PAX_FETCH_HEADERS?: () => Record<string, string> }).PAX_FETCH_HEADERS =
++  () => runtime.effectiveRequestHeaders();
+ ```
+ 
+-Add `X-User-ID`, `X-Env`, and `X-Updated-By` when adopting remote config or audited enterprise flows.
++Set `includeGlobalFetchHeaders: false` on the enterprise context provider when that
++global factory itself delegates to the service; otherwise its header resolution would
++re-enter the factory. Install in the host's existing initialization lifecycle, keep SSR
++request identity isolated, and restrict these headers to the trusted API destination in
++each transport. A global factory is not an origin gate. Use `runtime.applyHeaders()`
++for a confirmed HttpClient header projection; auth/context bootstrap must remain free
++of unconfirmed tenant/user claims. Unrelated authentication/experience headers follow
++the actual host contract.
++
++Cookie `withCredentials` is required for cross-origin session transport but is not a
++CSRF implementation. In same-origin proxy mode, Angular's XSRF handling can echo the
++readable CSRF cookie for protected writes. A cross-origin API cookie is not readable
++from the host, and Angular does not echo it to a foreign origin. Verify the actual
++host policy and use its canonical transport; never disable CSRF as a client repair.
++
++Suspend routed projections during login/context/logout transitions. Check the session
++before accepting a login; invalidate a current 401 while ignoring responses belonging
++to older revisions. After an uncertain logout, keep projections blocked and offer a
++protected check or explicit retry. Page persistence identity is derived only from a
++confirmed ready context, with customization/auto-persistence disabled until then.
++Keep corporate-context history in the host session service across outlet remounts;
++loss after confirmation cannot downgrade to standalone. Login attempts/rejected
++credentials do not establish revocation of an old SESSION. Uncertain replacement
++must retain blocked projections until a server readback settles the actual session.
+ 
+ ## Route-Level Providers
+ 
+diff --git a/codex-skills/praxis-angular-host-project/references/validation-checklist.md b/codex-skills/praxis-angular-host-project/references/validation-checklist.md
+index e05cb72..de5c8c3 100644
+--- a/codex-skills/praxis-angular-host-project/references/validation-checklist.md
++++ b/codex-skills/praxis-angular-host-project/references/validation-checklist.md
+@@ -10,7 +10,7 @@ Use this file before finishing a Praxis Angular host scaffold or integration cha
+ - `API_URL.default.baseUrl` is the single API base.
+ - `resourcePath` values are relative when the base URL includes `/api`.
+ - `resourcePath` values are base resources only; no `/filter`, `/options`, `/schemas`, item ids, or query strings.
+-- `PAX_FETCH_HEADERS` exists and returns tenant and locale; auth/user/env headers are included when the host requires them.
++- Each transport has an explicit header/credential policy. When `PAX_FETCH_HEADERS` is needed, it projects confirmed context without demo identities/tokens and matches the trusted HttpClient path; cookie-only HttpClient consumers need no artificial global factory.
+ - Seven common pipes are registered for standalone host runtime usage.
+ - `GenericCrudService` and runtime metadata providers exist at app or route scope where remote table/form/CRUD flows need them.
+ - Metadata registry providers are registered only when needed for authoring/catalog/widget discovery; do not confuse them with basic data runtime requirements.
+@@ -18,8 +18,8 @@ Use this file before finishing a Praxis Angular host scaffold or integration cha
+ - `overlay-prebuilt.css`, Material icons/symbols, and `@praxisui/core/theme-bridge.css` or a proven equivalent theme bridge are present when overlays or Material-based controls are used. If the package does not export the CSS subpath, the style is referenced through `angular.json` with the `node_modules/...` file path.
+ - App-level metadata registry providers are avoided unless authoring/catalog/widget discovery is actually in scope; basic table/form/CRUD/list runtime does not require global component-catalog registration.
+ - Table, CRUD, and list configs are checked against published TypeScript types; avoid guessed config flags, CRUD action operation names, or list-only `queryContext` nesting that the current train does not expose.
+-- Dev proxy maps `/api`, `/schemas`, and `/v3/api-docs` when using relative local backend paths with Praxis metadata/OpenAPI discovery.
+-- Dev proxy forwards auth, tenant, and `X-Forwarded-Proto`/`X-Forwarded-Host` when the backend emits HATEOAS links that browser components may follow.
++- Dev proxy maps `/api` and `/schemas`, `/auth` for cookie sessions, and `/v3/api-docs` only when required by the official integration.
++- Dev proxy preserves Origin, verifies TLS and injects no credentials or identity; forwarded headers require the backend's declared trusted-proxy policy.
+ - New filter/pagination/sort/contextual constraints use `queryContext` unless the existing host is intentionally on a legacy bridge.
+ - No local schema/data fetcher bypasses Praxis runtime services for critical schema-driven flows.
+ 
+@@ -64,12 +64,25 @@ Watch for:
+ 
+ - duplicated `/api/api`.
+ - missing `/schemas` or `/v3/api-docs` proxy in local dev.
+-- missing `X-Tenant-ID`.
++- missing confirmed context headers when the authenticated contract requires them; do not fill them with a demo tenant.
+ - CORS failures from non-official origins.
+ - CORS failures from absolute HATEOAS links pointing at the backend port instead of the frontend proxy origin.
+ - 400 from calling `GET /filter` when the backend expects `POST /filter`.
+ - schema 304 without prior cache in the current session.
+ 
++## Session And Context Validation
++
++- Login 204 alone is insufficient; a protected session readback confirms cookie acceptance.
++- Context comes from the server; selection uses opaque choices, selection version and pagination. Enterprise options are registered only for declared integration; valid SESSION plus optional provider 503/null remains authenticated without fabricated context.
++- Confirmed corporate-context history survives outlet remounts. Loss blocks corporate projections until ready or confirmed absence/revocation; failed/rejected replacement login cannot erase that history.
++- Protected READ authorization may be delegated to a different actor; test current read grants separately from original-subject confirmation/idempotency fences.
++- Credentials/contextual headers are added only for the configured trusted API origin/path.
++- Current 401 clears projections and permits reauthentication; a late old 401 cannot revoke a new session.
++- Login/context/logout transitions suspend stale content. Logout failure retains a blocked state until check/retry settles the actual session.
++- Page Builder identity/customization/auto-persistence uses only confirmed ready tenant/user context.
++- Same-origin proxy proof checks the issued CSRF cookie and echoed header on a protected write, plus rejection without/mismatched token when the server policy enables CSRF.
++- Cross-origin cookie, CORS and CSRF behavior is verified against the effective deployment policy; `withCredentials` and mock tests alone do not prove protected writes.
++
+ ## Remote Config Validation
+ 
+ When `providePraxisGlobalConfigBootstrap(...)` is enabled, verify:
+diff --git a/codex-skills/praxis-core-resource-runtime/SKILL.md b/codex-skills/praxis-core-resource-runtime/SKILL.md
+index f617b14..8973c3f 100644
+--- a/codex-skills/praxis-core-resource-runtime/SKILL.md
++++ b/codex-skills/praxis-core-resource-runtime/SKILL.md
+@@ -1,6 +1,6 @@
+ ---
+ name: praxis-core-resource-runtime
+-description: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, analytics schema contracts, stats request builders, or metadata-driven resource materialization.
++description: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, analytics schema contracts, stats request builders, governed bulk execution/recovery, or metadata-driven resource materialization.
+ ---
+ 
+ # Praxis Core Resource Runtime
+@@ -35,7 +35,7 @@ Inspect the affected source before changing guidance or code:
+ - `projects/praxis-core/src/lib/models/query-context.model.ts`
+ - `projects/praxis-core/src/lib/models/bulk-operation.model.ts`
+ - `projects/praxis-core/src/lib/services/bulk-operation-client.service.ts` and its spec
+-- `projects/praxis-core/src/lib/services/bulk-sync-state.service.ts` and its spec
++- `projects/praxis-core/src/lib/services/bulk-operation-state.service.ts` and its spec
+ - `projects/praxis-core/src/lib/models/enterprise-runtime-context.model.ts` for complete scope identity
+ 
+ Also read nearby specs for the exact behavior being changed. They are often the clearest contract for edge cases such as related resources, denied actions, schema operation resolution, and selected-value reload.
+@@ -89,34 +89,77 @@ Keep the Angular models aligned with the real backend payloads. `ResourceSchemaC
+ - For list/detail continuity, prefer the `resourceIdentity` already materialized on Praxis Table row/selection events and render it with `PraxisResourceIdentityComponent`. Re-fetching schema in the host, duplicating field-role config in CRUD metadata, or composing a screen-specific identifier header is a platform bypass.
+ - Preserve field-level `x-ui.presentation` when materializing identity parts. A visual key may inherit prefix/appearance from its field while title and metadata remain structurally governed by `x-ui.resource.identity`.
+ 
+-## BASIC Bulk Intent and Authorized Projection
+-
+-For BASIC, consume the published `SYNC / EXPLICIT / PER_ITEM` descriptor through
+-`BulkOperationClientService` and `BulkSyncStateService`; do not infer support for
+-QUERY, ASYNC or ATOMIC from enum members. Retain exact operation/group/method/path,
+-resource, configured origin and wire IDs. Read each selected resource's original
+-strong ETag from its canonical self GET with the published identity accessor;
+-reject weak, missing or cross-identity tokens, and never substitute a schema ETag.
+-Evaluate an immutable selection/intent without domain effects, then read the
+-protected preview and require a separate explicit confirmation of its proposal.
+-Keep one original Idempotency-Key for confirmation uncertainty and replay of that
+-same intent; changed intent needs a separately initiated evaluation, never an
+-automatic replacement proposal or a retry that resubmits successful targets.
+-
+-Separate proposal/execution/key custody from permission to display retained data.
+-On protected 401/403/404/410 or scope loss, the consuming workflow invalidates its projection;
+-retained state is not current authorization or proof that no effect committed.
+-The consuming workflow uses an authorization epoch so late successes cannot restore data after denial or
+-context change. Before redisplay, require complete fresh authorized reads for the
+-same resource/operation, actor, tenant, environment and organization scope, including
+-`effectiveContext.activeOrganizationId`. Do not replace the original proposal/key,
+-change actor to regain permission, or use local persistence as authority.
+-
+-Prove protocol/ETag/key/identity in the client/state specs and denial-versus-late-200
+-interleavings in the owning Table consumer. Mocks prove controlled transport
+-and UI behavior; require distinct real protected HTTP/backend commit/read/replay
+-receipts before claiming operational effects or deployed acceptance. Review the
+-exact runtime source and its focused evidence before adopting this workflow.
++## Governed Bulk Intent, Custody And Recovery
++
++Use `BulkOperationClientService` and `BulkOperationStateService.createSession()`
++with its `BulkOperationSession`. Core owns transport, validation and technical
++custody; Table and CRUD consume that same path. Inspect installed/public source
++before adopting it; do not retain a second client or the previous sync-only state
++service as a compatibility lane. Do not create host-local operation bindings when
++metadata already publishes them.
++
++Consume only the modes declared by the current descriptor and supported by the
++client: `SYNC` or `ASYNC`, `EXPLICIT`, `PER_ITEM`, with `DOMAIN_COMMAND`,
++`UNIFORM_UPDATE` or `PER_ITEM_UPDATE` as declared. Enum members alone do not prove
++QUERY or ATOMIC support. Preserve operation/group/method/path, resource, origin,
++request/response schema bindings and exact wire IDs. Read each selected resource's
++original strong ETag through its canonical self GET and declared identity accessor;
++reject weak, missing or cross-identity versions. A schema ETag is not a resource
++version. SET and CLEAR come from published writable/clearable fields; CLEAR omits
++value rather than sending null as an invented clear convention.
++
++Evaluate one immutable intent without domain effects, display its protected preview,
++and require a separate explicit confirmation of a READY proposal. The session owns
++one proposal and its Idempotency-Key. Before any confirmation POST, persist and
++read back the technical custody record; storage failure blocks dispatch. Confirmation
++sends the retained proposalId and the same key, not a replacement evaluation or the
++original target payload. Fingerprint the contract and resolved addresses; changed
++metadata/origin blocks recovery rather than silently moving the intent.
++
++After a lost response/503, remount or reload, recover fresh discovery and protected
++proposal/execution reads first. Recovery never confirms automatically. An explicit
++retry for the same intent reuses the original key. Retain only technical references,
++execution mode and contract fingerprint in session storage; never persist READY,
++permissions, grants, preview/results or business payload as authority. An existing or
++malformed unfinished record must not be overwritten by another session. Custody is
++bounded to that browser session; do not claim durable cross-device recovery.
++
++Treat HTTP 202 as an accepted response, not a status enum. QUEUED, RUNNING and
++CANCEL_REQUESTED are ongoing execution states. Read authoritative status,
++page results and offer cooperative cancellation only through the declared binding.
++Distinguish COMPLETED from partial errors, CANCELLED, STOPPED and
++RECONCILIATION_REQUIRED. The latter or unknown/indeterminate totals do not authorize
++custody cleanup or a success message. `complete()` is an explicit cleanup after a
++fresh authorized resolved terminal result, never after a transport failure, closed
++dialog or uncertain execution.
++
++Separate custody from permission to display retained data. On protected
++401/403/404/410 or context/scope loss, invalidate projections immediately while
++retaining an already dispatched intent. Use authorization epochs so late successes
++or result pages cannot restore data. Before redisplay, require current authorized
++reads for the retained resource/operation and the server-approved scope. Where an
++enterprise integration is configured or was confirmed, honor its ready identity,
++organization/profile/version and ACL invalidation fences. A provided-in-root context
++service alone does not make a standalone host require corporate context. Preserve
++history across host remounts; loss after confirmation cannot silently downgrade to
++standalone. Without that integration, cookie/session authentication and fresh backend
++operation grants still govern execution; do not fabricate READY, actor or tenant.
++
++Do not equate protected read authorization with creator continuity or confirmation
++permission. SDK readers delegate full-target authorization to the host provider; the
++Quickstart participant provider can permit another currently authorized requester to
++read. That is lawful delegated read, not a way to change the retained intent's creator.
++Confirmation/idempotency is still bound to the authenticated subject and original
++intent scope at the server. Keep technical custody if identity is unknown; fresh
++reads cannot authorize automatic confirmation, key replacement or cleanup. Test both
++an authorized different reader and a denied reader, plus creator-bound confirmation.
++Never use a local actor switch or cached authorization to bypass a server decision.
++
++Prove ETag/identity/key/protocol in the client/state specs, and denial-versus-late-200,
++remount, uncertain confirmation and asynchronous status behavior in the consumers.
++Mocks prove transport and UI behavior only. Operational effects require distinct
++protected HTTP/backend commit/read/replay receipts on an isolated assigned Neon
++branch; no local database or public production mutation substitutes for that proof.
+ 
+ ## No Keyword Routing
+ 
+@@ -141,6 +184,17 @@ Use focused specs for the touched service or model:
+ npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/schema/schema-metadata-client.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer-array.service.spec.ts
+ ```
+ 
++- bulk client and session custody:
++
++```sh
++npm run test:core -- --include=projects/praxis-core/src/lib/services/bulk-operation-client.service.spec.ts --include=projects/praxis-core/src/lib/services/bulk-operation-state.service.spec.ts
++```
++
++Prove durable-before-POST dispatch, same-key retry, 200/202, denial and late-response
++fences, blocked/malformed storage, metadata/origin drift, resolved versus uncertain
++cleanup and exact resource identity/ETag. Add the owning Table/CRUD consumer gates;
++client mocks alone cannot establish authorized business effects.
++
+ - CRUD runtime, option sources, and selected-value rehydration:
+ 
+ ```sh
+diff --git a/codex-skills/praxis-crud-runtime-openmodes/SKILL.md b/codex-skills/praxis-crud-runtime-openmodes/SKILL.md
+index eecbdef..cab4e5e 100644
+--- a/codex-skills/praxis-crud-runtime-openmodes/SKILL.md
++++ b/codex-skills/praxis-crud-runtime-openmodes/SKILL.md
+@@ -1,6 +1,6 @@
+ ---
+ name: praxis-crud-runtime-openmodes
+-description: Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation.
++description: Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, governed bulk session/ASYNC recovery, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation.
+ ---
+ 
+ # Praxis CRUD Runtime Open Modes
+@@ -27,6 +27,11 @@ Inspect:
+ - `src/lib/dynamic-form-dialog-host.component.ts`
+ - `src/lib/drawer.adapter.ts`
+ - `src/lib/crud.types.ts`
++- `src/lib/praxis-bulk-operation-dialog.component.ts`
++- `src/lib/praxis-bulk-edit-dialog.component.ts`
++- `src/lib/bulk-dialog-runtime.ts` and `src/lib/bulk-dialog-runtime.spec.ts`
++- Core's `bulk-operation-client.service.ts`, `bulk-operation-state.service.ts`,
++  `bulk-operation.model.ts` and their focused specs
+ - focused specs for launcher, dialog host, drawer adapter, and component metadata
+ 
+ ## Runtime Boundary
+@@ -95,6 +100,71 @@ when identity switching changes runtime behavior; a stub spec or a dispatched
+ browser event cannot prove consumer adoption. Inspect the installed package and
+ integrated source before promising this lifecycle in an older published version.
+ 
++## Governed Bulk Dialogs
++
++Core owns the single bulk client and session custody; CRUD owns dialog orchestration,
++parameters/field presentation and refresh handoff. Consume `BulkOperationClientService`
++and `BulkOperationStateService` rather than maintaining a CRUD-only transport. Remove
++obsolete client exports/consumers in the beta migration; a root barrel must not reexport
++Core types as a convenience facade. Use `praxis-core-resource-runtime` for protocol
++validation, scope identity, resource ETags, persisted-before-POST custody and cleanup.
++
++Discover current action/capability availability and bindings when opening, evaluating,
++confirming and recovering. A captured selection or caller-supplied descriptor is input,
++not permission. Read original strong resource versions from canonical self links with
++the exact declared row identity. Materialize DOMAIN_COMMAND parameters from its published
++request schema and UNIFORM_UPDATE fields from writable/clearable metadata.
++Use the published parameters pointer, Core schema normalization/field mapping and
++`PraxisDynamicForm.payloadPreviewChange.formData` only when `isValid` is true.
++Do not serialize raw control values/dates in the dialog: date-only and other payload
++semantics belong to the canonical form pipeline. Missing
++bindings, schemas, field lists, authority or READY status must not produce a local fallback.
++
++For ephemeral DOMAIN_COMMAND parameters, forward Dynamic Form's existing
++`layoutPolicy` with `{ source: 'authored', intent: 'command', persistence: 'transient' }`
++alongside the generated parameter config. The dialog owns this authored layout,
++while the published request schema and form pipeline own fields, validation and
++payload normalization. Transient persistence excludes cloud preference hydration
++and generated-config writes from this one-intent form; input-first precedence alone
++does not disable storage. Reuse Core's `DynamicFormLayoutPolicy` and Dynamic Form's
++existing guards, without a CRUD-only flag or a new Dynamic Form contract.
++
++Evaluate one intent, show a protected preview and require explicit confirmation.
++Reauthorize retained proposals with fresh discovery and protected reads before confirmation
++or an explicit retry. Reuse the same proposal/key after response loss; closing a dialog,
++context change or remount does not authorize another intention. Recovered custody contains
++technical references only and never auto-confirms. A scoped authorization epoch must keep
++late data from restoring a denied/destroyed dialog; use confirmed context, including the
++applicable organization/profile/version, rather than an app persona or cached ACL.
++When `PRAXIS_ENTERPRISE_RUNTIME_CONTEXT_OPTIONS` is configured or context has been
++known, require a ready snapshot before any protected orchestration. Null after
++confirmation is invalidation, not an unconfigured standalone host. A service that is
++merely provided in root, never configured and never given a context, does not force
++enterprise bootstrap on independent hosts. Hosts must retain previously confirmed
++context history across remounts; a new component's empty snapshot cannot erase it.
++Changes in capabilities/authorities must
++invalidate projections even when identity/version strings are unchanged; compare
++those arrays for the fence, but never persist ACL as custody scope or authority.
++
++For a published ASYNC operation, HTTP 202 is acceptance; QUEUED, RUNNING and
++CANCEL_REQUESTED remain in progress. Offer protected status readback and cooperative
++cancellation where declared; render totals/results from the API. Follow result cursors
++through the native Load More action, reauthorizing each read with fresh discovery and
++protected recovery; a first page alone is not all results. Distinguish complete, partial failure, cancelled, stopped and
++RECONCILIATION_REQUIRED outcomes. Do not show a generic success toast or clear pending
++custody for uncertain effects. An explicit resolved completion may clear technical custody;
++a dialog-dismiss action alone cannot. A protected read is scoped by the backend's
++current requester authorization and may be delegated to an authorized different actor;
++it does not establish creator continuity. Confirmation remains server-bound to the
++original subject/intent. Unknown actor identity in technical custody is not authority
++and cannot justify automatic confirmation, a new key or cleanup.
++
++Prove that completion/result propagates to CRUD and refreshes the table when appropriate,
++without treating a merely accepted execution as a completed save. Failed authorization
++removes projections while preserving technical recovery references. If the consumed package
++lacks this runtime, record the version/platform gap and upgrade through the official train;
++do not fill it with a host interceptor that fabricates bulk effects or a loop of item PUTs.
++
+ ## Child Boundaries
+ 
+ CRUD delegates:
+@@ -113,6 +183,7 @@ Minimum gates:
+ - compile: `npm run build:praxis-crud`
+ - component/runtime: `npx ng test praxis-crud --watch=false --progress=false --include=projects/praxis-crud/src/lib/praxis-crud.component.spec.ts`
+ - resource-page context: `npx ng test praxis-crud --watch=false --progress=false --include=projects/praxis-crud/src/lib/praxis-resource-page.component.spec.ts`
++- bulk: `npx ng test praxis-crud --watch=false --progress=false --include=projects/praxis-crud/src/lib/bulk-dialog-runtime.spec.ts --include=projects/praxis-crud/src/lib/praxis-crud.component.spec.ts` plus Core bulk client/state specs; prove availability/schema gates, resource ETags, uncertain same-key retry, 202 progression, cancellation, remount/context/late-response fences, no cleanup for reconciliation/unknown effects, payload-preview date-only semantics, cursor reauthorization, changed ACL with unchanged versions, configured-versus-unconfigured context and correct CRUD result/refresh handoff; verify transient command policy forwarding, visible/valid parameters and no config-storage calls for this ephemeral form. Diagnose blank/loading intervals from phase/transport evidence: bounded fail-open config loading does not establish cloud preferences as their cause
+ - table ownership/standalone execution: `npm run test:table -- --include=projects/praxis-table/src/lib/praxis-table.remote-regression.spec.ts --watch=false`
+ - launcher/open modes: `src/lib/crud-launcher.service.spec.ts`
+ - form host: `src/lib/dynamic-form-dialog-host.component.spec.ts`
+diff --git a/codex-skills/praxis-skills.manifest.json b/codex-skills/praxis-skills.manifest.json
+index 9d77475..f40e094 100644
+--- a/codex-skills/praxis-skills.manifest.json
++++ b/codex-skills/praxis-skills.manifest.json
+@@ -546,8 +546,8 @@
+                                             "praxis-editorial-forms-data-collection-adapters",
+                                             "praxis-editorial-forms-agentic-authoring"
+                                         ],
+-                       "skillMdSha256":  "A97BC8D7639E0F22CD086B21B70151A1D29B08B6B9550C5E32F5392B594C685F",
+-                       "treeSha256":  "1F366EC078841F915CA36CEB6F7E5C16057C6B047E754180623E493A19ED2797"
++                       "skillMdSha256":  "62E18D79F9ADCA82BD7985F00C21CF28CB43F6093EE38BD06629C3F2A084C1F6",
++                       "treeSha256":  "ADDEF7E92E49473DCF6276992C75FAD2B8993D71B5704AADCBCD42A6A87A5F51"
+                    },
+                    {
+                        "name":  "praxis-angular-i18n-governance",
+@@ -840,8 +840,8 @@
+                                             "praxis-core-i18n-resource-copy",
+                                             "praxis-core-providers-bootstrap"
+                                         ],
+-                       "skillMdSha256":  "2279B3252F8242D7F9544581A836C24C771E2B0EB401DDEE10E994152281CD0C",
+-                       "treeSha256":  "6E7E02A8673E6CD1377FD1F6DDE7AFE5D0DD07252FAC648FEB0BADD7A18DED9B"
++                       "skillMdSha256":  "2AAB475559B6465E91F710A40CE2B76E7E4D68AB03D436F4BAB4573F92EF532D",
++                       "treeSha256":  "5B936D2D05121FCEEF585A7E495B5C492F846C3193B6BE813A8EEC1F7DD68559"
+                    },
+                    {
+                        "name":  "praxis-metadata-schema-contracts",
+@@ -1000,8 +1000,8 @@
+                                             "praxis-crud-drawer-adapter-contract",
+                                             "praxis-crud-dialog-form-host-lifecycle"
+                                         ],
+-                       "skillMdSha256":  "70B20FBEFE727607AAC9A417193EFDC38101A9F0C3901E4F81B8FD7491A7B7C1",
+-                       "treeSha256":  "B06C01273E54EBF6DCDCB320396FAF62E6DD5D811F82E86086013A3654C1ABDF"
++                       "skillMdSha256":  "881B13CC6E27423C47252EEA31E7F3A5B0955524E6C41694FB3AB25B243837B8",
++                       "treeSha256":  "4295E7F1FC876E31AE92F8DC1813196C12F92895CF459B3B2E234AD0EDDD2E0F"
+                    },
+                    {
+                        "name":  "praxis-crud-drawer-adapter-contract",
+@@ -2081,8 +2081,8 @@
+                                             "praxis-dynamic-fields-editorial",
+                                             "praxis-resource-entity-lookup-backend"
+                                         ],
+-                       "skillMdSha256":  "26501B477C09DB46FBAEB03073B0879068AD6D4891D98D6A109487B496F45DDB",
+-                       "treeSha256":  "84DE328088F72F877386BEC2A449F10E012099109A2D81F2B6394A45A175D5E0"
++                       "skillMdSha256":  "FB5765E0928452E79B5E11F6DFCA5D832B5AC32F64DAB98A6CC24C0D028710BC",
++                       "treeSha256":  "5FB10F6370597323CBA5F5B5CAE11AA872B30792628C5BB8ADEEE3DC9FA00787"
+                    },
+                    {
+                        "name":  "praxis-table-rule-ai-validation",
+diff --git a/codex-skills/praxis-table-filter-actions/SKILL.md b/codex-skills/praxis-table-filter-actions/SKILL.md
+index fb2ae4f..1a9cc73 100644
+--- a/codex-skills/praxis-table-filter-actions/SKILL.md
++++ b/codex-skills/praxis-table-filter-actions/SKILL.md
+@@ -1,6 +1,6 @@
+ ---
+ name: praxis-table-filter-actions
+-description: Use when Codex must work on @praxisui/table filters, dynamic filter payloads, filter settings, filter drawer adapter, inline filters, toolbar actions, row actions, bulk actions, global actions, CRUD actions, export operations, or action/surface capability grounding.
++description: Use when Codex must work on @praxisui/table filters, dynamic filter payloads, filter settings, filter drawer adapter, inline filters, toolbar actions, row actions, governed bulk preview/confirmation/ASYNC recovery, global actions, CRUD actions, export operations, or action/surface capability grounding.
+ ---
+ 
+ # Praxis Table Filter Actions
+@@ -26,6 +26,12 @@ Inspect the affected source:
+ - `projects/praxis-table/docs/dynamic-inline-filter-catalog.md`
+ - `projects/praxis-table/docs/dynamic-filter-range-filters-guide.md`
+ 
++For governed bulk, also inspect `projects/praxis-table/src/lib/praxis-table.ts`,
++`praxis-table.bulk-operation.spec.ts`, `bulk-operation/table-bulk-operation-workflow.component.ts`
++and its template/spec, plus Core's bulk client/model/state and confirmed context.
++Inspect `test-dev/e2e/table-bulk-operation-governed.playwright.spec.ts` for the
++consumer journey; verify supported modes in the current descriptor/client.
++
+ For backend grounding, inspect `praxis-metadata-starter` filter DTO and resource controller docs/source when the change touches `GenericFilterDTO`, `/filter`, `/filter/cursor`, `/locate`, `/options/filter`, or range normalization.
+ 
+ ## Filter Contract Rules
+@@ -87,11 +93,54 @@ is not proof of that round-trip. Use `praxis-config-runtime-persistence` for rem
+ 
+ Do not route user intent by local keywords. The AI or backend contract chooses the canonical operation; table metadata can then rank fields, actions, and surfaces.
+ 
++## Governed Bulk Actions
++
++Use the table's native bulk workflow and Core's `BulkOperationClientService` /
++`BulkOperationStateService`. A selection, toolbar label or locally authored bulk
++button is not an executable descriptor. Discovery must publish current availability,
++operation bindings, writable/clearable fields, limits and supported modes; lack or
++denial fails closed. Metadata owns UNIFORM_UPDATE fields and DOMAIN_COMMAND
++parameters; do not add host field lists, guessed operation URLs or a mock interceptor
++that reports backend effects.
++
++For the short-lived bulk field/value form, pass the existing Dynamic Form
++`layoutPolicy` with `{ source: 'authored', intent: 'command', persistence: 'transient' }`.
++The workflow owns its authored layout; schema metadata still owns writable fields
++and payload semantics. Transient persistence keeps cloud preferences and generated
++config storage from loading or saving over this critical ephemeral intent.
++`configPersistenceStrategy='input-first'` alone is not the persistence boundary.
++Inspect Dynamic Form's initialization/persistence guards and Core's
++`DynamicFormLayoutPolicy` before adding another flag, storage adapter or layout contract.
++
++Capture EXPLICIT selected wire identities and fetch original strong resource ETags
++from their self links before evaluation. Keep one evaluated intent and require a
++protected preview plus explicit confirmation; reuse the retained key after an uncertain
++confirmation. For ASYNC/PER_ITEM, HTTP 202 accepts execution; QUEUED, RUNNING
++and CANCEL_REQUESTED remain in progress with status readback, cursor results and
++cooperative cancel where available. Clearly distinguish complete,
++partial failure, cancel, stop and reconciliation-required outcomes. Do not clear
++custody or announce success while effects are unknown.
++
++Closing/destroying the view invalidates its authorization projection, not a dispatched
++confirmation. When enterprise options are configured or context was already known, require a ready
++snapshot; a provided-in-root service with no configured integration/history must not
++block the server-governed standalone path. Keep confirmed-context history across
++host remounts so loss cannot become an implicit downgrade. Scope/context changes and
++protected denial must remove preview/results;
++late responses cannot restore them. Remount/recovery refreshes metadata and protected
++reads before redisplay and never triggers confirmation automatically. Inspect the
++Core session and owning Table handle; do not build per-host polling, key generation,
++web-storage authorization, or a second bulk client. An authorized read can be delegated
++by the backend to another requester; it is not proof of the retained creator or permission
++to confirm. The server's subject/intent fence continues to govern confirmation. Use `praxis-core-resource-runtime`
++for exact protocol, technical custody and terminal cleanup rules.
++
+ ## Validation
+ 
+ - Filter payload or inline controls: `praxis-filter*.spec.ts`, filter settings specs, and relevant docs.
+ - Host/backend contract: validate against `dynamic-filter-payload-contract.md` and a focal host/E2E when payload shape changes.
+ - Filter drawer adapter: include `filter-drawer-adapter/public-api.ts` and adapter specs.
++- Governed bulk: `npm run test:table -- --include=projects/praxis-table/src/lib/praxis-table.bulk-operation.spec.ts --include=projects/praxis-table/src/lib/bulk-operation/table-bulk-operation-workflow.component.spec.ts`, plus the Core bulk client/state specs. Verify the transient command policy is forwarded, fields remain visible/valid and config storage is not invoked for the ephemeral form; do not attribute a blank/loading interval to cloud preferences without phase/transport evidence, since config loading already fails open within a bounded timeout. Prove 202 progression, explicit retry/recovery, denial versus late success, remount/context fences, result paging, cancellation and no cleanup for uncertain effects. Use `projects/praxis-table/test-dev/e2e/table-bulk-operation-governed.playwright.spec.ts` for the focal consumer E2E, and add real HTTP/Neon proof before claiming operational results.
+ - Toolbar/row/bulk/global actions: `table-global-action-adapter.spec.ts`, toolbar editor specs, config editor integration, and AI operation specs when assistant behavior changes.
+ - CRUD action integration: `crud-integration-editor` plus config editor integration specs.
+ - Browser-visible filter/action UX: relevant Playwrights such as `funcionarios-inline-filters`, filter demo interactions, table connections, or surface-open demos.
+diff --git a/docs/engineering/handoff-real-bulk-20261013.md b/docs/engineering/handoff-real-bulk-20261013.md
+new file mode 100644
+index 0000000..383b59d
+--- /dev/null
++++ b/docs/engineering/handoff-real-bulk-20261013.md
+@@ -0,0 +1,53 @@
++# Passagem de trabalho — integração real de operações em lote do Hero
++
++**Encerrado por solicitação explícita do usuário em 13/10/2026 (America/Sao_Paulo). Não retomar automaticamente.**
++
++## Forma de entrega e preservação
++
++Esta pasta contém o estado exato das alterações deste agente em `changes.patch`, incluindo arquivos novos e exclusões, e um manifesto SHA-256. O patch parte da baseline indicada, NÃO da main atual. Ele foi entregue como artefato de revisão na main, sem aplicar alterações de runtime sobre mudanças concorrentes dos outros agentes. NÃO executar `git apply` cegamente, sobrescrever a main ou escolher `ours/theirs` indiscriminadamente. Revisar o diff contra a main atual e integrar manualmente os conflitos. Os checkouts originais, as mudanças do usuário e seus commits remotos foram preservados.
++
++## Objetivo, arquitetura e trabalho feito
++
++Substituir os mocks de operações em lote do Hero por SESSION real, discovery/capabilities/schema atuais, ETags de recurso, avaliação sem efeito, prévia protegida e confirmação humana com idempotência. Sem inventar endpoints, grants, contexto corporativo READY ou efeitos de backend.
++
++- Hero: removidos interceptor de mocks e identidade/clearance simulados; adicionados sessão/login/logout reais, interceptor de origem confiável, rota de participantes e testes. Casos fictícios de reajuste/containment foram retirados; não foi criada operação substituta inexistente. Contexto corporativo é opcional no host BASIC atual, com histórico confirmado preservado para bloquear downgrade.
++- Angular Core: unificação em BulkOperationClient/State/Session; remoção das classes BulkSync/PraxisBulkClient antigas, custody técnica em sessionStorage, ETags fortes, chave interna, fases ASYNC e fences de autorização/resposta tardia. Migração beta altera API pública: revisar consumidores.
++- Table: atualização uniforme publicada, seleção explícita, preview, confirmação, close/resume, recuperação por leitura fresca e mesma chave; HTTP202 não é sucesso terminal. Contexto obrigatório somente quando realmente configurado ou previamente confirmado.
++- CRUD: comandos e edição uniforme pelo runtime Core, descoberta fresca, validação, parâmetros serializados, status/results/cancel e custody. Revisão final dos parâmetros ainda incompleta.
++- Landing: READMEs vendorizados e guias de Table/CRUD; sync oficial seletivo com testes.
++- Skills: Core, Table, CRUD e Host atualizadas em checkout canônico; NÃO integradas/instaladas como guidance ativo. Há guidance transitório pendente de implementação na DynamicForm.
++
++## Evidência válida e limites
++
++Antes dos últimos ajustes: Hero 11 unitários/build/E2E controlado nos três temas; Core33, Table32, CRUD104 aprovados. Closure de14libs, packs locais oficiais e E2E Table focais passaram. Ingestion20/20 e snapshot Config10/10: nenhuma mudança semântica Config identificada nesse ponto. Os pacotes candidatos têm rótulo rc.12, mas bytes não publicados; NÃO inferir release pelo número.
++
++Último Table: 33 testes focais e build passaram com política authored/command/transient. Novo teste CRUD real encontrou DI incompleta na fixture, depois NG0103 e formulário sem geometria. O autor acrescentou GenericCrudService real, retirou feedback initialValue e começou a usar materializeFormLayoutFromMetadata. **A fonte final desses ajustes não foi validada nem revisada integralmente.** Revisar estabilidade do FormConfig produzido no template (não criar novo objeto a cada detecção), renderização dos parâmetros e payload date-only. Não tratar os104 testes antigos como aprovação do último diff.
++
++Toda prova com banco usou branches Neon exclusivas: API br-twilight-breeze-adq1cqaq (dark-mountain-25788969) e Config br-noisy-mouse-a4vgfjag (ancient-leaf-72055027), PG17/TLS e perfis ordinários verificados. Owner somente para provisionamento/inspeção; não como prova operacional.
++
++12 comandos oficiais de capacidade foram confirmados, identidade de9campos íntegra, duas instalações e dois slots livres. Primeira publicação503: timeout do controle3s, rollback/readback UNCOMPOSED/geração0 e zeroexecuções. Saturação posterior não prova causa. Nova tentativa serial, sem navegador concorrente: HTTP200, controle localREADY/geração1. Readback posterior: publicação globalPUBLISHED/geração2 e digest correspondente. Restart/reconcile oficial posteriorHTTP200 preservou geração local1.
++
++Hero real: SESSION204, filtro200, total195 no paginador/10linhas carregadas. Após aguardar discovery:11checkboxes, bulk-update allowed. O ensaio selecionou37/38 e abriu a operação, mas parou antes de EVAL/CONFIRM aguardando formulário. **Nenhuma prova positiva de mutação de negócio, retomada ou ausência de duplicação foi concluída.**
++
++Participantes37/38: missão2PLANEJADA, versões0; papelINTEL eNEGOCIACAO. Resultado não pode mudar em missão planejada; candidato FERIDO não executado. Prova proposta passou a papelSUPORTE, permitido nessa fase, mantendo principal único/equipe/grants. Não alterar fixtures para forçar um teste verde.
++
++## Onde parou / próximos passos do sucessor
++
++1. Revisar este patch e mudanças concorrentes da main; preservar ambas, comparar baselines e consumidores antes de integrar.
++2. Concluir parâmetros CRUD: formulário real renderizado, configuração estável, sem feedbackloop, sem submit implícito, serializer canônico e contrato fresco. Repetir testes focais após correção.
++3. DynamicForm: foi apenas PLANEJADO, **não implementado**. A política transient existente já evita layout normal, mas ngOnInit ainda lê form-inputs e outras preferências/fallbacks. Auditar ngOnInit2165/2201, fallback2633, persist/conflict2753/2765, presentation, storedschema metadata e ações de authoring. Corrigir fonte canônica, preservando modos persistentes, schema/ETag governados, mudanças de política/destroy e detach explícito. Nenhum novo flag/DTO/endpoint necessário. Testar ngOnInit real com storage indisponível, schema erro, late callbacks e regressões não transitórias.
++4. Atualizar skills de runtime/layout de formulário e guidance Table/CRUD: não instalar instrução de isolamento completo enquanto a implementação continuar parcial. Atualizar manifesto/drafts e validar scripts canônicos. Não sobrescrever drifts locais de List/UI-product-design.
++5. Reconstruir dependências e packs oficiais após o diff final; gerar nova proveniência incluindo arquivos novos. Packs anteriores não incluem os últimos ajustes.
++6. Repetir E2E focal e Hero com HTTP real/Neon: snapshot BEFORE_PLANNING, avaliação sem alteração de alvos/missão/193não-alvos, confirmação única, resultados, versões+1, mesma chave/replay, recuperação após resposta perdida e autorização delegada vs confirmação de outro criador. Sem mocks como prova operacional.
++7. Rever README/roadmap/json-api/publicdocs/ingestion. READMEs vendorizados podem estar anteriores aos últimos ajustes. Config snapshot/release só se houver delta semântico real após regeneração.
++8. Somente após revisão independente e gates: integrar fonte, publicar Angular pelo workflow oficial, adotar versão publicada no Hero, sincronizar somente skills afetadas e deploy oficial com smokes. NÃO publicar a partir deste snapshot incompleto.
++
++Pedido intermediário de revisar destaque de conexões (entradas/saídas, Cmd/Ctrl, pulso, persistência e temas) **não foi iniciado**, porque o usuário encerrou a tarefa. Confirmar o repositório do Workflow Designer antes de assumir que isso pertence ao Hero.
++
++## Recursos locais e segurança
++
++Checkouts e registros detalhados: /tmp/praxis-hero-real-bulk-20261013/docs/engineering/real-bulk-integration.md; /tmp/praxis-hero-bulk-runtime-20261013; /tmp/praxis-hero-real-bulk-skills-20261013; /tmp/praxis-hero-real-bulk-landing-20261013.
++
++Evidência privada: /private/tmp/praxis-hero-bulk-neon-20261013 (0700). Contém credenciais/cookies/chaves: NÃO anexar, versionar, imprimir ou copiar para GitHub. Scripts e receipts de main12, witnesses e supervisores estão ali para inspeção local autorizada. Chaves/budgets têm prazo finito: consultar validade atual antes de qualquer retomada; não renovar/resetar budgets antigos nem ativar capacidade copiada de outra branch. Branches isoladas foram preservadas; não excluir sem autorização.
++
++Hosts/backend/frontend e testes da tarefa foram encerrados; agentes interrompidos. Logout do operador foi comprovado na origem correta:204, depois401 e cookie removido; não equivale à revogação de cópias doJWT. Uma tentativa anterior de cleanup usou origem diferente e não comprovou remoção; recibos negativos preservados. Não houve release npm, tag ou deploy deste incremento.
+diff --git a/docs/issue-drafts/skill-reviews/praxis-angular-host-project.md b/docs/issue-drafts/skill-reviews/praxis-angular-host-project.md
+index 46d065b..5ebd507 100644
+--- a/docs/issue-drafts/skill-reviews/praxis-angular-host-project.md
++++ b/docs/issue-drafts/skill-reviews/praxis-angular-host-project.md
+@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
+ 
+ - Familia: praxis
+ - Caminho: codex-skills/praxis-angular-host-project/
+-- Descricao atual: Create or evolve Angular host applications that consume Praxis UI packages. Use when Codex must scaffold a new Angular project using published @praxisui/* packages, adapt a host from praxis-ui-quickstart, wire API_URL/PAX_FETCH_HEADERS/GenericCrudService/providers, create resource-oriented table/form/crud/list routes, configure local or remote Praxis UI runtime config, validate resourcePath/schema-driven integration, or decide which Praxis UI companion skills apply for authoring, dynamic-fields, config storage, or visual QA.
++- Descricao atual: Create or evolve Angular host applications that consume Praxis UI packages. Use when Codex must scaffold a new Angular project using published @praxisui/* packages, adapt a host from praxis-ui-quickstart, wire API_URL/PAX_FETCH_HEADERS/GenericCrudService/providers, consume server-owned cookie sessions and confirmed enterprise context, create resource-oriented table/form/crud/list routes, configure local or remote Praxis UI runtime config, validate resourcePath/schema-driven integration, or decide which Praxis UI companion skills apply for authoring, dynamic-fields, config storage, or visual QA.
+ 
+ ## Classificacao inicial
+ 
+diff --git a/docs/issue-drafts/skill-reviews/praxis-core-resource-runtime.md b/docs/issue-drafts/skill-reviews/praxis-core-resource-runtime.md
+index 2b377f9..9e3c221 100644
+--- a/docs/issue-drafts/skill-reviews/praxis-core-resource-runtime.md
++++ b/docs/issue-drafts/skill-reviews/praxis-core-resource-runtime.md
+@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
+ 
+ - Familia: praxis
+ - Caminho: codex-skills/praxis-core-resource-runtime/
+-- Descricao atual: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, analytics schema contracts, stats request builders, or metadata-driven resource materialization.
++- Descricao atual: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, analytics schema contracts, stats request builders, governed bulk execution/recovery, or metadata-driven resource materialization.
+ 
+ ## Classificacao inicial
+ 
+diff --git a/docs/issue-drafts/skill-reviews/praxis-crud-runtime-openmodes.md b/docs/issue-drafts/skill-reviews/praxis-crud-runtime-openmodes.md
+index 03c735d..b731735 100644
+--- a/docs/issue-drafts/skill-reviews/praxis-crud-runtime-openmodes.md
++++ b/docs/issue-drafts/skill-reviews/praxis-crud-runtime-openmodes.md
+@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
+ 
+ - Familia: praxis
+ - Caminho: codex-skills/praxis-crud-runtime-openmodes/
+-- Descricao atual: Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation.
++- Descricao atual: Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, governed bulk session/ASYNC recovery, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation.
+ 
+ ## Classificacao inicial
+ 
+diff --git a/docs/issue-drafts/skill-reviews/praxis-table-filter-actions.md b/docs/issue-drafts/skill-reviews/praxis-table-filter-actions.md
+index 6f37ebe..b0ee652 100644
+--- a/docs/issue-drafts/skill-reviews/praxis-table-filter-actions.md
++++ b/docs/issue-drafts/skill-reviews/praxis-table-filter-actions.md
+@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
+ 
+ - Familia: praxis
+ - Caminho: codex-skills/praxis-table-filter-actions/
+-- Descricao atual: Use when Codex must work on @praxisui/table filters, dynamic filter payloads, filter settings, filter drawer adapter, inline filters, toolbar actions, row actions, bulk actions, global actions, CRUD actions, export operations, or action/surface capability grounding.
++- Descricao atual: Use when Codex must work on @praxisui/table filters, dynamic filter payloads, filter settings, filter drawer adapter, inline filters, toolbar actions, row actions, governed bulk preview/confirmation/ASYNC recovery, global actions, CRUD actions, export operations, or action/surface capability grounding.
+ 
+ ## Classificacao inicial
+ 
+diff --git a/docs/skill-updates/hero-real-bulk-2026-10-13.md b/docs/skill-updates/hero-real-bulk-2026-10-13.md
+new file mode 100644
+index 0000000..a3ee1f6
+--- /dev/null
++++ b/docs/skill-updates/hero-real-bulk-2026-10-13.md
+@@ -0,0 +1,218 @@
++# Skills de sessão e lote real do Hero — 13/10/2026
++
++## Escopo e inventário
++
++Mudança `docs-apenas` neste repositório, com guidance transversal de runtime e
++adoção. Baseline canônico das skills: `a7a987e` (`origin/main`), branch isolada
++`codex/hero-real-bulk-skills-20261013`. A cópia principal e suas alterações locais
++não foram usadas como destino de escrita. Não há nova skill nem novo contrato.
++
++| Skill | Impacto | Evidência e decisão |
++| --- | --- | --- |
++| `praxis-core-resource-runtime` | `atualizar-existente` | O estado público migra de BulkSync para BulkOperation, com SYNC/ASYNC, custódia anterior ao POST e recuperação autorizada. Corrigir fonte/API/provas ensinadas. |
++| `praxis-table-filter-actions` | `atualizar-existente` | A seleção e a ação nativas materializam o cliente/sessão comum, readback e resultados sem sucesso prematuro. Ensinar o consumidor existente, sem fluxo local paralelo. |
++| `praxis-crud-runtime-openmodes` | `atualizar-existente` | Os diálogos passam a consumir a mesma custódia/transporte de Core e discovery atual; atualizar orquestração, confirmação e handoff. |
++| `praxis-angular-host-project` | `atualizar-existente` | Sessão HttpOnly/contexto confirmado substituem persona/token/tenant de demonstração. Referências de proxy/headers tinham orientação incompatível com essa adoção. |
++| `praxis-api-quickstart-security-config` | `existente-adequada` | Já separa cookie, CSRF, CORS, Origin, proxy confiável e prova browser. Não foi alterada. |
++| `praxis-skill-authoring-governance` | `existente-adequada` | Fonte canônica, manifesto, validadores, revisão independente e sincronização seletiva continuam sendo o procedimento. |
++
++Core é dono do protocolo e da custódia; Table e CRUD materializam o fluxo;
++Hero é dono da sessão/shell. Metadata permanece dono de bindings, disponibilidade,
++schemas e campos; a política HTTP continua no Quickstart. Nenhum exemplo de proxy
++pode fabricar ator/tenant, gravar SESSION em storage ou relaxar CSRF/Origin.
++
++Inventário adicional de composição: `/auth/session` já confirma a sessão real;
++Quickstart usa `QuickstartOperationalContextResolver` para binding e grants atuais
++por operação. Seu adapter corporativo é deliberadamente não auto-composto, e o
++Config default retorna 503 `RUNTIME_PROVIDER_UNAVAILABLE`. Tornar essa superfície
++obrigatória para autenticação/lote existente era `ja-suportado-mal-materializado`.
++A composição corporativa completa permanece `suportado-parcialmente` no host e
++fora deste incremento; não adicionar grant directory, managed keys ou provider
++simplificado como reparo de cliente. Registrar options/histórico somente conforme
++a integração efetiva, sem nova flag/contrato.
++
++Foram revisados os AGENTS aplicáveis, a governança de skills, source/specs de
++bulk client/state/model e contexto de Core, workflow Table, runtime/diálogos CRUD,
++sessão/interceptor/diálogo/shell/dashboard do Hero e política auth/CSRF do Quickstart.
++Fontes operacionais: Angular no checkout isolado `praxis-hero-bulk-runtime-20261013`
++(baseline `ad6c01e31`); Hero em `praxis-hero-real-bulk-20261013` (baseline `2081c87`);
++Quickstart `c390dd74`. Alterações ainda não commitadas exigem vinculação à fonte
++congelada antes de aceitar a correspondência final.
++
++## Guidance e artefatos derivados
++
++Atualizadas as quatro skills, as referências `host-bootstrap.md` e
++`validation-checklist.md` da skill host, os quatro drafts de revisão derivados e
++os hashes de SKILL.md/árvore das quatro entradas no manifesto Praxis. Dependências
++permanecem inalteradas; não foi criada dependência ou superfície pública nova.
++O gerador oficial produziu 186 drafts, mas somente os quatro derivados mudaram.
++Não há artefato de runtime gerado por este patch documental.
++
++A orientação diferencia sessão de contexto corporativo: optional 503 não invalida
++SESSION verificada nem fabrica READY. Personalização exige contexto confirmado.
++Histórico corporativo fica no serviço host e atravessa remounts; perda não vira
++standalone, nem login rejeitado prova que um cookie anterior deixou de valer.
++
++A orientação diferencia recuperação técnica de autorização, mantém a proposta/chave
++original após incerteza, exige readback antes de redisplay e não auto-confirma.
++202/RUNNING, reconciliação e totais desconhecidos não são sucesso nem autorização
++para limpeza. Sessão e Page Builder usam identidade confirmada; expiração corrente,
++respostas antigas e logout incerto têm provas próprias. O guidance não anuncia
++prova de banco, publicação npm ou paginação em um consumidor sem evidência.
++
++Teste de escopo das descrições:
++
++| Skill | Pedido que deve acionar | Pedido adjacente com outro dono |
++| --- | --- | --- |
++| Core resource | Implementar recuperação da confirmação ASYNC sem duplicar efeitos | Alterar cores do botão de ação na tabela |
++| Table filter/actions | Corrigir preview/readback de atualização da seleção da tabela | Publicar bindings bulk no backend Metadata |
++| CRUD runtime | Corrigir diálogo CRUD que trata HTTP 202 como save concluído | Definir campos graváveis do DTO backend |
++| Angular host | Integrar cookie de sessão, contexto confirmado e logout incerto | Alterar revogação de sessão no backend Quickstart |
++
++## Validação e estado
++
++PowerShell indisponível; aplicado o fallback Python canônico. O validador
++`quick_validate.py` estava presente, mas falhou por ausência local de PyYAML;
++`validate-praxis-skills.py` validou as quatro skills em substituição.
++
++Comandos reproduzíveis, executados na raiz deste repositório:
++
++```sh
++python3 scripts/generate-skill-review-issue-drafts.py
++python3 scripts/audit-praxis-skills.py --family praxis --skills-root codex-skills --fix-manifest
++python3 scripts/validate-praxis-skills.py codex-skills/praxis-core-resource-runtime codex-skills/praxis-table-filter-actions codex-skills/praxis-crud-runtime-openmodes codex-skills/praxis-angular-host-project
++python3 scripts/preflight-python-fallbacks.py
++python3 scripts/audit-praxis-skills.py --family praxis --skills-root codex-skills --fail-on-drift
++python3 scripts/audit-praxis-skills.py --family ergon-migration --skills-root codex-skills --fail-on-drift
++```
++
++Preflight aprovado: 41 testes de scripts, validação estrutural de ambas as famílias,
++check dos drafts derivados e auditoria de cópia temporária descartável. Auditoria
++fonte/manifesto: Praxis 167/167 e Ergon 19/19, sem drift. `--skills-root codex-skills`
++confere fonte/manifesto; não comprova atualização da instalação pessoal. Os scripts
++atualizam hashes/drafts; preflight usa uma cópia temporária para ensaiar sincronização.
++Nenhuma instalação pessoal foi sincronizada.
++
++Revisão independente do delta host opcional: ausência de token obrigatório,
++headers de identidade retirados quando não confirmados, ETag/idempotência preservados,
++SESSION mantida após context 503 e suspensão sticky após perda de contexto. O revisor
++identificou que login antes confirmado/rejeitado não pode apagar o histórico; o autor
++corrigiu isso e excluiu login 401 da evidência de expiração de uma SESSION existente.
++Fonte final inspecionada do teste: 11/11 aprovados no log
++`/tmp/praxis-real-bulk-hero-unit.log` (13/10, 20:31:51). Esse resultado foi importado
++da execução do coordenador, não reexecutado por este autor de guidance.
++
++Correção de premissa READ: a fonte SDK rc.169 `57d646c1b6` delega autorização de
++leitura do conjunto completo ao host. O provider Quickstart de participantes permite
++requester diferente do creator quando seu grant atual cobre todos os alvos. READ
++não prova continuidade do criador nem permissão de confirmar. Confirmação/idempotência
++continuam vinculadas ao subject/intent original no servidor. Custódia sem identidade
++conhecida permanece técnica e pode impedir outra intenção; nunca auto-confirma, substitui
++chave ou limpa referências por uma negação. Guidance atualizado nas quatro skills;
++prova HTTP de ator distinto/read/confirm permanece responsabilidade do ensaio real.
++
++Auditoria somente leitura da instalação: quatro skills deste patch ainda diferentes,
++mais os drifts prévios `praxis-list-runtime-data` e `praxis-ui-product-design`.
++Não sobrescrever esses dois ao integrar/sincronizar seletivamente. Logs locais de
++validação: `/tmp/praxis-real-bulk-skills-preflight.log`,
++`/tmp/praxis-real-bulk-skills-source-praxis.json`,
++`/tmp/praxis-real-bulk-skills-source-ergon.json` e auditorias installed correspondentes.
++Esses logs são recibos locais, não publicação nem prova HTTP/Neon.
++
++Estado: guidance alinhado aos nomes congelados de Core/Table/CRUD e à sessão Hero.
++Table usa a pasta `bulk-operation`, `praxis-table.bulk-operation.spec.ts` e
++`table-bulk-operation-governed.playwright.spec.ts`. HTTP 202 significa aceitação;
++os estados em andamento são QUEUED/RUNNING/CANCEL_REQUESTED, sem enum ACCEPTED.
++CRUD observa contexto configurado ou histórico confirmado, invalidação por mudança
++de ACL mesmo com versões iguais, scope de custódia sem ACL, payloadPreview.formData
++válido e cursores de resultados reautorizados. Fonte CRUD congelada: prova focal
++104/104 informada pelo autor e log `/tmp/praxis-crud-bulk-focal.log`; o revisor do
++runtime é o coordenador. Core/Table ainda repetem seus gates após a última mudança
++de descriptor/clone; closure de builds, E2E, HTTP/Neon e visual não foi certificada
++por este patch de guidance.
++
++Revisão independente pelo coordenador, integração/publicação canônica e sincronização
++pessoal permanecem pendentes.
++O autor destas skills não aceita o próprio patch. A validação estrutural não certifica
++funcionamento do produto nem conclui os gates HTTP/CSRF, Neon, E2E e visuais do Hero.
++
++## Fonte material inspecionada (SHA-256 provisórios)
++
++As revisões abaixo identificam os arquivos lidos após o delta de contexto opcional.
++São provisórias para confronto final pelo coordenador: runtime e docs/E2E podem
++receber alterações posteriores, que não ficam certificadas por estes hashes.
++
++| Repositório / arquivo | SHA-256 |
++| --- | --- |
++| Angular: `projects/praxis-core/src/lib/models/bulk-operation.model.ts` | `541c45b297fbb80f3f1b1344d40c1dbe4e9b219b4ad726cd7e432a5cfc92d961` |
++| Angular: `projects/praxis-core/src/lib/services/bulk-operation-client.service.ts` | `adb0552dc24a444858632e05f2636d2647c6d021640a1b5b899046638328ef06` |
++| Angular: `projects/praxis-core/src/lib/services/bulk-operation-state.service.ts` | `a68fcbca222b4398ee999f7b31fdc962680b8dcb48bb25c8d62d7f4e53c65c04` |
++| Angular: `projects/praxis-table/src/lib/bulk-operation/table-bulk-operation-workflow.component.ts` | `642bc24294624aa7c411d6177d1e62fe153f1b1b00aced1adeeb772ffa32ba08` |
++| Angular: `projects/praxis-table/src/lib/praxis-table.bulk-operation.spec.ts` | `32061272f5b943ca30e0204ccb45ea700a77c851f9c9da22b866b4d4140b034f` |
++| Angular: `projects/praxis-table/test-dev/e2e/table-bulk-operation-governed.playwright.spec.ts` | `badf99b1a4aaa904a8f66e75de2c292cd3497039ca6a0726c9748bf766d2ed22` |
++| Angular: `projects/praxis-crud/src/lib/bulk-dialog-runtime.ts` | `c41624ce63759b1afe626ad6fbaa1cb4c5a73d6fa49e8de2d361083d8154b378` |
++| Angular: `projects/praxis-crud/src/lib/bulk-dialog-runtime.spec.ts` | `b01d7ed62f00a20cf810b3832e9a3901c4eb594239a3a775f6283e29020c6605` |
++| Angular: `projects/praxis-crud/src/lib/praxis-bulk-operation-dialog.component.ts` | `dc335daacfa691515784397e19d4a14f5ee55a4fcec1db8307a66ca6065c17aa` |
++| Angular: `projects/praxis-crud/src/lib/praxis-bulk-edit-dialog.component.ts` | `a0a4630df69d87c201b4987319ddb9fcb52ee4f532bd76a897116873d0a66f81` |
++| Hero: `src/app/core/hero-session.service.ts` | `65cd94554e288a6b5b56b1ccc035b44306d9ab1d44b9d4f91162326d06ed0fc7` |
++| Hero: `src/app/core/hero-api.interceptor.ts` | `f042b848d0ba46c87dfa644badbfe4b764126c3c5ca5b8d124df95a4c8a50291` |
++| Hero: `src/app/core/hero-session.spec.ts` | `8b23312891822efcdac77bb3ad05b99a5cab5b6c6beaf4fddbd434860a0c3dc6` |
++| Hero: `src/app/app.config.ts` | `3efc260516f2d17b7e59ccc714cda15fc6cd73d768c8a1f12b25a60b20b53b52` |
++| Config: `src/main/java/org/praxisplatform/config/service/DefaultEnterpriseRuntimeContextProvider.java` | `80bc8aece35acc2387c8e67f457908baf9fa140615c3acf3495ee8dbad4ad801` |
++| SDK rc.169: `src/main/java/org/praxisplatform/uischema/bulk/BulkAuthorizedProposalReader.java` | `e8a5974da69ee5d02ce355f02ad10dd90889602e7db9db351d653b9a99dfc127` |
++| SDK rc.169: `src/main/java/org/praxisplatform/uischema/bulk/BulkAuthorizedExecutionReader.java` | `34bc20dbe260396821b64fd20a99f33dd823bbb93879c78eeda39b01c4531bdb` |
++| SDK rc.169: `src/main/java/org/praxisplatform/uischema/bulk/JdbcBulkDurableExecution.java` | `47920bdd2c44f73a68b556eb0df6e79aafb1a9f055f6ca7c344813c2c24a98a9` |
++| Angular: `projects/praxis-core/README.md` | `4821ee9b373a2619648387d29a4ffda1910a011ddfc171dd90c9ebd403900728` |
++
++Último delta documental: tabela de migração Core conferida contra exports antigos e
++atuais, incluindo options e helper de chave removidos. Vendor Core sincronizado
++isoladamente e os três READMEs revalidados. O pack candidato anterior antecede essa
++tabela somente documental; publicação oficial requer novo pack da fonte congelada.
++O runtime não mudou nesse delta. Guidance existente já cobre migração beta e chave
++interna à sessão; SKILL.md e manifesto permanecem intactos.
++
++
++## Delta de layout temporário de comando
++
++Escopo `docs-apenas`, orientação transversal em consumidores de contrato existente.
++Inventário: Core já exporta `DynamicFormLayoutPolicy`; Dynamic Form já reconhece
++`source: authored`, `intent: command` e `persistence: transient`. Sua inicialização
++evita `loadConfig` nesse modo, e suas escritas de configuração/metadados já são
++guardadas. `input-first` é precedência, não desativação de persistência. Aderência
++`ja-suportado-mal-materializado`: Table bulk e parâmetros DOMAIN_COMMAND de CRUD
++devem encaminhar essa política à forma efêmera, sem novo contrato/flag.
++
++Mapa de impacto: runtime canônico existente em Core/Dynamic Form; consumidores
++Table/CRUD; skills Table-filter-actions e CRUD-runtime-openmodes
++`atualizar-existente`; Core-resource-runtime e Angular-host-project
++`existente-adequada` para este delta, pois não são donos desse form temporário.
++READMEs canônicos/vendorizados públicos serão confrontados e sincronizados somente
++após freeze dos respectivos autores. Não há novo exemplo, receita ou API pública
++a gerar por esta orientação.
++
++Plano: registrar política nos dois consumidores, regenerar drafts oficiais, atualizar
++apenas seus hashes no manifesto e validar a fonte com os scripts canônicos; o
++coordenador revisa independentemente. Gates do runtime pertencem aos autores de
++Table/CRUD e devem provar encaminhamento, campos/payload válidos e ausência de
++load/save de preferências nas formas temporárias. A fonte Dynamic Form inspecionada
++tem configuração fail-open com timeout limitado; não há evidência para atribuir
++a ela uma tela vazia por quinze segundos. O guidance não declara causa observada,
++prova browser, HTTP ou Neon. O estado READY/PUBLISHED informado pelo coordenador
++é independente deste patch documental.
++
++Validação deste delta: `generate-skill-review-issue-drafts.py` executado (186 drafts);
++`audit-praxis-skills.py --fix-manifest` atualizou hashes das duas skills (o diagnóstico
++da primeira passagem ainda reportou os dois hashes antigos; a nova auditoria
++bloqueante passou). Validação estrutural focal Table/CRUD aprovada. Preflight
++canônico e auditorias fonte/manifesto das famílias Praxis/Ergon aprovados, sem drift.
++Logs: `/tmp/praxis-real-bulk-skills-transient-{drafts,manifest,validate,preflight}.log`
++e `/tmp/praxis-real-bulk-skills-transient-source-{praxis,ergon}.json`.
++Não houve build, teste de produto, HTTP/DB, sync local ou publicação neste delta.
++Revisão independente do coordenador e prova dos consumidores continuam pendentes.
++
++Hashes materiais de apoio deste delta, provisórios até freeze do runtime:
++
++| Fonte | SHA-256 |
++| --- | --- |
++| `projects/praxis-core/src/lib/helpers/form-layout-materializer.ts` | `7e65b20915783deefc29b7ca53d1d8cf8a716936b55fea522f5d986fe72605ec` |
++| `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.ts` | `bd8a1fd4d725d8aee2c2caa58a0afc2bf5cb05af489e25f76bb4a400c7943630` |
