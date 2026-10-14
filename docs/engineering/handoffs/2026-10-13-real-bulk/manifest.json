@@ -1,0 +1,11 @@
+{
+  "repository": "git@github.com:codexrodrigues/praxis-codex-skills.git",
+  "baseline": "a7a987e4a6c3fd904b803ba508d0cd275ebbc749",
+  "mainObserved": "851fddcf0b98e9d4e67c50eda83ed8e61a436c62",
+  "patchSha256": "af0869b0b3fce9b6c5d92e06a946f1bea7e47e57164c3c3fe1236a4f1a5ee17a",
+  "patchBytes": 83000,
+  "delivery": "reviewable-patch-not-runtime-applied",
+  "stopRequested": true,
+  "validationOfFinalTree": "PENDING",
+  "release": "NOT_PERFORMED"
+}
