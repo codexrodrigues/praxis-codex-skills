@@ -38,6 +38,16 @@ contracts, never in a host controller convention.
    version support exists. Reject stale or required-missing conditions canonically;
    never compare versions only in Angular or silently overwrite. Schema and resource
    version ETags solve different problems.
+   A controller check before command reservation or transaction entry is only
+   an early rejection. Pass the canonical precondition into the mutation service
+   and compare it again against the persisted revision after acquiring the
+   domain locks, inside the write transaction and before changing state.
+   Preserve historical replay before fresh-write gates; never renew its token.
+   Reject an unbound or dirty persistence context before the first entity/query
+   read when autoflush could persist caller changes ahead of governance. Reuse
+   the domain's existing concurrency helper rather than adding another protocol.
+   Prove stale-after-preflight rejection without mapper, state or audit effects;
+   keep lock conflicts distinct from stale-token failures.
    For B4-R1 candidate resource responses, pair the DTO with the persisted
    revision captured from that same entity, then emit the ETag from the pair;
    a second lookup after projection or commit can sign a newer version onto an
@@ -2486,3 +2496,8 @@ bounded same-snapshot paging and cursor reconstruction/rotation; do not describe
 as a process-restart proof. Distinguish candidate-SNAPSHOT host proof from tests against
 the released artifact. A passing G3b result read does not prove execution, tombstones,
 `READY`, Angular materialization, or RS1 redaction.
+
+When an action authority comes from current operational grants, materialize that same authority in canonical action discovery; do not leave requiredAuthorities evaluated solely against a stale or absent JWT claim. Use the host context resolver extension and preserve other canonical contexts. Discovery remains advisory and execution must recheck current grant/coverage under its transaction. Prove availability and execution with one authenticated identity before and after revocation.
+The projected tenant must likewise come from the attested grant binding after successful resolution; a caller's alternate tenant header must not populate this hint when the grant is denied or unavailable.
+
+Before accepting negative database concurrency cases as proof, validate a positive write with the exact EntityManager used by the fixture. Assert that it is clean and joined to the transaction; `getTransaction().isActive()` alone does not establish joining when Spring wraps an application-managed factory. For explicit resource-local fixture transactions use the native JPA factory, or use the configured Spring transaction manager consistently. Never relax a production clean-context guard or change a valid-flow expectation to 409 to accommodate a misbound fixture.

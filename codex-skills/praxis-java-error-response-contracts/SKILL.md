@@ -184,3 +184,7 @@ the changed response contract.
 Close with failure-to-response mapping, sanitized HTTP evidence, no-mutation proof,
 consumer materialization result, and any platform gap. An error contract is ready
 when callers can recover or correct safely without learning backend internals.
+
+## Governed Command Unavailability Candidate
+
+The governance correction candidate adds `UNAVAILABLE` to Metadata's existing command outcome/category and resource failure kind; the HTTP adapter maps it to 503 with a fixed safe message. Inspect the installed artifact: published rc.169 collapses ResponseStatusException(503) inside governed commands to sanitized 500. Do not compensate with a host-local catch or teach candidate behavior as released. Prove the entire controller/executor/adapter chain, including provider-returned outcomes and exceptions, and retain sanitized 500 for unexpected failures. Service-only assertions of 503 do not establish the wire response.
