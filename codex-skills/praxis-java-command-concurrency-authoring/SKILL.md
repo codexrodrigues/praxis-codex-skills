@@ -1824,6 +1824,18 @@ reject success. Prove the arithmetic and exception matrix without a database, th
 prove the combined SQL, lower-GUC restoration, expiry and rollback on assigned Neon.
 These unit oracles do not establish an SDK_STORE cause, remote acceptance or publication.
 
+For host capture, inspect `MissionParticipantEvaluationProvider.finish`,
+`protectedFacts`, `coordinates`, `requireTeamEvidenceBound`, `readTeams` and
+`readEmployees`. `CaptureBudget.get()` still clamps through SQL; per-item CPU
+checks must not invoke it repeatedly. Sample the original supplier before each
+query or CPU phase, anchoring a phase-local monotonic view before `get()` so its
+SQL and subsequent decoding time are deducted. Use that view only for CPU work
+or fully materialized JDBC results with `fetchSize=0` and the existing row/evidence
+bounds, never as a streaming shortcut. Recheck the original supplier on normal
+exit and before later SQL; a check in `finally` must not replace a primary
+exception or Error. Preserve SDK clamps, database clock/expiry, locks, GUC
+restoration, transaction affinity and nonrenewing budgets.
+
 For JdbcTemplate callbacks, unwrap the close-suppressing Connection proxy with
 `DataSourceUtils.getTargetConnection` before `isConnectionTransactional`; compare that
 physical target with the physical target of the Spring `ConnectionHolder`. Preserve

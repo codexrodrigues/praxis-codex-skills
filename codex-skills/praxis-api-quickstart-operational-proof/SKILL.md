@@ -692,6 +692,18 @@ expiry before mutation. Pair the finite tests with real Neon domain/receipt COMM
 and rollback; fewer clamp roundtrips or local tests do not certify the complete HTTP
 journey or Render deployment.
 
+Distinguish a host capture phase-local view from the LOCK/execution pure
+supplier: the capture SDK getter still performs SQL. Prove delayed-get accounting,
+decreasing/expired local remainder, bounded fully materialized decoding without
+per-row SQL, original-supplier rejection on normal exit, and preservation of a
+primary exception or Error. Keep the capture transaction timeout derived/floored
+from the existing eight-second remainder after pool reserve (about six seconds
+in the current profile), the five-second unit and thirty-second execution budgets,
+and immutable proposal expiry unchanged. `CAPTURE_FINISH` HTTP503 alone does not
+establish a timeout or remote correction; retain the bounded private cause and
+require assigned-Neon FULL3 preview/CONFIRM/executions/results/replay with complete
+protected readback before claiming that gate.
+
 Database timeouts establish bounded local waiting, not the outcome of an
 uncertain commit. After a write or lost acknowledgement, consult the canonical
 receipt/readback path before retrying; never infer rollback or rerun a domain
