@@ -84,3 +84,7 @@ State whether validation hit the published backend or only structural checks.
 - Use `praxis-http-examples-llm-smoke` for LLM-safe lanes and smoke selection.
 - Use `praxis-api-quickstart-security-config` for Origin/config exposure behavior.
 - Use `praxis-metadata-*` and `praxis-config-*` skills for canonical contract changes.
+
+## Versioned Resource Writes
+
+A versioned PUT/PATCH example must pair the payload with the strong ETag of the same GET snapshot and send it unchanged as If-Match. Include session and CSRF prerequisites where the host requires them. If the corpus parser supports only one request per file, keep GET and mutation as separate indexed requests with explicit transfer instructions instead of silently adding an unparsed multi-request flow. Reject stale snapshots (412) and absent preconditions (428); never refresh only the token and automatically resend stale data. Keep candidate proof separate from published-backend confirmation.
