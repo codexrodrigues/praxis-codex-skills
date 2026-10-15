@@ -1521,6 +1521,17 @@ credentials or SDK source build; collect the exact XML counts of the selected gu
 and pin the launcher, classes, resources, nested dependencies and source manifest.
 A pending public artifact or candidate compilation cannot authorize RUN.
 
+For FULL's multiple explicit targets, distinguish the assignment's ordering from
+the SDK's canonical intent ordering. Derive expected result/manifest/receipt
+ordinals through the resolved public `BulkIntentSnapshot.uniform` and identity
+codec, rather than assuming numeric ID order or copying a comparator into the
+host. With integer IDs 41, 43 and 355, public171 canonizes 355, 41, 43. Preserve
+exact identity, count, version and receipt-to-manifest checks; do not replace
+ordered equality with set equality or use the observed result as its own oracle.
+Reproduce an oracle mismatch against the pinned public JAR before changing the
+test. Persisted executable previews without a new execution do not prove HTTP
+preview, confirmation or replay; retain the failed run and its diagnostic limits.
+
 Select the codec's closed transport profile from the trusted workflow cut before
 decoding, never from envelope contents. Encode and verify the exact-byte roundtrip
 with that same profile; preserve existing default bounds and all rejection checks,
@@ -1930,8 +1941,13 @@ process, private log offsets, time window, reached prerequisite, source and host
 JAR hashes. A sidecar cannot borrow another stage's or host's log or a phase that
 was never reached. These windows do not cover other HTTP calls or assertions.
 For failures outside those windows, retain at most eight ordered primary test
-frames from the exact two allowlisted harness/fixture classes, bound to the source
-SHA. Export only class, bounded method identifier and line; never messages, file
+frames from the harness's exact allowlisted classes, bound to the source SHA.
+BASIC permits `BulkBasicReadyPackagedNeonProof` and `BulkBasicReadyNeonFixture`.
+FULL permits `BulkBasicReadyPackagedNeonProof`, `RenderCompositionNeonFixture`,
+`RenderCompositionNeonSmoke` and `RenderCompositionMultiTargetOracle`.
+Project these existing private frames
+into the closed sanitized receipt before runner cleanup removes private inputs.
+Export only class, bounded method identifier and line; never messages, file
 paths or cause/suppressed graphs. Empty or absent frames do not prove a cause, and
 a test call site identifies where the assertion failed, not the SDK failure cause.
 The defensive projection must preserve the primary test outcome and pass the same
