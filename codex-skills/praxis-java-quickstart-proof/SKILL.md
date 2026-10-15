@@ -27,15 +27,87 @@ downstream proof here.
 3. Include a negative case: invalid payload, missing resource, denied state,
    invalid filter/option request, conflict, or policy limit. Prove no mutation
    follows a rejected write.
-4. For writes, use controlled fixtures, read-after-write, side-effect evidence,
-   and cleanup. Development mutation authority is available, but fixtures must
-   remain reproducible and cleaned.
+4. For database-backed proof, use explicitly assigned isolated Neon branches;
+   unit tests without a database may run locally. For writes, retain controlled
+   fixtures, read-after-write, side-effect evidence and cleanup. Do not substitute
+   H2, embedded/local PostgreSQL or an unassigned parent/production branch.
 5. Run the relevant `QuickstartMetadataMigrationIntegrationTest`,
    `EventosFolhaPilotIntegrationTest`, focused pilot test, or Cockpit verifier.
    Review direct Angular runtime proof when the published contract changes.
 
 Read [proof-slice-matrix.md](references/proof-slice-matrix.md) when selecting
 the smallest representative resource and required evidence.
+
+## Published SDK Adoption On Neon
+
+Inspect the Quickstart POM, `src/test/java/com/example/praxis/apiquickstart/config/MetadataAdoptionNeonFixture.java`,
+its unit tests, `src/test/resources/metadata-adoption/neon-fixture.sql`, and the three
+Metadata downstream pilots before selecting this gate. This route proves host
+consumption of published SDKs; it does not publish an SDK or release the host.
+
+1. Verify the public POM/JAR bytes first, then adopt the published coordinates in
+   the host POM. Resolve through `.mvn/ql07-central-only-settings.xml` and a fresh
+   isolated Maven repository. Do not use a local SDK install, candidate GAV or
+   `praxis.core.version`/`praxis.config.version` override as public-adoption proof.
+2. Obtain an exclusive, reviewed API/Config child assignment and set these three
+   environment variables to absolute files before running:
+   - `PRAXIS_METADATA_ADOPTION_ASSIGNMENT_FILE`: assignment with project, child,
+     parent, endpoint, database, readiness/protection state, fixture bounds and a
+     fresh bounded expiry matching the current helper;
+   - `PRAXIS_METADATA_ADOPTION_API_CREDENTIALS`: private API role-to-DSN map;
+   - `PRAXIS_METADATA_ADOPTION_CONFIG_CREDENTIALS`: private Config role-to-DSN map.
+   Keep credential files private; never copy passwords/DSNs into guidance,
+   manifests, reports or command arguments. Read the current helper's reviewed
+   assignment instead of reusing historical IDs, endpoints or expiry values.
+3. Confirm endpoint/TLS/PostgreSQL identity and actual role privileges before
+   mutation. Owner may seed/clean only assigned fixture records. The application
+   uses ordinary API and Config runtimes: neither may be superuser, bypass RLS,
+   create roles/databases, or be a member of `neondb_owner`/`neon_superuser` and
+   assume those roles. Direct privilege flags alone do not prove this separation.
+4. Enable the official external-test opt-in, retain all selected cases and use
+   the host's published POM without overrides. From the Quickstart checkout, with
+   the three input variables exported and an absolute fresh repository path in
+   `PRAXIS_ADOPTION_MAVEN_REPO`:
+
+```bash
+: "${PRAXIS_ADOPTION_MAVEN_REPO:?Set an absolute fresh isolated Maven repository}"
+PRAXIS_EXTERNAL_SMOKE_TESTS=true mvn -B -ntp \
+  -s .mvn/ql07-central-only-settings.xml \
+  "-Dmaven.repo.local=$PRAXIS_ADOPTION_MAVEN_REPO" \
+  -Dtest=OpenApiGroupResolutionIsolatedIntegrationTest,QuickstartMetadataMigrationIntegrationTest,EventosFolhaPilotIntegrationTest \
+  -Dsurefire.failIfNoSpecifiedTests=true verify
+```
+
+Require the reviewed selection's full case count and zero failures, errors and
+skips (currently 43 cases across these three classes). Missing inputs must fail
+closed; an opt-in-disabled/skipped run is not a proof. Bind raw reports, source
+and SQL hashes, resolved public dependency bytes and packaged dependencies to
+this exact run and child assignment.
+
+If a failed assertion is corrected without changing production source, dependencies,
+shared fixtures or the passing classes, rerun the affected class with separate
+reports after verified cleanup. Reuse the cache only when its exclusively public
+origin remains proven. Preserve the negative run and compare source/dependency
+hashes before retaining earlier passes. Require the complete case matrix to pass;
+label combined evidence explicitly rather than claiming a single green 43-case
+run. Changes to shared fixtures or runtime behavior invalidate the affected prior
+passes and require those cases to run again.
+
+Seed canonical source tables and materialize real views; do not recreate inherited
+tables/views or reset inherited data to imitate an H2 fixture. Use functional
+filters/assigned IDs to isolate assertions. Revoke issued sessions, clean only
+owned records, and prove inherited rows/audit footprints survived. Record cleanup
+and any retained audit/sequence effects; do not invent restoration.
+
+A selected `verify` proves this focal slice plus packaging, not unrestricted
+`mvn verify`, the broad host release gate, or a published/deployed release. The
+OpenApi/Metadata pilots issue real sessions and verify HTTP admission/revocation;
+that is not `/auth/login` identity-provider proof. `EventosFolhaPilotIntegrationTest`
+retains a mock session lifecycle, and existing policy mocks/test security settings
+limit its evidence: do not claim operational grants, browser login, CSRF or origin
+protection from this gate. Keep wider Neon migration/release and security proofs
+as separate obligations. Report pending execution/publication explicitly; fixture
+compilation or helper unit tests do not mean the 43 cases passed.
 
 ## Boundaries
 
