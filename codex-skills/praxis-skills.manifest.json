@@ -790,7 +790,7 @@
                                             "praxis-navigation-container-composition-events"
                                         ],
                        "skillMdSha256":  "4ED9C6E3A1A44BE9F0FCCBBBA3A5AE4357AF1B5E6B750174E90A6386A4540DE2",
-                       "treeSha256":  "0D7FC43B8E3930F71274B996A30ACB3E4DBB03B9450AE3F982C0CCFF3651AC5F"
+                       "treeSha256":  "42A1B096D9285B851F3E6378816B032BAF8104ED9F3CE70C6420DB93F6A3F18E"
                    },
                    {
                        "name":  "praxis-core-global-actions-metadata",
@@ -2080,8 +2080,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-table-rule-ai-validation"
                                         ],
-                       "skillMdSha256":  "1710A9B9EBECC3D72883A77FBD6CEE0B99D07B544B09A1063F7BB754FDAFC05E",
-                       "treeSha256":  "F9873C45C2129EFE60FF00F288A13517E4FEE46CC9DCDAE217943967B862572F"
+                       "skillMdSha256":  "9F8E7D4DAD79D155A4AC6B8A7A36EF8DF6790A8BF923737E37FE5C3C90B323D3",
+                       "treeSha256":  "173103AB0061C32E8128DE474C8396A50884848A3FB6707F2532A5C122FF017F"
                    },
                    {
                        "name":  "praxis-table-filter-actions",

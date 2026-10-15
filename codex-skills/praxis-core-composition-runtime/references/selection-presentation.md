@@ -49,6 +49,22 @@ Invalid format configuration produces `SEMANTIC_TRANSFORM_FORMAT_INVALID`.
 Invalid date/mask data produces `RUNTIME_TRANSFORM_STEP_FAILED`. Verify independent
 failures retain distinct link-qualified diagnostic ids and `subject.linkId`.
 
+## Preserve independent transient selections
+
+For page rebootstrap, inspect `DynamicWidgetPageComponent` and its non-persistent
+selection specs. A same-context authoring update or acknowledged Save may preserve
+live `persist: false` values while the persisted projection remains sanitized.
+When only one state path resets, clear mounted source selections only for that
+path through the existing declared links/outputs. Do not use a page-wide boolean
+to clear independent sources whose live values and detail projections survived.
+Explicit page reload/reset retains its existing whole-scope policy.
+
+Prove two independent sources and details: select both, remove one writer in the
+same page context, verify only its state/source resets, and retain the other
+selection and detail. Then change the page context and verify the remaining
+selection resets. Do not replace this invariant with a host-specific selection
+cache, new state contract or persisted row snapshot.
+
 ## Smallest useful proof
 
 - Run formatter, transform runtime, and `composition-format.integration.spec.ts`
