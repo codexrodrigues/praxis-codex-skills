@@ -167,6 +167,60 @@ an actual Render receipt binds source/JAR/instance/IP/listener, relay, commands,
 cleanup and readbacks. Source integration, SDK publication/adoption and hosted
 proof remain separate gates.
 
+## Isolated administrative one-off jobs
+
+Prepare and prove the recovery transport **before suspending** a publication.
+Inspect the host procedure, reviewed operator/dispatcher source, dependency/class
+allowlist, artifact hashes and actual remote receipts. An open shell or a probe
+from another process is not proof that the recovery client can operate. Without
+a usable route, preserve the live service and report the blocker.
+
+A one-off may run a finite HTTP administrative main; it must not boot the full
+Spring app, its workers, Config indexing recovery or seeds. If it uses the host's
+PropertiesLauncher and existing Jackson, prove that the explicit external main
+alone executes: inspect for SpringApplication/context/SQL/bootstrap and run the
+innocuous main probe plus focused local HTTP tests. A successful class load is
+not that proof. Keep temporary operator artifacts tied to the reviewed operation;
+do not present their paths as a shipped public host command.
+
+Attest the relay job's actual service/commit/JAR separately from the candidate.
+Do not infer its image from the pending rollout: job creation has no deploy/image
+selector. Keep the destination immutable at the startup-observed private IP and
+actual listener, confirm build over HTTP, and forbid service DNS, proxy, load
+balancer, redirects and fallback. Inherit credentials only through the reviewed
+environment boundary; never embed them in the start command, input projection,
+logs or receipts.
+
+Require real fresh Render CP and protected ledger readbacks before dispatch.
+Queueing consumes validity: revalidate the reviewed evidence after job startup,
+before login and before the sole POST. An embedded CP projection is a bounded
+snapshot, not a live API check or guarantee during the request. Use the exact
+reviewed client's fixed freshness budget; never refresh timestamps artificially
+or turn a larger allowance for one measured queue into universal guidance.
+Expiry before authentication is a protected negative, not publication success.
+
+Before any create-job call, the prepared dispatcher durably records its attempt
+with O_EXCL, private permissions and file/directory fsync. Never delete or replace
+that sentinel after a failure, or silently choose another attempt name to repeat
+an uncertain intent. Job creation accepted, execution started, request possibly
+sent and response validated are different states. Inspect job outcome and both
+ledgers after any uncertainty, without retry, rebase or SQL repair. A new attempt
+requires the previous outcome resolved and explicitly reviewed fresh evidence.
+
+Preserve global-window authorization, real SESSION/current grants, effective
+CSRF, observed-generation CAS, one POST and finally cleanup on the same base.
+Only logout204 plus session401 confirms revocation. Keep pre-auth expiry,
+not-dispatched and uncertain-cleanup receipts distinct. The reviewed isolated
+client's CP60s budget and 50 offline/local-HTTP cases belong to this cut, not a
+platform-wide policy. Its later COMPLETED_HTTP_ONLY receipt confirmed the response
+and session cleanup; separate readbacks confirmed READY15/PUBLISHED24 and Render
+reported the deployment live. Do not derive durable state from the HTTP label
+alone or erase the earlier pre-auth expiry. Source integration, public SDK
+release/adoption, authenticated HTTPS, the next cold reconcile and Hero browser
+proof must each have their own actual receipt and independent review. A subsequent
+passing Hero pagination receipt is separate from publication acceptance and does
+not replace authenticated HTTPS or cold-node proof.
+
 ## Classify And Map Impact
 
 Classify before editing:
