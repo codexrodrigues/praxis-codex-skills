@@ -4,7 +4,7 @@ Use this file before finishing a Praxis Angular host scaffold or integration cha
 
 ## Static Checks
 
-- `package.json` uses a consistent Angular/Praxis UI package train, with Angular framework, Material/CDK, CLI/build, and compiler packages pinned to one exact compatible patch.
+- `package.json` uses a consistent Angular/Praxis UI train: exact compatible framework/compiler patches within their cohort, matching Material/CDK patches, and matching CLI/build patches. Preserve the host's release-line checks and validate peer compatibility; do not require every cohort to share one patch.
 - `zone.js` is installed and listed in build polyfills when the host uses `provideZoneChangeDetection`.
 - `npm ls` shows the selected `@praxisui/*` peer closure is resolved; unresolved peers are fixed by package train alignment, not by local aliases.
 - `API_URL.default.baseUrl` is the single API base.
