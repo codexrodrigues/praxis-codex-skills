@@ -262,6 +262,17 @@ Operational migrations and deterministic demo data support proof; they do not de
 
 Do not make a test only pass by changing production-like seed data without proving the contract it represents. Keep sensitive business data fictional and respect published governance/visibility restrictions in fixtures, exports, and docs.
 
+Before enriching demo data, inspect live triggers/functions and derived views as
+well as DTOs, services and determination rules. A field can have different meanings
+in a trigger and the published form contract; prove the small arithmetic example
+in an isolated branch before normalizing existing totals. If they disagree, retain
+the failed transaction/readback and open the canonical owner follow-up. Do not
+silently disable triggers or overwrite their results to make an import pass.
+A seed compatible with the current database does not certify API create/update,
+approval or payment. Preserve existing lifecycle versions and receipts; distinguish
+imported synthetic status and future projections from executed business actions.
+
+
 ## Adherence Inventory
 
 Before adding a path, DTO field, endpoint, filter, option source, stat, export, action, surface, migration, or domain materialization, classify the need:
