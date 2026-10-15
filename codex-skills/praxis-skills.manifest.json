@@ -1657,8 +1657,8 @@
                                             "praxis-core-resource-runtime",
                                             "praxis-angular-validation-gates"
                                         ],
-                       "skillMdSha256":  "DE1135D2ED66DBE16A66A67222DE81F66760027A2A49A79B02AEF69F1366F0FE",
-                       "treeSha256":  "826D83EDB9C877813F19DFE191E3A73CDE52C19878795F842772F597A4D868D7"
+                       "skillMdSha256":  "A31E5B2D6A57AC38CA811EF8A88B57E1D92370D6AAF380D78E2A84CB9D492B21",
+                       "treeSha256":  "DC2FD49C9A89C33DADE1078551CDEFB33ABE303F140888C85850B19F421829F6"
                    },
                    {
                        "name":  "praxis-manual-form-ai-authoring",
@@ -2147,8 +2147,8 @@
                                             "praxis-core-resource-runtime",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "311361273251193228A3BEA683BDD291028AC97325217BD1B12D738C0FEC2973",
-                       "treeSha256":  "9E232387271ADFE88068BE0A636D03910A378061429919AECAC646466975A066"
+                       "skillMdSha256":  "C40887E4547382AE1F8646CED8E1B4D9BCCA7DE142B59A7DB4C9F6BA816DDCC3",
+                       "treeSha256":  "846F2FED2440644F8AD916F97E41A851A5C3B01D41F01C74CC02ED952BF4317D"
                    },
                    {
                        "name":  "praxis-tabs-runtime-authoring",
