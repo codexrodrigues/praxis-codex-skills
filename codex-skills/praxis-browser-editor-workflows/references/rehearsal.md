@@ -74,3 +74,39 @@ state any retained server. Do not claim a recording unless one was made.
 After at least three comparable runs report median, range, preparation and quality.
 Improve the slowest measured phase. Native compositions/presets and fewer repeated
 dialogs improve the product; faster typing alone does not prove learnability.
+
+## Diagnose live apply separately from reload
+
+Before a new timed run, test a newly inserted page-owned collection with resource
+and configuration applied together. After Apply JSON and Save, inspect both the
+reopened document and the settled runtime: title/toolbar, inline filters, columns,
+page size and actual row count. Then save the page and reload for comparison.
+A successful round trip does not prove live apply; a loading frame does not prove
+a persistent defect. Use the same widget and record each observation's stage.
+
+In the 2026-10-15 employee-360 take, toolbar recovery followed reload. Two isolated
+rc.26 controls later rendered the toolbar and three filters before reload, including
+the full table configuration. Thus the toolbar-only cause was not reproduced and
+must remain uncertain. The fresh full configuration did show a different mismatch:
+JSON pageSize5 versus10 rendered rows after async loading; reload restored5.
+A subsequent5→3 edit briefly showed3, then settled back to5 while its editor
+still saved3; reload restored3. A further3→4 JSON edit sent the old request size3
+and received response size3: compare transport metadata before blaming rendering.
+Table ngOnChanges fetched before synchronizing its runtime pageSize with config.
+Keep immediate and settled observations distinct; do not teach mandatory reload as a product requirement.
+
+Readiness must include usable capabilities for every operation promised in the
+take. Real list reads with an expired session and disabled New prove consultation,
+not form writes. Do not bypass permission or quietly reduce the agreed journey.
+Check state-path discovery with persist:false before multiplying related surfaces.
+
+Measure last authoring Save, final interaction, formal stop and post-take evidence
+separately. One employee-360 run last saved at543s but formally stopped at617s;
+that is not a fully verified under-ten-minute success. Keep the timed page frozen.
+Use an isolated page identity for diagnosis, preserving original and take configs.
+
+For paired visual proof use the same per-tab viewport and equivalent list/dossier
+positions, close obstructing navigation and confirm the DOM has settled before
+capturing. An inner-scroll application can produce viewport-only fullPage captures;
+label the extent honestly and capture the dossier separately. Reset viewport
+emulation after comparison. Post-take screenshots never move work inside the timer.
