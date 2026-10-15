@@ -21,6 +21,7 @@ Inspect the real source before changing table runtime behavior:
 - `projects/praxis-table/src/lib/data-formatter/**`
 - `projects/praxis-table/src/lib/analytics/**`
 - `projects/praxis-table/src/lib/detail/**`
+- `projects/praxis-table/src/lib/components/praxis-analytical-drawer/**`
 - `projects/praxis-table/docs/local-data-mode-precedence.md`
 - `projects/praxis-table/docs/resource-events.md`
 
@@ -52,6 +53,8 @@ Only `lacuna-real-de-contrato` can justify a new public contract. Prefer fixing 
 ## Runtime Change Guidance
 
 - For remote resource flows, ground columns, filters, id fields, actions, surfaces, and availability in schema/capability discovery instead of hardcoded host lists.
+- For analytical-drawer metadata, let Core `ResourceDiscoveryService` resolve root-relative discovery URLs against the configured API origin; do not append `/schemas/**` to the CRUD `/api` base or change the host API base to compensate. Query the exact governed collection operation in `/schemas/catalog`, require one matching path/method, and follow its published `schemaLinks.response`. A resource path is not a semantic resource key: never replace slashes with dots to guess one. Surface-catalog operation descriptors are not drawer layouts; preserve explicit input/DI layouts and consume only the already-supported explicit layout extension when the returned structural schema contains it. Missing/ambiguous metadata leaves the remote layout absent. The removed beta `surfaceName` input must not be restored as a parallel discovery mode.
+- Invalidate drawer metadata and relation reads on resource/context change, resource removal, and destroy, including authority changes for the same user and tenant. Cancel obsolete requests, guard late callbacks, clear retained relations and old layout/cache state, and preserve method plus resolved URL in relation-cache identity. A metadata epoch alone cannot prevent redisplaying a cached authorization snapshot.
 - For local data mode, keep behavior contained in `src/lib/local-data/**` and preserve the documented precedence.
 - For data formatting, renderers, rich content, rating, badges, links, chips, progress, avatar, media, compose, and micro-visualization, verify the renderer contract and the rich-content adapter before changing table chrome.
 - For export, use `PraxisCollectionExportService` and declared export config; do not invent direct CSV/PDF generation inside a host.
@@ -74,6 +77,7 @@ Prefer the smallest reliable validation:
 
 - local data or precedence: `local-data/*.spec.ts` plus affected `praxis-table.*.spec.ts`
 - remote resource regression: `praxis-table.remote-regression.spec.ts` or a focused runtime spec
+- analytical-drawer discovery: its component spec for root/base-relative hrefs, API prefixes, exact catalog queries, absent/ambiguous schema, cancellation and same-principal context changes; then a direct-host browser proof that waits for metadata/data readiness and records failed URLs before asserting an empty console. Public GET evidence proves the backend query, not patched browser adoption.
 - renderers/rich content: the matching `praxis-table.*rich-content.spec.ts`
 - export/global action/runtime operation: focused runtime spec plus AI/runtime operation spec when assistant behavior is involved
 - public API/exported contract: `npm run build:praxis-table` plus a direct consumer or adapter validation when applicable

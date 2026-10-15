@@ -33,7 +33,9 @@ Before editing or advising:
 
 - `dataSource.data` has priority over `dataSource.resourcePath` when both exist. Do not weaken this precedence in docs, examples, or host adapters.
 - `dataSource.resourcePath` enters remote mode only when local data is absent and a `GenericCrudService` is available.
-- Remote mode configures `GenericCrudService` with the base resource path, calls `/filter` through `filter(query, pageable)`, and falls back to `getAll()` when `/filter` fails.
+- Remote mode configures `GenericCrudService` with the base resource path and calls `/filter` through `filter(query, pageable)`. Only an empty query may fall back to `getAll()` on failure. Active criteria fail closed with the retryable error stream; never widen a failed filtered query to unfiltered records.
+- Loading must be visible and announced without requiring a skeleton configuration. Keep search/toolbars mounted, hide stale row actions and empty/error content during the pending request, and retain keyboard focus in the collection when retry/pagination replaces its trigger. Test delayed requests as well as immediate failures.
+- Before enabling `ui.searchField` in an operational fixture or example, verify that the query field exists in the canonical filter schema/DTO. A field displayed in response rows is not necessarily searchable; an ignored criterion can produce plausible but unfiltered results.
 - `layout.groupBy` groups the loaded items in the runtime service. Do not implement duplicate grouping in a host unless the host is intentionally pre-shaping local data.
 - `layout.pageSize`, `dataSource.sort`, and `dataSource.query` participate in the request signature; changes should reset pagination where the runtime does so.
 - `selection` supports `none`, `single`, and `multiple`, with return modes `value`, `item`, or `id`. Validate form binding and `compareBy` before changing payload semantics.
@@ -60,6 +62,8 @@ Do not describe declared-only fields as active runtime behavior. If a task needs
 ## Rich Content And Templating
 
 Treat list templating as list-owned unless a path is explicitly promoted to shared rich content. `mapListTemplateToRichContentP0(...)` is the restricted bridge to shared rich content vocabulary. The promoted subset is small: `text`, `icon`, `image`, `chip` to badge, `metric`, and `compose`. Do not silently promote `component`, `slot`, `html`, `rating`, `currency`, or `date` into shared rich content without a semantic decision.
+
+Render the promoted presenter nodes with Rich Content's existing `layout="inline"` in compact list/card/tile slots (row slots, leading/primary/secondary, metadata, trailing/status and features). Preserve block flow for empty-state regions, section headers and rich-content expansion documents. Do not remove document containment or add consumer CSS to compensate for a compact host using block layout. Check actual badge/text geometry and readability in desktop and narrow real-shell screenshots: DOM text or node presence alone can pass while a shrink-to-fit presenter has zero width.
 
 Template expressions are list template expressions like `${item.field}` with simple pipes, not general Json Logic. Json Logic belongs to rules/effects, not template interpolation.
 
