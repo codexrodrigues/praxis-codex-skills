@@ -50,6 +50,35 @@ in praxis-ui-angular#599, not a new-contract requirement. Revalidate in later
 releases; do not teach the boolean as exact equivalence or repeat the failed
 projection. Retain the functional baseline and quantify remaining differences.
 
+## Avoid transition rework
+
+In the rc.22 prepared take, the same13-widget result took522.755s. Source/catalog
+work and navigation were interleaved; this is not an isolated HTTP latency.
+Do not repeat the workflow's accidental clicks as required product steps.
+
+- Open a panel once, then observe its named dialog and intended controls before
+  selecting a section. A short locator timeout does not prove opening failed:
+  inspect for a late panel before activating its launcher again.
+- Confirm the selected tab/panel after a navigation change. Controls may already
+  exist in outgoing or hidden panels during a transition. Prefer keyboard
+  activation on a focused, observed tab/button when pointer geometry is moving;
+  this is an interaction tactic, not a universal claim that clicks are broken.
+- After Save/Close, confirm the old dialog has disappeared and the next owner is
+  ready. Do not send the next section click into a moving replacement panel.
+- For remote charts, distinguish source resolution busy from a completed empty
+  operation catalog. Wait on authoritative readiness, not an unconditional sleep.
+  Select the resource once, preserve compatible dimensions/metrics, and correct
+  only the actual validated incompatibility after discovery completes.
+- Prepare the allowed per-component snippets and reading-order map before the
+  take; record a cumulative milestone after sources/KPIs, charts, remaining
+  content, layout/connections and verification. Do not rediscover known failed
+  List.config projections or chart ports during the timed run.
+
+Keep installed capability separate from newer skill/source guidance. A newly
+documented unified editor or cleanup fix is not available in an older host merely
+because its skill was synchronized. Adopt only within the authorized scope and
+report the version; comparable repetitions should retain a declared baseline.
+
 ## Finish and measure
 
 Keep four KPI values on one desktop row when the reference does. Resolve bindings
