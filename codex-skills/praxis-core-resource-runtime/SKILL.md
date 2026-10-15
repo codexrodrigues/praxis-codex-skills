@@ -147,6 +147,21 @@ same resource/operation, actor, tenant, environment and organization scope, incl
 `effectiveContext.activeOrganizationId`. Do not replace the original proposal/key,
 change actor to regain permission, or use local persistence as authority.
 
+Keep BASIC read lifetime separate from mutation custody. `BulkSyncSession.refreshExecution(signal?)`
+and `readResults(size, after, signal?)` retain their Promise contract and accept an
+optional standard `AbortSignal`. Cancellation must unsubscribe the underlying GET,
+reject pre-aborted calls before dispatch, remove listeners and release in-flight
+state without letting an older completion clear a newer read. A timeout around
+`from(Promise)` or `Promise.race` alone does not cancel that transport. The Core
+session does not impose a universal deadline on callers that omit the signal.
+
+The owning Table workflow supplies its existing `LoadingConfig.requestTimeoutMs`
+consultation policy (default 30000; zero disables it under a separate governed
+policy). Do not substitute the backend unit deadline or the ASYNC polling deadline.
+Timeout/destruction stops observation, never proves a terminal execution or rollback.
+Keep evaluate/confirm POST custody and the original key independent of these GETs;
+an aborted GET must not remain as pending session work that blocks remount.
+
 Prove protocol/ETag/key/identity in the client/state specs and denial-versus-late-200
 interleavings in the owning Table consumer. Mocks prove controlled transport
 and UI behavior; require distinct real protected HTTP/backend commit/read/replay

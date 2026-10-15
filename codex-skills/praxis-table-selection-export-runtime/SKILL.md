@@ -70,6 +70,23 @@ retains original custody/key but requires that fresh reauthorization. An unconfi
 proposal may be discarded on context change; do not promise universal retention.
 Do not treat a refreshed metadata label as a different business intent.
 
+Apply the existing `config.behavior.loading.requestTimeoutMs` budget to BASIC
+consultations, including selected-item versions, preview pages, execution/results
+and fresh authorization. Capture the policy when starting each consultation;
+default 30000 and explicit zero retain the existing Table semantics. Keep the
+internal workflow input connected to the current Table config rather than freezing
+it inside retained intent custody. No separate bulk timeout editor or metadata knob
+is needed.
+
+Destruction, authorization-epoch invalidation and deadline expiry must abort the
+active GET transport, release busy state and reject late projection updates. For
+session reads, pass the abort signal through the Core Promise API to its HTTP
+subscription. `pendingSessionWork` is only for dispatched evaluate/confirm POSTs:
+remount must not wait forever on an obsolete GET, and a GET timeout must not cancel
+or repeat an uncertain confirmation. Prove a never-responding transport, cancellation,
+fresh retry, remount and preserved POST/key with controlled unit tests and a focal
+browser scenario. Record browser mocks separately from backend effect evidence.
+
 Render all nine global execution totals from the authorized backend snapshot:
 `targetCount`, `pending`, `confirmed`, `unchanged`, `denied`, `invalid`, `conflict`,
 `notProcessed`, and `unknown`. A partial results page never determines those totals
