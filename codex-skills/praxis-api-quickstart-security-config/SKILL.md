@@ -43,6 +43,43 @@ Read `praxis-api-quickstart/AGENTS.md`, then inspect:
 
 Treat effective properties and executable tests as source evidence. Documentation is a required derived surface, not proof that a default or route policy is actually configured.
 
+## Enterprise context and Config write admission
+
+Inspect `EnterpriseRuntimeConfiguration`, `EnterpriseRuntimeProperties`,
+`QuickstartEnterprisePresentationSource`, `QuickstartUiConfigAdmission`, its MVC
+interceptor and `QuickstartUiConfigAdmissionConfiguration` together. Config owns
+runtime/context DTOs and the `UiConfigWriteAuthorizer` SPI; the host composes its
+actual SESSION, membership, presentation and admission sources.
+
+Require two distinct managed 32-byte reference keys and an explicitly configured
+presentation catalog. A missing catalog is incomplete composition; an explicitly
+empty catalog is valid and grants nothing. With an empty authoritative directory,
+authenticated context returns selection-required with no effective context and
+no choices. Never seed production tenants, organizations or memberships to make
+the endpoint ready. Presentation labels and JWT roles do not authorize access.
+
+For every canonical UserConfigController handler, including both identifier
+transports and conditional reads, revalidate the active SESSION, current selected
+membership, contextVersion and exact tenant/environment/user headers before the
+controller. Non-read methods additionally require the current membership's
+`ui.authoring.configure`; USER scope is not a personal-preference exemption.
+Install the existing write-authorizer SPI too, rechecking admission immediately
+before persistence. USER targets the authenticated subject; TENANT targets the
+selected tenant; an optional updated-by value must match the subject. Distinguish
+unauthenticated, forbidden, stale-context and unavailable-source results. The
+separate API and Config transactions do not provide an XA revocation fence.
+
+Validate through real HTTP on an exclusively assigned Neon child using ordinary
+runtime identities, TLS and actual column privileges. Membership FOR UPDATE may rely on the innocuous lock-anchor column UPDATE
+privilege; verify SESSION issuance, selection and revocation column grants
+separately. Do not widen grants because table-level UPDATE is false. Prove empty directory, session-bound choices,
+concurrent selection CAS, Config ETag and fallback, denied capability/forged
+identity, revoked membership, stale context, scoped cleanup and logout204 plus
+old-SESSION401. Preserve failed receipts and resolve uncertain issuance before
+retrying. Readiness warming is not proof of first-request behavior after an idle
+pool; record that boundary explicitly. For error responses such as Config's
+textual412, capture status and body hash before attempting JSON decoding.
+
 ## Current Operational Grants And Context
 
 For bulk-provider composition, inspect `security/QuickstartOperationalContextResolver.java`,
