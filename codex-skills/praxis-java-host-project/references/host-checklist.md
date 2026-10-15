@@ -13,7 +13,7 @@ Use this reference before finalizing a new Praxis Java host scaffold.
 - `@SpringBootApplication(scanBasePackages=...)` includes the host package and `org.praxisplatform.uischema`. Include `org.praxisplatform.config` only for hosts that intentionally expose config/AI surfaces and have the required config-store wiring.
 - Hosts using `praxis-config-starter` have explicit config-store JPA/entity/repository wiring, datasource properties, migrations/tables, and baseline policy. Do not reuse a legacy application datasource as the config store without an explicit architecture decision.
 - Datasource properties are environment-driven for real deployments.
-- Test profile or test annotations use H2 or another isolated local datasource.
+- Local unit tests do not connect to a database. Database-backed tests use explicitly assigned isolated remote Neon branches with verified project/child/endpoint/PostgreSQL identity and client TLS; verify actual owner/runtime/control-plane privileges and memberships, bound fixture writes/cleanup, and preserve inherited data. H2, embedded/local PostgreSQL and Testcontainers do not replace this proof.
 - Hosts that read an existing legacy database they do not migrate should set an explicit Flyway policy. For Oracle 11.2 or other unsupported legacy engines, disable Flyway in that host (`spring.flyway.enabled=false`) instead of letting auto-configuration fail or attempt ownership of the schema.
 - For Oracle 11.2, add `org.hibernate.orm:hibernate-community-dialects` and set `spring.jpa.database-platform=org.hibernate.community.dialect.Oracle10gDialect`. Hibernate's standard `OracleDialect` can generate `offset ... fetch first`, which Oracle 11.2 rejects.
 
