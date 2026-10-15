@@ -362,3 +362,29 @@ Load only what is needed:
 - `references/host-bootstrap.md`: app bootstrap, providers, headers, API base, proxy/SSR notes, remote config persistence.
 - `references/runtime-components.md`: table/form/CRUD/list first path, expansion runtimes, resourcePath/schema behavior.
 - `references/validation-checklist.md`: build, smoke, browser, network, and integration gates for new hosts.
+
+
+## Demonstrative host budgets and lazy routes
+
+Inspect the host's actual bootstrap and dependency graph before changing build
+configuration. Pages may already be lazy while eager metadata/provider imports
+retain the entire catalog. Prefer the existing provider and injector contracts;
+keep application singletons, root-consumed options and required dictionaries at
+their correct lifetime. Use `praxis-core-providers-bootstrap` for the scope audit.
+Do not raise budgets, remove deliberately published exports, or switch source
+aliases to packaged libraries without measuring and preserving style coverage.
+Report initial assets separately from the catalog fetched on first navigation.
+
+When moving an existing route collection under a persistent lazy parent, preserve
+URLs, precedence, redirects, feature gates and dynamic CRUD registration/removal.
+Use public Router matching and the existing resource registry; never manipulate
+private loaded-route caches. Exact URL segment matching is route admission, not
+primary user-intent routing. Preserve multi-segment resource keys.
+
+Shared action routes can reuse the same page instance across different resources.
+A page that captures `ActivatedRoute.snapshot` once may retain the old resource,
+id, formId or return target. Materialize current paramMap, queryParamMap and data
+streams, including query removal. Prove navigation with the real host page and the
+same instance; a probe with fresh snapshot getters can mask this defect. Validate
+normal production budgets, direct navigation/refresh, editor round-trips and
+panel context after the final productive change.

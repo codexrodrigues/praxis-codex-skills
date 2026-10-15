@@ -52,6 +52,33 @@ Vertical packages may register their package metadata or package defaults throug
 - Before adding a new token or provider, classify the gap as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`.
 - For real public contract gaps, map direct consumers and derived docs before editing.
 
+## Lazy host catalog and injector custody
+
+Before moving providers to a lazy route, map each provider's owner, lifetime,
+initializer, dictionaries and consumers. A metadata factory may import concrete
+runtime components; a package aggregate can also install its engine, inline
+renderers and i18n. A lazy editor loader alone does not guarantee a separate
+physical chunk when root barrels or other eager consumers retain that graph.
+Measure the normal production build; preserve budgets and intentional public
+exports. Initial-chunk reduction does not prove lower total first-navigation cost.
+
+Use one persistent route scope for a composition that needs the complete widget
+catalog. Keep application-owned auth, HTTP, global config, registries, stateful
+panel services and root-consumed authoring options in their original lifetime.
+A child metadata initializer can register with the root registry, but dictionaries
+installed only in the child are not automatically visible to a registry that
+captured root i18n. Compare resolved descriptor text and locale before/after;
+retain the canonical dictionary provider in root when required, rather than
+copying private constants or creating another registry.
+
+Use existing Settings Panel/Drawer bridges and their content-parent injector
+contract. A bridge installed in the route may capture that injector while opening
+through the same root panel service. Audit the actual injected interface before
+patching an owner: a bridge call already carrying its injector needs no redundant
+component change. Prove service identity, child engine/token visibility in a real
+preview, editor Apply/Save/reopen/Cancel and overlay lifecycle. Never re-provide a
+stateful root service merely to make child tokens visible to it.
+
 ## Validation
 
 Use the smallest reliable proof:
