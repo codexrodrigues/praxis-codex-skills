@@ -560,8 +560,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "A97BC8D7639E0F22CD086B21B70151A1D29B08B6B9550C5E32F5392B594C685F",
-                       "treeSha256":  "1F366EC078841F915CA36CEB6F7E5C16057C6B047E754180623E493A19ED2797"
+                       "skillMdSha256":  "47C43D8C40B7A673B23467E7AF531C0B5D918D015A225CEEE167DC6C03523F72",
+                       "treeSha256":  "F051F8C685F2C0F764B8A460CE027E338D0A69B218DF8EB4993798D2EE38E2C6"
                    },
                    {
                        "name":  "praxis-angular-i18n-governance",
@@ -837,8 +837,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "58F1F1808EAD7B6B55C0C10332F023B3DE3838ABDFD8E5555643FD9503B27163",
-                       "treeSha256":  "A64308ADA9A979A09F1EF7C55BB1FEC16888DAC7004DDD14B7073D522E776AE7"
+                       "skillMdSha256":  "942467680590B45D4A3D768C362FF3F37A9E046DB8ABF5E60E0091C7A6FAB00B",
+                       "treeSha256":  "9E13CC9BDE770973CD3D8B181520DEA63FDF7E895C2627DBA02DB99C3838E001"
                    },
                    {
                        "name":  "praxis-core-resource-runtime",
