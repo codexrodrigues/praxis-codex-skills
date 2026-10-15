@@ -108,17 +108,20 @@ coordinate to manufacture adoption.
 - Do not put page identity, ETag policy, tenant, user, or environment inside component documents when they belong to the config boundary.
 - Keep secret/API-key sanitization in `UserConfigService` and `AiApiKeyProtectionService`; do not duplicate redaction only in UI.
 - In corporate mode, resolve tenant and user from the authenticated server principal. Caller headers are hints only in explicitly configured local mode; host authorization and context-switch validation remain host-owned.
-- Treat default runtime providers as safe baselines: the default context provider exposes minimal context, the default tenant provider only the active tenant, and default navigation/security-event providers empty projections. Rich corporate data requires host-owned providers, not fabricated client data.
+- Default enterprise runtime providers fail closed with `503 RUNTIME_PROVIDER_UNAVAILABLE`; absence is not an empty or minimal ready context. Inspect each installed host provider before claiming that context, choices, tenants, navigation or security events are available.
 
 ## Enterprise Runtime Context Rules
 
 - `EnterpriseRuntimeContextService.ready()` loads `/api/praxis/runtime/context` and stores the safe snapshot used to derive propagation headers.
 - Runtime context endpoints are configurable per surface, but the default root is `/api/praxis/runtime` under the configured Praxis API root.
-- `EnterpriseRuntimeContextService.headers(fallback)` should merge fallback headers with snapshot-derived headers, with the snapshot winning for tenant, user, environment, locale, timezone, profile, and module when present.
-- `tenants()`, `navigation()`, `securityEvents()`, and `switchContext()` send snapshot-derived headers after context is loaded.
-- `switchContext()` updates the local snapshot only from the server-returned `effectiveContext`; do not accept the requested target tenant/profile as effective until the host provider confirms it.
-- `EnterpriseRuntimeContextController` normalizes locale, timezone, profile, and module headers and delegates tenant/user/environment resolution to `AiPrincipalContextResolver`.
-- Default runtime providers are intentionally minimal. A corporate shell must plug host-owned providers for tenant lists, navigation, context switching, and security events instead of fabricating rich data in Angular.
+- `EnterpriseRuntimeContextService.headers(fallback)` removes unconfirmed contextual headers and derives them from the confirmed snapshot. Nullable or absent selection fields must not retain tenant/user/profile claims from bootstrap fallbacks.
+- Context and opaque `choices()` must work before first selection using the authenticated SESSION. Tenant discovery is a separate surface; it does not select context or replace complete choices. Do not require a preselected tenant to discover authorized choices.
+- `switchContext()` sends only `choiceRef` and `expectedSelectionVersion`; the host revalidates SESSION and the current exact membership tuple, performs selection CAS and returns state after commit. The consumer invalidates its prior snapshot and accepts only the current server response; stale asynchronous responses cannot reinstate a previous context.
+- `EnterpriseRuntimeContextController` passes the servlet principal and normalized language/timezone/module hints to the host provider. Tenant/user/profile headers do not establish identity or selection; this transport does not resolve the selection through `AiPrincipalContextResolver`.
+- Only `ready` includes effective context and `contextVersion`. A valid SESSION with no selected membership returns `selection-required`; a stored invalid selection returns `selection-invalid`. An authoritative empty directory can return an empty choices page. Source unavailability must remain an error, not an empty directory or synthetic tenant.
+- A ready context does not authorize Config or business writes. Compose fresh host admission for Config scope and the existing `UiConfigWriteAuthorizer` SPI. Require the actual current membership capability for governed writes; `scope=user`, ADMIN/BASIC claims, payload flags and tags are not exemptions. Validate tenant/environment, user ownership and optional updater against the authenticated principal. Preserve ETag semantics and safe denial responses.
+- Managed reference keys and public presentation are separate from grants. Do not seed production memberships merely to make context ready. Verify effective column privileges with the actual runtime role: table-level ACL summaries can miss a restricted lock column or SESSION column grants. Do not grant broad membership UPDATE or run as owner to make `FOR UPDATE` pass.
+- Record the authorization boundary honestly: a committed operational admission before a separate Config transaction is not an inter-database atomic fence. Test revocation, stale context, concurrent selection CAS, publication identity and persistence in the assigned Neon branch; mocked SESSION or historical H2 evidence is not that proof.
 
 ## No Keyword Routing
 
