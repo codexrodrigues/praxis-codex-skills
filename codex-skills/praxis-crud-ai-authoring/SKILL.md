@@ -64,6 +64,13 @@ the first cockpit for authoring health before manually editing JSON.
 - Keep diagnostics tied to canonical paths such as `metadata.actions.create.form`
   so shell summaries, JSON validation, and persistence events stay aligned.
 
+## Schema Lookup And Draft Custody
+
+- Give schema discovery an editor-local `GenericCrudService` with the canonical DI dependencies; never reconfigure the shared runtime client to inspect another resource. Missing transport may leave offline authoring available, but a provided `API_URL={}` is not an absent provider.
+- Use the same identity for requests and inherited columns: trimmed resource path, trimmed endpoint key and `apiUrlEntry ?? null`. A resource change or clearing (including through Reset), or owner destruction, cancels/invalidates the old lookup before the next render; stale callbacks cannot replace fields or alter the current busy state. Editorial seed changes with the same tuple preserve the request. Validate callbacks against generation/current tuple and the captured external resource or its echo of the edited resource, not the entire serialized document.
+- Keep a provided `effectiveTableConfig` snapshot bound to the external resource observed when that snapshot is received. Reusing the same snapshot while replacing seed A with B must not relabel A's columns as B; editing B and resetting to A preserves A's snapshot owner. The host must supply a fresh snapshot with its coherent seed. Without a public resource identity in that snapshot, the editor cannot infer provenance from inputs delivered in separate cycles; do not invent one from column names. Materialized columns remain transient evidence; preserve authored `metadata.table.columns: []` until explicit customization.
+- Invalid KPI-filter JSON is an unsaved draft even when the canonical document has not changed. Combine it with dirty/valid shell state so Apply/Save stays blocked until repair or explicit Reset. An equivalent valid correction clears that draft without creating a false document change. Prove scope/late-response/empty/error/reset/destroy cases, coherent snapshot replacement and raw-draft repair in the focused metadata-editor spec; keep consumer persistence evidence separate.
+
 ## Manifest Rules
 
 Use `PRAXIS_CRUD_AUTHORING_MANIFEST` as executable source.

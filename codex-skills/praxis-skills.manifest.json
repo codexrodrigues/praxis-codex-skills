@@ -982,8 +982,8 @@
                                             "praxis-crud-drawer-adapter-contract",
                                             "praxis-crud-dialog-form-host-lifecycle"
                                         ],
-                       "skillMdSha256":  "AA812DD2CD921A9616DD4B7DA5BA4F42DDE644FABCAFC21E94A401C853A36365",
-                       "treeSha256":  "E10D959824CA445D8D79F9F065CA012C348524AD33B8C59808804348C13BDA7E"
+                       "skillMdSha256":  "B94C51CD9169B796D88B73F7C50DAC08D5660759A48C13890C9D6D318DF57E17",
+                       "treeSha256":  "37151A6FBC8B82C41C7853AF32AC38959F77CA881AFD549B07800763E639BB65"
                    },
                    {
                        "name":  "praxis-crud-runtime-openmodes",
@@ -1908,8 +1908,8 @@
                                             "praxis-rich-content-runtime",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "A8CB36F2D7D17FA4BB44B6C2E10C09740FC1103082D0BAC8EC5BFB3856CD1103",
-                       "treeSha256":  "33BD0C8FB608DE03A24C3CDEFC0C47C7F275B1E4CA12A93F7D73DA975156A53B"
+                       "skillMdSha256":  "106974709416534AC9B6F862B8E934A0A1DA7FC5C11B2B6A79F3A96ADEFD9E27",
+                       "treeSha256":  "26E58A592131C0BBF55D20F11AD11D5DD5915B6ADCCFC0F31C61CB0AA07C3928"
                    },
                    {
                        "name":  "praxis-rich-content-integration-adapters",
