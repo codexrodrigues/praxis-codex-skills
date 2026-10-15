@@ -1,6 +1,6 @@
 ---
 name: praxis-browser-editor-workflows
-description: Author or reconstruct Praxis pages by operating visible browser editors, including their free JSON fields, and prepare repeatable timed demonstrations with real data. Use for human-style Page Builder exercises; use component authoring skills instead when implementing editor code.
+description: Author or reconstruct Praxis pages through visible browser editors and free JSON, including employee/entity 360 workspaces from a blank page, related forms and real-data rehearsals. Use component authoring skills instead when implementing editor code.
 ---
 
 # Praxis Browser Editor Workflows
@@ -19,6 +19,10 @@ timing read [rehearsal.md](references/rehearsal.md); for collection screens also
 read [collection-screen.md](references/collection-screen.md).
 For dashboard rehearsals read [dashboard.md](references/dashboard.md) before
 preparing source, component and layout snippets.
+For an employee/entity 360 or a related-record workspace from a blank page, read
+[entity-360.md](references/entity-360.md) before choosing widgets or testing writes.
+Use `praxis-ui-product-design` alongside the functional owner when visual UX is
+in scope; design and journey acceptance belong in the initial plan.
 
 Inspect applicable AGENTS, the host route/providers, package lock, actual palette,
 editor and reference screen. Canonical sources in `praxis-ui-angular` are:
@@ -77,6 +81,8 @@ owned by their starters, not by this browser procedure.
 Explore metadata, other registered components, native composition and JSON before
 declaring a limitation. JSON cannot register an absent Angular class, implement
 missing runtime behavior or override permission.
+Restore temporary experiments explicitly through the editor and save the known
+checkpoint. Reload is a persistence check, not a reliable undo of editor drafts.
 
 ## Evidence and follow-up
 
