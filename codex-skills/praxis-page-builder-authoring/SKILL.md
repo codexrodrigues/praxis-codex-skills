@@ -106,6 +106,16 @@ Validate locks, inherited bounds, active-device measurements, cancellation of th
 transaction and unchanged child inputs. A numeric editor check alone does not certify usable body
 space or remote persistence; use the real consumer and the owning resize round-trip tests.
 
+The explicit blocked-height recovery action must use current canonical diagnostics,
+not a global invalid flag. Refresh diagnostics first, convert only fixed targets
+marked for height/vertical-offset limits, then revalidate to reveal another height
+blocker. Bound repeated validation and preserve valid siblings, column bounds,
+constraints and authored child inputs. A column-width error never authorizes changing
+all fixed heights. Keep any previous-height summary limited to targets actually
+changed. Prove mixed blocked/valid heights and column-only failure in
+`dynamic-page-config-editor.component.spec.ts`; consumer geometry and persistence
+remain separate evidence.
+
 ## Round-Trip Checklist
 
 For Connection Editor, separate inspection from mutation. Selecting a port
