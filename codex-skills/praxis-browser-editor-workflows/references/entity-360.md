@@ -98,6 +98,55 @@ consumer actually handles it. Refetch alone may leave derived selection stale
 when the same ID has a new record object. Do not invent JSON property names or
 replace version preconditions to conceal this gap.
 
+### Audit nested CRUD session binding before declaring a gap
+
+An explicit CRUD inside a drawer surface can use the existing session instead of
+opening a second overlay. Inspect the installed `SurfaceBindingRuntimeService`,
+`DynamicWidgetLoaderDirective`, `CrudLauncherService` and
+`DynamicFormDialogHostComponent`; pair with `praxis-crud-runtime-openmodes` and
+`praxis-crud-dialog-form-host-lifecycle`. Prefer automatic canonical materialization
+when it already wires the session correctly. Do not copy discovery catalogs into
+page JSON as a new source of truth.
+
+A browser control on public rc.22 proved this `surface.open` payload fragment for
+an explicit `praxis-crud` widget, with its create action/defaults using
+`openMode: "drawer"`:
+
+```json
+{
+  "bindings": [{
+    "to": "widget.inputs.context.surfaceRuntime",
+    "mode": "constant",
+    "value": "${surfaceRuntime}"
+  }]
+}
+```
+
+This is a reference to an ephemeral session, not a serialized function or private
+runtime injection. In that pipeline, putting the token directly in widget inputs
+resolves it before the new surface session exists. The constant binding inserts
+the literal after surface-payload template resolution; the widget loader then
+resolves it against the open surface context, and the drawer launcher can `push`
+the form frame. Recheck these phases in the installed version before reusing it.
+
+For related create, derive the current parent's canonical key into
+`action.form.initialValue[childParentField]`; use the existing
+`action.form.layoutPolicy` grouped-command preset and
+`groupedCommand.contextFields` to present that context. Adapt the field and parent
+binding to discovery and the current selection, and verify switching parents.
+Initial value and contextual presentation do not prove a locked relationship or
+server authorization.
+
+The rc.22 control proved one overlay/session with native Voltar/Fechar, clean
+cancel returning to the same list, and a real create with the derived parent,
+persisted readback, refreshed collection and focus restored to the add action.
+It did not certify update, page/order retention, mobile or dirty-draft protection:
+changing a draft field and returning showed no confirmation. Modal explicitly
+opened inside the drawer and automatic related materialization without this
+binding remained defective in that baseline. Track those owner defects and a
+removal/adaptation condition; this conditional recipe is not a universal fix or
+evidence that every relationship journey is complete.
+
 ## Test operations with explicit evidence boundaries
 
 Use a per-resource matrix: supported, configured, opened, locally validated,
