@@ -21,7 +21,10 @@ Inspect:
 - landing root `AGENTS.md`
 - `src/app/pages/dynamic-page-studio/**`
 - execution, sandbox, network-policy, document-store, analytics, i18n, and page specs
-- `src/app/pages/dynamic-page-examples*`
+- `src/app/pages/dynamic-page-examples*`, especially the component and specs for
+  the public visual-editor opener
+- Core `ComponentConfigEditorDefinition` and the component owner's published
+  `configEditor` metadata before assuming an eager editor implementation
 - `src/app/data/ai-recipes/**` and example metadata/catalog sync tool
 - `e2e/dynamic-page-studio.spec.ts` plus the affected recipe/remote E2E
 - package versions, runtime providers, official Quickstart origin, sitemap,
@@ -75,6 +78,30 @@ and project those contracts but must not redefine them.
 5. Update sitemap/LLM/crawler/public artifacts only when the route, guide,
    catalog, or published claim changes.
 
+## Public Visual Editor Resolution And Custody
+
+Consume the existing owner `configEditor` definition: resolve
+`editor.component ?? await editor.loadComponent?.()` before opening the Settings
+Panel. A lazy definition is supported metadata, not a missing editor. While the
+loader is pending, or if it fails, do not substitute the JSON inspector or claim
+the visual editor opened; report a safe diagnostic without exposing loader details.
+
+Capture the selected example, authored page and widget inputs from one snapshot.
+Use the latest request generation plus selection and destroy guards after the
+await and for the opened panel's events. Selection A→B→A must invalidate the old
+request even when the final selected ID matches. Before opening, also reject a
+pending resolution if the authored page changed or its draft was reset without
+a selection change. The page-snapshot check belongs to pending resolution:
+a legitimate Apply replaces the authored page, so a subsequent Save in that same
+owned panel must still succeed. Do not reject the panel's own revision with a
+permanent comparison against the pre-open page.
+
+On replacement, selection change or destroy, close the owned panel and release
+its subscriptions; on normal close, remove the owned reference/subscriptions.
+Late loader results or Apply/Save events must not open or mutate a new selection.
+Keep updates in the existing canonical page/envelope through the owner outputs;
+do not add a parallel draft or editor contract in Landing.
+
 ## Proof
 
 Minimum local gates:
@@ -90,6 +117,13 @@ Prove local safe JSON, governed remote execution, unmatched/unsafe profile
 rejection, blocked unexpected network, JSON/Visual round-trip, invalid paste
 recovery, accessible keyboard/narrow journey, and direct route reload. Hosted
 claims require the hosted smoke; local mocks do not prove public integration.
+For a visual-editor opener, cover eager/lazy definitions, reverse completion,
+A→B→A, pending page replacement/reset, load rejection, destroy, late events and
+Apply→Save in focused specs. Then use the public button in a real browser with
+the target published SDK, resolve its actual editor and exercise Apply/Save in
+the canonical page. Mocked metadata/Settings Panel on an installed older SDK
+train does not prove the next SDK train's lazy chunk, rendering or public flow;
+keep that browser/adoption gate explicitly pending until it runs.
 
 ## Companion Skills
 
