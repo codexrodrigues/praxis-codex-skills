@@ -1532,6 +1532,19 @@ Reproduce an oracle mismatch against the pinned public JAR before changing the
 test. Persisted executable previews without a new execution do not prove HTTP
 preview, confirmation or replay; retain the failed run and its diagnostic limits.
 
+Keep the secondary Python AFTER verifier separate from that Java ordered oracle.
+Validate a bijection between assigned IDs and saved manifest ordinals, then bind
+each receipt's ordinal to the exact manifest digest and opaque version bytes;
+retain deadlines and exact ID-keyed physical domain changes. Do not convert an
+opaque version into a numeric entity version or index numeric assignment order
+by ordinal. Reject boolean IDs/ordinals and duplicate, missing or foreign IDs.
+This relational check does not replace Java's canonical ordered proof or authorize
+a coordinated manifest rewrite. A passing Java journey followed by FAILED_AFTER
+remains a failed full run. Read back protected durable state before diagnosis;
+controlFreshAfter=false may be an unassigned default after an earlier assertion,
+not proof of expired control evidence. Preserve the failed receipt and review the
+verifier correction before a new isolated official proof.
+
 Select the codec's closed transport profile from the trusted workflow cut before
 decoding, never from envelope contents. Encode and verify the exact-byte roundtrip
 with that same profile; preserve existing default bounds and all rejection checks,
