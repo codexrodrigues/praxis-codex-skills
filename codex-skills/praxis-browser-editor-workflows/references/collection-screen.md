@@ -30,6 +30,13 @@ and native composition links. Child editor envelopes were:
 These illustrate envelopes, not complete defaults. Rich Content uses its own
 RichContentDocument. Apply JSON in the owner editor and save its result.
 
+For a page-owned exercise, choose **Origem da configuração** before saving each
+List/Table: rc.17 labels are **Configuração da página** (List) and **Definida nesta
+página** (Table). Verify `configPersistenceStrategy: "input-first"` in the saved
+widget inputs. The new-widget default `local-first` can let individual preferences
+override/merge the page configuration; a valid child JSON does not set this input.
+This choice is for page-owned composition, not a universal ban on user preferences.
+
 Scope items carried queries such as `{"filters":{"ativo":true}}` in
 `item.queryContext`. The graph used `itemClick -> pick-path(item.queryContext)
 -> state.values.selectedScopeQuery -> Table.queryContext`. State schema:
@@ -39,6 +46,16 @@ plus typed schema exposed it. This is historical evidence, never a universal
 initialization requirement. If reproduced in the current release, classify and
 track the Core/connection-editor materialization issue with a removal trigger for
 the workaround; do not add a second state contract by reflex.
+
+After selecting **Extrair um campo**, enter `item.queryContext`, leave the field,
+and verify the delivered-value summary before **Aplicar conexão**. Confirm the
+saved `transform.steps[].config.path` in the visible Praxis JSON immediately.
+In one rc.17 browser take, locator fill/typing showed the intended text while the
+pipeline retained `payload`; focusing the field, selecting all, using native
+keyboard text input and Tab committed the intended path. Treat this as observed
+automation/editor interaction, not a proved library defect or universal API rule.
+Do not repeat the same failing fill across links. If the graph already received
+an item envelope, reset the query through its page-state editor, then retest.
 
 Derived List configs synchronized active styling. Literal per-item slot rules
 avoided ambiguous nested template evaluation in a templated config. This was an
@@ -81,3 +98,13 @@ overrides do not necessarily set a child's internal responsive direction.
 Check long labels, loading/error/empty states, keyboard/focus, contrast and narrow
 panels. Mobile must not overflow globally; a wide table can scroll internally.
 Check the entire filter area, not only the first card.
+
+For this full-width vertical rc.17 reconstruction, finish dimensions before the
+final organization: one occupied row per natural block, full width, then
+**Coluna de trabalho → Usar organização no rascunho** and mobile **Empilhar widgets**
+when available in the installed editor. Preserve other intended compositions.
+Verify saved device geometry, not just desktop spans.
+For a frameless shell that still needs body padding, retain framed presentation,
+choose **Sem moldura**, and set **Mostrar cabeçalho: Nunca**; **Somente conteúdo**
+sets `kind:none` and can bypass shell spacing. Do not clear required pixel-height
+fields to request automatic size; use the actual natural-size/device controls.
