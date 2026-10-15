@@ -66,6 +66,30 @@ Do not rebuild CRUD drawers, modals, or table/form launchers in apps when the mi
   with `effects: []`. The host still evaluates policy and must not treat a
   matching profile as authorization.
 
+## Row Selection And Analytical Drawers
+
+Inspect `PraxisCrudComponent`'s derived table configuration and Table's
+`shouldOpenAnalyticalDrawerOnRowClick` before assuming that a row click only
+selects a record. CRUD can automatically enable the analytical drawer when its
+default or an action uses `openMode='drawer'`; Table can also open a registered
+resource drawer. Row selection and drawer opening are separate effects of the
+same click. Declaring `outputs.rowClick='emit'` exposes the output; it does not
+disable the drawer.
+
+When the authored journey uses a row click to select a record and update a
+master/detail dossier, declare
+`metadata.table.behavior.drawer.openOnRowClick=false` in the canonical CRUD
+recipe. Preserve explicit create/view/edit drawer actions. If the journey uses
+a dedicated selection control, exercise that control instead. Do not force-click
+through a backdrop, close an unexplained drawer in the test, or change the shared
+runtime default to hide a composition defect.
+
+Keep the semantic authoring plan, compiled page and consumer projections aligned.
+Prove plan/page parity, selection updating the dossier without an analytical
+drawer, and explicit view/edit actions still opening their intended surfaces.
+Use the actually adopted SDK: a newer source checkout does not prove that an
+older public package implements the same opening policy.
+
 ## Resource Page Context Lifecycle
 
 Consume `EnterpriseRuntimeContextService.contextChanges$` rather than a private
