@@ -94,6 +94,39 @@ owner to Settings Panel and cancel late open/apply/save work after destruction.
 Prove renamed actions, unavailable explanations, positive execution, owner teardown
 and subscription cleanup through the real contributor and shell host.
 
+## Controlled Page Acknowledgement And Settings Lifetime
+
+For controlled `pageChange` consumers, inspect `DynamicWidgetPageComponent.ngOnChanges`,
+`models/page/page-config.model.ts`, `dynamic-widget-page-settings.spec.ts`, the Core
+README owner-lifetime section and a real host that returns the page to Core. A host
+may recreate `PageIdentity` while acknowledging the same authored document.
+
+Audit semantic no-op identity changes before the existing change pipeline. Only
+non-first changes with the same identity presence and strictly equal canonical
+`appId`, `tenantId`, `userId`, `routePath` and `locale` qualify. Compare against the
+identity Core actually accepted, retained as a private snapshot of those primitive
+values. A host can mutate the object referenced by `SimpleChange.previousValue`
+before sending a clone; that mutable reference alone cannot prove an unchanged
+scope. Preserve null/empty and absent-identity distinctions; do not trim, sanitize,
+join delimiters or compare only the derived storage key. Normalize on a local copy/decision without mutating
+the caller's `SimpleChanges`. An equivalent-identity-only change should not clear
+the data-source overlay, rebootstrap composition or reset/reload persistence.
+
+A matching authored-page acknowledgement accompanied by this redundant identity
+must preserve the open settings owner through Apply then Save, including unified
+shell/size sessions. All remaining changes follow the existing pipeline: a different
+document, real scope/identity change, context (including function references),
+component instance, customization or authoring capabilities must retain their
+invalidation and persistence behavior. Do not JSON-serialize context or capabilities
+to suppress a real change, or hide the Core defect with host-local memoization.
+
+Prove equivalent identity with controlled page echoes, identity-only no-op,
+first-change behavior, unchanged caller changes, delimiter/whitespace collisions,
+in-place host identity mutation followed by a clone, and each real identity field change. Include overlay/composition/persistence and
+late-event/owner cleanup assertions. Require focused Core settings proof, Core and
+direct-consumer builds, and the real public-button Apply→Save flow on the target
+published SDK. Local mocks/builds do not certify that published browser journey.
+
 ## Inventory Before New Contract
 
 Classify gaps before adding widget or observation contracts:
