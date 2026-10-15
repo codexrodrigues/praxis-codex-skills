@@ -51,6 +51,7 @@ Do not create editor-only document shapes or host wrappers that the renderer can
 - Preserve semantic callout/card tone, icon, title, message, context-path bindings, action references, and safe advanced properties. Validate `rootClassName` and the full document even when content enters through advanced JSON.
 - Treat action nodes as references only. The owning host must resolve them against its governed action catalog and enforce capability, record authorization, confirmation, and dispatch; a rendered button never grants authority.
 - Prefer semantic tones and platform tokens. Arbitrary styles or gradients remain advanced input and require the canonical safety validator plus rendered contrast evidence across supported themes.
+- Selecting **Custom/manual** for an icon or badge preserves its existing preset or manually authored `node.style`. Continue manual edits through the existing style controls without clearing styles or persisting a new mode/preset id. Use the explicit visual-style reset when the intent is to remove overrides; selecting another named preset still applies that preset. Prove preset→Custom→Save, manual edit→Custom→Save, and explicit Reset for both icon and badge in the focused editor spec.
 
 Invalid payload and advanced-JSON drafts belong to the edited object, not its
 mutable array index. Preserve that ownership through reorder, sibling removal and
