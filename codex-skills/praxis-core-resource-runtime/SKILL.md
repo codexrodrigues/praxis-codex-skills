@@ -1,6 +1,6 @@
 ---
 name: praxis-core-resource-runtime
-description: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, analytics schema contracts, stats request builders, or metadata-driven resource materialization.
+description: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, bulk execution polling and observation deadlines, analytics schema contracts, stats request builders, or metadata-driven resource materialization.
 ---
 
 # Praxis Core Resource Runtime
@@ -96,6 +96,33 @@ Use `getByIdHttpResponse` when a consumer must retain the ETag with the exact bo
 `readStrongResourceEtag` validates the item validator; do not substitute schema/cache validators or weak tags. The consumer owns snapshot identity, destination, actor/tenant scope and request epoch. Reconfigure its transport when context changes, including removal of named/custom endpoints, and invalidate pending reads/writes across reset, reload and A→B→A context changes. Compare the operation epoch as well as identity before accepting late responses. A successful same-resource save may replace the body and ETag together; an explicit or cross-resource command precondition does not authorize hydrating the origin form from the command response. Missing/partial mutation representations require explicit reconciliation, not attaching a new token to an old body.
 
 Prove these rules in the Core client and direct Form consumer, with focused builds and real authenticated HTTP/browser evidence. Candidate source APIs are not evidence of published-package adoption; retain that distinction in release and consumer guidance.
+
+## Bulk Execution Observation
+
+Inspect `services/praxis-bulk-client.service.ts`, its focused spec and the CRUD
+bulk dialogs before changing `PraxisBulkClientService.waitForExecution`. This
+client and the BASIC `BulkOperationClientService` are distinct paths; a polling
+fix does not certify BASIC read deadlines or enable ASYNC in BASIC.
+
+Preserve the terminal-only observable contract. Allow at most one execution GET
+in flight; a polling tick must not abort a useful slow response. Start the
+observation deadline on subscription and enforce it independently of response
+emissions. Pending responses do not renew the deadline. Timeout, error,
+unsubscribe and destruction must tear down the timer and active HTTP request;
+a late response cannot revive an expired observation.
+
+Use the canonical terminal classification. `CANCEL_REQUESTED` remains pending;
+terminal does not mean successful. An observation timeout says nothing about
+rollback or whether the backend has committed. Resuming observation reads the
+same execution with a fresh consultation deadline; it must not evaluate a new
+proposal or repeat confirmation automatically.
+
+Prove this with the real service and controlled HTTP: responses slower than the
+poll interval, a request that never responds, repeated pending responses, delayed
+and repeated subscriptions, transport failure, unsubscribe and the deadline
+boundary. A spy returning a terminal value from `waitForExecution` does not test
+polling. Also validate both direct CRUD consumers and keep mock evidence distinct
+from real protected HTTP and backend effect/replay receipts.
 
 ## BASIC Bulk Intent and Authorized Projection
 

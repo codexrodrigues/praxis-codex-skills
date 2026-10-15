@@ -268,6 +268,31 @@ use, filtering, analytics, and operational constraints when they apply.
 - Analytics DTOs must document dimensions, measures, aggregation semantics, grain, time bucket,
   currency/unit, privacy restrictions, and whether values are exact, rounded, masked, or sampled.
 
+### Separating Lifecycle From Ordinary Updates
+
+Audit inherited Bean Validation constraints before removing lifecycle fields from
+an update contract. A getter override with `@Null` does not cancel an inherited
+field's `@NotNull`; that combination can reject every request. Separate the
+existing operation DTO when its write contract differs, preserving the annotations
+and governance of legitimate editable fields. Do not change the create operation's
+initial-state policy merely to simplify update validation.
+
+Hidden schema metadata is not rejection. If a forbidden input must fail, retain
+explicit validation/binding rejection instead of silently discarding it with a
+read-only or ignored Jackson property. Define omission versus explicit null:
+`@Null` alone accepts null. When the contract forbids the key itself, verify the
+host's Jackson null/coercion behavior and use the existing payload-error boundary;
+do not change global ObjectMapper policy for one field.
+
+Keep the Java service guard before private reads/mapping and prevent lifecycle
+mutation in both update projection and merge mappers. Preserve the legitimate
+workflow action's precondition, reason and audit path. Prove omission, same and
+opposite state values, explicit null, coercible and incompatible JSON values,
+generated mapper behavior, and unchanged create/read contracts. Use the configured
+host mapper, validator and canonical advice; a DTO test is not authenticated HTTP
+or transactional proof. Update the HTTP corpus and validate that form consumers
+submit the operation schema rather than copying the whole read representation.
+
 ## Per-Property Completion Checklist
 
 Before considering a DTO property complete, verify:

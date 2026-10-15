@@ -1,6 +1,6 @@
 ---
 name: praxis-crud-runtime-openmodes
-description: Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation.
+description: Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, bulk execution cancellation and terminal states, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation.
 ---
 
 # Praxis CRUD Runtime Open Modes
@@ -118,6 +118,39 @@ default-filter restoration and cleanup. Validate the real consuming route/host
 when identity switching changes runtime behavior; a stub spec or a dispatched
 browser event cannot prove consumer adoption. Inspect the installed package and
 integrated source before promising this lifecycle in an older published version.
+
+## Bulk Cancellation And Observation
+
+Inspect both `praxis-bulk-operation-dialog.component.ts` and
+`praxis-bulk-edit-dialog.component.ts`, their shared `praxis-bulk-dialogs.spec.ts`,
+the CRUD i18n catalog and Core's `PraxisBulkClientService`. Correct shared
+transport timing in Core and dialog state projection in CRUD.
+
+Own one polling subscription per observed execution. A cancellation response
+with `CANCEL_REQUESTED` does not finalize the execution or authorize loading final
+results. Prevent duplicate cancellation requests. Once a terminal response has
+been accepted, late cancellation success or failure must not downgrade it or
+replace its results. Release subscriptions on terminal completion and destruction,
+including synchronous observable completion.
+
+An observation error is an unknown current outcome, not a successful result.
+Keep the execution identity and snapshot, explain that effects may have occurred,
+and allow explicit read-only resumption or closing without reporting success.
+Resumption observes the same execution; it never confirms or evaluates again.
+Confirmed item counts alone do not make a pending execution successful. Preserve
+the actual terminal status and partial totals when reporting a terminal outcome.
+
+Use the existing i18n namespace for new state messages and controls. Prove both
+dialogs with controlled pending, terminal, late cancellation and transport-error
+interleavings, including partial confirmations, duplicate clicks, synchronous
+completion, teardown and resumption with no additional mutation calls. Build Core
+and CRUD as applicable and exercise the direct consumer in a focused browser flow.
+
+This observation repair does not establish custody after closing/reopening the
+dialog, reloading its parent, or losing confirmation responses. Audit the parent
+owner and existing replay protocol before adding a store or endpoint. Keep those
+gates and real backend commit/replay evidence explicit; do not describe UI mocks
+as operational acceptance.
 
 ## Child Boundaries
 
