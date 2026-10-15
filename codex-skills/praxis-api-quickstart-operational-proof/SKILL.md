@@ -172,6 +172,18 @@ an actual Render receipt binds source/JAR/instance/IP/listener, relay, commands,
 cleanup and readbacks. Source integration, SDK publication/adoption and hosted
 proof remain separate gates.
 
+For an authorized isolated host proof, inventory startup event listeners (including
+`ApplicationReadyEvent`) and synchronous callbacks as well as runners, scheduled
+workers and `PostConstruct`. A Started log does not prove those callbacks finished.
+Config162's API metadata indexing recovery is unconditional; registry-bootstrap=false,
+Spring AI disabled or worker-count=0 do not disable it. Before booting an exclusively
+assigned child for an unrelated journey, prove PENDING/PROCESSING=0 with a fresh
+ordinary-runtime read and compare inherited rows after boot. This is observed
+quiescence, not a recovery switch. Use the existing
+`praxis.domain-catalog.rag-publication.enabled=false` when excluding domain-catalog
+RAG recovery from that proof. If inherited work exists, stop and resolve isolation
+canonically; never erase work, invent a flag or infer containment from missing logs.
+
 ## Isolated administrative one-off jobs
 
 Prepare and prove the recovery transport **before suspending** a publication.
@@ -1518,14 +1530,31 @@ size tests are not that measurement.
 
 When cloning an already provisioned child, retain original Main command/input/receipt
 bytes, source and binary provenance. Require reviewed administrative source/resource
-and public-JAR equivalence for the reader-only delta, plus current child identity and
-resource receipts; do not label inherited commands as new executions. Provision fresh
+and public-JAR equivalence for the exact current artifact delta, plus current child identity and
+resource receipts; do not label inherited commands as new executions. Read the current
+`reader-artifact.json` and accepted equivalence receipt: the public171 comparison is
+administrative only, with `wholeRuntimeEquivalent=false` and
+`fullClassTransitiveClosureEqual=false`. Its runtime changes are not merely reader-only;
+historical Main receipts remain unchanged and do not prove current HTTP composition.
+Provision fresh
 cursor material and its own finite ledger without resetting historical quota. Bind the
 current complete domain rows, target/version and effective evaluation intent separately
 from historical assignment; derive HTTP expectedVersion from the real strong GET ETag.
 Counts, generations, roles, lease and snapshot values belong to that reviewed binding.
 
-Log in, reconcile the exact existing READY/publication pair, evaluate one explicit
+Observe the verified `ready.json` (source/JAR/PID, auto-started worker and physical
+datasource profiles) and listener200/503 before issuing the explicit command. The
+reader cut permits only RECONCILE; FULL uses its existing SUSPEND/PUBLISH CAS. Require
+health200 after that command and before evaluation, within the same monotonic240s
+startup deadline. Listener availability alone is not readiness, and publication does
+not renew the deadline. Keep runtime readiness and worker budgets unchanged.
+
+For host properties, use the existing helper that permits only the exact
+`app.security.enterprise.presentation.contexts` key with an empty array alongside
+scalar values. Reject other structured values and nonempty catalogs; never fabricate
+memberships to obtain context.
+
+Log in, reconcile the exact existing READY/publication pair, verify health200, evaluate one explicit
 target, then call the real proposal and first results-page facades. Do not confirm,
 replay, publish, suspend or send worker/Main commands in this cut. Independently compare
 all named full BEFORE/AFTER sets, including after startup or reconcile failure. Before
@@ -1535,6 +1564,17 @@ rows and zero domain/execution/receipt/admission/slot/occupation effects. Valida
 proposal, fingerprint, manifest, preview and version relationships without inventing
 a second cryptographic-digest implementation. Export only the closed bounded reader
 failure projection; raw logs, sessions, HTTP and snapshots remain private.
+
+Track every attempted login. Capture the issued SESSION token in memory immediately
+after its response, then persist SESSION/CSRF in a private0600 file for secret scanning
+before further body/status/session assertions. An IO failure must retain the in-memory
+token for cleanup. In finally, attempt every owned session's logout204 with its own
+SESSION cookie and CSRF, then GETsession401 using the same retained Bearer token with
+no cookie jar; cookie removal is not proof.
+Preserve the primary failure and record secondary cleanup failures. Uncertain issuance
+or missing revocation evidence cannot produce CLOSED merely because the host stopped.
+Keep bounded attempted/issued/revoked/tokenDenied/closed evidence private; zero sessions
+before login may be clean but cannot establish a successful two-actor journey.
 
 Offline guards and artifact checks prove preparation only. A passing same-object Neon
 receipt certifies the selected two readers, not full confirmation/replay, scale, Render
