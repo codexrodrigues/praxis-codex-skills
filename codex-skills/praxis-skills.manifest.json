@@ -2714,8 +2714,8 @@
                                             "praxis-core-composition-runtime",
                                             "praxis-landing-registries-sitemap-playgrounds"
                                         ],
-                       "skillMdSha256":  "5197AAB0E2F5B5AC8FFCE4B1E9F5EFC7E47FE16CFFA2CA8F582385929CFC64AA",
-                       "treeSha256":  "7627DCD7E9E6AE7CCB1F25E777D82424A4087908E2EC70CC898A94C768DFA755"
+                       "skillMdSha256":  "FD275AB4B0305AF72B02CF0581E0B9A4D7CBC35C30D302E6275DE3CF9B3C9093",
+                       "treeSha256":  "B3E42C78493BB55BD4B585A5A15F0EC455C2B8158B9D89C78BAFDC48B15D3AD7"
                    },
                    {
                        "name":  "praxis-rules-engine-runtime",
