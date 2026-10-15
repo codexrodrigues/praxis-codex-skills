@@ -44,6 +44,7 @@ Also inspect `projects/praxis-settings-panel/AGENTS.md` and the Settings Panel b
 - For filters, keep `behavior.filtering.advancedFilters.settings` synchronized with `FilterSettingsComponent`.
 - For rules and formulas, preserve the rule compiler/operator registry and do not reintroduce prohibited old Visual Builder dependencies.
 - For actions, preserve global action validation and effect shapes.
+- Treat sample-row paths in detail previews as untrusted authored data, including columns, conditions and expression fields. Validate every segment before creating any prefix; reject `__proto__`, `prototype` and `constructor` consistently with Core expression evaluation. Traverse only own properties and create own data properties so inherited objects or setters cannot be mutated. Prove hostile root/nested paths, an inherited object, valid nested paths, zero/false samples, and unchanged source config/no emission in the detail editor spec. Preview generation must not mutate shared prototypes or persisted documents.
 - For `surface.open` actions, combine mounted child raw-draft validity with Table document and
   main JSON validation. Invalid-only text must count as dirty, block Apply/Save, survive tab changes,
   and clear only through explicit Reset/Cancel. Track the mounted editor, not label/index identity,
