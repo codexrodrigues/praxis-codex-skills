@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-core-resource-runtime/
-- Descricao atual: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, analytics schema contracts, stats request builders, or metadata-driven resource materialization.
+- Descricao atual: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, bulk execution polling and observation deadlines, analytics schema contracts, stats request builders, or metadata-driven resource materialization.
 
 ## Classificacao inicial
 

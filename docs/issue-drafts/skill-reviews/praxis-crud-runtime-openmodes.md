@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-crud-runtime-openmodes/
-- Descricao atual: Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation.
+- Descricao atual: Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, bulk execution cancellation and terminal states, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation.
 
 ## Classificacao inicial
 
