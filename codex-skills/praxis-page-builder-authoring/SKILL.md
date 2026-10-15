@@ -5,6 +5,10 @@ description: Use when Codex must create, inspect, or fix @praxisui/page-builder 
 
 # Praxis Page Builder Authoring
 
+For human-style operation of existing browser editors and timed demonstrations,
+use `praxis-browser-editor-workflows`. This skill owns implementation and audit
+of the editor code; it does not prescribe a browser demo script.
+
 Use this skill for the visual/textual authoring editors that produce or update `WidgetPageDefinition`. The goal is not "any editor can mutate JSON"; the goal is a stable round-trip between canonical page semantics, visual editors, Settings Panel, persistence, and runtime rendering.
 
 Pair it with:

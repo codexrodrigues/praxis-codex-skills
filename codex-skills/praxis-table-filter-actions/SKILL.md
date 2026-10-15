@@ -61,6 +61,29 @@ without changing binding identity or payload shape.
 
 ## Governed Filter Presentation
 
+### Choose one query owner
+
+Before building an external filter bar, inventory Table's native toolbar scope,
+query and cross-filter regions: `toolbar.filters.quickFilters`, inline and
+advanced fields, saved tags, chips and clear. For a centralized filter experience,
+Table can own the filters while KPIs remain informational. `PraxisResourcePage`
+also coordinates native scopes and KPI selection; verify palette registration
+before assuming it is available as a JSON widget.
+
+If external shortcuts are required, inspect `onQuickFilterChange`,
+`resolvePraxisFilterCriteriaBridge`, `queryContextChange` and metadata ports in the
+installed release. Internal quick filters and external `queryContext.filters`
+are not automatically a single two-way store: the bridge can give external values
+precedence. Do not expose contradictory controls or remove that precedence without
+checking structural constraints and authorization. Preserve boolean false.
+
+Test text plus scope, optional KPI shortcut, partial/full clear and pagination
+reset, comparing visible selection, fields/chips and HTTP payload. The observed
+Core `queryContextClear` reset for a state-to-Table link does not prove partial
+filter preservation and does not require a manual feedback connection by default.
+Use `praxis-browser-editor-workflows` for browser-only reconstruction/rehearsal;
+this skill owns the filter/action contract and implementation evidence.
+
 Inspect Core's `FilterPresentationConfig`, the Table JSON API's **Filter presentation** section,
 `PraxisFilterComponent` and Filter Settings before adding a label, icon or local toolbar style.
 The table path is `behavior.filtering.advancedFilters.settings.presentation`; standalone filters

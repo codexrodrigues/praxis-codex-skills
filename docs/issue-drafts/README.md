@@ -45,6 +45,7 @@ Validacao local: `python3 scripts/validate-issue-drafts.py`
 - [praxis-api-quickstart-operational-proof](skill-reviews/praxis-api-quickstart-operational-proof.md)
 - [praxis-api-quickstart-security-config](skill-reviews/praxis-api-quickstart-security-config.md)
 - [praxis-authoring-editors](skill-reviews/praxis-authoring-editors.md)
+- [praxis-browser-editor-workflows](skill-reviews/praxis-browser-editor-workflows.md)
 - [praxis-charts-ai-handler-contracts](skill-reviews/praxis-charts-ai-handler-contracts.md)
 - [praxis-charts-ai-validation](skill-reviews/praxis-charts-ai-validation.md)
 - [praxis-charts-analytics-interactions](skill-reviews/praxis-charts-analytics-interactions.md)
