@@ -117,6 +117,56 @@ it is distinct from publication diagnostics. Do not add queries or expose SQL,
 messages or identities. A slow sink may delay delivery, and the release B/C/H/P4
 gates do not observe these reader paths; retain that limit in consumer evidence.
 
+## Pinning a pending Render candidate through its private IP
+
+When the service hostname cannot identify the intended candidate, inspect the
+host's `RenderNodeIdentityDiagnostics`, its focused test and
+`docs/engineering/render-startup-reconcile.md`. Render documents
+[direct private-IP access](https://render.com/docs/private-network#direct-ip-communication-advanced),
+but that does not prove reachability of a pending instance. Treat this as an
+existing route requiring identity evidence, not a new endpoint or an automatic
+publication mode.
+
+Bind the root Servlet startup log to the active Render deployment/instance and
+reviewed source/build: allowlisted Render identity, actual JAR SHA256, build
+version/time, private IPv4 interface candidates and actual listener port/context.
+Inspect the exact `PRAXIS_RENDER_NODE_IDENTITY` JSON projection; do not infer an
+unemitted address or source field. Keep
+the diagnostic log-only, bounded and failure-isolated; never dump environment,
+credentials, headers, responses or raw causes. A local address is a candidate,
+not proof that it is reachable. Do not guess an IP or treat getLocalHost, wildcard
+or loopback as the target identity.
+
+If the old instance relays the request through its official SSH channel, attest
+it separately: the relay SSH pin does not pin the remote HTTP candidate. Before
+each command, recheck that the candidate is active in Render, compare the exact
+source/build pins and `/actuator/info` with startup custody, and use only the
+observed IP/port/context. Info alone does not attest JAR bytes or the IP. An IP
+is a time-bound observation and can be reused; absent, divergent or ambiguous
+identity stops the flow. Never use service DNS, a load balancer, proxy or redirect
+as a substitute for that pin, or weaken health, TLS, ACL or CSRF to gain access.
+
+Preserve the existing explicit global-window authorization, real login/SESSION,
+current per-operation grants, effective CSRF, observed-generation CAS, both ledger
+readbacks and logout204/session401. A timeout or503 can follow a committed phase;
+inspect durable state without automatic retry, rebase or SQL repair. Never publish
+from the diagnostic or startup recovery. Manual publication installs the photograph
+in that JVM and can restore readiness when the live guard and dependency checks
+pass; a previous UNAVAILABLE is not a veto, unlike PENDING or uncertain cleanup.
+It does not retry or prove the one-shot runner. Keep cold reconciliation of the
+identical photograph as a separate gate at the next required deployment; do not
+require an immediate redeploy solely because the previous runner was unavailable.
+
+Do not start a second full app in a job/ephemeral shell to bypass access: the
+current startup may run the bulk worker and Config indexing recovery. Removing
+capacity/lifecycle changes the producer photograph. Require a separately proved
+administrative isolation before teaching such a process. Key acceptance followed
+by channel closure does not establish a root-lock, image or health cause; do not
+unlock root or change health based on that symptom. Keep this route pending until
+an actual Render receipt binds source/JAR/instance/IP/listener, relay, commands,
+cleanup and readbacks. Source integration, SDK publication/adoption and hosted
+proof remain separate gates.
+
 ## Classify And Map Impact
 
 Classify before editing:
