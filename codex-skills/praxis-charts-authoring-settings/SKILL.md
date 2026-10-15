@@ -26,17 +26,21 @@ Pair it with:
 - `praxis-config-starter` or the declared host storage owns governed persistence, ETag, approval, and publication. A chart editor does not write storage directly.
 - Backend metadata, schemas, analytics projections, option sources, and capabilities own which resources, fields, operations, metrics, and targets are authorable.
 
-## Two Authoring Envelopes
+## Editor Envelope And Owner Boundaries
 
-Do not conflate the direct chart editor with the widget editor.
+`PraxisChartConfigEditor` owns the canonical chart document. `PraxisChartWidgetConfigEditor` wraps that editor with the existing `{ inputs }` contract for document, local data and query context; both the direct runtime host and Page Builder consume this wrapper.
 
 ### Direct runtime chart
 
-`PraxisChartComponent.openConfigEditor()` hosts `PraxisChartConfigEditor` and expects the panel value to be a `PraxisXUiChartContract`:
+`PraxisChartComponent.openConfigEditor()` hosts `PraxisChartWidgetConfigEditor` with separate `inputs` and transient catalog `context`. Apply/Save returns `{ inputs }`, preserving `chartDocument`, derived local `data` and `queryContext` as separate owner inputs:
 
-`chartDocument -> editor state -> getSettingsValue/onSave -> applied$/saved$ -> runtimeChartDocument -> chartDocumentApplied/chartDocumentSaved`
+`runtime owner inputs -> widget editor -> { inputs } -> applied$/saved$ -> document/data/context runtime -> owner patch`
 
-Apply updates the component preview/runtime without closing. Save emits the same document shape; the external host decides whether and where to persist it.
+Apply updates the preview/runtime without closing. `chartDocumentApplied` and `chartDocumentSaved` still emit only `PraxisXUiChartContract`; `chartDocumentPatchChange.inputPatch` carries the complete changed input fields. Consume that existing patch in the external owner to persist data/context as well as the document. Explicit `null` clears stale data/query-context precedence when removed; `praxis.stats` must not continue using local rows. Do not move rows into `ChartContract`, invent another event envelope, or claim durability from an emitted patch.
+
+Treat document/config/data/query-context as one owner scope. Accumulate the latest expected acknowledgement per field across accepted patches, retaining fields omitted by a later patch. Accept equivalent or partial acknowledgements of those latest values without discarding the remaining local fields. The host must apply patches in order: without an epoch/revision in the existing contract, an old acknowledgement of A after B for the same field is indistinguishable from an intentional external change back to A, so the owner wins. Do not promise out-of-order acknowledgement delivery or invent history-based suppression of owner changes.
+
+Recheck ownership after context awaits and before Apply/Save, even before change detection. Closing/destroying the session releases its subscriptions; late events cannot overwrite a newer owner. Prove local rows through real editor Apply/Save, runtime accessible data and reopen, plus Reset/Cancel, stats transition, partial owner echoes across Apply/Save and external replacement.
 
 When a shell action invokes `command: "openConfigEditor"`, route by the stable command rather than the authored action id or label. Query live availability from the chart owner: customization enabled, Settings Panel bridge present, canonical document present, context resolution complete, and owner still alive. These explanations are localized presentation state, not backend authorization, and must not enter `chartDocument`.
 
@@ -80,6 +84,12 @@ Use `ChartContractNormalizerService` and `ChartContractValidationService`, then 
 - point click, selection, drilldown, cross-filter, governed targets, and mappings.
 
 Changing kind, source, operation, or resource may invalidate dependent state. Preserve compatible values; surface validation for incompatible values; remove data only through explicit normalizer rules. Do not silently keep stale metric/axis/source options merely because the form control is hidden.
+
+Local gauge consolidation preserves the authored metric aggregation and its result.
+For SUM40+80, retain120 even when the current scale is0..100 and surface the canonical
+out-of-range error until the author changes scale, data or aggregation. Do not
+silently substitute AVG60 or clamp the value to make the presentation valid. Test
+out-of-range SUM, a scale that admits120 and explicitly authored AVG.
 
 The preview must consume the normalized document through the same canonical mapper and `PraxisChartComponent`. Synthetic rows are acceptable for an explicitly local authoring preview, but the UI must not imply that a remote stats request or backend capability was proved.
 
