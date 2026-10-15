@@ -52,6 +52,15 @@ Do not create editor-only document shapes or host wrappers that the renderer can
 - Treat action nodes as references only. The owning host must resolve them against its governed action catalog and enforce capability, record authorization, confirmation, and dispatch; a rendered button never grants authority.
 - Prefer semantic tones and platform tokens. Arbitrary styles or gradients remain advanced input and require the canonical safety validator plus rendered contrast evidence across supported themes.
 
+Invalid payload and advanced-JSON drafts belong to the edited object, not its
+mutable array index. Preserve that ownership through reorder, sibling removal and
+parse/clone round trips; removing or replacing an owner discards only its own draft.
+Do not clear a surviving sibling's error or document-context draft to restore
+validity. Keep identity bookkeeping internal, without persisted node IDs. Test nested
+card/content/compose actions, swaps, type replacement, valid-node cloning and
+repair of a temporarily invalid structured document. Apply/Save stays blocked until
+all surviving errors are repaired; verify the accepted envelope through reopen.
+
 ## Validation
 
 Use the smallest reliable proof:

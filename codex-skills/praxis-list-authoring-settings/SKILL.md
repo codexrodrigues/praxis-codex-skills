@@ -66,6 +66,16 @@ tab visits, and is discarded only by explicit Reset/Cancel. Track contributors b
 identity rather than mutable labels or indices; do not rewrite the main JSON editor from a
 validation-only notification or remove an action while its unresolved draft would be lost.
 
+## Schema Request Ownership
+
+Use one cancellable schema-loading pipeline for resource-path edits and explicit
+field refresh. A new path must cancel the previous request before its debounce;
+refreshing the same path must still execute. Reset, restore to local data and owner
+destruction cancel pending work. Late success or failure from A must never replace
+B's fields, validity or busy state. Inspect `list-config-editor.component.ts` and
+prove A→B with late A, same-path refresh, reset/local mode and destruction in its
+focused spec; do not add an independent subscription for the refresh button.
+
 ## Global Actions
 
 List actions should use canonical `GlobalActionRef` shape:

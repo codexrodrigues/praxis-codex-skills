@@ -40,6 +40,7 @@ Also inspect `projects/praxis-settings-panel/AGENTS.md` and the Settings Panel b
 - `PraxisTableConfigEditor` implements `SettingsValueProvider`; preserve `isDirty$`, `isValid$`, `isBusy$`, `getSettingsValue`, and apply/save/reset behavior.
 - Treat `resourcePath`, `idField`, schema hash, local-data mode, and CRUD context as governed authoring state. Do not silently drop them when normalizing config.
 - For columns, always validate runtime rendering, editor visibility, order, type/format, renderer, computed expressions, value mapping, conditional styles, sticky state, and headers.
+- Preserve the Core threshold vocabulary in micro-visualization authoring: finite `min`/`max` ranges, progressive `value` cutoffs and discrete `equals` conditions. Presence matters: `equals: 0`, `false` and strings are valid. Range controls must not invalidate or convert existing cutoff/equality documents when editing tone, label or order. Inspect `presentation-visualization.model.ts` normalization and tone resolution; prove primary and conditional-renderer Apply/reopen, retained conditions/labels, cutoff preview, and empty/inverted/non-finite-only negatives in the columns editor specs. Do not require every threshold to have `min` or `max`.
 - For filters, keep `behavior.filtering.advancedFilters.settings` synchronized with `FilterSettingsComponent`.
 - For rules and formulas, preserve the rule compiler/operator registry and do not reintroduce prohibited old Visual Builder dependencies.
 - For actions, preserve global action validation and effect shapes.
