@@ -75,6 +75,26 @@ dossier state ephemeral where appropriate; do not persist personal snapshots jus
 to retain a preview. Test selecting A then B, clearing selection and filtering a
 selected record out. Propagate the current record, not just its unchanged ID.
 
+### Prove ephemeral state discovery before connecting
+
+Declare selection in `state.schema` with `persist:false` and an explicit `initial`
+(null or an empty selection object, matching the consuming expressions). Keep real
+records out of persisted `values`. Before authoring surfaces, open a new connection
+and confirm that the declared path is offered as a writable destination, including
+when a derived dossier node already exists. Save/reopen/reload and check again.
+Do not discover this integration gate after building every tab.
+
+On rc.26 a browser probe with `values:{}`, schema `selection` initial:null and a
+`derived.employeeView` accepted the JSON but omitted `selection` from connection
+selectors. Core already supports the initial and non-persistence; the graph only
+collected values. Without derived, a fallback path can hide this defect. Existing
+links can also recreate a visual port without proving initial discovery or clean
+diagnostics. Check the installed graph against the owner fix before claiming it
+resolved. Do not switch personal selection to persistent storage to make the
+editor offer a port; a null-only positive control belongs in isolated diagnosis,
+never in the ordinary rehearsal recipe. If this gate fails, retain the minimal
+JSON and report the owner limitation rather than concealing it in take preparation.
+
 Before multiplying the pattern across tabs, prove these transitions:
 
 | Transition | Required observation |
