@@ -17,6 +17,8 @@ Preparing a video does not itself request a recording.
 Distinguish exploration, a prepared rehearsal and recording. For preparation and
 timing read [rehearsal.md](references/rehearsal.md); for collection screens also
 read [collection-screen.md](references/collection-screen.md).
+For dashboard rehearsals read [dashboard.md](references/dashboard.md) before
+preparing source, component and layout snippets.
 
 Inspect applicable AGENTS, the host route/providers, package lock, actual palette,
 editor and reference screen. Canonical sources in `praxis-ui-angular` are:

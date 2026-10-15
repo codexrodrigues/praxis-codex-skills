@@ -52,6 +52,11 @@ saved-path checks from the collection reference. Never remove these checks to
 meet the time target. Any post-take correction stays outside the timed result and
 must be disclosed; completion requires the agreed quality as well as elapsed time.
 
+Subsequent prepared collection-screen runs measured251.710s and228.780s with
+real reads and the agreed fidelity. These prove those specific takes, not a
+five-minute benchmark for a larger dashboard. A thirteen-widget dashboard with
+four statistics sources and multiple links needs its own full measurement.
+
 ## Interruptions and closure
 
 Normal waits and editor navigation belong to the flow. Server restart, navigation
