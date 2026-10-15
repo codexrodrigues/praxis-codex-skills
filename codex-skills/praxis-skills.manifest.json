@@ -7,6 +7,20 @@
     "description":  "Praxis platform Codex skills that must remain independent from Ergon-specific migration guidance.",
     "skills":  [
                    {
+                       "name": "praxis-browser-editor-workflows",
+                       "sourcePath": "codex-skills/praxis-browser-editor-workflows",
+                       "version": "0.1.0-beta.0",
+                       "status": "active",
+                       "compatibility": "0.x",
+                       "dependencies": [
+                           "praxis-page-builder-authoring",
+                           "praxis-page-builder-composition",
+                           "praxis-product-evolution"
+                       ],
+                       "skillMdSha256": "C2DD58142A080CE62EA1BC5863D4242C48EBF7FB8830C46F8783094E4F75318B",
+                       "treeSha256": "9A23C3845CEF544309873B586E0D4E19E8357471C3FB1B9C7A8BB78F95542D6D"
+                   },
+                   {
                        "name":  "praxis-product-evolution",
                        "sourcePath":  "codex-skills/praxis-product-evolution",
                        "version":  "0.1.0-beta.0",
@@ -1851,8 +1865,8 @@
                        "dependencies":  [
                                             "praxis-page-builder-composition"
                                         ],
-                       "skillMdSha256":  "07F968A2B6922B3A3E0BC08BDAD2B2CE310CF2906667BE39DF97B640B31B8C2C",
-                       "treeSha256":  "2DAB8EC302272BAA181ED7D6D3A9C779EDF3B2657578DCC4A4A42B2BC5552F74"
+                       "skillMdSha256":  "78AA035DF6151E5DABD9BF8309E22DBF13BC01A04F38ABACC04CF2B0DAD6A564",
+                       "treeSha256":  "3DDA7C4979DA0766158048051009F7FA367124F3A925EEAFEE682B57281EAF75"
                    },
                    {
                        "name":  "praxis-page-builder-composition",
@@ -2081,8 +2095,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "26501B477C09DB46FBAEB03073B0879068AD6D4891D98D6A109487B496F45DDB",
-                       "treeSha256":  "84DE328088F72F877386BEC2A449F10E012099109A2D81F2B6394A45A175D5E0"
+                       "skillMdSha256":  "31067A3A3667A18894B17C9565F2A41D8D71AA354313B0A4E5B6EEFCC5DA6C5A",
+                       "treeSha256":  "A4D66211EF805AC85F6EA361882B19F6CC792989D65CBD91165A0AF688805875"
                    },
                    {
                        "name":  "praxis-table-rule-ai-validation",

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Praxis Browser Editor Workflows"
+  short_description: "Author pages through visible editors and rehearse demos"
+  default_prompt: "Use $praxis-browser-editor-workflows to author a Praxis screen through the browser editors, preserve real data, and verify a repeatable demonstration."
