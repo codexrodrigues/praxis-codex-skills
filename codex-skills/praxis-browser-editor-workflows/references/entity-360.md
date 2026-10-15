@@ -137,7 +137,7 @@ binding to discovery and the current selection, and verify switching parents.
 Initial value and contextual presentation do not prove a locked relationship or
 server authorization.
 
-The rc.22 control proved one overlay/session with native Voltar/Fechar, clean
+The initial rc.22 control proved one overlay/session with native Voltar/Fechar, clean
 cancel returning to the same list, and a real create with the derived parent,
 persisted readback, refreshed collection and focus restored to the add action.
 It did not certify update, page/order retention, mobile or dirty-draft protection:
@@ -146,6 +146,32 @@ opened inside the drawer and automatic related materialization without this
 binding remained defective in that baseline. Track those owner defects and a
 removal/adaptation condition; this conditional recipe is not a universal fix or
 evidence that every relationship journey is complete.
+
+For an explicit Form Cancel, use `id: "cancel", type: "button"`;
+`"cancel"` is not a `FormActionButton.type`. Audit both guards before changing
+policy: in rc.22, `backConfig.confirmOnDirty` overrides
+`form.behavior.confirmOnUnsavedChanges`, so Form Cancel followed by the CRUD host
+can prompt twice. A later browser control proved a single host prompt with this
+`metadata` fragment, preserving other defaults/actions and also omitting
+`confirmOnDirty` from action-level `back`:
+
+```json
+{
+  "defaults": { "back": {} },
+  "form": {
+    "behavior": { "confirmOnUnsavedChanges": false },
+    "actions": { "cancel": { "id": "cancel", "type": "button" } }
+  }
+}
+```
+
+Omission preserves the host's default confirmation; do not set
+`back.confirmOnDirty: false`. Check saved per-form `crud-back:${formId}` overrides.
+Prove that cancelling the prompt keeps the draft and confirming returns to the
+same list, then test Voltar, X/Fechar and Escape separately. In that control,
+Voltar still left a dirty frame without prompting and the guard appeared later
+when closing the list (Angular issue #613). This is a conditional Cancel
+mitigation, not a universal navigation or security fix.
 
 ## Test operations with explicit evidence boundaries
 
