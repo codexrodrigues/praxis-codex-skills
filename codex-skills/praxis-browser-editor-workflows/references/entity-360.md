@@ -170,8 +170,44 @@ Omission preserves the host's default confirmation; do not set
 Prove that cancelling the prompt keeps the draft and confirming returns to the
 same list, then test Voltar, X/Fechar and Escape separately. In that control,
 Voltar still left a dirty frame without prompting and the guard appeared later
-when closing the list (Angular issue #613). This is a conditional Cancel
-mitigation, not a universal navigation or security fix.
+when closing the list (historical rc.22 observation in Angular issue #613).
+This is a conditional Cancel mitigation, not a universal navigation or security fix.
+
+### Prove each surface exit on the installed artifact
+
+If a child guard appears only after returning to the parent, audit the concrete
+owner in `@praxisui/settings-panel`:
+`src/lib/surface-drawer.component.ts` and
+`src/lib/surface-drawer-bridge.provider.ts`. The frame must be active before the
+first input application/change-detection pass invokes hosted lifecycle hooks that
+register `setCanLeave`. Registration on the previously active frame can make back
+skip the child guard and leave a stale guard on the parent. Correct that runtime
+owner rather than weakening dirty-state policy in page JSON. Keep session closure
+for programmatic scope replacement distinct from dismissing the current child.
+
+A subsequent Hero HQ browser proof used a **locally patched and packed rc.26
+settings-panel build**. It did not use the public rc.26 artifact as proof of the
+fix, publish a release or perform domain writes. Record the actual source/tree
+and artifact identity; a matching version label alone does not identify this fix.
+Repeat this matrix when adopting an artifact:
+
+| State and action | Required observation | Scope of that browser proof |
+| --- | --- | --- |
+| Dirty child: Voltar, X/Fechar, Escape, each separately | Exactly one confirmation; cancelling preserves the modified value; discarding returns to the same parent list. | Desktop and 390px mobile. |
+| Context after discard | Parent identity, list page and ordering remain correct; record focus separately. | Desktop retained the external parent, page 2 and ordering. |
+| Clean child: Voltar, X/Fechar, Escape | Return to the list without a discard prompt. | 390px mobile. |
+| Lookup open: Escape | Close only the lookup, preserving the form and draft. | Observed. |
+| Confirmation open: Escape | Cancel the confirmation, preserving the draft and child frame. | Observed. |
+| Explicit Form Cancel on a dirty draft | One host prompt; preserve the same cancellation/discard behavior. | Mobile regression check. |
+| Close root after child discard | No phantom prompt from a destroyed child guard. | Observed. |
+| Backdrop dismissal, when enabled | Apply the current-step guard and preserve the parent. | Not certified by this browser control. |
+
+The local proof validates the explicit nested-CRUD navigation path, not all of
+issue #613. Automatic session wiring and modal fallback remained separate pending
+paths. Keep the earlier binding recipe version-qualified until the adopted
+runtime proves automatic wiring; do not remove it solely because a navigation
+patch passed. Do not infer authorization, parent locking or a complete entity-360
+journey from these exit checks.
 
 ## Test operations with explicit evidence boundaries
 
