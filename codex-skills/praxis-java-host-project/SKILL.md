@@ -59,7 +59,7 @@ For `arquitetural`, `contrato-publico`, or `transversal`, map impact before patc
 9. Include `praxis-config-starter` only when the host must expose `/api/praxis/config/**` or AI authoring/config-store surfaces and can provide the required config-store datasource, migrations/tables, and host adapters. Do not include it for a metadata/filter-only service. Before adding it, confirm the target host meets the starter's release prerequisites such as compatible Spring Boot baseline, supported config database/store, Flyway/baseline strategy, AI/RAG secrets when enabled, stream/auth policy, and required host adapters.
 10. Keep starter semantics in the starters. Do not patch a new host to redefine `x-ui`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/domain`, actions, capabilities, export, config headers, ETag, or AI contracts.
 11. Create only the host-owned code needed for the domain: application bootstrap, dependency composition, security/origin policy, datasource properties, resources, tests, and documentation.
-12. Validate with the smallest reliable command. For a new host, start with `mvn -B test`; add HTTP/schema smoke tests when the task claims the runtime metadata endpoints work.
+12. Validate with the smallest reliable command after inspecting which tests connect to a database. Local execution is limited to unit tests without a database. Use an explicitly assigned isolated remote Neon branch for database-backed tests; add real HTTP/schema proof when the task claims the runtime metadata endpoints work.
 
 ## Reference Resource Audit
 
@@ -160,7 +160,7 @@ Minimum dependencies for a CRUD host usually include:
 - `praxis-config-starter` only when the host must provide `/api/praxis/config/**` and its required config-store/RAG/domain adapters
 - database driver
 - MapStruct and Lombok if following quickstart mapper/entity conventions
-- `spring-boot-starter-test` and H2 for isolated tests
+- `spring-boot-starter-test` for tests; use the selected PostgreSQL driver for assigned remote Neon database proof, not H2 or embedded/local database substitutes
 
 In Maven, declare explicit starter versions unless the host imports a managed Praxis BOM or parent:
 
@@ -201,12 +201,22 @@ For sensitive fields or fields that should guide AI/RAG behavior, use `@DomainGo
 
 Prefer focused validation:
 
-- New host scaffold or resource compile proof: `mvn -B test`.
+- New host scaffold or resource compile proof: select the host's unit tests that do not open database connections; use `mvn -B test` only after confirming its complete selection is database-free or all database cases use the reviewed Neon assignment.
 - Published dependency proof for external hosts: resolve starter artifacts with Maven metadata or `mvn dependency:get`, preferably using a temporary local Maven repository when the task must prove no monorepo dependency.
 - Metadata/public contract proof: add or run a focused `@SpringBootTest`/MockMvc or TestRestTemplate test for `/v3/api-docs`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/surfaces`, `/schemas/actions`, `/schemas/domain` when available, resource filter, options, actions, and capabilities.
-- Config starter proof: include H2 datasources for both app and config datasource, disable Flyway when appropriate, and test `/api/praxis/config/**` with the host's required headers/origin.
+- Config starter proof: assign isolated remote Neon API/Config resources explicitly, verify project/child/endpoint/PostgreSQL identity and client TLS before connecting, and prove the real owner/runtime/control-plane privileges and memberships required by the flow. Keep credentials private, bound fixture writes and cleanup to the assignment, preserve inherited data, and test `/api/praxis/config/**` with the host's required headers/origin. A privileged fixture is not proof of the ordinary runtime path; do not disable migrations merely to imitate an old local fixture.
 - Dependency/version change: confirm Maven resolution and run at least the host's test phase.
 - For a full resource proof, execute the endpoints the UI/runtime will rely on: `/filter`, `/filter/cursor`, `/locate`, `/options/filter`, `/options/by-ids`, option-source endpoints when registered, `/schemas/filtered`, `/schemas/catalog`, `/schemas/surfaces?resource=...`, `/schemas/actions?resource=...`, `/schemas/domain` when available, collection and item `/capabilities`, collection and item `/actions`, item `/surfaces`, configured `/stats/*`, and `/export` when collection export is supported.
+
+Do not copy historical H2, embedded PostgreSQL or Testcontainers fixtures from
+reference hosts or checklists into a new database proof. A reference host may
+still contain unmigrated local database tests in its broad Maven/release gate;
+record that gap and migrate or compose the complete required case matrix on
+assigned Neon resources before release. Removing those tests, accepting skips,
+or replacing them with a focal SDK-adoption or cold-start proof does not close
+the broad release gate. Unit and focal passes remain evidence only for their
+stated scope. Follow the owning repository's actual private and sanitized-public
+release gates, retaining source/dependency identity, raw reports and cleanup.
 
 When validation is partial, state exactly what ran and what remains unvalidated.
 
