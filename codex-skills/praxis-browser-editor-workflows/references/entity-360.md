@@ -114,7 +114,10 @@ to source/build, endpoint, branch and TLS. A proxy's internal `pg_stat_ssl` can 
 from client TLS: verify the actual client transport rather than claiming either
 encryption or its absence from one internal flag alone.
 
-Use clearly synthetic fixtures in the assigned environment. Through native forms,
+Use clearly synthetic fixtures in the assigned environment. Before creating data,
+plan and record its cleanup, rollback or assigned-branch disposal, including any
+retention needed for review; respect authorization and deletion confirmation.
+Through native forms,
 exercise required/range/format validation, create/read/update, partial update when
 published, clean/dirty cancel, server errors, refresh and version conflicts where
 applicable. For commands verify prerequisites, reason/confirmation, state change
