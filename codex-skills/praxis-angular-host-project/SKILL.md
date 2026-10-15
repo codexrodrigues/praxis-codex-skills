@@ -110,7 +110,7 @@ When updating skills, change the versioned source under `codex-skills/` when it 
    - Otherwise inspect npm metadata, peer dependencies, and the published quickstart package graph.
    - Treat conflicting docs/package manifests as drift until verified against npm/package metadata.
    - Prefer a fixed version or lockfile for reproducible starters. Use `latest` only after verifying it is the intended active release train for the Angular major and that the full peer closure resolves.
-   - Pin Angular packages to one exact patch across framework, Material/CDK, CLI/build, and compiler packages; do not mix a newer core patch with an older Material/CDK patch.
+   - Pin Angular framework packages, including compiler/compiler-cli, to one exact compatible patch within that cohort. Pin Material/CDK together and CLI/build together to their own exact compatible patches. Cross-cohort patch equality is not required: preserve the host's accepted release line and cohort checks, and validate the published package peer ranges and installed closure. Do not change another cohort solely to adopt a new Praxis UI train.
 4. Scaffold or adapt the host with canonical bootstrap:
    - `API_URL.default.baseUrl` is the single API base.
    - `resourcePath` values are relative when the API base already includes `/api`.
