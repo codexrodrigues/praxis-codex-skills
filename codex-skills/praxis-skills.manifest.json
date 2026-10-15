@@ -2161,8 +2161,8 @@
                                             "praxis-core-resource-runtime",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "103CC43A8843D894DA2A020B3B27D1226D35366C6BA1B0B140CEF55F9ACC3166",
-                       "treeSha256":  "09832E069653BF1E031ED407655F8C2DE4969236FEE2EE0E03C4DC4FA04FCBE0"
+                       "skillMdSha256":  "5CD02C567CCB4EF1C4C444D74C4D1B3EDCCED3B451C10AA4503FF0AD9B524632",
+                       "treeSha256":  "404C155FC2B17DFAE400FE0413C0D17D1D83DF05F50B2453CF3FBFC90B990490"
                    },
                    {
                        "name":  "praxis-tabs-runtime-authoring",
