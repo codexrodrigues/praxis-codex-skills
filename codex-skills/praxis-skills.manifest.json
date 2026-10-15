@@ -2402,8 +2402,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "FEC97B08AFCBA5FA615624F47C0270AB964F9D7D70F7D6CFB43972BCE9574E18",
-                       "treeSha256":  "7707CBE1D7DC75D5C5C5CBB38902C9DC36799AD51060449D3033B20D20965ED5"
+                       "skillMdSha256":  "344D4A7CF78931B8B90D44936AA5F99EEACD9997C1EAF38DA74A94A383E7C271",
+                       "treeSha256":  "2502A28A7159472C4FA0F1048929DB52149D9DAD7AEACCA4DF058D47DED39F2F"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
@@ -2473,8 +2473,8 @@
                                             "praxis-http-examples-llm-smoke",
                                             "praxis-java-autoconfiguration-starter-maintenance"
                                         ],
-                       "skillMdSha256":  "7C87DD14D3518F628400D20C9CA472C525DEFD6870073C5E254E302C4254326E",
-                       "treeSha256":  "3FE3DC489E5125E7E5E7D03F103568E22750416B51FE25053792D0143C72DC68"
+                       "skillMdSha256":  "A0231B5FA2FC3E2B27CA57E6E7D7B7C99F85A3780C55CA77CEF723909284E8AE",
+                       "treeSha256":  "2E333691EDB2CA577C29C6B8EF614C4160E0A63D49FA8E0E0AC884D87F22C5C5"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",

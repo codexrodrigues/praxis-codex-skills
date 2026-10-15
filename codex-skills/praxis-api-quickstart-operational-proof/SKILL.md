@@ -69,15 +69,20 @@ witness is not product-role evidence: provisioner/allocator/reader and runtime/c
 must satisfy their actual canonical profiles. Invoke capacity provisioning only
 as an external administrative preparation, never as startup automation.
 
-When proving an unpublished SDK change, inspect the existing
-`bulk-reference-consumer-proof.yml` cut `quickstart-startup-recovery-neon` and its
-same-commit reusable `bulk-startup-recovery-proof.yml`. Pin both source SHAs, build
-the SDK under its private candidate GAV in a job-private cache, and package the
-host before injecting the dedicated child-assignment secret. Never overwrite the
-shared basic-proof secret or reuse another worker's branch. Execute only the
-five-boot method on one assigned fixture; retain sanitized source/package/branch
-receipts and failed cuts separately. This lane proves candidate behavior, not
-published Maven coordinates or live Render adoption.
+For published-SDK cold proof, inspect the existing
+`bulk-reference-consumer-proof.yml` cut `quickstart-startup-recovery-neon`, its
+same-commit reusable `bulk-startup-recovery-proof.yml` and
+`docs/engineering/cold-reconcile-public-sdk-proof.md`. Require the reviewed host
+POM's public starter pins, a fresh Central-only cache, immutable release JAR/POM
+hashes and matching nested/class-origin bytes; do not rebuild/install a replacement
+SDK or override dependency versions. Package and attest before injecting the
+dedicated child-assignment secret. Never overwrite the shared basic-proof secret
+or reuse another worker's branch/lease. Execute only the five-boot method on the
+assigned prepared fixture; retain sanitized source/package/branch receipts and
+failed cuts separately. This proves public-artifact adoption only for that case,
+not live Render cold recovery, HTTPS or Hero. Historical private-GAV receipts
+remain bound to their original sources/bytes; an unpublished candidate needs its
+own reviewed custody and cannot count as public adoption.
 
 Inspect the existing governance reader pool before relaxing operational deadlines.
 `DataSourceConfig.governanceReaderConfig` retains one validated ordinary idle
