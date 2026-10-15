@@ -86,10 +86,47 @@ Before multiplying the pattern across tabs, prove these transitions:
 | Error -> form | Draft retained, field/domain error understandable; no false success or silent dismissal. |
 | Change parent | No stale child collection/form or cross-parent submission. |
 
-A removable `queryContext.filters` value is a consultation context, not an enforced
-relationship boundary. Manually choosing the parent again and reopening the child
-list can diagnose persistence, but do not count them as successful inheritance or
-return navigation. Defaults alone do not prove lock or authorization.
+For a related list, distinguish its structural parent scope from editable search
+criteria. Use the existing `queryContext.meta` contract with the dynamic parent
+filter; do not present the parent as a removable cross-filter chip or hide it with
+CSS. In this fragment, replace `<publishedParentField>` with the discovered child
+parent field and adapt the selection/id expression to the authored page:
+
+```json
+{
+  "queryContext": {
+    "filters": {
+      "<publishedParentField>": "${state.selection.value.selectedRows.0.id}"
+    },
+    "meta": {
+      "relatedResource": true,
+      "parentFilterField": "<publishedParentField>",
+      "structuralFields": ["<publishedParentField>"]
+    }
+  }
+}
+```
+
+For CRUD, place it in `metadata.queryContext`; for standalone Table, use its
+`queryContext` input. Audit `@praxisui/table`'s `praxis-table.ts` and
+`praxis-table.json-api.md`: `isStructuralQueryContextField` excludes the parent
+from `computeActiveCrossFilters`, while `reconcileEditableQueryContextFilters`
+retains it when reconciling editable criteria. Keep the parent identity visible
+in the surface header/context and allow real child search criteria alongside it.
+Prove filter, clear/readback and parent switching without losing the scope. The
+browser control proved scoped data without a parent chip and an additional search
+result. After transient API pool failures, desktop and mobile clear/readback
+recovered six parent-scoped rows through Retry; this does not certify an
+uninterrupted flow. Further checks retained desktop ascending sort and page 2
+after create/cancel, and mobile page 2/original values after dirty edit/back/discard
+with one confirmation.
+
+This protects query context in the UI, not server ACLs or the parent linkage of a
+submitted child. Backend authorization and relationship validation remain
+independent. An unmarked, removable `queryContext.filters` value does not supply
+that structural UX protection. Manually choosing the parent again and reopening
+the child list can diagnose persistence, but do not count them as successful
+inheritance or return navigation. Defaults alone do not prove lock or authorization.
 
 Read the existing surface adapter, lifecycle/outcome and consuming owner before
 inventing configuration. Opening success is not completed/save. A refresh path
