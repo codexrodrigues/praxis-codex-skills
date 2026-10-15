@@ -58,12 +58,16 @@ owned by their starters, not by this browser procedure.
    insufficient, edit the child's **visible free JSON field**, validate, use its
    Apply JSON command when present, then save. Preserve unrelated fields. The
    graph's Praxis JSON view may be an inspector/export, not an import editor.
+   For a page-owned reconstruction, set each child's configuration origin to the
+   page before editing content; JSON envelopes need not carry persistence policy.
 6. Configure shell and canvas through their controls. Natural content height,
    occupied rows and fixed pixels are different. `kind: none` removes the shell;
    a frameless preset can preserve its content inset. Do not enlarge cards to
    conceal unresolved bindings.
-7. Wire declared ports, shared state and transforms. Inspect the saved path, not
-   just the input display. Test native clear before adding a feedback link.
+7. Wire declared ports, shared state and transforms. Verify each connection's
+   saved path immediately before creating the next; input text alone is not proof.
+   If filling leaves the pipeline unchanged, use focused native typing and blur,
+   then inspect again. Test native clear before adding a feedback link.
 8. Preview desktop/mobile and exercise the journey. Save/reopen/reload proves
    persistence; screenshots alone do not. Preserve authorization and read-only
    scope, including denied Create/Edit.

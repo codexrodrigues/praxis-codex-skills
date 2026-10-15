@@ -24,6 +24,7 @@ or completed-page restore during the take. Pasting into an allowed visible JSON
 field is a normal editor operation.
 
 Record phase times for data, content, layout, interactions and verification.
+Label cumulative milestones versus phase durations so they are not added twice.
 Ordinary timestamps suffice; do not create new product telemetry. Network,
 rendering and capability waits count as elapsed time.
 
@@ -42,6 +43,14 @@ Adapt to the requested job. Do not omit proof to hit 300s. Report preparation
 separately and compare like-for-like runs. A Hero HQ rc.17 prepared run on
 2026-10-15 measured 396.75s with component JSON, real reads and native local
 configuration. One run is not a median, novice benchmark or achieved five minutes.
+
+A later take measured 629.446s; it spent rework on an accidental palette insertion,
+uncommitted connection paths and layout. Its persistence priority was corrected
+only post-take, so it is not a fully equivalent timed success. Avoid that rework
+with per-component origin selection, verified focus/panel readiness and immediate
+saved-path checks from the collection reference. Never remove these checks to
+meet the time target. Any post-take correction stays outside the timed result and
+must be disclosed; completion requires the agreed quality as well as elapsed time.
 
 ## Interruptions and closure
 
