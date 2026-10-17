@@ -19,6 +19,11 @@ guide.
 
 ## Operating Modes
 
+When composing existing widgets through Page Builder, read
+[composed-widget-design.md](references/composed-widget-design.md) with the selected
+component authoring skills. Its guidance applies to charts, collections, forms,
+filters and editorial blocks, without prescribing a dashboard composition.
+
 Choose the mode from the user's request before taking action:
 
 - Audit/review mode: inspect, gather evidence, capture screenshots when feasible, and report prioritized findings. Do not edit files unless the user explicitly asks for fixes.

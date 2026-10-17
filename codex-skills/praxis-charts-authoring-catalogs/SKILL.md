@@ -1,9 +1,13 @@
 ---
 name: praxis-charts-authoring-catalogs
-description: Use when Codex must implement or audit governed @praxisui/charts authoring catalogs: resource discovery, stats capabilities and field eligibility, x-ui.analytics projections, availableResources/availableFields/availableTargets, operation-dependent cascades, Page Builder target resolution, transient editor context, catalog validation, preview samples, i18n, or AI/editor grounding parity.
+description: "Use when Codex must implement or audit governed @praxisui/charts authoring catalogs: resource discovery, stats capabilities and field eligibility, x-ui.analytics projections, availableResources/availableFields/availableTargets, operation-dependent cascades, Page Builder target resolution, transient editor context, catalog validation, preview samples, i18n, or AI/editor grounding parity."
 ---
 
 # Praxis Charts Authoring Catalogs
+
+For selecting data and interactions through an installed widget editor, read
+[browser-resource-selection.md](references/browser-resource-selection.md).
+Use `praxis-charts-authoring-settings` for the document envelope and editor changes.
 
 Use this skill when a chart editor must answer which resources, stats operations, dimensions, metrics, aggregations, and interaction targets are genuinely authorable. Catalogs are governed projections of backend metadata and current composition. They are not arrays of convenient labels maintained by a dashboard page.
 

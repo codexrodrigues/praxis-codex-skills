@@ -1,9 +1,12 @@
 ---
 name: praxis-list-authoring-settings
-description: Use when creating, changing, or auditing `@praxisui/list` authoring surfaces: list config editor, widget config editor, JSON config editor, Settings Panel integration, `ListAuthoringDocument`, `SettingsValueProvider`, apply/save/reset/reopen, template/action/selection/skin editors, i18n chrome, and runtime/editor parity.
+description: "Use when creating, changing, or auditing `@praxisui/list` authoring surfaces: list config editor, widget config editor, JSON config editor, Settings Panel integration, `ListAuthoringDocument`, `SettingsValueProvider`, apply/save/reset/reopen, template/action/selection/skin editors, i18n chrome, and runtime/editor parity."
 ---
 
 # Praxis List Authoring Settings
+
+For configuring list, card and tile widgets in a Page Builder composition, read
+[browser-list-widget.md](references/browser-list-widget.md).
 
 Use this skill for visual authoring of `@praxisui/list`. A list config editor change is complete only when the canonical document, editor UI, Settings Panel payload, persistence, reopen, and runtime interpretation remain coherent.
 

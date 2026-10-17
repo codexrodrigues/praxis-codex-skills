@@ -1,13 +1,16 @@
 ---
 name: praxis-page-builder-authoring
-description: Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors: PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, page editor runtime parity, or authoring changes that may require Page Builder agentic validation gates.
+description: "Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors: PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, page editor runtime parity, or authoring changes that may require Page Builder agentic validation gates."
 ---
 
 # Praxis Page Builder Authoring
 
-For human-style operation of existing browser editors and timed demonstrations,
-use `praxis-browser-editor-workflows`. This skill owns implementation and audit
-of the editor code; it does not prescribe a browser demo script.
+For composing pages through installed editors, read
+[browser-page-authoring.md](references/browser-page-authoring.md). Use
+`praxis-browser-editor-workflows` for browser mechanics and rehearsal evidence.
+The component skills own child configuration; the implementation sections below
+apply when changing the editor code. This routing serves analytical views,
+registration screens and selection/detail workspaces equally.
 
 Use this skill for the visual/textual authoring editors that produce or update `WidgetPageDefinition`. The goal is not "any editor can mutate JSON"; the goal is a stable round-trip between canonical page semantics, visual editors, Settings Panel, persistence, and runtime rendering.
 
