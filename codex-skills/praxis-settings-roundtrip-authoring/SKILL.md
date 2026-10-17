@@ -58,6 +58,15 @@ For consumer round-trip changes, inspect the owning editor and at least one runt
 
 ## Required Round-Trip Checks
 
+For browser operation, establish the side effects of the complete host chain
+before changing a value. A child Apply can propagate a page change into parent
+autosave; insertion and connection edits can persist before a visible page Save.
+Temporary Table/List preference mode does not disable the parent page's storage.
+Record page versus component-preference ownership and acknowledged persistence
+separately. For inspection, open/read/cancel without changing values; absence of
+a Save click is not proof that no mutation occurred. Use Page Builder's
+browser-page-authoring reference for page/shell/content responsibilities.
+
 For each editable path, prove or inspect:
 
 1. Existing persisted/current config opens with the correct value.

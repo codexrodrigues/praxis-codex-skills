@@ -5,6 +5,10 @@ description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynami
 
 # Praxis Form Authoring Settings
 
+For authoring a schema form or filter-form inside Page Builder, read
+[browser-form-widget.md](references/browser-form-widget.md). The same editor
+capabilities support custom registration, read-only detail and query screens.
+
 This `praxis-form-*` skill family is the canonical Codex skill surface for `@praxisui/dynamic-form` and `projects/praxis-dynamic-form`; do not create parallel `praxis-dynamic-form-*` guidance unless this family cannot express a proven contract gap.
 
 Use this skill for Dynamic Form authoring and Settings Panel flows. A change is incomplete when runtime config works but the visual editor cannot show, edit, apply, save, reset, reopen, or round-trip the same semantics.

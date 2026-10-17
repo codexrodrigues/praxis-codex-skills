@@ -1,6 +1,6 @@
 ---
 name: praxis-browser-editor-workflows
-description: Author or reconstruct Praxis pages through visible browser editors and free JSON, including employee/entity 360 workspaces from a blank page, related forms and real-data rehearsals. Use component authoring skills instead when implementing editor code.
+description: Compose or reconstruct flexible Praxis pages through visible browser editors, including analytical views, customized registration forms, filterable collections and selection/detail workspaces. Route by registered component capabilities and use the owning authoring skills for each widget. Use for browser operation and optional timed rehearsals; implementing editor code belongs to the component skills.
 ---
 
 # Praxis Browser Editor Workflows
@@ -13,6 +13,11 @@ authorize domain-record mutations, source changes, publication or recording.
 Preparing a video does not itself request a recording.
 
 ## Inspect the baseline
+
+For flexible page composition, start with [capability-routing.md](references/capability-routing.md).
+It routes to the existing Page Builder, component, connection and design skills;
+screen names do not prescribe a fixed widget set. Load only the owners needed by
+the selected composition. The scenario references below are optional examples.
 
 Distinguish exploration, a prepared rehearsal and recording. For preparation and
 timing read [rehearsal.md](references/rehearsal.md); for collection screens also
@@ -45,6 +50,11 @@ owned by their starters, not by this browser procedure.
 
 ## Operate the editors
 
+Establish whether the task permits only visual controls or also visible advanced
+JSON. Keep code inspection and transport diagnosis outside a strict browser-only
+take. If the allowed controls cannot express the requested capability, report
+that boundary rather than silently switching lanes or importing a finished page.
+
 1. Identify route, persona and disposable page scope. Preserve a checkpoint before
    an authorized reset. Reset through product controls; distinguish widgets,
    connections, data sources and device/layout overrides.
@@ -61,7 +71,7 @@ owned by their starters, not by this browser procedure.
    control and focus before keyboard activation. Never force disabled actions
    or use fixed sleeps to conceal incomplete work.
 5. Configure data/behavior before polishing. Use visual controls first; when
-   insufficient, edit the child's **visible free JSON field**, validate, use its
+   permitted and needed, edit the child's **visible free JSON field**, validate, use its
    Apply JSON command when present, then save. Preserve unrelated fields. The
    graph's Praxis JSON view may be an inspector/export, not an import editor.
    For a page-owned reconstruction, set each child's configuration origin to the
@@ -78,7 +88,7 @@ owned by their starters, not by this browser procedure.
    persistence; screenshots alone do not. Preserve authorization and read-only
    scope, including denied Create/Edit.
 
-Explore metadata, other registered components, native composition and JSON before
+Explore metadata, other registered components, native composition and permitted JSON before
 declaring a limitation. JSON cannot register an absent Angular class, implement
 missing runtime behavior or override permission.
 Restore temporary experiments explicitly through the editor and save the known

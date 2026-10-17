@@ -5,6 +5,11 @@ description: Use when Codex must work on @praxisui/table authoring, Settings Pan
 
 # Praxis Table Authoring Settings
 
+For configuring an installed table inside Page Builder, read
+[browser-table-widget.md](references/browser-table-widget.md). Pair it with
+`praxis-table-filter-actions` for query ownership and `praxis-ui-product-design`
+for composition with other widget types.
+
 Use this skill for table authoring and Settings Panel flows. A table change is incomplete when runtime config works but the visual editor cannot show, edit, apply, save, reset, reopen, or round-trip the same semantics.
 
 ## Source Audit

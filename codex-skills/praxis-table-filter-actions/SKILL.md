@@ -5,6 +5,10 @@ description: Use when Codex must work on @praxisui/table filters, dynamic filter
 
 # Praxis Table Filter Actions
 
+For choosing and connecting installed filter widgets, query controls or clickable
+cards, read [browser-filter-composition.md](references/browser-filter-composition.md).
+This covers Table's native filter, standalone Filter and Filter Form alternatives.
+
 Use this skill for table filters and action surfaces. The table must materialize governed capabilities, `_links`, `/schemas/filtered`, resource actions, global action catalogs, and filter DTO metadata. Do not solve filter/action gaps by adding host-specific keyword routing, local command parsing, or private adapters.
 
 ## Source Audit

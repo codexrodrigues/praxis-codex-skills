@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-browser-editor-workflows/
-- Descricao atual: Author or reconstruct Praxis pages through visible browser editors and free JSON, including employee/entity 360 workspaces from a blank page, related forms and real-data rehearsals. Use component authoring skills instead when implementing editor code.
+- Descricao atual: Compose or reconstruct flexible Praxis pages through visible browser editors, including analytical views, customized registration forms, filterable collections and selection/detail workspaces. Route by registered component capabilities and use the owning authoring skills for each widget. Use for browser operation and optional timed rehearsals; implementing editor code belongs to the component skills.
 
 ## Classificacao inicial
 

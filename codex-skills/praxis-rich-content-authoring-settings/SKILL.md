@@ -5,6 +5,10 @@ description: Use when Codex must implement, audit, document, or author `@praxisu
 
 # Praxis Rich Content Authoring Settings
 
+For composing cards, indicators, timelines and navigation in a page, read
+[browser-content-composition.md](references/browser-content-composition.md).
+It applies across analytical, registration and detail screens.
+
 Use this skill for the canonical rich-content editor and Settings Panel surface. The editor must preserve the same document envelope consumed by the renderer.
 
 ## Source Audit

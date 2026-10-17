@@ -1,6 +1,6 @@
 ---
 name: praxis-core-component-registry-contracts
-description: Use when Codex must implement, audit, or consume @praxisui/core ComponentMetadataRegistry contracts: component docs metadata, editorial descriptors, component type aliases, input/output defaults, ports, insertion presets, i18n resolution, widget catalog discovery, Page Builder/Visual Builder registry projection, or AI component context grounding.
+description: "Use when Codex must implement, audit, or consume @praxisui/core ComponentMetadataRegistry contracts: component docs metadata, editorial descriptors, component type aliases, input/output defaults, ports, insertion presets, i18n resolution, widget catalog discovery, Page Builder/Visual Builder registry projection, or AI component context grounding."
 ---
 
 # Praxis Core Component Registry Contracts
@@ -10,6 +10,13 @@ Use this skill when work depends on `ComponentMetadataRegistry` or component met
 The registry is a shared Angular catalog for materialized components. It is not a local builder-only registry and should not duplicate semantic contracts owned by resource metadata, domain governance, or a vertical component package.
 
 ## Source Audit
+
+When selecting widgets for an authored page, inspect registered ID, insertion
+preset inputs, public ports and hosted `configEditor` as separate capabilities.
+A selectable palette item can lack a child editor; a standalone editor can be
+absent from its widget wrapper. Resolve each from the installed registry before
+claiming it can be composed. Do not guess aliases or port names from display copy.
+Use the Page Builder authoring/composition skills for operating the chosen widgets.
 
 Inspect before editing:
 

@@ -1,6 +1,6 @@
 ---
 name: praxis-page-builder-composition
-description: Use when Codex must inspect, change, or scaffold @praxisui/page-builder composition behavior: DynamicPageBuilderComponent, WidgetPageDefinition, praxis-dynamic-page runtime materialization, component palette, ComponentMetadataRegistry, widget keys, canvas layout, page.composition.links, connection editor graph, nestedPath component-port endpoints, page state, global-action endpoints, public API, or composition changes that feed Page Builder agentic validation gates.
+description: "Use when Codex must inspect, change, or scaffold @praxisui/page-builder composition behavior: DynamicPageBuilderComponent, WidgetPageDefinition, praxis-dynamic-page runtime materialization, component palette, ComponentMetadataRegistry, widget keys, canvas layout, page.composition.links, connection editor graph, nestedPath component-port endpoints, page state, global-action endpoints, public API, or composition changes that feed Page Builder agentic validation gates."
 ---
 
 # Praxis Page Builder Composition
@@ -52,6 +52,10 @@ Before editing Page Builder composition, inspect:
 - focused specs called out by the local `AGENTS.md`
 
 ## Composition Rules
+
+For connecting installed widgets through the browser, read
+[browser-connections.md](references/browser-connections.md). It covers query,
+selection, state and action flows without prescribing a screen archetype.
 
 For connection-diagram work, load [connection-editor-ux.md](references/connection-editor-ux.md).
 It maps the existing editorial, trace, caption, routing, viewport, and inspection
