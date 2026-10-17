@@ -18,7 +18,7 @@
                            "praxis-product-evolution"
                        ],
                        "skillMdSha256": "D6BD2EA72323BEBBEE93D151B2D2036C04757742DEEF37EABEDE369A61ABD11C",
-                       "treeSha256": "5522F382C07F9CCA15DCE0A5A794BE306B80E4F810E35E3A132D8F5D0FEE01AF"
+                       "treeSha256": "0255514701B6046B4E2A311013F9C0F7B9B8E781811A7E6B52F35F2BA75B9C71"
                    },
                    {
                        "name":  "praxis-product-evolution",
@@ -49,8 +49,8 @@
                                             "praxis-java-host-project",
                                             "praxis-dto-annotations"
                                         ],
-                       "skillMdSha256":  "324DADAA47B8939BA1F4BCF3EFAB5CC672AE586BE081D14CDE502027F6D0FE7B",
-                       "treeSha256":  "2337C9F1210A2BE66AF8F14C72A12D84D39717DC7FEAD5DA56468A80E81BDD8B"
+                       "skillMdSha256":  "B7485526F1D6202546BFE46AFE11E27C6C87E9F12C283725FFD09BADC131874E",
+                       "treeSha256":  "B7618E965916960AAADF26E3745ACB2D48BB87A958D54D4D0D9B73968EDC91CE"
                    },
                    {
                        "name":  "praxis-java-resource-authoring",
@@ -1866,7 +1866,7 @@
                                             "praxis-page-builder-composition"
                                         ],
                        "skillMdSha256":  "0FCC119BFD9E3143949AA3EB8DEEC2BA9A6206EDB4BDC62B4E9AC383F97ED7B3",
-                       "treeSha256":  "765C5CAD6E4F42A997D8FEA2DAD27313C10F47814ACF229F4D8C7494BE54F54F"
+                       "treeSha256":  "683E315BEBDC1FA86F90C8432A2B2595AE66E2F796E269F4441A55B2B5177078"
                    },
                    {
                        "name":  "praxis-page-builder-composition",
