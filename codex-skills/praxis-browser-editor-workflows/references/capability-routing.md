@@ -46,6 +46,10 @@ Use explicit statuses:
 - **Blocked/partial:** retain the diagnostic, owner and exact unfinished proof.
 
 Record the installed version, source revision and historical recipe separately.
+For rehearsal readiness, audit the chosen skills and their transitive manifest
+dependencies, not only the entrypoints synchronized most recently. Reconcile
+installation differences through `praxis-skill-authoring-governance`; installing
+guidance does not upgrade the host's component packages.
 A prior version's successful rehearsal is neither a current regression nor a
 current acceptance. Do not generalize a host HTTP failure into missing platform
 support or repair an unavailable selector by guessing URLs.

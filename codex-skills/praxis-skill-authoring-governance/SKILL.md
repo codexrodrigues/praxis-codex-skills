@@ -94,6 +94,13 @@ fix.
 4. Sync the smallest family only after the source and manifest audit are clean.
    Re-audit the installed target. Investigate an existing destination drift
    instead of overwriting it casually.
+   For a selective installation, traverse the selected entries' manifest
+   dependencies transitively and inspect every required installed tree against
+   the canonical manifest. Reconcile missing/outdated dependencies within the
+   authorized scope, preserving unexplained local differences. Report entrypoint
+   parity and dependency-closure parity separately; a clean selected entrypoint
+   does not prove its companion guidance is current. Remaining family drift
+   outside that closure is a separate inventory result.
 5. Close with the classification, owner, evidence inspected, manifest change,
    validation run, installation result, and any platform follow-up still open.
 

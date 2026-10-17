@@ -49,6 +49,13 @@ Keep page values/derived data, transient selection and child inputs distinct.
 Use a shared page source when it is an actual supported choice, not as a way to
 bypass a child's validator or obscure what its editor will show on reopen.
 
+When multiple sources share an object target, compare the editor preview overlay
+with Core's runtime overlay semantics. A preview that replaces the object can
+drop sibling fields and produce derived-rule errors even when the expressions
+work at runtime. Reproduce with the installed version before changing authored
+formulas or duplicating state paths to conceal a preview defect. A source fix
+does not establish adoption by an older installed editor.
+
 ## Evidence Required By The Requested Operation
 
 Inspection: editor opens with the correct current target, controls and diagnostics;
