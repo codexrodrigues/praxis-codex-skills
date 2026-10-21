@@ -127,6 +127,33 @@ Keep cancellation/runner-loss reconciliation explicit; a shutdown callback alone
 is not cleanup evidence. Assignment, lock and journal custody must reject unsafe
 file targets. Do not terminate unrelated sessions or run broad DROP OWNED/reset.
 
+## Run The Remote Preflight Before Integration
+
+Inspect the current triggers, job conditions and downstream effects in
+`publish-public-release.yml` and both `ci-java.yml` definitions before dispatch.
+For validation of a reviewed branch before integration, use the existing
+**Publish Public Release** workflow with `create_tag=false`. This path calls the
+same complete private/sanitized Maven verify, packaged-runtime and cleanup gate
+with read-only repository permissions; it does not commit a version, create a
+tag, publish a snapshot or deploy. Do not create a parallel workflow or shorten
+the matrix to work around local network latency.
+
+Freeze the exact dispatched branch commit and obtain an exclusive child lease
+whose `sourceSha` matches it. Omit both `authorizedReleaseRef` and
+`authorizedTreeSha` for this branch preflight; that pair authorizes a specific
+release tag/tree and is not a way to reuse a lease for a nearby source revision.
+`ci-java.yml` admits `release_gate=false` only for a branch `workflow_dispatch`
+with `create_tag=false`. Its default remains `release_gate=true`, which requires
+a release tag belonging to main. The later official tag gate remains mandatory;
+a preflight pass does not waive it.
+
+Reserve the child through cleanup and keep another local or remote campaign on
+a separate assigned child. Bind run/attempt, source/tree and dependency hashes
+to the separately attributable private and sanitized receipts. Keep preflight,
+tag-gate, publication and deployed-HTTP evidence distinct, including failed or
+incomplete attempts. Dispatch or a running hosted job is not success, cleanup
+or a completion-time guarantee; inspect the final required jobs and receipts.
+
 ## Execute And Account For Both Trees
 
 Use the official full command in the private checkout, then in the generated
