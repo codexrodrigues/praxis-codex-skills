@@ -227,8 +227,8 @@
                                             "praxis-api-quickstart-cockpit-http-validation",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "7F76C182F7A0461922FE151EE043005F3AD679AD335BFE793F808250FEB4F444",
-                       "treeSha256":  "3AC531ED1E1CD1CB5D6830EEC25C4C3C55289DC658E3F6218D5795E09881DC0E"
+                       "skillMdSha256":  "B1099570DE9299178A8C2B7A4EFB1D78A564F5FE57D2B193B1D3E79CD19DFFED",
+                       "treeSha256":  "B66E9CFE32FA18CF6211C647F4CB4B88BDC81E6A4C1754E7154CE2EA2D9AF344"
                    },
                    {
                        "name":  "praxis-java-http-corpus-publication",
@@ -2487,8 +2487,8 @@
                                             "praxis-http-examples-llm-smoke",
                                             "praxis-java-autoconfiguration-starter-maintenance"
                                         ],
-                       "skillMdSha256":  "F254E9F1BD2D1478A7ED932C9560D3C44F5A9745E20F3728AA683D22D8AF4055",
-                       "treeSha256":  "4DD13E0313225BF525E95194A18F709D725EBD61298B19B118937C4BF51CF600"
+                       "skillMdSha256":  "46C9987CF87022C3FE16EBFDC3AC724A626C371333E9177B76D05B65A826B992",
+                       "treeSha256":  "0572DD3AA905B6EA1464385ACF26AD1EE6BC6D9F308C4DF576B0C412A8516216"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
@@ -2522,8 +2522,8 @@
                                             "praxis-config-domain-decisions",
                                             "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "C24EC415DC3277165AED26C00D3817706DB147F5900940A97983D90624458D8C",
-                       "treeSha256":  "84B5F8C6BDDBCCBC0C165719A3AE86B14A30D9D90F41022EAD118F5BF66CD9A6"
+                       "skillMdSha256":  "F0541D9250AFD167BFBCCB0F7E7EDC6D4BF7225DBB3B98148CC03E1C292F3B94",
+                       "treeSha256":  "95EE7301C26F0564B97434578AE35C70F3621BB78412487AC4BAB9025A25AF4E"
                    },
                    {
                        "name":  "praxis-api-quickstart-cockpit-http-validation",
