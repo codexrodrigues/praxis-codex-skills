@@ -218,6 +218,12 @@ When a pilot consumes an active runtime snapshot, keep it as a downstream data-p
 5. Prove rollback v1 → v2 → v1: v1's content hash repeats, but the opaque head ETag and activation revision must advance so ABA is rejected.
 6. Make polling/startup loading operationally opt-in where the host profile does not provide the snapshot tables. Publish health as unavailable/out-of-service until an effective plan exists, without leaking snapshot payloads, facts or approval evidence.
 
+Candidate prewarm must cover every affected RuleSet family, using the same host-owned registry and admission verifier as active loading. A candidate job reads immutable published content by key/hash, reports real probes and never reads it through an active-head fallback, mutates the head, or installs candidate content as last-known-good. Keep preload execution isolated from Spring startup side effects, schedulers and business mutation; use the official host job/script and authenticated Config transport.
+
+For a runtime contract upgrade, retain legitimate old publications and approvals unchanged, author and approve new compatible compositions, publish candidates without selection, prewarm each family, then activate through rollout quorum and strong conditional selection. Prove partial family activation and recovery under the documented maintenance boundary, same-line rollback, and rejection of the incompatible historical version. A synthetic JSON version rewrite or fabricated probe is not migration evidence. Resolve exact officially published engine, Config, Contracts and Metadata coordinates before final host acceptance; candidate packages and isolated source tests remain preliminary.
+
+After each candidate A/B activation and same-line rollback, exercise an existing non-persisting consumer operation and verify the official host observation against the selected scope, snapshot key, content hash and activation identity. A positive candidate probe or Config READY state does not prove active host adoption or establish LKG.
+
 The loader changes which governed plan is evaluated; it does not authorize business effects. Keep business endpoints, persistence, idempotency, shadow, effect execution and authority behind their own pilot gates.
 
 For Reactive Determination pilots, resolve the complete active snapshot as one
