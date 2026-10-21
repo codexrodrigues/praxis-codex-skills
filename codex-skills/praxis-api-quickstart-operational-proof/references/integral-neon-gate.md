@@ -73,6 +73,37 @@ DDL disabled; only explicit setup/export/Flyway uses owner authority. Preserve
 restrictive grants, negative ACL tests and migration placeholders. Functional
 fixture DML grants cannot substitute for an authorization test.
 
+## Persist Real Sessions In Authenticated Host Fixtures
+
+Inspect `EnterpriseSessionConfiguration`, `EnterpriseSessionLifecycle`,
+`EnterpriseSessionStore` and the `ExtraordinaryBenefitRequestPilotIntegrationTest`
+reference before adapting authenticated `@SpringBootTest` fixtures. Issue through
+the real `EnterpriseSessionLifecycle.issue` with the intended subject, role and
+authorities and a request, such as `MockHttpServletRequest`. Its store must use
+the operational `apiJdbcTemplate` and `apiTransactionManager` bound to the same
+API datasource; the lifecycle returns the token only after its issuance commits.
+`JwtTokenService.generate` alone creates a credential without persisted issuance.
+A session-guarded request denied with 403 in that state is correct; it does not
+prove the intended business authorization negative.
+
+After each fixture schema reset and before issuance, prepare
+`public.enterprise_session_context` as owner in the assigned child, using the
+reviewed `AssignedNeonStores.prepareApiSessions()` path. Grant only schema USAGE
+and SELECT/INSERT/UPDATE on that table to the ordinary API runtime. Restrict
+other fixture grants to their own tables/sequences: broad CRUD over all tables
+can accidentally add DELETE on sessions during a later seed. Keep owner setup
+separate from the real runtime issuance transaction and preserve fixture cleanup.
+
+For revocation negatives, prove the session is active before revoking it. For
+claims or Unicode authorization negatives whose invariant requires an active
+session, prove that prerequisite before the expected 403; a missing session
+cannot stand in for the rejected claim or identity. Keep lifecycle mocks confined
+to explicitly identified slices and report their limits; they do not certify
+IAM or persisted-session HTTP behavior on Neon. Use the official Maven/Surefire
+route for focal tests too, preserving the committed system properties, including
+the resource-version ETag secret. A direct JUnit runner omitting those settings
+is diagnostic evidence, not an equivalent host gate.
+
 ## Lifecycle And Cleanup Are Part Of Acceptance
 
 Use the reached `AssignedNeonStores`/`AssignedNeonDatabase` path admitted by the
