@@ -94,6 +94,24 @@ single divider cannot consume the card's multi-side color shorthand. Invalid val
 must block Save. Test corrected validity, Apply, clearing overrides and fresh remote
 reopen without altering child inputs or persisting resolved inherited context.
 
+### Widget selection and focus highlight
+
+Use Core's optional `shell.appearance.card.interactionHighlight` enum (`standard` or
+`gradient`) for the authoring selection/focus and resize-grip appearance. Standard
+uses a single theme color; gradient opts into theme-derived gradient grips and highlight. An absent override inherits
+from the resolved shell preset, then falls back to `standard`; clearing the editor
+control must remove the override rather than persist an inherited value. Explicit
+`standard` overrides a gradient preset. Keep gradient opt-in in examples and preserve
+unrelated appearance sections and child inputs through Apply, Reset and reopen.
+
+The highlight is editing chrome only: published/view-only pages must not acquire it,
+including on pointer or keyboard focus. Derive gradient colors from the active theme;
+preserve visible keyboard focus and a usable conventional fallback in forced-colors
+mode. Check both choices, inheritance, nested widgets and canvas wrappers with focused
+Core runtime and WidgetShellEditor specs plus a focused browser proof of visible UI.
+Extend the existing `widget.shell.configure` operation schema with the concrete enum;
+do not introduce a parallel AI operation or permit arbitrary CSS as this value.
+
 ## Page Spacing And Canvas Geometry
 
 Shared lateral breathing room belongs to `WidgetPageDefinition.layout.paddingInline`, not to
