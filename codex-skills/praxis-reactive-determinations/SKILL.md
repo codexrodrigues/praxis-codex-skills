@@ -63,6 +63,31 @@ Inspect the affected owner and direct consumers:
   Stepper pass the correct operation/form context; they do not duplicate the
   determination engine.
 
+## Chained governed calculations
+
+For an engine contract that supports direct dependency outputs (1.5 G1), compose
+versioned host Java calculations through the approved RuleSet DAG and evaluate
+once per request. The engine runtime skill defines the restricted output channel;
+metadata input/output bindings are not an alternative dataflow engine. Validate
+the published engine coordinate before adoption: beta.15/contract 1.4 does not
+transport intermediate outputs. G1 source tests alone do not prove an operational
+Reactive Determination or an adopted dependency.
+
+Keep derived facts out of submitted authority. Preview, command and sandbox
+must use the same executable registry and evaluation service. A downstream
+calculation consumes and validates its direct predecessor's typed output; never
+repair missing output with a second evaluation, local formula or client value.
+The Java output channel does not expose prior outputs to JSON Logic or replace
+form cancellation, provenance, precondition capture and stale-result handling.
+Use existing execution status/pending/unsatisfied evidence for UX; completion of
+pending alone is not satisfaction. Preserve the draft on technical failure or
+precondition conflict, distinguish prior displayed values from current valid
+results, and never automatically refresh concurrency tokens and resubmit.
+Do not expose raw engine results or mistake concurrent unit tests for tenant
+authorization proof. Test the actual package and authenticated HTTP/UI handoff.
+Prove the chain without prefilled derived values before claiming the example is
+ready, then prove the actual published packages and HTTP/UI handoff separately.
+
 ## Implementation Workflow
 
 1. Inventory what the platform already publishes: active decision/snapshot,
