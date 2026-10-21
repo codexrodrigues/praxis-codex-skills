@@ -255,6 +255,42 @@ Before adding domain-rule fields, knowledge patch operations, materialization ki
 
 Only real gaps justify new decision contracts. Identify which UX/behavior cannot be implemented, canonical source, impacted consumers, derived artifacts, and minimum proof.
 
+## Parameter template and values handoff
+
+For parameter authoring inspect `DomainRuleParameters`, parameter catalog DTOs,
+`DomainRuleService`, `DomainRuleChangeWorkspaceService`, snapshot composition,
+Engine `RuleParameterResolver`, Core client and the Quickstart composer/sandbox.
+`definition.parameterTemplate` stores the Engine-owned schema; only
+`parameters.parameterValues` stores editable scalar declarations. Other parameters
+may be structural metadata and must not become an inferred edit surface.
+
+Project `/definitions/{id}/parameters` under RULE_DEFINITION_READER and resolved
+scope. Expose type/unit/constraints/default/declared/effective/origin; omit absent
+values while preserving explicit JSON null. Let Engine validate and derive condition
+on creation/save; a caller-supplied condition must agree. Workspace changes preserve
+structural metadata, strong If-Match and revision/evidence invalidation.
+
+Bind each snapshot PARAMETERIZE binding to exactly one approved source by
+bindingKey/ruleKey, canonical template and values. A digest of a caller-selected
+schema is not sufficient without this source linkage. Preserve maker-checker and
+publication/activation/rollback gates. Publication stores immutable content without
+selecting a head; use the existing sanitized publication receipt and explicit
+operator activation/rollout contract, including conditional bootstrap when no head
+exists. Candidate versions must consider stored publications, not only the active
+head. Parameter templates materialize through governed
+RuleSet snapshots; generic create/publication/application adapters reject them because
+they do not preserve the complete Engine outcome/required-facts contract. Retirement
+of older artifacts remains available. The host sandbox and published composer must
+transport values, not just condition. Preserve operational facts; parameters may
+scale a fact but must not replace its canonical provider.
+
+Run `DomainRuleParametersTest`, workspace/controller/service/snapshot tests, then
+Core HTTP specs and an actual host A/B proof. Database/HTTP lifecycle proof uses an
+exclusively allocated remote Neon branch, TLS and separate migration/control-plane/
+runtime identities; synthetic sandbox facts are not operational-fact-provider proof.
+Update public OpenAPI, HTTP corpus, Core models and Studio together. Source-candidate
+Maven proof remains distinct from published-coordinate adoption.
+
 ## Validation
 
 Use focused local gates:
