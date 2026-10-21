@@ -50,6 +50,34 @@ widget instance, context or authoring eligibility changes. Negotiate panel repla
 destroying the previous owner; stale close/context callbacks must not replace a newer editor or keep
 Apply/Save subscriptions alive after their target disappears.
 
+## AI Target Context And Operation Ownership
+
+Before validating a targeted AI edit, inspect `DynamicPageBuilderComponent`'s
+`resolveSelectedWidgetKey`, `toggleAgenticAuthoring` and
+`resolveSelectedComponentAuthoringContext`, plus the emitted stream-start request.
+Visual canvas selection is not proof of the pinned AI target. Opening the global
+assistant without resuming a minimized instance clears pinned widget context;
+resuming a minimized assistant can preserve it. Exercise the intended UI journey and verify the actual
+`selectedWidgetKey` resolves inside the request's `currentPage.widgets`. A widget
+key mentioned only in the prompt does not establish structured target context.
+
+Separate the selected target from the operation owner. Shell operations such as
+`widget.shell.configure` belong to the Page Builder manifest and operate on the
+complete page's `widgets[].shell`. A child's manifest owns its declared inputs;
+its contextual assistant and `definition.inputs` are not authority to change the
+parent shell. Inspect Config Starter's `AgenticAuthoringPreviewService`
+(`previewComponentEditPlan`, direct/component context validation and materialization)
+and the owning effect compiler before claiming the page-owned operation is reachable.
+A registered schema, resolver or handler unit test does not establish a working
+SSE → preview → apply → host persistence → reopen journey.
+
+If that owner/target dispatch is missing, record the platform gap and fix the
+canonical dispatch rather than rerouting through a child or weakening the proof.
+Do not fabricate context hints, select targets through prompt keywords, inject a
+plan into the test, or invent SSE ids/replay cursors to make a live gate pass.
+Keep local editor round-trip, real AI operation execution and remote persistence
+as separate evidence; prove unchanged child inputs and unrelated shell state.
+
 ## Required Source Inventory
 
 Before editing Page Builder authoring, inspect:
