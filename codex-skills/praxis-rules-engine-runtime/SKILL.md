@@ -93,6 +93,37 @@ Angular cancellation/application belong to the determination handoff described
 by `praxis-reactive-determinations`; do not add form-specific execution to the
 engine.
 
+## Governed scalar parameterization (engine contract 1.6)
+
+Inspect `RuleParameterTemplate`, `RuleParameterDefinition`, `RuleParameterization`,
+`RuleParameterResolver`, planner and snapshot compiler together. A PARAMETERIZABLE
+slot must publish a product template; it is not permission for arbitrary JSON Logic.
+A CUSTOMER/PARAMETERIZE source binding carries only exact template identity and
+values, with executor/negative outcome/required facts absent. The compiled plan
+materializes these from the template; serialized snapshots retain source bindings
+so recompilation repeats admission, rather than trusting a derived executor.
+
+- Declare STRING/NUMBER/INTEGER/BOOLEAN restrictions, required/nullable/readOnly,
+  unit, inclusive bounds, enum, explicit default and exact literal JSON Pointers.
+  Java null means no default; native JSON null is explicit. Preserve absent,
+  null, false and zero. Defaults must equal original template literals.
+- Every parameter binds existing scalar operands; reject var/missing addressing,
+  overlapping/duplicate sites, unknown keys, structural edits and readonly changes.
+  Optional/readOnly entries need an explicit default. Java parameterization and
+  host-extension operators are unsupported; built-in dialect validation fails closed.
+- Reuse the public pure resolver for Config admission; never invent a host evaluator,
+  facts namespace overlay, JSON patch language or second parameter schema.
+- Bound template, declared/effective values and expression expansion. Include schema,
+  defaults, unit, declared values and compiled expression in canonical identity.
+  Compare canonical numeric JSON, not Java record/BigDecimal scale equality.
+- Update direct constructor consumers in the same beta cut; no compatibility overload
+  that permits old PARAMETERIZE expressions. Prove equal-facts A/B results, invalid
+  types/limits/defaults/null/readonly, source-snapshot roundtrip and digest changes.
+
+This contract guidance does not assert release availability. For source development,
+an isolated Maven repository may consume the exact candidate JAR with recorded SHA;
+keep that proof distinct from the published-coordinate release gate above.
+
 ## Direct dependency outputs (engine contract 1.5)
 
 This guidance accompanies the G1 implementation of contract 1.5. It is not

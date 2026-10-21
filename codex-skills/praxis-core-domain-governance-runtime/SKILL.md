@@ -58,6 +58,30 @@ Classify every requested addition:
 
 Only real gaps justify new contracts. For them, identify source owner, affected consumers, derived artifacts, docs, and a minimal HTTP/client validation.
 
+## Governed parameter catalogs
+
+Consume `DomainRuleService.getDefinitionParameters` and its typed catalog from
+Config; do not infer editable fields from arbitrary `parameters` JSON. Template
+identity/version and scalar constraints come from Engine through Config. Preserve
+absent versus null/default/declared values using property presence and origin,
+not truthiness. Keep fact discovery separate: literal parameterization adds no
+`var` namespace and does not replace operational facts.
+
+A parameterized editor changes only `parameters.parameterValues`, retains other
+metadata, and submits null condition for backend derivation. Disable structural
+condition editing; catalog failure must not unlock an arbitrary expression editor.
+A stored publication is not an active head. Materialize bootstrap from verified
+head absence and server capabilities; preserve the existing conditional activation
+and rollout contracts, and never equate a loading/error state with head absence.
+Include values in dirty/reopen/save and stale If-Match handling; surface backend
+validation. Check typed inputs, bounds/enum, nullable/readOnly, keyboard use and
+narrow layout. Do not add a frontend evaluator to predict canonical condition.
+
+For source integration, pack a coherent peer-compatible package cohort into an
+isolated consumer. Never use force/legacy-peer-deps, source symlinks or claim that
+candidate tarballs prove published availability. Compare current source versions
+with the consumer pins before invoking a build.
+
 ## Validation
 
 Use focused proof:
@@ -75,7 +99,8 @@ npm run test:core -- --include=projects/praxis-core/src/lib/models/domain-knowle
 ```
 
 - context-pack/model specs when AI grounding, registry projections, catalog schema, or public model shapes change.
-- `npm run build:praxis-core` when exports, public models, services, or context packs change; add a direct consumer smoke when UX, authoring, or runtime materialization changes.
+- `npx ng build praxis-core --configuration production` when exports, public models, services, or context packs change; add a direct consumer smoke when UX, authoring, or runtime materialization changes.
+- Inspect build script behavior before assuming a script named build:praxis-core is focal; the wrapper builds the transitive dependency closure, including TypeScript import edges; --only selects roots, not a single output.
 - Angular HTTP mocks prove client URL/header/body mapping only. When endpoint semantics, status lifecycle, publication/materialization behavior, evidence lifecycle, diagnostics, catalog retrieval policy, or backend grounding changes, also run the focused backend gates from `praxis-config-domain-decisions` or `praxis-config-api-metadata-grounding`.
 
 For first-step issue resolution, audit that the flow preserves service key, resource key, release key/context key, headers, semantic decision id, status/timeline evidence, and failure diagnostics.
