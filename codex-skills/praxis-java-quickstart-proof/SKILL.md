@@ -38,6 +38,23 @@ downstream proof here.
 Read [proof-slice-matrix.md](references/proof-slice-matrix.md) when selecting
 the smallest representative resource and required evidence.
 
+## Focal Proof And The Integral Neon Gate
+
+A focused pilot proves its selected behavior. It does not accept the host's
+integral release gate, even when its Maven goal is `verify`. For starter adoption,
+bootstrap or packaging changes that require the wider gate, follow the existing
+[`praxis-api-quickstart-operational-proof` procedure](../praxis-api-quickstart-operational-proof/references/integral-neon-gate.md).
+Verify the final private source and generated sanitized tree in sequence against
+the same public coordinates, with separately attributable reports and cleanup.
+
+Retain every required test and its assertions. Inventory optional cases by exact
+class/method, existing opt-in condition and reason; report skipped/aborted cases
+by name rather than accepting a total alone. Optional lanes outside the selected
+gate remain explicitly unproved. Missing assignment, new exclusions, disabled
+tests or an empty selection cannot produce a passing database proof. Keep raw
+logs, credentials and failure reports private until their export is reviewed;
+publish only the closed, sanitized evidence projection.
+
 ## Published SDK Adoption On Neon
 
 Inspect the Quickstart POM, `src/test/java/com/example/praxis/apiquickstart/config/MetadataAdoptionNeonFixture.java`,

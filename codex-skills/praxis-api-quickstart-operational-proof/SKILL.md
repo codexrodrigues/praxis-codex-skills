@@ -290,6 +290,20 @@ new database acceptance; if that is impossible, leave the specific gate pending.
 Do not run an unchanged local recipe as replacement evidence or assume Neon exposes
 SUPERUSER, host-based authentication files or cluster-internal catalogues.
 
+### Integral Assigned-Neon Release Gate
+
+Use the [integral gate procedure](references/integral-neon-gate.md) when accepting
+the complete private and sanitized Quickstart trees. Inspect the current
+`config/neon` test support, assignment materializer, isolation policy and both CI
+workflows before running. Database allocation and ordinary runtime wiring are
+test infrastructure; they do not replace SDK migrations or alter product ACLs.
+
+Keep focal results, helper validation, integral private/sanitized verification,
+public snapshot publication and deployed HTTP acceptance separate. A declared
+workflow or passing focal sample is not evidence that the integral gate ran.
+Do not promote this procedure as accepted until its exact helper, source,
+dependencies and two-tree remote results have passed independent review.
+
 ## Integration Topology And Owners
 
 ### Durable OpenAPI Across Cold Nodes
@@ -965,7 +979,13 @@ the affected HTTP flow. Correct compatibility in the owning baseline; do not add
 a host Hibernate override, increase budgets or weaken denial for convenience.
 Keep candidate proof separate from published-artifact adoption.
 
-Keep API and config datasource properties, Flyway policy, AI provider properties, RAG/vector-store switches, and test isolation explicit. Test profiles may disable external services or use H2, but must preserve the host/starter wiring being proven. Never use an in-memory shortcut as proof that deployed config persistence, origin policy, or streaming works.
+Keep API and Config datasource properties, Flyway policy, AI provider properties,
+RAG/vector-store switches and test isolation explicit. Test profiles may disable
+unrelated external services while preserving the host/starter wiring being
+proved. Database-backed tests must use their assigned Neon destination; H2 or
+embedded/local PostgreSQL is not an admitted fallback. A pure wiring test may
+use an explicitly nonconnectable destination only when the whole test proves no
+connection is made; it provides no database evidence.
 
 ## Host Security Is Integration, Not A Starter Override
 
