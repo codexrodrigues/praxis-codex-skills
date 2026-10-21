@@ -47,6 +47,14 @@ Use `praxis-config-domain-decisions` for the backend owner of domain rules, doma
 - Keep headers, ETag/origin behavior, service key, release key, resource key, context key, and query parameters aligned with config-starter contracts.
 - Timeline rich-content helpers are visual projections over backend-provided safe events. Filter to `visibility=safe`, preserve safe summaries/metadata, and do not synthesize missing domain-rule or domain-knowledge events from prompts, DTO timestamps, frontend handoff state, smoke output, raw evidence, patch payloads, or local history. An empty timeline means no safe persisted events were published for that projection.
 
+## Snapshot publication and activation projections
+
+Inspect the Config snapshot/rollout controllers and `DomainRuleService` together. Publication returns immutable stored content, not an activation response. Do not set an active badge or replace head state from publication success or its content ETag. Materialize the existing governance state and server action: explain `RUNTIME_INCOMPATIBLE` as retained history requiring governed republication, and disable operations for every non-READY version.
+
+Head 404 is verified absence only for that read; it is not permission to skip policy or probes. Preserve explicit absence preconditions (`If-None-Match: *`) for bootstrap rollout/activation, distinct from a strong existing-head `If-Match`. A READY version may offer `CREATE_ROLLOUT` before a head exists. Render policy/quorum/probe progress in that state instead of hiding the entire lifecycle inside a head-present block. Revalidate the currently observed state against the exact absence/head precondition captured before confirmation; surface an alert if it changed, without silently replacing the token or resubmitting. Keep the actual rollout ID and paired nullable expected snapshot/head returned by Config; REQUIRED policy and positive probe quorum remain server-owned.
+
+Test both bootstrap and existing-head flows, nullable expected-identity pairs, publication without selection, runtime incompatibility and stale confirmation. Add a direct consumer build and focal desktop/narrow keyboard/accessibility E2E; mocks prove UX and transport only, while real Config/host HTTP proves governed activation.
+
 ## Aderence Inventory
 
 Classify every requested addition:

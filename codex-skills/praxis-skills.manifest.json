@@ -212,8 +212,8 @@
                                             "praxis-metadata-schema-contracts",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "424E7B7986C6FC79AC2B23DF459CAF9595FC27EB90AED558CE6BD26AB3EC1AC2",
-                       "treeSha256":  "0598EDF8FA5171AF2AC24D6C56251F534506AC8606AB9D7AEBE3B59ACCE4B28E"
+                       "skillMdSha256":  "AFEB29E03BBAB8DA7244258D338CC176F50CEF987D2C414824D5AFBF91C4A1F5",
+                       "treeSha256":  "5ACB67EE029BAD44A4B92BF81BD9FF14B3FEFFE958A1F630D8B81294104A6F60"
                    },
                    {
                        "name":  "praxis-java-quickstart-proof",
@@ -2405,8 +2405,8 @@
                        "dependencies":  [
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "5DB94176506C053F26C4B918BCFE0EE4EA67F20F1175E08260BF263CD80EE29D",
-                       "treeSha256":  "82461EA266F83AF0B6B0A655ED666A93719FFB65F463356232E8D284DA381675"
+                       "skillMdSha256":  "E52C838F577E0761A588D68974F3287984497D5A9CFEDC2691807A8DA3C483B6",
+                       "treeSha256":  "6868CA1FDBA65CF8D6A09422264228582477184E34D33668D7BCFECA89DC35AC"
                    },
                    {
                        "name":  "praxis-config-runtime-persistence",
@@ -2461,8 +2461,8 @@
                        "dependencies":  [
                                             "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "4114AB8615E3C0D396C42E1FA6BC2F4D2A300941C5E50A05A183BC4051BE3CAF",
-                       "treeSha256":  "075452CC7CFF9103D195E40F1CEF8699BBC478479850213289CAECFC8BEC4E97"
+                       "skillMdSha256":  "E3C1D061E93413EC7EBE13AAD5A3CF513918D5384C20F83DF935B2ED36D010DD",
+                       "treeSha256":  "B972BABC0D6312DF54AF184FB4D8117C1C7098D711007E63D0921B085B6B9D22"
                    },
                    {
                        "name":  "praxis-api-quickstart-operational-proof",
@@ -2522,8 +2522,8 @@
                                             "praxis-config-domain-decisions",
                                             "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "0745A5C4015685E54A1CE01BE4306F56C294360BB619B8887E81AC8C80EA270C",
-                       "treeSha256":  "8F686228EF9A1EAF8AF079DB2A9BEF4730A3CEB18F9A17735281D8631D815197"
+                       "skillMdSha256":  "C24EC415DC3277165AED26C00D3817706DB147F5900940A97983D90624458D8C",
+                       "treeSha256":  "84B5F8C6BDDBCCBC0C165719A3AE86B14A30D9D90F41022EAD118F5BF66CD9A6"
                    },
                    {
                        "name":  "praxis-api-quickstart-cockpit-http-validation",
@@ -2687,8 +2687,8 @@
                                             "praxis-api-quickstart-domain-pilots",
                                             "praxis-http-examples-contract-surfaces"
                                         ],
-                       "skillMdSha256":  "0CA32D977CD0B282DA26EB90A472EA2B58292798696FC1201FC805E4B6F6180A",
-                       "treeSha256":  "11A64F80984ED619F39A1A0F88DEB7A59FB0D01DABF82A0A34DE48BFFD74E71B"
+                       "skillMdSha256":  "2441EE65F63E4D4D106AE99B91021C32B6C7C80FBFCBCC15A707BB1B76D7D02B",
+                       "treeSha256":  "D8D587530E6AC1889E1A1AF01C6D1C871A609B4C8B4B9BEE778ED744DD61F120"
                    },
                    {
                        "name":  "praxis-config-ai-provider-operations",

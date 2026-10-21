@@ -88,6 +88,14 @@ authorization proof. Test the actual package and authenticated HTTP/UI handoff.
 Prove the chain without prefilled derived values before claiming the example is
 ready, then prove the actual published packages and HTTP/UI handoff separately.
 
+## Governed runtime upgrades
+
+Before adopting a new engine contract, inventory every active-snapshot consumer, including secondary pilots, caches, preload jobs, fixtures and public receipts. Config owns historical verification versus executable admission: an intact incompatible snapshot remains history, while an invalid one must not be relabeled merely incompatible. Never rewrite hashes, approvals or engine tuples in persisted snapshots.
+
+Publish a newly approved compatible composition without activating it, prewarm with the real host registry, report canonical probes and perform explicit conditional activation. Absence of a head requires the governed bootstrap rollout; it is not a shortcut around readiness. Candidate preload cannot establish last-known-good. Run the 1.4→1.5 cutover under maintenance without mixed-version traffic. After the first 1.5 selection, recover forward to the compatible line; do not resume the old runtime over migrated heads. Test all affected families, partial cutover/recovery, rollback within the compatible line and rejection of old-line activation. Preserve draft/result diagnostics in UI and distinguish source tests, candidate package tests, published dependency adoption and real authenticated HTTP/UI proof.
+
+Close the upgrade proof only after a real non-persisting consumer operation and official host observation confirm active adoption after A, B and same-line rollback. Match the selected scope, snapshot/hash and activation identity; candidate readiness alone is insufficient.
+
 ## Implementation Workflow
 
 1. Inventory what the platform already publishes: active decision/snapshot,
@@ -138,4 +146,3 @@ the mirrored contract changes.
 - `praxis-form-schema-runtime-modes` and `praxis-form-actions-hooks-runtime`: Angular form context and lifecycle.
 - `praxis-crud-dialog-form-host-lifecycle` and `praxis-stepper-wizard-runtime`: host adapters.
 - `praxis-api-quickstart-domain-pilots` and `praxis-http-examples-contract-surfaces`: operational/public proof.
-

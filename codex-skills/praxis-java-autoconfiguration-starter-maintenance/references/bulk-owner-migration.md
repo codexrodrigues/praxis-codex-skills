@@ -244,6 +244,31 @@ URI uses a pooler. Operator control-plane attestation is not a fresh runner API
 lookup; state that boundary. Keep owner and fixture credentials in private files
 outside the checkout and evidence uploads.
 
+### Fixture cleanup and publication recovery
+
+Before reusing a child, inspect the selected fixtures' actual teardown.
+`BulkManagedOwnerNeonGateTest.Fixture` requires the four exact canonical roles
+absent (`praxis_bulk_retention_owner`, `praxis_bulk_retention_executor`,
+`praxis_bulk_control_owner`, `praxis_bulk_capacity_owner`) and cleans its own
+resources. `BulkOptionalPoliciesNeonTest` deliberately leaves its emitted database
+and runtime/control roles, plus migration-created canonical roles, for coordinator
+cleanup. A passing test or closed pool does not mean a clean child. Preserve raw
+identity markers, attest the exact assignment and zero active fixture backends,
+then reconcile only proven fixture resources. Nominal database removal precedes
+roles; never use FORCE, CASCADE, DROP OWNED or parent cleanup to force reuse.
+Stop on unexpected dependencies. When provenance is uncertain, preserve the
+existing child and assign a fresh child from an attested clean parent.
+
+Inspect `tools/release/publish_central.py` before rerunning publication: its CLI
+admits upload only on `GITHUB_RUN_ATTEMPT=1`. Green gates on a later attempt do not
+authorize upload. Preserve custody and determine whether upload occurred;
+reconcile any deployment or unknown outcome first. If the immutable failed tag
+never uploaded and the official workflow has no recovery route, prepare a new
+version through the official dispatcher, renew inventory/assignment and execute
+its required gates. Do not override the attempt, move tags or upload the retained
+bundle manually. This procedure does not grant release authority independently
+of the user's authorized scope.
+
 ### Managed owner provisioning before a remote proof
 
 Inspect the authenticated migration owner's attributes and incoming membership
