@@ -93,6 +93,57 @@ Angular cancellation/application belong to the determination handoff described
 by `praxis-reactive-determinations`; do not add form-specific execution to the
 engine.
 
+## Direct dependency outputs (engine contract 1.5)
+
+This guidance accompanies the G1 implementation of contract 1.5. It is not
+proof of a published Maven release or downstream adoption. Verify the actual
+engine coordinate and contract before using it; beta.15/contract 1.4 only gates
+and orders dependencies and does not supply this data channel.
+
+- Capture native finite JSON facts once for every binding and the facts digest.
+  Reject POJO/binary/missing/non-finite facts as FACTS_INVALID; bound canonical
+  UTF-8 size before hashing so compact decimal exponents cannot cause unbounded
+  expansion. FACTS_LIMIT_EXCEEDED is technical, and its budget is independent
+  from output transport. The host keeps the input stable during initial capture.
+- Recheck exact engine/dialect/corpus coordinates in evaluation before invoking
+  executors, including restored plans. PLAN_COMPATIBILITY_INVALID returns the
+  current runtime baseline without execution or factsDigest; it does not rewrite
+  the original definition or authenticate a manually constructed plan. Compile
+  candidates through the governed host flow; never relabel stale cached plans.
+- Keep one evaluation of the governed DAG. `RuleExecutorContext.directDependencyOutputs`
+  derives only from direct `dependsOn` results in the current evaluation; never
+  enrich facts between passes, create a host-local graph, or use a submitted
+  derived value as authority.
+- Both producer and consumer must be PRODUCT Java bindings in DOMAIN_DECISION
+  or POST_DECISION. Other edges remain control-only, including attested CUSTOMER,
+  SECURITY, protected guards, generated infrastructure, and intent stages.
+  ALLOW supplies output; preserve all five decision states and existing gates.
+- Missing Java output omits the key; explicit JSON null preserves it. Consumers
+  decode and validate domain output using their exact implementation/host
+  contracts. Missing or malformed required output is technical failure, never
+  zero, business denial, or fallback to facts. JSON Logic still sees original
+  facts only; this channel does not change the dialect or shared corpus.
+- Transport native JSON trees with finite numbers only. POJO, binary, missing
+  sentinel and non-finite nodes in eligible output fail with
+  DEPENDENCY_OUTPUT_INVALID, without consumer execution or partial binding
+  results; do not coerce them or change control-only edges.
+- Keep map order deterministic and copy mutable JSON defensively. Prove isolation
+  across accesses, bindings, retained results and concurrent evaluations.
+- Bound canonical UTF-8 bytes (including keys) before transport copies, both per
+  context and cumulatively per evaluation against MAX_PUBLIC_RESULT_BYTES.
+  Validate the entire map shape first: INVALID has fixed precedence over size,
+  independent of field insertion order. Empty maps cost zero; fan-out charges
+  every delivered context again. Overflow
+  produces DEPENDENCY_OUTPUT_LIMIT_EXCEEDED/TECHNICAL_ERROR with no partial binding
+  results. Preserve existing structural and public result limits too.
+- Prove positive chaining without prefilled derived facts, direct-only access,
+  excluded trust/stage pairs, missing/null, five-state gates, exact/over-budget
+  boundaries, cumulative fan-out, deterministic digests and thread safety.
+- Contract 1.5 is an exact compatibility boundary. Recompile and reapprove new
+  compositions; do not relabel old snapshots or hashes. Config historical
+  verification, executable admission and coordinated migration are separate
+  downstream gates. Engine tests do not prove host rollout, UI or database paths.
+
 ## Gates
 
 Use Java 21 and Maven 3.9+:

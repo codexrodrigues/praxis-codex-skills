@@ -2687,8 +2687,8 @@
                                             "praxis-api-quickstart-domain-pilots",
                                             "praxis-http-examples-contract-surfaces"
                                         ],
-                       "skillMdSha256":  "5DF3629B4810C5BA60EEC6AE17E13C044FFDC5630AE9130667B8C8EE79C36B60",
-                       "treeSha256":  "555A2D9C88444C9BC59E09F589EC58EF1B901DA284132D05BEB3C8E445D6B37D"
+                       "skillMdSha256":  "0CA32D977CD0B282DA26EB90A472EA2B58292798696FC1201FC805E4B6F6180A",
+                       "treeSha256":  "11A64F80984ED619F39A1A0F88DEB7A59FB0D01DABF82A0A34DE48BFFD74E71B"
                    },
                    {
                        "name":  "praxis-config-ai-provider-operations",
@@ -2727,8 +2727,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-angular-validation-gates"
                                         ],
-                       "skillMdSha256":  "B70A21E0E5DB78353E226F3898FEDD0177E020B7BCB79C1592227F7BB3112CB8",
-                       "treeSha256":  "78B5437E3735EB77A2EA5776EB715192A2AA307FEB38FBCD65E59F398883EF01"
+                       "skillMdSha256":  "2EAC74AD41B93899753F0E375CADDAE2C7AEF6C88B943573AC156CFDF9B550D4",
+                       "treeSha256":  "2810BBF58075B2079A95773C7E518CEF7E2B12B3F5BA09E6D4AC5D9FDDCCD173"
                    }
                ]
 }
