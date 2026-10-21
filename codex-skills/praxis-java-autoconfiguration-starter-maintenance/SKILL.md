@@ -538,7 +538,8 @@ For a bulk schema upgrade, inspect `BulkExecutionMigrator`, initializer phase
 markers, immutable SQL history, configured owner/runtime/control roles, and the
 exact artifact consumed. Read [bulk-owner-migration.md](references/bulk-owner-migration.md)
 for staged upgrade, phase-aware attestation, reject-only completed installations,
-pool/resource proof and packaged-consumer evidence. A private candidate or passing
+pool/resource proof and packaged-consumer evidence. Use that reference's release-validation
+section for assigned-child reuse and publication recovery. A private candidate or passing
 kernel test does not enable public ASYNC, autostart, HTTP202 or fleet readiness.
 
 ## Explicit Bulk Worker Composition
