@@ -2405,8 +2405,8 @@
                        "dependencies":  [
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "214AC1048A867F138EAF35DEE9EA9EDC8E24430C738C619321D68C024F2B3530",
-                       "treeSha256":  "73F7980D01BAF00AD54C304126E1531A9221000EB95CC39BACB9A471613176FD"
+                       "skillMdSha256":  "E52C838F577E0761A588D68974F3287984497D5A9CFEDC2691807A8DA3C483B6",
+                       "treeSha256":  "6868CA1FDBA65CF8D6A09422264228582477184E34D33668D7BCFECA89DC35AC"
                    },
                    {
                        "name":  "praxis-config-runtime-persistence",
@@ -2461,8 +2461,8 @@
                        "dependencies":  [
                                             "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "21C7B0CA2DB2CCEB276BAB66FBF2C340440717AA018A8B87BF7E4199B41D7D97",
-                       "treeSha256":  "2245062317835642DECF3BA618EB7F4A83FD861B5635539EB35967360191F839"
+                       "skillMdSha256":  "E3C1D061E93413EC7EBE13AAD5A3CF513918D5384C20F83DF935B2ED36D010DD",
+                       "treeSha256":  "B972BABC0D6312DF54AF184FB4D8117C1C7098D711007E63D0921B085B6B9D22"
                    },
                    {
                        "name":  "praxis-api-quickstart-operational-proof",
@@ -2727,8 +2727,8 @@
                                             "praxis-core-runtime-contracts",
                                             "praxis-angular-validation-gates"
                                         ],
-                       "skillMdSha256":  "2EAC74AD41B93899753F0E375CADDAE2C7AEF6C88B943573AC156CFDF9B550D4",
-                       "treeSha256":  "2810BBF58075B2079A95773C7E518CEF7E2B12B3F5BA09E6D4AC5D9FDDCCD173"
+                       "skillMdSha256":  "5DC2D90D63018A1962BBAE0EE3F1BF46744882B7FCAFCD0C4FA8DD58B493F78F",
+                       "treeSha256":  "326EF4740796FC0F399F26BCE44A16176298B70DF3A3673A4CC379DBF75C54BF"
                    }
                ]
 }
