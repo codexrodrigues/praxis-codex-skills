@@ -195,6 +195,16 @@ drafts, publication heads, titles and authored documents.
   Nested provenance traversal must consume the remaining outer deadline, with
   explicit cycle/depth/aggregate limits and denial rather than truncation.
 
+Keep a participating REQUIRED operation's validation attempt alive until the
+outer Config transaction completes. Its returned receipt is provisional until
+that owner commits; do not force a separate transaction to obtain an early
+acknowledgement. Check the same deadline before and after the actual commit and
+before returning an owned transaction's result. A failure after JDBC COMMIT is
+uncertain delivery, not rollback evidence: preserve the creation key, reconcile
+the original identity and never recapture or silently generate another key.
+Prove both owned and participating transactions, including delayed responses
+after a successful real commit and inspection through a fresh connection.
+
 Measure repeated historical reads before increasing a validation budget. If
 reuse is necessary, restrict it to positively resolved immutable evidence inside
 the actual Config transaction, bound to its owner and JDBC connection. Never
@@ -206,6 +216,12 @@ truncating provenance. Prove separation across owners/connections, suspended and
 new transactions, rollback/completion and scope keys, including actor when a
 creation-key association is reused. Compare SQL count and elapsed time before
 and after; a fixture measurement is not a production SLA.
+
+Rollback to a savepoint keeps the outer synchronization list alive, so completion
+cleanup alone cannot prevent reuse of rows that were rolled back. Clear retained
+positive bytes on savepoint rollback without renewing transaction admission;
+prove a later read reloads them. This cache invariant does not establish support
+for nested JPA lifecycle operations or their business callbacks.
 
 Include driver metadata calls in that measurement: PgJDBC isolation getters can
 issue server SQL outside a prepared-statement counter. A SHOW alone does not
