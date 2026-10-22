@@ -41,9 +41,11 @@ no capture receipt. On Render it requires the real `/app/app.jar` and official
 `RENDER_SERVICE_ID`, `RENDER_INSTANCE_ID` and `RENDER_GIT_COMMIT` identity.
 In the Render UI, add only the nonsecret
 `PRAXIS_BULK_PUBLICATION_CANDIDATE_CAPTURE_DIRECTORY` variable with a fresh,
-real absolute `/private/tmp/...` path; preserve the existing
-`SPRING_APPLICATION_JSON` and credentials. The synthetic Spring property/bean
-proof establishes conditional activation, not an actual Ready-event capture.
+real absolute path under an existing trusted parent (for example `/tmp/...` in
+the Linux Render container; `/private/tmp/...` for a Mac rehearsal); preserve
+the existing `SPRING_APPLICATION_JSON` and credentials. The synthetic Spring
+property/bean proof establishes conditional activation, not Render filesystem
+suitability or an actual Ready-event capture.
 
 The host uses validated bulk bindings and the public SDK
 `OpenApiDocumentService.prepareBulkOpenApiPublication` API to read the candidate;
