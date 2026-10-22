@@ -152,6 +152,29 @@ source/dependency hashes and limits; a partial DDL fixture is not full Flyway or
 live host HTTP proof. Catalog, routes, menus, cross-head transactions and host
 adoption remain their separately scoped downstream work.
 
+## Navigation Groups Admission
+
+For native navigation groups, reuse the P0 `groupsDocument` schema and the
+Config reproduction owner rather than adding a second schema or publication
+machine. The document contains a flat complete groups array; omission removes
+an entry and an empty array removes all. Page bindings remain authored by each
+page, never duplicated into the groups document. Preserve array order, stable
+UUID identities and order ties without coercing or normalizing authored values.
+
+A codec that validates UUID shape, icon syntax, bounds and exact patch
+reproduction does not register the root or admit its source and icon catalog.
+Require current host-owned source and structure policies; an unavailable catalog
+must fail closed. Register one stable app-shell root per authenticated navigation
+scope, without deriving UUIDs from arbitrary strings or trusting client scope.
+
+Review dispatcher, revision and frozen-release integration separately from an
+isolated codec. Until the inter-aggregate head guards are implemented and proved,
+do not enable publish, rollback or withdrawal of groups. The later gate must
+serialize page/group transitions, re-read authoritative heads and reject removal
+of groups with active references. Unit codec tests or a permissive host fixture
+do not prove those guarantees. Keep the issue open while required lifecycle
+integration seams, root registration, documentation or skills remain pending.
+
 ## Focused Validation And Evidence
 
 Choose selectors from the changed entrypoints, not a frozen suite count:
