@@ -747,8 +747,8 @@
                                             "praxis-charts-ai-handler-contracts",
                                             "praxis-angular-agents-governance"
                                         ],
-                       "skillMdSha256":  "89A95631B95D2CE6990EF8EDB293BBFCEFFE8811AC768CF61371F49F861FFE58",
-                       "treeSha256":  "72B37F3F19BED5876F722DFE390BA5E22D2C7D469833C874320430FE54311D83"
+                       "skillMdSha256":  "3809B48BE4AE3D7E73ED1A98648EC19C5CF044C0ECC414734397357F7D700112",
+                       "treeSha256":  "4F6160C4AB23028A6FC64DE532564DD749CD49C010D2017ACCC7DCA517202BCD"
                    },
                    {
                        "name":  "praxis-component-minimums",
@@ -916,8 +916,8 @@
                                             "praxis-core-global-actions-metadata",
                                             "praxis-core-widget-observations"
                                         ],
-                       "skillMdSha256":  "0A222E2F5A52F0AF0CF83DF7A991ED8CD34F89949D1CAD82E01D4A92FBA61826",
-                       "treeSha256":  "0B9EB58492376F4C436F1D8136082E0E5DF73736967158ED3DEC926E1E81C006"
+                       "skillMdSha256":  "4BBEB909BC5A2A4CA981ECD297E73458991EACFE7EE7218960EAFBFE098D0C39",
+                       "treeSha256":  "36EF5741B018F37012BAB37C04AA747FCE373A8CE6CA14BC4227710D99BA2447"
                    },
                    {
                        "name":  "praxis-core-widget-observations",

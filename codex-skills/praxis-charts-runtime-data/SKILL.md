@@ -155,6 +155,15 @@ suppression, and adversarial fallback through the actual consumer. Build Core, C
 consumer when the exported presentation contract changes; use focused consumer
 E2E for affected public UI. Review package docs and public examples for parity,
 and record any unexecuted consumer gates separately from source-level proof.
+Apply Core's numerical regression procedure to both renderers: keep width
+precision separate from rounded percentage labels; prove 201 equal categories
+do not overflow, and hundreds of decimal fractions with an exact total do not
+produce a false fallback, while genuinely incoherent tiny totals still fail.
+Test Table with omitted/conflicting `surface`, rather than only a document that
+already declares `table-cell`. For FieldShell DOM stability, require evidence that
+`getPresentationHtml` ran through the OnPush view's own `ChangeDetectorRef` before
+accepting an unchanged node as lifecycle proof. These gates require runtime
+evidence; a skill update alone does not close a defect.
 For host effects, include computed gradients/shadows, track height/radius/color,
 zero-segment geometry and shadow suppression, default motion, and a real browser
 reduced-motion override across Charts and the HTML consumers. A helper string or

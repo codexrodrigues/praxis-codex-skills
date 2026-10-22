@@ -127,12 +127,30 @@ and `projects/praxis-dynamic-fields/src/lib/components/field-shell/field-shell.m
 Cover over-total/negative/non-finite evidence, zero totals, missing legend labels,
 localized percentages, matching colors, and table-cell suppression. Helper-only
 assertions do not prove consumer sanitization, layout, styles, or locale wiring.
+Keep geometry at calculation precision; `toFixed` belongs only to display labels,
+not segment widths. Compare HTML and Charts with 201 equal categories: cumulative
+width must not overflow and hide the last category. Include a small positive
+allocation that two-decimal width rounding would erase. Exercise hundreds of
+decimal fractions against an exact declared total (300 values of `0.1`, total `30`)
+to catch summation error causing a false fallback. Retain rejection of genuinely
+incoherent tiny totals, such as total `Number.MIN_VALUE` with value `1`; do not
+widen an absolute epsilon to make the decimal case pass.
+Through the real Table renderer, omit `surface` and also supply a conflicting
+`surface: 'card-summary'` with title/legend requested. The owning cell must still
+materialize `table-cell` semantics. Core config normalization alone cannot prove
+that the consumer supplies its actual surface context.
 For host effects, prove computed category paint/shadows, zero-segment geometry
 and shadow suppression, track tokens, and motion in Charts, Table, and FieldShell.
 Exercise browser reduced-motion emulation separately; checking the current media
 query branch alone does not prove the override. Record unexecuted gates explicitly.
 Prove unchanged rerenders do not restart entry animations, while row/locale
 updates remain fresh; inspect Table's `getMicroVisualizationHtml` materialization.
+For FieldShell lifecycle tests, spy on `getPresentationHtml` and assert it was
+called during the unchanged check before comparing DOM identity. Drive the
+OnPush component view through its own `ChangeDetectorRef`; a host-fixture check
+alone can skip that view and pass without exercising materialization. Then change
+data/locale and assert fresh output. A failing gate remains an open runtime defect;
+adding guidance does not establish that the implementation is corrected.
 Review Core/Charts docs, examples and public landing projections for drift.
 
 ## Validation Guidance
