@@ -1,6 +1,6 @@
 ---
 name: praxis-core-runtime-contracts
-description: Use when Codex must inspect, change, or rely on @praxisui/core shared runtime contracts: public-api exports, tokens, providers, i18n, logging, common services, registries, shared models, schema infrastructure, global actions, config storage, CRUD/discovery services, or cross-lib contracts consumed by other @praxisui/* packages.
+description: Use when Codex must inspect, change, or rely on @praxisui/core shared runtime contracts: public-api exports, tokens, providers, i18n, logging, common services, registries, shared models, presentation microvisualizations, schema infrastructure, global actions, config storage, CRUD/discovery services, or cross-lib contracts consumed by other @praxisui/* packages.
 ---
 
 # Praxis Core Runtime Contracts
@@ -75,6 +75,39 @@ Classify each need:
 - `lacuna-real-de-contrato`
 
 Only `lacuna-real-de-contrato` justifies a new public core contract. If the data already exists in backend metadata, config starter state, action/surface/capability discovery, AI manifests, config storage, diagnostics, or runtime registries, fix the owner or materialization instead of adding a parallel Angular concept.
+
+## Presentation Distribution Contract
+
+For `PraxisPresentationVisualizationConfig`, inspect
+`projects/praxis-core/src/lib/models/presentation-visualization.model.ts` and its
+spec before editing a consumer. Core owns normalization, denominator resolution,
+and HTML materialization; Charts owns the Angular microvisualization renderer,
+which must consume this policy instead of defining a second validation policy.
+
+- For `stackedBar`, preserve the supplied distribution. Reject missing/invalid
+  segments (including sparse arrays), negative or non-finite values, a non-finite
+  sum, and an invalid, negative, or materially smaller explicit `total` by removing
+  all segments and rendering `fallbackText`. Never drop only the bad category, clamp its data,
+  renormalize to fit, or invent a remainder category.
+- An absent `total` uses the finite segment sum; explicit zero is valid only
+  when the sum is zero. Compare floating-point sums with relative tolerance from
+  the canonical normalizer, not an absolute epsilon that admits tiny bad totals.
+- Outside `table-cell`, `legend: true` requires every segment label; missing
+  labels cause the same complete fallback. For `table-cell`, normalize legend to
+  false and remove the presentation title without mutating the input. The HTML
+  path must also omit compact metadata, keeping cells free of category text.
+- Accept materialized category colors only through the existing hex-color
+  normalization. Keep bar/swatch colors, zero-width segments, denominator-based
+  percentages, fallback accessibility, and application locale aligned across
+  Charts and HTML consumers.
+
+Proof requires the model spec and real consumer DOM specs:
+`projects/praxis-table/src/lib/praxis-table.micro-visualization-renderer.spec.ts`
+and `projects/praxis-dynamic-fields/src/lib/components/field-shell/field-shell.micro-visualization.spec.ts`.
+Cover over-total/negative/non-finite evidence, zero totals, missing legend labels,
+localized percentages, matching colors, and table-cell suppression. Helper-only
+assertions do not prove consumer sanitization, layout, styles, or locale wiring.
+Review Core/Charts docs, examples and public landing projections for drift.
 
 ## Validation Guidance
 

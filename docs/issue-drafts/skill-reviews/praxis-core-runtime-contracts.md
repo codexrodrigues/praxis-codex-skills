@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-core-runtime-contracts/
-- Descricao atual: Use when Codex must inspect, change, or rely on @praxisui/core shared runtime contracts: public-api exports, tokens, providers, i18n, logging, common services, registries, shared models, schema infrastructure, global actions, config storage, CRUD/discovery services, or cross-lib contracts consumed by other @praxisui/* packages.
+- Descricao atual: Use when Codex must inspect, change, or rely on @praxisui/core shared runtime contracts: public-api exports, tokens, providers, i18n, logging, common services, registries, shared models, presentation microvisualizations, schema infrastructure, global actions, config storage, CRUD/discovery services, or cross-lib contracts consumed by other @praxisui/* packages.
 
 ## Classificacao inicial
 
