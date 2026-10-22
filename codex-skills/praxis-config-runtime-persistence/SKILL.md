@@ -152,7 +152,14 @@ Use focused local gates:
 - Angular consumers: `npm run test:core -- --include=projects/praxis-core/src/lib/services/config-storage.service.spec.ts --include=projects/praxis-core/src/lib/services/enterprise-runtime-context.service.spec.ts`
 - broad starter smoke for shared contract changes: `mvn -B -P ci-smoke-unit -T 1C clean verify`
 - For fallback ownership changes, prove tenant seed -> unscoped fallback -> user save -> conditional user read -> user clear -> tenant fallback -> explicit tenant clear. Compare the two scope-specific documents and ETags directly; a single unscoped GET cannot prove ownership isolation.
-- For component preference precedence, prove Apply without persistence, Save acknowledgement, browser reload, reopen, stale-ETag conflict without blind retry, and preservation of unmanaged sibling fields in the complete document.
+- For component preference precedence, establish the owning consumer's Apply/Save semantics first.
+  Prove that preview-only Apply stays unpersisted where that is the declared contract. If accepted
+  Apply persists, as in PraxisFilter field metadata editing, await its storage acknowledgement
+  before the next write or reload. Settings Panel `saved$`/closure alone does not await an
+  asynchronous storage subscriber. Prove Save acknowledgement, browser reload, reopen,
+  stale-ETag conflict without blind retry, and preservation of unmanaged sibling fields in the
+  complete document. For HTTP proof, require the real successful PUT and returned quoted ETag
+  before reload, then a successful remote GET and the consumer's restored authored value.
 
 For public persistence changes, review `README.md`, `docs/ai/**` when AI config is affected, Angular storage clients, Settings Panel global config, quickstart smokes, and HTTP examples. State explicitly when no derived artifact is affected.
 
