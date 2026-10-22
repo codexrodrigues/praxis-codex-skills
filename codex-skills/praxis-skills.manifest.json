@@ -1805,8 +1805,8 @@
                                             "praxis-manual-form-toolbar-metadata-bridge",
                                             "praxis-manual-form-field-detection-instance"
                                         ],
-                       "skillMdSha256":  "48D12B84DE5C3CCD1BC8DAA4861BCD4030D5916E6B03087EBC60F55C8C84A59E",
-                       "treeSha256":  "29E81A2AA124550E4B0B6792DD1BE4663986EA8084014CFC1F8A07BB60D1BC6B"
+                       "skillMdSha256":  "FD270C347CE21CDB908F77A32815790317593A14179D999FF113C673A5B1AB32",
+                       "treeSha256":  "360ED0593D62927C747BC58D87DEBF17D14B950E2EA74BDF3CDF0D8D3092CA97"
                    },
                    {
                        "name":  "praxis-metadata-editor-renderer-coverage",
@@ -2416,8 +2416,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "95F11CFF89BC0E4FE9016EE26D5A08C4EC5D8BD14C9D1F6835F7FEE4D619A2D9",
-                       "treeSha256":  "F3E4FD171743B2527C1DC6B8CF439FF5880DBA4A313B23B82D3D05A1824C800C"
+                       "skillMdSha256":  "886E13BBFF9B5331A47AF30559EBA5CFB658A934788EE8CFFA4EE60F9939C475",
+                       "treeSha256":  "D171A85AE1EF1A0553F790C9AD7B53AC57798E2F1987961FF3219612D5EDAABD"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
