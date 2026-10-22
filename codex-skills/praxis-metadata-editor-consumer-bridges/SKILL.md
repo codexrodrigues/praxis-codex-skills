@@ -39,6 +39,11 @@ Inspect the metadata-editor sources plus the affected consumer:
 
 - Use `FieldMetadataEditorComponent` for advanced FieldMetadata edits.
 - Pass canonical `controlType` and `seed`; normalize aliases through core helpers before opening.
+- Build the seed from a defensive clone of the complete current canonical field document,
+  including specialized properties such as `colorLabelOptions` and `inlineOverlay`.
+  Do not reconstruct it from an INPUT/common-property allowlist. Keep explicit editor
+  representation adapters, but normalize their accepted values back to the owner's paths
+  without persisting duplicate aliases or discarding supported specialized metadata.
 - Lazy-load `@praxisui/metadata-editor` when the consumer should avoid a hard authoring dependency in the runtime path, but fail visibly through diagnostics/snackbar/logging when the module or `FieldMetadataEditorComponent` export is unavailable.
 - Wire at least one canonical patch path, and preferably both when supported by the host: `hostBridge.applyPatch` for immediate editor-to-host application and Settings Panel `applied$`/`saved$` subscriptions for Apply/Save.
 - Receive delta patch from `hostBridge`, `applied$`, or Settings Panel save and apply JSON Merge Patch semantics, including `null` removal where the consumer stores metadata overrides.
@@ -135,6 +140,14 @@ the standalone initialization lane restores the saved document. Pair that path
 with `praxis-form-schema-runtime-modes`.
 
 ## Consumer Validation
+
+Exercise the consumer's public open method or visible field action and inspect the seed
+passed by that bridge before driving the real child. Supplying a complete handcrafted
+seed directly to the child or private bridge cannot detect properties lost by the public
+opening path. Prove specialized values survive open, accepted Apply/Save and runtime
+projection. When changing patch forwarding, also cover an existing representation
+adapter (for example `autoResize` -> `autoSize` without an alias residue), immutable
+field identity and preservation of nested unmanaged siblings.
 
 Choose the consumer proof:
 
