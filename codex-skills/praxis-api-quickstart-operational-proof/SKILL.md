@@ -939,21 +939,39 @@ installation. Resolve its namespace/deployment/role properties through the same
 Spring environment naming and Boot conversion used by runtime, without starting
 the application. The CLI reads its process environment, not application profiles
 or ConfigData. Validate the whole enabled composition before the first host write.
-Reuse the explicit operational migration credential; require its owner identity
-and the configured runtime/control roles. Do not invent another owner credential,
-infer grants from HTTP, copy Metadata SQL, or perform deployment DDL at startup.
+Use `OPERATIONAL_MIGRATION_DATASOURCE_USERNAME/PASSWORD` only for host Flyway.
+When bulk lifecycle is `true`, require explicit
+`BULK_MIGRATION_DATASOURCE_USERNAME/PASSWORD` for the Metadata migrator, on the
+same `OPERATIONAL_MIGRATION_DATASOURCE_URL` API database; there is no separate
+bulk URL or fallback to operational, runtime or control-plane credentials. The
+configured bulk expected owner must equal the explicit bulk username. The two
+migration usernames may match when explicitly governed, but the operational
+migration username must not be a bulk runtime or control-plane role. When bulk
+lifecycle is absent or `false`, do not require bulk credentials. Preserve both
+passwords literally and reject JDBC URL credential/identity overrides before
+bootstrap. Do not use `SET ROLE`, transfer SESSION ownership, infer grants from
+HTTP, copy Metadata SQL or perform deployment DDL at startup.
 
 The host Flyway history and Metadata bulk history are separate and not globally
-atomic. The command must propagate failure after either phase and must not claim
-rollout success after only the first one. The declared BASIC confirmation identity
-starts deny-only/UNCOMPOSED; installation does not publish readiness or business
-authorization. Preserve normal strict retry behavior without repair/clean fallback.
+atomic. Configuration validation before DDL cannot prevent a live bulk failure
+after operational Flyway has committed. The command must propagate failure after
+either phase and must not claim rollout success after only the first one. The
+declared BASIC confirmation identity starts deny-only/UNCOMPOSED; installation
+does not publish readiness or business authorization. Preserve normal strict
+retry behavior without repair/clean fallback.
 
-Prove the packaged entrypoint on an assigned Neon branch with the exact host and
-Metadata artifacts, direct TLS connection, non-superuser owner and real runtime/
-control identities. Check both histories, no-work repetition and the resulting
-privileges. Binding/unit tests and existing storage proofs are complementary; they
-do not replace invoking the packaged command. After each authorized Quickstart
+Prove the packaged entrypoint on an assigned copy-on-write Neon child with the
+exact host and Metadata artifacts, direct TLS connection, ordinary non-superuser
+operational migration owner, and real ordinary runtime/control identities.
+Preserve the SESSION predecessor, `current_user`/owner and mixed host history
+under its strict forward; never use SQL repair, `ALTER OWNER` or an expected-owner
+override to make it pass. Check both histories, Metadata's physical/catalog/CRC/
+ACL validation, no-work repetition and resulting privileges. A Bulk owner with
+the privileges admitted by the SDK's V20 gate does not itself prove the ordinary
+operational or runtime/control paths. Binding/unit tests and packaged-JAR checks
+are complementary; they do not replace invoking the packaged command. Until the
+fresh entrypoint, read-only SDK validation and repeat-zero receipts pass on the
+assigned child, keep Neon adoption pending. After each authorized Quickstart
 main update, follow its automatic Render deploy to a terminal result and correlate
 the source commit with the served build and health. An older healthy instance,
 or an unchanged application version string alone, cannot certify the new deploy.

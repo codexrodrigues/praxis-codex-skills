@@ -104,6 +104,23 @@ DDL disabled; only explicit setup/export/Flyway uses owner authority. Preserve
 restrictive grants, negative ACL tests and migration placeholders. Functional
 fixture DML grants cannot substitute for an authorization test.
 
+For the Quickstart predeploy composition, inspect the exact host candidate:
+operational Flyway uses its explicit operational credential, while an enabled
+bulk lifecycle requires an independent explicit bulk username/password on the
+same API JDBC URL. The bulk expected owner must match that bulk username; neither
+credential may fall back to runtime/control or a URL identity override. No bulk
+credential is required while lifecycle is disabled; matching operational and
+bulk usernames are admissible only when each is configured explicitly. Validate
+all configuration before DDL, then run operational Flyway before the Metadata
+bulk migrator; their histories have no shared transaction. On an assigned
+copy-on-write child, prove the ordinary operational owner and strict SESSION
+predecessor/current-user ownership with mixed history, plus SDK physical/catalog/
+checksum/ACL validation and repeat-zero. Do not repair SQL history, transfer
+SESSION ownership, use `SET ROLE` or invent an expected-owner override. A
+privileged Bulk owner admitted by the SDK's V20 checks does not prove the
+ordinary operational, runtime or control-plane identities. Source/unit/JAR
+evidence without this fresh Neon entrypoint result is preparation, not adoption.
+
 For a fresh bulk database on public Metadata rc178, use the configured
 `BulkExecutionMigrator.migrate(owner, map, roles, operations)` overload with
 ordinary, fixture-owned managed roles. Its migration owns the fresh bootstrap
