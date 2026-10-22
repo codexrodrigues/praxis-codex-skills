@@ -128,6 +128,16 @@ An explicit total above the sum leaves unallocated space. Materialized hex color
 override tones and must match between segment and swatch; tone fallback must also
 match. Never give zero values a minimum visible width or shrink valid proportions.
 
+Consume Core's `getPraxisStackedBarPaintStyle` for segment/swatch paint and follow
+the host-token policy in `praxis-core-runtime-contracts`. Host gradients and
+shadows that follow each category use `currentColor`, which Core sets locally;
+do not reference `--prx-micro-category-color` from an ancestor token. Keep these
+effects in trusted host CSS rather than metadata or a parallel chart config.
+Track entry is a one-shot opacity fade, with duration/delay defaulting to `0ms`
+and easing to `ease-out`; reduced motion disables it even with host tokens set.
+Preserve proportions and shadow halos: no width/scale/clip-path reveal. A zero
+segment has no shadow even with host effects; its legend swatch keeps its style.
+
 Use `PraxisI18nService.getLocale()` for visible and accessible percentages in
 Charts; HTML consumers must pass the application locale to the Core renderer.
 Keep explicit `ariaLabel` authoritative. Otherwise, when every segment is named,
@@ -145,6 +155,10 @@ suppression, and adversarial fallback through the actual consumer. Build Core, C
 consumer when the exported presentation contract changes; use focused consumer
 E2E for affected public UI. Review package docs and public examples for parity,
 and record any unexecuted consumer gates separately from source-level proof.
+For host effects, include computed gradients/shadows, track height/radius/color,
+zero-segment geometry and shadow suppression, default motion, and a real browser
+reduced-motion override across Charts and the HTML consumers. A helper string or
+media-query-dependent expectation alone does not prove those browser behaviors.
 
 ## Operational Proof
 

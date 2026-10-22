@@ -101,12 +101,38 @@ which must consume this policy instead of defining a second validation policy.
   percentages, fallback accessibility, and application locale aligned across
   Charts and HTML consumers.
 
+Use Core's `getPraxisStackedBarPaintStyle` for segment/swatch paint. It sets
+`--prx-micro-category-color` and `color` on each category span from validated hex
+or tone. Trusted host CSS may set `--prx-micro-segment-background`,
+`--prx-micro-segment-shadow`, `--prx-micro-swatch-shadow`,
+`--prx-micro-track-shadow`, `--prx-micro-track-height`, and the existing
+`--prx-micro-track-radius`/`--prx-micro-track-color`. For category-dependent host
+gradients or shadows, use `currentColor`: an ancestor token referencing
+`var(--prx-micro-category-color)` resolves on that ancestor before the local
+category context exists. Metadata still supplies only validated hex/tone;
+do not add raw CSS in JSON, new DTO fields, or feature flags for host styling.
+
+Shadows default to `none`; a zero-value segment always has `box-shadow:none`
+even when a host shadow is set, while its legend swatch retains its styling.
+Entry motion uses track opacity `0` to `1` once, with
+`--prx-micro-motion-duration` (`0ms`), `--prx-micro-motion-delay` (`0ms`), and
+`--prx-micro-motion-easing` (`ease-out`). Preserve the no-motion default and
+disable animation/transition under `prefers-reduced-motion: reduce` regardless
+of host tokens. Do not animate width, scale, or clip paths: proportions must stay
+truthful and the reveal must not clip shadows.
+
 Proof requires the model spec and real consumer DOM specs:
 `projects/praxis-table/src/lib/praxis-table.micro-visualization-renderer.spec.ts`
 and `projects/praxis-dynamic-fields/src/lib/components/field-shell/field-shell.micro-visualization.spec.ts`.
 Cover over-total/negative/non-finite evidence, zero totals, missing legend labels,
 localized percentages, matching colors, and table-cell suppression. Helper-only
 assertions do not prove consumer sanitization, layout, styles, or locale wiring.
+For host effects, prove computed category paint/shadows, zero-segment geometry
+and shadow suppression, track tokens, and motion in Charts, Table, and FieldShell.
+Exercise browser reduced-motion emulation separately; checking the current media
+query branch alone does not prove the override. Record unexecuted gates explicitly.
+Prove unchanged rerenders do not restart entry animations, while row/locale
+updates remain fresh; inspect Table's `getMicroVisualizationHtml` materialization.
 Review Core/Charts docs, examples and public landing projections for drift.
 
 ## Validation Guidance
