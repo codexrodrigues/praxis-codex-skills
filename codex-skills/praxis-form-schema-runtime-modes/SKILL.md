@@ -190,7 +190,12 @@ independent form preferences, presentation/back-navigation/connection keys or
 personal global schema-preference overlays. Preserve explicit zero/false values.
 
 Audit every storage load/save/clear and asynchronous completion, including Reset,
-schema update prompts and preference hydration. Prove behavior with conflicting
+schema update prompts and preference hydration. Bind stale-response guards to the
+ownership and actual key of the resource: legitimate connection/mode hydration
+must not cancel unrelated widget preferences. When a host change invalidates a
+pending read, ensure the current context receives a replacement when needed.
+Prove both valid response orders as well as identity changes, A-to-volatile-to-A,
+errors and destruction; rejecting every late response is not sufficient. Prove behavior with conflicting
 personal storage and real global config changes. Shared GlobalConfigService may
 still load its infrastructure state; do not claim zero global I/O or replace the
 service with a stub as proof of no personal influence. Tenant, cache, locale and
