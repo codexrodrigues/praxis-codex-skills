@@ -1,6 +1,6 @@
 ---
 name: praxis-form-schema-runtime-modes
-description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view modes, standalone config persistence, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
+description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view/presentation/dossier modes, volatile governed-page execution, standalone config persistence, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
 ---
 
 # Praxis Form Schema Runtime Modes
@@ -59,7 +59,7 @@ Separate these inputs before changing behavior:
 - `submitUrl` + `submitMethod`: canonical explicit submit pair. Do not configure one without the other.
 - `responseSchemaUrl`: diagnostic/read-only response contract, not a source for editable command fields.
 - `apiEndpointKey` and `apiUrlEntry`: origin resolution inputs for detached overlays/dialogs; do not hardcode API origins in consumers.
-- `mode`: `create`, `edit`, or `view`; it controls data lifecycle, not whether customization UI is enabled.
+- `mode`: Core `DynamicFormMode` accepts `create`, `edit`, `view`, `presentation`, and `dossier`. It does not choose whether customization UI is enabled; preserve the complete union through native authoring and preference hydration.
 - `initialValue`: create-mode seed or host-provided patch; it must not redefine schema semantics.
 
 For metadata-driven flows, prefer `/schemas/filtered` request/response schemas and operation-aware metadata over host-authored field lists. If table/list works but form fails, inspect id field, schema operation, and resource metadata before adding frontend aliases.
@@ -156,6 +156,7 @@ actual public surface changes, and record the decision.
 
 - `view` is read-only by data lifecycle. `readonlyModeGlobal` can also force read-only behavior.
 - `presentationModeGlobal=true` is only effective in `view`; edit/create should render input mode.
+- Explicit `presentation` and `dossier` modes also activate presentation; `dossier` selects the corporate dossier preset when no explicit preset overrides it. Check `effectivePresentation`, `effectivePresentationPreset` and mode-key persistence in the Form owner. Recommend `view` plus presentation options where appropriate without silently normalizing existing five-mode documents. Filter Form retains its three-mode subset.
 - `layoutPolicy.source="schema"` is explicit opt-in for schema-owned layout.
 - `intent="detail"` plus `preset="compactPresentation"` belongs to read-only detail summaries.
 - `intent="command"` plus grouped command layout belongs to create/edit command forms.
@@ -176,6 +177,30 @@ The runtime may debounce, cancel stale work, apply declared outputs, and emit
 sanitized diagnostics, but it must not select a determination by field names or
 execute a local business formula. Pair definition/binding or race changes with
 `praxis-reactive-determinations`.
+
+## Governed Page Execution
+
+For page-governed Form execution, inspect
+`dynamic-form-page-widget-adapter.ts` and the runtime's
+`configPersistenceStrategy: 'volatile'` paths. Use
+`materializeDynamicFormPageRuntimeInputs` to derive the Core page/widget identity
+and runtime-only persistence/editor flags; never save these inputs into page
+authorship. Volatile execution uses explicit config and native defaults, without
+independent form preferences, presentation/back-navigation/connection keys or
+personal global schema-preference overlays. Preserve explicit zero/false values.
+
+Audit every storage load/save/clear and asynchronous completion, including Reset,
+schema update prompts and preference hydration. Bind stale-response guards to the
+ownership and actual key of the resource: legitimate connection/mode hydration
+must not cancel unrelated widget preferences. When a host change invalidates a
+pending read, ensure the current context receives a replacement when needed.
+Prove both valid response orders as well as identity changes, A-to-volatile-to-A,
+errors and destruction; rejecting every late response is not sufficient. Prove behavior with conflicting
+personal storage and real global config changes. Shared GlobalConfigService may
+still load its infrastructure state; do not claim zero global I/O or replace the
+service with a stub as proof of no personal influence. Tenant, cache, locale and
+CSP remain host infrastructure, not page-authored configuration. The adapter
+does not itself prove published routes or the later host integration.
 
 ## Aderence Inventory
 

@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-form-schema-runtime-modes/
-- Descricao atual: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view modes, standalone config persistence, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
+- Descricao atual: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view/presentation/dossier modes, volatile governed-page execution, standalone config persistence, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
 
 ## Classificacao inicial
 

@@ -1,6 +1,6 @@
 ---
 name: praxis-core-composition-runtime
-description: "Use when Codex must inspect, change, or rely on @praxisui/core composition and widget runtime contracts: DynamicWidgetPageComponent, widget definitions, widget events, widget shell, composition links, selection-driven formatted headers, nested ports, connection/link execution, transform runtime, surface hosts, related-resource outlets, runtime observations, or dynamic page materialization."
+description: "Use when Codex must inspect, change, or rely on @praxisui/core composition and widget runtime contracts: DynamicWidgetPageComponent, widget definitions, widget events, widget shell, composition links, selection-driven formatted headers, nested ports, connection/link execution, transform runtime, surface hosts, related-resource outlets, runtime observations, dynamic page materialization, closed page publication codecs, or typed identity copy."
 ---
 
 # Praxis Core Composition Runtime
@@ -69,6 +69,49 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 - An intentional feedback loop must be explicit and guarded on every link in the cycle: use `metadata.tags: ['intentional-feedback']` plus at least one canonical guard per link (`condition`, `policy.distinct`, `policy.distinctBy`, or `policy.debounceMs`). Guarded intentional cycles produce `SEMANTIC_FEEDBACK_CYCLE_GUARDED` warnings, not blocking errors. Do not suppress cycle diagnostics or invent host-local loop breakers.
 
 Legacy migration is an explicit ingress concern. Use `CompositionLinkLegacyMigrator` for supported legacy condition/policy shapes, then persist the canonical result. Unsupported legacy conditions fail explicitly; do not keep an open-ended legacy interpreter in runtime code.
+
+## Governed Page Publication Profile
+
+For copying or admitting a publication document, inspect Core's
+`src/lib/widgets/page-publication/**`, `docs/page-publication-codec.md` and
+`docs/page-publication-codec-delivery.md`, plus Config's
+`docs/ai/contracts/page-publication-p0/`. Config owns the closed
+`praxis.dynamic-page.editor` contract; Core materializes it using the existing
+graph and identity models. This restricted profile is not the full composition
+runtime described above.
+
+1. Decode raw authorship with `decodePageAuthoringDocument`, then use
+   `validatePageAuthoringDocument` with the owning Form/Table validators. Missing
+   owners fail closed. Structural success does not prove native config, admitted
+   ports/icons/groups, immutable provenance, authorization or publication.
+2. Keep child configuration content solely in `definition.inputs.config` and
+   preserve admitted binding/context inputs for native reconstruction. Owner
+   adapters reconstruct native envelopes from these inputs; do not add a runtime
+   `authoringDocument` input or normalize the graph before validation. Unsupported
+   features must produce diagnostics rather than disappear during serialization.
+3. Preserve presence, null, zero, false, empty strings and array order. Use
+   `cloneBoundedUiLayoutJsonDocument` for the shared 256 KiB UTF-8 bound and maximum
+   container depth 64, counting the root as 1; do not replace it with a lossy JSON
+   clone at ingress. The
+   whole envelope counts. JavaScript numeric identity does not attest raw wire
+   precision or backend canonical hashes.
+4. Copy through `copyPageAuthoringDocument` using catalog-allocated UUIDs and an
+   exact typed widget/link map. Rewrite endpoint references through the widget
+   namespace only; preserve UUID-looking literals. A copy resets navigation and
+   requires fresh governance. The pure helper does not allocate identities or
+   create a server draft.
+5. Use `buildPublishedPageIdentity` with the host's registered namespace and
+   `derivePageChildRuntimeId` for stable page/widget identities. Titles never
+   choose routes. Deriving an ID alone does not suppress personal persistence;
+   the owning adapters must provide that runtime behavior.
+
+Compare derived fixture provenance/hashes with the integrated Config source and
+run `page-publication/*.spec.ts` plus `ui-layout-json.util.spec.ts`. Public API
+changes require Core build, a direct consumer build and the applicable browser
+regression. Keep those results separate from downstream Page Builder/host
+save-publish-reload evidence: the pure APIs do not activate that journey. Pair
+with `praxis-form-editor-document-roundtrip`, `praxis-table-authoring-settings`
+and `praxis-config-runtime-persistence` for native and server admission.
 
 ## Published Shell Presets
 
