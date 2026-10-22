@@ -77,6 +77,39 @@ storage acknowledgement.
 
 ## Round-Trip Checklist
 
+For governed page children, inspect `table-page-widget-adapter.ts` and its specs
+against Config's `page-publication-p0` profile. Use `decodeTablePageInputs` and
+`encodeTablePageInputs` for the native envelope, preserving presence of
+`resourcePath` and `horizontalScroll`. Keep config content only in
+`definition.inputs.config`; do not pass a fictitious runtime `authoringDocument`.
+The initial admitted profile uses compact schema columns (`columns: []`,
+`columnProjection.source: 'schema'`) and rejects null anywhere in config.
+
+Project intentional editor changes through `projectTablePageEditorChanges` using
+the original raw inputs and the mounted editor baseline/current values. Reuse
+the owner delta helper so materialized columns and defaults do not become new
+authorship. Fixed bindings require a new widget key and server-admitted seed when
+changed. Cover reserved JSON keys, raw presence, schema-column compaction,
+Unicode lengths, diagnostics as widget-relative JSON Pointers and the native
+Config corpus, then combine the owner validator with the Core page codec.
+
+Materialize execution-only inputs through `materializeTablePageRuntimeInputs`:
+Core-derived identity and volatile persistence are runtime projections, never
+saved authoring. Check every projected input against both component reflection
+and public metadata so the strict Core loader can mount it. Do not copy Form-only
+inputs into Table: Table uses `enableCustomization: false` to suppress independent
+authoring; it does not declare `showAiAssistant`. Verify filter persistence and
+Reset as well as the table key;
+a successful editor round-trip alone does not prove storage isolation. Verify in
+the runtime that volatile config uses native defaults and explicit
+inputs without personal global table/schema/timezone overlays, including after
+global changes and Reset. Host tenant/cache/locale/CSP infrastructure remains;
+shared global-service reads are not proof that personal table config was applied.
+Validate the real mounted advanced-filter child and every projection slot when
+testing its persistence flag; an absent child cannot prove isolation. Pair with
+`praxis-core-composition-runtime` and the Form round-trip skill for shared page
+integration. Page Builder/host publication remains a separate downstream proof.
+
 For every editable field, prove or inspect:
 
 1. Existing config opens in the editor with the correct value.
