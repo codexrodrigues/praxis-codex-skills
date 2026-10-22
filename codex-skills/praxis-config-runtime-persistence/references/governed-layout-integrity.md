@@ -173,7 +173,7 @@ do not enable publish, rollback or withdrawal of groups. The later gate must
 serialize page/group transitions, re-read authoritative heads and reject removal
 of groups with active references. Unit codec tests or a permissive host fixture
 do not prove those guarantees. Keep the issue open while required lifecycle
-costures, root registration, documentation or skills remain pending.
+integration seams, root registration, documentation or skills remain pending.
 
 ## Focused Validation And Evidence
 
