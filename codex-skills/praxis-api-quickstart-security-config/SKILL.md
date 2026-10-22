@@ -317,6 +317,41 @@ Cookie JWT authentication, CSRF, origin governance, and rate limiting have separ
 - Assert filter order and behavior: origin/rate-limit gates must run before expensive public work, authentication must populate protected endpoints correctly, and CSRF cookie exposure must not become an authorization bypass.
 - Local header identity for AI is an explicitly configured development exception. Corporate mode must resolve identity server-side; caller headers are not authorization proof.
 
+## Operational SESSION storage installation
+
+Inspect `EnterpriseSessionStore`, the operational migrator, and
+`docs/ENTERPRISE-SESSION-OPERATIONAL-PREREQUISITE.md` before admitting a hosted
+SESSION flow. The reviewed forward
+`V20261022_001__enterprise_session_operational_prerequisite.sql` belongs to the
+segregated API migration owner, never the application login or Config datasource.
+The owner must be able to issue its `GRANT USAGE ON SCHEMA public` (schema
+ownership or a grant option for USAGE), in addition to its CREATE/USAGE, TEMP and
+predecessor-table ownership requirements. Health UP and a signed SESSION JWT do
+not replace a persisted issuance. The forward does not install enterprise
+membership, payroll grants or G4 composition.
+
+The intended ordinary-runtime profile is schema USAGE and table SELECT, INSERT
+only on `credential_id`, `subject_id`, `expires_at`, and UPDATE only on
+`revoked_at`, `revision`, `tenant_id`, `environment`, `organization_id`,
+`sector_id`, `profile_id`. Preserve compatible non-grantable canonical column
+SELECT grants; do not widen INSERT/UPDATE to the table. Deny UPDATE of issuance
+identity/subject/expiry and INSERT of revision/selection fields. Inspect
+effective privileges, including PUBLIC, grant options, role membership and
+SET ROLE through NOINHERIT, plus owner/server-role and schema/database CREATE
+reachability. Do not assume Neon SUPERUSER or repair global grants/default
+privileges to make a predecessor pass.
+
+Existing storage is admitted only after a strict parsed-catalog comparison
+under the owner lock, preserving rows while rejecting unexpected structure,
+dependencies, ownership or ACLs. A TESTONLY fixture cannot reconstruct retired
+Flyway resources; missing history must fail before the forward without
+clean/repair/bypass. Pair with `praxis-api-quickstart-operational-proof` for the
+required `AssignedNeonDatabase` proof of the packaged migration, repeat-zero,
+real ordinary-runtime lifecycle and forbidden writes. Historical remote results,
+offline source checks and same-resource rollback negatives are distinct from
+fresh installation and authenticated HTTP adoption; report each boundary
+separately.
+
 ## Path Normalization And HttpFirewall
 
 Treat URL encoding as a public security contract, not a convenience setting.
