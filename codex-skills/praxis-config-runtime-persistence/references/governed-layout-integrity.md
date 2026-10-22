@@ -61,6 +61,15 @@ published version has all of these protections.
 
 ## V68 Metadata And PostgreSQL Proof
 
+All new database-dependent validation uses a remote Neon branch exclusively
+assigned to the worker/run. Confirm project, branch, endpoint, PostgreSQL version,
+TLS and actual owner/runtime/control-plane privileges before mutation. Existing
+local PostgreSQL workflow evidence is historical and does not satisfy this gate.
+Do not substitute embedded/local PostgreSQL or a privileged owner fixture for the
+runtime path. A proxy's `pg_stat_ssl` value alone may not establish client TLS;
+verify the actual JDBC client's TLS connection and hostname validation without
+logging credentials.
+
 Read the current opt-in test/runbook before reserving a database. The metadata
 capture gate requires an existing exclusive `b1a_it_*` schema migrated through
 V68, and the documented `PRAXIS_UI_LAYOUT_PG_*` inputs. Never print credentials.
@@ -76,9 +85,9 @@ Confirm that the workflow contains separate lifecycle preparation, admission
 and existing-schema reader phases before relying on it. An older workflow
 running only catalog/template tests does not prove UI-layout persistence.
 
-- Keep the official PostgreSQL service and its original catalog/template
-  database. Allocate the UI-layout database separately from `template0`, with
-  the documented owner and UTF8, and admit it as empty before lifecycle.
+- Reserve an isolated Neon branch and the documented exclusive schema/database
+  for the validation. Preserve its parent branch and all unrelated data. Record
+  UTF8, owner, runtime privileges and the migration starting state before lifecycle.
 - Use the exclusive documented `b1a_it_*` schema in JDBC `currentSchema` without
   `public` fallback. Let canonical lifecycle/Flyway install extensions naturally;
   verify actual vector/pgcrypto namespaces, required types/opclasses, owner,
@@ -103,6 +112,45 @@ V68's NOT VALID constraint protects new inserts without certifying incomplete
 historical rows. Do not backfill or VALIDATE CONSTRAINT to manufacture missing
 provenance. SQL hashes do not prove Java codec admission, current authority,
 normalization, producer reproduction or a browser journey.
+
+## Page And Internal Child Admission
+
+Inspect `UiLayoutPageRevisionReproduction`, `UiLayoutPageChildCaptures`, the
+workspace source/codec, command service and `docs/ai/contracts/page-publication-p0/`.
+The root target is `praxis-dynamic-page` with its opaque page UUID; children do
+not become additional external lifecycle targets. Reuse native Form/Table
+projection and reproduction checks even when page widgets are an atomic array.
+
+- Reconstruct native child documents from `definition.inputs.config` plus the
+  admitted binding/context inputs without defaults. Bindings and native envelope
+  stay fixed for each widget key. New binding/resource/mode needs a new key.
+- Require `childSources` to name exactly the previously unknown keys. Resolve
+  each registered source/revision server-side and capture its genuine native seed
+  and metadata. The source request, a hash supplied by a client, or an intact
+  historical `captureText` is not current authority. The source/admission SPI must
+  bind the requested immutable source to the captured evidence and current scope.
+- Preserve evidence for removed keys; restoration uses the historical seed and
+  must pass current admission. Reject replacement declarations for known keys,
+  missing/extra/duplicate requests, scope substitution and changed fixed envelopes.
+- Keep exact capture identity through workspace serialization and database JSONB.
+  Revalidate native reproduction, source admission and transaction gates at the
+  relevant mutation/execution paths. Historical authorized inspection proves
+  integrity and scope, not fresh admission to mutate or execute the page.
+- Compare schema/resource copies and Java/TypeScript corpus vectors. Preserve
+  Unicode codepoint limits, absolute regex endings, absence/null semantics and
+  exact-number guards; do not tighten one engine incidentally or normalize both
+  sides before comparing. Align revision reason with the existing lifecycle
+  storage limit, rejecting excess before SQL rather than widening storage to
+  accommodate an accidental contract divergence.
+
+Use focal codec/capture/lifecycle tests plus the owner's opt-in Neon page lifecycle
+gate when changes touch durable writes. Prove create/edit/add/remove/restore,
+freeze/publication/read and denied-source rollback on a fresh connection. A
+mocked repository cannot prove JPA new-entity/version behavior or JDBC/JPA sharing
+one Config transaction. Record the actual migration slice, runtime identity,
+source/dependency hashes and limits; a partial DDL fixture is not full Flyway or
+live host HTTP proof. Catalog, routes, menus, cross-head transactions and host
+adoption remain their separately scoped downstream work.
 
 ## Focused Validation And Evidence
 

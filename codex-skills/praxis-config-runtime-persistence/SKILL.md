@@ -49,6 +49,11 @@ Follow [governed-layout-integrity.md](references/governed-layout-integrity.md)
 for invocation/authority, null and numeric identity, historical reads, V68
 metadata evidence, quotas and evidence-qualified validation.
 
+For `praxis.dynamic-page.editor` and internal Form/Table children, follow the
+page-specific admission procedure in that reference and the owner's P0 corpus.
+Child source requests select versioned registered sources; they never attest
+their own provenance. Keep the page as the sole external lifecycle target.
+
 A source merge or a passing MockMvc fixture does not prove a published Maven
 artifact, PostgreSQL persistence, a live host or browser rendering. Pin and
 verify public artifacts separately; do not install a candidate under a public

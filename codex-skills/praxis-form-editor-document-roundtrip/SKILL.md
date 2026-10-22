@@ -108,6 +108,33 @@ examples, and round-trip requirements by stable identity through
 
 ## Apply Plan Rules
 
+For governed page children, inspect `dynamic-form-page-widget-adapter.ts` and its
+focused specs alongside Config's `page-publication-p0` contract. Use
+`decodeDynamicFormPageInputs` / `encodeDynamicFormPageInputs` to reconstruct the
+native document from the single `definition.inputs.config` plus admitted
+binding/context inputs. The raw page profile preserves absence and explicit
+values; a normalized editor snapshot must not become a second source of config.
+Use `projectDynamicFormPageEditorChanges` with the original inputs and the mounted
+editor's initial/current snapshots to persist only intentional changes. A changed
+binding/context requires a new widget key and admitted seed. Do not silently drop
+unsupported envelope blocks or add `authoringDocument` as a runtime input.
+
+The native Form contract preserves all five Core `DynamicFormMode` values:
+`create`, `edit`, `view`, `presentation`, `dossier`. Check normalization, apply
+plans, real editor save/reopen, metadata and AI runtime-input manifests together.
+An editor may recommend `view` plus presentation options, but it must retain
+existing supported values. Filter Form still exposes its own three-mode runtime
+subset through a copied projection; never mutate the owner manifest or extend
+Filter behavior merely because the shared document supports five modes.
+
+Page admission additionally rejects nulls in merged config objects; null inside
+atomic arrays remains distinct and permitted by the Form profile. Exercise raw
+presence, reserved JSON keys, native corpus vectors and whole-envelope Core
+bounds, rather than asserting only a normalized config. Pair with
+`praxis-core-composition-runtime` for the root codec and
+`praxis-form-schema-runtime-modes` for runtime persistence isolation. These APIs
+alone do not prove publication or the later Page Builder/host journey.
+
 The editor capability should produce an apply plan that names what changes:
 
 - `canonicalConfig`
