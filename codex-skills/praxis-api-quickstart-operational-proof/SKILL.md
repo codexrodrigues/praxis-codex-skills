@@ -1032,6 +1032,14 @@ or dropping the assigned database. On nontermination or cleanup failure, retain
 the exact lease and journal for reconciliation, including after timeout or
 interruption; do not turn cleanup into a passing business result.
 
+The historical `scripts/workspace/Invoke-PayrollReactiveDeterminationHostedProof.sh`
+is now a fail-closed entry point: it exits 2 before any provider call, even with
+the former valid confirmation. Its retired Render PostgreSQL topology used the
+owner as application runtime. The previous implementation remains in Git history
+for diagnosis, not as a standard gate or main deployment path. Do not revive it
+with an environment flag; requalification requires a separately governed,
+assigned Neon proof with distinct migration-owner and ordinary-runtime identities.
+
 ## Host Security Is Integration, Not A Starter Override
 
 The quickstart owns CORS, CSRF, cookies, origin restriction, firewall policy, rate limiting, and public/read/write exposure. These policies constrain hosted starter endpoints without redefining their semantics.
