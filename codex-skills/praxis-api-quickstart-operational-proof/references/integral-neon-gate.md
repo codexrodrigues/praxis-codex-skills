@@ -28,6 +28,30 @@ fixture/helper and policy hashes. Generate the sanitized tree from that source,
 record its own digest and inspect the sanitizer result. Later source or shared
 fixture changes invalidate affected passes; do not relabel old evidence.
 
+## Diagnose A Governed Publication Candidate
+
+For a private, opt-in comparison of the node's unpublished OpenAPI candidate,
+read the host's `docs/engineering/publication-candidate-capture.md` and run the
+reviewed executable with `java -jar <attested-host.jar>
+--praxis.bulk.publication.candidate-capture-directory=/private/tmp/<fresh>`.
+Use an absolute, nonexistent directory under a trusted parent; do not use a
+classes-directory fallback. The listener runs once on the main servlet
+`ApplicationReadyEvent`, after all runners. Startup failure before Ready yields
+no capture receipt. On Render it requires the real `/app/app.jar` and official
+`RENDER_SERVICE_ID`, `RENDER_INSTANCE_ID` and `RENDER_GIT_COMMIT` identity.
+
+The host uses validated bulk bindings and the public SDK
+`OpenApiDocumentService.prepareBulkOpenApiPublication` API to read the candidate;
+it does not install a photograph or write caches or ledgers. Keep
+the directory private (`0700`) and each exact-response-byte file private
+(`0600`). Accept only the final `candidate-receipt.json` after all bytes and
+the receipt have been forced; partial files are not success. Bind any comparison
+to the exact source, JAR, node and context, and compare with an old capture only
+when its bytes and provenance are attested. Mocked tests do not prove real
+capture; an old public artifact without that attestation cannot authorize
+publication. This diagnostic receipt alone does not prove durable ledger state,
+native Render transport or publication authority.
+
 ## Assignment And Actors Before Mutation
 
 Use a trusted operator-issued child assignment with project, child, parent,
