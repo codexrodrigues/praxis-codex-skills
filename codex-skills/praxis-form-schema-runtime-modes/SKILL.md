@@ -1,6 +1,6 @@
 ---
 name: praxis-form-schema-runtime-modes
-description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view/presentation/dossier modes, volatile governed-page execution, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
+description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view/presentation/dossier modes, volatile governed-page execution, standalone config persistence, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
 ---
 
 # Praxis Form Schema Runtime Modes
@@ -22,6 +22,7 @@ Inspect the real runtime before editing:
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.external-config-hydration.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.first-config-hydration.spec.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.field-metadata-roundtrip.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.layout-policy.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/services/form-config.service.ts`
 - `projects/praxis-dynamic-form/src/lib/services/form-config.service.spec.ts`
@@ -65,7 +66,7 @@ For metadata-driven flows, prefer `/schemas/filtered` request/response schemas a
 
 Keep these runtime rules explicit:
 
-- Corporate initialization requires `formId` and either `resourcePath` or `schemaUrl`. Local-only forms may render from explicit local `config`, but should not masquerade as metadata-driven runtime.
+- Schema-backed initialization requires `formId` and either `resourcePath` or `schemaUrl`. Local-only forms may render from explicit local `config`; a standalone form with `formId` also participates in configuration persistence without a schema request. Without an ID, standalone configuration remains host-owned.
 - `resourcePath` remains the owner resource path. `schemaUrl`, `readUrl`, `submitUrl`, and `responseSchemaUrl` are concrete operation/surface URLs published by discovery or supplied explicitly.
 - Explicit component inputs have precedence over persisted connection/input preferences. Persisted connection can hydrate `resourcePath` only when the host did not provide one.
 - `schemaUrl` can initialize schema-backed runtime without `resourcePath`, but command/read/submit behavior still needs the correct operation URLs and resource identity when applicable.
@@ -84,6 +85,30 @@ Keep these runtime rules explicit:
   transient `layoutPolicy`, prove the adapter/materializer produced the right runtime inputs before
   adding host-side defaults. Do not patch a migrated screen by hardcoding operation URLs or copying
   generated layout into `FormConfig.sections`.
+
+## Standalone Configuration Persistence
+
+Use the existing `initializeForm` lane for an identified standalone form with
+renderable host configuration. `local-first` restores the mode-scoped saved
+document; `input-first` keeps the latest host document authoritative. Transient
+layout policy skips loading persisted configuration. Do not invent a resource
+path, schema endpoint, or parallel persistence adapter for local fields.
+
+Inspect input hydration, storage and mode changes as one asynchronous flow. Resolve
+host precedence after the storage read, including a host document cleared while
+the read was pending. An empty standalone document must not fall through to schema
+generation. If the mode-scoped key changed during the read, discard that response
+and initialize the current key after releasing the loading guard. A late response
+after destruction must not rebuild or resume the destroyed view.
+
+Prove saved, missing and failed storage reads, `input-first`, transient policy,
+no-ID standalone and disconnected empty state. Include delayed reads with a newer
+host document, a cleared document, a mode switch and destruction. Check declared
+initialization hooks and pending entity inputs when those paths are affected;
+sharing an initializer must preserve their lifecycle without adding schema calls.
+Use `praxis-dynamic-form.field-metadata-roundtrip.spec.ts` as the focused regression
+entrypoint, plus a real storage reload when authoring persistence is the reported
+failure. A mocked accepted patch alone does not prove Save survives reopening.
 
 ## Remote Selection, Loading And Recovery
 
