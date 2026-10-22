@@ -1512,8 +1512,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "DCE4B1E154B90736B420892E8041DEB201A62D363547F4B66F61638B8D4FB89F",
-                       "treeSha256":  "2256C84224AE796021F54A47D0980DF4A8F9260A2D6F63A2D865FA328CA68DA7"
+                       "skillMdSha256":  "D0C8194F3E80CC30348F9C7ADF7A7BEEF112ACCC8234BA65177219542EF58DBC",
+                       "treeSha256":  "536011247E7CF999C143383DA53BCC424B3736F8149F4F600D7FACA0BD51B5A8"
                    },
                    {
                        "name":  "praxis-form-submit-payload-pipeline",
@@ -1805,8 +1805,8 @@
                                             "praxis-manual-form-toolbar-metadata-bridge",
                                             "praxis-manual-form-field-detection-instance"
                                         ],
-                       "skillMdSha256":  "470F05B333FDFF02D32F22D8DC528B9CDF063539884D2B3BBC47033564B2E8AD",
-                       "treeSha256":  "4EF80961B7B693DB027FF0CF0025E2020DF1D06D9C86174236D06A2B33797EC1"
+                       "skillMdSha256":  "48D12B84DE5C3CCD1BC8DAA4861BCD4030D5916E6B03087EBC60F55C8C84A59E",
+                       "treeSha256":  "29E81A2AA124550E4B0B6792DD1BE4663986EA8084014CFC1F8A07BB60D1BC6B"
                    },
                    {
                        "name":  "praxis-metadata-editor-renderer-coverage",
@@ -2080,8 +2080,8 @@
                                             "praxis-table-rule-table-integration",
                                             "praxis-table-rule-ai-validation"
                                         ],
-                       "skillMdSha256":  "95148D3C4EE5D7AE7A0584984DD35BB692B81D467B963B95D5AD874A12E14382",
-                       "treeSha256":  "B79EDB1FF079CB24A545804398CA1E4DB35BB7081CB1CD662D95B1B542880A4B"
+                       "skillMdSha256":  "2C4A450FDD6ED2B6DE6057638E9157B8126AF1BE9B6E09611FE15EB1C9D8FAA8",
+                       "treeSha256":  "2453D550571EE4D83067CF9F19EA39626778E124F36EC420974CAF74769C14DB"
                    },
                    {
                        "name":  "praxis-table-filter-actions",
