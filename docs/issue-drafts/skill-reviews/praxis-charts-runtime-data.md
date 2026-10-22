@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-charts-runtime-data/
-- Descricao atual: Use when Codex must inspect, change, or scaffold @praxisui/charts runtime behavior: PraxisXUiChartContract, chartDocument, PraxisChartConfig, x-ui.chart mapping, ECharts adapter boundaries, chart data sources, praxis.stats requests, AnalyticsChartConfigAdapterService, ChartStatsApiService, queryContext, drilldown, cross-filter, dashboard chart widgets, or chart public API.
+- Descricao atual: Use when Codex must inspect, change, or scaffold @praxisui/charts runtime behavior: PraxisXUiChartContract, chartDocument, PraxisChartConfig, x-ui.chart mapping, presentation microvisualizations and stackedBar legends, ECharts adapter boundaries, chart data sources, praxis.stats requests, AnalyticsChartConfigAdapterService, ChartStatsApiService, queryContext, drilldown, cross-filter, dashboard chart widgets, or chart public API.
 
 ## Classificacao inicial
 
