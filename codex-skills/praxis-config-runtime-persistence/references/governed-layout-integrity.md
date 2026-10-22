@@ -152,6 +152,59 @@ source/dependency hashes and limits; a partial DDL fixture is not full Flyway or
 live host HTTP proof. Catalog, routes, menus, cross-head transactions and host
 adoption remain their separately scoped downstream work.
 
+## Page Creation And Copy Admission
+
+Before adopting creation/copy, inspect the owner's P0 and P2 design, the actual
+`PageCreationService`, host attestation, catalog/lifecycle bridge, codec and
+migration. A planned endpoint is not an available host feature. Keep the
+catalog's durable identity and immutable creation evidence separate from mutable
+drafts, publication heads, titles and authored documents.
+
+- Resolve application and route namespace through independent server-owned host
+  attestation. Neither a module hint, an invocation supplied by a caller, nor a
+  catalog record grants application access. Metadata/lifecycle callbacks without
+  a Principal still need independently validated current host context before
+  application-scoped lookup or rebasing; do not infer authority from the ledger
+  or introduce a ThreadLocal to conceal a missing contract.
+- Copy only an exact registered native source/revision or the selected published
+  page/release/revision. A historical publication need not be the current head,
+  but a frozen release that was never published is not a published source.
+  Never substitute latest, effective configuration, a draft or the current DOM.
+- Reproduce the typed widget/link identity map and preserve ordinary literals.
+  Config-produced native output must be correlated with the complete immutable
+  original source, captures, map, transformation and hashes. NativeIdentity must
+  genuinely reproduce that output. A producer prefix, stored row or matching hash
+  alone cannot admit it. New draft observations reflect the current actor and
+  context; original observations remain historical evidence, not grants.
+- Require CREATE at the destination and READ_SOURCE/COPY_SOURCE for the directly
+  selected source at creation/replay and commit. Do not invent perpetual COPY
+  permission or ancestral page ACL requirements for an independent copy.
+  Integrity/reproduction and current producer, domain and derived-use admission
+  still apply throughout its provenance chain. Do not expose ancestral private
+  evidence through a receipt or association lookup.
+- Scope the creation key to actor/application/tenant/environment. Equal replay
+  returns the same page and current draft validator without recapture; a different
+  command conflicts. Context version must be current but is not a new key scope.
+  Reconciliation needs current association and draft visibility, without requiring
+  permission to the old selected source. Verify no-store, the quoted current
+  draft ETag, absence of 304 and a Location that can actually read that draft.
+- Preserve one atomic Config transaction for catalog, ledger, draft and metadata.
+  Reuse the shared actual JDBC/JPA connection invariant and reject rollback-only
+  results. Recheck context and current grants after the final extension in each
+  commit callback; checking a budget/snapshot after a revoking SPI is insufficient.
+  Nested provenance traversal must consume the remaining outer deadline, with
+  explicit cycle/depth/aggregate limits and denial rather than truncation.
+
+Use the owner's opt-in isolated Neon gate with its actual migration slice and
+restricted runtime. Prove equal and divergent concurrent commands, lost-response
+reconciliation, source isolation, current authority, and failures after actual
+SQL writes as well as at commit. Verify absence of partial catalog, ledger,
+draft and metadata rows from a fresh connection. Fault injection belongs in the
+test JDBC fixture, not a production bypass. Bind raw logs/XML and fixture,
+source and dependency hashes to the reviewed tree. Report skipped/full migration,
+live HTTP, host and browser gates separately; a passing SQL fixture does not
+prove those downstream journeys.
+
 ## Navigation Groups Admission
 
 For native navigation groups, reuse the P0 `groupsDocument` schema and the
@@ -166,10 +219,17 @@ reproduction does not register the root or admit its source and icon catalog.
 Require current host-owned source and structure policies; an unavailable catalog
 must fail closed. Register one stable app-shell root per authenticated navigation
 scope, without deriving UUIDs from arbitrary strings or trusting client scope.
+Exercise the operational host resolver: identical authenticated scope reuses the
+same root and an alternative requested UUID is denied. A UUID constructor or
+Javadoc alone does not prove that registration invariant.
 
 Review dispatcher, revision and frozen-release integration separately from an
 isolated codec. Until the inter-aggregate head guards are implemented and proved,
-do not enable publish, rollback or withdrawal of groups. The later gate must
+do not enable publish, rollback or withdrawal of groups. Block these transitions
+in the lifecycle owner itself, including direct callers with permissive policy
+and no page-creation host. Validate native group metadata before any draft write
+and re-admit persisted root evidence on revision, freeze and commit; history
+inspection does not grant current mutation rights. The later cross-head gate must
 serialize page/group transitions, re-read authoritative heads and reject removal
 of groups with active references. Unit codec tests or a permissive host fixture
 do not prove those guarantees. Keep the issue open while required lifecycle
