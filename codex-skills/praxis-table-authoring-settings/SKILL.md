@@ -95,7 +95,11 @@ Config corpus, then combine the owner validator with the Core page codec.
 
 Materialize execution-only inputs through `materializeTablePageRuntimeInputs`:
 Core-derived identity and volatile persistence are runtime projections, never
-saved authoring. Verify filter persistence and Reset as well as the table key;
+saved authoring. Check every projected input against both component reflection
+and public metadata so the strict Core loader can mount it. Do not copy Form-only
+inputs into Table: Table uses `enableCustomization: false` to suppress independent
+authoring; it does not declare `showAiAssistant`. Verify filter persistence and
+Reset as well as the table key;
 a successful editor round-trip alone does not prove storage isolation. Verify in
 the runtime that volatile config uses native defaults and explicit
 inputs without personal global table/schema/timezone overlays, including after
