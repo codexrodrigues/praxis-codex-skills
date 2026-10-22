@@ -2488,7 +2488,7 @@
                                             "praxis-java-autoconfiguration-starter-maintenance"
                                         ],
                        "skillMdSha256":  "46C9987CF87022C3FE16EBFDC3AC724A626C371333E9177B76D05B65A826B992",
-                       "treeSha256":  "6E767B22BFE3725E89C02589103EB9BF45FD922021594D21C8D6E4A424F184D7"
+                       "treeSha256":  "3402F9DBCFAABCBF62CCE66F4AF5ED3DB5F64B761B4EEEC1E23FCF7045827917"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
