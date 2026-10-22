@@ -73,6 +73,22 @@ DDL disabled; only explicit setup/export/Flyway uses owner authority. Preserve
 restrictive grants, negative ACL tests and migration placeholders. Functional
 fixture DML grants cannot substitute for an authorization test.
 
+For a fresh bulk database on public Metadata rc178, use the configured
+`BulkExecutionMigrator.migrate(owner, map, roles, operations)` overload with
+ordinary, fixture-owned managed roles. Its migration owns the fresh bootstrap
+and V19 function ACLs; do not patch those ACLs with manual GRANTs after V19
+transfers ownership. Record canonical roles only after a successful migration.
+If a partial migration leaves an uncertain role or database, reconcile its
+exact OID through the private ledger before another fixture or reset.
+
+When Config owner-only Flyway creates tables required by Spring startup readers,
+prepare the Config fixture's ordinary runtime access **before** context startup:
+the owner grants DML on existing fixture tables/sequences and default DML for
+tables/sequences that Flyway will create in the assigned database. Keep Flyway
+on the owner datasource and the application on its ordinary runtime datasource.
+This fixture-scoped DML setup is not evidence for a restrictive ACL test; keep
+authorization fixtures' exact grants and negative assertions independent.
+
 ## Persist Real Sessions In Authenticated Host Fixtures
 
 Inspect `EnterpriseSessionConfiguration`, `EnterpriseSessionLifecycle`,
@@ -126,6 +142,23 @@ blocks new allocation without preventing cleanup of already owned resources.
 Keep cancellation/runner-loss reconciliation explicit; a shutdown callback alone
 is not cleanup evidence. Assignment, lock and journal custody must reject unsafe
 file targets. Do not terminate unrelated sessions or run broad DROP OWNED/reset.
+
+For a durable journal append, use a separate local NIO writer and wait for its
+write and `force` to finish **before** the corresponding database mutation. If
+the waiting caller is interrupted, preserve its interrupt status after the
+writer finishes; do not let caller interruption close the shared journal
+channel during an in-flight append. Propagate append/force errors and block the
+mutation. A stalled filesystem still needs outer runner containment; this
+pattern does not provide an independent append deadline, certify cleanup or
+turn a failed journal into green evidence. Reconcile any uncertain outcome
+out of band against the exact recorded OIDs before reuse.
+
+Remote migration and seed setup can legitimately take longer than the behavior
+under test. Give expensive fixture preparation its own explicit `@BeforeEach`
+deadline (the reviewed grant-fence fixture uses 10 minutes), separate from its
+unchanged business lock/transaction deadlines (25 or 30 seconds and the 500 ms
+budget). Do not widen business deadlines, move their assertions into setup or
+claim a pass merely because preparation completed.
 
 ## Run The Remote Preflight Before Integration
 
