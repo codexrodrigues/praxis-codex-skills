@@ -1,6 +1,6 @@
 ---
 name: praxis-charts-runtime-data
-description: Use when Codex must inspect, change, or scaffold @praxisui/charts runtime behavior: PraxisXUiChartContract, chartDocument, PraxisChartConfig, x-ui.chart mapping, ECharts adapter boundaries, chart data sources, praxis.stats requests, AnalyticsChartConfigAdapterService, ChartStatsApiService, queryContext, drilldown, cross-filter, dashboard chart widgets, or chart public API.
+description: Use when Codex must inspect, change, or scaffold @praxisui/charts runtime behavior: PraxisXUiChartContract, chartDocument, PraxisChartConfig, x-ui.chart mapping, presentation microvisualizations and stackedBar legends, ECharts adapter boundaries, chart data sources, praxis.stats requests, AnalyticsChartConfigAdapterService, ChartStatsApiService, queryContext, drilldown, cross-filter, dashboard chart widgets, or chart public API.
 ---
 
 # Praxis Charts Runtime Data
@@ -111,6 +111,40 @@ public `total` field for radial proportions. Card-summary radial presentations n
 card-sized geometry; do not enlarge the compact table default globally. Cover both
 contexts in the focused chart/micro specs and real-shell browser comparison. This
 is runtime presentation, not a new governed analytics metric or chart catalog.
+
+## Presentation Microvisualizations
+
+For `<praxis-micro-visualization>`, inspect
+`projects/praxis-charts/src/lib/components/praxis-micro-visualization/praxis-micro-visualization.component.ts`
+and its spec, plus the Core presentation model and HTML renderer. This path
+consumes `PraxisPresentationVisualizationConfig`; it does not need ECharts or a
+new `x-ui.chart` document. Use `praxis-core-runtime-contracts` for the canonical
+distribution validity and denominator policy. Do not add consumer repair logic.
+
+For `stackedBar` outside table cells, opt into the complete category legend with
+`legend: true` and optional `title`. Preserve all categories, including zero
+allocations; use the resolved total for both widths and localized percentages.
+An explicit total above the sum leaves unallocated space. Materialized hex colors
+override tones and must match between segment and swatch; tone fallback must also
+match. Never give zero values a minimum visible width or shrink valid proportions.
+
+Use `PraxisI18nService.getLocale()` for visible and accessible percentages in
+Charts; HTML consumers must pass the application locale to the Core renderer.
+Keep explicit `ariaLabel` authoritative. Otherwise, when every segment is named,
+generate the category/percentage summary even with `legend: false` or in table
+cells; compact distributions with missing labels use `fallbackText`. Table cells
+consume Core's normalized compact shape: no title or legend, and no HTML metadata
+row. Invalid distributions render accessible `fallbackText`, with no partial bars
+or fabricated percentages.
+
+Run the focused microvisualization component spec and Core presentation model
+spec, then the real Table and FieldShell DOM specs listed in
+`praxis-core-runtime-contracts`. Prove computed colors, visible/zero dimensions,
+all legend entries, denominator gaps, application locale selection, table
+suppression, and adversarial fallback through the actual consumer. Build Core, Charts and a direct
+consumer when the exported presentation contract changes; use focused consumer
+E2E for affected public UI. Review package docs and public examples for parity,
+and record any unexecuted consumer gates separately from source-level proof.
 
 ## Operational Proof
 
