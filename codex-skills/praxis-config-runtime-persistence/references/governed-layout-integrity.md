@@ -195,6 +195,28 @@ drafts, publication heads, titles and authored documents.
   Nested provenance traversal must consume the remaining outer deadline, with
   explicit cycle/depth/aggregate limits and denial rather than truncation.
 
+Measure repeated historical reads before increasing a validation budget. If
+reuse is necessary, restrict it to positively resolved immutable evidence inside
+the actual Config transaction, bound to its owner and JDBC connection. Never
+reuse an authority decision, current context, head, negative lookup or mutable
+review state. A data hit must still run current source/domain/structure admission,
+reproduction and final grant checks. Bound retained bytes/entries, preserve
+defensive copies and clear on completion; eviction reloads data rather than
+truncating provenance. Prove separation across owners/connections, suspended and
+new transactions, rollback/completion and scope keys, including actor when a
+creation-key association is reused. Compare SQL count and elapsed time before
+and after; a fixture measurement is not a production SLA.
+
+A `RELEASED` label alone does not make a draft row immutable. For a frozen copy,
+prove that its candidate reproduces the captured B0 plus the selected immutable
+revision patch, and audit protection of the whole workspace, including embedded
+child captures. If the lifecycle already makes freeze terminal, enforce that
+invariant in the database rather than maintaining a parallel fingerprint path.
+Prove that DRAFT edits and the transition to RELEASED still work with real JPA
+flushes, while later body/ETag/state changes cannot succeed. Distinguish a denial
+by SQL privileges from execution of an immutability trigger; neither authorizes
+rewriting old evidence. Previous DDL evidence does not certify a newly added seal.
+
 Use the owner's opt-in isolated Neon gate with its actual migration slice and
 restricted runtime. Prove equal and divergent concurrent commands, lost-response
 reconciliation, source isolation, current authority, and failures after actual
