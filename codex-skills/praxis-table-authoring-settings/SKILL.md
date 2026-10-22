@@ -46,6 +46,8 @@ Also inspect `projects/praxis-settings-panel/AGENTS.md` and the Settings Panel b
 - Treat `resourcePath`, `idField`, schema hash, local-data mode, and CRUD context as governed authoring state. Do not silently drop them when normalizing config.
 - For columns, always validate runtime rendering, editor visibility, order, type/format, renderer, computed expressions, value mapping, conditional styles, sticky state, and headers.
 - Preserve the Core threshold vocabulary in micro-visualization authoring: finite `min`/`max` ranges, progressive `value` cutoffs and discrete `equals` conditions. Presence matters: `equals: 0`, `false` and strings are valid. Range controls must not invalidate or convert existing cutoff/equality documents when editing tone, label or order. Inspect `presentation-visualization.model.ts` normalization and tone resolution; prove primary and conditional-renderer Apply/reopen, retained conditions/labels, cutoff preview, and empty/inverted/non-finite-only negatives in the columns editor specs. Do not require every threshold to have `min` or `max`.
+- For `stackedBar`, expose the supported denominator (`total`/`totalExpr`) in ordinary and conditional guided authoring alongside the segment source. An absent total means the category sum; it cannot represent a deliberately partial allocation. Load colored segments and expressions, edit an unrelated property, Apply/Save and reopen; compare the complete document, including unknown authored fields and compose items, rather than checking only the edited field.
+- Prove micro-visualization previews through the actual columns-editor DOM after Angular sanitization. Assert proportional widths, zero geometry and category colors, effective `table-cell` context even for omitted/conflicting source surfaces, and application locale. A helper-string assertion does not prove a rendered preview. Reuse Core's structured materialization and the owning renderer's safe boundary; never solve lost styles by trusting arbitrary authored HTML. Inspect `columns-config-editor-renderer-phase2.spec.ts` and compose/conditional paths, and keep failing authoring gates open until the runtime/editor correction is independently verified.
 - For filters, keep `behavior.filtering.advancedFilters.settings` synchronized with `FilterSettingsComponent`.
 - For rules and formulas, preserve the rule compiler/operator registry and do not reintroduce prohibited old Visual Builder dependencies.
 - For actions, preserve global action validation and effect shapes.
@@ -82,6 +84,12 @@ For every editable field, prove or inspect:
 4. Runtime reflects the applied change.
 5. Reopening the editor preserves the value.
 6. Reset does not erase unrelated table state.
+
+Exercise parent config replacement and Reset while the columns editor remains
+mounted. Verify the new input replaces the appropriate draft and reconciles the
+selection; then edit another property and prove that the emitted document does
+not resurrect pre-reset columns, renderers or segment colors. Recreating the child
+before checking Reset cannot prove this lifecycle path.
 
 For contextual detail, repeat the proof with no selection, one eligible visible selection, multiple selection, a selection outside the visible page, empty content, resource failure, dynamic height, fixed height, collapse/reopen, and narrow Settings Panel navigation.
 
