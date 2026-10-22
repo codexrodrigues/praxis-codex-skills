@@ -207,6 +207,12 @@ new transactions, rollback/completion and scope keys, including actor when a
 creation-key association is reused. Compare SQL count and elapsed time before
 and after; a fixture measurement is not a production SLA.
 
+Include driver metadata calls in that measurement: PgJDBC isolation getters can
+issue server SQL outside a prepared-statement counter. A SHOW alone does not
+establish PostgreSQL's first-query isolation boundary. Audit the owner's explicit
+read-transaction admission and prove isolation cannot change after its SELECT;
+retain the regular mutation guards and recheck connection/rollback state on reuse.
+
 A `RELEASED` label alone does not make a draft row immutable. For a frozen copy,
 prove that its candidate reproduces the captured B0 plus the selected immutable
 revision patch, and audit protection of the whole workspace, including embedded
