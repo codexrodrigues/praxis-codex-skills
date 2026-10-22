@@ -987,6 +987,51 @@ embedded/local PostgreSQL is not an admitted fallback. A pure wiring test may
 use an explicitly nonconnectable destination only when the whole test proves no
 connection is made; it provides no database evidence.
 
+## Install the operational SESSION prerequisite
+
+Before an authenticated host proof, inspect `EnterpriseSessionConfiguration`,
+`EnterpriseSessionStore`, `EnterpriseSessionLifecycle`, the official
+`OperationalDatasourceMigrator` and
+`docs/ENTERPRISE-SESSION-OPERATIONAL-PREREQUISITE.md`. The reviewed forward
+`V20261022_001__enterprise_session_operational_prerequisite.sql` installs the
+existing Store contract on the API datasource, separately from Config Flyway.
+Verify the exact source, packaged resource and deployment adoption before use;
+local source or offline tests alone do not admit a hosted SESSION or G4 flow.
+
+Run the forward through a distinct, non-superuser operational migration owner
+with incompatible writers stopped. The owner needs schema CREATE/USAGE, database
+TEMP and ownership of an existing predecessor; because the SQL issues `GRANT
+USAGE ON SCHEMA public`, it also needs authority to grant that schema privilege
+(schema ownership or the relevant grant option). The ordinary runtime must not
+gain owner or schema/database CREATE authority. An existing table must pass the
+locked strict catalog, dependency, ownership and effective-ACL checks without
+row rewriting, ownership transfer or grant repair. A missing historical Flyway
+resource still fails before this forward; do not clean/repair history or recreate
+retired bytes from a fixture. `AssignedNeonStores.prepareApiSessions()` and
+TESTONLY schema snapshots prepare isolated fixtures, not this installation.
+
+Validate the packaged migration and repeat-zero on an exclusively assigned
+Neon child through the required `AssignedNeonDatabase` path, with distinct real
+owner and ordinary-runtime identities. Prove Store/lifecycle issue, subsequent
+read, selection CAS and revoke through runtime, exact column-write denials,
+compatible predecessor preservation and rollback of drift negatives. Record
+source/resource hashes, TLS client evidence and raw result privately. A
+same-resource adversarial rollback is not another full migrator run; an offline
+pass or historical remote result is not fresh admission. If a committed forward
+is followed by a failure, preserve that cut and reconcile rather than reset
+history or silently retry. Authenticated HTTP, enterprise membership composition,
+full gate and deploy remain separate proofs.
+
+For assigned Neon contention proofs, prepare physical TLS connections and
+observer statements in fixture setup before the bounded business window. Keep
+the real ordinary-role observation, execution lifetime at most 30 seconds and
+the revoker's 500 ms observation assertion unchanged; setup moving outside
+those windows cannot weaken their measured work. Release gates and sessions,
+cancel workers and confirm termination before closing writer-owned connections
+or dropping the assigned database. On nontermination or cleanup failure, retain
+the exact lease and journal for reconciliation, including after timeout or
+interruption; do not turn cleanup into a passing business result.
+
 ## Host Security Is Integration, Not A Starter Override
 
 The quickstart owns CORS, CSRF, cookies, origin restriction, firewall policy, rate limiting, and public/read/write exposure. These policies constrain hosted starter endpoints without redefining their semantics.
