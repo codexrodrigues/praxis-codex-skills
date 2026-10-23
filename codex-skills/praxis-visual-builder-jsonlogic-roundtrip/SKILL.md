@@ -54,6 +54,16 @@ The exported `ExportOptions` advertises `json`, `typescript`, and `form-config`,
 - `propertyRule` conditions can use inline JSON Logic or `conditionNodeId`, but both must validate against graph state and export deterministically.
 - `buildConditionExpressionFromGraph(...)` and import paths must be treated as a semantic round trip, not as string formatting.
 
+Preserve the original inline condition when a partial visual import cannot reconstruct it
+exactly, including unsupported operators or children and root-data `var: ""`; visual limitations
+must not erase valid runtime semantics. Build condition projections purely from fresh graph
+`nodes`/`rootNodes`; absent or stale `currentJSON` and cached diagnostics are not semantic input.
+After initialization, accept external `initialRules` replacements through the canonical importer,
+including same-ID and empty documents, without treating equivalent echoes as new history. Inspect
+`rule-definition.component.spec.ts`, `rule-editor.component.spec.ts`, and
+`rule-builder.service.spec.ts`; for Form bridges also prove exact-expression preservation in
+`utils/rule-converters.spec.ts` and runtime-only diagnostics in the host.
+
 ## Inventory Before New Contract
 
 Classify requested additions:

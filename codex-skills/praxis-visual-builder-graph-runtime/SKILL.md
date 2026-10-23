@@ -67,6 +67,15 @@ Only a real contract gap justifies public model changes. Name the canonical owne
 - Use `saveSnapshot(...)`-driven history for undo/redo rather than ad hoc local copies in hosts.
 - Keep destructive node or edge operations explicit when conditions, effects, or descendants can be lost.
 
+For property-rule condition edits, use `RuleBuilderService.updateNode(nodeId, updates,
+conditionState?)` with the complete existing `RuleBuilderState`, including every reachable group
+child. The canonical service transfers the owned condition graph atomically, preserves unrelated
+or shared nodes and selection, and records one undo snapshot. Incomplete or cyclic conditions
+remain graph drafts with diagnostics, never unconditional rules; complete conditions project from
+fresh `nodes`/`rootNodes`, not cached `currentJSON`. Do not merge partial subgraphs through import
+or reset history through whole-state replacement. Prove repair, selection/reopen, ownership,
+cycles, and undo in `rule-builder.service.spec.ts` and `rule-editor.component.spec.ts`.
+
 ## Validation
 
 Use the smallest reliable proof:
