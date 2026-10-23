@@ -163,6 +163,17 @@ If no visual editor is affected, state why.
 - When an editor embeds `FieldMetadataEditorComponent`, `DynamicEditorRendererComponent`, or `CascadeManagerTabComponent`, use the metadata-editor consumer bridge contract instead of reimplementing metadata editor logic in Dynamic Form.
 - Dynamic Form may delegate to manual-form or editorial-forms hosts, but those hosts must not redefine Dynamic Form authoring semantics through local autosave, toolbar, or journey snapshot shortcuts.
 
+Distinguish validation scopes: builder structure, structured-effect editability, sample-data
+preview, and form/runtime diagnostics. A successful preview proves only the evaluated branch for
+those data; it does not validate targets, grant access, or replace the hosted editor's Apply/Save
+gates. JSON replacement, list clearing, and Reset must refresh the same visual draft and effects
+panel: canonical `formRules` wins over valid stale derived state. While conversion fails, retain
+the accepted config, hide its stale structured effects panel, and direct repair to the visual
+wizard or JSON; restore the panel only after conversion succeeds. Invalid drafts block Apply/Save.
+Prove this with
+`config-editor/praxis-dynamic-form-config-editor.spec.ts` and
+`config-editor/rule-properties-panel.component.spec.ts`, then exercise the visible editor flow.
+
 ## Inventory Before New Contract
 
 - `ja-suportado-so-ux`: the document/apply-plan and runtime support the value, but a tab, Settings Panel affordance, diagnostic, or copy is missing.
