@@ -34,7 +34,7 @@ Read `praxis-api-quickstart/AGENTS.md`, then inspect:
 - `security/ConfigOriginRestrictionFilter.java`
 - `security/PublicApiRateLimitFilter.java`
 - `security/CookieJwtAuthenticationFilter.java`
-- `security/SpaCsrfTokenRequestHandler.java` and `CsrfCookieFilter.java`
+- `security/SpaCsrfTokenLifecycle.java`, `SpaCsrfTokenRequestHandler.java`, and `CsrfCookieFilter.java`
 - `security/EnterpriseSessionLifecycle.java`, `EnterpriseSessionStore.java`, `VerifiedJwtCredential.java`, and `JwtTokenService.java`
 - `/auth/**` controller issuance, revocation and identity-switch behavior
 - `src/main/resources/application.properties`, `application-dev.properties`, and `application-prod.properties`
@@ -337,6 +337,53 @@ Cookie JWT authentication, CSRF, origin governance, and rate limiting have separ
 - Any CSRF ignore matcher, especially `/api/praxis/config/**`, needs an equivalent stronger host policy and a documented reason. Do not disable CSRF globally to repair a local request.
 - Assert filter order and behavior: origin/rate-limit gates must run before expensive public work, authentication must populate protected endpoints correctly, and CSRF cookie exposure must not become an authorization bypass.
 - Local header identity for AI is an explicitly configured development exception. Corporate mode must resolve identity server-side; caller headers are not authorization proof.
+
+## Corporate page CSRF and cross-origin bootstrap
+
+When adopting the page host, inspect `SpaCsrfTokenLifecycle`, `SecurityConfig`,
+`SpaCsrfTokenRequestHandler`, `AuthController`, `SecurityConfigSpaCsrfPolicyTest`
+and `SecurityConfigCorsTest` together. The lifecycle bean owns the one cookie
+repository shared by the filter chain and actual auth-boundary rotation. Keep
+ordinary cookie-JWT reconstruction from invoking automatic login rotation;
+retain raw request-header validation and XOR request attributes/parameters.
+
+For an explicitly allowed credentialed origin, bootstrap through
+`GET /auth/session` with browser credentials included and read the exposed raw
+`X-XSRF-TOKEN` response header. A SPA on another host cannot read the API's
+host-only cookie through `document.cookie`. The browser retains SESSION and
+XSRF cookies; send the returned raw value in `X-XSRF-TOKEN` on protected writes.
+Consume the fresh header after successful login or identity switch and clear it
+on logout. Auth responses are `no-store`; the bootstrap can return401 with a
+CSRF token, which grants no SESSION or operation authority. Do not expect every
+Config/runtime response to republish the header. CORS must expose
+`X-XSRF-TOKEN` and lifecycle `Location` as well as existing validators.
+
+Cross-site production cookies require HTTPS, `Secure` and `SameSite=None` for
+both SESSION and XSRF, with SESSION still HttpOnly. Same-origin/local Lax tests
+and a manual HTTP cookie jar do not prove browser cookie delivery, cross-site
+policy, CORS enforcement or third-party-cookie availability. Use the official
+origin catalog and environment properties; test the deployed browser path
+separately. Never export raw cookie/header pairs in assertions, traces or logs.
+
+The existing Config CSRF exclusion must subtract both `/api/praxis/config/pages`
+and `/api/praxis/config/pages/**`, and both `/api/praxis/config/ui-layouts` and
+`/api/praxis/config/ui-layouts/**`. Use the same Spring MVC-aware path semantics
+as controller dispatch, not raw request-URI prefix checks. Preserve unrelated
+Config exclusions deliberately; origin admission alone does not exempt these
+page/lifecycle writes from CSRF. For every canonical and encoded equivalent
+(for example `%70ages` and `ui%2Dlayouts`), prove a matching pair reaches the
+intended controller and missing/mismatched pairs receive403. A firewall404 or
+an unreachable positive does not prove the matcher. Keep broader firewall
+encoding restrictions unchanged.
+
+Run the focused SPA/CORS/firewall tests before the real host gate. For the
+candidate page flow, pair with `praxis-java-config-boundary-integration` and
+`QuickstartPageCorporateHttpNeonTest`: require actual login, current SESSION,
+opaque choices/CAS, publication and runtime reads on the assigned remote Neon
+branch with ordinary runtime roles. Stale context must reach context409 using
+the current CSRF pair. Compare status before JSON and retain only safe hashes;
+prove logout and retained-SESSION401 even after a failed scenario. The existence
+of the test or a passing policy slice is not a fresh Neon or browser result.
 
 ## Operational SESSION storage installation
 

@@ -154,6 +154,75 @@ scope resolution. For protected config APIs, enforce the documented `Origin`,
 authenticated principal, tenant/context validation, and authorization at the
 host. Caller headers are not corporate authorization.
 
+## Adopt The Existing Corporate Page Boundary
+
+For a host containing the Config P3B page contracts, first inventory
+`PageCreationHost`, `PageCreationService`, `PageRuntimeReadService` and
+`UiLayoutResolutionAutoConfiguration` in Config, then the Quickstart
+`QuickstartPageConfiguration`, `QuickstartPageHost`, `QuickstartPageDocuments`
+and `QuickstartUiLayoutContextAuthorization`. Missing host providers are an
+adoption/materialization gap, not permission to create another page DTO,
+controller, persistence store or writer. Config retains page identity, route,
+creation-key reconciliation, exact-source copy evidence, lifecycle publication,
+published-only catalog/read and navigation receipt ownership.
+
+1. Import `QuickstartPageConfiguration` explicitly into the intended SESSION
+   host; do not activate it through component scan or combine its singular SPIs
+   with `PurchaseOrderLayoutConfiguration`. It is a bounded pilot registration:
+   application `quickstart-corporate-pages`, namespace `/pages`, tenants
+   `lab-a`/`lab-b`, environment `lab`, organization `org-1`. Registration is not
+   membership provisioning or production readiness.
+2. Reuse fresh `QuickstartUiLayoutContextAuthorization` at resolve and lifecycle
+   callbacks. Compare the entire invocation with the current SESSION membership,
+   opaque context version and composition; an invocation is correlation, not a
+   credential. Keep authoring/copy under `ui.authoring.configure`, publication
+   under `ui.layout.publish`, and head/review reads under either capability as
+   this pilot declares. JWT role/authority catalogs, selected presentation labels
+   and stored observations never supply these grants. Preserve the boundary
+   between independent API admission and Config transactions; it is not XA.
+3. Register the groups root injectively for application and route namespace
+   within its physical tenant/environment scope. Re-attest the inverse mapping
+   in `resolveLifecycle`; do not accept another app's root or a caller-asserted
+   namespace. The single pilot uses an exact registered UUID, not a hash-based
+   uniqueness claim. Config's catalog independently validates created page
+   identities and ownership; generic host invocation cannot mint them.
+4. Supply the genuine pinned native source through `PageCreationHost` and retain
+   exact producer/publication, document, raw input and child evidence. Re-admit
+   historical bytes and dependencies without replacing them with latest content
+   or treating historical observation as a grant. Compose workspace, metadata,
+   structure, release and budget SPIs; use `UiLayoutNativeStructureChecks` for
+   canonical schema/reproduction plus the host's closed policy. The pilot admits
+   one empty form with no domain API binding or ports, the `home` icon and its
+   explicit assignment scope. This is not proof of arbitrary widgets, domain
+   resource authorization or executable business rules.
+5. Project `EffectiveUiAudienceProvider` from current membership and delegate
+   `EnterpriseRuntimeNavigationProvider` to `PageRuntimeReadService.navigation`.
+   Do not append local nodes or recompute routes outside Config's final receipt.
+   Preserve published-only visibility: no READ_HEAD grant means omitted catalog
+   entries and a direct404, not a leaked document or conditional304. An invalid
+   SESSION/selection still follows its own current authority failure.
+
+Use `QuickstartPageHostTest` and `QuickstartPageDocumentsTest` for focused grants,
+inverse registration, exact provenance and canonical reproduction. The real
+`QuickstartPageCorporateHttpNeonTest` is a separate required gate: login/CSRF,
+opaque selection CAS, groups and page lifecycle, published/catalog/navigation
+head agreement, independent published-source copy, tenant isolation, revocation
+and logout. Use the packaged operational SESSION migration and actual Config
+Flyway on assigned isolated Neon stores; label explicit test membership rows
+TESTONLY and keep runtime SELECT plus only the required lock-column UPDATE.
+Do not seed production grants, use owner as runtime or recreate Config tables.
+Pair with `praxis-api-quickstart-security-config` for header bootstrap, protected
+page/lifecycle CSRF paths and browser-versus-manual-HTTP proof limits.
+
+Check the actual Config coordinate before using these imports. A private P3B
+candidate in an isolated Maven repository is compilation/proof input only.
+Record source/dependency identity and leave public adoption pending until a
+published resolvable coordinate supplies the contracts. Do not silently update
+the public pin, add reflection/fallback providers or claim a Neon pass from
+source/unit evidence. Review official host docs and HTTP examples after the
+accepted proof; guidance presence itself certifies neither publication nor
+runtime acceptance.
+
 ## Grounding And Safety
 
 `api_metadata`, Domain Catalog, Project Knowledge, and filtered schemas are
