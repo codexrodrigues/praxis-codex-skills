@@ -81,7 +81,9 @@ When changing cascades:
 - Keep `dependencyLoadOnChange` modes explicit: `respectLoadOn`, `immediate`, or `manual`.
 - Preserve merge strategy and debounce semantics.
 - Preserve current defaults unless a contract change is intentional and spec-backed: `enableDependencyCascade=true` unless explicitly `false`, `resetOnDependentChange=false`, `dependencyMergeStrategy='merge'`, `dependencyDebounceMs=150`, and `dependencyLoadOnChange='respectLoadOn'`.
-- Keep `suggest()` behavior deterministic: dependency filter map defaults to `dep -> dep`, and `dependencyValuePath` defaults to `id` unless an explicit value path is supplied.
+- Use `suggest()` to fill missing map entries with `dep -> dep` and missing extraction paths from the inferred value key, falling back to `id`. Preserve authored non-identity mappings, including string/object entries, and `dependencyValuePath` as either a string or a per-dependency record. Opening and saving an unchanged rule must preserve both values and shapes.
+- Keep the mapping rows as the current editor draft. An opening snapshot may preserve entry shape, but stale JSON must not overwrite later row edits. Changing the dependency list preserves unsaved edits for retained dependencies; opening another field or template starts a separate draft.
+- When an extraction override changes, preserve the defaults and explicit paths of the other dependencies. Do not replace the existing string/record extraction document merely because the visual editor was opened.
 - Prefer governed `RESOURCE_ENTITY` option-source semantics for business entity lookup, including identity, display, search, selection policy, capabilities, and detail/surface metadata.
 - Remote option-source authoring uses `resourcePath`; do not reintroduce legacy `endpoint` in select, radio, button-toggle, transfer-list, or entity lookup configs.
 - `RESOURCE_ENTITY` coverage must include `optionSource.key`, `type`, `entityKey`, `resourcePath`, value/label/code/description/status paths, search/filtering metadata, `dependsOn`, `dependencyFilterMap`, selection policy, `capabilities.byIds`, detail/create metadata, dialog columns, and actions.
@@ -111,6 +113,7 @@ Property-level `defaultValue` wins over seed hydration. Seed defaults are fallba
 Minimum gates:
 
 - cascade hydration/dehydration: `tabs/cascade-manager/cascade-rules.service.spec.ts`
+- cascade draft and edit/save/reopen preservation: `tabs/cascade-manager/cascade-manager-tab.component.spec.ts`
 - remote source coverage: `config/configs-remote-source.spec.ts`
 - schema normalization: `testing/schema-normalizer.service.spec.ts`
 - dynamic form factory: `testing/dynamic-form-factory.service.spec.ts`
@@ -122,10 +125,16 @@ Useful focused Angular gate:
 ```bash
 npx ng test praxis-metadata-editor --watch=false --progress=false \
   --include=projects/praxis-metadata-editor/src/lib/tabs/cascade-manager/cascade-rules.service.spec.ts \
+  --include=projects/praxis-metadata-editor/src/lib/tabs/cascade-manager/cascade-manager-tab.component.spec.ts \
   --include=projects/praxis-metadata-editor/src/lib/config/configs-remote-source.spec.ts \
   --include=projects/praxis-metadata-editor/src/lib/testing/schema-normalizer.service.spec.ts \
   --include=projects/praxis-metadata-editor/src/lib/testing/dynamic-form-factory.service.spec.ts
 ```
+
+For cascade edits, cover no-op reopen with non-identity string/object mappings and string/record
+extraction paths, row edits overriding the opening snapshot, dependency-list changes, and switching
+fields/templates without draft leakage. Include a real visual edit/save/reopen check through the
+owning host; these specs alone do not prove the browser or remote persistence path.
 
 If AI authoring operations can emit these patches, add focused AI gates:
 
