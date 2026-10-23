@@ -207,6 +207,37 @@ defaults or migration assumptions, and do not generalize lookup absence to opera
 
 The quickstart may demonstrate a materialization, but no pilot may route rules through command words, local keyword rules, or copied assistant text. Governed semantic resolution remains the primary path.
 
+## Governed RuleSet Parameters And Publication
+
+For a parameterizable domain decision, inspect the host's `DecisionSlot.parameterTemplate`,
+Config's approved source definition and snapshot composition service, and the Engine's
+`RuleParameterResolver` before changing a JSON Logic condition. The product-owned template
+declares the expression, allowed scalar paths, bounds, units, required facts and false outcome;
+the host may offer declared values, not a customer-supplied executable or a second copy of
+those outcomes. Persist the template in `definition.parameterTemplate` and declared values in
+`parameters.parameterValues`; derive the persisted condition on the server. A draft condition,
+when supplied, must match that derivation. Composition must compare the source template to
+the host slot and retain only the exact template reference and values in a
+`CUSTOMER/PARAMETERIZE` binding. Reject unknown, null or out-of-range values and attempts to
+replace facts, operators or outcome semantics.
+
+For the next immutable RuleSet version, query Config's maximum in the exact tenant,
+environment and RuleSet scope, then add one with checked arithmetic. The selected head,
+publication order and a page of the version catalog do not establish that maximum. This read
+does not reserve a version: a concurrent publisher must still meet Config's atomic uniqueness
+and precondition checks, without silent retry under a different digest. Publishing stores
+immutable content only; it neither selects nor bootstraps the active head. Head selection
+requires the separate governed operator rollout, host preload/admission and explicit
+activation with the current head ETag or verified head absence.
+
+Use `ExtraordinaryGrantRuleSetFactory`, `PolicyStudioSandboxRuleSetMaterializer`,
+`PolicyStudioRuleSetCompositionService`, `PolicyStudioRuleParameterizationTest` and
+`PolicyStudioRuleSetCompositionServiceTest` as the Quickstart source/proof slice at
+`e6bf30fa` (Config rc.166 and Engine beta.17 public coordinates). Check the current POM
+and run focused tests for derived values, unchanged facts, template mismatch, scoped maximum,
+and publication without activation; prove remote operational adoption separately. Source
+tests or historical SNAPSHOT rehearsals do not certify a public release or full gate.
+
 ## Governed Snapshot Consumption
 
 When a pilot consumes an active runtime snapshot, keep it as a downstream data-plane proof:
