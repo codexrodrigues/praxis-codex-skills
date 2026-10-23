@@ -1447,8 +1447,8 @@
                                             "praxis-visual-builder-ai-validation",
                                             "praxis-manual-form-rules-agentic"
                                         ],
-                       "skillMdSha256":  "0481DA555AD50445E6A3A389C9C50D7EC3FD4ADDB81F45178CA27098479F8D57",
-                       "treeSha256":  "4AF2EABFDF4E5ABB9F0095373F98D590E0D8630749C9AF95A006B2886AD050FA"
+                       "skillMdSha256":  "65FADF565233524DDAF022EF0399448AFA8B738B8A93754B3EE571E060B3911F",
+                       "treeSha256":  "85E7FCF27977486A72E4EB611347B9401C00A2739949148340F1575ECE0AE5EC"
                    },
                    {
                        "name":  "praxis-form-authoring-settings",
@@ -1545,8 +1545,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "7CD44EED5603B16DE1CA9E251994F45A20CA38F6398982584C003F8B4DF07A14",
-                       "treeSha256":  "8BF4CFE7CE01F7AE69A058A7842CA63DE04CD0AD9F5BF1B9698D736303C09281"
+                       "skillMdSha256":  "39ECAC3A19E19A45E2A834290DF67510D3BF1CDFD73A13EFC3CFDFE45B01B946",
+                       "treeSha256":  "5886857BEF8774F1E3FBFA9B3BFC69465778F8D4C03383F04D820F4C0749E640"
                    },
                    {
                        "name":  "praxis-java-host-project",

@@ -76,6 +76,8 @@ Canonical apply/save is replace-all:
 - editor `runtimeContext` is read-only operational evidence. It may expose `resolvedContract.schemaUrl`, `submitUrl`, or `submitMethod` in the UI, but must not be copied into the authoring document.
 - `formRulesState` is internal derived round-trip state for the visual builder. Do not make AI, JSON authoring, or manual editor workflows write it directly; derive or preserve it through the existing editor paths.
 
+When projecting `formRulesState` into `formRules`, distinguish an intentionally empty `rootNodes: []` from a declared root that is missing or has no valid target. `ruleBuilderStateToFormLayoutRules` must throw for missing/targetless roots instead of silently returning an empty rule list; the editor must retain the last accepted config, keep the invalid visual draft available for repair, and block Apply/Save. Intentional deletion of the last rule must instead clear `formRules`/`formRulesState` and recover validity. Prove both paths and save/reopen in `utils/rule-converters.spec.ts` and `config-editor/praxis-dynamic-form-config-editor.spec.ts`; preserve the existing graph-validation boundary rather than treating conversion failure as a deletion.
+
 Legacy editor payloads may be normalized into the canonical document, but new code should author the document shape directly.
 
 `DynamicFormAuthoringDocument` owns authoring state only. `FormConfig` owns form config. `bindings` owns persistible runtime mode preferences. `contextSnapshot` owns persistible authoring context such as `backConfig`, presentation, and schema preferences. Host discovery values, resolved schema URLs, submit endpoints, HTTP methods, and current resource metadata are read-only diagnostics and may appear in editor UI only as evidence.
