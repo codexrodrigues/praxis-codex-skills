@@ -166,6 +166,9 @@ drafts, publication heads, titles and authored documents.
   a Principal still need independently validated current host context before
   application-scoped lookup or rebasing; do not infer authority from the ledger
   or introduce a ThreadLocal to conceal a missing contract.
+  Include route namespace in page lookup predicates and immutable-read keys;
+  prove isolation within one transaction and uniform known/unknown rejection.
+  Preserve the separately defined creation-key idempotency scope.
 - Copy only an exact registered native source/revision or the selected published
   page/release/revision. A historical publication need not be the current head,
   but a frozen release that was never published is not a published source.
@@ -268,16 +271,92 @@ same root and an alternative requested UUID is denied. A UUID constructor or
 Javadoc alone does not prove that registration invariant.
 
 Review dispatcher, revision and frozen-release integration separately from an
-isolated codec. Until the inter-aggregate head guards are implemented and proved,
-do not enable publish, rollback or withdrawal of groups. Block these transitions
-in the lifecycle owner itself, including direct callers with permissive policy
-and no page-creation host. Validate native group metadata before any draft write
+isolated codec. Validate native group metadata before any draft write
 and re-admit persisted root evidence on revision, freeze and commit; history
-inspection does not grant current mutation rights. The later cross-head gate must
-serialize page/group transitions, re-read authoritative heads and reject removal
-of groups with active references. Unit codec tests or a permissive host fixture
-do not prove those guarantees. Keep the issue open while required lifecycle
-integration seams, root registration, documentation or skills remain pending.
+inspection does not grant current mutation rights. Until cross-head integrity is
+implemented and proved, block group publish, rollback and withdrawal in the
+lifecycle owner itself, including direct callers with permissive policy and no
+page-creation host. A codec or permissive fixture does not prove those guarantees.
+Keep the issue open while required integration, documentation or skills remain
+pending.
+
+For page/group head transitions, inspect the owner's P3-A design, core
+`moveHead`/`withdraw`, command factory, `PageCreationHost`, Config transaction
+guard and immutable workspace resolver. Require an internal integrity owner in
+the effective core path; an admission callback alone or a caller-supplied
+"validated" flag cannot replace it. Missing dependencies must deny page/group
+head changes rather than silently enabling the earlier path.
+
+Resolve the navigation root through the host's explicit registered mapping, then
+independently attest the inverse root-bound context. One stable root per scope
+must also mean one application/namespace per physical tenant/environment/root;
+two scopes aliasing that head break application-partitioned checks. Mapping is
+not a grant. Recheck it with current context/authority after locks and at commit;
+do not infer application from actor, administrative unit, module or an anchor.
+Admit the active groups dependency through its current READ_HEAD policy as well
+as source/metadata/structure checks. Recheck admission after those extensions;
+an active group or a valid UUID alone does not authorize a page to use it.
+
+Plan affected group IDs from both the prior and candidate release, including
+omission and withdrawal. Lock the shared navigation identities deterministically
+before the physical root/head, including first publication. Administrative units
+sharing a navigation scope must share its exclusion. Ordering each call alone
+does not prevent inversions across several REQUIRED calls: inspect the owner's
+try-lock/conflict protocol and require rollback of the entire Config transaction
+on contention. Catching the exception or rolling back to a savepoint must not
+restore commit eligibility. Retry means a new transaction and explicit fresh
+preconditions, never REQUIRES_NEW or acquiring an expanded set out of order.
+
+Flush own JPA writes before authoritative JDBC reads and refresh the managed
+head under the lock before changing it. A second `findForUpdate` may return a
+stale first-level entity; refresh must not discard a previous valid write in the
+same transaction. Re-read the base used to choose locks and reject a changed
+base without renewing If-Match. Before commit, check the final heads under the
+retained locks, allowing valid repeated transitions of one root while retaining
+current context/grant checks for each command. Validate the final page's current
+root metadata, children and complete structure as well as its groups dependency;
+checking only its reproduced group IDs is insufficient. Evaluate head
+preconditions against the authoritative refreshed state, so a stale managed
+entity cannot reject an otherwise current ETag before reaching that check.
+Bind each governed root to its expected native authoring kind before applying
+revision reproduction. A kind-dispatch helper may skip unrelated descriptors;
+that skip cannot admit malformed historical groups under permissive host SPIs.
+Never memoize heads as immutable evidence. Require actual JDBC/JPA connection
+identity for reads, locks, flush and mutation even when the JDBC holder reports
+itself synchronized; synchronization alone does not prove a shared connection.
+
+Count all active page references in the attested scope, including private pages
+and other administrative units. Scan with an immutable keyset and bounded
+batches, not OFFSET under READ COMMITTED: unrelated insertions/removals can shift
+offsets past a stable reference. Exceeding the deadline denies the operation;
+a partial scan is not absence. Do not reuse copy-chain quotas as a page-count
+limit. Bound ORM first-level retention too: batching SQL does not bound memory
+if every frozen workspace stays managed. After flushing own writes, release
+sealed read entities and other read records loaded exclusively by the scan;
+preserve pre-existing managed definitions, which do not have an immutable seal.
+Never clear the whole persistence context or discard mutable heads/drafts.
+When increasing batch count to reduce remote round trips, also bound the
+serialized workspace text selected in each batch. Select an ordered keyset
+prefix, retain missing release/draft rows for the canonical verifier, and always
+include the first row so an oversized or malformed record cannot be skipped or
+stall progress. Advance from the last row actually returned. This is a batching
+resource budget, not a page admission quota or a partial-scan shortcut. Workspace
+text bytes do not bound heap, patches or all associated records; record those
+costs separately and prove complete identities across passes after tuning.
+An active page head whose catalog ownership cannot be
+proved must fail closed; document the explicit adoption/migration prerequisite
+rather than inferring its application or treating it as unreferenced. A derived index, if
+introduced, needs atomic maintenance and historical completeness proof.
+
+Prove races in both orders against group omission, rollback and withdrawal;
+check the invariant from a new connection. With multiple try-locks both
+contenders may legitimately abort; do not require an artificial winner. Include
+external REQUIRED inversions, swallowed conflicts/savepoints, initial heads,
+preloaded JPA heads, own writes and repeated transitions, cross-unit private
+references, and rollback of A without changing B or groups. Distinguish failure
+after actual SQL, a beforeCommit exception, and a server rejection of COMMIT;
+each claim needs its own evidence. Measure a dense scan without asserting an
+unmeasured production SLA or claiming the later host/HTTP/navigation gates.
 
 ## Focused Validation And Evidence
 
