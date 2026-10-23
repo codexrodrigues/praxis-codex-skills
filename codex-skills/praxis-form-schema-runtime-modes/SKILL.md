@@ -17,6 +17,7 @@ Inspect the real runtime before editing:
 - `projects/praxis-dynamic-form/src/public-api.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.spec.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.resource-isolation.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.json-api.md`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.spec.ts`
@@ -66,6 +67,10 @@ For metadata-driven flows, prefer `/schemas/filtered` request/response schemas a
 
 Keep these runtime rules explicit:
 
+- Each `<praxis-dynamic-form>` owns its mutable `GenericCrudService` and `FormContextService` instances. Sibling forms must not overwrite another form's resource, schema cache, available fields, or rules; prove isolation with `praxis-dynamic-form.resource-isolation.spec.ts`.
+- This is a breaking-beta migration from shared DI: an ancestor replacement or subclass of `GenericCrudService` is no longer used by Dynamic Form. Do not describe that previously supported replacement path as if it had never existed.
+- Configure the Form through `resourcePath`, `apiEndpointKey`, `apiUrlEntry`, and direct Form `customEndpoints`; these inputs do not reproduce custom logic from an ancestor service replacement. `HttpClient` and its interceptors, `GlobalConfigService`, and `API_URL` remain inherited from the host injector.
+- In Form tests, override the component-local mock with `TestBed.overrideComponent(PraxisDynamicForm, { add: { providers: [{ provide: GenericCrudService, useValue: crudMock }] } })`; mock `FormContextService` there when needed. Use `add` so the Form's i18n provider remains installed.
 - Schema-backed initialization requires `formId` and either `resourcePath` or `schemaUrl`. Local-only forms may render from explicit local `config`; a standalone form with `formId` also participates in configuration persistence without a schema request. Without an ID, standalone configuration remains host-owned.
 - `resourcePath` remains the owner resource path. `schemaUrl`, `readUrl`, `submitUrl`, and `responseSchemaUrl` are concrete operation/surface URLs published by discovery or supplied explicitly.
 - Explicit component inputs have precedence over persisted connection/input preferences. Persisted connection can hydrate `resourcePath` only when the host did not provide one.
