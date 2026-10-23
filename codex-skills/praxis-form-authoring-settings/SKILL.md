@@ -168,7 +168,7 @@ preview, and form/runtime diagnostics. A successful preview proves only the eval
 those data; it does not validate targets, grant access, or replace the hosted editor's Apply/Save
 gates. JSON replacement, list clearing, and Reset must refresh the same visual draft and effects
 panel: canonical `formRules` wins over valid stale derived state. While conversion fails, retain
-the accepted config, hide its stale structured effects panel, and direct repair to the visual
+the accepted config, hide its stale structured effects panel and accepted-rule diagnostics, and direct repair to the visual
 wizard or JSON; restore the panel only after conversion succeeds. Invalid drafts block Apply/Save.
 Prove this with
 `config-editor/praxis-dynamic-form-config-editor.spec.ts` and

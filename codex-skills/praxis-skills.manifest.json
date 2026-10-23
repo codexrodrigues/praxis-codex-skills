@@ -1466,8 +1466,8 @@
                                             "praxis-editorial-forms-presentation-diagnostics",
                                             "praxis-editorial-forms-data-collection-adapters"
                                         ],
-                       "skillMdSha256":  "30337C8B23A426B1D099D82A698BAF211045A10B6B6C45BAD99D600E08739646",
-                       "treeSha256":  "C605D934DAF11D79961602A7E6EC059838C38900E0D9BA3004AFEAB0EE0F57F2"
+                       "skillMdSha256":  "53D974DE126E4EBA759A44E4D3048145D140100787CE613A14FEDA5CF58682E1",
+                       "treeSha256":  "F606CE90FD0110BE270D3B33CB664E4616BC3CA705D0D64AAB7B13A786B5B6A7"
                    },
                    {
                        "name":  "praxis-form-layout-canvas",
@@ -1545,8 +1545,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "6A56A170334B28A7122852C38398588AD75952B6C9403EB76E2CE1BC052D0DB2",
-                       "treeSha256":  "4C548FB6D3C006FC1852DC7C8542F70D0C93D5361E0E5C15EB0122F77540F071"
+                       "skillMdSha256":  "6672054D21F073023F9D778948EE1EDC6507DC265F7B01EEB696F24FB1EE18B9",
+                       "treeSha256":  "41F98AA4941BC68DDBBC069A1B476E920F660830337A02681331274BAFD06709"
                    },
                    {
                        "name":  "praxis-java-host-project",
