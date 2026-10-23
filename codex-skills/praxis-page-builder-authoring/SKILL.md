@@ -1,6 +1,6 @@
 ---
 name: praxis-page-builder-authoring
-description: "Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors and save-as adoption: PraxisPageSaveAsComponent, PageSaveAsAdapter, PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, page editor runtime parity, or authoring changes that may require Page Builder agentic validation gates."
+description: "Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors and save-as adoption: PraxisPageCopyActionComponent, PraxisPageSaveAsComponent, PageSaveAsAdapter, PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, page editor runtime parity, or authoring changes that may require Page Builder agentic validation gates."
 ---
 
 # Praxis Page Builder Authoring
@@ -59,6 +59,16 @@ public API, then the host adapter and browser proof. Prefer the standalone
 `PraxisPageSaveAsComponent` from `@praxisui/page-builder`; it is a composed journey,
 not a registered canvas widget or AI operation. Do not add a second host save form,
 icon catalog or storage mechanism to the library.
+
+For a copy entry point, use `PraxisPageCopyActionComponent` from the same library:
+feed the current builder draft as `page`, bind `canCopy` to the builder's save/review
+eligibility and let `copyRequested` hand the isolated full snapshot to the host's
+editor/route placement. Inspect `page-copy-action.component.ts` and the copy cases
+in `page-save-as.component.spec.ts`; preserve unknown/native fields and clone-failure
+feedback. This is a local draft snapshot, not `copyPageAuthoringDocument`'s governed
+identity remapping. The host may pass it as transient navigation information; no new
+storage, source attestation or corporate copy evidence is implied. The destination
+still completes the explicit save-as chain below.
 
 Wire the explicit lifecycle as one chain:
 
