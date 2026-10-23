@@ -77,6 +77,60 @@ Serialized workspace batching does not bound heap, patches or all ORM state.
 Measure the actual fixture's SQL, elapsed time, bytes and managed retention;
 reject deadline exhaustion rather than truncate or claim an unmeasured SLA.
 
+## Prefetch Immutable Bytes Without Moving Admission
+
+Inspect `ConfigTransactionReadSet`, `PageCatalogStore` and
+`JdbcUiLayoutMetadataCaptureStore` before optimizing repeated evidence reads.
+Feed the same store instance used by the creation/lifecycle adapters; a second
+store owner will not warm their readset. Run the SQL loader inside the existing
+transaction admission, with the same owner/holder/JPA-JDBC connection checked
+before and after loading. Preserve mutation guards, suspension, completion and
+savepoint rollback cleanup; a hit never renews the validation deadline.
+
+Prefetch complete immutable raw rows, including every SQL column needed by the
+original correlation, without parsing private documents or running semantic
+codecs early. Preserve the existing order: mapping, delegate READ_HEAD, ledger
+consumption, frozen document/selector, then matching metadata/source/structure
+admission. READ_HEAD denial must prevent ledger and capture validation; selector
+mismatch prevents capture admission but does not undo the earlier ledger check.
+A physical metadata row key identifies stored bytes; it does not attest the full
+source/descriptor/baseline binding. Recheck that binding and scope on every
+admitted read, and create fresh mutable objects from retained strings. SQL or
+connection failure remains a failure, never a cached miss.
+
+Keep raw page-row and published-source snapshot key types distinct within the
+shared catalog owner. Preserve application/tenant/environment/namespace/page
+identity, with release/revision identity for a published snapshot; do not replace
+these keys with ambiguous aliases.
+
+Consume each selected prefix before prefetching the next. Bound both candidate
+count and bytes before loading, and check actual UTF-8 envelope bytes before
+retaining them; replacement must subtract the previous value. A missing or
+oversized item must still advance through the existing individual loader when
+its admission gates allow consumption, without being hidden, truncated or
+retained as a negative result. Limits belong to each owner: ancestry may reach
+additional stores, and neither their sum nor SQL text sizes establish a global
+heap bound. Final authority checks may prefetch raw rows in windows only after
+all mapping callbacks, preserving the final grant fence and fresh head vector.
+
+Prove that corrupt private ledger/capture bytes leave the public projection and
+receipt unchanged when their current gates deny consumption; admitting that
+same source must still fail closed. Also prove a mismatching expected binding
+on a raw-row hit, mutation isolation, eviction/reload, savepoint rollback and
+current revocation after a hit. Compare measured SQL/getter costs and complete
+admission before claiming capacity. A diagnostic test that accepts an unavailable
+response after its budget is not a successful capacity gate.
+
+Exercise real P2 creation from a PUBLISHED source as well as a native seed.
+After publishing the destination, withdraw the source head and deny ancestral
+READ_HEAD/READ_SOURCE/COPY_SOURCE. The independently admitted destination must
+still resolve its own head in catalog, URL and menu; revoking its current
+producer/domain admission must still deny it. This exercises the shared raw-row
+and published-snapshot cache plus the extra metadata owner. A thousand native
+pages do not prove capacity for a thousand ancestry chains.
+
+## Conditional Validators
+
 The semantic receipt excludes the changing `resolvedAt`, so these GETs require
 weak HTTP ETag `W/"<receiptEtag>"` and weak If-None-Match comparison after current
 authorization. Keep the stored head ETag strong for lifecycle If-Match/412.
