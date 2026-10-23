@@ -216,6 +216,11 @@ passing results merely because code, documentation or a fixture exists:
    whereas404 permits fresh defaults; check exact GET/PUT validators, scope
    ownership and ETag chains including legitimate hydration echoes. Require zero
    exact-key pending requests and record every request failure before teardown.
+   Make reruns valid with existing remote documents: correlate the validator to
+   the current edit/epoch, not an earlier hydration echo with the same value.
+   Treat null context during switch/refresh as pending and await confirmation.
+   Require the whole functional flow and cleanup to finish before SQL acceptance;
+   a report written from finally after a failed assertion is not a passing gate.
 5. For confidential browser HTTP, use same-origin browser-native fetch with native
    cookies and catch transport errors inside the evaluated function, returning
    only a static failure marker. Use a real non-HTML static auxiliary resource
