@@ -76,6 +76,33 @@ Classify each need:
 
 Only `lacuna-real-de-contrato` justifies a new public core contract. If the data already exists in backend metadata, config starter state, action/surface/capability discovery, AI manifests, config storage, diagnostics, or runtime registries, fix the owner or materialization instead of adding a parallel Angular concept.
 
+## Enterprise Navigation And Context Generation
+
+Before changing `EnterpriseRuntimeContextService.navigation`, inspect its model,
+service/spec and Config's current `P3B-DESIGN.md`, provider and DTOs. Config owns
+publication/visibility; Core consumes that projection, not a second menu registry.
+Reuse Core's existing `UiLayoutReleaseHeadReceipt` by owner-local type import.
+Preserve the admitted icon token, lazy `children: null`, required receipt/context
+fields and nullable continuation; do not infer private child counts or grants.
+
+Capture the existing `contextRevision` before awaiting `ready()`. Require a ready,
+nonblank server context version; recheck generation/current version after the
+wait, after host header preparation, and after HTTP success or failure. A→B→A
+must reject the first A's callback even if business identifiers repeat. Reuse
+`EnterpriseRuntimeContextObsoleteError`; preserve current-generation HTTP errors.
+Copy validated pagination options before the wait and use the confirmed snapshot
+headers while preserving authentication and endpoint overrides. Never dispatch
+navigation using bootstrap context claims or an unconfirmed version.
+
+The minimal navigation client does not cache bodies or send If-None-Match. Any
+later cache adoption needs explicit 304/body and revocation handling; a stored
+menu is not authority to open its route. Prove the public HTTP service with the
+focused `enterprise-runtime-context.service.spec.ts`, including obsolete success,
+error, pending-ready and header callbacks. Build Core and a real direct consumer.
+A Dynamic Form build proves package integration, not menu navigation. Locate an
+actual visual consumer before selecting browser E2E; report renderer/route wiring
+and live host HTTP separately when those downstream gates remain unimplemented.
+
 ## Presentation Distribution Contract
 
 For `PraxisPresentationVisualizationConfig`, inspect
