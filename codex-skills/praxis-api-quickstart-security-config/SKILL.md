@@ -80,6 +80,40 @@ retrying. Readiness warming is not proof of first-request behavior after an idle
 pool; record that boundary explicitly. For error responses such as Config's
 textual412, capture status and body hash before attempting JSON decoding.
 
+## Cost of enterprise authority admissions
+
+For repeated enterprise/page admissions, inspect `EnterpriseContextSessionService`,
+`JdbcEnterpriseContextSnapshotReader`, `EnterpriseSessionStore` and
+`JdbcEnterpriseMembershipSource` before changing budgets or transaction managers.
+The host reader composes the existing SESSION and membership snapshot; Config still
+owns lifecycle checkpoints and persistence. Keep two fresh observations around each
+policy and compare the session revision and complete membership. Do not cache grants,
+remove checkpoints, raise the page validation budget or widen runtime privileges.
+
+Use the same physical writable operational transaction and datasource for both
+stores. The composed query locks materialized SESSION before the exact membership
+lookup (NULL selectors are significant), reuses verified identity and the original
+parsers/clocks, and evaluates validity after lock waits. Invalid SESSION must be
+rejected before interpreting grant JSON; technical membership failures must not
+become successful absence or authentication failures.
+
+At READ COMMITTED, a membership inserted while the statement waits on SESSION may
+be conservatively absent even when the changed SESSION is visible. Preserve denial;
+never recover an old grant or silently retry using an alternate read. A subsequent
+fresh request can observe the new membership. Document this availability boundary.
+
+Use `JdbcEnterpriseContextSnapshotReaderTest` for physical guards/choreography and
+the assigned-Neon `JdbcEnterpriseContextSnapshotReaderNeonTest` for actual two-query
+admissions, SESSION-before-membership locks, revocation, expiry after waits and
+coherence rollback. For group-draft HTTP acceptance, use
+`QuickstartPageCorporateHttpNeonTest#groupsDraftCreateReadAndCommitRollback` only
+with the explicitly resolved compatible Config artifact. Require create/read below
+the unchanged budget; force failure after draft and metadata are staged, observe
+transaction rollback, and independently read their absence through another ordinary
+runtime connection before retrying the same creation key. Fixture cleanup is not
+rollback proof. Bind receipts to source, dependencies, branch, privileges and timings;
+these focal gates do not certify publication, navigation, browser or deployment.
+
 ## Current Operational Grants And Context
 
 For bulk-provider composition, inspect `security/QuickstartOperationalContextResolver.java`,
