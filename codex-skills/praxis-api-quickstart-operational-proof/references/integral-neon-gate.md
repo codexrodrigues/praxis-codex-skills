@@ -213,11 +213,22 @@ claim a pass merely because preparation completed.
 Inspect the current triggers, job conditions and downstream effects in
 `publish-public-release.yml` and both `ci-java.yml` definitions before dispatch.
 For validation of a reviewed branch before integration, use the existing
-**Publish Public Release** workflow with `create_tag=false`. This path calls the
-same complete private/sanitized Maven verify, packaged-runtime and cleanup gate
-with read-only repository permissions; it does not commit a version, create a
-tag, publish a snapshot or deploy. Do not create a parallel workflow or shorten
-the matrix to work around local network latency.
+**Publish Public Release** workflow with `create_tag=false` and the default
+`validation_scope=complete`. This path calls the same complete private/sanitized
+Maven verify, packaged-runtime and cleanup gate with read-only repository
+permissions; it does not commit a version, create a tag, publish a snapshot or
+deploy. Preserve that complete matrix for integration/release acceptance.
+
+For diagnosis of the declared Bulk command, grant-fence and process-restart
+cases when local network latency consumes their unchanged business deadlines,
+use the same dispatch with `validation_scope=bulk-focal`. This closed selection
+runs only the named source tests and isolation policy, with the same exact-source
+Neon assignment, cleanup attestation and retained test receipts. It skips sanitized
+Maven/package validation, uses a distinct focal artifact and explicitly reports
+`FOCAL_ONLY_NOT_RELEASE_GATE`. It cannot prepare a tag or publish; release calls
+reject this scope. Inspect the committed selection rather than inventing a test
+expression, parallel workflow or deadline override. A focal pass diagnoses that
+selection only and never replaces either complete release tree.
 
 Freeze the exact dispatched branch commit and obtain an exclusive child lease
 whose `sourceSha` matches it. Omit both `authorizedReleaseRef` and
