@@ -115,6 +115,25 @@ Use `praxis-dynamic-form.field-metadata-roundtrip.spec.ts` as the focused regres
 entrypoint, plus a real storage reload when authoring persistence is the reported
 failure. A mocked accepted patch alone does not prove Save survives reopening.
 
+Exercise host replacements through `fixture.componentRef.setInput('config', value)`
+and change detection with documents already normalized by the Form helper. Angular
+assigns the new input before `ngOnChanges`; compare the previous host document
+(`SimpleChange.previousValue`) when detecting change, rather than treating the
+already-assigned component property as the previous document. Directly calling
+`ngOnChanges` without Angular's assignment can miss this regression.
+
+For a `local-first` form, let saved configuration load, hold its first `afterInit`
+hook, then supply a different normalized host document and release the hook.
+Assert that the latest fields remain authoritative and initialization succeeds.
+Use cold storage that returns the old saved document on every subscription, and
+assert one form-config read: a retry must not replay that document over the update.
+Separately, in a settled `input-first` standalone form, prove a real replacement
+rebuilds while preserving surviving controls' dirty values, an equivalent clone
+of the current document avoids a rebuild, and an explicit empty replacement
+removes the old controls. These local-field cases must not request schema or save
+configuration merely because an input changed; they do not establish equivalent
+clone behavior for every persisted-config or schema-backed combination.
+
 ## Remote Selection, Loading And Recovery
 
 Read `projects/praxis-dynamic-form/docs/entity-read-feedback.md`, the runtime
@@ -232,6 +251,7 @@ For hydration, persisted config, runtime context, or `initialValue` behavior:
 
 ```bash
 npx ng test praxis-dynamic-form --watch=false --progress=false \
+  --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.field-metadata-roundtrip.spec.ts \
   --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.external-config-hydration.spec.ts \
   --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.first-config-hydration.spec.ts \
   --include=projects/praxis-dynamic-form/src/lib/services/form-context.service.spec.ts \
