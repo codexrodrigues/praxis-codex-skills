@@ -204,6 +204,14 @@ switching by changing tenant headers, component IDs, page inputs or a compatibil
 flag. Confirm an opaque authorized `choiceRef` with the current
 `expectedSelectionVersion`. Labels present choices; they do not choose scope.
 
+Before mounting that journey, keep reference demos with fixed identity headers
+out of a server-confirmed principal's page: use the existing
+`user.resolvedFromServerPrincipal === true` fact, as the remote lab parent does,
+with a monotonic presentation latch across null transitions. Keep the SESSION
+consumer mounted once; hiding auto-fit/color/demo-tabs is not a grant or a new
+contract/route/flag, and must not infer identity from cookies or roles. Check the
+parent presentation spec and the browser `corporateLab` assertions before proof.
+
 1. On each invalidation/unready emission, synchronously clear the host owner and
    visible document/JSON. Each newly confirmed owner receives fresh defaults from
    the canonical factory and a monotonic render epoch. Track that epoch to recreate

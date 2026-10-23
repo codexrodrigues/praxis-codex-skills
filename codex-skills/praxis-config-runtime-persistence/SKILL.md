@@ -182,9 +182,21 @@ passing results merely because code, documentation or a fixture exists:
    actual CSRF flow, discover opaque choices and select through current CAS. Use
    the same SESSION/SPA for tenant changes, edit real controls and preserve the
    component key/type. No JWT/cookie seeding, fake grants or Config response mocks.
+   Do not bootstrap fixed-header demo consumers beside that principal: the
+   existing `user.resolvedFromServerPrincipal === true` DTO fact selects the lab's
+   SESSION-only presentation, latched through null so auto-fit/color/demo-tabs
+   cannot restart during selection. This is no grant, cookie/role heuristic or
+   new contract/route/flag. Require the parent mount-count spec and browser
+   `corporateLab` absence assertions; pending/failed E2E runs stay unapproved.
+   Reuse the successful selection PUT's confirmed snapshot for transition/header
+   assertions instead of issuing a redundant concurrent context GET during
+   bootstrap. Keep deliberate remote Config GET/hydration proof distinct; reusing
+   confirmation does not replace that persistence evidence.
 2. Gate an A write before it reaches the backend, confirm B and release the exact
-   real request: require host scope403. Cover A→B→A with the obsolete version and
-   require context409. Inspect canonical error codes, all writes and final records;
+   real request: require host scope403. Bound every raw delay/hold handshake
+   (for example `Promise.race` with a 30s deadline), clear its timer and release
+   held transport in `finally` even if navigation/assertions fail. Cover A→B→A
+   with the obsolete version and require context409. Inspect canonical error codes, all writes and final records;
    do not synthesize the denial or infer it from UI state.
 3. Separately allow A to commit, withhold its real ACK, select B and then release
    it. Prove the recorded commit remains in A without updating B or the new A
@@ -196,8 +208,11 @@ passing results merely because code, documentation or a fixture exists:
    exact-key pending requests and record every request failure before teardown.
 5. For confidential browser HTTP, use same-origin browser-native fetch with native
    cookies and catch transport errors inside the evaluated function, returning
-   only a static failure marker. Use a real static auxiliary resource to avoid
-   bootstrapping another Angular app. Do not use `route.fetch` or authenticated
+   only a static failure marker. Use a real non-HTML static auxiliary resource
+   to avoid bootstrapping another Angular app. Navigate with `waitUntil: 'commit'`
+   and an explicit bounded timeout (for example 15s), then assert the expected
+   same origin; image documents need not emit DOMContentLoaded. Do not wait for
+   that event or leave auxiliary navigation unbounded. Do not use `route.fetch` or authenticated
    APIRequestContext: their reporter step can record Cookie/XSRF before an outer
    catch, even with traces off. Transport delays must forward the real request and
    release the real response, never fabricate Config/SESSION payloads or ACKs.
@@ -207,6 +222,19 @@ passing results merely because code, documentation or a fixture exists:
    via an in-memory real probe with static errors and no credential logs. Preserve
    a sanitized lifecycle/result record. Historical reload evidence is not proof
    of same-SESSION switching, load/SLA, corporate SSO or every application.
+7. Before a rerun after unexpected503/timeout, inspect host/transport logs and
+   record canonical defaults, effective pool/minimum-idle values, warmup state,
+   acquisition deadlines and the observed connection/concurrency budget for each
+   datasource. Neither an undersized override nor the canonical default proves
+   capacity adequate for real bootstrap/admission work: transaction locks and
+   remote RTT can exhaust it. Diagnose that bottleneck first. If demand exceeds
+   the default, a justified bounded capacity adjustment through existing official
+   knobs, with explicit warmup and a database-wide connection budget, is allowed;
+   record its values/rationale in the receipt. Do not reflexively inflate pools,
+   blindly rerun, mask503, weaken authorization or extend acquisition/authentication/
+   session deadlines to force a pass. Preserve those deadlines and distinguish
+   capacity evidence from security correctness, load/SLA certification and bounded
+   transport cleanup.
 
 ## No Keyword Routing
 
