@@ -16,6 +16,9 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/AGENTS.md`
 - `projects/praxis-core/src/public-api.ts` when composition models, widget contracts, ports, surface hosts, runtime observations, or composition services are exported or public consumption changes
 - `projects/praxis-core/docs/connection-editor.md`
+- `projects/praxis-core/docs/dynamic-page-serialized-persistence.md` and `docs/table-connections-persistence-lab-baseline.md` for context-bound writers and SPA owner replacement
+- `projects/praxis-core/src/lib/services/config-storage.service.ts` and `enterprise-runtime-context.service.ts` when a composition consumer switches enterprise context
+- `src/app/features/remote-config-storage-persistence-lab/session-tabs-consumer.component.ts` and its focused spec for the existing same-SESSION owner/choice materialization
 - `projects/praxis-core/docs/rfc-dynamic-page-canvas-runtime.md`
 - `projects/praxis-core/src/lib/composition/**`
 - `projects/praxis-core/src/lib/widgets/**`
@@ -194,6 +197,55 @@ Classify gaps before adding contracts:
 
 Only the last category justifies a new shared contract. Extend the canonical owner and its consumers together; do not add an event bus, command-string router, custom transform registry, or host-only nested path convention.
 
+## Same-SESSION SPA Owner Lifecycle
+
+Use the existing Core context service and Config adapter; do not implement context
+switching by changing tenant headers, component IDs, page inputs or a compatibility
+flag. Confirm an opaque authorized `choiceRef` with the current
+`expectedSelectionVersion`. Labels present choices; they do not choose scope.
+
+Before mounting that journey, keep reference demos with fixed identity headers
+out of a server-confirmed principal's page: use the existing
+`user.resolvedFromServerPrincipal === true` fact, as the remote lab parent does,
+with a monotonic presentation latch across null transitions. Keep the SESSION
+consumer mounted once; hiding auto-fit/color/demo-tabs is not a grant or a new
+contract/route/flag, and must not infer identity from cookies or roles. Check the
+parent presentation spec and the browser `corporateLab` assertions before proof.
+
+1. On each invalidation/unready emission, synchronously clear the host owner and
+   visible document/JSON. Each newly confirmed owner receives fresh defaults from
+   the canonical factory and a monotonic render epoch. Track that epoch to recreate
+   the DWP even when A→null→A or A→B→A completes before Angular renders. Reusing the
+   parent document lets GET404 accidentally adopt the previous tenant's defaults.
+2. Capture the emitting epoch in `pageChange` and reject obsolete outputs. Correlate
+   async catalog callbacks by operation and context revision, including A1→B→A2.
+   Prevent duplicate selection submissions. CAS/503 selection failures cannot
+   restore the former owner; allow an explicit context HTTP refresh. Catalog
+   discovery failure alone does not revoke a still-confirmed owner.
+3. Keep Core's context-bound queue guard. Discard not-yet-invoked obsolete jobs;
+   do not redirect their payloads to the next tenant's headers. Recreate a fresh
+   ready DWP in the same SPA/SESSION instead of requiring browser reload. This is
+   host materialization, not live reuse of an obsolete page instance or cross-tab
+   coordination. Draining after DWP view destruction requires the parent adapter
+   provider to remain alive. Destroying that provider rejects callbacks/releases
+   probes and carries no drain guarantee. Inspect the Config skill for captured
+   transport/cache epochs.
+4. Require an emitted current-owner load result before enabling writes. A genuine
+   404 confirms absent config and permits that owner's fresh defaults; hard error,
+   synchronous throw and EMPTY do not. Preserve the existing DWP i18n
+   `persistence.loadFailed` alert with `role="alert"`; do not hide a failed load,
+   expose its raw error, or call empty completion success.
+5. A request already admitted/committed can finish after the view changes. Ignoring
+   its ACK is not rollback, and operational admission followed by Config commit is
+   not an atomic database fence. Same-SESSION claims require the real proof below;
+   historical fresh-session/reload tests alone do not establish them. Render only
+   safe context facts/presence markers, never raw opaque context versions.
+   A functional proof on a warmed host does not certify recovery after idle or
+   SLA. Preserve that evidence boundary, stable CSRF within one authenticated
+   SESSION and unresolved connection-recovery failures using the Config proof workflow;
+   a per-request token-rotation host bug is not a reason to bypass browser CAS;
+   do not mask them with heartbeat traffic or widened authentication deadlines.
+
 ## Operational Proof
 
 Before declaring composition guidance current, prove:
@@ -210,7 +262,7 @@ Before declaring composition guidance current, prove:
    interaction after reload so hash equality alone cannot hide an endpoint-match
    regression. Readiness and receipts remain derived evidence, never page inputs.
 7. State-input overlap path: project a whole input object and an independent descendant override in both link orders within one segment. Verify the descendant survives persistence/reload in the rendered real form while source selection remains unchanged. Cover a same-widget nested delivery as an ordering barrier and another widget's nested delivery as unrelated; equal-path order and event/side-effect execution retain their existing behavior. A persisted state assertion or synthetic output emission alone does not prove input rehydration.
-8. Remote writer path: prove serialized adapter calls, captured snapshots/keys, acknowledgement versus empty completion/error, and draining accepted jobs after destroy while rejecting new jobs. Require the real remote form edit, acknowledged PUT and fresh-context GET/control round-trip; inspect every target write and unfinished/failed request, not only one successful response. Use the reference above and `praxis-config-runtime-persistence` without duplicating Config's scope, ETag or authorization contract.
+8. Remote writer path: prove serialized adapter calls, captured snapshots/keys, acknowledgement versus empty completion/error, and draining accepted jobs after view destruction only while provenance remains valid and the adapter provider remains alive. Require real remote control edits, acknowledged PUTs, GET/control round-trips and all exact-key pending/failed requests. For SPA switching, prove fresh owner/defaults and actual requests after A→null→B and coalesced A→B→A, obsolete output rejection, and load503/EMPTY blocking with the localized alert versus legitimate404. Use `praxis-config-runtime-persistence` for real before-admission and after-commit transport gates, scope/ETag and authorization proof; do not duplicate that contract here.
 
 Use a focused Angular gate from the `praxis-ui-angular` root:
 

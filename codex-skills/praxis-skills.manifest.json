@@ -789,8 +789,8 @@
                                             "praxis-core-providers-bootstrap",
                                             "praxis-navigation-container-composition-events"
                                         ],
-                       "skillMdSha256":  "30DF08F92EB03402C7747C83E4BE12C8242A68078AE19A307CA9FCC1F87044AA",
-                       "treeSha256":  "A111C6897E9A451AC2599C3D257A23A125A96EC4CC0D862F8BFDA95B96BFB0E4"
+                       "skillMdSha256":  "0985FDCFF5998421EB8358DB981AE98D69D55DD1466778F09690D036EEA7809F",
+                       "treeSha256":  "FB677FBCA259038048ED9290DC12BEE6ECE21A524CD0678B6A76525F74048F97"
                    },
                    {
                        "name":  "praxis-core-global-actions-metadata",
@@ -2416,8 +2416,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "49E5C21FDEC9FF7AB66360F998EE061245DC5E6EDA2DE68E4E306A90E6469145",
-                       "treeSha256":  "A0634F92E2B4D039569DDA282A07608308F7D1F45EC948306EF867BCD68A5B26"
+                       "skillMdSha256":  "7A428D38FB70157EBC6AC8A65ACD7B192787AED92914F7E4A9FB78628963DDCA",
+                       "treeSha256":  "815C417B14C572EC13D8775BA22391C784EAB3689F94A08145A9B5A779C7A637"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
@@ -2503,8 +2503,8 @@
                                             "praxis-config-agentic-authoring-streaming",
                                             "praxis-metadata-schema-contracts"
                                         ],
-                       "skillMdSha256":  "F215422D81C21A38EB579F13723799909B2A890369EC0F230B056AEA50DBB850",
-                       "treeSha256":  "C1C46A2C855E8478A3340324C1B336AFA5BC9784CE84D15D82407FD5DED3C500"
+                       "skillMdSha256":  "0FA0B83282DA585662A8026BFE18B690D86E0C0B7450B0FDC9CC48341E59D701",
+                       "treeSha256":  "2CE8E65B7482EEFDEA34F6ECA3943F1390174E1B381F5BE7E2ACD7B609C6A14F"
                    },
                    {
                        "name":  "praxis-api-quickstart-domain-pilots",
