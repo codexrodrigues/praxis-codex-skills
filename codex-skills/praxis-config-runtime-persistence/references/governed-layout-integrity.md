@@ -329,6 +329,14 @@ if every frozen workspace stays managed. After flushing own writes, release
 sealed read entities and other read records loaded exclusively by the scan;
 preserve pre-existing managed definitions, which do not have an immutable seal.
 Never clear the whole persistence context or discard mutable heads/drafts.
+When increasing batch count to reduce remote round trips, also bound the
+serialized workspace text selected in each batch. Select an ordered keyset
+prefix, retain missing release/draft rows for the canonical verifier, and always
+include the first row so an oversized or malformed record cannot be skipped or
+stall progress. Advance from the last row actually returned. This is a batching
+resource budget, not a page admission quota or a partial-scan shortcut. Workspace
+text bytes do not bound heap, patches or all associated records; record those
+costs separately and prove complete identities across passes after tuning.
 An active page head whose catalog ownership cannot be
 proved must fail closed; document the explicit adoption/migration prerequisite
 rather than inferring its application or treating it as unreferenced. A derived index, if
