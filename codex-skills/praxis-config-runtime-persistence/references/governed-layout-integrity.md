@@ -149,8 +149,10 @@ freeze/publication/read and denied-source rollback on a fresh connection. A
 mocked repository cannot prove JPA new-entity/version behavior or JDBC/JPA sharing
 one Config transaction. Record the actual migration slice, runtime identity,
 source/dependency hashes and limits; a partial DDL fixture is not full Flyway or
-live host HTTP proof. Catalog, routes, menus, cross-head transactions and host
-adoption remain their separately scoped downstream work.
+live host HTTP proof. Those child-admission tests do not by themselves prove
+catalog, routes, menus, cross-head transactions or host adoption. Use the dedicated
+creation/group sections below and [published-page-runtime.md](published-page-runtime.md)
+for their separate implementation and evidence gates.
 
 ## Page Creation And Copy Admission
 
