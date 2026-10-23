@@ -166,6 +166,9 @@ drafts, publication heads, titles and authored documents.
   a Principal still need independently validated current host context before
   application-scoped lookup or rebasing; do not infer authority from the ledger
   or introduce a ThreadLocal to conceal a missing contract.
+  Include route namespace in page lookup predicates and immutable-read keys;
+  prove isolation within one transaction and uniform known/unknown rejection.
+  Preserve the separately defined creation-key idempotency scope.
 - Copy only an exact registered native source/revision or the selected published
   page/release/revision. A historical publication need not be the current head,
   but a frozen release that was never published is not a published source.
@@ -315,6 +318,9 @@ root metadata, children and complete structure as well as its groups dependency;
 checking only its reproduced group IDs is insufficient. Evaluate head
 preconditions against the authoritative refreshed state, so a stale managed
 entity cannot reject an otherwise current ETag before reaching that check.
+Bind each governed root to its expected native authoring kind before applying
+revision reproduction. A kind-dispatch helper may skip unrelated descriptors;
+that skip cannot admit malformed historical groups under permissive host SPIs.
 Never memoize heads as immutable evidence. Require actual JDBC/JPA connection
 identity for reads, locks, flush and mutation even when the JDBC holder reports
 itself synchronized; synchronization alone does not prove a shared connection.
