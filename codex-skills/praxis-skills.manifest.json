@@ -1865,8 +1865,8 @@
                        "dependencies":  [
                                             "praxis-page-builder-composition"
                                         ],
-                       "skillMdSha256":  "DCAE5534BB0E377C7ED47AE8B5FD938DBCE98CA5B1D25EA6C3F053660238530F",
-                       "treeSha256":  "48A2F94EF9350D116C6BAEE24FE350012A6D8F246C929BB268CA64C1B986B50A"
+                       "skillMdSha256":  "01BF3C0BD101894B784DAA08595A4F9143C66739F7AB9F87DB7616222BAF272A",
+                       "treeSha256":  "2C975610E123932AFF7E3D2DADF765BE36DF4A6620E044BF904F26BCB602AE54"
                    },
                    {
                        "name":  "praxis-page-builder-composition",
