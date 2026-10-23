@@ -916,8 +916,8 @@
                                             "praxis-core-global-actions-metadata",
                                             "praxis-core-widget-observations"
                                         ],
-                       "skillMdSha256":  "4BBEB909BC5A2A4CA981ECD297E73458991EACFE7EE7218960EAFBFE098D0C39",
-                       "treeSha256":  "36EF5741B018F37012BAB37C04AA747FCE373A8CE6CA14BC4227710D99BA2447"
+                       "skillMdSha256":  "A179F90E763A97C2E53152BD548BB64E1A66739A5E36FD2E6577F1E26C168E3F",
+                       "treeSha256":  "D1482251DD8FDCAE8061D13CCF3CD421E2B543EA3D5342C0E6DD44F7558087E8"
                    },
                    {
                        "name":  "praxis-core-widget-observations",
@@ -2416,8 +2416,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "886E13BBFF9B5331A47AF30559EBA5CFB658A934788EE8CFFA4EE60F9939C475",
-                       "treeSha256":  "3EF356AD943AB4B3351EF3CFF8A9F4305888E6FD52485BA83F6C38996D53C957"
+                       "skillMdSha256":  "49E5C21FDEC9FF7AB66360F998EE061245DC5E6EDA2DE68E4E306A90E6469145",
+                       "treeSha256":  "A0634F92E2B4D039569DDA282A07608308F7D1F45EC948306EF867BCD68A5B26"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
