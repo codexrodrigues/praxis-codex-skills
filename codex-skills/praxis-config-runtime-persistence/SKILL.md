@@ -1,6 +1,6 @@
 ---
 name: praxis-config-runtime-persistence
-description: Use when Codex must implement, audit, or consume praxis-config-starter runtime configuration persistence: /api/praxis/config/ui, ui_user_config scope and environment resolution, ETag conditional requests, payload secret protection, Angular ApiConfigStorage, governed UI-layout lifecycle, exact revision identity, immutable metadata evidence, or /api/praxis/runtime/** enterprise context projections.
+description: Use when Codex must implement, audit, or consume praxis-config-starter runtime configuration persistence: /api/praxis/config/ui, ui_user_config scope and environment resolution, ETag conditional requests, payload secret protection, Angular ApiConfigStorage, governed UI-layout lifecycle, published-page catalog/URL/navigation, exact revision identity, immutable metadata evidence, or /api/praxis/runtime/** enterprise context projections.
 ---
 
 # Praxis Config Runtime Persistence
@@ -55,6 +55,11 @@ For `praxis.dynamic-page.editor` and internal Form/Table children, follow the
 page-specific admission procedure in that reference and the owner's P0 corpus.
 Child source requests select versioned registered sources; they never attest
 their own provenance. Keep the page as the sole external lifecycle target.
+
+For published page discovery, URL resolution and the existing runtime navigation
+surface, follow [published-page-runtime.md](references/published-page-runtime.md).
+Audit the actual candidate/package first: a lifecycle receipt, available draft or
+generic effective configuration does not establish a published route.
 
 A source merge or a passing MockMvc fixture does not prove a published Maven
 artifact, PostgreSQL persistence, a live host or browser rendering. Pin and
