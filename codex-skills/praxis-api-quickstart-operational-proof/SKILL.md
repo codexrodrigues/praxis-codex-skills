@@ -298,6 +298,8 @@ the complete private and sanitized Quickstart trees. Inspect the current
 workflows before running. Database allocation and ordinary runtime wiring are
 test infrastructure; they do not replace SDK migrations or alter product ACLs.
 
+For remote diagnosis of the declared Bulk cases, the same procedure documents
+`validation_scope=bulk-focal`; its bounded source selection is not a release gate.
 Keep focal results, helper validation, integral private/sanitized verification,
 public snapshot publication and deployed HTTP acceptance separate. A declared
 workflow or passing focal sample is not evidence that the integral gate ran.
