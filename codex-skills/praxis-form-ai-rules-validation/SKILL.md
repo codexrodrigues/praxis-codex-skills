@@ -112,6 +112,8 @@ changing manifest, adapter, recipe, registry, or public docs involving `componen
 - Computed field values must use the canonical closed envelope when authoring structured values: exactly `{ "expression": <JSON Logic> }` or exactly `{ "literal": <value> }`.
 - The visual property panel is a guided projection of the JSON/rule contract. Unsupported or JSON-only rule capabilities must remain visible as advanced/diagnostic state rather than being silently dropped.
 
+Editor validation and rule diagnostics must use the host-injected `PraxisJsonLogicService` and its operator registry, matching `FormRulesService` runtime evaluation. Pass that instance into `diagnoseFormRules`/`diagnoseFormRule`; a standalone default validator must not shadow host-registered operators in an editor. A registered runtime-valid operator may remain `runtime-only` when the visual builder cannot represent it; preserve its inline JSON Logic and allow save/reopen. Prove a host-registered operator is accepted while an unknown operator and invalid arity remain rejected, using `config-editor/praxis-dynamic-form-config-editor.spec.ts` and `utils/rule-authoring-diagnostics.spec.ts`.
+
 ## Intent Guardrail
 
 Do not add keyword, regex, alias, or fuzzy matching as the primary intent router. Text matching is allowed only after a canonical intent/operation scope exists, for ranking declared fields/actions/targets or asking clarification.
