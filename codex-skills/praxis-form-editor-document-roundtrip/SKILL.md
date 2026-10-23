@@ -78,6 +78,13 @@ Canonical apply/save is replace-all:
 
 When projecting `formRulesState` into `formRules`, distinguish an intentionally empty `rootNodes: []` from a declared root that is missing or has no valid target. `ruleBuilderStateToFormLayoutRules` must throw for missing/targetless roots instead of silently returning an empty rule list; the editor must retain the last accepted config, keep the invalid visual draft available for repair, and block Apply/Save. While conversion fails, hide the stale accepted effects panel and explain that repair belongs in the visual wizard or JSON; restore that panel after successful conversion. Programmatic recovery handlers do not establish an available panel-based UI repair path. Intentional deletion of the last rule must instead clear `formRules`/`formRulesState` and recover validity. Prove both paths and save/reopen in `utils/rule-converters.spec.ts` and `config-editor/praxis-dynamic-form-config-editor.spec.ts`; preserve the existing graph-validation boundary rather than treating conversion failure as a deletion.
 
+When reopening canonical `formRules`, `formLayoutRulesToBuilderState` must create one selectable
+`propertyRule` root per rule, preserving its ID, full `targets`/`targetType`, both effect branches,
+description, and authoring/semantic metadata. Do not downgrade property effects to legacy
+conditional-validator nodes or duplicate a multi-target rule into separate roots. Preserve advanced
+conditions inline when the visual graph cannot reconstruct them exactly; prove selectable reopen
+and lossless serialization in `utils/rule-converters.spec.ts`.
+
 Legacy editor payloads may be normalized into the canonical document, but new code should author the document shape directly.
 
 `DynamicFormAuthoringDocument` owns authoring state only. `FormConfig` owns form config. `bindings` owns persistible runtime mode preferences. `contextSnapshot` owns persistible authoring context such as `backConfig`, presentation, and schema preferences. Host discovery values, resolved schema URLs, submit endpoints, HTTP methods, and current resource metadata are read-only diagnostics and may appear in editor UI only as evidence.
