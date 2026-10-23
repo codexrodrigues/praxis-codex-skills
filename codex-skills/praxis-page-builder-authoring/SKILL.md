@@ -1,6 +1,6 @@
 ---
 name: praxis-page-builder-authoring
-description: "Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors: PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, page editor runtime parity, or authoring changes that may require Page Builder agentic validation gates."
+description: "Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors and save-as adoption: PraxisPageSaveAsComponent, PageSaveAsAdapter, PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, page editor runtime parity, or authoring changes that may require Page Builder agentic validation gates."
 ---
 
 # Praxis Page Builder Authoring
@@ -49,6 +49,63 @@ the transient owner through the Settings Panel bridge, preserve a valid session 
 widget instance, context or authoring eligibility changes. Negotiate panel replacement before
 destroying the previous owner; stale close/context callbacks must not replace a newer editor or keep
 Apply/Save subscriptions alive after their target disappears.
+
+## Save As A New Page
+
+When a host repeats page name, menu destination, icon, save/retry and saved-route UI,
+inspect `src/lib/page-save-as/page-save-as.component.{ts,html,spec.ts}` and
+`page-save-as.model.ts` in `projects/praxis-page-builder`, the library README and
+public API, then the host adapter and browser proof. Prefer the standalone
+`PraxisPageSaveAsComponent` from `@praxisui/page-builder`; it is a composed journey,
+not a registered canvas widget or AI operation. Do not add a second host save form,
+icon catalog or storage mechanism to the library.
+
+Wire the explicit lifecycle as one chain:
+
+`canSave -> saveRequested -> builder.saveCurrentPage() -> pageSaveRequested -> saveAs.save(definition)`
+
+Keep the builder's agentic-preview/save eligibility as `canSave`; do not call the
+adapter with `builder.currentPage()` to bypass the builder's canonical save event.
+Use `autoPersist=false` when the adapter owns the page document, preventing a second
+runtime writer. The host supplies a stable adapter and a view/session `contextKey`
+that changes across tenant/persona/route/seed transitions, including A -> B -> A.
+This key invalidates UI callbacks; it is not an authentication or authorization grant.
+
+`PageSaveAsRequest` is a transient UI intent: creation key, full
+`WidgetPageDefinition`, presentation and menu label. Presentation reuses Core's
+`PageAuthoringDocument` type; Page Builder must not reexport Core's public barrel or
+create another persisted page envelope. Do not pass this request to Config's
+`POST /pages`: that command admits an exact registered-native or published-page
+source, not arbitrary browser content. The full runtime definition may contain
+fields/widgets outside the closed publication profile. Preserve them in laboratory
+adapters; incompatible corporate content needs owner diagnostics and an admitted
+profile extension, never silent stripping or relaxed publication validation.
+
+The adapter owns admission, persistence, page/menu consistency, durable identity and
+an openable local route. There is no default storage. Its `{pageId, routePath}` receipt
+must resolve only after confirmation. The component snapshots each attempt, protects
+retries from adapter mutation, reuses its creation key for the same payload and
+starts a new attempt when the payload/destination changes. Preserve the last confirmed
+route on a later failure. Ignore save/icon completions after context or adapter
+replacement/destruction; underlying writes still require host/server admission.
+
+Use Core's `IconPickerService`, accept plain Material names and handle cancellation,
+invalid values and dialog failure without losing the draft. The simple journey uses
+one chosen icon for presentation and its menu projection; it does not redefine the
+separate canonical navigation-binding icon. `titleMaxLength`/`menuMaxLength` are view
+limits (default 160, valid 1..160); hosts may supply stricter limits such as 80/60.
+Those controls do not replace backend or native-document validation.
+
+Prove `page-save-as.component.spec.ts`, the library build, a direct consumer build
+and browser create/copy -> edit -> save -> URL -> reload, plus failed save/retry and
+identity change. Keep laboratory Web Lock/storage proof separate from corporate HTTP,
+ETag, provenance and Neon proof. Consume through the official package workflow;
+private candidate installation proves that candidate only. A host locked to a public
+version without the new export remains blocked for merge until a public dependency
+contains it; keep its adoption PR draft and dependent. A save-as implementation does
+not authorize a package release. Update the owning authoring guidance and public
+README in the same cycle; do not claim release, installed parity or corporate
+publication from a passing local browser journey.
 
 ## AI Target Context And Operation Ownership
 
