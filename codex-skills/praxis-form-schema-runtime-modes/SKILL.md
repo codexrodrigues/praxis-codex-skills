@@ -131,8 +131,25 @@ Separately, in a settled `input-first` standalone form, prove a real replacement
 rebuilds while preserving surviving controls' dirty values, an equivalent clone
 of the current document avoids a rebuild, and an explicit empty replacement
 removes the old controls. These local-field cases must not request schema or save
-configuration merely because an input changed; they do not establish equivalent
-clone behavior for every persisted-config or schema-backed combination.
+configuration merely because an input changed.
+
+Distinguish an equivalent host echo from the effective document selected by
+`local-first`: the opening host document can differ from the loaded saved one.
+Prove echoes of that opening document after initialization and during `afterInit`
+retain the saved metadata, both saved rule effect branches and dirty control values,
+without rebuilding or rereading configuration. Keep one effective runtime document;
+any pre-assignment observation is transient lifecycle bookkeeping, not a parallel
+configuration contract. An echo alone must not invalidate initialization ownership;
+changes to mode, identity or resource still require their existing fences.
+
+Cover two `setInput` assignments before one change-detection pass: the local-first
+case ending in an opening-document echo preserves the effective saved document;
+the separate input-first case ending in a genuine replacement rebuilds once from
+that final document. A manual equivalent `ngOnChanges` call without a corresponding
+input assignment must not restore an older internal document. Inspect the existing
+schema-backed echo test too: its reconciliation/verification spies prove local
+ownership and no redundant rebuild, not live schema HTTP or identity-switch
+behavior. Do not claim settled owner-switch coverage from these cases.
 
 ## Remote Selection, Loading And Recovery
 
