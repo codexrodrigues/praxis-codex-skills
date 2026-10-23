@@ -376,14 +376,18 @@ intended controller and missing/mismatched pairs receive403. A firewall404 or
 an unreachable positive does not prove the matcher. Keep broader firewall
 encoding restrictions unchanged.
 
-Run the focused SPA/CORS/firewall tests before the real host gate. For the
-candidate page flow, pair with `praxis-java-config-boundary-integration` and
-`QuickstartPageCorporateHttpNeonTest`: require actual login, current SESSION,
-opaque choices/CAS, publication and runtime reads on the assigned remote Neon
-branch with ordinary runtime roles. Stale context must reach context409 using
-the current CSRF pair. Compare status before JSON and retain only safe hashes;
-prove logout and retained-SESSION401 even after a failed scenario. The existence
-of the test or a passing policy slice is not a fresh Neon or browser result.
+Run the focused SPA/CORS/firewall and auth-lifecycle tests with the host's
+published dependency coordinates. Protecting page/lifecycle paths does not
+install their providers or prove their journey. When reviewing a separately
+composed page host, pair with `praxis-java-config-boundary-integration` and its
+actual HTTP gate: require login, current SESSION, opaque choices/CAS and the
+promised operations on the assigned remote Neon branch with ordinary runtime
+roles. Compare status before JSON and retain only safe hashes; prove logout and
+retained-SESSION401 even after a failed scenario. Reuse component evidence only
+when source identity, dependencies and limits are explicit. A policy slice or
+SESSION/CSRF pass does not certify publication, navigation, copy, browser cookie
+behavior or a new full HTTP campaign. Keep private-candidate/public-adoption
+and integration gates separate.
 
 ## Operational SESSION storage installation
 
