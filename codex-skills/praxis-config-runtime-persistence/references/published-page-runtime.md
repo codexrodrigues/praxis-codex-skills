@@ -92,6 +92,12 @@ must not append menus or replace a custom provider. Missing providers fail
 closed. A host that changes/composes the projection owns the receipt, ordering,
 cursor and final authority checks of that final result; it cannot alter nodes
 while retaining a fragment's receipt or continuation.
+Validate the provider boundary too: require a nonblank node ID, preserve nullable
+lazy children and reject null members in a present children list. Malformed
+provider DTOs/receipts and invalid server-owned root identities are unavailable
+sources (503), not caller cursor errors (400). Keep malformed client parameters
+and conditional headers distinct and sanitized; prove both with If-None-Match
+present so invalid output cannot escape as 304.
 
 Recovery is pull revalidation of durable heads. Prove a lost commit response and
 a fresh reader reconstruct the current publication; event UUID/time is not a
