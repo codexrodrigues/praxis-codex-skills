@@ -202,6 +202,16 @@ passing results merely because code, documentation or a fixture exists:
    it. Prove the recorded commit remains in A without updating B or the new A
    epoch's cache/validator/view. Hold a real GET response too and reject its late
    hydration. Distinguish before-admission denial from after-commit stale delivery.
+   Require authenticated GETs/context requests to keep an existing XSRF pair
+   stable, including concurrent cookie-jar activity, while SESSION is unchanged.
+   CSRF rotates at real successful login/identity-switch/logout boundaries, not
+   on each JWT principal reconstruction. If ordinary requests rotate it, audit
+   the host Security chain with `praxis-api-quickstart-security-config`; do not
+   preserve/replay an old pair through Node as a permanent CAS workaround. Let
+   the browser continue the original stale-CAS request naturally and require real
+   context409, not a generic CSRF403. Compare pair/session stability only with
+   booleans, never token logs. Node forwarding of a genuine Config response/ACK
+   remains a separate permitted transport gate, without fabricating its commit.
 4. Prove current loads503/EMPTY block saving with an accessible localized alert,
    whereas404 permits fresh defaults; check exact GET/PUT validators, scope
    ownership and ETag chains including legitimate hydration echoes. Require zero
@@ -235,6 +245,13 @@ passing results merely because code, documentation or a fixture exists:
    session deadlines to force a pass. Preserve those deadlines and distinguish
    capacity evidence from security correctness, load/SLA certification and bounded
    transport cleanup.
+   A warmed functional pass does not certify recovery after idle. If a later
+   login exhausts the unchanged acquisition deadline with pool total zero and
+   succeeds after pool replenishment, record that sequence and the warm/idle
+   boundary without assigning an unproved cause to Neon, proxy or network. It
+   does not prove automatic idle recovery or SLA. Do not add a heartbeat or widen
+   acquisition/auth deadlines to conceal the gap; keep recovery diagnosis and
+   acceptance explicitly pending.
 
 ## No Keyword Routing
 

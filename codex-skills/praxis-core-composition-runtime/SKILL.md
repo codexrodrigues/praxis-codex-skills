@@ -240,6 +240,11 @@ parent presentation spec and the browser `corporateLab` assertions before proof.
    not an atomic database fence. Same-SESSION claims require the real proof below;
    historical fresh-session/reload tests alone do not establish them. Render only
    safe context facts/presence markers, never raw opaque context versions.
+   A functional proof on a warmed host does not certify recovery after idle or
+   SLA. Preserve that evidence boundary, stable CSRF within one authenticated
+   SESSION and unresolved connection-recovery failures using the Config proof workflow;
+   a per-request token-rotation host bug is not a reason to bypass browser CAS;
+   do not mask them with heartbeat traffic or widened authentication deadlines.
 
 ## Operational Proof
 

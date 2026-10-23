@@ -313,6 +313,27 @@ Cookie JWT authentication, CSRF, origin governance, and rate limiting have separ
 - Keep reachable positives and existing role/grant negatives. For SPA policy, prove signed-but-unissued token rejection, old-cookie denial after identity switch, and active-session writes rejecting absent or mismatched XSRF while matching tokens reach the intended action. Do not weaken statuses, filters, permission policy or CSRF exceptions to repair fixture prerequisites. Reuse valid evidence from unaffected classes and preserve the failed campaign; repeat only corrected paths unless a separate adoption gate requires broader verification.
 - Cookie authentication establishes the Spring principal; validate cookie attributes (`Secure`, `HttpOnly`, `SameSite`, lifetime, and configured name) by environment.
 - When CSRF is enabled, a SPA cookie/header flow must accept the intended raw header and retain server-rendered XOR behavior. Prove both token issuance and a protected write with matching cookie/header.
+- Audit CSRF authentication lifecycle, not just `SessionCreationPolicy.STATELESS`.
+  In Security6.5.11 an implicitly installed `SessionManagementFilter` can call
+  `CsrfAuthenticationStrategy` whenever the cookie-JWT filter reconstructs an
+  Authentication. Rotating XSRF on each ordinary authenticated request is a host
+  bug: an unchanged SESSION with concurrent context GETs must keep its existing
+  cookie/header pair stable. Inspect the actual strategies/filter chain and fix
+  the host owner; do not hide it with frontend retries or an old-pair Node CAS replay.
+- Rotate/clear CSRF explicitly at actual successful login, successful identity
+  switch and logout boundaries. Keep token issuance when absent, the SPA raw
+  header/XOR contract, origin controls and missing/mismatch rejection. Do not
+  disable CSRF or widen ignore matchers to fix lifecycle rotation. Failed login
+  must not rotate an established pair. Reuse an existing registered repository;
+  removing automatic per-request rotation is not removal of CSRF validation.
+- Prove sequential and concurrent authenticated GET/protected-write pair stability,
+  rotation at real auth boundaries, unchanged SESSION during a context-only switch,
+  and natural browser continuation of stale selection CAS reaching context409.
+  A generic403 caused by CSRF is not context-conflict evidence. Record only safe
+  booleans/hashes, never cookie/header/password values; preserve failed campaigns
+  and require current real SESSION/Neon proof before calling the fix accepted.
+  Holding/forwarding a real Config ACK after commit is a separate transport proof,
+  not authorization to bypass CSRF on context commands.
 - Any CSRF ignore matcher, especially `/api/praxis/config/**`, needs an equivalent stronger host policy and a documented reason. Do not disable CSRF globally to repair a local request.
 - Assert filter order and behavior: origin/rate-limit gates must run before expensive public work, authentication must populate protected endpoints correctly, and CSRF cookie exposure must not become an authorization bypass.
 - Local header identity for AI is an explicitly configured development exception. Corporate mode must resolve identity server-side; caller headers are not authorization proof.
