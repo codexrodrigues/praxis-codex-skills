@@ -46,6 +46,7 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 
 - Persist new page composition in `WidgetPageDefinition.composition.links`. `page.connections` is legacy and `DynamicWidgetPageComponent` rejects it; do not save both shapes or reintroduce a compatibility branch in a host.
 - Use `WidgetPageCompositionFactory` to materialize widget order, indexed widgets, links, state, derived definitions, and context before bootstrapping `CompositionRuntimeEngine`.
+- When state is correct but a reloaded input is stale, inspect overlapping state-to-input projections in Core before changing the host. For the same top-level widget, materialize an ancestor input path before its descendant override within each segment separated by a nested delivery to that widget; preserve existing order for equal paths. This orders snapshot writes only: link conditions, transforms, diagnostics, dispatch and side effects retain their execution order. Nested targets are excluded, and flat writes must not move across their same-widget barrier. Read [state-input-projection.md](references/state-input-projection.md) for the scope, source audit and real-form edit/persist/reload proof.
 - Keep dynamic widget input materialization idempotent. A page update that rebuilds a plain JSON input with the same structural value, including a different object-key order, must not rebind the input or emit `ngOnChanges`; use the core loader's stable JSON signature. Values outside the JSON-safe set, including functions, class instances, dates, non-finite numbers, and cycles, retain `Object.is` reference semantics instead of being coerced into a serialized equality rule.
 - Treat `CompositionRuntimeEngine.bootstrap()` as semantic validation plus state materialization. Blocking diagnostics produce a `degraded` snapshot with trace evidence; do not convert every diagnostic into an exception or silently mark the page ready.
 - Dispatch a `CompositionDispatchEvent` from an exact canonical endpoint. Matching includes owner widget, port, direction, and `nestedPath` when present. Let the engine execute condition, transform, policy, target delivery, state update, diagnostics, and trace as one cycle.
@@ -207,6 +208,7 @@ Before declaring composition guidance current, prove:
    effects. For nested composition, execute a fresh output-to-state-to-input
    interaction after reload so hash equality alone cannot hide an endpoint-match
    regression. Readiness and receipts remain derived evidence, never page inputs.
+7. State-input overlap path: project a whole input object and an independent descendant override in both link orders within one segment. Verify the descendant survives persistence/reload in the rendered real form while source selection remains unchanged. Cover a same-widget nested delivery as an ordering barrier and another widget's nested delivery as unrelated; equal-path order and event/side-effect execution retain their existing behavior. A persisted state assertion or synthetic output emission alone does not prove input rehydration.
 
 Use a focused Angular gate from the `praxis-ui-angular` root:
 
