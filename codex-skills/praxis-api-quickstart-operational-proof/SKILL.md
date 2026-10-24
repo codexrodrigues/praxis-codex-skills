@@ -151,6 +151,35 @@ is a time-bound observation and can be reused; absent, divergent or ambiguous
 identity stops the flow. Never use service DNS, a load balancer, proxy or redirect
 as a substitute for that pin, or weaken health, TLS, ACL or CSRF to gain access.
 
+When SSH is unavailable and WebShell reaches only the old live instance, inspect
+the host's versioned `scripts/workspace/governed-publication-native/` package.
+Its finite PropertiesLauncher client supports NATIVE and RELAY without starting
+Spring; build against reviewed host dependencies and preserve the source/artifact
+receipt, synthetic fixtures and explicit-main probes. Prove the actual candidate's
+build, login, SESSION and logout204/session401 through the intended transport
+before suspension. An open WebShell on the old node alone is insufficient.
+
+RELAY fixes the startup-observed private IPv4 and pins the native relay per
+request. Require the real Render CP snapshot within30s before login and the sole
+POST, plus HTTP build checks before both; report that these are not candidate SSH
+pins. The current-grant witness belongs to the relay. Require the coordinator's
+preserved attestation of equal publisher/binding/datasource and an exact expected
+target grant-context match; never label it an independent SQL observation of the
+candidate. The target server still revalidates SESSION and current authority.
+Keep credentials in the native environment/memory. Preserve CREATE_NEW/fsync
+journals and independent post-command durable readbacks. CP expiry after a long
+POST must not suppress cleanup to the immutable target; unconfirmed cleanup or
+response remains failed without retry. Suspend and publish each have their own
+240s request limit and preparation/readback/cleanup, so qualify enough rollout
+lifetime for both before opening the authorized global window. Do not extend
+server budgets or weaken health to compensate for a short-lived candidate.
+
+The optional ApplicationReady candidate capture is not a publish prerequisite:
+Metadata178 prepares and validates the photograph inside the protected HTTP
+publish request before its transactional CAS. Its Servlet-context requirement
+makes an out-of-request diagnostic insufficient; do not fabricate a Servlet
+principal/context or add an endpoint just to turn that diagnostic into acceptance.
+
 Preserve the existing explicit global-window authorization, real login/SESSION,
 current per-operation grants, effective CSRF, observed-generation CAS, both ledger
 readbacks and logout204/session401. A timeout or503 can follow a committed phase;
