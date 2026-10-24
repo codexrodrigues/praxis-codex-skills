@@ -273,8 +273,17 @@ retain the regular mutation guards and recheck connection/rollback state on reus
 Inspect `ConfigJdbcTransactionGuard` together with `ConfigTransactionReadSet`:
 their shared proof concerns transaction isolation only, never principal, grants,
 source admission or provenance. Bind it to the exact datasource, connection
-holder, JDBC connection and active synchronization lifetime. Reuse across guard
-instances in that same transaction must not repeat the isolation getter; a new
+holder, JDBC connection and active synchronization lifetime. Enable reuse only
+when the guard first enlists into an empty synchronization list. If a callback
+was already registered, the first access could occur inside a savepoint rollback
+callback whose notification the new proof missed: require fresh verification for
+the remainder of that transaction, even without an observed rollback. This
+deliberately sacrifices reuse in transactions with preexisting synchronizations.
+Every read-set owner, including a late-created owner, must consult the shared
+proof's reuse eligibility before and after loading or prefetching; a private
+owner flag cannot authorize retention after the shared proof disabled it.
+Eligible reuse across guard instances in that same transaction must not repeat
+the isolation getter; a new
 or resumed transaction must use its own synchronization/proof. Without active
 synchronization, retain the full guard validation rather than retaining proof.
 Prove savepoint rollback invalidation independently of positive-cache eviction,
