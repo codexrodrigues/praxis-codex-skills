@@ -1579,8 +1579,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-authoring-editors"
                                         ],
-                       "skillMdSha256":  "1584A6CA173CF73B37980C1CA9ACB6DA1BE3935545107D6B35E55DFF08B2D50B",
-                       "treeSha256":  "FF3674349F993B9D8493709A0CF09E32D3338F44DC9C32FACD99DEF6F84B3FD2"
+                       "skillMdSha256":  "A5050B03CDA5A439D8D17D4A00B5D51ACA8D90793FD560E8C23148DBBFB9FB17",
+                       "treeSha256":  "A4B77203671B5D07A3B76A97299A329A665941A2DE3F3ED903BD391200A41493"
                    },
                    {
                        "name":  "praxis-landing-public-docs-contracts",
@@ -2449,8 +2449,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "8091514A05F32F734367F7B29D31AE627E96A485B1C23FAB387F77FC5CE48543",
-                       "treeSha256":  "DB9CF9CD254187CBCBFA232BE80F593A5F43545235C68818F1902E5C66A9D8B7"
+                       "skillMdSha256":  "765EBD21CCC74AD0F3DEB9BCCB951078DC4B86DE8F1C8384BE4B75696D24B53D",
+                       "treeSha256":  "F444F305517C63C9C60FDA579408A2A798BD42BD6512A9796F213D4E276EBC19"
                    },
                    {
                        "name":  "praxis-config-domain-decisions",

@@ -191,6 +191,17 @@ Preserve these invariants:
 - `status`, `thought.step`, tool progress, and `intent.resolved` are non-terminal and replay-safe.
 - Only persisted `result`, `error`, or `cancelled` events terminate the turn. Heartbeats are transient
   liveness signals and cannot advance the persisted cursor.
+- A local terminal reservation is neither a durable event nor delivered SSE. Inspect
+  `AgenticAuthoringTurnStreamService.appendAndEmit` and the watchdog/timeout/replay completion paths:
+  persist the terminal, remember the committed envelope/cursor, send it to active emitters, then
+  complete the stream. Progress or terminal checks must not close emitters while that sequence is
+  pending. Reuse the owner's existing append/completion synchronization; do not introduce an ad hoc
+  delivery flag or prescribe one locking protocol for every owner.
+- If terminal persistence fails, release the local reservation and propagate the original failure;
+  do not retry silently, report completion, or advance the replay cursor. Add a deterministic test
+  that holds terminal append with a latch while invoking the real watchdog callback, then verifies
+  no early completion and ordered terminal send before completion. Cover failed append separately;
+  extending timeouts or relying on scheduling sleeps does not prove the ordering.
 - `heartbeat` is out-of-band keep-alive: it may use `seq=-1` and no `eventId`, derives `phase` and
   user-facing `summary` from the latest known event, and must not be counted as execution evidence.
 - Long-running progress is persisted as `status` from the backend processing watchdog only when the
