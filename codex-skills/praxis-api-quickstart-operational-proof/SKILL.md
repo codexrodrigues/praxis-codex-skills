@@ -307,6 +307,21 @@ workflow or passing focal sample is not evidence that the integral gate ran.
 Do not promote this procedure as accepted until its exact helper, source,
 dependencies and two-tree remote results have passed independent review.
 
+Before rerunning a database-backed HTTP fixture after a timeout, inspect its actual
+runtime datasource and connection lifecycle. A simple datasource may establish a
+fresh remote TLS session for every JDBC borrow; distinguish that harness cost from
+an SDK transaction or HTTP failure. When the fixture uses a pool, require bounded
+capacity/acquisition and explicit warm-up outside the measured operation, then a
+read-only check of the same ordinary runtime identity, database and TLS path.
+Keep owner/runtime credentials and privileges separate; do not replace identity
+checks with role switching, weaken TLS, extend product deadlines or retry domain
+commands. Close and attest the fixture-owned pool before assigned-database cleanup;
+borrowed/unclosed connections and uncertain cleanup remain fail-closed evidence,
+not permission to force-drop resources. Inspect the current `config/neon` support
+and its offline lifecycle tests, then prove the unchanged HTTP/persistence oracles
+and cleanup on the assigned Neon branch. Pool configuration or warm-up alone is
+not acceptance, a throughput guarantee or a certified SLA.
+
 ## Integration Topology And Owners
 
 ### Durable OpenAPI Across Cold Nodes

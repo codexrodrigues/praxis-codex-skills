@@ -1579,8 +1579,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-authoring-editors"
                                         ],
-                       "skillMdSha256":  "A5050B03CDA5A439D8D17D4A00B5D51ACA8D90793FD560E8C23148DBBFB9FB17",
-                       "treeSha256":  "A4B77203671B5D07A3B76A97299A329A665941A2DE3F3ED903BD391200A41493"
+                       "skillMdSha256":  "6E8F019CDF7B33273DEF45E198FF8B04A9EC84CE8947ECF71F3797DB8D665B55",
+                       "treeSha256":  "94E959F08A58AA662438A32DC9131163A79893E0483845CD7D13E8170AF8D8AC"
                    },
                    {
                        "name":  "praxis-landing-public-docs-contracts",
@@ -2487,8 +2487,8 @@
                                             "praxis-http-examples-llm-smoke",
                                             "praxis-java-autoconfiguration-starter-maintenance"
                                         ],
-                       "skillMdSha256":  "2D80AD83B71DD47AA2B31529D837988F94E1112BE15FFABE3EF575A2FFF771B0",
-                       "treeSha256":  "D59E498F5A0E20F02CB6FF84343A32262DA6FA3E9F1741073258143FB52BED94"
+                       "skillMdSha256":  "B9A7E870489EE2604260D10424C320A3795FFEF1851705E40B8A7F876CD4092A",
+                       "treeSha256":  "75AE15462FE106501535728D171C9D685921C496FA55BF711DC4212BF0A35526"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
