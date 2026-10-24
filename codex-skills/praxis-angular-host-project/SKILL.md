@@ -139,6 +139,17 @@ Do not report draft creation as successful SaveAs publication. Materialize only 
 host-admitted document profile; a lifecycle state receipt is not an immutable review
 preview or proof that a page renderer is wired. Keep those acceptance scopes separate.
 
+Treat navigation groups as a separate governed aggregate: publish the referenced
+group before publishing a page binding to it. Consume the SDK's runtime navigation
+in that same corporate provider scope; do not synthesize menus from the page
+catalog. Inspect Config P3-A/P3-B and `QuickstartPageConfiguration`/`QuickstartPageDocuments`:
+the native groups baseline is empty, not a clone of the published groups head.
+A genuine head404 selects the existing first-publication precondition; an existing
+head requires the complete admitted groups document and current strong CAS before
+editing, or reuse of its groups without rewriting the aggregate. Never replace the
+full groups document with a paginated/visibility-filtered navigation projection.
+Prove persistent menu/route behavior separately from draft save and group creation.
+
 ## Required Workflow
 
 1. Classify the host mode:
