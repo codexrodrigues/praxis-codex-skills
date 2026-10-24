@@ -94,6 +94,34 @@ For table chrome, use the public `TableConfig` contract before styling internals
 
 When updating skills, change the versioned source under `codex-skills/` when it exists, then run `scripts/sync-praxis-skills.ps1` for the smallest necessary sync. If the relevant migration skill is installed locally but has no versioned source in this repo, record that ownership gap instead of silently editing only the installed copy.
 
+## Corporate SESSION Transport
+
+For Quickstart-backed corporate hosts, inspect the backend AuthController/CSRF
+contract and Hero's `corporate-session-*`, `corporate-context` and
+`docs/engineering/corporate-session-journey.md` before adding another auth adapter.
+Core already owns context/choices/CAS; cookie identity and transport belong to the
+host. Keep demo personas and local page persistence separate from server grants.
+
+Confirm login through GET `/auth/session`, consume its raw `X-XSRF-TOKEN` response
+header and send it only on required mutations. Keep passwords/tokens out of storage,
+logs and diagnostics. Serialize auth exchanges: discarding a stale callback cannot
+undo a browser's late Set-Cookie. Fence context responses by session generation;
+403/503 context failures do not mean logout. Preserve uncertain logout explicitly.
+
+Scope credentials/CSRF to the exact configured origin and canonical route boundaries;
+remove synthetic persona headers while preserving Core-confirmed context headers and
+ETag/preconditions. Inspect the effective Angular HttpBackend: XHR may ignore a
+redirect option. Reject credential redirects before another destination is contacted;
+when needed, use a host-private FetchBackend only for corporate paths and preserve
+legacy XHR/progress. Do not switch the whole application transport by convenience.
+
+Proxy `/auth` without spoofing an allowed Origin, weakening TLS or rewriting cookie
+security. The backend must allow the real origin. Test session restore, raw CSRF,
+logout uncertainty, response races, exact-origin rejection and blocked redirects.
+Browser responses controlled by tests prove consumer behavior, not real SESSION,
+cross-site cookies, CORS or deployed-backend readiness. Record those limits and reuse
+unchanged backend evidence instead of requiring another Neon campaign for UI work.
+
 ## Required Workflow
 
 1. Classify the host mode:
