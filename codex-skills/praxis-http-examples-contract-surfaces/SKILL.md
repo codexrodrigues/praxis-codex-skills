@@ -88,3 +88,24 @@ State whether validation hit the published backend or only structural checks.
 ## Versioned Resource Writes
 
 A versioned PUT/PATCH example must pair the payload with the strong ETag of the same GET snapshot and send it unchanged as If-Match. Include session and CSRF prerequisites where the host requires them. If the corpus parser supports only one request per file, keep GET and mutation as separate indexed requests with explicit transfer instructions instead of silently adding an unparsed multi-request flow. Reject stale snapshots (412) and absent preconditions (428); never refresh only the token and automatically resend stale data. Keep candidate proof separate from published-backend confirmation.
+
+For payroll G4, inspect the corpus's `PAYROLL_G4_CONTRACT.md`, the exact
+operation request schemas and Quickstart command DTOs before editing examples.
+The host-specific `precondicoesFolhas` is a typed list of
+`{folhaPagamentoId, resourceVersion}`; do not invent a generic `decisionVersion`
+or reinterpret one main `If-Match` as a multi-parent header. Event edit captures
+the body, event response ETag and `precondicaoFolhaAtual` in one joined GET
+snapshot. Preserve that origin token; create/destination changes capture the
+selected payroll through its official GET. A move includes distinct origin and
+destination entries, while same-parent edit includes one original entry.
+Preserve complete strong token bytes, including quotes when encoded in JSON,
+and keep fixture identities/tokens explicitly illustrative until provisioned.
+
+Keep source-derived G4 examples classified as candidates with
+`runtimeRecordConfirmed=false`, `publishedBackendConfirmed=false` and
+`llmOperational=false` until the relevant runtime/published proof exists.
+Offline manifest/schema checks do not establish HTTP, current authorization,
+CAS, atomic persistence or deployed adoption. Synchronize the candidate note,
+request, payload, manifest, verifier and LLM surface without promoting a write
+or adding an unproved version claim. Declared financial outputs are verified by
+the governed host; no client formula or invented authority field fills a gap.

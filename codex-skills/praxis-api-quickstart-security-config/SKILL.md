@@ -118,12 +118,27 @@ Do not use token authorities or the demo catalog as a revocable authorization so
   composing the actual provider/executor. Revocation applies to the next fresh lookup,
   not retroactively to an admitted transaction.
 
+For financial action-policy admission, inspect `config/OperationalPolicyGate`
+and `OperationalPolicyGateTest`. The G4 candidate resolves the exact canonical
+action first; its declared `PAYROLL_APPROVE` requirement selects the current
+operational grant, never a route-name heuristic. Replace only that authority in
+the local availability context after exact subject/tenant/environment agreement;
+preserve other authorities and do not mint a claim or mutate authentication.
+Missing/revoked authority denies with 403; unavailable storage fails with a safe
+503 before Config, without a JWT/demo/owner fallback. Other required authorities
+remain mandatory. This bridge does not grant target coverage or replace final
+domain authorization, locking or CAS, and does not generalize to all JWT authorities.
+
 Run `QuickstartOperationalIdentityTest`, `QuickstartPrincipalGrantRepositoryPostgresTest`, `QuickstartOperationalContextHttpTest`
-and the operational migrator tests; verify actual PostgreSQL versions in logs. On macOS ARM,
-`embedded.postgres.binary.version` selects the test binary (default 17.11.0, 16.14.0 override).
-Do not label other platforms as PG16/17 without runtime evidence. EmbeddedPostgres's
-`getJdbcUrl(user, database)` embeds the user in the URL: assert `current_user` to avoid testing
-with owner credentials accidentally. The HTTP fixture proves context resolution only;
+and the operational migrator tests in the smallest applicable scope. Every database-backed
+case requires an isolated remote Neon branch explicitly assigned to the run, with actual
+ordinary runtime/control-plane roles and a separate migration owner where required.
+Verify project/branch, endpoint, PostgreSQL version, TLS and effective identity/privileges;
+bind raw results to the exact source, dependencies and assignment without exposing secrets.
+Legacy embedded test fixtures and binary-version overrides remain historical evidence,
+not a current execution recipe or substitute for Neon. Confirm the selected harness is
+available and compatible in the actual baseline; if not, leave its gate pending without
+local fallback or assuming an unmerged AssignedNeon integration. The HTTP fixture proves context resolution only;
 write admission/CSRF, domain effects, replay/status/cancel and worker delegation need their
 own integration gates. Existing route policies and demo grounding are not replaced by this source.
 
@@ -317,6 +332,39 @@ Cookie JWT authentication, CSRF, origin governance, and rate limiting have separ
 - Assert filter order and behavior: origin/rate-limit gates must run before expensive public work, authentication must populate protected endpoints correctly, and CSRF cookie exposure must not become an authorization bypass.
 - Local header identity for AI is an explicitly configured development exception. Corporate mode must resolve identity server-side; caller headers are not authorization proof.
 
+## Operational SESSION storage installation
+
+Inspect the existing Store SQL and
+`docs/ENTERPRISE-SESSION-OPERATIONAL-PREREQUISITE.md` with the reviewed candidate
+`V20261022_001__enterprise_session_operational_prerequisite.sql`. Its forward
+installation belongs to the segregated operational migration owner, never the
+application login or Config datasource. Health UP or a signed SESSION JWT cannot
+replace the persisted issuance table. This prerequisite does not provision
+enterprise membership/directory, payroll grants or an admitted G4 composition.
+
+The candidate installation's runtime profile is schema USAGE and table SELECT,
+INSERT only on `credential_id`, `subject_id`, `expires_at`, and UPDATE only on
+`revoked_at`, `revision`, `tenant_id`, `environment`, `organization_id`,
+`sector_id`, `profile_id`. Preserve compatible non-grantable canonical column
+SELECT grants; do not widen INSERT/UPDATE to the table. Deny UPDATE of issuance
+identity/subject/expiry and INSERT of revision/selection fields. Inspect effective
+role closure, including SET ROLE reachability through NOINHERIT memberships,
+PUBLIC/grant options and owner/server-role/schema/database CREATE authority.
+Do not repair global grants/default privileges or assume Neon SUPERUSER.
+
+Existing storage is admitted only by strict parsed PostgreSQL catalogues under
+the owner lock, preserving rows and rejecting unexpected defaults, validated
+constraints, index topology, RLS, triggers, ownership or dependencies. A fixture
+or TESTONLY schema cannot reconstruct retired migration checksums; missing
+historical resources must fail before the forward, without clean/repair/bypass.
+
+Pair with operational-proof for the reviewed guarded Neon assignment and exact
+packaged SQL hash. Require real ordinary-runtime issue/read/selection-CAS/revoke
+and denied column writes, repeat-zero official migration and conservative
+predecessor/rollback negatives. Same-resource rollback adversaries are not a full
+Flyway rerun. Keep candidate integration, an in-progress Neon run and HTTP/session
+adoption separate; offline source checks alone establish none of those gates.
+
 ## Path Normalization And HttpFirewall
 
 Treat URL encoding as a public security contract, not a convenience setting.
@@ -359,14 +407,23 @@ Review public docs, properties, quickstart HTTP examples, config/metadata downst
 
 ## Administrative Bulk Publication Exposure
 
-For the three basic bulk publication POSTs, inspect the controller and exact host
-`ApiPaths.Operations` matchers before changing security exposure. Each command needs
+For basic bulk publication POSTs, inspect both fixed-target controllers,
+`core/bulk/BulkPublicationAdministration`, `BulkPublicationShapeAdvice` and exact host
+`ApiPaths.Operations` / `ApiPaths.HumanResources` matchers before changing exposure.
+The G4 payroll candidate adds `/api/human-resources/eventos-folha/actions/bulk-approve/publication/`
+with `publish`, `reconcile` and `suspend`; inspect
+`docs/PAYROLL-BULK-PUBLICATION-OPERATIONS.md` and confirm adoption first. Each command needs
 its own current grant permission (`BULK_PUBLICATION_PUBLISH`, `_RECONCILE`, `_SUSPEND`),
 active SESSION admission and configured binding; ADMIN/JWT authorities and demo
 read-open/bulk settings cannot substitute authorization. Preserve the write-disabled
-matcher for all three paths and keep current grant reads outside SDK control locks.
+matcher for each mission/payroll path and keep current grant reads outside SDK control locks.
+The server fixes the payroll operation and authorized namespace; reject caller-supplied
+target, actor, tenant or namespace. Administrative grants do not confer `PAYROLL_APPROVE`
+or financial coverage. Keep ordinary domain runtime and SDK control-plane identities
+separate from the migration owner; installation initializes both typed controls without
+READY and never grants administration by an application startup side effect.
 
-`ConfigOriginRestrictionFilter` governs Config paths, not these operations paths.
+`ConfigOriginRestrictionFilter` governs Config paths, not these publication paths.
 Use the existing CORS and CSRF chain: credentialed official Origin, actual cookie
 repository emission via authenticated `/auth/session`, and raw `X-XSRF-TOKEN` equal
 to the `XSRF-TOKEN` cookie. Bearer SESSION has no automatic CSRF exemption. Test
@@ -381,6 +438,20 @@ grants or installation errors, infer rollback, or retry publication automaticall
 Document the logical-deployment-wide suspension effect and a protected generation/evidence
 procedure before administrative commands or basic operational availability acceptance. Strict original JSON and generation bounds
 belong to admission; existing SDK publication semantics remain canonical.
+Payroll accepts only the integral `expectedGeneration` in a single original JSON
+document, at most 1024 bytes. Obtain it through protected observation, without a
+new public generation endpoint, retokening or mutating retries. Existing-state
+reconciliation does not publish an UNCOMPOSED control. Candidate unit/MVC checks
+are not real bulk HTTP, durable READY, business authorization or G4 acceptance.
+
+For candidate cold recovery, inspect `LocalPublicationRecovery`/`Client` and
+`BulkPublicationTarget`. Inventory real providers and all registered fixed-target
+hints before login; a hint grants no authority and a failed lookup cannot fall
+back to another READY target. Call only one target's own reconcile route at its
+observed generation through the existing SESSION/current-grant/CSRF gate, without
+retokening, publish or retries. Require the exact operation/state/generation reply
+and logout204 plus same-token session401. Preserve the live health guard and
+uncertain-cleanup veto; loopback tests do not certify a deployed restart or READY.
 
 ## Managed bulk roles and effective SESSION privileges
 
