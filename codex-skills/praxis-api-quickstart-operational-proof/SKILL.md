@@ -186,6 +186,18 @@ explicitly echo the actually issued CSRF pair, preserve browser cookie attribute
 and SESSION Bearer authentication, and still attest logout/session401. Never
 solve that transport gap by disabling CSRF or downgrading Secure cookies.
 
+Inspect `QuickstartNativePublicationOperator.observeXsrf` against the host's
+`SpaCsrfTokenLifecycle`: login can emit an initial cookie and a rotated cookie in
+one response. When a response contains multiple XSRF emissions, admit exactly two
+only for LOGIN, with identical attributes (including Secure/SameSite), host-only
+session-cookie scope, Path=/ and no Expires/Max-Age; the unique
+final `X-XSRF-TOKEN` header must match exactly one decoded cookie value. Never
+select by Set-Cookie order. Invalid or ambiguous input must leave the confirmed
+pair unchanged. A header without a new cookie must match that confirmed pair;
+an empty header plus deletion clears it only at LOGOUT. Prove these cases with
+the operator's offline fixtures, preserving secret-safe diagnostics and actual
+SESSION cleanup. Fixture success alone does not certify deployed publication.
+
 Administrative CLI jobs need an observed launcher/argv receipt in the actual
 Render image. Do not treat shell quoting validated locally as proof that Render
 interprets startCommand identically. Qualify an inert probe, retain plan output
