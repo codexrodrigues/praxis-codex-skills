@@ -2417,7 +2417,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "DEE6A0942520A1A5EF47F8BDF96A107B905BD4C3F398796C051C0DE7E2E5B412",
-                       "treeSha256":  "9C6FDB7887E0731A428E75942BFF21D2B923E30EDDD2C74A433D063C505E36B5"
+                       "treeSha256":  "85600251E8A1937333DABE67236EC84BBDF6863BF3818EB6091A1A8213813E53"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
