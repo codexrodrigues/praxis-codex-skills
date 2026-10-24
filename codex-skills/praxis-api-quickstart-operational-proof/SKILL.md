@@ -1172,6 +1172,53 @@ resolve and attest the officially published compatible artifact and repeat the
 appropriate consumer gate. Unit success does not close Neon, integration or release
 acceptance; retain those gates as pending until their own reviewed receipts exist.
 
+### Run The Fixed Page Focal Gate Without Publication
+
+Inspect Quickstart `.github/workflows/publish-public-release.yml`, its same-source
+`ci-java.yml`, `scripts/workspace/corporate_page_focal.py` and
+`neon_gate_assignment.py`. The manual `page-focal` cut requires a branch dispatch,
+`create_tag=false` and `release_gate=false`; it runs only
+`QuickstartPageCorporateHttpNeonTest#nativePageCreatePublishAndReadWithCurrentSessions`.
+Require the clean host checkout and assignment source SHA to equal the workflow's
+exact SHA. This seam is implemented; functional Neon acceptance remains pending
+until its own complete, independently reviewed receipt exists.
+
+With empty `page_config_ref`, consume the host POM's public Config pin without an
+override or fallback, attest Central JAR/POM checksums and nested-JAR equality.
+An optional candidate must be an exact full commit SHA in the fixed public Config
+repository. Clone it privately, verify clean source, use a unique private GAV and
+fresh isolated Maven repository, and attest that only project/version changed for
+installation before restoring the canonical POM and clean source. Retain Config
+commit, whole-tree and `src/main` tree identities plus canonical/private/installed
+POM and JAR hashes. Matching production trees supports comparison with a later
+release; it does not turn private bytes into public-artifact adoption.
+
+Package and attest before injecting `CORPORATE_PAGE_NEON_ASSIGNMENT` through the
+existing materialization gate. The coordinator exclusively assigns the isolated
+Neon child, lease and resource root; never reuse or replace the basic-proof secret,
+fall back to another assignment, or extend the lease silently. Keep the same forty
+seconds, canonical checkpoints and two fresh authority observations per admission,
+without authority caching. The Ubuntu remote runner is a topology, not evidence
+of geographic proximity, browser behavior or a local latency/SLA guarantee.
+
+Retain only the allowlisted custody, functional, assignment, test-results, cleanup
+and resource-ledger JSON receipts. Require creation/publication/read, conditional
+read, independent head, precommit failure, independent rollback observation,
+same-key retry, other-tenant denial and current-revocation denial. Project only
+closed phases/statuses/timings, fixed-route HTTP status/body hash, known error codes
+and SPI aggregates; raw logs, reports, headers, environment and credentials stay
+private. A hash or prior phase does not explain a later failure. Raw runner logs
+are ephemeral; preserve failed sanitized receipts before diagnosing a new attempt.
+
+The 25-minute job limit does not guarantee the harness cleanup completes after a
+kill or runner loss. Verify cleanup separately; if incomplete, the coordinator
+must reconcile the assigned resource root against the private journal and sanitized
+resource ledger, removing only resources whose ownership is established. Never
+clean a parent/shared branch or infer ownership from a broad prefix alone. Remove
+the dedicated repository secret after the run; retain controlled private recovery
+custody until reconciliation finishes. Cleanup is distinct from pre-cleanup rollback
+proof. This gate neither publishes a release nor accepts menu/copy/browser paths.
+
 ### Prove Bulk Restart Across OS Processes
 
 For the case where the client received the response, pair the existing
