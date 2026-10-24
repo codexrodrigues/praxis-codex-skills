@@ -59,6 +59,35 @@ A candidate correction remains a candidate until independently reviewed and
 integrated. This procedure is an audit requirement, not a claim that every
 published version has all of these protections.
 
+## One Owner For Nested Validation
+
+For Config #521 adoption, inspect `UiLayoutValidationAttempt`,
+`UiLayoutValidationContext`, `UiLayoutValidationScope` and
+`docs/ai/contracts/page-publication-p0/P3C-VALIDATION-BUDGET-521.md` in the exact
+candidate. These correlation/scope seams are internal, not public host APIs or DTOs.
+Keep one owner budget across reserved draft creation, receipt reads, source lineage
+and commit checks. Correlated views retain its operation, correlation ID, original
+ticker, deadline and monotonic balance; never rebuild `now + remaining` or obtain
+a fresh child allowance. Changing a root does not permit changing actor, tenant,
+unit, environment or context version. Close the owner to invalidate every view;
+closing a view must not close its owner or siblings.
+
+Pass validation explicitly where the internal reserved-command/read signatures
+support it. Only SPIs without that parameter use the lexical scope frame carrying
+the attempt. It must contain no principal, membership, grants or cached admission.
+Restore the previous frame with resource cleanup, prohibit unrelated nested budgets
+and worker inheritance, and fail closed on absent/expired scope or changed authority
+correlation. Commit callbacks reinstall their captured attempt for their execution;
+do not retain ThreadLocal state until transaction completion or mint another budget.
+
+Bound each external callback before and after execution, including metadata and
+child admission. Expiry in root metadata must stop before calling child producers;
+denial only after traversing more callbacks is insufficient. Prove this with a
+deterministic clock, plus correlated closure, reentrancy, exception cleanup and
+cross-thread tests. These guards preserve every current-authority checkpoint and
+prevent late acceptance; they do not cancel blocked JDBC/SPI work or establish
+that a public artifact already contains the correction.
+
 ## V68 Metadata And PostgreSQL Proof
 
 All new database-dependent validation uses a remote Neon branch exclusively

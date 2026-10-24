@@ -1150,6 +1150,28 @@ with no navigation bindings need not publish an unrelated group first. Those
 later host surfaces require their own appropriate evidence before claiming them
 operational; never fabricate a group head or reuse an old authorization result.
 
+### Accept The Shared Page Deadline And Rollback
+
+Before accepting the page pilot after Config #521, inspect the owner's
+`P3C-VALIDATION-BUDGET-521.md`, the host guide and the exact current harness.
+Keep forty seconds per initiating operation, including its reserved draft,
+receipt, lineage and commit callbacks; six separate publication HTTP commands
+still own six separate attempts. A blocked extension can return after the deadline,
+but its result must be rejected without executing later callbacks or committing.
+An expiry observed only after an actual database commit means uncertain delivery:
+reconcile with the same creation key; never report that committed write as rollback.
+
+After focused clock/authority tests, require assigned-Neon creation/publication/read
+and a controlled failure after writes are staged but before commit. Observe actual
+transaction rollback and absence of the affected catalog, draft, metadata, head and
+creation-key records, as applicable, using an independent ordinary-runtime connection
+before fixture cleanup. Logout and dropping test databases do not prove rollback.
+Preserve failed receipts and record source, artifact hashes, roles, timings and
+cleanup separately. Private-candidate success does not establish public adoption:
+resolve and attest the officially published compatible artifact and repeat the
+appropriate consumer gate. Unit success does not close Neon, integration or release
+acceptance; retain those gates as pending until their own reviewed receipts exist.
+
 ### Prove Bulk Restart Across OS Processes
 
 For the case where the client received the response, pair the existing
