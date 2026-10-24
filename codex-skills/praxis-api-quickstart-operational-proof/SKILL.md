@@ -1115,6 +1115,125 @@ For metadata integration, prove the chain:
 
 `@ApiResource`/path -> OpenAPI group -> `/schemas/catalog` -> `/schemas/filtered` -> `x-ui`/schema headers -> actions/surfaces/capabilities/links -> downstream consumer evidence.
 
+### Prove A Minimal Corporate Page Publication
+
+For the Config page contracts, inspect `QuickstartPageConfiguration`,
+`QuickstartPageHost`, `QuickstartPageDocuments` and the current
+`docs/CORPORATE-PAGES-PILOT.md`. Reuse Config creation/lifecycle/runtime owners;
+explicitly import the pilot rather than creating parallel writers or activating
+production memberships through component scan. Follow
+`praxis-config-runtime-persistence` for canonical page/group integrity.
+
+Pin the compatible public Config coordinate in the host POM without an override.
+Verify Central JAR/POM checksums and byte equality with the packaged nested JAR;
+private-GAV evidence remains private even when its sources match the release.
+Reuse unchanged owner concurrency/rollback proofs with their exact source and
+limits, then execute the focal host HTTP case on assigned isolated Neon.
+
+`QuickstartPageCorporateHttpNeonTest#nativePageCreatePublishAndReadWithCurrentSessions`
+proves the smaller native page path: two current SESSIONs with separate author
+and publisher memberships, creation/draft, 404 before publication, revision,
+assignment, freeze, submit, approve and head publication. Require the published
+route/document/head, authorized 200/304, an independent ordinary-runtime read of
+the committed head, logout and retained-SESSION rejection. Before accepting the
+host providers, prove publisher-without-authoring creation denial, another tenant
+receiving 404 despite a valid published ETag, and current membership revocation
+receiving 403 rather than 304 with that ETag. Owner-only revocation belongs to the
+assigned test fixture, never runtime grant repair. Keep the existing
+budget, locks, CSRF and authority rechecks; six publication commands have separate
+budgets, not one combined allowance. Preserve a failure before considering a new
+attempt; cleanup does not establish rollback.
+
+The seed has one empty Form and no navigation bindings; this case does not prove
+business submission, menu/group publication, copy or browser rendering. A page
+with no navigation bindings need not publish an unrelated group first. Those
+later host surfaces require their own appropriate evidence before claiming them
+operational; never fabricate a group head or reuse an old authorization result.
+
+### Accept The Shared Page Deadline And Rollback
+
+Before accepting the page pilot after Config #521, inspect the owner's
+`P3C-VALIDATION-BUDGET-521.md`, the host guide and the exact current harness.
+Keep forty seconds per initiating operation, including its reserved draft,
+receipt, lineage and commit callbacks; six separate publication HTTP commands
+still own six separate attempts. A blocked extension can return after the deadline,
+but its result must be rejected without executing later callbacks or committing.
+An expiry observed only after an actual database commit means uncertain delivery:
+reconcile with the same creation key; never report that committed write as rollback.
+
+After focused clock/authority tests, require assigned-Neon creation/publication/read
+and a controlled failure after writes are staged but before commit. Observe actual
+transaction rollback and absence of the affected catalog, draft, metadata, head and
+creation-key records, as applicable, using an independent ordinary-runtime connection
+before fixture cleanup. Logout and dropping test databases do not prove rollback.
+Preserve failed receipts and record source, artifact hashes, roles, timings and
+cleanup separately. Private-candidate success does not establish complete public
+HTTP acceptance. Resolve and attest the officially published compatible artifact;
+by default, run the appropriate consumer gate before claiming that acceptance.
+Unit success alone does not close Neon, integration or release acceptance.
+
+An explicit human decision may accept technical integration with a documented
+availability limitation instead of repeating a campaign. First require independent
+review of unchanged production-source equivalence, public artifact/nested-JAR custody,
+focused consumer tests and the existing complete isolated-Neon functional proof.
+Preserve every public negative and identify its exact failed phase; do not rename
+private evidence as public success, infer rollback from cleanup, or attribute the
+failure exclusively to topology without measurements. Record the decision, scope,
+residual risk and unproved deployment/browser/performance claims in the host guide,
+plan and tracking issue. This accepts a code increment, not production qualification.
+Do not use this path to waive an unexplained integrity/security failure, weaken
+current authority, alter the monotonic operation budget or bypass branch protection.
+After an approved decision, do not repeat invariant suites or require a new executor
+merely to advance unrelated functional adoption.
+
+### Run The Fixed Page Focal Gate Without Publication
+
+Inspect Quickstart `.github/workflows/publish-public-release.yml`, its same-source
+`ci-java.yml`, `scripts/workspace/corporate_page_focal.py` and
+`neon_gate_assignment.py`. The manual `page-focal` cut requires a branch dispatch,
+`create_tag=false` and `release_gate=false`; it runs only
+`QuickstartPageCorporateHttpNeonTest#nativePageCreatePublishAndReadWithCurrentSessions`.
+Require the clean host checkout and assignment source SHA to equal the workflow's
+exact SHA. This seam is implemented; complete public HTTP acceptance requires its
+own passing reviewed receipt. Keep that result distinct from any explicitly approved
+technical-integration decision described above.
+
+With empty `page_config_ref`, consume the host POM's public Config pin without an
+override or fallback, attest Central JAR/POM checksums and nested-JAR equality.
+An optional candidate must be an exact full commit SHA in the fixed public Config
+repository. Clone it privately, verify clean source, use a unique private GAV and
+fresh isolated Maven repository, and attest that only project/version changed for
+installation before restoring the canonical POM and clean source. Retain Config
+commit, whole-tree and `src/main` tree identities plus canonical/private/installed
+POM and JAR hashes. Matching production trees supports comparison with a later
+release; it does not turn private bytes into public-artifact adoption.
+
+Package and attest before injecting `CORPORATE_PAGE_NEON_ASSIGNMENT` through the
+existing materialization gate. The coordinator exclusively assigns the isolated
+Neon child, lease and resource root; never reuse or replace the basic-proof secret,
+fall back to another assignment, or extend the lease silently. Keep the same forty
+seconds, canonical checkpoints and two fresh authority observations per admission,
+without authority caching. The Ubuntu remote runner is a topology, not evidence
+of geographic proximity, browser behavior or a local latency/SLA guarantee.
+
+Retain only the allowlisted custody, functional, assignment, test-results, cleanup
+and resource-ledger JSON receipts. Require creation/publication/read, conditional
+read, independent head, precommit failure, independent rollback observation,
+same-key retry, other-tenant denial and current-revocation denial. Project only
+closed phases/statuses/timings, fixed-route HTTP status/body hash, known error codes
+and SPI aggregates; raw logs, reports, headers, environment and credentials stay
+private. A hash or prior phase does not explain a later failure. Raw runner logs
+are ephemeral; preserve failed sanitized receipts before diagnosing a new attempt.
+
+The 25-minute job limit does not guarantee the harness cleanup completes after a
+kill or runner loss. Verify cleanup separately; if incomplete, the coordinator
+must reconcile the assigned resource root against the private journal and sanitized
+resource ledger, removing only resources whose ownership is established. Never
+clean a parent/shared branch or infer ownership from a broad prefix alone. Remove
+the dedicated repository secret after the run; retain controlled private recovery
+custody until reconciliation finishes. Cleanup is distinct from pre-cleanup rollback
+proof. This gate neither publishes a release nor accepts menu/copy/browser paths.
+
 ### Prove Bulk Restart Across OS Processes
 
 For the case where the client received the response, pair the existing
