@@ -1167,10 +1167,24 @@ transaction rollback and absence of the affected catalog, draft, metadata, head 
 creation-key records, as applicable, using an independent ordinary-runtime connection
 before fixture cleanup. Logout and dropping test databases do not prove rollback.
 Preserve failed receipts and record source, artifact hashes, roles, timings and
-cleanup separately. Private-candidate success does not establish public adoption:
-resolve and attest the officially published compatible artifact and repeat the
-appropriate consumer gate. Unit success does not close Neon, integration or release
-acceptance; retain those gates as pending until their own reviewed receipts exist.
+cleanup separately. Private-candidate success does not establish complete public
+HTTP acceptance. Resolve and attest the officially published compatible artifact;
+by default, run the appropriate consumer gate before claiming that acceptance.
+Unit success alone does not close Neon, integration or release acceptance.
+
+An explicit human decision may accept technical integration with a documented
+availability limitation instead of repeating a campaign. First require independent
+review of unchanged production-source equivalence, public artifact/nested-JAR custody,
+focused consumer tests and the existing complete isolated-Neon functional proof.
+Preserve every public negative and identify its exact failed phase; do not rename
+private evidence as public success, infer rollback from cleanup, or attribute the
+failure exclusively to topology without measurements. Record the decision, scope,
+residual risk and unproved deployment/browser/performance claims in the host guide,
+plan and tracking issue. This accepts a code increment, not production qualification.
+Do not use this path to waive an unexplained integrity/security failure, weaken
+current authority, alter the monotonic operation budget or bypass branch protection.
+After an approved decision, do not repeat invariant suites or require a new executor
+merely to advance unrelated functional adoption.
 
 ### Run The Fixed Page Focal Gate Without Publication
 
@@ -1180,8 +1194,9 @@ Inspect Quickstart `.github/workflows/publish-public-release.yml`, its same-sour
 `create_tag=false` and `release_gate=false`; it runs only
 `QuickstartPageCorporateHttpNeonTest#nativePageCreatePublishAndReadWithCurrentSessions`.
 Require the clean host checkout and assignment source SHA to equal the workflow's
-exact SHA. This seam is implemented; functional Neon acceptance remains pending
-until its own complete, independently reviewed receipt exists.
+exact SHA. This seam is implemented; complete public HTTP acceptance requires its
+own passing reviewed receipt. Keep that result distinct from any explicitly approved
+technical-integration decision described above.
 
 With empty `page_config_ref`, consume the host POM's public Config pin without an
 override or fallback, attest Central JAR/POM checksums and nested-JAR equality.
