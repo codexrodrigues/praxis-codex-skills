@@ -126,7 +126,11 @@ For the canonical
 `PageCreationHost.requireCreation(principal, contextVersion, expected, source)`
 contract, evaluate the FULL resolve policy plus CREATE_PAGE, READ_SOURCE and
 COPY_SOURCE in one admission using the supplied Principal. Do not substitute
-thread identity or the expected actor. Return the freshly observed context only
+thread identity or the expected actor. Preserve
+`QuickstartUiLayoutContextAuthorization.authorize`'s existing identity check:
+the supplied Authentication must be the ambient SecurityContext Authentication;
+do not accept a detached credential or replace the supplied identity to pass it.
+Return the freshly observed context only
 after both observations succeed; Config requires exact equality with expected
 and rejects null. Expected grants no authority and must not silently rebase scope.
 This is an explicit joint decision
