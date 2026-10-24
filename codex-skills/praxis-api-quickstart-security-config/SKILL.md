@@ -173,8 +173,18 @@ lookup; non-page invocations still use `require`. Test plain-bean rejection and
 restrictive custom policies as well as stale context and revocation.
 For the closed pilot, structure validation may be pure: retain `validation.require`,
 registered tenant/environment/unit, exact root/sole composition/target, canonical
-schema/reproduction, icons, Form restrictions and selectors. Structural acceptance
-grants no operation or source access. Outside these explicit joint units,
+schema/reproduction, icons, Form restrictions and selectors. Inspect
+`QuickstartPageFormContentPolicy` before evolving content: the native B0 stays
+empty, while revisions/copied baselines may contain the admitted SDK local fields
+(`controlType`, `source: local`, `transient: true`, `submitPolicy: omit`) and
+field-only sections/rows/columns. Text controls use `input`, not `text`. Keep
+field references/order consistent with metadata and reject unknown properties;
+do not silently strip editor output. No resource/API bindings, actions, hooks,
+rules, option sources, default values or entered preview data are admitted by
+this presentation-only cut. Validate real public-editor projection fixtures and
+negative widening cases with `QuickstartPageFormContentPolicyTest`; an accepted
+structure is not a business-data submission or HTTP publication proof.
+Structural acceptance grants no operation or source access. Outside these explicit joint units,
 preserve independent current admissions for invocation, lifecycle, mapping,
 native source, metadata and children; historical
 captures are never grants. Use `QuickstartPageHostTest` and
