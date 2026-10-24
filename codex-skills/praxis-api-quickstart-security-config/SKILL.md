@@ -122,9 +122,18 @@ Audit `QuickstartPageHost.require` before multiplying operational reads inside o
 callback: app/namespace shape and complete invocation/capability/source policy can
 share one `requireCurrent` admission with both observations still around the policy.
 Do not reuse that result in the next callback or globally weaken `requireContext`.
-For the canonical `PageCreationHost.requireCreation(context, source)` contract,
-evaluate CREATE_PAGE, READ_SOURCE and COPY_SOURCE together through one
-`QuickstartPageHost.requireCurrent` admission. This is an explicit joint decision
+For the canonical
+`PageCreationHost.requireCreation(principal, contextVersion, expected, source)`
+contract, evaluate the FULL resolve policy plus CREATE_PAGE, READ_SOURCE and
+COPY_SOURCE in one admission using the supplied Principal. Do not substitute
+thread identity or the expected actor. Preserve
+`QuickstartUiLayoutContextAuthorization.authorize`'s existing identity check:
+the supplied Authentication must be the ambient SecurityContext Authentication;
+do not accept a detached credential or replace the supplied identity to pass it.
+Return the freshly observed context only
+after both observations succeed; Config requires exact equality with expected
+and rejects null. Expected grants no authority and must not silently rebase scope.
+This is an explicit joint decision
 window, with the same operational locks and fresh before/after observations around
 all three pure policies; it changes their former separate linearization points.
 No Config work, source I/O or arbitrary extension belongs between these policies.
@@ -141,6 +150,12 @@ historical producer, root metadata and every child's source/metadata inside one
 that unit before and after structural extensions; both calls retain their own
 fresh before/after SESSION/membership observations. Prove the second call rejects
 revocation or expiry during those extensions and that no child policy is omitted.
+It also includes the FULL resolveLifecycle policy, including custom registration
+restrictions, and returns a fresh context for Config's exact-equality check.
+Ledger-derived comparison values never authorize the call. Preserve pre-catalog
+admission and the post-extension call; post-I/O authority is resolved inside the
+joint unit, not reused from the earlier context. Test a stricter custom resolver,
+null or divergent returned context, and the supplied Principal boundary.
 Mixed captures still use `requireNative` with independent metadata/child checks
 and Config provenance correlation; published traversal is unchanged. Do not let
 the host select this route from labels or generated-marker guesses.
