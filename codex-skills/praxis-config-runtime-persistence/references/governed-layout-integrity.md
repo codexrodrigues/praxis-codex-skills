@@ -213,9 +213,41 @@ drafts, publication heads, titles and authored documents.
 - Require CREATE at the destination and READ_SOURCE/COPY_SOURCE for the directly
   selected source at creation/replay and commit. Do not invent perpetual COPY
   permission or ancestral page ACL requirements for an independent copy.
+  Inspect the mandatory `PageCreationHost.requireCreation(context, source)` SPI:
+  it admits these three policies as one joint current-authority decision. This
+  explicitly changes linearization from three separate admissions to one window;
+  it is not a claim that the previous interleavings remain identical. The host
+  evaluates all three pure policies under the same locked authority snapshot,
+  with fresh observations and expiry/coherence checks before and after the unit.
+  Concurrent revocation serializes against that unit. Keep Config work, source
+  I/O and arbitrary extensions outside it, and retain every Config creation
+  checkpoint, including replay and actual commit. Each call must reauthorize;
+  never cache the result or merge other native, metadata, child or lifecycle
+  callbacks into this unit. Update implementing hosts explicitly for this beta
+  SPI change; do not introduce a default that silently restores three admissions.
+  Prove all three policies, denial, stale context, expiry and revocation between
+  units with focused tests. A reduced observation count does not certify the
+  real journey within the unchanged 40-second budget.
   Integrity/reproduction and current producer, domain and derived-use admission
   still apply throughout its provenance chain. Do not expose ancestral private
   evidence through a receipt or association lookup.
+- Inspect the separate mandatory `PageCreationHost.requireNativeProvenance` SPI
+  for wholly host-native captures. Config alone selects it when the source is
+  Native and neither root nor any child metadata is Config-generated. One joint
+  admission covers the exact historical origin, current producer/domain
+  dependencies, root metadata and every child's exact source and metadata.
+  Config calls it before and after structural extensions; each call has its own
+  current-authority window, with fresh before/after observations and expiry checks.
+  Reproduction, metadata syntax, complete child-key matching and Config provenance
+  integrity remain Config responsibilities. The host must not reinterpret a
+  generated marker or replace captured bytes with latest content to qualify.
+  Mixed native/generated captures retain `requireNative` and independent
+  metadata/child admissions plus Config-owned correlations; `requireNative` is
+  this distinct semantic seam, not a compatibility alias. Published-source
+  traversal is unchanged. Prove aggregate policy completeness, revocation during
+  structural extensions and denial by the second admission, and mixed/published
+  routing. These explicit joint units change linearization; they authorize no
+  grant reuse across callbacks or request-wide authority cache.
 - Scope the creation key to actor/application/tenant/environment. Equal replay
   returns the same page and current draft validator without recapture; a different
   command conflicts. Context version must be current but is not a new key scope.

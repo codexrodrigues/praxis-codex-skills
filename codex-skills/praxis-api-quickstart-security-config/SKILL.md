@@ -115,18 +115,41 @@ For repeated enterprise/page admissions, inspect `EnterpriseContextSessionServic
 `JdbcEnterpriseMembershipSource` before changing budgets or transaction managers.
 The host reader composes the existing SESSION and membership snapshot; Config still
 owns lifecycle checkpoints and persistence. Keep two fresh observations around each
-policy and compare the session revision and complete membership. Do not cache grants,
+admission unit and compare the session revision and complete membership. Do not cache grants,
 remove checkpoints, raise the page validation budget or widen runtime privileges.
 
 Audit `QuickstartPageHost.require` before multiplying operational reads inside one
 callback: app/namespace shape and complete invocation/capability/source policy can
 share one `requireCurrent` admission with both observations still around the policy.
 Do not reuse that result in the next callback or globally weaken `requireContext`.
+For the canonical `PageCreationHost.requireCreation(context, source)` contract,
+evaluate CREATE_PAGE, READ_SOURCE and COPY_SOURCE together through one
+`QuickstartPageHost.requireCurrent` admission. This is an explicit joint decision
+window, with the same operational locks and fresh before/after observations around
+all three pure policies; it changes their former separate linearization points.
+No Config work, source I/O or arbitrary extension belongs between these policies.
+Config still invokes the unit at each creation/replay/commit checkpoint, and
+revocation between units must deny the later call. Test policy completeness,
+stale scope and expiry, retaining independent admissions for other callbacks.
+Do not generalize this grouping to unrelated policies or claim the unchanged
+40-second operational budget is met from an observation-count reduction alone.
+The separate canonical `requireNativeProvenance` unit is restricted to captures
+classified by Config as Native with wholly non-generated root/child metadata.
+In the closed Quickstart producer, `documents.requirePage` checks the exact
+historical producer, root metadata and every child's source/metadata inside one
+`requireCurrent` policy, without arbitrary extensions or Config I/O. Config calls
+that unit before and after structural extensions; both calls retain their own
+fresh before/after SESSION/membership observations. Prove the second call rejects
+revocation or expiry during those extensions and that no child policy is omitted.
+Mixed captures still use `requireNative` with independent metadata/child checks
+and Config provenance correlation; published traversal is unchanged. Do not let
+the host select this route from labels or generated-marker guesses.
 For the closed pilot, structure validation may be pure: retain `validation.require`,
 registered tenant/environment/unit, exact root/sole composition/target, canonical
 schema/reproduction, icons, Form restrictions and selectors. Structural acceptance
-grants no operation or source access. Preserve independent current admissions for
-invocation, lifecycle, mapping, native source, metadata and children; historical
+grants no operation or source access. Outside the two explicit joint units,
+preserve independent current admissions for invocation, lifecycle, mapping,
+native source, metadata and children; historical
 captures are never grants. Use `QuickstartPageHostTest` and
 `QuickstartPageStructureTest` for forged/stale scope, revocation between callbacks
 and absence of structural authority I/O. Confirm the Config owner budget propagation
