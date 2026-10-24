@@ -139,6 +139,18 @@ Do not report draft creation as successful SaveAs publication. Materialize only 
 host-admitted document profile; a lifecycle state receipt is not an immutable review
 preview or proof that a page renderer is wired. Keep those acceptance scopes separate.
 
+For published-page copies, inspect Config's `PageRuntimeReadService` and the
+host transport/editor together. Use the server-provided `copySource` from the
+published read, correlated with that page and its authorized head. Send it to
+creation with a new creationKey; let Config allocate the new page/draft/route
+identity and rematerialize the source. Do not clone JSON or reuse source/menu
+identities on the client. The copy is a draft with no inherited navigation
+binding: explicitly select its destination group and publish through lifecycle.
+On authorization denial, clear displayed protected content and fence further
+writes. A reread may discard unsaved edits; this UI fence neither repairs stored
+configuration nor grants access. Test copied content, distinct identity, empty
+initial navigation and the denial path separately from real publication proof.
+
 Treat navigation groups as a separate governed aggregate: publish the referenced
 group before publishing a page binding to it. Consume the SDK's runtime navigation
 in that same corporate provider scope; do not synthesize menus from the page
