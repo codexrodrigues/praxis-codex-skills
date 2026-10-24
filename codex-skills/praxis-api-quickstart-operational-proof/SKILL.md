@@ -792,9 +792,10 @@ idempotency reservation and failing later during audit persistence.
 
 ## Avoid Nested Acquisition From The Domain Pool
 
-When a bulk unit already holds an API connection, audit every independent read in
-its admission callback. A bounded connection timeout does not prevent structural
-starvation if grants or facts need a second connection from that same pool.
+When a domain unit already holds an API connection, audit every independent read
+and synchronous durable evidence append, including item-command revalidation.
+`REQUIRES_NEW` separates transactions, not physical pool capacity. A bounded timeout
+does not prevent structural starvation when nested work needs another API slot.
 Do not fix this solely by increasing the pool or limiting bulk threads while
 unrelated API traffic can still occupy the required connections.
 
@@ -825,6 +826,26 @@ revocation, replay and transactional rollback proofs. Distinguish controlled poo
 occupancy from multiple complete concurrent HTTP executions and from a production
 capacity certification. Release retained connections and await pending requests
 before clearing shared test hooks.
+
+For an existing independent JPA evidence append, inspect
+`RuleExecutionObservationPublisher`, `RuleExecutionObservationOutbox`, its appender
+and store configuration. Preserve synchronous commit before return and durability
+for DENY and caller rollback; do not substitute REQUIRED, lossy asynchronous work,
+larger domain pools or longer timeouts. A dedicated bounded physical writer pool must use
+the same effective ordinary API runtime identity, destination and TLS settings.
+Never delegate it back to the occupied API pool or borrow owner/Config credentials.
+Keep its private PU/transaction manager restricted to the existing outbox entity
+and table, without domain lookups, callbacks, duplicated SQL or schema creation;
+retain the existing claim, acknowledgement and dispatch path. Verify mutable driver
+and health-check Properties are detached: shallow Hikari copying plus merging
+setters can still alias the source. Warm the pool with a read-only bootstrap probe,
+close it through Spring before assigned-database cleanup, and include its capacity
+in the per-instance connection budget. On assigned Neon, hold every API slot while
+appending ALLOW/DENY evidence, require append completion before releasing callers,
+then roll callers back and prove only the independent evidence remains committed.
+Prove the writer's ordinary identity and single-entity mapping; retain the real
+concurrent HTTP command's one-effect and 409/412 loser oracles. Source/unit proof
+alone does not certify that saturation, rollback or HTTP interleaving on Neon.
 
 ## Prove Real Config Outage Between Confirmed Units
 
