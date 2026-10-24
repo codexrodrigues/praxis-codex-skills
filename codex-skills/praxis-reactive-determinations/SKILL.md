@@ -88,6 +88,16 @@ authorization proof. Test the actual package and authenticated HTTP/UI handoff.
 Prove the chain without prefilled derived values before claiming the example is
 ready, then prove the actual published packages and HTTP/UI handoff separately.
 
+## Financial draft and dependent-resource handoff
+
+For payroll facts, three payment dates or event create/edit/move, read
+[the financial handoff procedure](references/payroll-financial-handoff.md).
+It separates the host's financial/CAS authority from the consumer's snapshot
+capture, real metadata FormArray, persistent validation and runtime satisfaction.
+Inspect the actual published Core/Dynamic Form packages before changing a generic
+contract. Treat G4 source and mocked consumer tests as candidate evidence until
+the corresponding schema, authenticated HTTP, isolated Neon and UI gates pass.
+
 ## Governed runtime upgrades
 
 Before adopting a new engine contract, inventory every active-snapshot consumer, including secondary pilots, caches, preload jobs, fixtures and public receipts. Config owns historical verification versus executable admission: an intact incompatible snapshot remains history, while an invalid one must not be relabeled merely incompatible. Never rewrite hashes, approvals or engine tuples in persisted snapshots.

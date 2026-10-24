@@ -16,13 +16,22 @@ Inspect `LocalPublicationRecovery`, `LocalPublicationRecoveryClient`,
 `reconcilePublished`; the generation lookup is a fenced momentary hint, never
 an authorization or promise that reconciliation will succeed.
 
-Use only the fixed host operation/namespace and current durable generation.
-Inspect its actual provider registration before adoption: the official administrative
-endpoint is bound to the uniform operation. The current ASYNC profile requires all
-six provisioned capacity coordinates. Missing registration or a previous SYNC
-photograph stays closed; do not choose another READY provider as an alias for this
-endpoint or copy test capacity into production. A producer/profile change needs
-the existing explicit governed republication, outside the startup runner.
+Use only fixed host operation/namespace identities and observed durable generations.
+In the G4 candidate, inspect `core/bulk/BulkPublicationTarget` and
+`docs/PAYROLL-BULK-PUBLICATION-OPERATIONS.md`: the catalog maps mission uniform and
+payroll approval IDs to their own reconcile routes. Inventory actual descriptor
+providers and collect every registered fixed target's hint before SESSION issuance;
+reject duplicate providers, divergent runtime infrastructure and any lookup failure.
+Another READY hint must not mask a failed lookup. An empty hint is not generation
+zero or proof of no drift. Payroll-only recovery does not require a mission provider
+or its six ASYNC capacity coordinates. A registered ASYNC profile still requires
+its actual provisioned capacity; never copy test capacity into production.
+
+Only after the complete inventory succeeds, the fixed catalog order chooses one
+READY candidate for one HTTP reconcile at its exact generation and own route.
+Do not fall back to another target after failure. The SDK still validates the global
+photograph and current descriptors, ACL/state and CAS; the hint grants no authority.
+A producer/profile change needs explicit governed republication outside the runner.
 The startup runner may call the existing real HTTP reconcile once on its own
 native Servlet listener (actual port/context path), using the already configured
 publisher login. Never route through the Render load balancer, synthesize a
@@ -965,7 +974,50 @@ the affected HTTP flow. Correct compatibility in the owning baseline; do not add
 a host Hibernate override, increase budgets or weaken denial for convenience.
 Keep candidate proof separate from published-artifact adoption.
 
-Keep API and config datasource properties, Flyway policy, AI provider properties, RAG/vector-store switches, and test isolation explicit. Test profiles may disable external services or use H2, but must preserve the host/starter wiring being proven. Never use an in-memory shortcut as proof that deployed config persistence, origin policy, or streaming works.
+Keep API and config datasource properties, Flyway policy, AI provider properties,
+RAG/vector-store switches and test isolation explicit. Test profiles may disable
+external services outside the exercised boundary while preserving the host/starter
+wiring being proved. Every database-backed validation uses an exclusively assigned
+remote Neon child with the required real role profile. Historical H2 or embedded
+fixtures remain historical evidence, not a new database proof. Do not substitute
+an in-memory fixture for persistence, origin-policy or streaming integration proof.
+
+## Install the operational SESSION prerequisite
+
+Before an authenticated host proof, inspect `EnterpriseSessionConfiguration`,
+`EnterpriseSessionStore`, `EnterpriseSessionLifecycle`, the official operational
+migrator and `docs/ENTERPRISE-SESSION-OPERATIONAL-PREREQUISITE.md`. The reviewed
+candidate `V20261022_001__enterprise_session_operational_prerequisite.sql` installs
+the existing Store contract on API storage, separately from Config Flyway. Verify
+its actual source/package/adoption before use; it is not an accepted deployment
+or G4 admission merely because the local source/offline tests exist.
+
+Run only through the segregated migration owner with incompatible writers stopped.
+Absent storage may be created; an existing table must pass the locked, strict
+PostgreSQL catalogue/owner/constraint/index/dependency and ACL comparison without
+rewriting rows, normalizing a predecessor, taking ownership or repairing broad
+privileges. Derive runtime's exact column writes from Store SQL and pair with
+`praxis-api-quickstart-security-config`; no broad INSERT/UPDATE fallback, global
+role/default-privilege repair or fixture DDL substitutes this installation.
+
+`AssignedNeonStores.prepareApiSessions` and TESTONLY snapshots do not prove the
+official installation or recover retired migration bytes. Missing historical
+resources remain a strict Flyway failure before the forward; do not repair/clean
+history, restore removed SQL from a fixture or bypass that check to start the host.
+
+Use the guarded `EnterpriseSessionPrerequisiteNeonTest` only after independent
+source review and exclusive control-plane assignment: direct Neon endpoint,
+fresh named database prepared by the official predecessor migrator, a distinct
+non-superuser migration owner and ordinary runtime, verify-full/channel binding
+and the packaged SQL hash. Attest JDBC client TLS protocol/cipher; backend
+`pg_stat_ssl` behind the Neon proxy does not prove that client connection.
+The full migrator install plus repeat-zero and real Store/lifecycle operations
+are separate from same-resource adversarial transactions that always roll back.
+If a later assertion fails after forward commit, retain the failed cut and state;
+never delete table/history or silently retry on a reset database. Offline/source
+checks do not prove DDL, effective ACLs, physical rollback, HTTP authentication,
+enterprise membership composition or payroll readiness. Report an in-progress
+Neon run as pending until its exact result and independent review are available.
 
 ## Host Security Is Integration, Not A Starter Override
 
@@ -1249,6 +1301,39 @@ Do not claim granular enforcement, safe public pages or READY from persistence
 alone. Update fixtures through the official migration lane and preserve the
 independent current-grant connection used by mutation admission.
 
+## Assign Candidate Preload To Exact Hosted RuleSets
+
+For the G4 candidate command, inspect `RuleHostImplementationCatalog`,
+`RuleCandidatePreloadJob`, its focused tests and
+`docs/RULE-SNAPSHOT-COMPATIBILITY-MIGRATION.md` in the exact packaged host.
+Confirm adoption before applying candidate guidance to a deployed command.
+
+Assign `PRAXIS_RULE_PRELOAD_RULE_SET_KEYS` as a nonempty JSON array of unique,
+exact hosted identities. Payroll-only uses
+`["human-resources.payroll.reactive-determinations"]`; a two-family rehearsal
+also assigns `extraordinary-grant-eligibility`. Missing, malformed, empty,
+duplicate, non-string or unknown entries must fail before credentials are read
+or transport is created. Do not infer selection from labels, aliases, text
+matching or whichever pending rollouts happen to exist. Update actual command
+callers when adopting this required beta CLI input; do not default to all families.
+
+Application publication and the maintenance command must share the scoped
+`RuleHostImplementationCatalog`. The inspected candidate exposes five references
+in the common host scope: three benefits and two payroll Java implementations.
+Keep executable registries family-specific. A payroll-only probe still uses the
+complete host-scoped catalog digest, not a payroll-only or obsolete benefits-only
+digest, but must never poll or require a benefits rollout.
+
+Require an accepted positive probe for every assigned family; an absent candidate,
+negative admission, ignored probe or control-plane failure is not success.
+Prove payroll-only, benefits-only and explicit combined selection, catalog parity
+with the application, and rejection of bad assignments before transport creation.
+Retain the independent observer identity, immutable candidate/hash checks and
+sanitized output. Preloading starts no application context or database connection
+and does not activate a head, populate active/LKG state or authorize traffic.
+Focused offline tests prove this routing/admission boundary; real HTTP probing,
+governed rollout and G4 adoption remain separate evidence gates.
+
 ## Prove Temporal Read Authorization On One Snapshot
 
 For payroll result access, resolve department assignment from protected historical
@@ -1274,6 +1359,44 @@ requesters, reduction/revocation, concurrent grant and assignment changes, bad p
 transaction settings, bounded failure and sanitized outputs on PostgreSQL. A coherent
 host snapshot is not yet proof of sharing the Metadata reader snapshot or wiring a
 public API; keep that integration and mutation admission as explicit later gates.
+
+Apply the same rule to ordinary payroll/event detail, history projections,
+filters/options, analytics, counts, previews and availability, not only protected
+bulk results. Inspect `PayrollFinancialDomainService.authorize`,
+`QuickstartOperationalContextResolver`, `QuickstartPrincipalGrantRepository` and
+the actual controller/service transaction boundaries. A separate READ COMMITTED
+`readCurrent` grant plus a later RR domain query is not one authorized snapshot.
+The G4 candidate's `resolveReadSnapshot` reuses `readCurrentInSnapshot` on the
+bound API connection; verify its presence and adoption in the exact host first.
+Absent/wrong holders, auto-commit, wrong binding or incompatible isolation stay
+closed without an independent reader/owner fallback or changing the transaction.
+Keep current-grant and historical-assignment fences for writable command replies;
+a writable transaction flag alone does not certify a read-authorization snapshot.
+Public read entrypoints must establish the API RR/RO boundary through the real
+Spring proxy, including the data and any accompanying diagnostic count. Self-call
+and an inherited default transaction annotation do not establish that boundary.
+
+Prove a causal mixed-snapshot negative: a grant initially covers department A while
+the target belongs to B; pause after the old grant read, revoke A and then change
+the target's historical assignment to A. No instant authorizes that combined
+observation. The corrected snapshot must deny, not pair old coverage with a new
+body. Also test missing holder, RO/READ COMMITTED, wrong datasource/binding and
+unavailable authority. Unit simulations and candidate source do not close G4:
+retain actual runtime-role Neon interleaving and authenticated HTTP/UI gates.
+
+For financial action-policy admission, inspect `config/OperationalPolicyGate`
+and its focused tests as well as the action availability resolver. In the G4
+candidate, the uniquely resolved canonical action's required `PAYROLL_APPROVE`
+selects `QuickstartOperationalContextResolver` as that authority's current source.
+Remove a stale claim from the local availability set and project only the current
+grant after exact subject/tenant/environment agreement; preserve other required
+authorities and the authentication itself. Denial remains 403 and unavailable
+storage remains sanitized 503 before any Config policy lookup, without JWT fallback.
+This admission is distinct from the domain's final coverage, locks and CAS checks.
+Prove a current grant without a JWT payroll claim, revoked/missing grants despite
+an old claim, another missing required authority, scope mismatch and store failure
+before Config. Bind real mark-paid/replay and paid-state rejection evidence to
+its exact source/package; do not extrapolate it to bulk, READY or full G4 acceptance.
 
 ## Adherence Inventory
 
@@ -1841,12 +1964,31 @@ the current Angular SYNC consumer, provisioning, HTTP and deployment have separa
 
 ## Basic Bulk Publication Admission
 
-Inspect the host's `MissionParticipantBulkPublicationController`, original-JSON
-`MissionParticipantBulkPublicationShapeAdvice`, explicit SecurityConfig POST matchers
-and `docs/operational-bulk-publication.md`. Metadata owns publish/reconcile/suspend
-and durable CONTROL/global publication semantics; the host supplies one fixed basic
-operation identity and the current server-configured binding. Do not create a second
-registry, annotations or lifecycle implementation in the host.
+Inspect the host's `MissionParticipantBulkPublicationController`,
+`EventosFolhaBulkPublicationController`, shared `core/bulk/BulkPublicationAdministration`,
+original-JSON `BulkPublicationShapeAdvice`, explicit SecurityConfig POST matchers,
+`docs/operational-bulk-publication.md` and `docs/PAYROLL-BULK-PUBLICATION-OPERATIONS.md`.
+Metadata owns publish/reconcile/suspend and durable CONTROL/global publication
+semantics; the host fixes each operation identity and resolves the authorized
+binding. Do not create a second registry, annotations or lifecycle in the host.
+
+In the G4 candidate, payroll POSTs are
+`/api/human-resources/eventos-folha/actions/bulk-approve/publication/publish`,
+`/api/human-resources/eventos-folha/actions/bulk-approve/publication/reconcile`
+and `/api/human-resources/eventos-folha/actions/bulk-approve/publication/suspend`.
+The target is fixed to `human-resources.eventos-folha.bulk-approve`; neither the
+body nor a mission route chooses or aliases it. Confirm these paths in the exact
+adopted host before using this candidate procedure.
+
+Use the official operational migrator and `BulkOperationalMigrationConfiguration`
+to supply both typed SDK control identities, mission uniform and payroll approval,
+from their providers' operation IDs. Fresh controls begin `UNCOMPOSED`; repetition
+must preserve existing state, history and generation. Verify segregated migration
+owner, ordinary domain runtime and SDK control-plane identities against effective
+privileges. Do not copy SDK SQL, reset generations or publish during startup.
+Payroll remains `DOMAIN_COMMAND / SYNC / EXPLICIT`; mission ASYNC capacity
+coordinates are not its prerequisites. Structural publication grants neither
+`PAYROLL_APPROVE`, financial coverage nor Config rule selection.
 
 Resolve each distinct current administrative permission, complete the separate grant
 read before SDK control locks, and recheck the exact active SESSION. Never retain a
@@ -1860,6 +2002,32 @@ not retry or rebase mutating commands on 503: it does not prove rollback or fail
 durable publication. Reconcile only an already confirmed READY publication at its
 exact generation. Identify an authorized protected evidence reader before administrative commands or basic operational
 availability acceptance; fixture SQL and guessed zero are not an operational recovery procedure.
+
+For payroll send only `expectedGeneration` in one JSON document of at most 1024
+bytes. Observe generation through protected administration; there is no new public
+generation GET. On stale CAS, lost response or uncertain commit/readback, retain
+the original expectation and stop mutating commands until protected observation
+supports a new explicit decision. Do not retoken, increment by guess, replace the
+lifecycle with SQL or infer rollback. Keep no-store sanitized responses on all
+outcomes. The candidate's focused unit/MVC policy tests do not prove bulk HTTP,
+Neon installation/publication, R3 confirmation/replay or G4 READY/admission.
+
+Use the candidate's fixed payroll recipe
+`db/operational-administration/inspect-payroll-bulk-publication.sql`, not the
+mission-specific `inspect-basic-bulk-publication.sql` or a caller-selected operation.
+Supply all six protected expectations: actor, database, namespace, tenant,
+environment and deployment. The RR/RO observation joins host/namespace binding,
+operation control and global publication under finite SQL limits; use the assigned
+secret-safe administration channel and an external finite deadline. Bind source
+hash, Neon project/branch/endpoint and transport evidence separately: expected
+values alone do not attest those identities. USAGE/SELECT suffice; owner is not required.
+Exit zero returns a momentary receipt, without control locks or future authority.
+`readyPairMatches` does not prove local installation. Missing/divergent evidence
+must produce empty stdout, exit 3, SQLSTATE `PBP01` and the fixed
+`PRAXIS_BULK_PUBLICATION_INSPECTION_UNAVAILABLE` marker; exit 3 alone is insufficient.
+Static recipe tests and loopback client tests do not prove PostgreSQL or a real
+payroll-only restart. Keep recipe adversaries, exact-generation HTTP reconcile,
+temporary SESSION revocation and live suspension/drift as separate remote gates.
 
 Prove the three HTTP commands with persisted SESSION/current grants/owned PostgreSQL,
 stale CAS, revocation and delegation negatives, business-permission separation, and
@@ -1894,14 +2062,26 @@ HTTP or backend proof. Do not upload raw logs or rejected sidecars; if privacy i
 or fallback validation are unavailable, emit no fallback artifact. Diagnose the
 recorded rejection and correct its cause before rerunning the remote journey.
 
-For lifecycle OpenAPI on Render, merge `springdoc.cache.disabled=true`
+For governed lifecycle OpenAPI, merge `springdoc.cache.disabled=true`
 and an empty `app.openapi.internal-base-url` into the existing
 `SPRING_APPLICATION_JSON` overlay, then check the served document after READY.
+Verify the effective profile: `prod` retains a loopback URL fallback when its
+environment variable is omitted. Merge the two properties without replacing
+other protected JSON settings; absence of an environment override is not empty.
 Inspect Metadata's `docs/spec/BULK-OPERATION-LIFECYCLE.md` and
 `docs/technical/AUTO-CONFIGURACAO.md`, plus the host's
 `src/main/resources/application-prod.properties` and README: its shared
 `APP_OPENAPI_INTERNAL_BASE_URL` also feeds AI schema/capability URLs. Do not clear
 that shared environment variable to fix the lifecycle lookup.
+
+Preserve the released `CachedOpenApiDocumentService` and
+`OpenApiInternalRestTemplate` with Metadata's original request factory, no
+interceptors or request initializers. Fresh-composition/public-cache checks and
+the capture's transport-revision fence must remain active. Preserve the publication
+filter over the complete Servlet context after the enabled Boot Security chain;
+an alternate transport, partial mapping or changed filter order is not a remedy.
+Inspect these guards in the exact adopted SDK; successful startup alone proves
+neither capture nor publication, cold recovery or business readiness.
 
 When diagnosing a publish 503, distinguish the control/runtime transaction deadline
 from fresh OpenAPI capture. Inspect the exact released
