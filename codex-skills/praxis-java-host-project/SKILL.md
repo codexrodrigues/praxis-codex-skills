@@ -61,6 +61,29 @@ For `arquitetural`, `contrato-publico`, or `transversal`, map impact before patc
 11. Create only the host-owned code needed for the domain: application bootstrap, dependency composition, security/origin policy, datasource properties, resources, tests, and documentation.
 12. Validate with the smallest reliable command after inspecting which tests connect to a database. Local execution is limited to unit tests without a database. Use an explicitly assigned isolated remote Neon branch for database-backed tests; add real HTTP/schema proof when the task claims the runtime metadata endpoints work.
 
+## Diagnose Missing UI Metadata After Dependency Changes
+
+When `@UISchema` is present but generated `x-ui` is absent, audit the resolved
+composition before changing annotations or expected schema values:
+
+1. Inspect the effective Maven dependencies and packaged/runtime Springdoc and
+   Swagger Jakarta core, models and annotations. Check for duplicate annotation
+   classes; a source POM or successful OpenAPI response alone does not prove alignment.
+2. Compare `CustomOpenApiResolver` with its actual `ModelResolver` superclass
+   using `javap -p -s`. Include return types in the JVM descriptors: a changed
+   superclass return type can silently bypass an old enrichment hook. Inspect
+   the canonical resolver registration as well.
+3. Correct resolver ABI compatibility in `praxis-metadata-starter` and keep the
+   host's dependency family coherent. Do not copy enrichment into the host or
+   upgrade unrelated starter/domain APIs merely to conceal the mismatch.
+4. Prove label, lookup binding and existing validation through a real
+   `ModelConverters` pipeline on the selected dependency family. Calling the
+   protected hook directly does not prove that Swagger dispatches to it.
+5. Verify `/schemas/filtered` over real HTTP in the consuming host, retaining its
+   original schema assertions and binding evidence to source, JAR and resolved
+   dependencies. Keep candidate validation separate from published adoption;
+   never suppress an oracle or treat compilation alone as consumer acceptance.
+
 ## Reference Resource Audit
 
 When the user asks to make an existing backend resource an exemplar for future

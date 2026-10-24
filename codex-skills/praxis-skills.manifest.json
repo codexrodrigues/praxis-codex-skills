@@ -1579,8 +1579,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-authoring-editors"
                                         ],
-                       "skillMdSha256":  "43A193B0F4CDD6C734F2555D851496BD682123993121960CC6A4E87B0AA60E94",
-                       "treeSha256":  "D0ED9208AFDDA4991F885B78F03FCF1D5CEBA87501DB824724CECC725A4BDEDD"
+                       "skillMdSha256":  "1584A6CA173CF73B37980C1CA9ACB6DA1BE3935545107D6B35E55DFF08B2D50B",
+                       "treeSha256":  "FF3674349F993B9D8493709A0CF09E32D3338F44DC9C32FACD99DEF6F84B3FD2"
                    },
                    {
                        "name":  "praxis-landing-public-docs-contracts",
