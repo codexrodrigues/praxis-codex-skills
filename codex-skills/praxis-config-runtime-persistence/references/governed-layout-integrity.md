@@ -229,8 +229,15 @@ drafts, publication heads, titles and authored documents.
 - Require CREATE at the destination and READ_SOURCE/COPY_SOURCE for the directly
   selected source at creation/replay and commit. Do not invent perpetual COPY
   permission or ancestral page ACL requirements for an independent copy.
-  Inspect the mandatory `PageCreationHost.requireCreation(context, source)` SPI:
-  it admits these three policies as one joint current-authority decision. This
+  Inspect the mandatory
+  `PageCreationHost.requireCreation(principal, contextVersion, expected, source)`
+  SPI: it includes the FULL `resolve(principal, contextVersion)` policy and these
+  three policies in one joint current-authority decision. Use the supplied
+  Principal as credential input; never substitute the expected actor or thread
+  identity. Return the freshly observed `PageCreationContext` only after final
+  checks. Config rejects null or any difference from `expected`, without rebasing
+  scope. Expected is correlation, not authority. Resolution and creation must
+  share one window rather than two transactions. This
   explicitly changes linearization from three separate admissions to one window;
   it is not a claim that the previous interleavings remain identical. The host
   evaluates all three pure policies under the same locked authority snapshot,
@@ -254,6 +261,13 @@ drafts, publication heads, titles and authored documents.
   dependencies, root metadata and every child's exact source and metadata.
   Config calls it before and after structural extensions; each call has its own
   current-authority window, with fresh before/after observations and expiry checks.
+  Include the FULL `resolveLifecycle` policy, including custom registration
+  restrictions, in that same window and return its freshly attested context after
+  final checks. Config rejects null or any difference from the expected context.
+  Ledger-derived application/namespace values are comparison inputs only: never
+  treat them as current authority. Keep pre-catalog admission and the second
+  provenance admission after extensions; the joint resolution provides the
+  required post-I/O authority check rather than reusing the earlier decision.
   Reproduction, metadata syntax, complete child-key matching and Config provenance
   integrity remain Config responsibilities. The host must not reinterpret a
   generated marker or replace captured bytes with latest content to qualify.
