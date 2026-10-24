@@ -133,11 +133,23 @@ revocation between units must deny the later call. Test policy completeness,
 stale scope and expiry, retaining independent admissions for other callbacks.
 Do not generalize this grouping to unrelated policies or claim the unchanged
 40-second operational budget is met from an observation-count reduction alone.
+The separate canonical `requireNativeProvenance` unit is restricted to captures
+classified by Config as Native with wholly non-generated root/child metadata.
+In the closed Quickstart producer, `documents.requirePage` checks the exact
+historical producer, root metadata and every child's source/metadata inside one
+`requireCurrent` policy, without arbitrary extensions or Config I/O. Config calls
+that unit before and after structural extensions; both calls retain their own
+fresh before/after SESSION/membership observations. Prove the second call rejects
+revocation or expiry during those extensions and that no child policy is omitted.
+Mixed captures still use `requireNative` with independent metadata/child checks
+and Config provenance correlation; published traversal is unchanged. Do not let
+the host select this route from labels or generated-marker guesses.
 For the closed pilot, structure validation may be pure: retain `validation.require`,
 registered tenant/environment/unit, exact root/sole composition/target, canonical
 schema/reproduction, icons, Form restrictions and selectors. Structural acceptance
-grants no operation or source access. Preserve independent current admissions for
-invocation, lifecycle, mapping, native source, metadata and children; historical
+grants no operation or source access. Outside the two explicit joint units,
+preserve independent current admissions for invocation, lifecycle, mapping,
+native source, metadata and children; historical
 captures are never grants. Use `QuickstartPageHostTest` and
 `QuickstartPageStructureTest` for forged/stale scope, revocation between callbacks
 and absence of structural authority I/O. Confirm the Config owner budget propagation

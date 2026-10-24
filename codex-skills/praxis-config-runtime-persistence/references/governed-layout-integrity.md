@@ -231,6 +231,23 @@ drafts, publication heads, titles and authored documents.
   Integrity/reproduction and current producer, domain and derived-use admission
   still apply throughout its provenance chain. Do not expose ancestral private
   evidence through a receipt or association lookup.
+- Inspect the separate mandatory `PageCreationHost.requireNativeProvenance` SPI
+  for wholly host-native captures. Config alone selects it when the source is
+  Native and neither root nor any child metadata is Config-generated. One joint
+  admission covers the exact historical origin, current producer/domain
+  dependencies, root metadata and every child's exact source and metadata.
+  Config calls it before and after structural extensions; each call has its own
+  current-authority window, with fresh before/after observations and expiry checks.
+  Reproduction, metadata syntax, complete child-key matching and Config provenance
+  integrity remain Config responsibilities. The host must not reinterpret a
+  generated marker or replace captured bytes with latest content to qualify.
+  Mixed native/generated captures retain `requireNative` and independent
+  metadata/child admissions plus Config-owned correlations; `requireNative` is
+  this distinct semantic seam, not a compatibility alias. Published-source
+  traversal is unchanged. Prove aggregate policy completeness, revocation during
+  structural extensions and denial by the second admission, and mixed/published
+  routing. These explicit joint units change linearization; they authorize no
+  grant reuse across callbacks or request-wide authority cache.
 - Scope the creation key to actor/application/tenant/environment. Equal replay
   returns the same page and current draft validator without recapture; a different
   command conflicts. Context version must be current but is not a new key scope.
