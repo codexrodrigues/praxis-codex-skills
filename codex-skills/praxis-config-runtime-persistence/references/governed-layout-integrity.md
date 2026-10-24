@@ -158,6 +158,14 @@ projection and reproduction checks even when page widgets are an atomic array.
   and metadata. The source request, a hash supplied by a client, or an intact
   historical `captureText` is not current authority. The source/admission SPI must
   bind the requested immutable source to the captured evidence and current scope.
+  Implement `UiLayoutDraftWorkspaceSource.requirePageChildEvidence` for hosts
+  supporting children: the default denies. This replaces `requirePageChild` with
+  one joint admission of exact source, document, reproduction and complete
+  metadata, including restored/frozen children. Do not fall back to the former
+  callback or treat historical capture text as a grant. For Config-generated
+  children, Config retains page correlation and `sameSeedOrigin`, then traverses
+  creation provenance once. Preserve both checks in the child codec; eliminate
+  only duplicate preflight work, never the post-extension authorization check.
 - Preserve evidence for removed keys; restoration uses the historical seed and
   must pass current admission. Reject replacement declarations for known keys,
   missing/extra/duplicate requests, scope substitution and changed fixed envelopes.
@@ -182,6 +190,14 @@ live host HTTP proof. Those child-admission tests do not by themselves prove
 catalog, routes, menus, cross-head transactions or host adoption. Use the dedicated
 creation/group sections below and [published-page-runtime.md](published-page-runtime.md)
 for their separate implementation and evidence gates.
+
+For historical metadata persistence, inspect the package-private `readVerified`
+boundary and `JdbcUiLayoutMetadataCaptureStore`: the store owns exact binding,
+integrity/codec verification and both current access callbacks. Its consumers
+must not run that same verification again after the verified read. This ownership
+does not cache authority or remove either callback inside verification. Test
+binding mismatch, corrupted capture and denial at both access boundaries; keep
+fixture observation counts separate from deployed latency and Neon evidence.
 
 ## Page Creation And Copy Admission
 
@@ -255,6 +271,16 @@ drafts, publication heads, titles and authored documents.
   permission to the old selected source. Verify no-store, the quoted current
   draft ETag, absence of 304 and a Location that can actually read that draft.
 - Preserve one atomic Config transaction for catalog, ledger, draft and metadata.
+  Page composition requires its configured `UiLayoutLifecycleAdmission` bean to
+  implement `PageLifecycleAdmission`; a plain bean fails closed. Do not install
+  a second permissive admission or silently wrap/ignore an existing delegate.
+  `requirePage(operation, invocation)` applies every operation/domain policy of
+  `require` and current application/namespace/invocation policy in one authority
+  window, returning correlation rather than a reusable grant. Admit page UUIDs
+  before catalog lookup, including unknown ones; preserve current context after
+  catalog I/O and renewed admission after provenance and at commit. Non-page
+  operations continue through `require`. Prove restrictive custom policies,
+  plain-bean rejection, forged namespace, revocation and unchanged non-page flow.
   Reuse the shared actual JDBC/JPA connection invariant and reject rollback-only
   results. Recheck context and current grants after the final extension in each
   commit callback; checking a budget/snapshot after a revoking SPI is insufficient.

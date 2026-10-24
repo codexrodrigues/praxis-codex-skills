@@ -144,10 +144,22 @@ revocation or expiry during those extensions and that no child policy is omitted
 Mixed captures still use `requireNative` with independent metadata/child checks
 and Config provenance correlation; published traversal is unchanged. Do not let
 the host select this route from labels or generated-marker guesses.
+For child evidence, implement `requirePageChildEvidence` as one current admission
+covering source, document, reproduction and full metadata; the default denies.
+Do not delegate to an old callback or omit restored/frozen children. Config owns
+generated-child correlation and its provenance traversal, not a host grant cache.
+The configured lifecycle admission bean itself must implement
+`PageLifecycleAdmission`. Its `requirePage` preserves all operation/domain
+policies of `require` while attesting current context in the same authority
+window. A separate provider or ignored delegate would bypass custom restrictions.
+Retain fresh before/after observations, post-catalog context checks and renewed
+admission after provenance/at commit. Unknown page UUIDs need admission before
+lookup; non-page invocations still use `require`. Test plain-bean rejection and
+restrictive custom policies as well as stale context and revocation.
 For the closed pilot, structure validation may be pure: retain `validation.require`,
 registered tenant/environment/unit, exact root/sole composition/target, canonical
 schema/reproduction, icons, Form restrictions and selectors. Structural acceptance
-grants no operation or source access. Outside the two explicit joint units,
+grants no operation or source access. Outside these explicit joint units,
 preserve independent current admissions for invocation, lifecycle, mapping,
 native source, metadata and children; historical
 captures are never grants. Use `QuickstartPageHostTest` and
