@@ -43,6 +43,7 @@ Inspect:
 - `src/lib/components/material-searchable-select/**`
 - `src/lib/components/material-async-select/**`
 - `src/lib/components/material-autocomplete/**`
+- `src/lib/directives/autocomplete-layout.directive.ts` and its mounted spec for Material autocomplete positioning
 - `src/lib/components/material-multi-select/**`
 - `src/lib/components/material-multi-select-tree/**`
 - `src/lib/components/material-tree-select/**`
@@ -142,6 +143,32 @@ Inspect:
 - Do not use LLM operational examples or published HTTP payloads as a local shape contract for Ergon or another host. They can help diagnose the backend response, but the runtime shape must still flow through `OptionSourceMetadata`, `OptionDTO.extra`, `OptionDisplayResolverService`, `OptionStore`, and the entity lookup component's view model. If those fields are not reaching the control, fix mapper/normalizer/runtime wiring before inventing a consumer adapter.
 - For dependent entity lookup, verify both the search path and selected-display path. A successful dependent filter example proves the lookup can search; it does not prove that already selected blocked/legacy values render correctly after reopen unless by-ids hydration also receives the mapped dependency context and preserves disabled reason/order.
 
+## Material Autocomplete During Layout Motion
+
+For a misplaced autocomplete panel, inspect the installed Material/CDK version and
+actual connected origin, panel and ancestors before patching CSS. CDK can use a
+native popover outside the usual OverlayContainer; measure the actual DOM. Reuse
+the internal autocomplete-layout directive for Material async-select, autocomplete
+and inline-autocomplete inputs; it is not a new metadata flag or public API and
+does not replace the separate collection-overlay owner.
+
+`updatePosition()` alone does not refresh width in the inspected Material version.
+While the panel is already open, the public `openPanel()` path refreshes origin
+and width without detaching, followed by public `updatePosition()`. Keep that
+behavior covered by mounted tests when upgrading Material. Observe the declared
+connected origin or form-field origin, not only the narrower input. Coalesce
+origin resize and ancestor CSS transition/animation end or cancellation into one
+animation frame; translations alone do not trigger ResizeObserver. Ignore unrelated
+motion, guard browser capabilities and cancel observers/listeners/queued work on
+close and destruction. Never reopen a closed panel from a queued callback or use
+private overlay references, synthetic window resize, host offsets or polling.
+
+Prove width and position change with the origin while value/CVA, active option
+and opened/closed counts remain stable. Include an external connected origin and
+missing ResizeObserver. Browser proof must also open during a tab transition plus
+viewport resize, then check desktop and narrow geometry, search/no-match, clear
+and keyboard selection; opening only after layout settles does not cover the race.
+
 ## Inventory Before New Contract
 
 - `ja-suportado-so-ux`: options/source identity exists but UI, labels, selected display, empty state, or docs are weak.
@@ -164,6 +191,8 @@ Use focused gates:
   - Add the focused spec for `OptionDisplayResolverService` when one exists or create it with the behavior change; selected display/rehydration should not remain untested.
 - Simple/search/remote/entity selection controls:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/components/material-select/material-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-searchable-select/material-searchable-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-async-select/material-async-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-autocomplete/material-autocomplete.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-select/inline-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-searchable-select/inline-searchable-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-async-select/inline-async-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-autocomplete/inline-autocomplete.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-entity-lookup/inline-entity-lookup.component.spec.ts`
+- Material autocomplete layout changes:
+  - Include `projects/praxis-dynamic-fields/src/lib/directives/autocomplete-layout.directive.spec.ts` plus the affected Material async-select, autocomplete and inline-autocomplete component specs; mounted geometry tests complement the temporal browser proof above.
 - Multi/list/tree/chips controls:
   - `npx ng test praxis-dynamic-fields --watch=false --progress=false --include=projects/praxis-dynamic-fields/src/lib/components/material-multi-select/material-multi-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-multi-select-tree/material-multi-select-tree.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-tree-select/material-tree-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-tree-select/inline-tree-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/inline-multi-select/inline-multi-select.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-selection-list/material-selection-list.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-transfer-list/material-transfer-list.component.spec.ts --include=projects/praxis-dynamic-fields/src/lib/components/material-chips/material-chips.component.spec.ts`
 - Toggle/radio/checkbox/button toggle controls:
