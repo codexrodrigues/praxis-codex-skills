@@ -167,12 +167,30 @@ preserved attestation of equal publisher/binding/datasource and an exact expecte
 target grant-context match; never label it an independent SQL observation of the
 candidate. The target server still revalidates SESSION and current authority.
 Keep credentials in the native environment/memory. Preserve CREATE_NEW/fsync
-journals and independent post-command durable readbacks. CP expiry after a long
+journals and independent post-command durable readbacks. Export sanitized HTTP
+receipts/journals to custody outside an ephemeral relay before promotion destroys
+it: fsync does not survive pod deletion. If a final HTTP receipt is lost, report
+that limitation separately from durable publication/session readbacks; do not
+repeat the command to recreate evidence. CP expiry after a long
 POST must not suppress cleanup to the immutable target; unconfirmed cleanup or
 response remains failed without retry. Suspend and publish each have their own
 240s request limit and preparation/readback/cleanup, so qualify enough rollout
 lifetime for both before opening the authorized global window. Do not extend
 server budgets or weaken health to compensate for a short-lived candidate.
+
+Before enabling the existing SPA CSRF policy in a deployed host, verify its
+current effective flag and the browser SESSION header. Qualify cold recovery
+with Secure=true on both SESSION and XSRF cookies: Java CookieManager does not
+replay Secure cookies over native HTTP. The pinned loopback machine client must
+explicitly echo the actually issued CSRF pair, preserve browser cookie attributes
+and SESSION Bearer authentication, and still attest logout/session401. Never
+solve that transport gap by disabling CSRF or downgrading Secure cookies.
+
+Administrative CLI jobs need an observed launcher/argv receipt in the actual
+Render image. Do not treat shell quoting validated locally as proof that Render
+interprets startCommand identically. Qualify an inert probe, retain plan output
+and JAR pins, then apply once with the reviewed fingerprint and unchanged inputs;
+uncertain results require readback rather than automatic replay.
 
 The optional ApplicationReady candidate capture is not a publish prerequisite:
 Metadata178 prepares and validates the photograph inside the protected HTTP
