@@ -90,6 +90,21 @@ owns lifecycle checkpoints and persistence. Keep two fresh observations around e
 policy and compare the session revision and complete membership. Do not cache grants,
 remove checkpoints, raise the page validation budget or widen runtime privileges.
 
+Audit `QuickstartPageHost.require` before multiplying operational reads inside one
+callback: app/namespace shape and complete invocation/capability/source policy can
+share one `requireCurrent` admission with both observations still around the policy.
+Do not reuse that result in the next callback or globally weaken `requireContext`.
+For the closed pilot, structure validation may be pure: retain `validation.require`,
+registered tenant/environment/unit, exact root/sole composition/target, canonical
+schema/reproduction, icons, Form restrictions and selectors. Structural acceptance
+grants no operation or source access. Preserve independent current admissions for
+invocation, lifecycle, mapping, native source, metadata and children; historical
+captures are never grants. Use `QuickstartPageHostTest` and
+`QuickstartPageStructureTest` for forged/stale scope, revocation between callbacks
+and absence of structural authority I/O. Confirm the Config owner budget propagation
+separately; reducing host calls does not repair nested deadline renewal or prove
+that the real Neon operation fits forty seconds.
+
 Use the same physical writable operational transaction and datasource for both
 stores. The composed query locks materialized SESSION before the exact membership
 lookup (NULL selectors are significant), reuses verified identity and the original
