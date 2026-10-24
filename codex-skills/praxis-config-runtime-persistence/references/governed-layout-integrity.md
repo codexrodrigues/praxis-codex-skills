@@ -253,8 +253,16 @@ and after; a fixture measurement is not a production SLA.
 
 Rollback to a savepoint keeps the outer synchronization list alive, so completion
 cleanup alone cannot prevent reuse of rows that were rolled back. Clear retained
-positive bytes on savepoint rollback without renewing transaction admission;
-prove a later read reloads them. This cache invariant does not establish support
+positive bytes on savepoint rollback and disable both immutable-read retention
+and isolation-proof reuse for the rest of that transaction. Subsequent guarded
+accesses require a fresh pinning SELECT and load immutable records without
+retaining them. Prefetch still enforces bounds and accounts for consumed rows.
+Spring invokes `savepointRollback` before the physical rollback; another
+synchronization can reenter a ledger and obtain proof that the subsequent rollback
+undoes, or repopulate bytes that it later removes. Merely clearing a flag or the
+retained rows and allowing reuse again is unsafe. Prove that reentry followed by
+physical rollback cannot preserve proof or bytes, and that a later read reloads
+discarded records. These invariants do not establish support
 for nested JPA lifecycle operations or their business callbacks.
 
 Include driver metadata calls in that measurement: PgJDBC isolation getters can
@@ -262,6 +270,18 @@ issue server SQL outside a prepared-statement counter. A SHOW alone does not
 establish PostgreSQL's first-query isolation boundary. Audit the owner's explicit
 read-transaction admission and prove isolation cannot change after its SELECT;
 retain the regular mutation guards and recheck connection/rollback state on reuse.
+Inspect `ConfigJdbcTransactionGuard` together with `ConfigTransactionReadSet`:
+their shared proof concerns transaction isolation only, never principal, grants,
+source admission or provenance. Bind it to the exact datasource, connection
+holder, JDBC connection and active synchronization lifetime. Reuse across guard
+instances in that same transaction must not repeat the isolation getter; a new
+or resumed transaction must use its own synchronization/proof. Without active
+synchronization, retain the full guard validation rather than retaining proof.
+Prove savepoint rollback invalidation independently of positive-cache eviction,
+and prove denial if isolation changed before the replacement pinning SELECT.
+Use focused no-database JDBC instrumentation to count getter/server statements
+and adversarial identity/rollback cases. Report that result as a measured local
+cost reduction, not a fresh Neon rollback proof or a guaranteed 40-second journey.
 
 A `RELEASED` label alone does not make a draft row immutable. For a frozen copy,
 prove that its candidate reproduces the captured B0 plus the selected immutable
