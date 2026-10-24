@@ -2417,7 +2417,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "DEE6A0942520A1A5EF47F8BDF96A107B905BD4C3F398796C051C0DE7E2E5B412",
-                       "treeSha256":  "DB9DB9AF50D448261AF8FF787BBD715733B1E0231FFA604EE975F0EF586AC4C0"
+                       "treeSha256":  "47A6512C25404C893E34FE5A384E1D19F3B7341498329C1BAFF03ACE2542BF36"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
@@ -2503,8 +2503,8 @@
                                             "praxis-config-agentic-authoring-streaming",
                                             "praxis-metadata-schema-contracts"
                                         ],
-                       "skillMdSha256":  "C284499C66D406E24D082D6C3203FE8073002239EC2CD114C63FB6F59B8064C0",
-                       "treeSha256":  "309289D019B3F4AFAF840934FF217631EFD330D329483517AE4FD386363BB930"
+                       "skillMdSha256":  "D0E7055A66C1729CD97ACD28ED79B58166C2034475A0DC233620BF6EEA0E493F",
+                       "treeSha256":  "4F4860CC53D7F49D7410C6A3438A50309281786A59C043B7795B296C73A8DE37"
                    },
                    {
                        "name":  "praxis-api-quickstart-domain-pilots",
