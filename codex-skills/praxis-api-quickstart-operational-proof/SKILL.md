@@ -1110,6 +1110,70 @@ for diagnosis, not as a standard gate or main deployment path. Do not revive it
 with an environment flag; requalification requires a separately governed,
 assigned Neon proof with distinct migration-owner and ordinary-runtime identities.
 
+## Qualify and provision the existing enterprise directory
+
+Inspect `EnterpriseRuntimeProperties`, `JdbcEnterpriseMembershipSource`, the
+operational migrator, `EnterpriseMembershipDirectory`,
+`EnterpriseMembershipProvisioningCommand`, `scripts/workspace/Start-ApiRuntime.sh`
+and `docs/ENTERPRISE-MEMBERSHIP-OPERATIONAL-ACTIVATION.md` together. Keep installing
+storage, configuring public presentation and provisioning revocable membership
+separate. Structural migrations must not seed subjects,
+capabilities or validity. The existing-directory activation does not deliver a
+fresh directory installer or authorize new DDL: preserve the admitted predecessor.
+Presentation and `AUTH_*` technical accounts cannot substitute for persisted grants.
+
+Before editing deployment settings, privately inventory their effective sources,
+including `SPRING_APPLICATION_JSON`; preserve valid managed reference keys rather
+than regenerating them because a catalog is empty. Compare the actual predecessor
+catalog and effective ACLs with the candidate. Preserve directory FKs, constraints,
+column types/defaults and the innocuous lock anchor even when there are no rows.
+Reject an unsupported predecessor; do not convert it to a TESTONLY fixture schema,
+drop dependencies or widen runtime UPDATE to make installation pass.
+
+Qualify the exact image/JAR and deployment revision before an administrative job.
+Use the existing operational migration lane with its segregated owner and strict
+history. Resolve history by complete typed tuples, including legitimate `DELETE`
+markers from the governed history-recovery path; a version alone does not identify
+a pending/applied SQL migration. Do not delete markers, reconstruct retired SQL,
+run `repair`/`clean`, or invoke demo fixtures to manufacture an acceptable history.
+
+The packaged `/app/bin/praxis-enterprise-membership-admin preflight` is read-only:
+use official Flyway validation/info to interpret history and report pending versions,
+not to run migrations or manually reconstruct `DELETE` semantics. After the normal
+deployment migration lane, `plan` and `apply` require no pending migrations. Review
+the private plan, then use `apply --expected-plan-sha256 <approved-64-hex-digest>`
+only with the same qualified artifact and stable inputs. The preflight fingerprint
+is not an apply authorization. Consult the activation guide for exact environment
+names; the command does not resolve Spring ConfigData/JSON login precedence, so
+privately attest its subjects against the actual configured authentication source.
+
+This command provisions only `lab-a/lab/org-1`: one tenant, one organization and
+two memberships atomically, AUTHOR with `ui.authoring.configure` and PUBLISHER
+with `ui.layout.publish`, empty groups and NULL sector/profile. The approved inputs
+include a reference UUID, distinct membership UUIDs and an explicit UTC start;
+validity is ninety days and application must occur while current and within the
+first twenty-four hours. Preserve the absence precondition for the target directory
+rows and either subject/UUID, history-before-directory lock order, and the reread
+of the artifact/database/runtime/catalog/history-bound fingerprint before writes.
+Expected-absence compare-and-set is not an upsert or a general grant replacement API.
+Do not infer authorization to renew, expand or replace existing memberships from
+permission to install storage; no restart seed or blind retry after lost output.
+Keep approved input/receipt custody and reconcile an uncertain commit privately.
+
+Keep owner datasource credentials available only to their administrative entry
+points, outside the Java application process. `/app/bin/praxis-api-start` removes
+`OPERATIONAL_MIGRATION_DATASOURCE_*` and `BULK_MIGRATION_DATASOURCE_*`; this does
+not sanitize Config credentials, aliases, `JAVA_OPTS`, JVM flags, JSON or mounted
+files, nor remove secrets from the deployment provider. Verify the runtime login
+and remaining credential sources without printing values; claim only that boundary.
+
+Reuse valid focused source/unit evidence and report its limits. A mocked plan/apply
+test does not prove PostgreSQL locks, Flyway, grants or a live deployment. Do not
+repeat Neon campaigns when the authorized cut explicitly excludes them; retain
+that boundary and qualify the separate real operational action, readback and
+SESSION/context/HTTP proof. Health UP, a successful predeploy or a saved environment
+setting alone does not establish enterprise availability or the Hero journey.
+
 ## Host Security Is Integration, Not A Starter Override
 
 The quickstart owns CORS, CSRF, cookies, origin restriction, firewall policy, rate limiting, and public/read/write exposure. These policies constrain hosted starter endpoints without redefining their semantics.

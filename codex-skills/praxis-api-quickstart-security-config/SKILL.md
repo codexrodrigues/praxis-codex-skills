@@ -58,6 +58,34 @@ authenticated context returns selection-required with no effective context and
 no choices. Never seed production tenants, organizations or memberships to make
 the endpoint ready. Presentation labels and JWT roles do not authorize access.
 
+Before generating or rotating reference keys, inventory the effective deployment
+configuration privately, including `SPRING_APPLICATION_JSON`, environment aliases
+and property precedence. Missing individual environment variables do not prove
+missing keys. Record only presence, validity and source, never values or a full
+environment/JSON dump. Preserve valid managed keys; rotation is a separate explicit
+operation affecting issued references, not a remedy for an empty catalog.
+An explicitly empty `app.security.enterprise.presentation.contexts` is different
+from missing configuration, missing membership storage and an empty authoritative
+membership directory. Diagnose each independently.
+
+Inspect `JdbcEnterpriseMembershipSource`, `EnterpriseRuntimeProperties` and
+`QuickstartEnterprisePresentationSource` together. Persistent membership supplies
+the exact subject/tenant/environment/optional-selector tuple, revision, validity,
+revocation and capabilities; presentation supplies only reviewed public labels.
+`AUTH_*` lab identities establish authentication, not enterprise grants. Neither
+an ADMIN role, a presentation entry nor successful login can replace membership.
+Provision access through a separately authorized administrative operation with a
+reviewable plan, explicit compare-and-set precondition and bounded validity;
+startup, migrations and demo authentication must not insert or renew grants.
+
+Inventory the actual membership catalog before installation: column types,
+nullability/defaults, constraints, foreign keys, ownership and effective ACLs.
+An empty table is not permission to replace its schema or drop directory FKs.
+For PostgreSQL `SELECT ... FOR UPDATE`, UPDATE on an innocuous column may provide
+the lock privilege even when table-level UPDATE is false. Preserve the admitted
+lock anchor and check its effective column grant; do not alter its type or grant
+UPDATE on capability, selector or revision columns to satisfy a fixture shape.
+
 For every canonical UserConfigController handler, including both identifier
 transports and conditional reads, revalidate the active SESSION, current selected
 membership, contextVersion and exact tenant/environment/user headers before the
