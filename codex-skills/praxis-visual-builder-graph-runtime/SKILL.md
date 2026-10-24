@@ -76,6 +76,21 @@ fresh `nodes`/`rootNodes`, not cached `currentJSON`. Do not merge partial subgra
 or reset history through whole-state replacement. Prove repair, selection/reopen, ownership,
 cycles, and undo in `rule-builder.service.spec.ts` and `rule-editor.component.spec.ts`.
 
+For wizard echoes, compare the actual normalized projection returned by the owning
+service, including its reachable condition graph. Adding a second root may wrap
+roots or remap IDs; acknowledge only that exact own projection once, preserving
+the current step. Same rule ID alone is not an echo proof. A meaningful external
+graph replacement must still hydrate, even after an own update; do not ignore all
+incoming states while waiting for an expected echo.
+
+Recursive `RuleNodeComponent` instances must forward each descendant update with
+the original leaf ID and update payload through every ancestor to the canonical
+owner. Prove this through mounted templates, not only direct service calls: add a
+second incomplete root without leaving Condition, then repair a typed `false`
+leaf through several AND/OR levels. Check sibling IDs/order, unrelated rules,
+validation gates, the exact exported condition and one undo/redo snapshot per
+logical edit. An emitted leaf event without a changed owning graph is not success.
+
 ## Validation
 
 Use the smallest reliable proof:
