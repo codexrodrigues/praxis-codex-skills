@@ -1080,6 +1080,41 @@ For metadata integration, prove the chain:
 
 `@ApiResource`/path -> OpenAPI group -> `/schemas/catalog` -> `/schemas/filtered` -> `x-ui`/schema headers -> actions/surfaces/capabilities/links -> downstream consumer evidence.
 
+### Prove A Minimal Corporate Page Publication
+
+For the Config page contracts, inspect `QuickstartPageConfiguration`,
+`QuickstartPageHost`, `QuickstartPageDocuments` and the current
+`docs/CORPORATE-PAGES-PILOT.md`. Reuse Config creation/lifecycle/runtime owners;
+explicitly import the pilot rather than creating parallel writers or activating
+production memberships through component scan. Follow
+`praxis-config-runtime-persistence` for canonical page/group integrity.
+
+Pin the compatible public Config coordinate in the host POM without an override.
+Verify Central JAR/POM checksums and byte equality with the packaged nested JAR;
+private-GAV evidence remains private even when its sources match the release.
+Reuse unchanged owner concurrency/rollback proofs with their exact source and
+limits, then execute the focal host HTTP case on assigned isolated Neon.
+
+`QuickstartPageCorporateHttpNeonTest#nativePageCreatePublishAndReadWithCurrentSessions`
+proves the smaller native page path: two current SESSIONs with separate author
+and publisher memberships, creation/draft, 404 before publication, revision,
+assignment, freeze, submit, approve and head publication. Require the published
+route/document/head, authorized 200/304, an independent ordinary-runtime read of
+the committed head, logout and retained-SESSION rejection. Before accepting the
+host providers, prove publisher-without-authoring creation denial, another tenant
+receiving 404 despite a valid published ETag, and current membership revocation
+receiving 403 rather than 304 with that ETag. Owner-only revocation belongs to the
+assigned test fixture, never runtime grant repair. Keep the existing
+budget, locks, CSRF and authority rechecks; six publication commands have separate
+budgets, not one combined allowance. Preserve a failure before considering a new
+attempt; cleanup does not establish rollback.
+
+The seed has one empty Form and no navigation bindings; this case does not prove
+business submission, menu/group publication, copy or browser rendering. A page
+with no navigation bindings need not publish an unrelated group first. Those
+later host surfaces require their own appropriate evidence before claiming them
+operational; never fabricate a group head or reuse an old authorization result.
+
 ### Prove Bulk Restart Across OS Processes
 
 For the case where the client received the response, pair the existing
