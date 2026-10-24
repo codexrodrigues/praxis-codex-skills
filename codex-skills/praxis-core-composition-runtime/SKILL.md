@@ -1,6 +1,6 @@
 ---
 name: praxis-core-composition-runtime
-description: "Use when Codex must inspect, change, or rely on @praxisui/core composition and widget runtime contracts: DynamicWidgetPageComponent, widget definitions, widget events, widget shell, composition links, selection-driven formatted headers, nested ports, connection/link execution, transform runtime, surface hosts, related-resource outlets, runtime observations, or dynamic page materialization."
+description: "Use when Codex must inspect, change, or rely on @praxisui/core composition and widget runtime contracts: DynamicWidgetPageComponent, widget definitions, widget events, widget shell, composition links, selection-driven formatted headers, nested ports, connection/link execution, transform runtime, surface hosts, related-resource outlets, runtime observations, dynamic page materialization, closed page publication codecs, or typed identity copy."
 ---
 
 # Praxis Core Composition Runtime
@@ -16,6 +16,9 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/AGENTS.md`
 - `projects/praxis-core/src/public-api.ts` when composition models, widget contracts, ports, surface hosts, runtime observations, or composition services are exported or public consumption changes
 - `projects/praxis-core/docs/connection-editor.md`
+- `projects/praxis-core/docs/dynamic-page-serialized-persistence.md` and `docs/table-connections-persistence-lab-baseline.md` for context-bound writers and SPA owner replacement
+- `projects/praxis-core/src/lib/services/config-storage.service.ts` and `enterprise-runtime-context.service.ts` when a composition consumer switches enterprise context
+- `src/app/features/remote-config-storage-persistence-lab/session-tabs-consumer.component.ts` and its focused spec for the existing same-SESSION owner/choice materialization
 - `projects/praxis-core/docs/rfc-dynamic-page-canvas-runtime.md`
 - `projects/praxis-core/src/lib/composition/**`
 - `projects/praxis-core/src/lib/widgets/**`
@@ -45,7 +48,9 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 ## Canonical Read And Execution Path
 
 - Persist new page composition in `WidgetPageDefinition.composition.links`. `page.connections` is legacy and `DynamicWidgetPageComponent` rejects it; do not save both shapes or reintroduce a compatibility branch in a host.
+- For automatic page persistence, inspect the Core writer before treating a remote `412` as an external edit. Capture each accepted key and canonical snapshot, then serialize the storage adapter invocations themselves; deferring only subscription can capture a stale ETag early. When enterprise context is explicitly configured, bind the page instance to its initially confirmed provenance: a context change invalidates queued saves and loads, and requires a fresh ready owner and rebootstrap. Preserve acknowledgement, context and lifecycle limits in [serialized-page-persistence.md](references/serialized-page-persistence.md); a per-instance queue is not multi-tab coordination, unload durability or an authorization-context freeze.
 - Use `WidgetPageCompositionFactory` to materialize widget order, indexed widgets, links, state, derived definitions, and context before bootstrapping `CompositionRuntimeEngine`.
+- When state is correct but a reloaded input is stale, inspect overlapping state-to-input projections in Core before changing the host. For the same top-level widget, materialize an ancestor input path before its descendant override within each segment separated by a nested delivery to that widget; preserve existing order for equal paths. This orders snapshot writes only: link conditions, transforms, diagnostics, dispatch and side effects retain their execution order. Nested targets are excluded, and flat writes must not move across their same-widget barrier. Read [state-input-projection.md](references/state-input-projection.md) for the scope, source audit and real-form edit/persist/reload proof.
 - Keep dynamic widget input materialization idempotent. A page update that rebuilds a plain JSON input with the same structural value, including a different object-key order, must not rebind the input or emit `ngOnChanges`; use the core loader's stable JSON signature. Values outside the JSON-safe set, including functions, class instances, dates, non-finite numbers, and cycles, retain `Object.is` reference semantics instead of being coerced into a serialized equality rule.
 - Treat `CompositionRuntimeEngine.bootstrap()` as semantic validation plus state materialization. Blocking diagnostics produce a `degraded` snapshot with trace evidence; do not convert every diagnostic into an exception or silently mark the page ready.
 - Dispatch a `CompositionDispatchEvent` from an exact canonical endpoint. Matching includes owner widget, port, direction, and `nestedPath` when present. Let the engine execute condition, transform, policy, target delivery, state update, diagnostics, and trace as one cycle.
@@ -69,6 +74,49 @@ Page Builder, Visual Builder, component libraries, and host apps consume these c
 - An intentional feedback loop must be explicit and guarded on every link in the cycle: use `metadata.tags: ['intentional-feedback']` plus at least one canonical guard per link (`condition`, `policy.distinct`, `policy.distinctBy`, or `policy.debounceMs`). Guarded intentional cycles produce `SEMANTIC_FEEDBACK_CYCLE_GUARDED` warnings, not blocking errors. Do not suppress cycle diagnostics or invent host-local loop breakers.
 
 Legacy migration is an explicit ingress concern. Use `CompositionLinkLegacyMigrator` for supported legacy condition/policy shapes, then persist the canonical result. Unsupported legacy conditions fail explicitly; do not keep an open-ended legacy interpreter in runtime code.
+
+## Governed Page Publication Profile
+
+For copying or admitting a publication document, inspect Core's
+`src/lib/widgets/page-publication/**`, `docs/page-publication-codec.md` and
+`docs/page-publication-codec-delivery.md`, plus Config's
+`docs/ai/contracts/page-publication-p0/`. Config owns the closed
+`praxis.dynamic-page.editor` contract; Core materializes it using the existing
+graph and identity models. This restricted profile is not the full composition
+runtime described above.
+
+1. Decode raw authorship with `decodePageAuthoringDocument`, then use
+   `validatePageAuthoringDocument` with the owning Form/Table validators. Missing
+   owners fail closed. Structural success does not prove native config, admitted
+   ports/icons/groups, immutable provenance, authorization or publication.
+2. Keep child configuration content solely in `definition.inputs.config` and
+   preserve admitted binding/context inputs for native reconstruction. Owner
+   adapters reconstruct native envelopes from these inputs; do not add a runtime
+   `authoringDocument` input or normalize the graph before validation. Unsupported
+   features must produce diagnostics rather than disappear during serialization.
+3. Preserve presence, null, zero, false, empty strings and array order. Use
+   `cloneBoundedUiLayoutJsonDocument` for the shared 256 KiB UTF-8 bound and maximum
+   container depth 64, counting the root as 1; do not replace it with a lossy JSON
+   clone at ingress. The
+   whole envelope counts. JavaScript numeric identity does not attest raw wire
+   precision or backend canonical hashes.
+4. Copy through `copyPageAuthoringDocument` using catalog-allocated UUIDs and an
+   exact typed widget/link map. Rewrite endpoint references through the widget
+   namespace only; preserve UUID-looking literals. A copy resets navigation and
+   requires fresh governance. The pure helper does not allocate identities or
+   create a server draft.
+5. Use `buildPublishedPageIdentity` with the host's registered namespace and
+   `derivePageChildRuntimeId` for stable page/widget identities. Titles never
+   choose routes. Deriving an ID alone does not suppress personal persistence;
+   the owning adapters must provide that runtime behavior.
+
+Compare derived fixture provenance/hashes with the integrated Config source and
+run `page-publication/*.spec.ts` plus `ui-layout-json.util.spec.ts`. Public API
+changes require Core build, a direct consumer build and the applicable browser
+regression. Keep those results separate from downstream Page Builder/host
+save-publish-reload evidence: the pure APIs do not activate that journey. Pair
+with `praxis-form-editor-document-roundtrip`, `praxis-table-authoring-settings`
+and `praxis-config-runtime-persistence` for native and server admission.
 
 ## Published Shell Presets
 
@@ -149,6 +197,55 @@ Classify gaps before adding contracts:
 
 Only the last category justifies a new shared contract. Extend the canonical owner and its consumers together; do not add an event bus, command-string router, custom transform registry, or host-only nested path convention.
 
+## Same-SESSION SPA Owner Lifecycle
+
+Use the existing Core context service and Config adapter; do not implement context
+switching by changing tenant headers, component IDs, page inputs or a compatibility
+flag. Confirm an opaque authorized `choiceRef` with the current
+`expectedSelectionVersion`. Labels present choices; they do not choose scope.
+
+Before mounting that journey, keep reference demos with fixed identity headers
+out of a server-confirmed principal's page: use the existing
+`user.resolvedFromServerPrincipal === true` fact, as the remote lab parent does,
+with a monotonic presentation latch across null transitions. Keep the SESSION
+consumer mounted once; hiding auto-fit/color/demo-tabs is not a grant or a new
+contract/route/flag, and must not infer identity from cookies or roles. Check the
+parent presentation spec and the browser `corporateLab` assertions before proof.
+
+1. On each invalidation/unready emission, synchronously clear the host owner and
+   visible document/JSON. Each newly confirmed owner receives fresh defaults from
+   the canonical factory and a monotonic render epoch. Track that epoch to recreate
+   the DWP even when A→null→A or A→B→A completes before Angular renders. Reusing the
+   parent document lets GET404 accidentally adopt the previous tenant's defaults.
+2. Capture the emitting epoch in `pageChange` and reject obsolete outputs. Correlate
+   async catalog callbacks by operation and context revision, including A1→B→A2.
+   Prevent duplicate selection submissions. CAS/503 selection failures cannot
+   restore the former owner; allow an explicit context HTTP refresh. Catalog
+   discovery failure alone does not revoke a still-confirmed owner.
+3. Keep Core's context-bound queue guard. Discard not-yet-invoked obsolete jobs;
+   do not redirect their payloads to the next tenant's headers. Recreate a fresh
+   ready DWP in the same SPA/SESSION instead of requiring browser reload. This is
+   host materialization, not live reuse of an obsolete page instance or cross-tab
+   coordination. Draining after DWP view destruction requires the parent adapter
+   provider to remain alive. Destroying that provider rejects callbacks/releases
+   probes and carries no drain guarantee. Inspect the Config skill for captured
+   transport/cache epochs.
+4. Require an emitted current-owner load result before enabling writes. A genuine
+   404 confirms absent config and permits that owner's fresh defaults; hard error,
+   synchronous throw and EMPTY do not. Preserve the existing DWP i18n
+   `persistence.loadFailed` alert with `role="alert"`; do not hide a failed load,
+   expose its raw error, or call empty completion success.
+5. A request already admitted/committed can finish after the view changes. Ignoring
+   its ACK is not rollback, and operational admission followed by Config commit is
+   not an atomic database fence. Same-SESSION claims require the real proof below;
+   historical fresh-session/reload tests alone do not establish them. Render only
+   safe context facts/presence markers, never raw opaque context versions.
+   A functional proof on a warmed host does not certify recovery after idle or
+   SLA. Preserve that evidence boundary, stable CSRF within one authenticated
+   SESSION and unresolved connection-recovery failures using the Config proof workflow;
+   a per-request token-rotation host bug is not a reason to bypass browser CAS;
+   do not mask them with heartbeat traffic or widened authentication deadlines.
+
 ## Operational Proof
 
 Before declaring composition guidance current, prove:
@@ -164,6 +261,8 @@ Before declaring composition guidance current, prove:
    effects. For nested composition, execute a fresh output-to-state-to-input
    interaction after reload so hash equality alone cannot hide an endpoint-match
    regression. Readiness and receipts remain derived evidence, never page inputs.
+7. State-input overlap path: project a whole input object and an independent descendant override in both link orders within one segment. Verify the descendant survives persistence/reload in the rendered real form while source selection remains unchanged. Cover a same-widget nested delivery as an ordering barrier and another widget's nested delivery as unrelated; equal-path order and event/side-effect execution retain their existing behavior. A persisted state assertion or synthetic output emission alone does not prove input rehydration.
+8. Remote writer path: prove serialized adapter calls, captured snapshots/keys, acknowledgement versus empty completion/error, and draining accepted jobs after view destruction only while provenance remains valid and the adapter provider remains alive. Require real remote control edits, acknowledged PUTs, GET/control round-trips and all exact-key pending/failed requests. For SPA switching, prove fresh owner/defaults and actual requests after A→null→B and coalesced A→B→A, obsolete output rejection, and load503/EMPTY blocking with the localized alert versus legitimate404. Use `praxis-config-runtime-persistence` for real before-admission and after-commit transport gates, scope/ETag and authorization proof; do not duplicate that contract here.
 
 Use a focused Angular gate from the `praxis-ui-angular` root:
 

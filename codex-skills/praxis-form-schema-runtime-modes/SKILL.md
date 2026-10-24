@@ -1,6 +1,6 @@
 ---
 name: praxis-form-schema-runtime-modes
-description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view modes, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
+description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view/presentation/dossier modes, volatile governed-page execution, standalone config persistence, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
 ---
 
 # Praxis Form Schema Runtime Modes
@@ -17,11 +17,13 @@ Inspect the real runtime before editing:
 - `projects/praxis-dynamic-form/src/public-api.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.spec.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.resource-isolation.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.json-api.md`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.external-config-hydration.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.first-config-hydration.spec.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.field-metadata-roundtrip.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.layout-policy.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/services/form-config.service.ts`
 - `projects/praxis-dynamic-form/src/lib/services/form-config.service.spec.ts`
@@ -58,14 +60,18 @@ Separate these inputs before changing behavior:
 - `submitUrl` + `submitMethod`: canonical explicit submit pair. Do not configure one without the other.
 - `responseSchemaUrl`: diagnostic/read-only response contract, not a source for editable command fields.
 - `apiEndpointKey` and `apiUrlEntry`: origin resolution inputs for detached overlays/dialogs; do not hardcode API origins in consumers.
-- `mode`: `create`, `edit`, or `view`; it controls data lifecycle, not whether customization UI is enabled.
+- `mode`: Core `DynamicFormMode` accepts `create`, `edit`, `view`, `presentation`, and `dossier`. It does not choose whether customization UI is enabled; preserve the complete union through native authoring and preference hydration.
 - `initialValue`: create-mode seed or host-provided patch; it must not redefine schema semantics.
 
 For metadata-driven flows, prefer `/schemas/filtered` request/response schemas and operation-aware metadata over host-authored field lists. If table/list works but form fails, inspect id field, schema operation, and resource metadata before adding frontend aliases.
 
 Keep these runtime rules explicit:
 
-- Corporate initialization requires `formId` and either `resourcePath` or `schemaUrl`. Local-only forms may render from explicit local `config`, but should not masquerade as metadata-driven runtime.
+- Each `<praxis-dynamic-form>` owns its mutable `GenericCrudService` and `FormContextService` instances. Sibling forms must not overwrite another form's resource, schema cache, available fields, or rules; prove isolation with `praxis-dynamic-form.resource-isolation.spec.ts`.
+- This is a breaking-beta migration from shared DI: an ancestor replacement or subclass of `GenericCrudService` is no longer used by Dynamic Form. Do not describe that previously supported replacement path as if it had never existed.
+- Configure the Form through `resourcePath`, `apiEndpointKey`, `apiUrlEntry`, and direct Form `customEndpoints`; these inputs do not reproduce custom logic from an ancestor service replacement. `HttpClient` and its interceptors, `GlobalConfigService`, and `API_URL` remain inherited from the host injector.
+- In Form tests, override the component-local mock with `TestBed.overrideComponent(PraxisDynamicForm, { add: { providers: [{ provide: GenericCrudService, useValue: crudMock }] } })`; mock `FormContextService` there when needed. Use `add` so the Form's i18n provider remains installed.
+- Schema-backed initialization requires `formId` and either `resourcePath` or `schemaUrl`. Local-only forms may render from explicit local `config`; a standalone form with `formId` also participates in configuration persistence without a schema request. Without an ID, standalone configuration remains host-owned.
 - `resourcePath` remains the owner resource path. `schemaUrl`, `readUrl`, `submitUrl`, and `responseSchemaUrl` are concrete operation/surface URLs published by discovery or supplied explicitly.
 - Explicit component inputs have precedence over persisted connection/input preferences. Persisted connection can hydrate `resourcePath` only when the host did not provide one.
 - `schemaUrl` can initialize schema-backed runtime without `resourcePath`, but command/read/submit behavior still needs the correct operation URLs and resource identity when applicable.
@@ -84,6 +90,66 @@ Keep these runtime rules explicit:
   transient `layoutPolicy`, prove the adapter/materializer produced the right runtime inputs before
   adding host-side defaults. Do not patch a migrated screen by hardcoding operation URLs or copying
   generated layout into `FormConfig.sections`.
+
+## Standalone Configuration Persistence
+
+Use the existing `initializeForm` lane for an identified standalone form with
+renderable host configuration. `local-first` restores the mode-scoped saved
+document; `input-first` keeps the latest host document authoritative. Transient
+layout policy skips loading persisted configuration. Do not invent a resource
+path, schema endpoint, or parallel persistence adapter for local fields.
+
+Inspect input hydration, storage and mode changes as one asynchronous flow. Resolve
+host precedence after the storage read, including a host document cleared while
+the read was pending. An empty standalone document must not fall through to schema
+generation. If the mode-scoped key changed during the read, discard that response
+and initialize the current key after releasing the loading guard. A late response
+after destruction must not rebuild or resume the destroyed view.
+
+Prove saved, missing and failed storage reads, `input-first`, transient policy,
+no-ID standalone and disconnected empty state. Include delayed reads with a newer
+host document, a cleared document, a mode switch and destruction. Check declared
+initialization hooks and pending entity inputs when those paths are affected;
+sharing an initializer must preserve their lifecycle without adding schema calls.
+Use `praxis-dynamic-form.field-metadata-roundtrip.spec.ts` as the focused regression
+entrypoint, plus a real storage reload when authoring persistence is the reported
+failure. A mocked accepted patch alone does not prove Save survives reopening.
+
+Exercise host replacements through `fixture.componentRef.setInput('config', value)`
+and change detection with documents already normalized by the Form helper. Angular
+assigns the new input before `ngOnChanges`; compare the previous host document
+(`SimpleChange.previousValue`) when detecting change, rather than treating the
+already-assigned component property as the previous document. Directly calling
+`ngOnChanges` without Angular's assignment can miss this regression.
+
+For a `local-first` form, let saved configuration load, hold its first `afterInit`
+hook, then supply a different normalized host document and release the hook.
+Assert that the latest fields remain authoritative and initialization succeeds.
+Use cold storage that returns the old saved document on every subscription, and
+assert one form-config read: a retry must not replay that document over the update.
+Separately, in a settled `input-first` standalone form, prove a real replacement
+rebuilds while preserving surviving controls' dirty values, an equivalent clone
+of the current document avoids a rebuild, and an explicit empty replacement
+removes the old controls. These local-field cases must not request schema or save
+configuration merely because an input changed.
+
+Distinguish an equivalent host echo from the effective document selected by
+`local-first`: the opening host document can differ from the loaded saved one.
+Prove echoes of that opening document after initialization and during `afterInit`
+retain the saved metadata, both saved rule effect branches and dirty control values,
+without rebuilding or rereading configuration. Keep one effective runtime document;
+any pre-assignment observation is transient lifecycle bookkeeping, not a parallel
+configuration contract. An echo alone must not invalidate initialization ownership;
+changes to mode, identity or resource still require their existing fences.
+
+Cover two `setInput` assignments before one change-detection pass: the local-first
+case ending in an opening-document echo preserves the effective saved document;
+the separate input-first case ending in a genuine replacement rebuilds once from
+that final document. A manual equivalent `ngOnChanges` call without a corresponding
+input assignment must not restore an older internal document. Inspect the existing
+schema-backed echo test too: its reconciliation/verification spies prove local
+ownership and no redundant rebuild, not live schema HTTP or identity-switch
+behavior. Do not claim settled owner-switch coverage from these cases.
 
 ## Remote Selection, Loading And Recovery
 
@@ -131,6 +197,7 @@ actual public surface changes, and record the decision.
 
 - `view` is read-only by data lifecycle. `readonlyModeGlobal` can also force read-only behavior.
 - `presentationModeGlobal=true` is only effective in `view`; edit/create should render input mode.
+- Explicit `presentation` and `dossier` modes also activate presentation; `dossier` selects the corporate dossier preset when no explicit preset overrides it. Check `effectivePresentation`, `effectivePresentationPreset` and mode-key persistence in the Form owner. Recommend `view` plus presentation options where appropriate without silently normalizing existing five-mode documents. Filter Form retains its three-mode subset.
 - `layoutPolicy.source="schema"` is explicit opt-in for schema-owned layout.
 - `intent="detail"` plus `preset="compactPresentation"` belongs to read-only detail summaries.
 - `intent="command"` plus grouped command layout belongs to create/edit command forms.
@@ -151,6 +218,30 @@ The runtime may debounce, cancel stale work, apply declared outputs, and emit
 sanitized diagnostics, but it must not select a determination by field names or
 execute a local business formula. Pair definition/binding or race changes with
 `praxis-reactive-determinations`.
+
+## Governed Page Execution
+
+For page-governed Form execution, inspect
+`dynamic-form-page-widget-adapter.ts` and the runtime's
+`configPersistenceStrategy: 'volatile'` paths. Use
+`materializeDynamicFormPageRuntimeInputs` to derive the Core page/widget identity
+and runtime-only persistence/editor flags; never save these inputs into page
+authorship. Volatile execution uses explicit config and native defaults, without
+independent form preferences, presentation/back-navigation/connection keys or
+personal global schema-preference overlays. Preserve explicit zero/false values.
+
+Audit every storage load/save/clear and asynchronous completion, including Reset,
+schema update prompts and preference hydration. Bind stale-response guards to the
+ownership and actual key of the resource: legitimate connection/mode hydration
+must not cancel unrelated widget preferences. When a host change invalidates a
+pending read, ensure the current context receives a replacement when needed.
+Prove both valid response orders as well as identity changes, A-to-volatile-to-A,
+errors and destruction; rejecting every late response is not sufficient. Prove behavior with conflicting
+personal storage and real global config changes. Shared GlobalConfigService may
+still load its infrastructure state; do not claim zero global I/O or replace the
+service with a stub as proof of no personal influence. Tenant, cache, locale and
+CSP remain host infrastructure, not page-authored configuration. The adapter
+does not itself prove published routes or the later host integration.
 
 ## Aderence Inventory
 
@@ -177,6 +268,7 @@ For hydration, persisted config, runtime context, or `initialValue` behavior:
 
 ```bash
 npx ng test praxis-dynamic-form --watch=false --progress=false \
+  --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.field-metadata-roundtrip.spec.ts \
   --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.external-config-hydration.spec.ts \
   --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.first-config-hydration.spec.ts \
   --include=projects/praxis-dynamic-form/src/lib/services/form-context.service.spec.ts \

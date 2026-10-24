@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-page-builder-authoring/
-- Descricao atual: Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors: PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, page editor runtime parity, or authoring changes that may require Page Builder agentic validation gates.
+- Descricao atual: Use when Codex must create, inspect, or fix @praxisui/page-builder authoring editors and save-as adoption: PraxisPageCopyActionComponent, PraxisPageSaveAsComponent, PageSaveAsAdapter, PageConfigEditorComponent, DynamicPageConfigEditorComponent, WidgetShellEditorComponent, SettingsValueProvider, Settings Panel bridge, page settings, canvas/grouping/device/state/context editors, widget shell actions, ComponentDocMeta.configEditor hosting, visual/textual round-trip, save/apply/reset/reopen, i18n, page editor runtime parity, or authoring changes that may require Page Builder agentic validation gates.
 
 ## Classificacao inicial
 

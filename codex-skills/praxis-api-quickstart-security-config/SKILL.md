@@ -34,7 +34,7 @@ Read `praxis-api-quickstart/AGENTS.md`, then inspect:
 - `security/ConfigOriginRestrictionFilter.java`
 - `security/PublicApiRateLimitFilter.java`
 - `security/CookieJwtAuthenticationFilter.java`
-- `security/SpaCsrfTokenRequestHandler.java` and `CsrfCookieFilter.java`
+- `security/SpaCsrfTokenLifecycle.java`, `SpaCsrfTokenRequestHandler.java`, and `CsrfCookieFilter.java`
 - `security/EnterpriseSessionLifecycle.java`, `EnterpriseSessionStore.java`, `VerifiedJwtCredential.java`, and `JwtTokenService.java`
 - `/auth/**` controller issuance, revocation and identity-switch behavior
 - `src/main/resources/application.properties`, `application-dev.properties`, and `application-prod.properties`
@@ -79,6 +79,55 @@ old-SESSION401. Preserve failed receipts and resolve uncertain issuance before
 retrying. Readiness warming is not proof of first-request behavior after an idle
 pool; record that boundary explicitly. For error responses such as Config's
 textual412, capture status and body hash before attempting JSON decoding.
+
+## Cost of enterprise authority admissions
+
+For repeated enterprise/page admissions, inspect `EnterpriseContextSessionService`,
+`JdbcEnterpriseContextSnapshotReader`, `EnterpriseSessionStore` and
+`JdbcEnterpriseMembershipSource` before changing budgets or transaction managers.
+The host reader composes the existing SESSION and membership snapshot; Config still
+owns lifecycle checkpoints and persistence. Keep two fresh observations around each
+policy and compare the session revision and complete membership. Do not cache grants,
+remove checkpoints, raise the page validation budget or widen runtime privileges.
+
+Audit `QuickstartPageHost.require` before multiplying operational reads inside one
+callback: app/namespace shape and complete invocation/capability/source policy can
+share one `requireCurrent` admission with both observations still around the policy.
+Do not reuse that result in the next callback or globally weaken `requireContext`.
+For the closed pilot, structure validation may be pure: retain `validation.require`,
+registered tenant/environment/unit, exact root/sole composition/target, canonical
+schema/reproduction, icons, Form restrictions and selectors. Structural acceptance
+grants no operation or source access. Preserve independent current admissions for
+invocation, lifecycle, mapping, native source, metadata and children; historical
+captures are never grants. Use `QuickstartPageHostTest` and
+`QuickstartPageStructureTest` for forged/stale scope, revocation between callbacks
+and absence of structural authority I/O. Confirm the Config owner budget propagation
+separately; reducing host calls does not repair nested deadline renewal or prove
+that the real Neon operation fits forty seconds.
+
+Use the same physical writable operational transaction and datasource for both
+stores. The composed query locks materialized SESSION before the exact membership
+lookup (NULL selectors are significant), reuses verified identity and the original
+parsers/clocks, and evaluates validity after lock waits. Invalid SESSION must be
+rejected before interpreting grant JSON; technical membership failures must not
+become successful absence or authentication failures.
+
+At READ COMMITTED, a membership inserted while the statement waits on SESSION may
+be conservatively absent even when the changed SESSION is visible. Preserve denial;
+never recover an old grant or silently retry using an alternate read. A subsequent
+fresh request can observe the new membership. Document this availability boundary.
+
+Use `JdbcEnterpriseContextSnapshotReaderTest` for physical guards/choreography and
+the assigned-Neon `JdbcEnterpriseContextSnapshotReaderNeonTest` for actual two-query
+admissions, SESSION-before-membership locks, revocation, expiry after waits and
+coherence rollback. For group-draft HTTP acceptance, use
+`QuickstartPageCorporateHttpNeonTest#groupsDraftCreateReadAndCommitRollback` only
+with the explicitly resolved compatible Config artifact. Require create/read below
+the unchanged budget; force failure after draft and metadata are staged, observe
+transaction rollback, and independently read their absence through another ordinary
+runtime connection before retrying the same creation key. Fixture cleanup is not
+rollback proof. Bind receipts to source, dependencies, branch, privileges and timings;
+these focal gates do not certify publication, navigation, browser or deployment.
 
 ## Current Operational Grants And Context
 
@@ -328,42 +377,116 @@ Cookie JWT authentication, CSRF, origin governance, and rate limiting have separ
 - Keep reachable positives and existing role/grant negatives. For SPA policy, prove signed-but-unissued token rejection, old-cookie denial after identity switch, and active-session writes rejecting absent or mismatched XSRF while matching tokens reach the intended action. Do not weaken statuses, filters, permission policy or CSRF exceptions to repair fixture prerequisites. Reuse valid evidence from unaffected classes and preserve the failed campaign; repeat only corrected paths unless a separate adoption gate requires broader verification.
 - Cookie authentication establishes the Spring principal; validate cookie attributes (`Secure`, `HttpOnly`, `SameSite`, lifetime, and configured name) by environment.
 - When CSRF is enabled, a SPA cookie/header flow must accept the intended raw header and retain server-rendered XOR behavior. Prove both token issuance and a protected write with matching cookie/header.
+- Audit CSRF authentication lifecycle, not just `SessionCreationPolicy.STATELESS`.
+  In Security6.5.11 an implicitly installed `SessionManagementFilter` can call
+  `CsrfAuthenticationStrategy` whenever the cookie-JWT filter reconstructs an
+  Authentication. Rotating XSRF on each ordinary authenticated request is a host
+  bug: an unchanged SESSION with concurrent context GETs must keep its existing
+  cookie/header pair stable. Inspect the actual strategies/filter chain and fix
+  the host owner; do not hide it with frontend retries or an old-pair Node CAS replay.
+- Rotate/clear CSRF explicitly at actual successful login, successful identity
+  switch and logout boundaries. Keep token issuance when absent, the SPA raw
+  header/XOR contract, origin controls and missing/mismatch rejection. Do not
+  disable CSRF or widen ignore matchers to fix lifecycle rotation. Failed login
+  must not rotate an established pair. Reuse an existing registered repository;
+  removing automatic per-request rotation is not removal of CSRF validation.
+- Prove sequential and concurrent authenticated GET/protected-write pair stability,
+  rotation at real auth boundaries, unchanged SESSION during a context-only switch,
+  and natural browser continuation of stale selection CAS reaching context409.
+  A generic403 caused by CSRF is not context-conflict evidence. Record only safe
+  booleans/hashes, never cookie/header/password values; preserve failed campaigns
+  and require current real SESSION/Neon proof before calling the fix accepted.
+  Holding/forwarding a real Config ACK after commit is a separate transport proof,
+  not authorization to bypass CSRF on context commands.
 - Any CSRF ignore matcher, especially `/api/praxis/config/**`, needs an equivalent stronger host policy and a documented reason. Do not disable CSRF globally to repair a local request.
 - Assert filter order and behavior: origin/rate-limit gates must run before expensive public work, authentication must populate protected endpoints correctly, and CSRF cookie exposure must not become an authorization bypass.
 - Local header identity for AI is an explicitly configured development exception. Corporate mode must resolve identity server-side; caller headers are not authorization proof.
 
+## Corporate page CSRF and cross-origin bootstrap
+
+When adopting the page host, inspect `SpaCsrfTokenLifecycle`, `SecurityConfig`,
+`SpaCsrfTokenRequestHandler`, `AuthController`, `SecurityConfigSpaCsrfPolicyTest`
+and `SecurityConfigCorsTest` together. The lifecycle bean owns the one cookie
+repository shared by the filter chain and actual auth-boundary rotation. Keep
+ordinary cookie-JWT reconstruction from invoking automatic login rotation;
+retain raw request-header validation and XOR request attributes/parameters.
+
+For an explicitly allowed credentialed origin, bootstrap through
+`GET /auth/session` with browser credentials included and read the exposed raw
+`X-XSRF-TOKEN` response header. A SPA on another host cannot read the API's
+host-only cookie through `document.cookie`. The browser retains SESSION and
+XSRF cookies; send the returned raw value in `X-XSRF-TOKEN` on protected writes.
+Consume the fresh header after successful login or identity switch and clear it
+on logout. Auth responses are `no-store`; the bootstrap can return401 with a
+CSRF token, which grants no SESSION or operation authority. Do not expect every
+Config/runtime response to republish the header. CORS must expose
+`X-XSRF-TOKEN` and lifecycle `Location` as well as existing validators.
+
+Cross-site production cookies require HTTPS, `Secure` and `SameSite=None` for
+both SESSION and XSRF, with SESSION still HttpOnly. Same-origin/local Lax tests
+and a manual HTTP cookie jar do not prove browser cookie delivery, cross-site
+policy, CORS enforcement or third-party-cookie availability. Use the official
+origin catalog and environment properties; test the deployed browser path
+separately. Never export raw cookie/header pairs in assertions, traces or logs.
+
+The existing Config CSRF exclusion must subtract both `/api/praxis/config/pages`
+and `/api/praxis/config/pages/**`, and both `/api/praxis/config/ui-layouts` and
+`/api/praxis/config/ui-layouts/**`. Use the same Spring MVC-aware path semantics
+as controller dispatch, not raw request-URI prefix checks. Preserve unrelated
+Config exclusions deliberately; origin admission alone does not exempt these
+page/lifecycle writes from CSRF. For every canonical and encoded equivalent
+(for example `%70ages` and `ui%2Dlayouts`), prove a matching pair reaches the
+intended controller and missing/mismatched pairs receive403. A firewall404 or
+an unreachable positive does not prove the matcher. Keep broader firewall
+encoding restrictions unchanged.
+
+Run the focused SPA/CORS/firewall and auth-lifecycle tests with the host's
+published dependency coordinates. Protecting page/lifecycle paths does not
+install their providers or prove their journey. When reviewing a separately
+composed page host, pair with `praxis-java-config-boundary-integration` and its
+actual HTTP gate: require login, current SESSION, opaque choices/CAS and the
+promised operations on the assigned remote Neon branch with ordinary runtime
+roles. Compare status before JSON and retain only safe hashes; prove logout and
+retained-SESSION401 even after a failed scenario. Reuse component evidence only
+when source identity, dependencies and limits are explicit. A policy slice or
+SESSION/CSRF pass does not certify publication, navigation, copy, browser cookie
+behavior or a new full HTTP campaign. Keep private-candidate/public-adoption
+and integration gates separate.
+
 ## Operational SESSION storage installation
 
-Inspect the existing Store SQL and
-`docs/ENTERPRISE-SESSION-OPERATIONAL-PREREQUISITE.md` with the reviewed candidate
-`V20261022_001__enterprise_session_operational_prerequisite.sql`. Its forward
-installation belongs to the segregated operational migration owner, never the
-application login or Config datasource. Health UP or a signed SESSION JWT cannot
-replace the persisted issuance table. This prerequisite does not provision
-enterprise membership/directory, payroll grants or an admitted G4 composition.
+Inspect `EnterpriseSessionStore`, the operational migrator, and
+`docs/ENTERPRISE-SESSION-OPERATIONAL-PREREQUISITE.md` before admitting a hosted
+SESSION flow. The reviewed forward
+`V20261022_001__enterprise_session_operational_prerequisite.sql` belongs to the
+segregated API migration owner, never the application login or Config datasource.
+The owner must be able to issue its `GRANT USAGE ON SCHEMA public` (schema
+ownership or a grant option for USAGE), in addition to its CREATE/USAGE, TEMP and
+predecessor-table ownership requirements. Health UP and a signed SESSION JWT do
+not replace a persisted issuance. The forward does not install enterprise
+membership, payroll grants or G4 composition.
 
-The candidate installation's runtime profile is schema USAGE and table SELECT,
-INSERT only on `credential_id`, `subject_id`, `expires_at`, and UPDATE only on
+The intended ordinary-runtime profile is schema USAGE and table SELECT, INSERT
+only on `credential_id`, `subject_id`, `expires_at`, and UPDATE only on
 `revoked_at`, `revision`, `tenant_id`, `environment`, `organization_id`,
 `sector_id`, `profile_id`. Preserve compatible non-grantable canonical column
 SELECT grants; do not widen INSERT/UPDATE to the table. Deny UPDATE of issuance
-identity/subject/expiry and INSERT of revision/selection fields. Inspect effective
-role closure, including SET ROLE reachability through NOINHERIT memberships,
-PUBLIC/grant options and owner/server-role/schema/database CREATE authority.
-Do not repair global grants/default privileges or assume Neon SUPERUSER.
+identity/subject/expiry and INSERT of revision/selection fields. Inspect
+effective privileges, including PUBLIC, grant options, role membership and
+SET ROLE through NOINHERIT, plus owner/server-role and schema/database CREATE
+reachability. Do not assume Neon SUPERUSER or repair global grants/default
+privileges to make a predecessor pass.
 
-Existing storage is admitted only by strict parsed PostgreSQL catalogues under
-the owner lock, preserving rows and rejecting unexpected defaults, validated
-constraints, index topology, RLS, triggers, ownership or dependencies. A fixture
-or TESTONLY schema cannot reconstruct retired migration checksums; missing
-historical resources must fail before the forward, without clean/repair/bypass.
-
-Pair with operational-proof for the reviewed guarded Neon assignment and exact
-packaged SQL hash. Require real ordinary-runtime issue/read/selection-CAS/revoke
-and denied column writes, repeat-zero official migration and conservative
-predecessor/rollback negatives. Same-resource rollback adversaries are not a full
-Flyway rerun. Keep candidate integration, an in-progress Neon run and HTTP/session
-adoption separate; offline source checks alone establish none of those gates.
+Existing storage is admitted only after a strict parsed-catalog comparison
+under the owner lock, preserving rows while rejecting unexpected structure,
+dependencies, ownership or ACLs. A TESTONLY fixture cannot reconstruct retired
+Flyway resources; missing history must fail before the forward without
+clean/repair/bypass. Pair with `praxis-api-quickstart-operational-proof` for the
+required `AssignedNeonDatabase` proof of the packaged migration, repeat-zero,
+real ordinary-runtime lifecycle and forbidden writes. Historical remote results,
+offline source checks and same-resource rollback negatives are distinct from
+fresh installation and authenticated HTTP adoption; report each boundary
+separately.
 
 ## Path Normalization And HttpFirewall
 

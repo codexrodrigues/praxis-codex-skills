@@ -264,6 +264,7 @@ Read the host composition and the exact downstream proof before deciding where t
 
 - `praxis-api-quickstart/AGENTS.md`, `README.md`, and `pom.xml`
 - `ApiQuickstartApplication.java`, `ApiPaths.java`, and `application*.properties`
+- `run_local.sh`, datasource wiring, and the reviewed launch guard/offline negatives for the actual packaged-host proof, when present
 - `SecurityConfig.java`, `ConfigOriginRestrictionFilter.java`, and related security filters
 - `QuickstartMetadataMigrationIntegrationTest`, `EventosFolhaPilotIntegrationTest`, and `OpenApiGroupResolutionIsolatedIntegrationTest`
 - `ResourceEntityLookupGovernanceIntegrationTest`, `ProcurementExternalOptionSourceProviderIntegrationTest`, and `VwStatsSmokeHttpTest` when option-source contracts are hosted
@@ -298,6 +299,22 @@ assertions to the assigned Neon branch and available permissions before counting
 new database acceptance; if that is impossible, leave the specific gate pending.
 Do not run an unchanged local recipe as replacement evidence or assume Neon exposes
 SUPERUSER, host-based authentication files or cluster-internal catalogues.
+
+### Integral Assigned-Neon Release Gate
+
+Use the [integral gate procedure](references/integral-neon-gate.md) when accepting
+the complete private and sanitized Quickstart trees. Inspect the current
+`config/neon` test support, assignment materializer, isolation policy and both CI
+workflows before running. Database allocation and ordinary runtime wiring are
+test infrastructure; they do not replace SDK migrations or alter product ACLs.
+
+For remote diagnosis of the declared Bulk cases, the same procedure documents
+`validation_scope=bulk-focal`; its bounded source selection is not a release gate.
+Keep focal results, helper validation, integral private/sanitized verification,
+public snapshot publication and deployed HTTP acceptance separate. A declared
+workflow or passing focal sample is not evidence that the integral gate ran.
+Do not promote this procedure as accepted until its exact helper, source,
+dependencies and two-tree remote results have passed independent review.
 
 ## Integration Topology And Owners
 
@@ -934,21 +951,39 @@ installation. Resolve its namespace/deployment/role properties through the same
 Spring environment naming and Boot conversion used by runtime, without starting
 the application. The CLI reads its process environment, not application profiles
 or ConfigData. Validate the whole enabled composition before the first host write.
-Reuse the explicit operational migration credential; require its owner identity
-and the configured runtime/control roles. Do not invent another owner credential,
-infer grants from HTTP, copy Metadata SQL, or perform deployment DDL at startup.
+Use `OPERATIONAL_MIGRATION_DATASOURCE_USERNAME/PASSWORD` only for host Flyway.
+When bulk lifecycle is `true`, require explicit
+`BULK_MIGRATION_DATASOURCE_USERNAME/PASSWORD` for the Metadata migrator, on the
+same `OPERATIONAL_MIGRATION_DATASOURCE_URL` API database; there is no separate
+bulk URL or fallback to operational, runtime or control-plane credentials. The
+configured bulk expected owner must equal the explicit bulk username. The two
+migration usernames may match when explicitly governed, but the operational
+migration username must not be a bulk runtime or control-plane role. When bulk
+lifecycle is absent or `false`, do not require bulk credentials. Preserve both
+passwords literally and reject JDBC URL credential/identity overrides before
+bootstrap. Do not use `SET ROLE`, transfer SESSION ownership, infer grants from
+HTTP, copy Metadata SQL or perform deployment DDL at startup.
 
 The host Flyway history and Metadata bulk history are separate and not globally
-atomic. The command must propagate failure after either phase and must not claim
-rollout success after only the first one. The declared BASIC confirmation identity
-starts deny-only/UNCOMPOSED; installation does not publish readiness or business
-authorization. Preserve normal strict retry behavior without repair/clean fallback.
+atomic. Configuration validation before DDL cannot prevent a live bulk failure
+after operational Flyway has committed. The command must propagate failure after
+either phase and must not claim rollout success after only the first one. The
+declared BASIC confirmation identity starts deny-only/UNCOMPOSED; installation
+does not publish readiness or business authorization. Preserve normal strict
+retry behavior without repair/clean fallback.
 
-Prove the packaged entrypoint on an assigned Neon branch with the exact host and
-Metadata artifacts, direct TLS connection, non-superuser owner and real runtime/
-control identities. Check both histories, no-work repetition and the resulting
-privileges. Binding/unit tests and existing storage proofs are complementary; they
-do not replace invoking the packaged command. After each authorized Quickstart
+Prove the packaged entrypoint on an assigned copy-on-write Neon child with the
+exact host and Metadata artifacts, direct TLS connection, ordinary non-superuser
+operational migration owner, and real ordinary runtime/control identities.
+Preserve the SESSION predecessor, `current_user`/owner and mixed host history
+under its strict forward; never use SQL repair, `ALTER OWNER` or an expected-owner
+override to make it pass. Check both histories, Metadata's physical/catalog/CRC/
+ACL validation, no-work repetition and resulting privileges. A Bulk owner with
+the privileges admitted by the SDK's V20 gate does not itself prove the ordinary
+operational or runtime/control paths. Binding/unit tests and packaged-JAR checks
+are complementary; they do not replace invoking the packaged command. Until the
+fresh entrypoint, read-only SDK validation and repeat-zero receipts pass on the
+assigned child, keep Neon adoption pending. After each authorized Quickstart
 main update, follow its automatic Render deploy to a terminal result and correlate
 the source commit with the served build and health. An older healthy instance,
 or an unchanged application version string alone, cannot certify the new deploy.
@@ -974,50 +1009,100 @@ the affected HTTP flow. Correct compatibility in the owning baseline; do not add
 a host Hibernate override, increase budgets or weaken denial for convenience.
 Keep candidate proof separate from published-artifact adoption.
 
-Keep API and config datasource properties, Flyway policy, AI provider properties,
+Keep API and Config datasource properties, Flyway policy, AI provider properties,
 RAG/vector-store switches and test isolation explicit. Test profiles may disable
-external services outside the exercised boundary while preserving the host/starter
-wiring being proved. Every database-backed validation uses an exclusively assigned
-remote Neon child with the required real role profile. Historical H2 or embedded
-fixtures remain historical evidence, not a new database proof. Do not substitute
-an in-memory fixture for persistence, origin-policy or streaming integration proof.
+unrelated external services while preserving the host/starter wiring being
+proved. Database-backed tests must use their assigned Neon destination; H2 or
+embedded/local PostgreSQL is not an admitted fallback. A pure wiring test may
+use an explicitly nonconnectable destination only when the whole test proves no
+connection is made; it provides no database evidence.
+
+### Pin local packaged-host launch inputs before Java
+
+Inspect the actual launcher before every boot or retry. `run_local.sh` defaults
+`ENV_FILE` to `.env.dev`, exports file values over inherited variables, lets Config
+fall back to API credentials, and selects a JAR under `target/` when `APP_JAR` is
+absent. An executable-permission failure followed by `bash run_local.sh` does not
+preserve a selector omitted from that retry. Require an explicit absolute private
+env-file path and absolute reviewed `APP_JAR` with its SHA-256 on every attempt;
+never recover by loading the default file or relying on an earlier shell export.
+
+Before the JVM starts, use a reviewed fail-closed preparation gate that validates
+the env-file/launcher/JAR bytes and starts with a fresh allowlisted process
+environment. Pin the intended JDK executable/version/hash and its `JAVA_HOME`/PATH
+when selecting a non-system runtime; a clean datasource environment alone does
+not prove which `java` executable runs. Reject inherited or file-based indirect
+Spring configuration locations/JSON and JVM option overrides that could escape
+the assignment. Enumerate every effective JDBC destination, including API,
+Config, Flyway and any applicable reader/control pools and fallback relationships.
+Match endpoints, database, TLS and distinct runtime/migration/control roles to the
+explicitly assigned Neon children before launch; reject missing or unassigned
+destinations and unexpected database-bearing variables instead of accepting a
+PostgreSQL URL prefix or allowing parent/production fallback.
+
+Exercise the gate offline with execution intercepted: missing/changed private
+inputs, wrong endpoint/role, indirect overrides and a mismatched JDK must be
+refused before Java. Record safe hashes and assertion outcomes, never env contents,
+passwords or tokens. This proves launch preparation, not HTTP health, database
+isolation after connection or absence of writes. A private task wrapper is not an
+official product API or a correction to the production launcher; do not publish
+its temporary paths as a reusable tool. Retain the actual owned process identity
+for cleanup. After an unintended boot, stop that process and preserve the incident
+receipt and uncertainty: Flyway validation with no new migration log does not
+prove that seeds, listeners, recovery or other application paths made zero writes.
 
 ## Install the operational SESSION prerequisite
 
 Before an authenticated host proof, inspect `EnterpriseSessionConfiguration`,
-`EnterpriseSessionStore`, `EnterpriseSessionLifecycle`, the official operational
-migrator and `docs/ENTERPRISE-SESSION-OPERATIONAL-PREREQUISITE.md`. The reviewed
-candidate `V20261022_001__enterprise_session_operational_prerequisite.sql` installs
-the existing Store contract on API storage, separately from Config Flyway. Verify
-its actual source/package/adoption before use; it is not an accepted deployment
-or G4 admission merely because the local source/offline tests exist.
+`EnterpriseSessionStore`, `EnterpriseSessionLifecycle`, the official
+`OperationalDatasourceMigrator` and
+`docs/ENTERPRISE-SESSION-OPERATIONAL-PREREQUISITE.md`. The reviewed forward
+`V20261022_001__enterprise_session_operational_prerequisite.sql` installs the
+existing Store contract on the API datasource, separately from Config Flyway.
+Verify the exact source, packaged resource and deployment adoption before use;
+local source or offline tests alone do not admit a hosted SESSION or G4 flow.
 
-Run only through the segregated migration owner with incompatible writers stopped.
-Absent storage may be created; an existing table must pass the locked, strict
-PostgreSQL catalogue/owner/constraint/index/dependency and ACL comparison without
-rewriting rows, normalizing a predecessor, taking ownership or repairing broad
-privileges. Derive runtime's exact column writes from Store SQL and pair with
-`praxis-api-quickstart-security-config`; no broad INSERT/UPDATE fallback, global
-role/default-privilege repair or fixture DDL substitutes this installation.
+Run the forward through a distinct, non-superuser operational migration owner
+with incompatible writers stopped. The owner needs schema CREATE/USAGE, database
+TEMP and ownership of an existing predecessor; because the SQL issues `GRANT
+USAGE ON SCHEMA public`, it also needs authority to grant that schema privilege
+(schema ownership or the relevant grant option). The ordinary runtime must not
+gain owner or schema/database CREATE authority. An existing table must pass the
+locked strict catalog, dependency, ownership and effective-ACL checks without
+row rewriting, ownership transfer or grant repair. A missing historical Flyway
+resource still fails before this forward; do not clean/repair history or recreate
+retired bytes from a fixture. `AssignedNeonStores.prepareApiSessions()` and
+TESTONLY schema snapshots prepare isolated fixtures, not this installation.
 
-`AssignedNeonStores.prepareApiSessions` and TESTONLY snapshots do not prove the
-official installation or recover retired migration bytes. Missing historical
-resources remain a strict Flyway failure before the forward; do not repair/clean
-history, restore removed SQL from a fixture or bypass that check to start the host.
+Validate the packaged migration and repeat-zero on an exclusively assigned
+Neon child through the required `AssignedNeonDatabase` path, with distinct real
+owner and ordinary-runtime identities. Prove Store/lifecycle issue, subsequent
+read, selection CAS and revoke through runtime, exact column-write denials,
+compatible predecessor preservation and rollback of drift negatives. Record
+source/resource hashes, TLS client evidence and raw result privately. A
+same-resource adversarial rollback is not another full migrator run; an offline
+pass or historical remote result is not fresh admission. If a committed forward
+is followed by a failure, preserve that cut and reconcile rather than reset
+history or silently retry. Authenticated HTTP, enterprise membership composition,
+full gate and deploy remain separate proofs.
 
-Use the guarded `EnterpriseSessionPrerequisiteNeonTest` only after independent
-source review and exclusive control-plane assignment: direct Neon endpoint,
-fresh named database prepared by the official predecessor migrator, a distinct
-non-superuser migration owner and ordinary runtime, verify-full/channel binding
-and the packaged SQL hash. Attest JDBC client TLS protocol/cipher; backend
-`pg_stat_ssl` behind the Neon proxy does not prove that client connection.
-The full migrator install plus repeat-zero and real Store/lifecycle operations
-are separate from same-resource adversarial transactions that always roll back.
-If a later assertion fails after forward commit, retain the failed cut and state;
-never delete table/history or silently retry on a reset database. Offline/source
-checks do not prove DDL, effective ACLs, physical rollback, HTTP authentication,
-enterprise membership composition or payroll readiness. Report an in-progress
-Neon run as pending until its exact result and independent review are available.
+For assigned Neon contention proofs, prepare physical TLS connections and
+observer statements in fixture setup before the bounded business window. Keep
+the real ordinary-role observation, execution lifetime at most 30 seconds and
+the revoker's 500 ms observation assertion unchanged; setup moving outside
+those windows cannot weaken their measured work. Release gates and sessions,
+cancel workers and confirm termination before closing writer-owned connections
+or dropping the assigned database. On nontermination or cleanup failure, retain
+the exact lease and journal for reconciliation, including after timeout or
+interruption; do not turn cleanup into a passing business result.
+
+The historical `scripts/workspace/Invoke-PayrollReactiveDeterminationHostedProof.sh`
+is now a fail-closed entry point: it exits 2 before any provider call, even with
+the former valid confirmation. Its retired Render PostgreSQL topology used the
+owner as application runtime. The previous implementation remains in Git history
+for diagnosis, not as a standard gate or main deployment path. Do not revive it
+with an environment flag; requalification requires a separately governed,
+assigned Neon proof with distinct migration-owner and ordinary-runtime identities.
 
 ## Host Security Is Integration, Not A Starter Override
 
@@ -1038,6 +1123,125 @@ Use real resource keys, OpenAPI operations, filtered schema URLs, headers, capab
 For metadata integration, prove the chain:
 
 `@ApiResource`/path -> OpenAPI group -> `/schemas/catalog` -> `/schemas/filtered` -> `x-ui`/schema headers -> actions/surfaces/capabilities/links -> downstream consumer evidence.
+
+### Prove A Minimal Corporate Page Publication
+
+For the Config page contracts, inspect `QuickstartPageConfiguration`,
+`QuickstartPageHost`, `QuickstartPageDocuments` and the current
+`docs/CORPORATE-PAGES-PILOT.md`. Reuse Config creation/lifecycle/runtime owners;
+explicitly import the pilot rather than creating parallel writers or activating
+production memberships through component scan. Follow
+`praxis-config-runtime-persistence` for canonical page/group integrity.
+
+Pin the compatible public Config coordinate in the host POM without an override.
+Verify Central JAR/POM checksums and byte equality with the packaged nested JAR;
+private-GAV evidence remains private even when its sources match the release.
+Reuse unchanged owner concurrency/rollback proofs with their exact source and
+limits, then execute the focal host HTTP case on assigned isolated Neon.
+
+`QuickstartPageCorporateHttpNeonTest#nativePageCreatePublishAndReadWithCurrentSessions`
+proves the smaller native page path: two current SESSIONs with separate author
+and publisher memberships, creation/draft, 404 before publication, revision,
+assignment, freeze, submit, approve and head publication. Require the published
+route/document/head, authorized 200/304, an independent ordinary-runtime read of
+the committed head, logout and retained-SESSION rejection. Before accepting the
+host providers, prove publisher-without-authoring creation denial, another tenant
+receiving 404 despite a valid published ETag, and current membership revocation
+receiving 403 rather than 304 with that ETag. Owner-only revocation belongs to the
+assigned test fixture, never runtime grant repair. Keep the existing
+budget, locks, CSRF and authority rechecks; six publication commands have separate
+budgets, not one combined allowance. Preserve a failure before considering a new
+attempt; cleanup does not establish rollback.
+
+The seed has one empty Form and no navigation bindings; this case does not prove
+business submission, menu/group publication, copy or browser rendering. A page
+with no navigation bindings need not publish an unrelated group first. Those
+later host surfaces require their own appropriate evidence before claiming them
+operational; never fabricate a group head or reuse an old authorization result.
+
+### Accept The Shared Page Deadline And Rollback
+
+Before accepting the page pilot after Config #521, inspect the owner's
+`P3C-VALIDATION-BUDGET-521.md`, the host guide and the exact current harness.
+Keep forty seconds per initiating operation, including its reserved draft,
+receipt, lineage and commit callbacks; six separate publication HTTP commands
+still own six separate attempts. A blocked extension can return after the deadline,
+but its result must be rejected without executing later callbacks or committing.
+An expiry observed only after an actual database commit means uncertain delivery:
+reconcile with the same creation key; never report that committed write as rollback.
+
+After focused clock/authority tests, require assigned-Neon creation/publication/read
+and a controlled failure after writes are staged but before commit. Observe actual
+transaction rollback and absence of the affected catalog, draft, metadata, head and
+creation-key records, as applicable, using an independent ordinary-runtime connection
+before fixture cleanup. Logout and dropping test databases do not prove rollback.
+Preserve failed receipts and record source, artifact hashes, roles, timings and
+cleanup separately. Private-candidate success does not establish complete public
+HTTP acceptance. Resolve and attest the officially published compatible artifact;
+by default, run the appropriate consumer gate before claiming that acceptance.
+Unit success alone does not close Neon, integration or release acceptance.
+
+An explicit human decision may accept technical integration with a documented
+availability limitation instead of repeating a campaign. First require independent
+review of unchanged production-source equivalence, public artifact/nested-JAR custody,
+focused consumer tests and the existing complete isolated-Neon functional proof.
+Preserve every public negative and identify its exact failed phase; do not rename
+private evidence as public success, infer rollback from cleanup, or attribute the
+failure exclusively to topology without measurements. Record the decision, scope,
+residual risk and unproved deployment/browser/performance claims in the host guide,
+plan and tracking issue. This accepts a code increment, not production qualification.
+Do not use this path to waive an unexplained integrity/security failure, weaken
+current authority, alter the monotonic operation budget or bypass branch protection.
+After an approved decision, do not repeat invariant suites or require a new executor
+merely to advance unrelated functional adoption.
+
+### Run The Fixed Page Focal Gate Without Publication
+
+Inspect Quickstart `.github/workflows/publish-public-release.yml`, its same-source
+`ci-java.yml`, `scripts/workspace/corporate_page_focal.py` and
+`neon_gate_assignment.py`. The manual `page-focal` cut requires a branch dispatch,
+`create_tag=false` and `release_gate=false`; it runs only
+`QuickstartPageCorporateHttpNeonTest#nativePageCreatePublishAndReadWithCurrentSessions`.
+Require the clean host checkout and assignment source SHA to equal the workflow's
+exact SHA. This seam is implemented; complete public HTTP acceptance requires its
+own passing reviewed receipt. Keep that result distinct from any explicitly approved
+technical-integration decision described above.
+
+With empty `page_config_ref`, consume the host POM's public Config pin without an
+override or fallback, attest Central JAR/POM checksums and nested-JAR equality.
+An optional candidate must be an exact full commit SHA in the fixed public Config
+repository. Clone it privately, verify clean source, use a unique private GAV and
+fresh isolated Maven repository, and attest that only project/version changed for
+installation before restoring the canonical POM and clean source. Retain Config
+commit, whole-tree and `src/main` tree identities plus canonical/private/installed
+POM and JAR hashes. Matching production trees supports comparison with a later
+release; it does not turn private bytes into public-artifact adoption.
+
+Package and attest before injecting `CORPORATE_PAGE_NEON_ASSIGNMENT` through the
+existing materialization gate. The coordinator exclusively assigns the isolated
+Neon child, lease and resource root; never reuse or replace the basic-proof secret,
+fall back to another assignment, or extend the lease silently. Keep the same forty
+seconds, canonical checkpoints and two fresh authority observations per admission,
+without authority caching. The Ubuntu remote runner is a topology, not evidence
+of geographic proximity, browser behavior or a local latency/SLA guarantee.
+
+Retain only the allowlisted custody, functional, assignment, test-results, cleanup
+and resource-ledger JSON receipts. Require creation/publication/read, conditional
+read, independent head, precommit failure, independent rollback observation,
+same-key retry, other-tenant denial and current-revocation denial. Project only
+closed phases/statuses/timings, fixed-route HTTP status/body hash, known error codes
+and SPI aggregates; raw logs, reports, headers, environment and credentials stay
+private. A hash or prior phase does not explain a later failure. Raw runner logs
+are ephemeral; preserve failed sanitized receipts before diagnosing a new attempt.
+
+The 25-minute job limit does not guarantee the harness cleanup completes after a
+kill or runner loss. Verify cleanup separately; if incomplete, the coordinator
+must reconcile the assigned resource root against the private journal and sanitized
+resource ledger, removing only resources whose ownership is established. Never
+clean a parent/shared branch or infer ownership from a broad prefix alone. Remove
+the dedicated repository secret after the run; retain controlled private recovery
+custody until reconciliation finishes. Cleanup is distinct from pre-cleanup rollback
+proof. This gate neither publishes a release nor accepts menu/copy/browser paths.
 
 ### Prove Bulk Restart Across OS Processes
 

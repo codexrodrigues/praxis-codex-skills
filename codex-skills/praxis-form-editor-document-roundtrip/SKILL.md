@@ -76,6 +76,15 @@ Canonical apply/save is replace-all:
 - editor `runtimeContext` is read-only operational evidence. It may expose `resolvedContract.schemaUrl`, `submitUrl`, or `submitMethod` in the UI, but must not be copied into the authoring document.
 - `formRulesState` is internal derived round-trip state for the visual builder. Do not make AI, JSON authoring, or manual editor workflows write it directly; derive or preserve it through the existing editor paths.
 
+When projecting `formRulesState` into `formRules`, distinguish an intentionally empty `rootNodes: []` from a declared root that is missing or has no valid target. `ruleBuilderStateToFormLayoutRules` must throw for missing/targetless roots instead of silently returning an empty rule list; the editor must retain the last accepted config, keep the invalid visual draft available for repair, and block Apply/Save. While conversion fails, hide the stale accepted effects panel and accepted-rule diagnostics and explain that repair belongs in the visual wizard or JSON; restore that panel after successful conversion. Programmatic recovery handlers do not establish an available panel-based UI repair path. Intentional deletion of the last rule must instead clear `formRules`/`formRulesState` and recover validity. Prove both paths and save/reopen in `utils/rule-converters.spec.ts` and `config-editor/praxis-dynamic-form-config-editor.spec.ts`; preserve the existing graph-validation boundary rather than treating conversion failure as a deletion.
+
+When reopening canonical `formRules`, `formLayoutRulesToBuilderState` must create one selectable
+`propertyRule` root per rule, preserving its ID, full `targets`/`targetType`, both effect branches,
+description, and authoring/semantic metadata. Do not downgrade property effects to legacy
+conditional-validator nodes or duplicate a multi-target rule into separate roots. Preserve advanced
+conditions inline when the visual graph cannot reconstruct them exactly; prove selectable reopen
+and lossless serialization in `utils/rule-converters.spec.ts`.
+
 Legacy editor payloads may be normalized into the canonical document, but new code should author the document shape directly.
 
 `DynamicFormAuthoringDocument` owns authoring state only. `FormConfig` owns form config. `bindings` owns persistible runtime mode preferences. `contextSnapshot` owns persistible authoring context such as `backConfig`, presentation, and schema preferences. Host discovery values, resolved schema URLs, submit endpoints, HTTP methods, and current resource metadata are read-only diagnostics and may appear in editor UI only as evidence.
@@ -107,6 +116,33 @@ examples, and round-trip requirements by stable identity through
 `projectComponentAuthoringManifest()`; do not copy or weaken owner operations.
 
 ## Apply Plan Rules
+
+For governed page children, inspect `dynamic-form-page-widget-adapter.ts` and its
+focused specs alongside Config's `page-publication-p0` contract. Use
+`decodeDynamicFormPageInputs` / `encodeDynamicFormPageInputs` to reconstruct the
+native document from the single `definition.inputs.config` plus admitted
+binding/context inputs. The raw page profile preserves absence and explicit
+values; a normalized editor snapshot must not become a second source of config.
+Use `projectDynamicFormPageEditorChanges` with the original inputs and the mounted
+editor's initial/current snapshots to persist only intentional changes. A changed
+binding/context requires a new widget key and admitted seed. Do not silently drop
+unsupported envelope blocks or add `authoringDocument` as a runtime input.
+
+The native Form contract preserves all five Core `DynamicFormMode` values:
+`create`, `edit`, `view`, `presentation`, `dossier`. Check normalization, apply
+plans, real editor save/reopen, metadata and AI runtime-input manifests together.
+An editor may recommend `view` plus presentation options, but it must retain
+existing supported values. Filter Form still exposes its own three-mode runtime
+subset through a copied projection; never mutate the owner manifest or extend
+Filter behavior merely because the shared document supports five modes.
+
+Page admission additionally rejects nulls in merged config objects; null inside
+atomic arrays remains distinct and permitted by the Form profile. Exercise raw
+presence, reserved JSON keys, native corpus vectors and whole-envelope Core
+bounds, rather than asserting only a normalized config. Pair with
+`praxis-core-composition-runtime` for the root codec and
+`praxis-form-schema-runtime-modes` for runtime persistence isolation. These APIs
+alone do not prove publication or the later Page Builder/host journey.
 
 The editor capability should produce an apply plan that names what changes:
 
