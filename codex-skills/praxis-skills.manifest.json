@@ -560,8 +560,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "1BCA1E217543732303675A6167C42816F8E5A676015ED45756D3E5D95DB14B5B",
-                       "treeSha256":  "2CFADBC8EA7776BDC5652E4C0C6913F08533CCC69DA8CA4D88D2C2D2C67E9343"
+                       "skillMdSha256":  "FF118136BB49B5B33D06A6B56B1A62B25713BB63179D7FCD281787247C1714AC",
+                       "treeSha256":  "9B5E77AF341E51A0AD99B4E3411241751516E90E5E8D91A67B223B1A3A899B6B"
                    },
                    {
                        "name":  "praxis-angular-i18n-governance",
@@ -2417,7 +2417,7 @@
                        "dependencies":  [
                                         ],
                        "skillMdSha256":  "7A428D38FB70157EBC6AC8A65ACD7B192787AED92914F7E4A9FB78628963DDCA",
-                       "treeSha256":  "718038ABB9E9DFD73AF8AFB62A6FA87A6E46A543591C5CDBF653F4A12FF22864"
+                       "treeSha256":  "6234C71F387410A9C0A7481B5F77B245E1B39A1852BC20398AA1AAE7F9163417"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
