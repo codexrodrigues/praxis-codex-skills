@@ -27,6 +27,11 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/dto/ApiSearchResult.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringApiMetadataCandidateCatalog.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringResourceDiscoveryService.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringOperationalBindingVerificationService.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringIntentResolverService.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringEvidenceBundle.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringTurnStreamService.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringTurnEngine.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringProjectKnowledgeService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringRuntimeComponentGroundingService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/VectorRankedProjectKnowledgeCandidateRetriever.java`
@@ -92,6 +97,34 @@ Broad candidate scans must use repository projections containing only the fields
 - Schema retrieval returns typed failures for invalid context, missing base URL, access denial, not found, invalid payload, and transport/unavailable states. Do not replace a failed canonical schema request with `/schemas/catalog`, `api_metadata`, or an inferred local schema.
 - The Angular `AiBackendApiService` derives the AI-context base URL from `API_URL.default` unless an explicit gateway override exists. Hosts must supply governed identity headers; demo/local header defaults are not corporate authorization.
 
+## Preserve Operational Binding Identity
+
+Carry each verified operation/surface identity, API path and method, schema role/URL,
+submit URL/method, scope, source release and evidence bundle through candidate and
+LLM-context projections. Create, detail, edit and list can share a `resourcePath`
+without being interchangeable. Do not deduplicate distinct operational bindings by
+resource path or normalize a verified write binding into a default read/filter route.
+A consumer read projection must follow semantic operation selection and preserve the
+original verified binding; it must not manufacture `/filter/cursor` authority.
+Resource ranking and ambiguity checks must compare distinct canonical resources, not
+sibling operations of the same resource; do not collapse operations to recover ranking.
+
+Correlate preserved bindings exactly with the existing backend-owned
+`verifiedDomainOperations` v2 envelope, its principal-capability verification,
+availability, scope/release, schema and submit tuple, and evidence refs. Inspect the
+stream/engine boundary that strips client-supplied verification and rebuilds the
+envelope from operational tools. Candidate hint markers, copied evidence labels or
+a client-forged envelope are not proof; do not add a DTO trust flag to bypass this
+correlation.
+
+Documentary API Catalog evidence can supplement grounding without replacing verified
+operation fields or erasing their proof. Keep documentary and operational provenance
+separate: neither a matching resource path nor a newer documentary release transfers
+schema, capability or action verification across operations, principals or releases.
+Retain the existing tenant/environment, release and evidence checks and fail closed
+for unresolved intent, mismatched focus or ambiguous operational bindings. Do not
+restore materialization by weakening the guard that correctly rejected missing proof.
+
 ## Project Knowledge And Corpus
 
 - Project Knowledge vector publication and retrieval are opt-in derived accelerators. Publish only active, approved, AI-visible concepts backed by active evidence; mask or redact content before indexing.
@@ -147,6 +180,7 @@ Use focused local gates:
 
 - ingestion/context: `mvn "-Dtest=ApiMetadataIngestionServiceTest,ApiMetadataControllerTest,AiContextControllerTest,ContextRetrievalServiceTest,SchemaRetrievalServiceTest" test`
 - resource/project knowledge/runtime grounding: `mvn "-Dtest=AgenticAuthoringApiMetadataCandidateCatalogTest,AgenticAuthoringResourceDiscoveryServiceTest,AgenticAuthoringProjectKnowledgeServiceTest,VectorRankedProjectKnowledgeCandidateRetrieverTest,AgenticAuthoringRuntimeComponentGroundingServiceTest" test`
+- operational binding projections: `mvn "-Dtest=AgenticAuthoringOperationalBindingVerificationServiceTest,AgenticAuthoringResourceFocusReconciliationTest" test`; exercise the public resolver with governed semantic LLM resolution, four distinct create/detail/edit/list bindings, documentary refinement from another release and unchanged per-operation evidence. Retain unresolved-intent, focus, principal-scope, ambiguous-release and absent/forged verification-envelope negatives. These focused tests do not certify a paid provider journey, live apply or downstream persistence.
 - RAG/vector changes: `mvn "-Dtest=RagVectorStoreServiceTest,RagVectorStoreConfigurationTest,RagProjectKnowledgeMetadataTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
 - Domain Catalog prompt/RAG grounding: `mvn "-Dtest=DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,RagVectorStoreServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest" test`
 - Angular AI-context consumer: `npm run test:praxis-ai:backend-api`
