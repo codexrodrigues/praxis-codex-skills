@@ -255,6 +255,7 @@ Read the host composition and the exact downstream proof before deciding where t
 
 - `praxis-api-quickstart/AGENTS.md`, `README.md`, and `pom.xml`
 - `ApiQuickstartApplication.java`, `ApiPaths.java`, and `application*.properties`
+- `run_local.sh`, datasource wiring, and the reviewed launch guard/offline negatives for the actual packaged-host proof, when present
 - `SecurityConfig.java`, `ConfigOriginRestrictionFilter.java`, and related security filters
 - `QuickstartMetadataMigrationIntegrationTest`, `EventosFolhaPilotIntegrationTest`, and `OpenApiGroupResolutionIsolatedIntegrationTest`
 - `ResourceEntityLookupGovernanceIntegrationTest`, `ProcurementExternalOptionSourceProviderIntegrationTest`, and `VwStatsSmokeHttpTest` when option-source contracts are hosted
@@ -1006,6 +1007,40 @@ proved. Database-backed tests must use their assigned Neon destination; H2 or
 embedded/local PostgreSQL is not an admitted fallback. A pure wiring test may
 use an explicitly nonconnectable destination only when the whole test proves no
 connection is made; it provides no database evidence.
+
+### Pin local packaged-host launch inputs before Java
+
+Inspect the actual launcher before every boot or retry. `run_local.sh` defaults
+`ENV_FILE` to `.env.dev`, exports file values over inherited variables, lets Config
+fall back to API credentials, and selects a JAR under `target/` when `APP_JAR` is
+absent. An executable-permission failure followed by `bash run_local.sh` does not
+preserve a selector omitted from that retry. Require an explicit absolute private
+env-file path and absolute reviewed `APP_JAR` with its SHA-256 on every attempt;
+never recover by loading the default file or relying on an earlier shell export.
+
+Before the JVM starts, use a reviewed fail-closed preparation gate that validates
+the env-file/launcher/JAR bytes and starts with a fresh allowlisted process
+environment. Pin the intended JDK executable/version/hash and its `JAVA_HOME`/PATH
+when selecting a non-system runtime; a clean datasource environment alone does
+not prove which `java` executable runs. Reject inherited or file-based indirect
+Spring configuration locations/JSON and JVM option overrides that could escape
+the assignment. Enumerate every effective JDBC destination, including API,
+Config, Flyway and any applicable reader/control pools and fallback relationships.
+Match endpoints, database, TLS and distinct runtime/migration/control roles to the
+explicitly assigned Neon children before launch; reject missing or unassigned
+destinations and unexpected database-bearing variables instead of accepting a
+PostgreSQL URL prefix or allowing parent/production fallback.
+
+Exercise the gate offline with execution intercepted: missing/changed private
+inputs, wrong endpoint/role, indirect overrides and a mismatched JDK must be
+refused before Java. Record safe hashes and assertion outcomes, never env contents,
+passwords or tokens. This proves launch preparation, not HTTP health, database
+isolation after connection or absence of writes. A private task wrapper is not an
+official product API or a correction to the production launcher; do not publish
+its temporary paths as a reusable tool. Retain the actual owned process identity
+for cleanup. After an unintended boot, stop that process and preserve the incident
+receipt and uncertainty: Flyway validation with no new migration log does not
+prove that seeds, listeners, recovery or other application paths made zero writes.
 
 ## Install the operational SESSION prerequisite
 
