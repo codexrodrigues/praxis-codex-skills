@@ -32,6 +32,9 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringEvidenceBundle.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringTurnStreamService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringTurnEngine.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringGenericUiCompositionPlanProvider.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringUiCompositionPlanCompiler.java`
+- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringDomainBindingService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringProjectKnowledgeService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringRuntimeComponentGroundingService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/VectorRankedProjectKnowledgeCandidateRetriever.java`
@@ -125,6 +128,16 @@ Retain the existing tenant/environment, release and evidence checks and fail clo
 for unresolved intent, mismatched focus or ambiguous operational bindings. Do not
 restore materialization by weakening the guard that correctly rejected missing proof.
 
+For the `resource-master-detail` blueprint, semantic selection of a resource does
+not identify its item HTTP operation. Materialize the detail's exact `schemaUrl`
+from the unique verified item GET/response operation for that same canonical resource
+in the current backend-owned v2 envelope, retaining principal scope and release
+provenance. Do not invent a root GET or append `/{id}` to manufacture a binding;
+documentary selection, copied markers and forged envelopes cannot supply it.
+Missing or ambiguous item operations must fail closed for this blueprint. Preserve
+the master configuration, context and composition links while correcting the detail
+projection.
+
 ## Project Knowledge And Corpus
 
 - Project Knowledge vector publication and retrieval are opt-in derived accelerators. Publish only active, approved, AI-visible concepts backed by active evidence; mask or redact content before indexing.
@@ -181,6 +194,7 @@ Use focused local gates:
 - ingestion/context: `mvn "-Dtest=ApiMetadataIngestionServiceTest,ApiMetadataControllerTest,AiContextControllerTest,ContextRetrievalServiceTest,SchemaRetrievalServiceTest" test`
 - resource/project knowledge/runtime grounding: `mvn "-Dtest=AgenticAuthoringApiMetadataCandidateCatalogTest,AgenticAuthoringResourceDiscoveryServiceTest,AgenticAuthoringProjectKnowledgeServiceTest,VectorRankedProjectKnowledgeCandidateRetrieverTest,AgenticAuthoringRuntimeComponentGroundingServiceTest" test`
 - operational binding projections: `mvn "-Dtest=AgenticAuthoringOperationalBindingVerificationServiceTest,AgenticAuthoringResourceFocusReconciliationTest" test`; exercise the public resolver with governed semantic LLM resolution, four distinct create/detail/edit/list bindings, documentary refinement from another release and unchanged per-operation evidence. Retain unresolved-intent, focus, principal-scope, ambiguous-release and absent/forged verification-envelope negatives. These focused tests do not certify a paid provider journey, live apply or downstream persistence.
+- master-detail materialization: `mvn "-Dtest=AgenticAuthoringGenericUiCompositionPlanProviderTest,AgenticAuthoringUiCompositionPlanCompilerTest,AgenticAuthoringDomainBindingServiceTest" test`; prove the exact item schema survives provider and compiler, with missing/ambiguous/untrusted operations and tenant/environment/release negatives. In the real consumer, assert the persisted detail schema tuple and GET 200 from an admitted official origin without redirects, alongside the functional scenario assertions and critical-network guard. Functional checks alone cannot certify a schema route that returns 404.
 - RAG/vector changes: `mvn "-Dtest=RagVectorStoreServiceTest,RagVectorStoreConfigurationTest,RagProjectKnowledgeMetadataTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
 - Domain Catalog prompt/RAG grounding: `mvn "-Dtest=DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,RagVectorStoreServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest" test`
 - Angular AI-context consumer: `npm run test:praxis-ai:backend-api`
