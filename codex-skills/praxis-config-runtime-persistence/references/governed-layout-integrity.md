@@ -234,7 +234,9 @@ drafts, publication heads, titles and authored documents.
   SPI: it includes the FULL `resolve(principal, contextVersion)` policy and these
   three policies in one joint current-authority decision. Use the supplied
   Principal as credential input; never substitute the expected actor or thread
-  identity. Return the freshly observed `PageCreationContext` only after final
+  identity. Preserve the host's existing credential/context coherence policies;
+  accepting a supplied Principal does not authorize an identity detached from
+  the host's authenticated context. Return the freshly observed `PageCreationContext` only after final
   checks. Config rejects null or any difference from `expected`, without rebasing
   scope. Expected is correlation, not authority. Resolution and creation must
   share one window rather than two transactions. This
