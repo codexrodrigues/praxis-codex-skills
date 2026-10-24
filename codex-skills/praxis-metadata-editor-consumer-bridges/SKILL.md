@@ -39,6 +39,11 @@ Inspect the metadata-editor sources plus the affected consumer:
 
 - Use `FieldMetadataEditorComponent` for advanced FieldMetadata edits.
 - Pass canonical `controlType` and `seed`; normalize aliases through core helpers before opening.
+- Build the seed from a defensive clone of the complete current canonical field document,
+  including specialized properties such as `colorLabelOptions` and `inlineOverlay`.
+  Do not reconstruct it from an INPUT/common-property allowlist. Keep explicit editor
+  representation adapters, but normalize their accepted values back to the owner's paths
+  without persisting duplicate aliases or discarding supported specialized metadata.
 - Lazy-load `@praxisui/metadata-editor` when the consumer should avoid a hard authoring dependency in the runtime path, but fail visibly through diagnostics/snackbar/logging when the module or `FieldMetadataEditorComponent` export is unavailable.
 - Wire at least one canonical patch path, and preferably both when supported by the host: `hostBridge.applyPatch` for immediate editor-to-host application and Settings Panel `applied$`/`saved$` subscriptions for Apply/Save.
 - Receive delta patch from `hostBridge`, `applied$`, or Settings Panel save and apply JSON Merge Patch semantics, including `null` removal where the consumer stores metadata overrides.
@@ -105,8 +110,10 @@ Consumer patch application must respect the consumer storage model without chang
 ## Opening Baseline And Cumulative Deltas
 
 `FieldMetadataEditorComponent.getSettingsValue()` is a cumulative delta relative to
-its opening seed. For Layout Editor and Filter Settings, capture an immutable
-field-scoped opening baseline and apply every accepted delta to that baseline.
+its opening seed. For the direct `PraxisDynamicForm` field bridge, Layout Editor
+and Filter Settings, capture an immutable field-scoped opening baseline and apply
+every accepted delta to that baseline. In Dynamic Form, capture the stored field
+document rather than a seed augmented with editor-only defaults.
 Applying a cumulative delta to the already patched value loses reversions:
 A -> B -> Apply -> A -> Conclude must restore A even when the final delta is `{}`.
 Keep unrelated fields from the current parent document; do not restore the entire
@@ -122,11 +129,30 @@ option-source edits, null removal, A -> B -> A, repeated Apply and another field
 changed while the child is open. Handwritten patch fixtures alone cannot prove the
 emitter/consumer baseline agreement.
 
+Dynamic Form also caches runtime metadata and column field projections separately
+from `FormConfig`. Invalidate both after an accepted metadata update so a
+presentation-only FieldShell receives the new declarative loader input even when
+there is no editable input component. Warm `getColumnFields` before Apply and
+assert the next projection changes while the opening projection remains intact.
+For persistence, combine the real child delta proof with Save, close/reopen and
+reload through the official storage adapter; accepted events alone do not prove
+the standalone initialization lane restores the saved document. Pair that path
+with `praxis-form-schema-runtime-modes`.
+
 ## Consumer Validation
+
+Exercise the consumer's public open method or visible field action and inspect the seed
+passed by that bridge before driving the real child. Supplying a complete handcrafted
+seed directly to the child or private bridge cannot detect properties lost by the public
+opening path. Prove specialized values survive open, accepted Apply/Save and runtime
+projection. When changing patch forwarding, also cover an existing representation
+adapter (for example `autoResize` -> `autoSize` without an alias residue), immutable
+field identity and preservation of nested unmanaged siblings.
 
 Choose the consumer proof:
 
 - dynamic-form field editor:
+  - cumulative baseline, null removal, warmed projection and standalone hydration: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.field-metadata-roundtrip.spec.ts`
   - `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.spec.ts`
   - `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/layout-editor/layout-editor.component.spec.ts`
   - cascade bridge proof when cascade patches cross into form config: `npx ng test praxis-dynamic-form --watch=false --progress=false --include=projects/praxis-dynamic-form/src/lib/config-editor/praxis-dynamic-form.config-editor.cascade.integration.spec.ts`

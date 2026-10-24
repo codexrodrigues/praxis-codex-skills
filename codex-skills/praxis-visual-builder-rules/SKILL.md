@@ -70,6 +70,20 @@ For property effects, preserve canonical target semantics: `field`, `section`, `
 
 For field schemas and context variables, use governed `FieldSchema`, `FieldSchemaContext`, `ContextVariable`, and custom function metadata. Text search can rank fields after scope is known, but it must not decide primary authoring intent.
 
+Wizard review and rule lists must describe the actual condition, canonical target labels, and
+every effect in both branches. Preserve grouping, operand order, value types, and null inheritance;
+localize Boolean choices. When the complete expression cannot be described faithfully, expose
+advanced JSON review and preserve the original expression rather than presenting a partial or
+unconditional summary. Inspect `src/lib/presentation/rule-summary.ts` and its spec, plus
+`rule-definition.component.spec.ts` and `rule-list.component.spec.ts`.
+
+Treat external input replacement, including same-ID edits and intentional empty input, as document
+replacement through the canonical importer. Equivalent current-state echoes must preserve selection
+and undo history; malformed JSON must preserve the current draft and report the failure. Verify
+replacement and subsequent editing without echo loops in `rule-editor.component.spec.ts`; inspect
+`rule-definition.component.ts` when the selected rule's configuration is replaced without changing
+its ID. Keep this lifecycle handling inside the existing builder/host boundary.
+
 ## AI Manifest Rules
 
 The visual builder manifest should preserve editable targets for node, edge, variable, condition, effect, and DSL document. Operations should use deterministic handler contracts for node add/remove/configure, edge connect/remove, variable add, condition set, effect set, and DSL round-trip validation.

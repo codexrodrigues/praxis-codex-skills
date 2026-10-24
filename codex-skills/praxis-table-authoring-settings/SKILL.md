@@ -43,9 +43,12 @@ Also inspect `projects/praxis-settings-panel/AGENTS.md` and the Settings Panel b
 - Keep the canonical pair `runtime/config <-> editor` in sync.
 - Test sparse host configurations and compare the entire persisted document after a single-field edit. Editor defaults must remain transient for untouched settings; action label edits must not author export, row-action or layout defaults. Reuse the Table internal initial/edited projection merge (`table-authoring-changes.ts`) rather than replacing complete config groups. Preserve coupled semantics when explicitly selected, such as hybrid row-action behavior.
 - `PraxisTableConfigEditor` implements `SettingsValueProvider`; preserve `isDirty$`, `isValid$`, `isBusy$`, `getSettingsValue`, and apply/save/reset behavior.
+- Capture the active columns draft before tab navigation or `getSettingsValue()`/`onSave()` produces a payload, independently of typing debounce; prove immediate edit-to-JSON and Apply/Save without sleeps or debounce ticks, and keep inactive child state from overwriting manual JSON.
 - Treat `resourcePath`, `idField`, schema hash, local-data mode, and CRUD context as governed authoring state. Do not silently drop them when normalizing config.
 - For columns, always validate runtime rendering, editor visibility, order, type/format, renderer, computed expressions, value mapping, conditional styles, sticky state, and headers.
 - Preserve the Core threshold vocabulary in micro-visualization authoring: finite `min`/`max` ranges, progressive `value` cutoffs and discrete `equals` conditions. Presence matters: `equals: 0`, `false` and strings are valid. Range controls must not invalidate or convert existing cutoff/equality documents when editing tone, label or order. Inspect `presentation-visualization.model.ts` normalization and tone resolution; prove primary and conditional-renderer Apply/reopen, retained conditions/labels, cutoff preview, and empty/inverted/non-finite-only negatives in the columns editor specs. Do not require every threshold to have `min` or `max`.
+- For `stackedBar`, expose the supported denominator (`total`/`totalExpr`) in ordinary and conditional guided authoring alongside the segment source. An absent total means the category sum; it cannot represent a deliberately partial allocation. Load colored segments and expressions, edit an unrelated property, Apply/Save and reopen; compare the complete document, including unknown authored fields and compose items, rather than checking only the edited field.
+- Prove micro-visualization previews through the actual columns-editor DOM after Angular sanitization. Assert proportional widths, zero geometry and category colors, effective `table-cell` context even for omitted/conflicting source surfaces, and application locale. A helper-string assertion does not prove a rendered preview. Reuse Core's structured materialization and the owning renderer's safe boundary; never solve lost styles by trusting arbitrary authored HTML. Inspect `columns-config-editor-renderer-phase2.spec.ts` and compose/conditional paths, and keep failing authoring gates open until the runtime/editor correction is independently verified.
 - For filters, keep `behavior.filtering.advancedFilters.settings` synchronized with `FilterSettingsComponent`.
 - For rules and formulas, preserve the rule compiler/operator registry and do not reintroduce prohibited old Visual Builder dependencies.
 - For actions, preserve global action validation and effect shapes.
@@ -74,6 +77,39 @@ storage acknowledgement.
 
 ## Round-Trip Checklist
 
+For governed page children, inspect `table-page-widget-adapter.ts` and its specs
+against Config's `page-publication-p0` profile. Use `decodeTablePageInputs` and
+`encodeTablePageInputs` for the native envelope, preserving presence of
+`resourcePath` and `horizontalScroll`. Keep config content only in
+`definition.inputs.config`; do not pass a fictitious runtime `authoringDocument`.
+The initial admitted profile uses compact schema columns (`columns: []`,
+`columnProjection.source: 'schema'`) and rejects null anywhere in config.
+
+Project intentional editor changes through `projectTablePageEditorChanges` using
+the original raw inputs and the mounted editor baseline/current values. Reuse
+the owner delta helper so materialized columns and defaults do not become new
+authorship. Fixed bindings require a new widget key and server-admitted seed when
+changed. Cover reserved JSON keys, raw presence, schema-column compaction,
+Unicode lengths, diagnostics as widget-relative JSON Pointers and the native
+Config corpus, then combine the owner validator with the Core page codec.
+
+Materialize execution-only inputs through `materializeTablePageRuntimeInputs`:
+Core-derived identity and volatile persistence are runtime projections, never
+saved authoring. Check every projected input against both component reflection
+and public metadata so the strict Core loader can mount it. Do not copy Form-only
+inputs into Table: Table uses `enableCustomization: false` to suppress independent
+authoring; it does not declare `showAiAssistant`. Verify filter persistence and
+Reset as well as the table key;
+a successful editor round-trip alone does not prove storage isolation. Verify in
+the runtime that volatile config uses native defaults and explicit
+inputs without personal global table/schema/timezone overlays, including after
+global changes and Reset. Host tenant/cache/locale/CSP infrastructure remains;
+shared global-service reads are not proof that personal table config was applied.
+Validate the real mounted advanced-filter child and every projection slot when
+testing its persistence flag; an absent child cannot prove isolation. Pair with
+`praxis-core-composition-runtime` and the Form round-trip skill for shared page
+integration. Page Builder/host publication remains a separate downstream proof.
+
 For every editable field, prove or inspect:
 
 1. Existing config opens in the editor with the correct value.
@@ -82,6 +118,12 @@ For every editable field, prove or inspect:
 4. Runtime reflects the applied change.
 5. Reopening the editor preserves the value.
 6. Reset does not erase unrelated table state.
+
+Exercise parent config replacement and Reset while the columns editor remains
+mounted. Verify the new input replaces the appropriate draft and reconciles the
+selection; then edit another property and prove that the emitted document does
+not resurrect pre-reset columns, renderers or segment colors. Recreating the child
+before checking Reset cannot prove this lifecycle path.
 
 For contextual detail, repeat the proof with no selection, one eligible visible selection, multiple selection, a selection outside the visible page, empty content, resource failure, dynamic height, fixed height, collapse/reopen, and narrow Settings Panel navigation.
 
