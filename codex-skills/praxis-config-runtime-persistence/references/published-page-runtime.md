@@ -39,6 +39,25 @@ available in a consumer; source integration does not publish a package.
   list or a partial successful scan. External authority rechecks are not a
   distributed atomic revocation fence.
 
+## Exact Copy Source Projection
+
+Inspect the exact Config artifact before enabling copy from a reopened publication.
+The canonical PageSourceReference.Published selector needs pageId, releaseId and
+revisionId. A head or review receipt alone does not provide the content revision;
+never infer it from latest, a draft, local JSON or another actor's remembered receipt.
+
+The copy-source projection increment adds PublishedPageResponse.copySource using
+that existing selector type, derived from the same admitted frozen snapshot as the
+returned document, after visibility/source/metadata checks. Include the selector in
+the public receipt digest so earlier bodies cannot satisfy a conditional read.
+Do not introduce new authority I/O, a new head contract or a separate copy registry.
+This projection does not grant CREATE_PAGE, READ_SOURCE or COPY_SOURCE; creation
+still rechecks the canonical operations. Check publication/pin/deployment separately:
+rc.169 lacks copySource, and a source PR does not prove a consuming host has it.
+Owner/controller unit proofs suffice for the projection's local behavior; reuse
+unchanged integrity/rollback evidence and record the absence of another Neon run.
+They do not certify a newly deployed browser journey.
+
 ## Coherence, Paging And Conditional Reads
 
 Use the actual Config transaction/JDBC/JPA connection and REQUIRED lifetime.
