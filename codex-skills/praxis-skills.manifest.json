@@ -2487,8 +2487,8 @@
                                             "praxis-http-examples-llm-smoke",
                                             "praxis-java-autoconfiguration-starter-maintenance"
                                         ],
-                       "skillMdSha256":  "B9A7E870489EE2604260D10424C320A3795FFEF1851705E40B8A7F876CD4092A",
-                       "treeSha256":  "75AE15462FE106501535728D171C9D685921C496FA55BF711DC4212BF0A35526"
+                       "skillMdSha256":  "584749D75EEF430D1EA2B64F9244DE100C61BDA16F7A503EE79F6C09AE217C34",
+                       "treeSha256":  "8481E505B88E37C0F03824016ACF8ACACE0A93352A19E0280317CD881A8D982A"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",
@@ -2503,8 +2503,8 @@
                                             "praxis-config-agentic-authoring-streaming",
                                             "praxis-metadata-schema-contracts"
                                         ],
-                       "skillMdSha256":  "A0DD23C1A48986B32A89B67A0CDB648B27C65D4613F9A25B1C815561D0598699",
-                       "treeSha256":  "8DDF44281EEF7B18FDAE95D73FBB17E273FE418721E8C8FEED31BD47D7572C08"
+                       "skillMdSha256":  "FEB82B3E7DEE581D1C9BA04D17FBD574BA04C7A3FFCAFAF66441DA5A0F95AAFF",
+                       "treeSha256":  "D0CBCB10AA998749A08DAEC8F2B6A6F364A5CCFE7A6F3FBB987DC808EAF082DE"
                    },
                    {
                        "name":  "praxis-api-quickstart-domain-pilots",
