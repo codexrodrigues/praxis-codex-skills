@@ -122,6 +122,23 @@ Browser responses controlled by tests prove consumer behavior, not real SESSION,
 cross-site cookies, CORS or deployed-backend readiness. Record those limits and reuse
 unchanged backend evidence instead of requiring another Neon campaign for UI work.
 
+For page authoring hosts, put EnterpriseRuntimeContextService, UiLayoutLifecycleService
+and the host page transport in one explicit corporate ancestor scope shared by entry,
+editor and published reader. A component-scoped context paired with a root lifecycle
+client creates different snapshots. Keep the demo's global headers out of this scope.
+Invalidate that shared context on every SESSION generation change, not only logout;
+fence reads and writes by both context revision and captured session generation.
+After 401/new login, ready() must not reuse the previous actor's snapshot.
+
+Use Config creationKey receipts and the by-creation-key reconciliation read for a
+lost creation response; a 404 is not permission to recreate an in-flight command.
+Keep revision, assignment, freeze, submit, approve and publish explicit, with the
+server's current strong validators. Published/catalog HTTP ETags are weak read
+receipts and must never be required or reused as strong draft/head write validators.
+Do not report draft creation as successful SaveAs publication. Materialize only the
+host-admitted document profile; a lifecycle state receipt is not an immutable review
+preview or proof that a page renderer is wired. Keep those acceptance scopes separate.
+
 ## Required Workflow
 
 1. Classify the host mode:
