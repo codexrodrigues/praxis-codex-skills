@@ -213,6 +213,21 @@ drafts, publication heads, titles and authored documents.
 - Require CREATE at the destination and READ_SOURCE/COPY_SOURCE for the directly
   selected source at creation/replay and commit. Do not invent perpetual COPY
   permission or ancestral page ACL requirements for an independent copy.
+  Inspect the mandatory `PageCreationHost.requireCreation(context, source)` SPI:
+  it admits these three policies as one joint current-authority decision. This
+  explicitly changes linearization from three separate admissions to one window;
+  it is not a claim that the previous interleavings remain identical. The host
+  evaluates all three pure policies under the same locked authority snapshot,
+  with fresh observations and expiry/coherence checks before and after the unit.
+  Concurrent revocation serializes against that unit. Keep Config work, source
+  I/O and arbitrary extensions outside it, and retain every Config creation
+  checkpoint, including replay and actual commit. Each call must reauthorize;
+  never cache the result or merge other native, metadata, child or lifecycle
+  callbacks into this unit. Update implementing hosts explicitly for this beta
+  SPI change; do not introduce a default that silently restores three admissions.
+  Prove all three policies, denial, stale context, expiry and revocation between
+  units with focused tests. A reduced observation count does not certify the
+  real journey within the unchanged 40-second budget.
   Integrity/reproduction and current producer, domain and derived-use admission
   still apply throughout its provenance chain. Do not expose ancestral private
   evidence through a receipt or association lookup.
