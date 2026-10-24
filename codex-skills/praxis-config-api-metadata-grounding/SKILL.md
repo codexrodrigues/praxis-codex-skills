@@ -47,6 +47,9 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/rag/**`
 - `src/main/resources/db/migration/V4__create_api_metadata.sql`, `V28__scope_api_metadata_identity.sql`, `V8__create_api_metadata_embedding_index.sql`, and vector-store migrations.
 - `praxis-ui-angular/projects/praxis-ai/src/lib/core/services/ai-backend-api.service.ts`
+- `praxis-ui-angular/projects/praxis-table/src/lib/praxis-table.ts`
+- `praxis-ui-angular/projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.ts`
+- `praxis-ui-angular/projects/praxis-core/src/lib/composition/transform-runtime.service.ts`
 - focused API metadata, context, RAG, project knowledge, and resource discovery tests.
 
 ## Canonical Boundary
@@ -135,8 +138,18 @@ in the current backend-owned v2 envelope, retaining principal scope and release
 provenance. Do not invent a root GET or append `/{id}` to manufacture a binding;
 documentary selection, copied markers and forged envelopes cannot supply it.
 Missing or ambiguous item operations must fail closed for this blueprint. Preserve
-the master configuration, context and composition links while correcting the detail
-projection.
+the master configuration, context and semantic selection state; physical composition
+links must materialize the receiving runtime's canonical read contract.
+
+For remote-backed Form detail, derive `resourceId` from Table selection's
+metadata-derived `payload.resourceIdentity.key.value`, separately from the selected
+DTO snapshot (`payload.selectedRows.0`). Do not infer `row.id` or substitute a late
+`initialValue` for the remote entity read. Preserve explicit `fallbackValue: null`
+through plan compilation and propagate selection clearing even when the event still
+contains a stale `row`; truthiness conditions must not suppress that clear. Retain
+the verified item schema, allow the Form to cancel obsolete reads and reject stale
+responses, and keep its remote hydration guard intact. `initialValue` remains the
+appropriate snapshot input for local snapshot/create semantics.
 
 ## Project Knowledge And Corpus
 
@@ -194,7 +207,7 @@ Use focused local gates:
 - ingestion/context: `mvn "-Dtest=ApiMetadataIngestionServiceTest,ApiMetadataControllerTest,AiContextControllerTest,ContextRetrievalServiceTest,SchemaRetrievalServiceTest" test`
 - resource/project knowledge/runtime grounding: `mvn "-Dtest=AgenticAuthoringApiMetadataCandidateCatalogTest,AgenticAuthoringResourceDiscoveryServiceTest,AgenticAuthoringProjectKnowledgeServiceTest,VectorRankedProjectKnowledgeCandidateRetrieverTest,AgenticAuthoringRuntimeComponentGroundingServiceTest" test`
 - operational binding projections: `mvn "-Dtest=AgenticAuthoringOperationalBindingVerificationServiceTest,AgenticAuthoringResourceFocusReconciliationTest" test`; exercise the public resolver with governed semantic LLM resolution, four distinct create/detail/edit/list bindings, documentary refinement from another release and unchanged per-operation evidence. Retain unresolved-intent, focus, principal-scope, ambiguous-release and absent/forged verification-envelope negatives. These focused tests do not certify a paid provider journey, live apply or downstream persistence.
-- master-detail materialization: `mvn "-Dtest=AgenticAuthoringGenericUiCompositionPlanProviderTest,AgenticAuthoringUiCompositionPlanCompilerTest,AgenticAuthoringDomainBindingServiceTest" test`; prove the exact item schema survives provider and compiler, with missing/ambiguous/untrusted operations and tenant/environment/release negatives. In the real consumer, assert the persisted detail schema tuple and GET 200 from an admitted official origin without redirects, alongside the functional scenario assertions and critical-network guard. Functional checks alone cannot certify a schema route that returns 404.
+- master-detail materialization: `mvn "-Dtest=AgenticAuthoringGenericUiCompositionPlanProviderTest,AgenticAuthoringUiCompositionPlanCompilerTest,AgenticAuthoringDomainBindingServiceTest" test`; prove the exact item schema survives provider and compiler, with missing/ambiguous/untrusted operations and tenant/environment/release negatives. In the real consumer, assert the persisted detail schema tuple and GET 200 from an admitted official origin without redirects, alongside the functional scenario assertions and critical-network guard. Functional checks alone cannot certify a schema route that returns 404. Also prove typed null fallback survives compilation, metadata-derived keys work without an `id` property, and deselection/cancellation/stale-response negatives hold. The real selection must issue entity GET 200 for that exact identity and hydrate the matching Form content; a schema GET or populated DTO alone does not prove this read.
 - RAG/vector changes: `mvn "-Dtest=RagVectorStoreServiceTest,RagVectorStoreConfigurationTest,RagProjectKnowledgeMetadataTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
 - Domain Catalog prompt/RAG grounding: `mvn "-Dtest=DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,RagVectorStoreServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest" test`
 - Angular AI-context consumer: `npm run test:praxis-ai:backend-api`

@@ -2438,8 +2438,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "2D60098FDAA6BB25260BDFC36F9AC9F51EAE5673EA86A6D497289CEBBDEA6CB1",
-                       "treeSha256":  "10297F507DDB3662DE6D2D249945279BF1B3F340A16E94EB786364A9D1C55A24"
+                       "skillMdSha256":  "8477E196CE3D78804C8477106C4D246CDA2B49E14A2DACE4657EBBFF3F3A7344",
+                       "treeSha256":  "0C84B0C576A7B7BA263F0E54461FA900BD86AF88C1083D2FE1DEC8485DA04E7A"
                    },
                    {
                        "name":  "praxis-config-agentic-authoring-streaming",
