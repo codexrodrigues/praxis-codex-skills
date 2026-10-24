@@ -73,16 +73,35 @@ composition before changing annotations or expected schema values:
    using `javap -p -s`. Include return types in the JVM descriptors: a changed
    superclass return type can silently bypass an old enrichment hook. Inspect
    the canonical resolver registration as well.
-3. Correct resolver ABI compatibility in `praxis-metadata-starter` and keep the
-   host's dependency family coherent. Do not copy enrichment into the host or
+3. Inspect the actual `SpringDocConfigProperties.isOpenapi31()` and the mode of
+   the converter bean returned by `OpenApiUiSchemaAutoConfiguration`, including
+   its registration. Do not infer the runtime dialect from a previous Springdoc
+   default. When properties are available, reuse that existing bean through the
+   owner's optional `ObjectProvider` wiring; disabled/non-web contexts must not
+   require or fabricate Springdoc configuration.
+4. Correct resolver ABI and dialect wiring in `praxis-metadata-starter` and keep
+   the host's dependency family coherent. Do not copy enrichment into the host or
    upgrade unrelated starter/domain APIs merely to conceal the mismatch.
-4. Prove label, lookup binding and existing validation through a real
-   `ModelConverters` pipeline on the selected dependency family. Calling the
-   protected hook directly does not prove that Swagger dispatches to it.
-5. Verify `/schemas/filtered` over real HTTP in the consuming host, retaining its
-   original schema assertions and binding evidence to source, JAR and resolved
-   dependencies. Keep candidate validation separate from published adoption;
-   never suppress an oracle or treat compilation alone as consumer acceptance.
+5. Prove label, lookup binding, schema types and existing validation through a
+   real `ModelConverters` pipeline using the owner's factory and real Springdoc
+   properties in both 3.0 and 3.1 modes. Cover absent properties and disabled/non-web
+   bootstrap too. Calling the protected hook alone does not prove Swagger dispatch;
+   manually correcting the resolver's mode in a pipeline test does not prove the
+   production factory or bootstrap wiring. Include Boolean/Integer fields annotated
+   only with a `@UISchema` label, without explicit control or data types: assert inferred
+   checkbox/numeric controls, UI data types and serialized schema types in both dialects.
+   In 3.1, `Schema.getType()` may be null while `getTypes()` carries the scalar type;
+   explicit control metadata must not mask broken inference.
+   Prefer private converter chains for direct conversion tests. When the real Springdoc
+   utility uses a singleton chain, serialize that test boundary, register only the
+   factory-created converter and remove that exact instance in `finally`; never reset
+   the converter list or global properties.
+6. Verify `/schemas/filtered` and the relevant OpenAPI response over real HTTP in
+   the consuming host; follow response `$ref` values into `components.schemas` and
+   check serialized property types as well as `x-ui`. Retain the original schema
+   assertions and bind evidence to source, JAR and resolved dependencies. Keep
+   candidate validation separate from published adoption; never suppress an oracle
+   or treat compilation alone as consumer acceptance.
 
 ## Reference Resource Audit
 
