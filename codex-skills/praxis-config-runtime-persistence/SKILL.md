@@ -61,6 +61,14 @@ surface, follow [published-page-runtime.md](references/published-page-runtime.md
 Audit the actual candidate/package first: a lifecycle receipt, available draft or
 generic effective configuration does not establish a published route.
 
+For Angular host adoption (`GovernedPageWorkflowController`,
+`GovernedPageNavigationController`, `inspectLegacyPublishedPagePayload`,
+`copyPageAuthoringDocument`, and child `configPersistenceStrategy: 'volatile'`),
+load `praxis-page-builder-authoring` and `praxis-angular-host-project`. For HTTP
+examples of `/api/praxis/config/pages/**` and `/api/praxis/runtime/navigation`,
+inspect `praxisui-http-examples/http/config/pages_*` and
+`runtime_navigation_read.http`.
+
 A source merge or a passing MockMvc fixture does not prove a published Maven
 artifact, PostgreSQL persistence, a live host or browser rendering. Pin and
 verify public artifacts separately; do not install a candidate under a public

@@ -560,8 +560,8 @@
                                             "praxis-editorial-forms-data-collection-adapters",
                                             "praxis-editorial-forms-agentic-authoring"
                                         ],
-                       "skillMdSha256":  "259D5223CA9161DE4EA6D6331F51A90EAADD89F5ADC3FE2DF537A0564408FCE2",
-                       "treeSha256":  "6A3808C49A204072F60691ADB5EA671D104ADFC20AA3DEA923273C06B7A1C7D1"
+                       "skillMdSha256":  "7A9251499D835B437424796A64F6EF456A0D1A2AE1BF88A647ACA0DC92043CD3",
+                       "treeSha256":  "44AC6240E25CB3154B5DD77EA13F1A4CA14D1951B4669057CB70D2697C82F452"
                    },
                    {
                        "name":  "praxis-angular-i18n-governance",
@@ -1865,8 +1865,8 @@
                        "dependencies":  [
                                             "praxis-page-builder-composition"
                                         ],
-                       "skillMdSha256":  "01BF3C0BD101894B784DAA08595A4F9143C66739F7AB9F87DB7616222BAF272A",
-                       "treeSha256":  "2C975610E123932AFF7E3D2DADF765BE36DF4A6620E044BF904F26BCB602AE54"
+                       "skillMdSha256":  "B06A0FE6943F19D08EDE206DA851806A6010A59228EFC9AA296E165B320CC7F9",
+                       "treeSha256":  "470E4950BB5AF0BA62C3386CCC8D644C1F8275DF5F9270175B1FFCE1AB6042C9"
                    },
                    {
                        "name":  "praxis-page-builder-composition",
@@ -2416,8 +2416,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "DEE6A0942520A1A5EF47F8BDF96A107B905BD4C3F398796C051C0DE7E2E5B412",
-                       "treeSha256":  "5F9D00E016A1DCB2D791946E40A86F7C8E32A2100A78AEE343CF1BF39BE09746"
+                       "skillMdSha256":  "110BC14B8F4CEF17F326D96B20394132AD9D459C1FE509AD6C77CDE9566F402C",
+                       "treeSha256":  "2CC8D1D74E2840F22068E283CC54E020474722E4A2ED490027C5E4AE8913B610"
                    },
                    {
                        "name":  "praxis-config-ai-registry-manifests",
