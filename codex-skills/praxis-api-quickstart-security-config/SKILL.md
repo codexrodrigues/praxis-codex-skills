@@ -58,6 +58,34 @@ authenticated context returns selection-required with no effective context and
 no choices. Never seed production tenants, organizations or memberships to make
 the endpoint ready. Presentation labels and JWT roles do not authorize access.
 
+Before generating or rotating reference keys, inventory the effective deployment
+configuration privately, including `SPRING_APPLICATION_JSON`, environment aliases
+and property precedence. Missing individual environment variables do not prove
+missing keys. Record only presence, validity and source, never values or a full
+environment/JSON dump. Preserve valid managed keys; rotation is a separate explicit
+operation affecting issued references, not a remedy for an empty catalog.
+An explicitly empty `app.security.enterprise.presentation.contexts` is different
+from missing configuration, missing membership storage and an empty authoritative
+membership directory. Diagnose each independently.
+
+Inspect `JdbcEnterpriseMembershipSource`, `EnterpriseRuntimeProperties` and
+`QuickstartEnterprisePresentationSource` together. Persistent membership supplies
+the exact subject/tenant/environment/optional-selector tuple, revision, validity,
+revocation and capabilities; presentation supplies only reviewed public labels.
+`AUTH_*` lab identities establish authentication, not enterprise grants. Neither
+an ADMIN role, a presentation entry nor successful login can replace membership.
+Provision access through a separately authorized administrative operation with a
+reviewable plan, explicit compare-and-set precondition and bounded validity;
+startup, migrations and demo authentication must not insert or renew grants.
+
+Inventory the actual membership catalog before installation: column types,
+nullability/defaults, constraints, foreign keys, ownership and effective ACLs.
+An empty table is not permission to replace its schema or drop directory FKs.
+For PostgreSQL `SELECT ... FOR UPDATE`, UPDATE on an innocuous column may provide
+the lock privilege even when table-level UPDATE is false. Preserve the admitted
+lock anchor and check its effective column grant; do not alter its type or grant
+UPDATE on capability, selector or revision columns to satisfy a fixture shape.
+
 For every canonical UserConfigController handler, including both identifier
 transports and conditional reads, revalidate the active SESSION, current selected
 membership, contextVersion and exact tenant/environment/user headers before the
@@ -87,18 +115,78 @@ For repeated enterprise/page admissions, inspect `EnterpriseContextSessionServic
 `JdbcEnterpriseMembershipSource` before changing budgets or transaction managers.
 The host reader composes the existing SESSION and membership snapshot; Config still
 owns lifecycle checkpoints and persistence. Keep two fresh observations around each
-policy and compare the session revision and complete membership. Do not cache grants,
+admission unit and compare the session revision and complete membership. Do not cache grants,
 remove checkpoints, raise the page validation budget or widen runtime privileges.
 
 Audit `QuickstartPageHost.require` before multiplying operational reads inside one
 callback: app/namespace shape and complete invocation/capability/source policy can
 share one `requireCurrent` admission with both observations still around the policy.
 Do not reuse that result in the next callback or globally weaken `requireContext`.
+For the canonical
+`PageCreationHost.requireCreation(principal, contextVersion, expected, source)`
+contract, evaluate the FULL resolve policy plus CREATE_PAGE, READ_SOURCE and
+COPY_SOURCE in one admission using the supplied Principal. Do not substitute
+thread identity or the expected actor. Preserve
+`QuickstartUiLayoutContextAuthorization.authorize`'s existing identity check:
+the supplied Authentication must be the ambient SecurityContext Authentication;
+do not accept a detached credential or replace the supplied identity to pass it.
+Return the freshly observed context only
+after both observations succeed; Config requires exact equality with expected
+and rejects null. Expected grants no authority and must not silently rebase scope.
+This is an explicit joint decision
+window, with the same operational locks and fresh before/after observations around
+all three pure policies; it changes their former separate linearization points.
+No Config work, source I/O or arbitrary extension belongs between these policies.
+Config still invokes the unit at each creation/replay/commit checkpoint, and
+revocation between units must deny the later call. Test policy completeness,
+stale scope and expiry, retaining independent admissions for other callbacks.
+Do not generalize this grouping to unrelated policies or claim the unchanged
+40-second operational budget is met from an observation-count reduction alone.
+The separate canonical `requireNativeProvenance` unit is restricted to captures
+classified by Config as Native with wholly non-generated root/child metadata.
+In the closed Quickstart producer, `documents.requirePage` checks the exact
+historical producer, root metadata and every child's source/metadata inside one
+`requireCurrent` policy, without arbitrary extensions or Config I/O. Config calls
+that unit before and after structural extensions; both calls retain their own
+fresh before/after SESSION/membership observations. Prove the second call rejects
+revocation or expiry during those extensions and that no child policy is omitted.
+It also includes the FULL resolveLifecycle policy, including custom registration
+restrictions, and returns a fresh context for Config's exact-equality check.
+Ledger-derived comparison values never authorize the call. Preserve pre-catalog
+admission and the post-extension call; post-I/O authority is resolved inside the
+joint unit, not reused from the earlier context. Test a stricter custom resolver,
+null or divergent returned context, and the supplied Principal boundary.
+Mixed captures still use `requireNative` with independent metadata/child checks
+and Config provenance correlation; published traversal is unchanged. Do not let
+the host select this route from labels or generated-marker guesses.
+For child evidence, implement `requirePageChildEvidence` as one current admission
+covering source, document, reproduction and full metadata; the default denies.
+Do not delegate to an old callback or omit restored/frozen children. Config owns
+generated-child correlation and its provenance traversal, not a host grant cache.
+The configured lifecycle admission bean itself must implement
+`PageLifecycleAdmission`. Its `requirePage` preserves all operation/domain
+policies of `require` while attesting current context in the same authority
+window. A separate provider or ignored delegate would bypass custom restrictions.
+Retain fresh before/after observations, post-catalog context checks and renewed
+admission after provenance/at commit. Unknown page UUIDs need admission before
+lookup; non-page invocations still use `require`. Test plain-bean rejection and
+restrictive custom policies as well as stale context and revocation.
 For the closed pilot, structure validation may be pure: retain `validation.require`,
 registered tenant/environment/unit, exact root/sole composition/target, canonical
-schema/reproduction, icons, Form restrictions and selectors. Structural acceptance
-grants no operation or source access. Preserve independent current admissions for
-invocation, lifecycle, mapping, native source, metadata and children; historical
+schema/reproduction, icons, Form restrictions and selectors. Inspect
+`QuickstartPageFormContentPolicy` before evolving content: the native B0 stays
+empty, while revisions/copied baselines may contain the admitted SDK local fields
+(`controlType`, `source: local`, `transient: true`, `submitPolicy: omit`) and
+field-only sections/rows/columns. Text controls use `input`, not `text`. Keep
+field references/order consistent with metadata and reject unknown properties;
+do not silently strip editor output. No resource/API bindings, actions, hooks,
+rules, option sources, default values or entered preview data are admitted by
+this presentation-only cut. Validate real public-editor projection fixtures and
+negative widening cases with `QuickstartPageFormContentPolicyTest`; an accepted
+structure is not a business-data submission or HTTP publication proof.
+Structural acceptance grants no operation or source access. Outside these explicit joint units,
+preserve independent current admissions for invocation, lifecycle, mapping,
+native source, metadata and children; historical
 captures are never grants. Use `QuickstartPageHostTest` and
 `QuickstartPageStructureTest` for forged/stale scope, revocation between callbacks
 and absence of structural authority I/O. Confirm the Config owner budget propagation
