@@ -117,6 +117,34 @@ not authorize a package release. Update the owning authoring guidance and public
 README in the same cycle; do not claim release, installed parity or corporate
 publication from a passing local browser journey.
 
+## Governed Corporate Page Publication (`P4` / `P5-B` / `P5-D`)
+
+When an Angular host adopts governed corporate page authoring and publication:
+
+- Reuse `@praxisui/core` page authoring codecs (`encodePageAuthoringDocument`,
+  `decodePageAuthoringDocument`, `copyPageAuthoringDocument`,
+  `validatePageAuthoringDocument`, `encodeNavigationGroupsAuthoringDocument`,
+  `decodeNavigationGroupsAuthoringDocument`, `materializeGovernedPagePreview`) and
+  `@praxisui/page-builder` `GovernedPageWorkflowController` +
+  `GovernedPageNavigationController` + `createCorporateGovernedPagePersistenceAdapter`.
+  Never build a parallel publication state machine or serialize raw runtime state to
+  `/api/praxis/config/ui-layouts/**`.
+- Keep child widget configuration exclusively in `widget.definition.inputs.config`
+  with `configPersistenceStrategy: 'volatile'` inside governed pages so personal
+  `ui_user_config` overrides never shadow the published release.
+- Declare `childSources` on `POST /api/praxis/config/ui-layouts/drafts/{draftId}/revisions`
+  only for newly inserted widget keys; omit unchanged and restored keys, and reject
+  changed fixed binding envelopes (`resourcePath`, `mode`, `readOnly`, `operation`)
+  for existing widget keys.
+- Keep `praxis.dynamic-page.editor` (`navigationBindings[]`) separate from
+  `praxis.navigation-groups.editor` (`groups[]`); never embed page routes inside
+  group documents or publish an invalid/unadmitted icon.
+- For legacy published snapshots in `ui_user_config` (`LEGACY_PUBLISHED_PAGE_STORAGE_PREFIX`),
+  migrate explicitly via `inspectLegacyPublishedPagePayload` +
+  `GovernedPageWorkflowController.importLegacyPublishedPage` (`POST /api/praxis/config/pages`
+  from an admitted native seed + governed revision with `legacyImportedFrom`) instead
+  of falling back silently at runtime.
+
 ## AI Target Context And Operation Ownership
 
 Before validating a targeted AI edit, inspect `DynamicPageBuilderComponent`'s
