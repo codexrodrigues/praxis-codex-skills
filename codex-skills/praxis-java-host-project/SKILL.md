@@ -61,6 +61,62 @@ For `arquitetural`, `contrato-publico`, or `transversal`, map impact before patc
 11. Create only the host-owned code needed for the domain: application bootstrap, dependency composition, security/origin policy, datasource properties, resources, tests, and documentation.
 12. Validate with the smallest reliable command after inspecting which tests connect to a database. Local execution is limited to unit tests without a database. Use an explicitly assigned isolated remote Neon branch for database-backed tests; add real HTTP/schema proof when the task claims the runtime metadata endpoints work.
 
+## Diagnose Missing UI Metadata After Dependency Changes
+
+When `@UISchema` is present but generated `x-ui` is absent, audit the resolved
+composition before changing annotations or expected schema values:
+
+1. Inspect the effective Maven dependencies and packaged/runtime Springdoc and
+   Swagger Jakarta core, models and annotations. Check for duplicate annotation
+   classes; a source POM or successful OpenAPI response alone does not prove alignment.
+2. Compare `CustomOpenApiResolver` with its actual `ModelResolver` superclass
+   using `javap -p -s`. Include return types in the JVM descriptors: a changed
+   superclass return type can silently bypass an old enrichment hook. Inspect
+   the canonical resolver registration as well.
+3. Inspect the actual `SpringDocConfigProperties.isOpenapi31()` and the mode of
+   the converter bean returned by `OpenApiUiSchemaAutoConfiguration`, including
+   its registration. Do not infer the runtime dialect from a previous Springdoc
+   default. When properties are available, reuse that existing bean through the
+   owner's optional `ObjectProvider` wiring; disabled/non-web contexts must not
+   require or fabricate Springdoc configuration.
+4. Correct resolver ABI and dialect wiring in `praxis-metadata-starter` and keep
+   the host's dependency family coherent. Do not copy enrichment into the host or
+   upgrade unrelated starter/domain APIs merely to conceal the mismatch.
+5. Prove label, lookup binding, schema types and existing validation through a
+   real `ModelConverters` pipeline using the owner's factory and real Springdoc
+   properties in both 3.0 and 3.1 modes. Cover absent properties and disabled/non-web
+   bootstrap too. Calling the protected hook alone does not prove Swagger dispatch;
+   manually correcting the resolver's mode in a pipeline test does not prove the
+   production factory or bootstrap wiring. Include Boolean/Integer fields annotated
+   only with a `@UISchema` label, without explicit control or data types: assert inferred
+   checkbox/numeric controls, UI data types and serialized schema types in both dialects.
+   In 3.1, `Schema.getType()` may be null while `getTypes()` carries the scalar type;
+   explicit control metadata must not mask broken inference.
+   Inventory the full affected chain: converter enrichment, `ApiDocsController`
+   filtered-schema materialization and `PraxisMetadataAutoConfiguration` customizers.
+   In 3.1 an array can be a generic `Schema`/`JsonSchema` with `items`, so a concrete
+   `ArraySchema` check is not a semantic array test. Inspect scalar `type`, union
+   `types` and serialized string/list values; infer only a unique non-null type,
+   preserve the original representation and decline ambiguous unions.
+   Trace property-sibling timing before post-propagating enum options: a converter's
+   intermediate `schemaProperty` result can precede the final property annotation.
+   Perform automatic propagation at the final model boundary, follow only local
+   references already defined in that context with a visit guard, and preserve
+   explicit controls/options and extra-property precedence. Do not erase metadata
+   after the fact without provenance. Prove scalar/object arrays, nullable and
+   ambiguous types, enum size boundaries, a referenced root and explicit overrides;
+   exercise list/page/cursor flattening and nested numeric formats when affected.
+   Prefer private converter chains for direct conversion tests. When the real Springdoc
+   utility uses a singleton chain, serialize that test boundary, register only the
+   factory-created converter and remove that exact instance in `finally`; never reset
+   the converter list or global properties.
+6. Verify `/schemas/filtered` and the relevant OpenAPI response over real HTTP in
+   the consuming host; follow response `$ref` values into `components.schemas` and
+   check serialized property types as well as `x-ui`. Retain the original schema
+   assertions and bind evidence to source, JAR and resolved dependencies. Keep
+   candidate validation separate from published adoption; never suppress an oracle
+   or treat compilation alone as consumer acceptance.
+
 ## Reference Resource Audit
 
 When the user asks to make an existing backend resource an exemplar for future

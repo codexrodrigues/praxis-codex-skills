@@ -122,6 +122,46 @@ Browser responses controlled by tests prove consumer behavior, not real SESSION,
 cross-site cookies, CORS or deployed-backend readiness. Record those limits and reuse
 unchanged backend evidence instead of requiring another Neon campaign for UI work.
 
+For page authoring hosts, put EnterpriseRuntimeContextService, UiLayoutLifecycleService
+and the host page transport in one explicit corporate ancestor scope shared by entry,
+editor and published reader. A component-scoped context paired with a root lifecycle
+client creates different snapshots. Keep the demo's global headers out of this scope.
+Invalidate that shared context on every SESSION generation change, not only logout;
+fence reads and writes by both context revision and captured session generation.
+After 401/new login, ready() must not reuse the previous actor's snapshot.
+
+Use Config creationKey receipts and the by-creation-key reconciliation read for a
+lost creation response; a 404 is not permission to recreate an in-flight command.
+Keep revision, assignment, freeze, submit, approve and publish explicit, with the
+server's current strong validators. Published/catalog HTTP ETags are weak read
+receipts and must never be required or reused as strong draft/head write validators.
+Do not report draft creation as successful SaveAs publication. Materialize only the
+host-admitted document profile; a lifecycle state receipt is not an immutable review
+preview or proof that a page renderer is wired. Keep those acceptance scopes separate.
+
+For published-page copies, inspect Config's `PageRuntimeReadService` and the
+host transport/editor together. Use the server-provided `copySource` from the
+published read, correlated with that page and its authorized head. Send it to
+creation with a new creationKey; let Config allocate the new page/draft/route
+identity and rematerialize the source. Do not clone JSON or reuse source/menu
+identities on the client. The copy is a draft with no inherited navigation
+binding: explicitly select its destination group and publish through lifecycle.
+On authorization denial, clear displayed protected content and fence further
+writes. A reread may discard unsaved edits; this UI fence neither repairs stored
+configuration nor grants access. Test copied content, distinct identity, empty
+initial navigation and the denial path separately from real publication proof.
+
+Treat navigation groups as a separate governed aggregate: publish the referenced
+group before publishing a page binding to it. Consume the SDK's runtime navigation
+in that same corporate provider scope; do not synthesize menus from the page
+catalog. Inspect Config P3-A/P3-B and `QuickstartPageConfiguration`/`QuickstartPageDocuments`:
+the native groups baseline is empty, not a clone of the published groups head.
+A genuine head404 selects the existing first-publication precondition; an existing
+head requires the complete admitted groups document and current strong CAS before
+editing, or reuse of its groups without rewriting the aggregate. Never replace the
+full groups document with a paginated/visibility-filtered navigation projection.
+Prove persistent menu/route behavior separately from draft save and group creation.
+
 ## Required Workflow
 
 1. Classify the host mode:

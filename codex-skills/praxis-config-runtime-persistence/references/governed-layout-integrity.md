@@ -158,6 +158,14 @@ projection and reproduction checks even when page widgets are an atomic array.
   and metadata. The source request, a hash supplied by a client, or an intact
   historical `captureText` is not current authority. The source/admission SPI must
   bind the requested immutable source to the captured evidence and current scope.
+  Implement `UiLayoutDraftWorkspaceSource.requirePageChildEvidence` for hosts
+  supporting children: the default denies. This replaces `requirePageChild` with
+  one joint admission of exact source, document, reproduction and complete
+  metadata, including restored/frozen children. Do not fall back to the former
+  callback or treat historical capture text as a grant. For Config-generated
+  children, Config retains page correlation and `sameSeedOrigin`, then traverses
+  creation provenance once. Preserve both checks in the child codec; eliminate
+  only duplicate preflight work, never the post-extension authorization check.
 - Preserve evidence for removed keys; restoration uses the historical seed and
   must pass current admission. Reject replacement declarations for known keys,
   missing/extra/duplicate requests, scope substitution and changed fixed envelopes.
@@ -182,6 +190,14 @@ live host HTTP proof. Those child-admission tests do not by themselves prove
 catalog, routes, menus, cross-head transactions or host adoption. Use the dedicated
 creation/group sections below and [published-page-runtime.md](published-page-runtime.md)
 for their separate implementation and evidence gates.
+
+For historical metadata persistence, inspect the package-private `readVerified`
+boundary and `JdbcUiLayoutMetadataCaptureStore`: the store owns exact binding,
+integrity/codec verification and both current access callbacks. Its consumers
+must not run that same verification again after the verified read. This ownership
+does not cache authority or remove either callback inside verification. Test
+binding mismatch, corrupted capture and denial at both access boundaries; keep
+fixture observation counts separate from deployed latency and Neon evidence.
 
 ## Page Creation And Copy Admission
 
@@ -213,9 +229,57 @@ drafts, publication heads, titles and authored documents.
 - Require CREATE at the destination and READ_SOURCE/COPY_SOURCE for the directly
   selected source at creation/replay and commit. Do not invent perpetual COPY
   permission or ancestral page ACL requirements for an independent copy.
+  Inspect the mandatory
+  `PageCreationHost.requireCreation(principal, contextVersion, expected, source)`
+  SPI: it includes the FULL `resolve(principal, contextVersion)` policy and these
+  three policies in one joint current-authority decision. Use the supplied
+  Principal as credential input; never substitute the expected actor or thread
+  identity. Preserve the host's existing credential/context coherence policies;
+  accepting a supplied Principal does not authorize an identity detached from
+  the host's authenticated context. Return the freshly observed `PageCreationContext` only after final
+  checks. Config rejects null or any difference from `expected`, without rebasing
+  scope. Expected is correlation, not authority. Resolution and creation must
+  share one window rather than two transactions. This
+  explicitly changes linearization from three separate admissions to one window;
+  it is not a claim that the previous interleavings remain identical. The host
+  evaluates all three pure policies under the same locked authority snapshot,
+  with fresh observations and expiry/coherence checks before and after the unit.
+  Concurrent revocation serializes against that unit. Keep Config work, source
+  I/O and arbitrary extensions outside it, and retain every Config creation
+  checkpoint, including replay and actual commit. Each call must reauthorize;
+  never cache the result or merge other native, metadata, child or lifecycle
+  callbacks into this unit. Update implementing hosts explicitly for this beta
+  SPI change; do not introduce a default that silently restores three admissions.
+  Prove all three policies, denial, stale context, expiry and revocation between
+  units with focused tests. A reduced observation count does not certify the
+  real journey within the unchanged 40-second budget.
   Integrity/reproduction and current producer, domain and derived-use admission
   still apply throughout its provenance chain. Do not expose ancestral private
   evidence through a receipt or association lookup.
+- Inspect the separate mandatory `PageCreationHost.requireNativeProvenance` SPI
+  for wholly host-native captures. Config alone selects it when the source is
+  Native and neither root nor any child metadata is Config-generated. One joint
+  admission covers the exact historical origin, current producer/domain
+  dependencies, root metadata and every child's exact source and metadata.
+  Config calls it before and after structural extensions; each call has its own
+  current-authority window, with fresh before/after observations and expiry checks.
+  Include the FULL `resolveLifecycle` policy, including custom registration
+  restrictions, in that same window and return its freshly attested context after
+  final checks. Config rejects null or any difference from the expected context.
+  Ledger-derived application/namespace values are comparison inputs only: never
+  treat them as current authority. Keep pre-catalog admission and the second
+  provenance admission after extensions; the joint resolution provides the
+  required post-I/O authority check rather than reusing the earlier decision.
+  Reproduction, metadata syntax, complete child-key matching and Config provenance
+  integrity remain Config responsibilities. The host must not reinterpret a
+  generated marker or replace captured bytes with latest content to qualify.
+  Mixed native/generated captures retain `requireNative` and independent
+  metadata/child admissions plus Config-owned correlations; `requireNative` is
+  this distinct semantic seam, not a compatibility alias. Published-source
+  traversal is unchanged. Prove aggregate policy completeness, revocation during
+  structural extensions and denial by the second admission, and mixed/published
+  routing. These explicit joint units change linearization; they authorize no
+  grant reuse across callbacks or request-wide authority cache.
 - Scope the creation key to actor/application/tenant/environment. Equal replay
   returns the same page and current draft validator without recapture; a different
   command conflicts. Context version must be current but is not a new key scope.
@@ -223,6 +287,16 @@ drafts, publication heads, titles and authored documents.
   permission to the old selected source. Verify no-store, the quoted current
   draft ETag, absence of 304 and a Location that can actually read that draft.
 - Preserve one atomic Config transaction for catalog, ledger, draft and metadata.
+  Page composition requires its configured `UiLayoutLifecycleAdmission` bean to
+  implement `PageLifecycleAdmission`; a plain bean fails closed. Do not install
+  a second permissive admission or silently wrap/ignore an existing delegate.
+  `requirePage(operation, invocation)` applies every operation/domain policy of
+  `require` and current application/namespace/invocation policy in one authority
+  window, returning correlation rather than a reusable grant. Admit page UUIDs
+  before catalog lookup, including unknown ones; preserve current context after
+  catalog I/O and renewed admission after provenance and at commit. Non-page
+  operations continue through `require`. Prove restrictive custom policies,
+  plain-bean rejection, forged namespace, revocation and unchanged non-page flow.
   Reuse the shared actual JDBC/JPA connection invariant and reject rollback-only
   results. Recheck context and current grants after the final extension in each
   commit callback; checking a budget/snapshot after a revoking SPI is insufficient.
@@ -253,8 +327,16 @@ and after; a fixture measurement is not a production SLA.
 
 Rollback to a savepoint keeps the outer synchronization list alive, so completion
 cleanup alone cannot prevent reuse of rows that were rolled back. Clear retained
-positive bytes on savepoint rollback without renewing transaction admission;
-prove a later read reloads them. This cache invariant does not establish support
+positive bytes on savepoint rollback and disable both immutable-read retention
+and isolation-proof reuse for the rest of that transaction. Subsequent guarded
+accesses require a fresh pinning SELECT and load immutable records without
+retaining them. Prefetch still enforces bounds and accounts for consumed rows.
+Spring invokes `savepointRollback` before the physical rollback; another
+synchronization can reenter a ledger and obtain proof that the subsequent rollback
+undoes, or repopulate bytes that it later removes. Merely clearing a flag or the
+retained rows and allowing reuse again is unsafe. Prove that reentry followed by
+physical rollback cannot preserve proof or bytes, and that a later read reloads
+discarded records. These invariants do not establish support
 for nested JPA lifecycle operations or their business callbacks.
 
 Include driver metadata calls in that measurement: PgJDBC isolation getters can
@@ -262,6 +344,27 @@ issue server SQL outside a prepared-statement counter. A SHOW alone does not
 establish PostgreSQL's first-query isolation boundary. Audit the owner's explicit
 read-transaction admission and prove isolation cannot change after its SELECT;
 retain the regular mutation guards and recheck connection/rollback state on reuse.
+Inspect `ConfigJdbcTransactionGuard` together with `ConfigTransactionReadSet`:
+their shared proof concerns transaction isolation only, never principal, grants,
+source admission or provenance. Bind it to the exact datasource, connection
+holder, JDBC connection and active synchronization lifetime. Enable reuse only
+when the guard first enlists into an empty synchronization list. If a callback
+was already registered, the first access could occur inside a savepoint rollback
+callback whose notification the new proof missed: require fresh verification for
+the remainder of that transaction, even without an observed rollback. This
+deliberately sacrifices reuse in transactions with preexisting synchronizations.
+Every read-set owner, including a late-created owner, must consult the shared
+proof's reuse eligibility before and after loading or prefetching; a private
+owner flag cannot authorize retention after the shared proof disabled it.
+Eligible reuse across guard instances in that same transaction must not repeat
+the isolation getter; a new
+or resumed transaction must use its own synchronization/proof. Without active
+synchronization, retain the full guard validation rather than retaining proof.
+Prove savepoint rollback invalidation independently of positive-cache eviction,
+and prove denial if isolation changed before the replacement pinning SELECT.
+Use focused no-database JDBC instrumentation to count getter/server statements
+and adversarial identity/rollback cases. Report that result as a measured local
+cost reduction, not a fresh Neon rollback proof or a guaranteed 40-second journey.
 
 A `RELEASED` label alone does not make a draft row immutable. For a frozen copy,
 prove that its candidate reproduces the captured B0 plus the selected immutable
