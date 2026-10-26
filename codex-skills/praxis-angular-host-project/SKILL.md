@@ -162,6 +162,22 @@ editing, or reuse of its groups without rewriting the aggregate. Never replace t
 full groups document with a paginated/visibility-filtered navigation projection.
 Prove persistent menu/route behavior separately from draft save and group creation.
 
+## Governed Pages Host Adoption Protocol (`P4` / `P5-A` / `P5-B` / `P5-C` / `P5-D`)
+
+When a host adopts governed dynamic pages (`praxis-dynamic-page`), follow this
+10-step protocol without inventing parallel storage, routes, or menu registries:
+
+1. **Separate operating modes**: use `PraxisPageSaveAsComponent` + `PraxisPageCopyActionComponent` (`@praxisui/page-builder`) with a Web Lock-protected local repository for browser-local laboratory flows (`P5-A`), and `GovernedPageWorkflowController` + `GovernedPageNavigationController` + `createCorporateGovernedPagePersistenceAdapter` + `/api/praxis/config/pages/**` + `/api/praxis/config/ui-layouts/**` for corporate governed flows (`P4` / `P5-B`).
+2. **Enforce volatile child persistence**: render child `praxis-dynamic-form` and `praxis-table` widgets inside governed pages with `configPersistenceStrategy: 'volatile'` and configuration solely in `widget.definition.inputs.config`.
+3. **Admit creation sources on the server**: create corporate pages via `POST /api/praxis/config/pages` using an admitted `registered-native` seed or a pinned `published-page` `copySource` (`pageId`, `releaseId`, `revisionId`) correlated with `GET /api/praxis/config/pages/{pageId}/published`.
+4. **Reconcile timeouts by creation key**: on network timeout during `POST /api/praxis/config/pages`, query `GET /api/praxis/config/pages/by-creation-key?creationKey=...` with the same `creationKey` before retrying.
+5. **Preserve childSources and fixed envelopes**: when saving a revision (`POST /drafts/{draftId}/revisions`), declare `childSources` only for newly added widget keys and keep fixed binding envelopes (`resourcePath`, `mode`, `readOnly`, `operation`) immutable per `widget.key`.
+6. **Govern navigation groups and icons**: edit menu bindings (`navigationBindings[]`) in `praxis.dynamic-page.editor` and shared groups (`groups[]`) in `praxis.navigation-groups.editor` using only the host's admitted Material icon catalog (`GOVERNED_PAGE_DEFAULT_ALLOWED_ICONS` / `QuickstartPageConfiguration.ALLOWED_ICONS`).
+7. **Complete the release lifecycle**: run `draft -> revision -> assignment -> freeze -> submit -> approve -> publish` (plus `rollback` and `withdraw`) with strong `If-Match` preconditions and distinct author/reviewer/publisher gates where required.
+8. **Resolve from the single release head**: render the page catalog (`GET /api/praxis/config/pages`), stable route `/pages/:pageId` (`GET /api/praxis/config/pages/{pageId}/published`), and runtime menu (`GET /api/praxis/runtime/navigation`) from the same active head without falling back to `ui_user_config` or drafts.
+9. **Fence session and context epochs**: require authenticated `SESSION`, raw `X-CSRF-TOKEN` on mutations, and confirmed `EnterpriseRuntimeContextService` (`X-Praxis-Context-Version`), invalidating in-flight requests and caches on logout or context switch (`A -> B -> A`).
+10. **Migrate legacy pages explicitly**: import legacy `ui_user_config` pages (`LEGACY_PUBLISHED_PAGE_STORAGE_PREFIX`) through `inspectLegacyPublishedPagePayload` and `GovernedPageWorkflowController.importLegacyPublishedPage` (`P5-D`) rather than reading legacy snapshots at runtime.
+
 ## Required Workflow
 
 1. Classify the host mode:
