@@ -865,8 +865,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "904BD7DE0E38A2A0C6666D767A5B88C35D97DEF707A746FD28D853C1DB02693D",
-                       "treeSha256":  "17141DDB2395804EFC5C22EB4552B28ADEB12E4AEFE594E06F5947472E3F0A36"
+                       "skillMdSha256":  "A58DCF41557A61A8085026787A667692DBD22C25B5413DB545042AE12FCD96C8",
+                       "treeSha256":  "AE68101C3E3475A747CBBB48C443B580DC49B5BFCCAC0703FF4B90801E257E55"
                    },
                    {
                        "name":  "praxis-metadata-resource-baseline",
@@ -898,8 +898,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "8033F597500182A5D1B0236A70B413011199BB4EBDF21D341C249E5307D7D6CD",
-                       "treeSha256":  "72C40745E32541275E0D280378F291BD077B71CA40A7B693E6134257755B4211"
+                       "skillMdSha256":  "104064CDF6AF32BBC2FF8A863DF6D5023D74D53692A2B8E6C40C56E0587D23F8",
+                       "treeSha256":  "C316EEE01774252C62CEDC23FC7CDF51009FFFA7FA52CAA8AE543C5E31AFC2C6"
                    },
                    {
                        "name":  "praxis-core-runtime-contracts",
