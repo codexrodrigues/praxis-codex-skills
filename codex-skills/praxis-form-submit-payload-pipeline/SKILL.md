@@ -17,6 +17,7 @@ Inspect these files before editing:
 - `projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/nested-field-path.ts` and its spec
+- `projects/praxis-dynamic-form/src/lib/utils/custom-fields-submit.integration.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form.ts` and its spec
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-submit-payload.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-submit-payload.spec.ts`
@@ -62,9 +63,9 @@ Respect these semantics:
 
 - The submit payload is a projection of raw form value plus `FieldMetadata`, dirty paths, and the request schema; host components must not add local payload transforms for canonical cases.
 - A metadata name such as `customFields.numero_calcado` addresses a nested record value, not a literal dotted JSON key. Read, normalize, omit and write that leaf while retaining sibling values and the nested wire structure. Apply ordinary submit policies, dates, lookup serialization, required/dirty handling and array item schemas at that full field path.
-- Do not manufacture a missing nested value/container or replace a null/scalar container during submit. Copy changed record ancestors so filtering and normalization do not mutate API data or the raw form value. Array items remain governed by their item schema, not generic record-path traversal.
+- Do not manufacture a missing nested value/container or replace a null/scalar container during submit. Copy changed record ancestors so filtering and normalization do not mutate API data or the raw form value. Preserve the flat-field branch: one initial record draft plus direct writes/deletes, without copying the whole root for every field. Array items remain governed by their item schema, not generic record-path traversal.
 - The internal `nested-field-path` helper also supports date hydration and filter metadata rebuilds. Nested date controls must receive the same coercion as top-level date controls. Filter restoration must retain existing nested values, including disabled controls, skip removed fields and respect explicit defaults as reset intent. Keep the helper internal; this path does not require a new public export or host adapter.
-- Reject unsafe, inherited and malformed record paths. Do not traverse arrays or non-record values as if they were ordinary object containers.
+- The record-path helper rejects `__proto__` and empty segments and never follows inherited values. Own `constructor` and `prototype` properties are legitimate data keys in flat and nested payload/helper records; do not blanket-ban them or infer Angular FormGroup support for every backend-valid key from these utility tests. Writing a path creates own record properties rather than traversing inherited objects. Do not traverse arrays or non-record values as if they were ordinary object containers.
 - `source: "local"` and `transient: true` are omitted by default.
 - `submitPolicy: "include" | "omit" | "includeWhenDirty"` overrides the default omission policy.
 - Legacy `"never"` may be defensively normalized to `"omit"`, but the public contract remains `"omit"`.
@@ -80,7 +81,7 @@ Respect these semantics:
 - Rule, action, and hook execution may change form values or trigger submit, but must not fork submit semantics. The final persisted payload still goes through `prepareSubmitPayload`.
 - Hook extras, command-rule runtime context, and intermediate `form.value` snapshots are operational context, not the persisted submit contract. The persisted command payload is the `formSubmit.formData` computed in `onSubmit()` after `beforeSubmit` completes and `prepareSubmitPayload(...)` filters/serializes the raw value; use `rawFormData` only for diagnostics, audit, UI hooks, or local/transient context.
 - `formCommandRules` and global action `payloadExpr` values that read `runtime.formData` must receive the same prepared payload used by submit events and HTTP requests. Do not evaluate command-rule conditions or `payloadExpr` against `form.getRawValue()`, local/transient fields, or a pre-filter snapshot unless the contract explicitly asks for diagnostic `rawFormData`.
-- Computed rule values that affect persisted fields must stabilize before payload preparation. Visual-only rule targets never become payload fields.
+- Computed rule values that affect persisted fields must stabilize before payload preparation. `FormRulesService` must materialize dotted computed targets into the nested evaluation `formData` consumed by JSON Logic, with the same structure as wire values and no literal dotted aliases. Keep `result.fieldValues` as the flat target-ID map used to apply values to controls. Read only own properties, preserve the flat draft branch and copy only changed nested record ancestors; do not mutate raw form data or the FormGroup during context stabilization. Record-path helpers do not traverse array intermediates; item-schema submit recursion is a separate path. Visual-only rule targets never become payload fields.
 - Visual blocks, helper content, and local presentation-only state must not enter `formSubmit.formData` or the HTTP payload.
 - When adopting a changed request schema, test both fresh and saved form configuration. Core `reconcileFormConfig` knows whether a retained field is absent from the current server definitions: absent `source` or `source: "schema"` means a legacy schema field, while explicit `source: "local"` keeps its local policy. A removed schema field is retained for layout continuity but materialized as `formHidden: true`, `disabled: true`, `submitPolicy: "omit"`. This prevents stale required validators from blocking the form and prevents GET hydration plus `getRawValue()` from resubmitting the removed property. Do not implement a host-specific property strip or omit every hidden field: hidden fields still in the request schema may be required contextual inputs. When the server publishes the field again, reconciliation restores current server enabled/visibility and submit semantics. Prove the real reconciler → `DynamicFormService` FormGroup → read hydration → prepared payload chain, including required-null orphans, returning fields, valid hidden fields and explicit local include. When testing through the Core public package, verify that it contains the corrected reconciler; a stale installed package is not evidence about the changed source.
 - `formSubmit.formData` is the persistable filtered payload. `formSubmit.rawFormData` is for diagnostics, audit, or UI hooks that need local/transient values, not a replacement submit contract.
@@ -111,13 +112,18 @@ npx ng test praxis-dynamic-form --watch=false --progress=false \
   --include=projects/praxis-dynamic-form/src/lib/utils/normalize-date-arrays.spec.ts
 ```
 
-For dotted field names, also prove helper immutability/unsafe-path handling,
-submit policies and lookup serialization at the nested leaf, absent/null
+For dotted field names, also prove helper immutability/unsafe-path handling, own
+`constructor`/`prototype` round-trips without inherited traversal, preserved flat
+normalization/omission without per-field root copies, submit policies and lookup
+serialization at the nested leaf, absent/null
 containers, nested date hydration, filter metadata rebuild/default behavior, and
-composition of custom-field collections with dotted/bracket item dirty paths:
+composition of custom-field collections with dotted/bracket item dirty paths.
+The saved-container integration must prove normalization → each of the three
+reconciliation paths → `DynamicFormService` controls → prepared nested payload,
+including number/date values and source immutability:
 
 ```bash
-npm run test:form -- --include=projects/praxis-dynamic-form/src/lib/utils/nested-field-path.spec.ts --include=projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.spec.ts --include=projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form.spec.ts
+npm run test:form -- --include=projects/praxis-dynamic-form/src/lib/utils/nested-field-path.spec.ts --include=projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.spec.ts --include=projects/praxis-dynamic-form/src/lib/utils/custom-fields-submit.integration.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.spec.ts --include=projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form.spec.ts
 ```
 
 When entity lookup serialization or payload mode changes, also run:
@@ -137,7 +143,7 @@ npx ng test praxis-dynamic-form --watch=false --progress=false \
   --include=projects/praxis-dynamic-form/src/lib/json-config-editor/json-config-editor.component.spec.ts
 ```
 
-When rules, command rules, actions, or hooks can affect submitted values, add focused service specs before browser validation:
+When rules, command rules, actions, or hooks can affect submitted values, add focused service specs before browser validation. For dotted computed targets, prove a nested-to-flat chain declared in reverse dependency order stabilizes before conditions run, including true/false branches, source immutability, no dotted aliases and no false iteration-limit diagnostic for unsupported array traversal:
 
 ```bash
 npx ng test praxis-dynamic-form --watch=false --progress=false \

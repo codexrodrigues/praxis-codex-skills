@@ -24,6 +24,11 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/src/lib/services/dynamic-form.service.ts` and its spec
 - `projects/praxis-core/src/lib/models/field-definition.model.ts`
 - `projects/praxis-core/src/lib/models/component-metadata.interface.ts`
+- `projects/praxis-core/src/lib/models/form/server-owned-field-semantics.ts`
+- `projects/praxis-core/src/lib/models/form/materialize-custom-fields-layout.ts`
+- `projects/praxis-core/src/lib/models/form/custom-fields-reconciliation.spec.ts`
+- `projects/praxis-core/src/lib/models/form/form-config.model.ts` (`syncWithServerMetadata`)
+- `projects/praxis-core/src/lib/reconcilers/form-config-reconciler.ts` and `filter-config-reconciler.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts`
 - `projects/praxis-core/src/lib/services/resource-action-open-adapter.service.ts`
@@ -191,6 +196,26 @@ and `customField: true`; retain the published `customFieldKey` and
 `tenant`. `mapFieldDefinitionToMetadata` must carry that identity into
 `FieldMetadata`. Identity does not grant permission or replace backend validation.
 
+Keep `customField`, `customFieldKey` and `customFieldScope` server-owned through
+form/filter reconciliation and `syncWithServerMetadata`, using the existing
+`applyServerOwnedFieldSemantics` path. Refresh current identities and clear stale
+local identities when the server no longer publishes them; saved UI customizations
+must not override schema identity. Include changes/removals of all three identity
+keys in `syncResult.modifiedFields` and `hasChanges`, even when no visual metadata
+changed, so callers can persist the corrected configuration.
+
+When a saved schema-backed raw container is absent from the current schema but
+that schema publishes its direct children with `customField: true`, materialize its
+metadata and layout references as those current children before reconciliation.
+Use the internal `materializeCustomFieldsLayout` path across all three entrypoints.
+Preserve explicit local containers, ancestors still declared by the current
+schema, more distant ancestors, and ordinary dotted fields without custom-field
+identity. Migrate both legacy `fields` and mixed `items` layouts, retain rich content and already placed
+children, avoid duplicate references/item IDs, tolerate missing rows/columns and
+leave the input unchanged. Synchronization diagnostics must report container
+removal even when all children were already saved; repeating the migrated config
+must report no further removal. Do not infer trusted children from saved configuration or introduce a host migration adapter.
+
 Do not flatten wire values into literal dotted JSON keys or add host transforms.
 Use `praxis-form-submit-payload-pipeline` for nested submit paths, date hydration
 and filter value restoration; the JSON remains
@@ -230,6 +255,19 @@ fields, global ordering, original-root collection refs, malformed containers and
 schema immutability. Prove normalization-to-`DynamicFormService` integration creates
 nested controls, retains validators, and round-trips structured values. Also prove
 the direct form consumer's nested value path.
+
+For saved configurations, run the focused integration across form reconciliation,
+filter reconciliation and metadata synchronization:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/models/form/custom-fields-reconciliation.spec.ts
+```
+
+Prove schema identity refresh/removal, raw-container metadata/layout migration,
+direct-child-only replacement, local/current/distant ancestor preservation, mixed
+content, unique item IDs, incomplete layouts, child placement without duplication,
+identity-only change/removal diagnostics, sync container-removal diagnostics,
+idempotence and source immutability.
 
 - CRUD runtime, option sources, and selected-value rehydration:
 
