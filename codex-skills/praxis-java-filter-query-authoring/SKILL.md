@@ -19,7 +19,7 @@ sort, option dependencies, authorization, or only local presentation.
 Create a dedicated `GenericFilterDTO`. For every candidate criterion, record the
 business question, target entity property, expected type/cardinality, predicate,
 null/empty behavior, governing scope, permitted sort, and UI/option-source
-consumer. Do not expose a filter merely because a database column exists.
+consumer. Do not expose raw technical columns (`version`, internal hashes), but **never** produce a skeletal 2- to 4-field `FilterDTO` on an enterprise entity: cover all legitimate operational search dimensions of the domain (identities, text `LIKE`/`STARTS_WITH`, statuses/categories `EQUAL`/`IN`/`NOT_IN`, numeric and date ranges `BETWEEN`/`GREATER_OR_EQUAL`/`LESS_OR_EQUAL`, relative periods `IN_LAST_DAYS`/`IN_NEXT_DAYS`/`ON_DATE`, validity/nullability `IS_NULL`/`IS_NOT_NULL`, boolean flags `IS_TRUE`/`EQUAL`, cross-entity relations `relation = "parent.field"`, and `@CustomFields` when JSONB is present).
 
 Before adding a field, operator, payload form, query endpoint, or sort rule,
 classify it as `ja-suportado-so-ux`,

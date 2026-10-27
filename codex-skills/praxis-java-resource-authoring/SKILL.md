@@ -49,6 +49,7 @@ operational proof, never the canonical owner of a starter or runtime semantic.
    command DTOs. `@Schema` describes verified business meaning; `@UISchema`
    describes presentation/control behavior; governance and AI-use metadata are
    deliberate. A filter models predicates, not a reduced create DTO.
+   - **100% Entity Column Accounting & Anti-Minimalism Gate:** Never truncate a 20- to 55-column enterprise entity into an 8-field skeletal DTO or a 3-field `FilterDTO`. Every business column on the JPA entity must be accounted for in `ResponseDTO` (using `@UISchema(group = ...)` and `tableHidden = true` for secondary detail fields) and either editable in `CreateDTO`/`UpdateDTO` or governed by a dedicated `@ResourceIntent` (`PATCH` partial form with `@UiSurface(kind = SurfaceKind.PARTIAL_FORM)`) or `@WorkflowAction`. Deliver `@QuickFilter`s on `@ApiResource`, full lifecycle `@WorkflowAction`s, multiple `@ResourceFact`s, a comprehensive `FilterDTO` across all relevant `FilterOperation` families, and real domain business invariants in the `Service`.
 4. Implement mapper, service, validation, transactions, and controller as one
    coherent slice. Preserve `RestApiResponse`, canonical `idField`, and `_links`;
    do not introduce host envelopes, endpoint aliases, string-built schema maps,
