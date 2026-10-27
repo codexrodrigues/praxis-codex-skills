@@ -1,6 +1,6 @@
 ---
 name: praxis-core-resource-runtime
-description: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, bulk execution polling and observation deadlines, analytics schema contracts, stats request builders, or metadata-driven resource materialization.
+description: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, bulk execution polling and observation deadlines, analytics schema contracts, stats request builders, custom-field schema expansion, or metadata-driven resource materialization.
 ---
 
 # Praxis Core Resource Runtime
@@ -19,6 +19,11 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/src/public-api.ts` when resource runtime models, services, components, tokens, or helpers are exported or public consumption changes
 - `projects/praxis-core/src/lib/services/generic-crud.service.ts`
 - `projects/praxis-core/src/lib/schema/schema-metadata-client.ts`
+- `projects/praxis-core/src/lib/services/schema-normalization-kernel.ts`
+- `projects/praxis-core/src/lib/helpers/field-definition-mapper.ts` and its spec
+- `projects/praxis-core/src/lib/services/dynamic-form.service.ts` and its spec
+- `projects/praxis-core/src/lib/models/field-definition.model.ts`
+- `projects/praxis-core/src/lib/models/component-metadata.interface.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts`
 - `projects/praxis-core/src/lib/services/resource-action-open-adapter.service.ts`
@@ -168,6 +173,29 @@ and UI behavior; require distinct real protected HTTP/backend commit/read/replay
 receipts before claiming operational effects or deployed acceptance. Review the
 exact runtime source and its focused evidence before adopting this workflow.
 
+## Custom-Field Materialization
+
+Audit the backend schema before changing expansion. `SchemaNormalizerService`
+expands a property marked with boolean `x-ui.customFieldsContainer: true`, or an
+object named `customFields` with inline `properties`, through the normal child
+field path. The container is wire structure and never an independent control.
+Children still need ordinary `x-ui` field metadata; expansion does not invent
+controls for undocumented children.
+
+Preserve child labels, controls, options, option sources, validators, groups and
+order, including the container schema's `required` list. Retain the original root
+schema when resolving child collection references and keep global field ordering.
+Each expanded child uses the full value path, such as `customFields.numero_calcado`,
+and `customField: true`; retain the published `customFieldKey` and
+`customFieldScope`, defaulting only absent values to the original child name and
+`tenant`. `mapFieldDefinitionToMetadata` must carry that identity into
+`FieldMetadata`. Identity does not grant permission or replace backend validation.
+
+Do not flatten wire values into literal dotted JSON keys or add host transforms.
+Use `praxis-form-submit-payload-pipeline` for nested submit paths, date hydration
+and filter value restoration; the JSON remains
+`{ "customFields": { "numero_calcado": 40 } }`.
+
 ## No Keyword Routing
 
 Do not route user intent, action selection, surface opening, tab selection, lookup selection, or analytics metrics by labels, regex, XML names, aliases, or keyword lists as the primary decision. Textual matching may rank candidates only after canonical resource/operation/surface/field scope is resolved from metadata and governed tools.
@@ -190,6 +218,18 @@ Use focused specs for the touched service or model:
 ```sh
 npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/schema/schema-metadata-client.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer-array.service.spec.ts
 ```
+
+- custom-field schema expansion and metadata mapping:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts --include=projects/praxis-core/src/lib/helpers/field-definition-mapper.spec.ts --include=projects/praxis-core/src/lib/services/dynamic-form.service.spec.ts
+```
+
+Prove explicit and implicit containers, absent identity defaults, child required
+fields, global ordering, original-root collection refs, malformed containers and
+schema immutability. Prove normalization-to-`DynamicFormService` integration creates
+nested controls, retains validators, and round-trips structured values. Also prove
+the direct form consumer's nested value path.
 
 - CRUD runtime, option sources, and selected-value rehydration:
 

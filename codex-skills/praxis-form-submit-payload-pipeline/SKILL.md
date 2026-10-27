@@ -1,6 +1,6 @@
 ---
 name: praxis-form-submit-payload-pipeline
-description: Use when Codex must inspect, change, or test @praxisui/dynamic-form or praxis-dynamic-form package submit payload normalization, prepareSubmitPayload, normalizeSubmitPayload, normalizeDateArrays, local/transient fields, submitPolicy, entity lookup payloadMode, dirty-field filtering, nested array item schemas, or submit validation.
+description: Use when Codex must inspect, change, or test @praxisui/dynamic-form or praxis-dynamic-form package submit payload normalization, prepareSubmitPayload, normalizeSubmitPayload, normalizeDateArrays, local/transient fields, submitPolicy, entity lookup payloadMode, dirty-field filtering, dotted custom-field paths, nested date hydration/filter restoration, nested array item schemas, or submit validation.
 ---
 
 # Praxis Form Submit Payload Pipeline
@@ -16,6 +16,8 @@ Inspect these files before editing:
 - `projects/praxis-dynamic-form/AGENTS.md`
 - `projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.spec.ts`
+- `projects/praxis-dynamic-form/src/lib/utils/nested-field-path.ts` and its spec
+- `projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form.ts` and its spec
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-submit-payload.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-submit-payload.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-date-arrays.ts`
@@ -59,13 +61,17 @@ The canonical order is:
 Respect these semantics:
 
 - The submit payload is a projection of raw form value plus `FieldMetadata`, dirty paths, and the request schema; host components must not add local payload transforms for canonical cases.
+- A metadata name such as `customFields.numero_calcado` addresses a nested record value, not a literal dotted JSON key. Read, normalize, omit and write that leaf while retaining sibling values and the nested wire structure. Apply ordinary submit policies, dates, lookup serialization, required/dirty handling and array item schemas at that full field path.
+- Do not manufacture a missing nested value/container or replace a null/scalar container during submit. Copy changed record ancestors so filtering and normalization do not mutate API data or the raw form value. Array items remain governed by their item schema, not generic record-path traversal.
+- The internal `nested-field-path` helper also supports date hydration and filter metadata rebuilds. Nested date controls must receive the same coercion as top-level date controls. Filter restoration must retain existing nested values, including disabled controls, skip removed fields and respect explicit defaults as reset intent. Keep the helper internal; this path does not require a new public export or host adapter.
+- Reject unsafe, inherited and malformed record paths. Do not traverse arrays or non-record values as if they were ordinary object containers.
 - `source: "local"` and `transient: true` are omitted by default.
 - `submitPolicy: "include" | "omit" | "includeWhenDirty"` overrides the default omission policy.
 - Legacy `"never"` may be defensively normalized to `"omit"`, but the public contract remains `"omit"`.
 - Empty optional fields are omitted when they were not dirty.
 - Required fields, dirty fields, and nested dirty paths must remain eligible for submit.
 - For array item schemas, recurse through `array.itemSchema.fields`. An item path such as `participantes.0` can make `includeWhenDirty` fields in that item eligible, but the parent collection path such as `participantes` must not mark every item field dirty.
-- Cleared optional fields inside nested collections must remain eligible only when their specific nested dirty path is present.
+- Cleared optional fields inside nested collections must remain eligible only when their specific nested dirty path is present. Compose dotted collection fields such as `customFields.items` with item-schema leaves such as `customFields.reason`; both `customFields.items.0.customFields.reason` and `customFields.items[0].customFields.reason` dirty paths must preserve the intended cleared leaf without marking the sibling item dirty.
 - `entityLookup` and `inlineEntityLookup` payloads must respect `payloadMode`, `multiple`, and `optionSource.entityKey`, using `serializeEntityLookupValueForPayload` from `@praxisui/core`.
 - If a backend needs `id`, `ids`, `entityRef`, or `entityRefs`, fix metadata/request schema/core helper usage; do not reshape lookup values in the host.
 - `RESOURCE_ENTITY` display evidence such as `label`, `code`, `status`, `disabledReason`, rich fields, and `OptionDTO.extra` belongs to selection/display UX, not to the persisted submit payload unless the request schema explicitly models an `entityRef` projection. A successful Cockpit, HTTP, or LLM option-source example does not authorize submitting the full lookup object or label.
@@ -105,6 +111,15 @@ npx ng test praxis-dynamic-form --watch=false --progress=false \
   --include=projects/praxis-dynamic-form/src/lib/utils/normalize-date-arrays.spec.ts
 ```
 
+For dotted field names, also prove helper immutability/unsafe-path handling,
+submit policies and lookup serialization at the nested leaf, absent/null
+containers, nested date hydration, filter metadata rebuild/default behavior, and
+composition of custom-field collections with dotted/bracket item dirty paths:
+
+```bash
+npm run test:form -- --include=projects/praxis-dynamic-form/src/lib/utils/nested-field-path.spec.ts --include=projects/praxis-dynamic-form/src/lib/utils/prepare-submit-payload.spec.ts --include=projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.spec.ts --include=projects/praxis-dynamic-form/src/lib/filter-form/praxis-filter-form.spec.ts
+```
+
 When entity lookup serialization or payload mode changes, also run:
 
 ```bash
@@ -136,6 +151,7 @@ For public API changes, run `npm run build:praxis-dynamic-form` plus the direct 
 
 ## Companion Skills
 
+- Use `praxis-core-resource-runtime` for `customFieldsContainer` expansion and preservation of custom-field identity from `FieldDefinition` into `FieldMetadata`.
 - Use `praxis-form-schema-runtime-modes` for `resourcePath`, schema/read/submit URLs, modes, and hydration.
 - Use `praxis-form-actions-hooks-runtime` when submit is triggered, intercepted, or decorated by form actions or hooks.
 - Use `praxis-form-authoring-settings` when editors expose `submitPolicy`, local fields, or entity lookup payload configuration.
