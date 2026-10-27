@@ -1154,6 +1154,10 @@ Audit global unique constraints in the versioned seed and migrations before
 appending cases: distinct primary keys do not make repeated business names unique.
 Prove multiple cases in the same assigned class database, not just one successful
 bootstrap case; keep assertions bound to each case’s explicit business values.
+Inspect the trigger's actual INSERT/UPDATE events before assuming that a new row
+has initial history. Seed required nonfinancial history explicitly when the
+canonical trigger only records later changes; preserve the original history
+assertions instead of weakening them or changing the production trigger.
 Reconcile old payload/assertion expectations with the current DTOs, metadata and
 ETag contracts without weakening the behavior under test. If this chain has not
 passed on the assigned Neon, retain the gate as pending; a custom-field harness
