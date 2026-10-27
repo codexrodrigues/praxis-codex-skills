@@ -67,8 +67,8 @@
                                             "praxis-metadata-domain-option-sources",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "4484C735760034303D40899DD8C0B11D153FFBD570E2B9EFF5E10FCE81D71415",
-                       "treeSha256":  "69C4FD4C5A52EDD113BB939A8223778C2F3A4C128537D67615D2EE33B7AB24F3"
+                       "skillMdSha256":  "8CF0E5090F88D03296274CB5A0C90504CB810C94C4D68030AC59A5C55D39F03F",
+                       "treeSha256":  "ED2C197CD67C29783C1541743B1ECE8D7E1E46F91B61608644AD365BC24E6559"
                    },
                    {
                        "name":  "praxis-java-filter-query-authoring",
@@ -1126,8 +1126,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "6529AFFA424B4E74FAA77F1BC13461650D395A21225313EB7EE4536F8F3D030C",
-                       "treeSha256":  "31A724950E1A63586EBD0D1AB144519796A67A2C80E4C6F052DA51D866E22CB9"
+                       "skillMdSha256":  "8AFBA2967416E5A89ECC35AA226B38D7AE87653DAD8A3C154FEE7E1E7BDE33BA",
+                       "treeSha256":  "03DE1A25D3A4049090451E80CAA72D94001BD25240D5F1AF8CCAC64AD47D36AF"
                    },
                    {
                        "name":  "praxis-dynamic-fields-editorial",
@@ -1579,8 +1579,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-authoring-editors"
                                         ],
-                       "skillMdSha256":  "6E8F019CDF7B33273DEF45E198FF8B04A9EC84CE8947ECF71F3797DB8D665B55",
-                       "treeSha256":  "94E959F08A58AA662438A32DC9131163A79893E0483845CD7D13E8170AF8D8AC"
+                       "skillMdSha256":  "7C3C285A592854B91915153096470F790BA33B20EBEC54E3DF957B2E5D2AF7E9",
+                       "treeSha256":  "5FFB503E029F9DB2FFB68B39B094B12B8074378874A58A49BDC573FFB0C12E6F"
                    },
                    {
                        "name":  "praxis-landing-public-docs-contracts",

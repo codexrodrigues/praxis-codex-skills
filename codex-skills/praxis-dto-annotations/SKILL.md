@@ -21,6 +21,8 @@ goal is to codify what the platform already publishes before adding annotation f
 
 ## Required Pairing
 
+*(In external Antigravity workspaces, full companion skills are available under `~/.gemini/praxis-skills/<skill-name>/SKILL.md` or `$CODEX_HOME/skills/<skill-name>/SKILL.md`.)*
+
 Use `praxis-java-host-project` with this skill when creating or changing a Java host resource.
 Use `praxis-resource-entity-lookup-backend` as well when a field uses `ENTITY_LOOKUP`,
 `INLINE_ENTITY_LOOKUP`, `RESOURCE_ENTITY`, `OptionSourceRegistry`, or
@@ -50,6 +52,8 @@ public docs, examples/playgrounds/http corpus, minimum validation, and breaking-
 Prefer these local sources when available:
 
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/extension/annotation/UISchema.java`
+- `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/annotation/ResourceIdentity.java`
+- `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/annotation/ResourceReference.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/FieldControlType.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/filter/annotation/Filterable.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/annotation/DomainGovernance.java`
@@ -126,6 +130,19 @@ focused host HTTP/schema smokes. Do not require local monorepo source to annotat
 9. Check derived artifacts when public metadata changed: public docs, host examples,
    `praxisui-http-examples`, `docs/ai/*`, recipes, or Angular host examples when present.
 
+### Proactive Domain Expansion For New Resources (First-Shot Excellence)
+
+When a developer or architect asks for a new resource from a brief domain prompt (without manually listing every annotation), do **not** generate bare-bones `@UISchema(label = "Nome")` skeletons. Deliver the complete Praxis semantic contract on the first shot:
+
+1. **Class-Level Identity:** Annotate `ResponseDTO` with `@Schema(name = ..., description = ...)` and `@ResourceIdentity(keyField = "id", titleField = ..., subtitleField = ..., metadataFields = {...}, displayLabelField = ...)`. Annotate `CreateDTO` and `UpdateDTO` with `@JsonIgnoreProperties({"id"})` and `@Schema(...)`.
+2. **Semantic Grouping & Visual Hierarchy:** Organize properties into 3–5 business groups (`group = "Identificação"`, `"Vínculo e Lotação"`, `"Remuneração e Finanças"`, `"Situação Operacional"`), deterministic `order` (`10, 20, 30...`), Material icons (`icon = "badge"`, `"payments"`, `"event_available"`, `"apartment"`), and `quickViewVisible = true` / `quickViewOrder` on the 3–4 primary summary fields.
+3. **Complete Field Triad:** Every property must carry:
+   - `@Schema(description = "...", example = "...")` with real PT-BR business role, lifecycle impact, and boundaries;
+   - `@UISchema(...)` with `preset` (`UISchemaPreset.ENTERPRISE_ID`, `ENTERPRISE_NAME`, `MONETARY_AMOUNT`, `BOOLEAN_FLAG`, etc.), `type`, `controlType`, `numericFormat`, `mask`, `helpText`, and visibility (`readOnly`, `formHidden`, `tableHidden`);
+   - `@DomainGovernance(..., aiUsage = @AiUsagePolicy(...))` on personal (`PERSONAL`), financial (`FINANCIAL`), sensitive (`SENSITIVE`), or security-scoped fields.
+4. **Relationship Pairing:** Pair foreign-key fields (`cargoId`, `departamentoId`) using `SELECT` / `ASYNC_SELECT` / `ENTITY_LOOKUP` (`tableHidden = true`) with read-only resolved display fields (`cargoNome`, `departamentoNome`, `readOnly = true, formHidden = true`) annotated with `@ResourceReference(resourceKey = "...", valueField = "...Id", surfaceId = "detail")` on `ResponseDTO`.
+5. **High-Power `FilterDTO` Matrix:** Design `FilterDTO implements GenericFilterDTO` with a rich combination of `@Filterable` predicates (`LIKE` for text, `EQUAL` for status/booleans, `IN` for multi-select relations/enums, `BETWEEN` with `DATE_RANGE` / `PRICE_RANGE` for ranges, and `IN_LAST_DAYS` for relative windows), always setting `relation = "<entityPath>"` whenever the filter property is an alias (`hireDateRange`, `salaryBetween`, `departmentIdsIn`). See `praxis-java-host-project/references/resource-baseline.md` for a full compiling exemplar.
+
 ## Contract Boundaries
 
 - `/schemas/filtered` is the structural source for DTO fields, `x-ui`, option metadata, governance
@@ -189,6 +206,8 @@ use, filtering, analytics, and operational constraints when they apply.
   must not receive locale numeric formatting such as `7,00`.
 - Use host/project icon conventions. For Angular hosts this normally means Material icon names, not
   arbitrary icon sets invented in DTO metadata.
+- For resource identity and Quick View summaries, declare `@ApiResource(identity = @ResourceIdentity(keyField = ..., titleField = ..., subtitleField = ..., avatarField = ..., metadataFields = {...}, displayLabelField = ...))` on the controller/DTO and curate up to 3–5 high-signal scalar summary fields on the response DTO with `@UISchema(quickViewVisible = true, quickViewOrder = ...)`. Do not duplicate `titleField` or `subtitleField` inside `metadataFields` or `quickViewVisible`.
+- For cross-resource reference fields (resolved foreign-key labels, self-references, or lookup projections), annotate the display/reference property with `@ResourceReference(resourceKey = "...", valueField = "...", surfaceId = "detail", previewSurfaceId = "...", detailPresentation = "drawer" | "modal")` so `/schemas/filtered` publishes `x-ui.resourceReference` and Angular surfaces (`@praxisui/table`, `@praxisui/list`, `@praxisui/rich-content`) synthesize governed Quick View bindings automatically.
 
 ### Governance, LGPD, and Compliance
 
@@ -252,6 +271,13 @@ use, filtering, analytics, and operational constraints when they apply.
   contract.
 - When technical fields are intentionally exposed, document why they are visible, who uses them, and
   whether they should be hidden from forms, exports, filters, analytics, and AI contexts.
+
+### Tenant Custom Fields (`@CustomFields`) and Domain Facts (`@ResourceFact`)
+
+- When a resource persists tenant-defined attributes in a JSONB `custom_fields` column governed by a metadata table (`custom_field_definitions`), declare `private Map<String, Object> customFields = new LinkedHashMap<>();` annotated with `@CustomFields(resourceKey = "<canonical.resource-key>")` and `@Schema(description = "...")` on `ResponseDTO`, `CreateDTO`, `UpdateDTO`, and `FilterDTO`.
+- Keep `customFields` as an explicit nested map on the wire (`{"name": "Ana", "customFields": {"numero_calcado": 42}}`); never flatten dynamic tenant fields onto the root DTO with `@JsonAnyGetter` or `@JsonAnySetter`.
+- Register a `CustomFieldDefinitionProvider` bean in the host so `/schemas/filtered` and `/schemas/domain` project each active `CustomFieldDescriptor` with full PT-BR `label`, `description`, `controlType`, validation constraints, `filterOperation`, and `x-ui.customField = true` / `x-ui.customFieldKey = "<key>"` / `x-ui.customFieldScope = "tenant"` under `properties.customFields` (`x-ui.customFieldsContainer = true`).
+- When a resource exposes calculated domain indicators or business facts for AI/RAG and rule authoring, annotate the controller or service with `@ResourceFact` (or `@ResourceFacts`) or register a `ResourceFactCatalogProvider` bean with semantic PT-BR `label`, `description`, `dataType`, `unit`, `deterministic`, and `sourceKind`.
 
 ## DTO Kind Rules
 

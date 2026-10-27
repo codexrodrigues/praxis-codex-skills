@@ -44,17 +44,19 @@ For `arquitetural`, `contrato-publico`, or `transversal`, map impact before patc
    - a domain host with real resources;
    - a reference/demo host that must mirror quickstart breadth.
 5. Collect or infer the minimum resource contract before generating files: base package, module, entity/projection name, ID type, `resourcePath`, stable `resourceKey`, OpenAPI group, mutability/read-only mode, real fields, relationships, filter needs, option/lookup needs, and whether surfaces/actions/export/stats are in scope.
-6. Generate resource files in dependency order. For a new application prefer `ApiPaths`, entity/projection, repository, DTOs, mapper, service, controller. For an existing application adding a resource, prefer DTOs, repository, mapper, service, controller, and only then surfaces, intents, actions, export, or analytics.
-7. Use the canonical resource-oriented baseline for new resources:
-   - `@ApiResource(value=..., resourceKey=...)`;
-   - `@ApiGroup(...)` when grouping is meaningful;
-   - `AbstractResourceController` or a project-local thin subclass around it;
-   - `AbstractBaseResourceService` or a project-local thin subclass around it;
-   - `AbstractReadOnlyResourceController` and `AbstractReadOnlyResourceService` for read-only views/projections;
-   - `BaseCrudRepository`;
-   - `ResourceMapper` as the service boundary, implemented directly or adapted through a thin host-local wrapper;
-   - mutable resources: response DTO, create DTO, update DTO, and filter DTO with deliberate `@Schema` and `@UISchema`;
-   - read-only resources: response DTO and filter DTO only.
+6. Generate resource files in dependency order using the exact generic signatures and templates in [resource-baseline.md](references/resource-baseline.md) (including Section 0 for complete `pom.xml`/`application.yml` bootstrap with `-parameters`, MapStruct/Lombok annotation processors, `springdoc.writer-with-order-by-keys: true`, and `praxis.resource-version.etag.secret`). For a new application prefer `ApiPaths`, entity/projection, repository, DTOs, mapper, service, controller. For an existing application adding a resource, prefer DTOs, repository, mapper, service, controller, and only then surfaces, intents, actions, export, or analytics.
+7. Use the canonical resource-oriented baseline and deliver the **Full-Power Praxis Value Pack** on the first shot so the resource compiles immediately and showcases the platform without back-and-forth:
+   - `@ApiResource(value=..., resourceKey=..., title=..., description=..., icon=..., visualTone=..., identity=@ResourceIdentity(...), quickFilters={@QuickFilter(...)})` (note: `@ApiResource` is already meta-annotated with `@RestController` and `@RequestMapping`);
+   - `@ApiGroup(...)` with semantic/visual metadata when grouping is meaningful;
+   - Entity with `@OptionLabel` on the canonical human label getter/field (enabling `/options/filter` and `/options/by-ids` automatically) and `@DefaultSortColumn`;
+   - `BaseCrudRepository<E, ID>`;
+   - `ResourceMapper<E, ResponseDTO, CreateDTO, UpdateDTO, ID>` (note: `ID` is 5th; `applyUpdate(E entity, UpdateDTO dto)` takes `entity` first and must never overwrite route-owned `id`);
+   - `AbstractBaseResourceService<E, ResponseDTO, ID, FilterDTO, CreateDTO, UpdateDTO>` (note: `ID` is 3rd) overriding `getResourceMapper()`, `getDatasetVersion()`, `getStatsFieldRegistry()`, and `StatsSupportMode.AUTO` (`getGroupByStatsSupportMode()`, `getTimeSeriesStatsSupportMode()`, `getDistributionStatsSupportMode()`, `getComparisonStatsSupportMode()`) so `/stats/*` works out of the box;
+   - `AbstractResourceController<ResponseDTO, ID, FilterDTO, CreateDTO, UpdateDTO>` (note: 5 type params, no `E`, `ID` is 2nd) overriding `getService()` and `getResponseId(ResponseDTO dto)`;
+   - `AbstractReadOnlyResourceController<ResponseDTO, ID, FilterDTO>` and `AbstractReadOnlyResourceService<E, ResponseDTO, ID, FilterDTO>` for read-only views/projections;
+   - mutable resources: separate `ResponseDTO`, `CreateDTO` (`@JsonIgnoreProperties({"id"})`), `UpdateDTO` (`@JsonIgnoreProperties({"id"})`), and `FilterDTO implements GenericFilterDTO` with rich domain `@Schema(description=...)`, `@UISchema` (`preset`, `controlType`, `numericFormat`, `group`, `order`, `icon`, `quickViewVisible`, `helpText`), `@DomainGovernance`/`@AiUsagePolicy`, and a multi-operator `@Filterable` matrix (`LIKE`, `EQUAL`, `IN`, `BETWEEN`, `IN_LAST_DAYS`);
+   - read-only resources: `ResponseDTO` and `FilterDTO` only;
+   - **Composite PKs (`@EmbeddedId`), Optimistic Concurrency (`@Version`), Governed Relationships (`@ResourceReference` / `OptionSourceRegistry`), `@Embedded` Value Objects, JSONB `@CustomFields`, and `@ResourceFact`:** follow Sections 9, 10, 11, and 12 of [resource-baseline.md](references/resource-baseline.md) whenever the domain schema uses composite keys (`CompositeResourceId`), optimistic locking (`VersionedCreateUpdateResourceService`), foreign-key display pairing, reusable `@Embedded` value objects, tenant JSONB `custom_fields` (`CustomFieldDefinitionProvider`), or declarative domain facts (`ResourceFactCatalogProvider`).
 8. Treat `AbstractCrudController`, `AbstractReadOnlyController`, `BaseCrudService`, and similar pre-resource-oriented classes as migration surfaces only. Do not use them as the default for new resources when the resolved starter exposes the resource-oriented baseline.
 9. Include `praxis-config-starter` only when the host must expose `/api/praxis/config/**` or AI authoring/config-store surfaces and can provide the required config-store datasource, migrations/tables, and host adapters. Do not include it for a metadata/filter-only service. Before adding it, confirm the target host meets the starter's release prerequisites such as compatible Spring Boot baseline, supported config database/store, Flyway/baseline strategy, AI/RAG secrets when enabled, stream/auth policy, and required host adapters.
 10. Keep starter semantics in the starters. Do not patch a new host to redefine `x-ui`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/domain`, actions, capabilities, export, config headers, ETag, or AI contracts.
@@ -63,59 +65,7 @@ For `arquitetural`, `contrato-publico`, or `transversal`, map impact before patc
 
 ## Diagnose Missing UI Metadata After Dependency Changes
 
-When `@UISchema` is present but generated `x-ui` is absent, audit the resolved
-composition before changing annotations or expected schema values:
-
-1. Inspect the effective Maven dependencies and packaged/runtime Springdoc and
-   Swagger Jakarta core, models and annotations. Check for duplicate annotation
-   classes; a source POM or successful OpenAPI response alone does not prove alignment.
-2. Compare `CustomOpenApiResolver` with its actual `ModelResolver` superclass
-   using `javap -p -s`. Include return types in the JVM descriptors: a changed
-   superclass return type can silently bypass an old enrichment hook. Inspect
-   the canonical resolver registration as well.
-3. Inspect the actual `SpringDocConfigProperties.isOpenapi31()` and the mode of
-   the converter bean returned by `OpenApiUiSchemaAutoConfiguration`, including
-   its registration. Do not infer the runtime dialect from a previous Springdoc
-   default. When properties are available, reuse that existing bean through the
-   owner's optional `ObjectProvider` wiring; disabled/non-web contexts must not
-   require or fabricate Springdoc configuration.
-4. Correct resolver ABI and dialect wiring in `praxis-metadata-starter` and keep
-   the host's dependency family coherent. Do not copy enrichment into the host or
-   upgrade unrelated starter/domain APIs merely to conceal the mismatch.
-5. Prove label, lookup binding, schema types and existing validation through a
-   real `ModelConverters` pipeline using the owner's factory and real Springdoc
-   properties in both 3.0 and 3.1 modes. Cover absent properties and disabled/non-web
-   bootstrap too. Calling the protected hook alone does not prove Swagger dispatch;
-   manually correcting the resolver's mode in a pipeline test does not prove the
-   production factory or bootstrap wiring. Include Boolean/Integer fields annotated
-   only with a `@UISchema` label, without explicit control or data types: assert inferred
-   checkbox/numeric controls, UI data types and serialized schema types in both dialects.
-   In 3.1, `Schema.getType()` may be null while `getTypes()` carries the scalar type;
-   explicit control metadata must not mask broken inference.
-   Inventory the full affected chain: converter enrichment, `ApiDocsController`
-   filtered-schema materialization and `PraxisMetadataAutoConfiguration` customizers.
-   In 3.1 an array can be a generic `Schema`/`JsonSchema` with `items`, so a concrete
-   `ArraySchema` check is not a semantic array test. Inspect scalar `type`, union
-   `types` and serialized string/list values; infer only a unique non-null type,
-   preserve the original representation and decline ambiguous unions.
-   Trace property-sibling timing before post-propagating enum options: a converter's
-   intermediate `schemaProperty` result can precede the final property annotation.
-   Perform automatic propagation at the final model boundary, follow only local
-   references already defined in that context with a visit guard, and preserve
-   explicit controls/options and extra-property precedence. Do not erase metadata
-   after the fact without provenance. Prove scalar/object arrays, nullable and
-   ambiguous types, enum size boundaries, a referenced root and explicit overrides;
-   exercise list/page/cursor flattening and nested numeric formats when affected.
-   Prefer private converter chains for direct conversion tests. When the real Springdoc
-   utility uses a singleton chain, serialize that test boundary, register only the
-   factory-created converter and remove that exact instance in `finally`; never reset
-   the converter list or global properties.
-6. Verify `/schemas/filtered` and the relevant OpenAPI response over real HTTP in
-   the consuming host; follow response `$ref` values into `components.schemas` and
-   check serialized property types as well as `x-ui`. Retain the original schema
-   assertions and bind evidence to source, JAR and resolved dependencies. Keep
-   candidate validation separate from published adoption; never suppress an oracle
-   or treat compilation alone as consumer acceptance.
+When `@UISchema` is present on DTOs but generated `x-ui` is absent or incomplete after a Spring Boot, Springdoc, Swagger Jakarta, or starter version change, read [openapi-metadata-troubleshooting.md](references/openapi-metadata-troubleshooting.md) to audit `CustomOpenApiResolver` ABI, OpenAPI 3.0 vs. 3.1 dialect wiring, and `ModelConverters` pipeline proofs before changing DTO annotations.
 
 ## Reference Resource Audit
 
@@ -164,6 +114,8 @@ changing code:
 ## Skill Coverage
 
 This skill is sufficient for ordinary Java host API work with `praxis-metadata-starter`: project bootstrap, Maven dependency wiring, resource-oriented CRUD/read APIs, DTOs, filters, schemas, OpenAPI discovery, capabilities, surfaces, options, cursor/locate, stats, and collection export.
+
+*(In external Antigravity workspaces, full companion skills are available under `~/.gemini/praxis-skills/<skill-name>/SKILL.md` or `$CODEX_HOME/skills/<skill-name>/SKILL.md`.)*
 
 Use companion Praxis skills when the API needs a specialized platform surface:
 
@@ -278,6 +230,7 @@ When validation is partial, state exactly what ran and what remains unvalidated.
 
 ## References
 
-- Read `references/resource-baseline.md` before implementing concrete resources.
+- Read `references/resource-baseline.md` before implementing concrete resources (contains the exact generic signatures, starter imports, and the complete 1-Shot Golden Path code template).
 - Read `references/host-checklist.md` before finalizing a scaffold or reporting completion.
+- Read `references/openapi-metadata-troubleshooting.md` when diagnosing missing `x-ui` metadata after Spring Boot, Springdoc, or starter version changes.
 - When local platform docs are available, use `praxis-metadata-starter/docs/guides/GUIA-01-AI-BACKEND-APLICACAO-NOVA.md`, `GUIA-02-AI-BACKEND-CRUD-METADATA.md`, `GUIA-04-QUANDO-USAR-RESOURCE-SURFACE-ACTION-CAPABILITY.md`, `GUIA-05-DO-CRUD-AO-CONTRATO-SEMANTICO.md`, `GUIA-06-REDACAO-SEMANTICA-DE-ANNOTATIONS-PARA-IA.md`, `FILTROS-E-PAGINACAO.md`, `OPTIONS-ENDPOINT.md`, and `COLLECTION-EXPORT.md` as supporting references for gaps not covered here.
