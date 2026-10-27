@@ -18,7 +18,8 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/AGENTS.md`
 - `projects/praxis-core/src/public-api.ts` when resource runtime models, services, components, tokens, or helpers are exported or public consumption changes
 - `projects/praxis-core/src/lib/services/generic-crud.service.ts`
-- `projects/praxis-core/src/lib/schema/schema-metadata-client.ts`
+- `projects/praxis-core/src/lib/schema/schema-metadata-client.ts` and its specs
+- `projects/praxis-core/src/lib/schema/schema-request-key.ts` (internal representation key)
 - `projects/praxis-core/src/lib/services/schema-normalization-kernel.ts`
 - `projects/praxis-core/src/lib/helpers/field-definition-mapper.ts` and its spec
 - `projects/praxis-core/src/lib/services/dynamic-form.service.ts` and its spec
@@ -227,6 +228,25 @@ Do not route user intent, action selection, surface opening, tab selection, look
 
 ## Schema transport resilience
 
+Keep public structural identity separate from representation custody.
+`buildSchemaId`, metadata `schemaId` and `getLastSchemaInfo()` retain their semantic
+identity; equal IDs do not prove equal tenant-specific schema bodies or hashes.
+The shared internal `buildSchemaRequestKey` binds schema cache entries and
+`SchemaMetadataClient` in-flight ownership to
+`[schemaId, resolved request URL, declared tenant ?? null, declared locale ?? null]`.
+Use it for `GenericCrudService.getSchema`, `getFilteredSchema` and direct-schema
+fallbacks, including ETag/304 revalidation and status-0 cache recovery. Never fall
+back to an old neutral-ID cache entry. `getFilterSchema` observable replay must
+also include the endpoint key and full representation tuple; capture the context
+when creating the observable, before delayed subscription or a context switch.
+
+Hosts must declare representation context: `GetSchemaParams.tenant`/`locale` for
+`SchemaMetadataClient`, and the configured tenant plus browser locale for
+`GenericCrudService`. Preserve that captured context through asynchronous cache
+reads and retries. Implicit global header hooks, interceptors, cookies or principal
+changes do not add a cache dimension; this tuple does not certify their isolation.
+Do not change public `buildSchemaId` or export the internal key to hide that limit.
+
 - `SchemaMetadataClient` owns the schema-read deadline. Angular consumers inject `SCHEMA_METADATA_CLIENT_OPTIONS`; direct clients pass constructor options. `requestTimeoutMs` defaults to 30000; finite nonnegative values are required and 0 explicitly disables the deadline. Do not invent per-widget timeout settings for this policy.
 - Propagate `GetSchemaParams.signal` and preserve shared-request isolation: cancelling one subscriber must not cancel others; cancelling the final subscriber aborts the transport. Timeout must release in-flight state even if transport ignores abort, and late responses must not start cache writes.
 - The deadline covers cache reads, fetch/body consumption and a 304 refetch. It does not bound all component initialization, hooks or independent preference persistence. A cache write already started is not rolled back by abort.
@@ -268,6 +288,19 @@ direct-child-only replacement, local/current/distant ancestor preservation, mixe
 content, unique item IDs, incomplete layouts, child placement without duplication,
 identity-only change/removal diagnostics, sync container-removal diagnostics,
 idempotence and source immutability.
+
+- schema representation isolation across both real consumers:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/schema/schema-metadata-client.spec.ts --include=projects/praxis-core/src/lib/schema/schema-metadata-client.transport.spec.ts --include=projects/praxis-core/src/lib/services/generic-crud.service.spec.ts
+```
+
+Prove separate tenant/locale/resolved-URL entries, same-tuple client deduplication,
+independent cancellation, per-context ETags/304s, ignored neutral legacy entries
+and captured context across pending reads. Cover all three GenericCrud schema
+lanes, status-0 recovery without cross-tenant reuse, pending 304 races, filter
+replay isolation and delayed subscription. Keep these controlled transport proofs
+separate from real authenticated host adoption and implicit credential isolation.
 
 - CRUD runtime, option sources, and selected-value rehydration:
 
