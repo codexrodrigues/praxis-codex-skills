@@ -445,7 +445,11 @@ empty IN, null, false and non-filterable keys.
 When dynamic writable children are required, also require the root customFields
 container; preserve static container requirements on active write/response schemas.
 Readonly custom fields are excluded entirely from ordinary WRITE request schemas,
-not merely marked optional/readOnly. Keep them in response and in filter projection
+not merely marked optional/readOnly. This is a projection rule in the enricher:
+the provider's `request` snapshot must still contain readonly definitions so the
+write validator and replacement mapper can reject assignments and preserve stored
+values. Never implement WRITE exclusion by filtering them out of the provider.
+Keep them in response and in filter projection
 when filterable; filtering a server-owned value does not authorize writing it.
 Validate duplicate provider keys before role filtering, so duplicate definitions
 cannot disappear behind readonly or filterable selection. Normalize schemaType
