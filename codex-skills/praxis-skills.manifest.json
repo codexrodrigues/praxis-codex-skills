@@ -227,8 +227,8 @@
                                             "praxis-api-quickstart-cockpit-http-validation",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "B1099570DE9299178A8C2B7A4EFB1D78A564F5FE57D2B193B1D3E79CD19DFFED",
-                       "treeSha256":  "B66E9CFE32FA18CF6211C647F4CB4B88BDC81E6A4C1754E7154CE2EA2D9AF344"
+                       "skillMdSha256":  "13B88FE8D8DD907DC78620262D17F4CB14EDF74C6493A54D95239709F8B2BA28",
+                       "treeSha256":  "73B902E62C9AB90F4E2D2B29EF420F6DCD254F8B5E72F2E791A954C119738B6C"
                    },
                    {
                        "name":  "praxis-java-http-corpus-publication",

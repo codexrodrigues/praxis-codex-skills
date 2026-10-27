@@ -66,24 +66,24 @@ consumption of published SDKs; it does not publish an SDK or release the host.
    the host POM. Resolve through `.mvn/ql07-central-only-settings.xml` and a fresh
    isolated Maven repository. Do not use a local SDK install, candidate GAV or
    `praxis.core.version`/`praxis.config.version` override as public-adoption proof.
-2. Obtain an exclusive, reviewed API/Config child assignment and set these three
-   environment variables to absolute files before running:
-   - `PRAXIS_METADATA_ADOPTION_ASSIGNMENT_FILE`: assignment with project, child,
-     parent, endpoint, database, readiness/protection state, fixture bounds and a
-     fresh bounded expiry matching the current helper;
-   - `PRAXIS_METADATA_ADOPTION_API_CREDENTIALS`: private API role-to-DSN map;
-   - `PRAXIS_METADATA_ADOPTION_CONFIG_CREDENTIALS`: private Config role-to-DSN map.
-   Keep credential files private; never copy passwords/DSNs into guidance,
-   manifests, reports or command arguments. Read the current helper's reviewed
-   assignment instead of reusing historical IDs, endpoints or expiry values.
+2. Inspect the current `MetadataAdoptionNeonFixture` and
+   `config/neon/AssignedNeonStores`: the reviewed PR #482 fixture uses the shared
+   Quickstart assignment, not the historical three-file adoption lease. Follow
+   [the integral gate's assignment procedure](../praxis-api-quickstart-operational-proof/references/integral-neon-gate.md)
+   to bind `PRAXIS_QUICKSTART_NEON_ASSIGNMENT_FILE`, its SHA-256, run ID,
+   expected repository and source SHA. Confirm the target checkout contains this
+   fixture before executing; do not apply candidate guidance to an older release.
+   Keep credential files private and outside source/artifacts. Never copy
+   passwords/DSNs into guidance, manifests, reports or command arguments, or reuse
+   historical endpoint/expiry values. Serialize classes sharing the SDK roles.
 3. Confirm endpoint/TLS/PostgreSQL identity and actual role privileges before
-   mutation. Owner may seed/clean only assigned fixture records. The application
+   mutation. Owner may prepare and remove only assigned fixture databases/roles. The application
    uses ordinary API and Config runtimes: neither may be superuser, bypass RLS,
    create roles/databases, or be a member of `neondb_owner`/`neon_superuser` and
    assume those roles. Direct privilege flags alone do not prove this separation.
 4. Enable the official external-test opt-in, retain all selected cases and use
    the host's published POM without overrides. From the Quickstart checkout, with
-   the three input variables exported and an absolute fresh repository path in
+   the assignment inputs exported and an absolute fresh repository path in
    `PRAXIS_ADOPTION_MAVEN_REPO`:
 
 ```bash
@@ -110,21 +110,27 @@ label combined evidence explicitly rather than claiming a single green 43-case
 run. Changes to shared fixtures or runtime behavior invalidate the affected prior
 passes and require those cases to run again.
 
-Seed canonical source tables and materialize real views; do not recreate inherited
-tables/views or reset inherited data to imitate an H2 fixture. Use functional
-filters/assigned IDs to isolate assertions. Revoke issued sessions, clean only
-owned records, and prove inherited rows/audit footprints survived. Record cleanup
-and any retained audit/sequence effects; do not invent restoration.
+Use the official bootstrap and migrations on the assigned databases. The
+financial fixture must activate approved governance through the real Config
+publication path and write payroll/events through admitted HTTP actions; SQL
+inserts into those governed aggregates cannot replace that authority. Scope
+nonfinancial seed and assertions to unique case IDs, including unique text keys.
+Preserve inherited-row snapshots during the run, revoke issued sessions and close
+Spring before deleting the owned databases/roles by their recorded OIDs. Do not
+claim row restoration when the actual cleanup removes the whole disposable store.
 
 A selected `verify` proves this focal slice plus packaging, not unrestricted
 `mvn verify`, the broad host release gate, or a published/deployed release. The
-OpenApi/Metadata pilots issue real sessions and verify HTTP admission/revocation;
-that is not `/auth/login` identity-provider proof. `EventosFolhaPilotIntegrationTest`
-retains a mock session lifecycle, and existing policy mocks/test security settings
-limit its evidence: do not claim operational grants, browser login, CSRF or origin
-protection from this gate. Keep wider Neon migration/release and security proofs
-as separate obligations. Report pending execution/publication explicitly; fixture
-compilation or helper unit tests do not mean the 43 cases passed.
+financial authority logs its governance actors in through `/auth/login`. Case
+principals receive persistent sessions through `EnterpriseSessionLifecycle.issue`;
+the pilots verify HTTP SESSION admission/revocation, not password/identity-provider
+login for those case principals. Config governance uses a fixed host tenant and
+ordinary API/Config runtimes.
+That is not multitenant Config rollout, browser login, CSRF or general departmental
+authorization proof. Preserve the explicit policy/mock boundaries in the current
+fixture and record skipped/aborted cases separately. Prior private-candidate
+passes remain tied to their source and dependency hashes; an integrated PR or
+unchanged GAV does not turn them into public-artifact evidence.
 
 ## Boundaries
 
