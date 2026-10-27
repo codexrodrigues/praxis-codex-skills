@@ -1136,6 +1136,11 @@ corporate server-default tenant/environment properties with its admitted operati
 binding; keep corporate IAM checks enabled and never promote caller headers to
 authority. This proves that fixed scope, not multitenant Config admission. Financial
 commands must still revalidate current grants and header/binding agreement.
+If a historical test replaces Boot's HTTP transport, verify that the replacement
+supports every governance verb, including PATCH. Preserve its bounded timeouts,
+disable automatic cookies and redirects when actor sessions are carried explicitly,
+and close owned clients after revocation. Test the actual transport factory so a
+successful login does not conceal unsupported approval requests or actor mixing.
 
 Create payroll and events through their real authorized host writers. The payroll
 writer evaluates the fresh head, locks current grants and historical assignment,
@@ -1145,6 +1150,10 @@ coverage for each new case. Revoke fixture sessions after use and let the assign
 helper drop the owned databases
 at class completion. Do not DELETE financial history to reset a case. Preserve
 inherited data and prevent another case's retained rows from influencing assertions.
+Audit global unique constraints in the versioned seed and migrations before
+appending cases: distinct primary keys do not make repeated business names unique.
+Prove multiple cases in the same assigned class database, not just one successful
+bootstrap case; keep assertions bound to each case’s explicit business values.
 Reconcile old payload/assertion expectations with the current DTOs, metadata and
 ETag contracts without weakening the behavior under test. If this chain has not
 passed on the assigned Neon, retain the gate as pending; a custom-field harness
