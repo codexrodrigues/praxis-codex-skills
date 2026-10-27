@@ -34,6 +34,11 @@ to select only the evidence required by the resource's actual operations.
      2. Exposed as `readOnly = true` in `ResponseDTO` and mutated by a dedicated `@WorkflowAction` or `@ResourceIntent` (`PATCH`); or
      3. Explicitly justified as internal/technical (`@Version`).
      If a resource silently drops domain columns (e.g., exposing 9 of 55 entity columns or 15 of 51 columns), mark `static` as **`fail`** immediately (`lacuna-de-completude-de-dominio`).
+   - **Quick View 360° & `@UISchema` Editorial Quality (`QuickViewCols >= 4`, `RichIdentity = YES`, `EditorialIssues == 0`):**
+     - Verify `@ResourceIdentity` declares `subtitleField` and/or `metadataFields = {...}` in addition to `keyField` and `titleField`;
+     - Verify each `ResponseDTO` curates 4 to 8 summary fields with `@UISchema(quickViewVisible = true, quickViewOrder = ...)`;
+     - Verify `@ResourceReference(resourceKey = ..., valueField = ..., surfaceId = "detail", previewSurfaceId = ..., detailPresentation = "drawer")` on the resource's title field and on every foreign-key display projection (`orgaoNome`, `pessoaNome`, `cargoNome`, `setorNome`, `cargoComissaoNome`, etc.), backed by `@UiSurface(kind = SurfaceKind.READ_PROJECTION | SurfaceKind.VIEW)`;
+     - Reject (`fail`) any DTO where `@UISchema(label = ...)` is a pasted sentence/description (`> 36` chars or ending with `.`) or where `LocalDate`/`LocalDateTime` fields omit `controlType = FieldControlType.DATE_PICKER`.
    - **`FilterDTO` Predicate Density & Variety:** Verify that `FilterDTO` covers all operational search dimensions of the entity across multiple `FilterOperation` families (`LIKE`/`STARTS_WITH`, `EQUAL`, `IN`/`NOT_IN`, `BETWEEN`/`GREATER_OR_EQUAL`/`LESS_OR_EQUAL`, `IN_LAST_DAYS`/`IN_NEXT_DAYS`/`ON_DATE`, `IS_NULL`/`IS_NOT_NULL`, `IS_TRUE`, cross-entity `relation = "parent.field"`, and `@CustomFields` when JSONB is present). A 2- to 4-field `FilterDTO` on a rich domain entity is an automatic **`fail`**.
    - **Praxis Capability Density (`@QuickFilter`, `@ResourceIntent`, `@WorkflowAction`, `@ResourceFact`, Business Invariants):**
      - Verify `@QuickFilter`s on `@ApiResource` for operational cohorts;
