@@ -17,6 +17,10 @@ Inspect the affected source:
 
 - `projects/praxis-table/AGENTS.md`
 - `projects/praxis-table/src/lib/components/praxis-filter/**`
+- `projects/praxis-table/src/lib/components/praxis-filter/filter-payload-projection.ts` and its spec
+- `projects/praxis-table/src/lib/components/praxis-filter/praxis-filter.scalar-payload.spec.ts`
+- `projects/praxis-table/src/lib/components/praxis-filter/filter-form-dialog-host.component.ts` and its spec
+- `projects/praxis-core/src/lib/helpers/scalar-array-value.ts` and its spec
 - `projects/praxis-table/src/lib/filter-settings/**`
 - `projects/praxis-table/src/lib/filter-drawer.adapter.ts`
 - `projects/praxis-table/filter-drawer-adapter/**`
@@ -39,6 +43,20 @@ For backend grounding, inspect `praxis-metadata-starter` filter DTO and resource
 - Ranges, aliases, and entity lookup collection payloads must respect the documented normalizers and `payloadMode`.
 - Inline aliases and UI metadata can help materialize controls, but they must not create arbitrary HTTP contracts.
 - Use `@praxisui/dynamic-fields` option sources, async selects, entity lookup, descriptors, and field metadata before creating local filter controls.
+
+Scalar `items`/enum comes from the operation request schema. Use Core's shared
+`normalizeScalarArrayValue` and Table's internal `projectFilterPayload` for typed
+IN operands, finite enum and submitPolicy omit across always/advanced change,
+submit and saved-shortcut boundaries. Preserve DTO flat/nested structure and raw
+draft; invalid/null items reject the whole projection, never a partial query.
+Pending/invalid controls block emissions, including an earlier debounce. A
+zero-active DISABLED group may still clear. Do not omit every hidden/local field.
+
+The advanced modal Apply/Save invokes the child's existing submit path and
+consumes its projected payload. Reproject after merging initial shortcut values
+so omitted fields cannot reenter. No modal raw getRawValue bypass or new public
+DTO/API is needed. Test these boundaries with real child/host consumers as well
+as the helper; command-form browser proof is not IN-filter browser/backend proof.
 
 If a field, range, or lookup cannot be represented, classify the gap. Most problems are `ja-suportado-mal-nomeado-ou-mal-materializado` or `suportado-parcialmente`, not a new table-only contract.
 
@@ -116,7 +134,7 @@ Do not route user intent by local keywords. The AI or backend contract chooses t
 
 ## Validation
 
-- Filter payload or inline controls: `praxis-filter*.spec.ts`, filter settings specs, and relevant docs.
+- Filter payload or inline controls: `praxis-filter*.spec.ts`, filter settings specs, and relevant docs. For scalar/omit changes include filter-payload-projection.spec.ts, praxis-filter.scalar-payload.spec.ts and filter-form-dialog-host.component.spec.ts; prove invalid→valid recovery, pending/debounce blocking, zero-active clear, typed enum and omission after shortcut merge.
 - Host/backend contract: validate against `dynamic-filter-payload-contract.md` and a focal host/E2E when payload shape changes.
 - Filter drawer adapter: include `filter-drawer-adapter/public-api.ts` and adapter specs.
 - Toolbar/row/bulk/global actions: `table-global-action-adapter.spec.ts`, toolbar editor specs, config editor integration, and AI operation specs when assistant behavior changes.

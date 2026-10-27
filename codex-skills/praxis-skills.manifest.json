@@ -854,8 +854,8 @@
                                             "praxis-core-i18n-resource-copy",
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "F2A4ED771DC496EA04CE6B6A3CACF590B47614C7514DD58E9C34020D3FA5F4B5",
-                       "treeSha256":  "0058D1CEB8BD6D0A04C2AFA705DC72C6AF9A86DEF2AB3773919FFEEC14A5E6DA"
+                       "skillMdSha256":  "1B52B4261EFF721770AD7E509E110576C1F393C643D48B9806F028384FC94478",
+                       "treeSha256":  "1701D45BE639CDBC5B7A99587A9D7DD4DD5A55DB6AF881D754B2BB00D05F87F1"
                    },
                    {
                        "name":  "praxis-metadata-schema-contracts",
@@ -1319,8 +1319,8 @@
                        "compatibility":  "0.x",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "E36D7B49215878A9E3366817688AB30FEA052847D4A7A8A02A50EF71BDB6CB96",
-                       "treeSha256":  "1F39A0E20A67FB8B9F16DCC9CFAF510EC7766D3CAB3BD3849F3CCC985F4DB3DC"
+                       "skillMdSha256":  "282347A704B38F0B1ED672F5A1A4EFE38677A2D2EFFBA95F6E714F09FA051110",
+                       "treeSha256":  "21A943CF8857DF45D40CB681B262779F168FD0333ACA7BD95387AE16AF242537"
                    },
                    {
                        "name":  "praxis-fields-option-sources",
@@ -1523,8 +1523,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "1FE2D684723C61748169895715B1BDCE35300FB31922218714BFB9196E155A4E",
-                       "treeSha256":  "ED73B447F8D4C28D7191B637CC3259425936B1FCB418A64EDBB243708523B74F"
+                       "skillMdSha256":  "CCC08397849A8754121E7D797113C1220A36C5CFB4BCA0C528E003AD409BD454",
+                       "treeSha256":  "FDE623E8FC8FC402D575F0BF8BA286A14F7092C9D6BDC04046742C0B3184C157"
                    },
                    {
                        "name":  "praxis-form-actions-hooks-runtime",
@@ -2095,8 +2095,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "EF1B57CC92C80992185B4389969604793CDBBD95419F7DA1EA3A214A6B5C7E91",
-                       "treeSha256":  "7E6990276ED1D398F2A924D0CE01ECA328FE4F94256B64D7BE491BB35F11A32B"
+                       "skillMdSha256":  "A9F2EBF0C957BCF3D9F453D20C77C341169C4A5DE024FE2DFBFC4C1CC1A4B961",
+                       "treeSha256":  "B4046A042CD99C59BB817B8AD39E28F5A8E7738DD3E142E395A5FE2272A390B0"
                    },
                    {
                        "name":  "praxis-table-rule-ai-validation",

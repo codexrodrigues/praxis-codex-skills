@@ -1,6 +1,6 @@
 ---
 name: praxis-core-resource-runtime
-description: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, bulk execution polling and observation deadlines, analytics schema contracts, stats request builders, or metadata-driven resource materialization.
+description: Use when Codex must work with @praxisui/core resource runtime contracts: GenericCrudService, SchemaMetadataClient, ResourceDiscoveryService, /schemas/filtered consumption, actions, surfaces, capabilities, HATEOAS links, related-resource surfaces, option-source runtime, CRUD operation resolution, bulk execution polling and observation deadlines, analytics schema contracts, stats request builders, custom-field schema expansion, or metadata-driven resource materialization.
 ---
 
 # Praxis Core Resource Runtime
@@ -18,7 +18,23 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/AGENTS.md`
 - `projects/praxis-core/src/public-api.ts` when resource runtime models, services, components, tokens, or helpers are exported or public consumption changes
 - `projects/praxis-core/src/lib/services/generic-crud.service.ts`
-- `projects/praxis-core/src/lib/schema/schema-metadata-client.ts`
+- `projects/praxis-core/src/lib/schema/schema-metadata-client.ts` and its specs
+- `projects/praxis-core/src/lib/schema/schema-request-key.ts`, `schema-request-context.ts` and `schema-fetch.ts` (internal representation/transport paths)
+- `projects/praxis-core/src/lib/schema/schema-header-context.spec.ts`
+- `projects/praxis-core/src/lib/models/field-scalar-items.model.ts` and `helpers/scalar-array-value.ts` with specs
+- `projects/praxis-core/src/lib/services/scalar-array-schema-runtime.spec.ts`
+- `projects/praxis-core/src/lib/models/form/schema-field-lifecycle.spec.ts`
+- `projects/praxis-core/src/lib/services/resource-discovery.schema-lifecycle.spec.ts`
+- `projects/praxis-core/src/lib/services/schema-normalization-kernel.ts`
+- `projects/praxis-core/src/lib/helpers/field-definition-mapper.ts` and its spec
+- `projects/praxis-core/src/lib/services/dynamic-form.service.ts` and its spec
+- `projects/praxis-core/src/lib/models/field-definition.model.ts`
+- `projects/praxis-core/src/lib/models/component-metadata.interface.ts`
+- `projects/praxis-core/src/lib/models/form/server-owned-field-semantics.ts`
+- `projects/praxis-core/src/lib/models/form/materialize-custom-fields-layout.ts`
+- `projects/praxis-core/src/lib/models/form/custom-fields-reconciliation.spec.ts`
+- `projects/praxis-core/src/lib/models/form/form-config.model.ts` (`syncWithServerMetadata`)
+- `projects/praxis-core/src/lib/reconcilers/form-config-reconciler.ts` and `filter-config-reconciler.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.ts`
 - `projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts`
 - `projects/praxis-core/src/lib/services/resource-action-open-adapter.service.ts`
@@ -168,11 +184,132 @@ and UI behavior; require distinct real protected HTTP/backend commit/read/replay
 receipts before claiming operational effects or deployed acceptance. Review the
 exact runtime source and its focused evidence before adopting this workflow.
 
+## Custom-Field Materialization
+
+Audit the backend schema before changing expansion. `SchemaNormalizerService`
+expands a property marked with boolean `x-ui.customFieldsContainer: true`, or an
+object named `customFields` with inline `properties`, through the normal child
+field path. The container is wire structure and never an independent control.
+Children still need ordinary `x-ui` field metadata; expansion does not invent
+controls for undocumented children.
+
+Preserve child labels, controls, options, option sources, validators, groups and
+order, including the container schema's `required` list. Retain the original root
+schema when resolving child collection references and keep global field ordering.
+Each expanded child uses the full value path, such as `customFields.numero_calcado`,
+and `customField: true`; retain the published `customFieldKey` and
+`customFieldScope`, defaulting only absent values to the original child name and
+`tenant`. `mapFieldDefinitionToMetadata` must carry that identity into
+`FieldMetadata`. Identity does not grant permission or replace backend validation.
+
+Keep parent restrictions monotonic when expanding: `disabled: true`, `readOnly: true` and `formHidden: true` remain restrictive on children. Do not distribute
+scalar parent defaults/validators to leaves. Keep `formHidden` server-owned during
+sync. Inherit absent child `fieldAccess`; accept equivalent authority sets, but
+reject different parent/child policies and require the backend's effective leaf
+policy rather than approximating AND with an OR-list. Prove that normalization
+failure blocks saved-config initialization too, rather than recovering old
+metadata as ready.
+
+Use the canonical Metadata key policy for custom-field admission; own-key payload
+helpers do not relax reserved control names or authorize screen aliases/private
+Angular workarounds. Existing stored definitions need explicit backend migration.
+Read-only is not generic omission: the command request projection excludes
+read-only custom fields, while response/filter projections may retain them for
+their operation. Use the exact operation schema, never merge response fields into
+a command or invent a local `x-ui.submitPolicy` mapping.
+
+Preserve scalar `items` through FieldDefinition/FieldMetadata using
+`FieldScalarItemsSchema`, separate from object `array.itemSchema.fields`.
+`normalizeScalarArrayValue` is the shared public projection for declared
+string/integer/number/boolean tokens, temporal formats and enum after conversion.
+Reject the entire result on invalid/null items, malformed enum, nonfinite numbers
+or unsafe integers; distinguish absent/null container and empty array from null
+items. Do not infer types by labels/value shape or claim arbitrary JSON Schema
+items/object-array editor support. `items` and `enumValues` remain server-owned,
+including identity-only sync diagnostics; direct consumers must validate and
+project through the same helper.
+
+Keep `customField`, `customFieldKey` and `customFieldScope` server-owned through
+form/filter reconciliation and `syncWithServerMetadata`, using the existing
+`applyServerOwnedFieldSemantics` path. Refresh current identities and clear stale
+local identities when the server no longer publishes them; saved UI customizations
+must not override schema identity. Include changes/removals of all three identity
+keys in `syncResult.modifiedFields` and `hasChanges`, even when no visual metadata
+changed, so callers can persist the corrected configuration.
+
+When a saved raw container is absent from the current schema but
+that schema publishes its direct children with `customField: true`, materialize its
+metadata and layout references as those current children before reconciliation.
+Use the internal `materializeCustomFieldsLayout` path across all three entrypoints.
+A colliding saved container, even `source: "local"`, yields to the current server
+shape; do not carry its omit policy into the children. Preserve noncolliding local
+fields, ancestors still declared by the current schema, more distant ancestors,
+and ordinary dotted fields without custom-field identity. Migrate both legacy `fields` and mixed `items` layouts, retain rich content and already placed
+children, avoid duplicate references/item IDs, tolerate missing rows/columns and
+leave the input unchanged. Synchronization diagnostics must report container
+removal even when all children were already saved; repeating the migrated config
+must report no further removal. Do not infer trusted children from saved configuration or introduce a host migration adapter.
+
+Treat a successful empty schema as authoritative in automatic reconciliation,
+manual metadata sync and filters. Retained nonlocal orphans become hidden,
+disabled and omitted; explicit local fields retain their policy. On reappearance,
+current server required/type/items/enum and operational semantics win over stale
+saved constraints. Prove these entrypoints through real FormGroup and payload
+consumers; hiding alone or container migration does not establish omission.
+
+Do not flatten wire values into literal dotted JSON keys or add host transforms.
+Use `praxis-form-submit-payload-pipeline` for nested submit paths, date hydration
+and filter value restoration; the JSON remains
+`{ "customFields": { "numero_calcado": 40 } }`.
+
 ## No Keyword Routing
 
 Do not route user intent, action selection, surface opening, tab selection, lookup selection, or analytics metrics by labels, regex, XML names, aliases, or keyword lists as the primary decision. Textual matching may rank candidates only after canonical resource/operation/surface/field scope is resolved from metadata and governed tools.
 
 ## Schema transport resilience
+
+Keep public structural identity separate from representation custody.
+`buildSchemaId`, metadata `schemaId` and `getLastSchemaInfo()` retain their semantic
+identity; equal IDs do not prove equal tenant-specific schema bodies or hashes.
+The internal representation tuple binds semantic ID, resolved actual URL and
+captured tenant/locale. Snapshot outgoing headers before cache awaits or delayed
+subscriptions: SchemaMetadataClient includes its existing global hook; GenericCrud
+and Discovery include API entry headers and confirmed enterprise context.
+Additional captured headers, including Authorization/context version, select a
+bounded page-lifetime opaque partition. Raw credentials/fingerprints stay in RAM,
+never persistent keys/metadata; this does not redact arbitrary schema bodies.
+Retry304 uses the same immutable snapshot. Hook/provider failure or conflicting
+tenant aliases fails before request. Keep these helpers internal and preserve the
+existing public fetch wrapper/exports and `buildSchemaId`.
+
+GenericCrud, Discovery and Form block a known enterprise snapshot that is not
+ready. A standalone SchemaMetadataClient does not discover a DI context service;
+it snapshots the hook/declared parameters. Cookie/interceptor identity changes
+invisible to capture require a confirmed version header or complete cache/session
+scope invalidation by the host. Recreating one client over the same persistent
+adapter is insufficient. Never describe tenant partitioning as authorization.
+
+Deduplicate only pending schema reads; release ownership before next/error/complete
+and on final cancellation so reentrant reads start fresh and old finalize cannot
+remove a replacement. Use refCount cancellation. Completed filter/Discovery
+observables must not become permanent authorized schema caches. Fresh Form cycles
+revalidate HTTP and normalize the obtained/revalidated body; compiled L1 is not a
+readiness shortcut. Reuse a matching cached body only after304, never as status0,
+401/403 or invalid-schema fallback. Never substitute response/catalog summaries
+for empty/denied request structure. Known unavailable equivalent lanes retain
+only their documented404/405/501 fallback; preserve typed failures.
+
+GenericCrud fences late callbacks and clears derived metadata/identity/hints when
+configured API/endpoint or captured context changes; getters check context too.
+Per-call endpoint/parent overrides keep their own results/cache, but publish
+singleton derived metadata only for the configured resource scope. `schemaUrl()`
+continues to describe that scope; getters are not a per-call results map. Remove
+resource fields absent from the new schema rather than retaining old values.
+
+Prove denied/invalid saved-schema initialization fails closed; distinguish access,
+context-required, invalid metadata and transport feedback. Loading/error/known
+nonready blocks submit. Retry is not cross-context autosave; context change
+invalidates old seeds and responses rather than restoring another tenant's draft.
 
 - `SchemaMetadataClient` owns the schema-read deadline. Angular consumers inject `SCHEMA_METADATA_CLIENT_OPTIONS`; direct clients pass constructor options. `requestTimeoutMs` defaults to 30000; finite nonnegative values are required and 0 explicitly disables the deadline. Do not invent per-widget timeout settings for this policy.
 - Propagate `GetSchemaParams.signal` and preserve shared-request isolation: cancelling one subscriber must not cancel others; cancelling the final subscriber aborts the transport. Timeout must release in-flight state even if transport ignores abort, and late responses must not start cache writes.
@@ -190,6 +327,52 @@ Use focused specs for the touched service or model:
 ```sh
 npm run test:core -- --include=projects/praxis-core/src/lib/services/resource-discovery.service.spec.ts --include=projects/praxis-core/src/lib/schema/schema-metadata-client.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts --include=projects/praxis-core/src/lib/services/schema-normalizer-array.service.spec.ts
 ```
+
+- custom-field schema expansion and metadata mapping:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/services/schema-normalizer.service.spec.ts --include=projects/praxis-core/src/lib/helpers/field-definition-mapper.spec.ts --include=projects/praxis-core/src/lib/services/dynamic-form.service.spec.ts
+```
+
+Prove explicit and implicit containers, absent identity defaults, child required
+fields, global ordering, original-root collection refs, malformed containers and
+schema immutability. Prove normalization-to-`DynamicFormService` integration creates
+nested controls, retains validators, and round-trips structured values. Also prove
+the direct form consumer's nested value path.
+
+For saved configurations, run the focused integration across form reconciliation,
+filter reconciliation and metadata synchronization:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/models/form/custom-fields-reconciliation.spec.ts
+```
+
+Prove schema identity refresh/removal, raw-container metadata/layout migration,
+direct-child-only replacement including a colliding local parent, noncolliding
+local/current/distant ancestor preservation, parent restriction/fieldAccess cases, mixed
+content, unique item IDs, incomplete layouts, child placement without duplication,
+identity-only change/removal diagnostics, sync container-removal diagnostics,
+idempotence and source immutability.
+
+- schema representation isolation across both real consumers:
+
+```sh
+npm run test:core -- --include=projects/praxis-core/src/lib/schema/schema-metadata-client.spec.ts --include=projects/praxis-core/src/lib/schema/schema-metadata-client.transport.spec.ts --include=projects/praxis-core/src/lib/services/generic-crud.service.spec.ts
+```
+
+Prove separate tenant/locale/resolved-URL entries, same-tuple client deduplication,
+independent cancellation, per-context ETags/304s, ignored neutral legacy entries
+and captured context across pending reads. Cover all three GenericCrud schema
+lanes, status-0 rejection, pending304 races, completed-read revalidation and
+reentrant cleanup, delayed subscription, delimiter-safe L1 keys, per-call override
+custody and stale derived state fencing/removal across context changes. Include `dynamic-form.service.spec.ts`
+for L1 and `fetch-with-etag.util.spec.ts` for case-insensitive declared headers.
+Include schema-header-context and resource-discovery.schema-lifecycle specs for
+hook/API/confirmed context snapshots, provider failure, alias conflict, no raw
+secrets in persisted keys, same/different auth dedupe and known nonready. Prove
+scalar helper/runtime constraints and empty/orphan/reappearance lifecycle specs.
+Keep controlled transport proofs separate from real authenticated host adoption
+and invisible credential isolation.
 
 - CRUD runtime, option sources, and selected-value rehydration:
 
