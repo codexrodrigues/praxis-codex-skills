@@ -1121,10 +1121,36 @@ fail-closed check intact. Grant fixture runtime prerequisites before the operati
 migrations, not afterward: a post-migration blanket DML grant can undo the financial
 contract's privilege reductions. Historical SQL fixtures that directly insert or
 delete payroll rows are not equivalent to the current audited financial lifecycle.
-If they require a broader governed authoring/publication/approval fixture, record
-that gate as pending; do not disable triggers, forge receipts or call a custom-field
-harness result approval of those legacy pilots. Do not copy the Flyway builder, seed production identity
-implicitly, or catch an expected migration failure as the normal setup flow.
+For a financial fixture, reuse the host's `PayrollReactiveDeterminationFixturePayload`
+and the Config contract actually resolved by Maven. Verify an older source checkout
+against the exact published sources/JAR before following its workflow. In rc.175,
+publication creates a candidate, not an active head: author and approve the three
+sources, collect two distinct composition approvals bound to the canonical digest,
+publish, then create/approve/activate a REQUIRED rollout policy with positive
+quorum. Create the absent-head rollout, execute the real host
+`payrollRuleCandidatePreloader`, confirm canonical `activationReady` and conditionally
+activate using `If-None-Match: *` and the rollout identity. Never synthesize readiness,
+approvals, active heads or receipts with SQL, mocks or aliased actors.
+For a fixed-host fixture whose SESSION has no tenant claim, align the existing
+corporate server-default tenant/environment properties with its admitted operational
+binding; keep corporate IAM checks enabled and never promote caller headers to
+authority. This proves that fixed scope, not multitenant Config admission. Financial
+commands must still revalidate current grants and header/binding agreement.
+
+Create payroll and events through their real authorized host writers. The payroll
+writer evaluates the fresh head, locks current grants and historical assignment,
+and persists the CREATE receipt with the financial row in its API transaction.
+Retain prior cases’ financial rows and receipts, using explicit IDs and department
+coverage for each new case. Revoke fixture sessions after use and let the assigned
+helper drop the owned databases
+at class completion. Do not DELETE financial history to reset a case. Preserve
+inherited data and prevent another case's retained rows from influencing assertions.
+Reconcile old payload/assertion expectations with the current DTOs, metadata and
+ETag contracts without weakening the behavior under test. If this chain has not
+passed on the assigned Neon, retain the gate as pending; a custom-field harness
+alone does not approve the historical pilots. Do not copy the Flyway builder,
+seed production identity implicitly, disable triggers, or catch an expected
+migration failure as the normal setup flow.
 
 For custom fields prove authenticated A/B schema isolation, conditional 304 and
 revocation, header spoofing, nested JSONB writes, required/type rejection, readonly
