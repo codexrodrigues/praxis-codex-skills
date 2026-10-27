@@ -61,11 +61,21 @@ HTTP/runner tests do not certify IAM, Neon, public SDK adoption or Render. A pri
 candidate GAV/cache must be recorded separately and never overwrite public coordinates.
 A new public SDK release remains a separate authorized official workflow gate.
 Before creating a release tag, inspect Metadata `RELEASING.md` and run the official
-`tools/release/neon_gate.py` inventory preflight for all three selections on the
+`tools/release/neon_gate.py` inventory preflight for every official selection on the
 clean reviewed source, with the full resolved base SHA and its current POM version.
 A passing focal test does not update test-source hashes or broad impact/reuse
 closures. Review affected dispositions against the actual production/dependency
 diff before refreshing hashes; preserve original historical receipts and limits.
+For the resource-contract release phase, inspect its closed class/method matrix:
+custom fields and composite identities must run on assigned Neon with ordinary
+schema-local credentials. Require their exact non-skipped XML cases and cleanup
+receipts. The privileged setup owner is not the HTTP runtime. Close Spring through
+its test lifecycle before removing owned database/role OIDs; a cleanup marker alone
+cannot turn a failed class into a passing proof. Broad historical reuse digests
+also require call-path review: an unrelated profile resource may be unconsumed,
+while a shared JDBC row decoder can affect old async/occupancy paths. Use fresh
+focused Neon evidence for the changed common path and preserve the historical
+limits; never relabel it as a fresh load/async campaign.
 A tag-version-only commit is validated separately by the official assignment guard.
 If a queued publication must be cancelled for stale custody, retain its immutable
 tag and use the next free version after canonical repair; never silently retag,
