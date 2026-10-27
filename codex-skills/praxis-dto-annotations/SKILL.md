@@ -192,22 +192,17 @@ use, filtering, analytics, and operational constraints when they apply.
 
 ### UI, Table, and Presentation Metadata
 
-- `@UISchema.label` is short PT-BR UI copy; `helpText` explains how to fill or interpret the value;
-  `placeholder` is only an input example and must not replace domain documentation.
-- Choose `FieldControlType`, mask, `valuePresentation`, `numericFormat`, date/time format,
-  alignment, grouping, visibility, read-only/hidden state, and icon from the information role, not
-  only from the Java type.
-- Table/list metadata must be complete enough that Angular hosts do not need custom presentation code
-  for common values: CPF, CNPJ, CEP, telefone, e-mail, moeda, percentual/taxa, quantidade, data,
-  data e hora, status, booleano, codigo/identificador, documento, protocolo, and resolved lookup
-  display values.
-- Numeric-looking identifiers, document numbers, phone numbers, fiscal keys, and protocol numbers
-  must be treated as text/display values with masks when needed. They are not decimal numbers and
-  must not receive locale numeric formatting such as `7,00`.
-- Use host/project icon conventions. For Angular hosts this normally means Material icon names, not
-  arbitrary icon sets invented in DTO metadata.
-- For resource identity and Quick View summaries, declare `@ApiResource(identity = @ResourceIdentity(keyField = ..., titleField = ..., subtitleField = ..., avatarField = ..., metadataFields = {...}, displayLabelField = ...))` on the controller/DTO and curate up to 3–5 high-signal scalar summary fields on the response DTO with `@UISchema(quickViewVisible = true, quickViewOrder = ...)`. Do not duplicate `titleField` or `subtitleField` inside `metadataFields` or `quickViewVisible`.
-- For cross-resource reference fields (resolved foreign-key labels, self-references, or lookup projections), annotate the display/reference property with `@ResourceReference(resourceKey = "...", valueField = "...", surfaceId = "detail", previewSurfaceId = "...", detailPresentation = "drawer" | "modal")` so `/schemas/filtered` publishes `x-ui.resourceReference` and Angular surfaces (`@praxisui/table`, `@praxisui/list`, `@praxisui/rich-content`) synthesize governed Quick View bindings automatically.
+- `@UISchema.label` is short PT-BR UI copy (1 to 4 words, max ~35 characters, never ending with a period `.`, and **never** a copy of `@Schema.description`); `helpText` explains how to fill or interpret the value; `placeholder` is only an input example and must not replace domain documentation.
+- Every `LocalDate` / `LocalDateTime` property must explicitly declare `controlType = FieldControlType.DATE_PICKER` (or `DATE_TIME_PICKER`) or a corresponding `UISchemaPreset`, never relying on bare defaults.
+- Choose `FieldControlType`, mask, `valuePresentation`, `numericFormat`, date/time format, alignment, grouping, visibility, read-only/hidden state, and icon from the information role, not only from the Java type.
+- Table/list metadata must be complete enough that Angular hosts do not need custom presentation code for common values: CPF, CNPJ, CEP, telefone, e-mail, moeda, percentual/taxa, quantidade, data, data e hora, status, booleano, codigo/identificador, documento, protocolo, and resolved lookup display values.
+- Numeric-looking identifiers, document numbers, phone numbers, fiscal keys, and protocol numbers must be treated as text/display values with masks when needed. They are not decimal numbers and must not receive locale numeric formatting such as `7,00`.
+- Use host/project icon conventions. For Angular hosts this normally means Material icon names, not arbitrary icon sets invented in DTO metadata.
+- **Mandatory Quick View / 360° Contract on Every Resource:**
+  1. Declare `@ApiResource(identity = @ResourceIdentity(keyField = ..., titleField = ..., subtitleField = ..., avatarField = ..., metadataFields = {...}, displayLabelField = ...))` on both the controller and `ResponseDTO` (`subtitleField` and/or `metadataFields` are **mandatory** — never leave `@ResourceIdentity` with only `keyField` and `titleField`).
+  2. Curate **4 to 8 high-signal summary fields** on every `ResponseDTO` with `@UISchema(quickViewVisible = true, quickViewOrder = ...)` so the Quick View card body is populated. Do not duplicate `titleField` or `subtitleField` inside `metadataFields` or `quickViewVisible`.
+  3. Annotate the resource's own primary title field AND every foreign-key display projection (`orgaoNome`, `pessoaNome`, `cargoNome`, `setorNome`, `cargoComissaoNome`, `cargoAglutinadorNome`, etc.) with `@ResourceReference(resourceKey = "...", valueField = "...", surfaceId = "detail", previewSurfaceId = "...", detailPresentation = "drawer")` so `/schemas/filtered` publishes `x-ui.resourceReference` and Angular surfaces (`@praxisui/table`, `@praxisui/list`, `@praxisui/rich-content`) synthesize governed Quick View 360° overlays automatically.
+- Before closing any DTO authoring task, run `python scripts/workspace/audit-java-resource-completeness.py <path-to-host> --strict` and verify `QuickViewCols >= 4`, `RichIdentity = YES`, and `EditorialIssues = 0`.
 
 ### Governance, LGPD, and Compliance
 
