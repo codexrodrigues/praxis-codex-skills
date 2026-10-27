@@ -1083,6 +1083,47 @@ main update, follow its automatic Render deploy to a terminal result and correla
 the source commit with the served build and health. An older healthy instance,
 or an unchanged application version string alone, cannot certify the new deploy.
 
+## Custom-field candidate adoption
+
+For Metadata #303, inspect `CustomFieldsTenantAdoptionNeonTest`, its explicit
+`customfields` test configuration, the canonical metadata custom-field spec, and
+`MetadataAdoptionNeonFixture` before claiming host support. Reuse the host's real
+login/SESSION lifecycle and JDBC membership/snapshot reader for tenant resolution;
+do not replace authentication with mocked principals or accept tenant headers as
+authority. Record whether selected context was established through the public
+selection API or by an explicit fixture, and distinguish test-only wiring from a
+production tenant rollout.
+
+Bind the candidate JAR and POM bytes to an exact source snapshot. Build/install an
+unpublished candidate only in an exclusive Maven repository or under private
+coordinates; never overwrite a shared published coordinate and then claim public
+artifact adoption. A source checkout changing during the build invalidates that
+provenance. Freeze the source and repeat only the affected downstream proof after
+the final candidate is available. Do not permanently change the host dependency
+pin to a task-local coordinate.
+
+Run `EventosFolhaPilotIntegrationTest`,
+`QuickstartMetadataMigrationIntegrationTest` and
+`OpenApiGroupResolutionIsolatedIntegrationTest` with the current
+`AssignedNeonStores` assignment rather than hardcoded historical endpoints. Where
+these pilots need operational views, bootstrap their empty API database using
+`OperationalDatasourceMigrator` in `HOSTED_PUBLIC_DEMO_FIXTURE` mode and the
+versioned seed/migrations. Use the canonical Config Flyway lane for its separate
+store. Never substitute synthetic views or privileged application credentials to
+make a downstream test pass. Preserve assignment guards, ordinary runtime grants
+and per-class cleanup; migration of an old fixture removes its historical
+provenance exception instead of refreshing unrelated frozen hashes.
+
+For custom fields prove authenticated A/B schema isolation, conditional 304 and
+revocation, header spoofing, nested JSONB writes, required/type rejection, readonly
+value preservation through replacement mapping, and mandatory tenant scoping of
+filter/includeIds as well as entity read/update/delete. Verify the committed row
+after rejected writes. Check WRITE readonly exclusion separately from response
+and filter visibility. Prove the actual declared scalar/array operand shape at the
+HTTP boundary; frontend fixtures alone do not establish host persistence. Retain
+source/dependency hashes, assigned branch and cleanup receipt. Focal candidate
+proof is not a released-artifact, deployment or full-suite approval.
+
 ## Maven And Bootstrap Discipline
 
 `pom.xml` intentionally pins `praxis.core.version` and `praxis.config.version`. A version change is an integration change, not a dependency-only edit:
