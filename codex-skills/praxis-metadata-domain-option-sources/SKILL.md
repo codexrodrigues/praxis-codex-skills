@@ -124,3 +124,78 @@ Review `docs/spec/x-ui-field.schema.json`, option-source examples, guides, quick
 - Use `praxis-api-quickstart-domain-pilots` and `praxis-api-quickstart-cockpit-http-validation` for downstream proof of option-source, entity lookup, domain governance, and cockpit materialization.
 - Use `praxis-fields-option-sources`, `praxis-fields-selection-lookup-controls`, and `praxis-resource-entity-lookup-backend` for Angular/backend lookup consumption.
 - Use `praxis-core-domain-governance-runtime` when domain governance feeds config-starter semantic decision authoring or Angular runtime decision clients.
+
+
+## Tenant fields and declared facts (Metadata #303)
+
+Inspect `customfields/**`, `fact/**`, `SemanticDomainCatalogService` and
+`ResourceFactAndCustomFieldDomainCatalogTest` before extending domain grounding.
+Reuse the existing nodeType/source, binding and governance DTOs: custom fields are
+field nodes sourced from custom_field, with dto_field bindings at
+customFields.<key>; resource facts are fact nodes sourced from resource_fact,
+with provides_fact edges and resource_fact bindings at facts.<key>. Do not add
+parallel type/sourceType wire aliases to satisfy informal issue terminology.
+
+`ResourceFactCatalogProvider` supplies descriptors, not evaluations. The default
+annotation provider discovers bean types/methods without constructing beans or
+calling domain computations; hosts can replace it for tenant-dependent historical
+facts. Reuse DomainGovernance for annotation governance and preserve descriptor
+parameters, determinism, units and source kind. Do not introduce a dependency on
+config-starter or rules-engine, or execute business logic in catalog discovery.
+Preserve findByResourceKey/findByGroup signatures. Catalog cache identity must
+include tenant and a canonical snapshot fingerprint so provider changes cannot
+reuse another tenant's catalog. Group discovery remains grounded in registered
+resources; a fact descriptor is not authorization to invent resource routes.
+
+For write/filter/export adoption inspect the canonical resource services and
+GenericSpecificationsBuilder. Validate custom writes before hooks; custom host
+write implementations must preserve that validation. Build filter predicates only
+for declared filterable keys, with typed JSONB casts and request definitions.
+Never keep a resource-specific mutable key on a shared specifications builder.
+Use CollectionExportValueResolver.reflective() for public dotted bean/record/Map
+traversal only after the host has approved export columns; it does not replace
+field access enforcement. Metadata #303 is a PR-level capability until integrated;
+confirm the exact artifact before teaching host adoption as released behavior.
+
+
+For #303 updates, preserve server-owned custom fields across replacement mappers.
+The canonical base validates once and captures readonly keys from that same tenant
+snapshot; `validateCustomFields(dto, "request")` returns those keys. Overrides
+must retain the superclass result. After beforeUpdate, snapshot readonly values
+with `CustomFieldSupport.snapshotReadOnlyValues`; after mapping, restore values
+and absence with `restoreReadOnlyValues` before persistence. This preserves domain
+hook decisions without accepting readonly request assignments. Custom/versioned
+writers must reproduce this sequence in their transaction in addition to version
+preconditions; validate alone does not protect the final entity. Use JSON-compatible
+values and a writable field/setter/container; arbitrary mutable scalar POJOs are
+not deep-cloned. Prove replacement/null/immutable maps, nested values, legitimate
+hook changes, absent readonly keys and failure before save when restoration fails.
+
+Test fact discovery with real Spring JDK proxies and lazy bean definitions without
+executing constructors/fact computations. Keep declarations visible on concrete
+types, interfaces or factory metadata; a lazy factory declared only as an interface
+cannot expose hidden implementation annotations without execution. Fail explicitly
+on unresolved ambiguous factory overloads instead of cataloging unselected methods.
+Fingerprint valid Java Time defaults deterministically as ISO values. Preserve
+confidence, reason (aiUsage.reason), policies and ownership exactly in governance;
+do not replace a declared confidence such as 0.4 with 1.0 or drop partial
+metadata because optional fields are absent. An omitted confidence keeps the
+historical default 1.0; it is not a measured quality guarantee, so hosts should
+declare confidence explicitly. Root reason overrides nested reason only when declared. Cover
+both custom fields and facts with catalog regressions, including partial/empty
+metadata and stable hashes for equivalent temporal representations.
+
+These corrections update existing guidance; they do not certify Angular rendering
+or consumer cache isolation. Keep the starter execution record's Quickstart/Angular
+adoption gates explicit, publish through the existing canonical skills PR, and do
+not sync an unmerged candidate over installed guidance as if it were released.
+
+
+When proving adoption in a host, derive `ResourceTenantContextResolver` from the
+authenticated selected membership, including current revocation/version checks;
+headers may corroborate that identity, never replace it. Prove tenant isolation
+separately at schema/hash/304 and at every published entity read, write, delete and
+filter/includeIds path. A tenant-aware definition provider alone does not scope
+repository queries. Cross-tenant requests must not reveal row existence or mutate
+server-owned custom values. A test-only adapter is integration evidence, not a
+production rollout of tenancy to every resource.

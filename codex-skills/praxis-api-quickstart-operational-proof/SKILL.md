@@ -1083,6 +1083,102 @@ main update, follow its automatic Render deploy to a terminal result and correla
 the source commit with the served build and health. An older healthy instance,
 or an unchanged application version string alone, cannot certify the new deploy.
 
+## Custom-field candidate adoption
+
+For Metadata #303, inspect `CustomFieldsTenantAdoptionNeonTest`, its explicit
+`customfields` test configuration, the canonical metadata custom-field spec, and
+`MetadataAdoptionNeonFixture` before claiming host support. Reuse the host's real
+login/SESSION lifecycle and JDBC membership/snapshot reader for tenant resolution;
+do not replace authentication with mocked principals or accept tenant headers as
+authority. Record whether selected context was established through the public
+selection API or by an explicit fixture, and distinguish test-only wiring from a
+production tenant rollout.
+
+Bind the candidate JAR and POM bytes to an exact source snapshot. Build/install an
+unpublished candidate only in an exclusive Maven repository or under private
+coordinates; never overwrite a shared published coordinate and then claim public
+artifact adoption. A source checkout changing during the build invalidates that
+provenance. Freeze the source and repeat only the affected downstream proof after
+the final candidate is available. Do not permanently change the host dependency
+pin to a task-local coordinate.
+
+Run `EventosFolhaPilotIntegrationTest`,
+`QuickstartMetadataMigrationIntegrationTest` and
+`OpenApiGroupResolutionIsolatedIntegrationTest` with the current
+`AssignedNeonStores` assignment rather than hardcoded historical endpoints. Where
+these pilots need operational views, bootstrap their empty API database using
+`OperationalDatasourceMigrator` in `HOSTED_PUBLIC_DEMO_FIXTURE` mode and the
+versioned seed/migrations. Use the canonical Config Flyway lane for its separate
+store. Never substitute synthetic views or privileged application credentials to
+make a downstream test pass. Preserve assignment guards, ordinary runtime grants
+and per-class cleanup; migration of an old fixture removes its historical
+provenance exception instead of refreshing unrelated frozen hashes.
+If a later migration requires admitted operational identity, use the shared
+package-private `OperationalDatasourceMigrator.configuration` and a fixture-only
+administrative callback at that migration boundary. Supply the fixture's
+explicit admitted binding, reject a conflicting existing binding, and keep the migration's
+fail-closed check intact. Grant fixture runtime prerequisites before the operational
+migrations, not afterward: a post-migration blanket DML grant can undo the financial
+contract's privilege reductions. Historical SQL fixtures that directly insert or
+delete payroll rows are not equivalent to the current audited financial lifecycle.
+For a financial fixture, reuse the host's `PayrollReactiveDeterminationFixturePayload`
+and the Config contract actually resolved by Maven. Verify an older source checkout
+against the exact published sources/JAR before following its workflow. In rc.175,
+publication creates a candidate, not an active head: author and approve the three
+sources, collect two distinct composition approvals bound to the canonical digest,
+publish, then create/approve/activate a REQUIRED rollout policy with positive
+quorum. Create the absent-head rollout, execute the real host
+`payrollRuleCandidatePreloader`, confirm canonical `activationReady` and conditionally
+activate using `If-None-Match: *` and the rollout identity. Never synthesize readiness,
+approvals, active heads or receipts with SQL, mocks or aliased actors.
+For a fixed-host fixture whose SESSION has no tenant claim, align the existing
+corporate server-default tenant/environment properties with its admitted operational
+binding; keep corporate IAM checks enabled and never promote caller headers to
+authority. This proves that fixed scope, not multitenant Config admission. Financial
+commands must still revalidate current grants and header/binding agreement.
+If a historical test replaces Boot's HTTP transport, verify that the replacement
+supports every governance verb, including PATCH. Preserve its bounded timeouts,
+disable automatic cookies and redirects when actor sessions are carried explicitly,
+and close owned clients after revocation. Test the actual transport factory so a
+successful login does not conceal unsupported approval requests or actor mixing.
+
+Create payroll and events through their real authorized host writers. The payroll
+writer evaluates the fresh head, locks current grants and historical assignment,
+and persists the CREATE receipt with the financial row in its API transaction.
+Retain prior cases’ financial rows and receipts, using explicit IDs and department
+coverage for each new case. Revoke fixture sessions after use and let the assigned
+helper drop the owned databases
+at class completion. Do not DELETE financial history to reset a case. Preserve
+inherited data and prevent another case's retained rows from influencing assertions.
+Audit global unique constraints in the versioned seed and migrations before
+appending cases: distinct primary keys do not make repeated business names unique.
+Prove multiple cases in the same assigned class database, not just one successful
+bootstrap case; keep assertions bound to each case’s explicit business values.
+Inspect the trigger's actual INSERT/UPDATE events before assuming that a new row
+has initial history. Seed required nonfinancial history explicitly when the
+canonical trigger only records later changes; preserve the original history
+assertions instead of weakening them or changing the production trigger.
+Reconcile old payload/assertion expectations with the current DTOs, metadata and
+ETag contracts without weakening the behavior under test. If this chain has not
+passed on the assigned Neon, retain the gate as pending; a custom-field harness
+alone does not approve the historical pilots. Do not copy the Flyway builder,
+seed production identity implicitly, disable triggers, or catch an expected
+migration failure as the normal setup flow.
+
+For custom fields prove authenticated A/B schema isolation, conditional 304 and
+revocation, header spoofing, nested JSONB writes, required/type rejection, readonly
+value preservation through replacement mapping, and mandatory tenant scoping of
+filter/includeIds as well as entity read/update/delete. Verify the committed row
+after rejected writes. Check WRITE readonly exclusion separately from response
+and filter visibility. Prove the actual declared scalar/array operand shape at the
+HTTP boundary; frontend fixtures alone do not establish host persistence. Retain
+source/dependency hashes, assigned branch and cleanup receipt. For fact adoption,
+add an explicit metadata-only `ResourceFactCatalogProvider` and exercise
+`/schemas/domain` under A/B/A session context, header spoofing and revocation.
+Check fact/source/binding paths and declared governance (including confidence and
+AI-use reason/policy) without invoking a computation or business rule. Focal candidate
+proof is not a released-artifact, deployment or full-suite approval.
+
 ## Maven And Bootstrap Discipline
 
 `pom.xml` intentionally pins `praxis.core.version` and `praxis.config.version`. A version change is an integration change, not a dependency-only edit:
