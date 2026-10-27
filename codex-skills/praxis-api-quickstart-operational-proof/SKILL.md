@@ -1117,7 +1117,13 @@ If a later migration requires admitted operational identity, use the shared
 package-private `OperationalDatasourceMigrator.configuration` and a fixture-only
 administrative callback at that migration boundary. Supply the fixture's
 explicit admitted binding, reject a conflicting existing binding, and keep the migration's
-fail-closed check intact. Do not copy the Flyway builder, seed production identity
+fail-closed check intact. Grant fixture runtime prerequisites before the operational
+migrations, not afterward: a post-migration blanket DML grant can undo the financial
+contract's privilege reductions. Historical SQL fixtures that directly insert or
+delete payroll rows are not equivalent to the current audited financial lifecycle.
+If they require a broader governed authoring/publication/approval fixture, record
+that gate as pending; do not disable triggers, forge receipts or call a custom-field
+harness result approval of those legacy pilots. Do not copy the Flyway builder, seed production identity
 implicitly, or catch an expected migration failure as the normal setup flow.
 
 For custom fields prove authenticated A/B schema isolation, conditional 304 and
