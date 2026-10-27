@@ -394,3 +394,89 @@ Prepare a fresh candidate only for publication or explicit reconciliation. `with
 For one capability or action response, capture an ephemeral `BulkLifecycleDocumentFence` while the installed-photograph scope is active, then release cache/preparation locks before response assembly. The fence carries the cache epoch, transport revision, owner thread, and remaining composition deadline; its short reads validate before and after use. It is validity evidence for that response, not source authority, readiness itself, or permission to mutate. Provider recapture/composition and admitted database reads still execute under the short read section; custom code or a transaction already started is not forcibly interrupted. Do not describe this as a hard duration bound or SLA.
 
 The lifecycle consumer must close its per-response fence and private response frame on every exit. Revalidate provider and durable generation/fingerprint/revision at each scoped readiness query and once after response assembly. Do not reuse a response frame, fence, or its approved projection across requests; the installed photograph is reusable only through a new guarded `withPublishedBulkOpenApiPublication` scope. Do not remove transactional admission checks. Test invalidation and strict refresh, failed invalidation guards, transport ABA, deadline exhaustion, another thread, cleanup after exceptions, and a subsequent independent request.
+
+
+## Tenant custom-field structural projection (Metadata #303)
+
+For `@CustomFields` work, inspect `customfields/CustomFieldDescriptor`,
+`CustomFieldSchemaEnricher`, `ResourceTenantContextResolver`, and the adoption
+spec `docs/spec/custom-fields-and-resource-facts.md` in the metadata starter.
+The annotation marks a named `Map<String,Object> customFields` container on
+entities and DTOs/records. Never flatten extension keys with root JsonAnySetter.
+`CustomFieldDefinitionProvider` supplies definitions scoped by canonical resource,
+tenant and request/response schema role; it does not persist authored rules.
+
+Capture one definition snapshot for projection and cache fingerprinting. Publish
+properties, required keys, validation bounds, options and governance beneath the
+container, with `customFieldsContainer`, `customField`, `customFieldKey` and
+`customFieldScope` markers. Empty definitions must not leave a rendered empty
+control or a dangling root required entry. Preserve ordinary schemas and existing
+schemaId strings when no extension context exists. Tenant is carried by request
+context, not invented schema URL query parameters; hash-cache entries must bind
+tenant and the exact definition fingerprint. A cached hash from a different
+tenant or earlier definition must never authorize 304.
+
+The default tenant adapter validates X-Tenant/X-Tenant-ID; authenticated hosts
+replace the SPI rather than trusting header identity as authorization. Its result,
+including absence, is authoritative. Both 200 and 304 vary on both tenant headers;
+tenant-scoped responses must be private because a host may use authenticated
+context without either header. Providers must enforce their own trusted tenant
+scope; metadata selection alone does not enforce row tenancy.
+
+Use `RequestHeaderResourceTenantContextResolverTest`, custom-field schema tests,
+`CustomFieldsResourceE2ETest`, and the existing ApiDocs/schema-reference regression.
+Run database-dependent proof only on an assigned remote Neon branch with verified
+TLS and ordinary runtime privileges. H2JsonbFunctions can be unit tested as a JSON
+parser without opening a local database. Update x-ui-field.schema.json and its
+conformance example when the published markers change. This guidance accompanies
+Metadata issue #303; confirm its PR is integrated before claiming released support.
+
+
+For the #303 review corrections, derive filter projection from the MVC request
+body implementing `GenericFilterDTO`, including inherited generic bindings through
+`CanonicalOperationResolver.resolveRequestBodyType`; never infer a filter role from
+route suffixes or DTO names. The provider still receives normalized `request`.
+Publish IN as an array of scalar operands and IS_NULL as boolean, with nullable
+no-op operands; remove write required/bounds/default/readonly from search criteria.
+Do not carry stored-value options into an IS_NULL boolean control. Cross-check
+published filter payloads against the actual Criteria/HTTP execution, including
+empty IN, null, false and non-filterable keys.
+
+When dynamic writable children are required, also require the root customFields
+container; preserve static container requirements on active write/response schemas.
+Readonly custom fields are excluded entirely from ordinary WRITE request schemas,
+not merely marked optional/readOnly. This is a projection rule in the enricher:
+the provider's `request` snapshot must still contain readonly definitions so the
+write validator and replacement mapper can reject assignments and preserve stored
+values. Never implement WRITE exclusion by filtering them out of the provider.
+Keep them in response and in filter projection
+when filterable; filtering a server-owned value does not authorize writing it.
+Validate duplicate provider keys before role filtering, so duplicate definitions
+cannot disappear behind readonly or filterable selection. Normalize schemaType
+before provider lookup, schema identity and hash so REQUEST/request are equivalent.
+Use `CustomFieldSchemaProjectionTest` and tenant/controller regressions to validate
+complete payloads against the generated JSON Schema, not only metadata fragments.
+
+Keep enum membership canonical: enumValues is supported on STRING/ENUM; ENUM
+requires a nonempty finite list. Options/optionSource are presentation and lookup
+contracts, not substitute validation authority. Reject invalid definitions at
+construction and prove both accepted and rejected values agree between schema and
+write validator. Dynamic selections without a finite enum remain STRING with
+host-owned domain validation. Update the spec/conformance examples alongside tests.
+
+
+For Angular adoption, resolve `FieldControlType.AUTO` through the existing
+`OpenApiUiUtils` scalar/enum/array inference before publishing the custom-field
+projection. Explicit controls keep their declared meaning; IS_NULL always uses its
+boolean operand, and IN is inferred from the scalar item schema. Test concrete
+controls and payload types together; a control label alone does not prove support
+for typed scalar arrays.
+
+Keep the custom-key boundary identical in descriptor validation, JSON Schema spec
+and consumers. In addition to the letter-first 64-character identifier grammar,
+reject the exact reserved names `constructor`, `prototype`, `hasOwnProperty`,
+`isPrototypeOf`, `propertyIsEnumerable`, `toLocaleString`, `toString` and `valueOf`.
+Do not silently drop a provider key accepted by the backend in the UI, or claim
+that generic own-property traversal makes those names usable by Angular FormGroup.
+Re-run projection/spec conformance and the consumer control/submit regression after
+changing this boundary.
