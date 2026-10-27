@@ -1137,7 +1137,7 @@ public class EmployeeService extends AbstractBaseResourceService<
         if (currentVersion.isEmpty()) {
             throw ResourceVersionPreconditionException.missingState();
         }
-        precondition.requireMatch(id, currentVersion.getAsLong());
+        precondition.requireMatch(currentVersion.getAsLong());
         beforeUpdate(id, entity, dto);
         var readOnlyValues = org.praxisplatform.uischema.customfields.CustomFieldSupport.snapshotReadOnlyValues(entity, readOnlyKeys);
         mapper.applyUpdate(entity, dto);
@@ -1182,8 +1182,10 @@ private Long positionId;
 )
 @ResourceReference(
     resourceKey = "human-resources.positions",
-    resourcePath = ApiPaths.HumanResources.POSITIONS,
-    idField = "positionId"
+    endpoint = ApiPaths.HumanResources.POSITIONS,
+    valueField = "positionId",
+    displayField = "positionName",
+    surfaceId = "detail"
 )
 private String positionName;
 ```
@@ -1214,7 +1216,7 @@ public class HrOptionSourcesConfig {
 }
 ```
 
-#### B. `@Embedded` Value Objects (Without `CompositeResourceId`)
+#### B. `@Embedded` Value Objects (Without `CompositeResourceId`) and PostgreSQL `CHAR(n)` Columns
 When multiple tables share reusable column groups (such as audit metadata, legal act snapshots, or address blocks), model them as `@Embeddable` classes annotated with `@Embedded` on the entity. Because they are **not** primary keys, they **must not** implement `CompositeResourceId`:
 
 ```java
@@ -1233,15 +1235,18 @@ public class SnapshotAtoLegal {
 ```
 In JPA Criteria (`@Filterable(relation = "atoLegal.numeroAto")`), `praxis-metadata-starter` automatically navigates `@Embedded` paths via `.get("atoLegal").get("numeroAto")` without generating invalid SQL joins.
 
+> **PostgreSQL `CHAR(n)` (`bpchar`) with `ddl-auto=validate`:** When mapping fixed-length `character(1)` or `character(2)` columns (e.g., `sexo`, `uf`, `cargo_funcao`, `flag_acesso`) to `String` under `spring.jpa.hibernate.ddl-auto=validate`, always annotate the field with `@JdbcTypeCode(SqlTypes.CHAR)` in addition to `@Column(name = "...", length = n, columnDefinition = "character(n)")`. Without `@JdbcTypeCode(SqlTypes.CHAR)`, Hibernate 6 expects `VARCHAR` and fails schema validation at startup.
+
 ### 12. Tenant Schema Extensibility (`@CustomFields` + `CustomFieldDefinitionProvider`) & Domain Fact Catalog (`@ResourceFact`)
 
 #### A. JSONB `@CustomFields` in Entity, DTOs, and `CustomFieldDefinitionProvider`
-When a resource supports tenant-specific dynamic fields stored in a PostgreSQL `JSONB` column (`custom_fields`) and governed by a metadata catalog table (`custom_field_definitions`):
+When a resource supports tenant-specific dynamic fields stored in a PostgreSQL `JSONB` column (`custom_fields`) and governed by a metadata catalog table (`custom_field_definitions`), annotate **both** the JPA Entity field and the DTO fields with `@CustomFields`:
 
-1. **Entity (`@JdbcTypeCode(SqlTypes.JSON)`):**
+1. **Entity (`@JdbcTypeCode(SqlTypes.JSON)` + `@CustomFields` — required on the Entity so `GenericSpecificationsBuilder` can resolve JSONB predicates in `/filter`):**
 ```java
 @JdbcTypeCode(SqlTypes.JSON)
 @Column(name = "custom_fields", columnDefinition = "jsonb", nullable = false)
+@CustomFields(resourceKey = "human-resources.employees")
 private Map<String, Object> customFields = new LinkedHashMap<>();
 ```
 
@@ -1307,9 +1312,9 @@ For each resource, decide explicitly which Praxis metadata features are in scope
 | `/schemas/filtered` | Ensure request/response DTOs are discoverable from the generated OpenAPI operation. |
 | `/filter` | Implement a `GenericFilterDTO` with valid `@Filterable` operations and verify pageable SQL against the target database. |
 | `/options/filter` and `/options/by-ids` | Ensure the entity has a stable id and option label, commonly with `@OptionLabel`; use `praxis-resource-entity-lookup-backend` for governed cross-resource lookups. |
-| `/filter/cursor` | The starter provides baseline cursor behavior; validate sort stability and generated SQL. Override only for keyset, dialect, performance, or domain-specific behavior. |
+| `/filter/cursor` | The controller exposes `POST /{resource}/filter/cursor`, but `AbstractBaseQueryResourceService.filterEntitiesByCursor` throws `UnsupportedOperationException` by default; override `filterEntitiesByCursor` in the service (or host base service) with deterministic keyset pagination when cursor pagination is in scope. |
 | `/locate` | Override `locate` in the service when the UI needs position restoration. |
-| `/stats/*` | Override stats support modes and publish `StatsFieldRegistry`; validate payload shape and SQL. |
+| `/stats/*` | Enable `praxis.stats.enabled: true` in `application.yml`, override stats support modes (`StatsSupportMode.AUTO`), and publish `StatsFieldRegistry`; validate payload shape and SQL. |
 | `/export` | Publish only when the service implements collection export support, capability, executor, field allowlist, limits, and truncation/audit metadata. |
 | `/capabilities` | Treat as advertised capability snapshot; still execute the endpoint it advertises. |
 | `/surfaces` and `/actions` | Use starter defaults only when they match the real UX contract; otherwise register/implement the required domain semantics deliberately. |
@@ -1371,7 +1376,7 @@ For read-only resources, use the read-only controller baseline and do not publis
 - Override `getIdFieldName()` when the public DTO identifier is not named `id`, for example a legacy business key such as `companyCode`. Also keep `getResponseId(...)` aligned in the controller. Otherwise `/schemas/filtered` and Praxis UI may report or consume a divergent `x-ui.resource.idField`.
 - Implement `getDatasetVersion()` when the host can provide a cheap stable version such as `EntityName:count` or a real update marker.
 - Register option sources only when fields actually need governed entity lookup. Do not publish provider internals in public payloads.
-- Treat cursor pagination, locate, and stats according to their actual support model. Cursor pagination has a baseline implementation but still needs runtime proof for sort stability, SQL, and page continuity; override it only for keyset/dialect/performance/domain behavior. `locate` is opt-in and must be implemented when the UI needs jump-to-row or position restoration. Stats require support modes plus `getStatsFieldRegistry()` before claiming `/stats/*` works.
+- Treat cursor pagination, locate, and stats according to their actual support model. `POST /{resource}/filter/cursor` requires overriding `filterEntitiesByCursor` in the service (the base method throws `UnsupportedOperationException` by default) with deterministic sort and keyset predicates. `locate` is opt-in and must be implemented when the UI needs jump-to-row or position restoration. Stats require `praxis.stats.enabled: true` in `application.yml` plus support modes and `getStatsFieldRegistry()` before claiming `/stats/*` works.
 - Add host-specific service methods only for real domain commands or integration behavior that is not covered by the resource baseline. Do not add `buscarPorNome`, `filtrar`, `listarPorStatus`, or similar methods when the same behavior belongs in the `FilterDTO` with `@Filterable`.
 - For collection export, do not rely on frontend-provided fields or `maxRows` as authority. The service must declare `supportsCollectionExport()`, return `getCollectionExportCapability()`, enforce server-side field allowlists and row limits, apply the resource filter/security rules, and use the canonical export executor or an equivalent governed engine.
 - Validate advertised capabilities against HTTP. Do not rely only on OpenAPI or `/capabilities`; execute `/filter`, `/filter/cursor`, `/locate`, `/stats/*`, `/options/*`, `/export` when supported, `/schemas/filtered`, `/schemas/domain` when available, item/collection capabilities, item surfaces, and item actions for the resource under test.
@@ -1393,5 +1398,5 @@ For a new resource, prefer at least:
 
 - compile/test phase for mapper and generics correctness;
 - Maven dependency resolution against the artifact repository used by the host;
-- a schema smoke for the create or filter DTO when runtime proof is in scope;
+- a schema smoke for the create or filter DTO when runtime proof is in scope (note: `GET /{resource}/schemas` returns `302 Found` redirecting to `/schemas/filtered`; in `@SpringBootTest`, `/schemas/filtered` resolves OpenAPI via internal HTTP loopback to `/v3/api-docs`, so permit `/v3/api-docs/**` in `SecurityFilterChain`, run with `webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT`, and bind `@LocalServerPort` on MockMvc requests via `request.setServerPort(port); request.setLocalPort(port);`);
 - a resource filter or options smoke when the UI/runtime will consume it immediately.

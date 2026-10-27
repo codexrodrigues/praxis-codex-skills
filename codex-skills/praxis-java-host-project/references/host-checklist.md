@@ -48,13 +48,16 @@ Use this reference before finalizing a new Praxis Java host scaffold.
 
 ## Optional Runtime Features
 
-- Stats are exposed only when the service declares support modes and a valid `StatsFieldRegistry`.
+- Stats are exposed only when `praxis.stats.enabled: true` is configured in `application.yml` and the service declares support modes plus a valid `StatsFieldRegistry`.
+- Cursor pagination (`POST /{resource}/filter/cursor`) is exposed only when the service overrides `filterEntitiesByCursor` (which throws `UnsupportedOperationException` in `AbstractBaseQueryResourceService` by default).
 - Collection export is exposed only when the service declares support, capability metadata, field allowlist, server-side row limits, and a real export executor.
 - Governed `RESOURCE_ENTITY`, `LIGHT_LOOKUP`, and other option-source work follows `praxis-resource-entity-lookup-backend` when it goes beyond simple id/label options.
+- In PostgreSQL with `spring.jpa.hibernate.ddl-auto=validate`, fixed-length `CHAR(n)` (`bpchar`) columns mapped to `String` include `@JdbcTypeCode(SqlTypes.CHAR)`.
+- When `@CustomFields` is used, both the JPA Entity JSONB field and the DTO/FilterDTO `customFields` maps carry `@CustomFields(resourceKey = ...)` so JSONB filtering in `GenericSpecificationsBuilder` resolves the entity container.
 
 ## Security And Origins
 
-- Real hosts define a deliberate security policy instead of relying accidentally on Spring defaults.
+- Real hosts define a deliberate security policy instead of relying accidentally on Spring defaults, while permitting `/v3/api-docs/**` when `/schemas/filtered` resolves OpenAPI documents via internal HTTP loopback.
 - Hosts expected to run behind a dev/prod reverse proxy set a deliberate forwarded-header policy, such as `server.forward-headers-strategy=framework`, so HATEOAS links do not leak internal backend origins to browser clients.
 - Config endpoints under `/api/praxis/config/**` respect the required headers and origin policy.
 - Local/demo exposure is documented as local/demo exposure, not production policy.
