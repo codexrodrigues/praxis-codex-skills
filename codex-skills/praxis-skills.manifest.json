@@ -865,8 +865,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "54BB488A1F1ECDCCD69CEEC144B62565CDE39BEC0B79428B7B79B33B0987BB9B",
-                       "treeSha256":  "1B681319383BD7E7A3EC60EFC68425D0E09E202DCD0D926AD75038CB9AD63C5F"
+                       "skillMdSha256":  "9803B01E90E479C648928081BB4D42206834D5DD72D427D24E52D308D8AA1793",
+                       "treeSha256":  "577B592368B19AB87CD9EC94E9E5D414576D3700AB4172415072D310679A8032"
                    },
                    {
                        "name":  "praxis-metadata-resource-baseline",
@@ -898,8 +898,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "CB1D4DE6D849EA98D47F21E826F876418C0CF2854D37BC2EB6B91D54A0E295B9",
-                       "treeSha256":  "B7E46A8118079924DA314D43F4C9E373593EEF9872CBC54641883509409B4C79"
+                       "skillMdSha256":  "0108335353E8C36B69223BB33386F5C952C50F0EEA2B1DC6F48B66EDFE0DA4B8",
+                       "treeSha256":  "F7705F64A97E7B98206A9CD662BF27CB6AF1B4D7AE5132846689526EB5B25421"
                    },
                    {
                        "name":  "praxis-core-runtime-contracts",
@@ -2487,8 +2487,8 @@
                                             "praxis-http-examples-llm-smoke",
                                             "praxis-java-autoconfiguration-starter-maintenance"
                                         ],
-                       "skillMdSha256":  "EB72309ED79C8F908B037EF16E7F911C22DCE7D7CAE06971F53655240EF0424C",
-                       "treeSha256":  "45D19889ECE2438AD9770809A3945781B674B117817D9F927CAF97A0FEB68076"
+                       "skillMdSha256":  "387E5FA7671900AAAF61610719170F34E4313B050032CB43DBA2A859E96DEECC",
+                       "treeSha256":  "98432AF9FECE0D916331324C00133DFF8D45E5ADAFEA03B59EF9EF2670B4331B"
                    },
                    {
                        "name":  "praxis-api-quickstart-security-config",

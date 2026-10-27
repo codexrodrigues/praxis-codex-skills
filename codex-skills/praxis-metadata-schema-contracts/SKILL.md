@@ -444,7 +444,11 @@ empty IN, null, false and non-filterable keys.
 
 When dynamic writable children are required, also require the root customFields
 container; preserve static container requirements on active write/response schemas.
-Readonly required children apply to response, not input. Normalize schemaType
+Readonly custom fields are excluded entirely from ordinary WRITE request schemas,
+not merely marked optional/readOnly. Keep them in response and in filter projection
+when filterable; filtering a server-owned value does not authorize writing it.
+Validate duplicate provider keys before role filtering, so duplicate definitions
+cannot disappear behind readonly or filterable selection. Normalize schemaType
 before provider lookup, schema identity and hash so REQUEST/request are equivalent.
 Use `CustomFieldSchemaProjectionTest` and tenant/controller regressions to validate
 complete payloads against the generated JSON Schema, not only metadata fragments.
@@ -455,3 +459,20 @@ contracts, not substitute validation authority. Reject invalid definitions at
 construction and prove both accepted and rejected values agree between schema and
 write validator. Dynamic selections without a finite enum remain STRING with
 host-owned domain validation. Update the spec/conformance examples alongside tests.
+
+
+For Angular adoption, resolve `FieldControlType.AUTO` through the existing
+`OpenApiUiUtils` scalar/enum/array inference before publishing the custom-field
+projection. Explicit controls keep their declared meaning; IS_NULL always uses its
+boolean operand, and IN is inferred from the scalar item schema. Test concrete
+controls and payload types together; a control label alone does not prove support
+for typed scalar arrays.
+
+Keep the custom-key boundary identical in descriptor validation, JSON Schema spec
+and consumers. In addition to the letter-first 64-character identifier grammar,
+reject the exact reserved names `constructor`, `prototype`, `hasOwnProperty`,
+`isPrototypeOf`, `propertyIsEnumerable`, `toLocaleString`, `toString` and `valueOf`.
+Do not silently drop a provider key accepted by the backend in the UI, or claim
+that generic own-property traversal makes those names usable by Angular FormGroup.
+Re-run projection/spec conformance and the consumer control/submit regression after
+changing this boundary.

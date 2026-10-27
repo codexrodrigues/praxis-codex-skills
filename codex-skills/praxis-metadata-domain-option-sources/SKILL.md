@@ -189,3 +189,13 @@ These corrections update existing guidance; they do not certify Angular renderin
 or consumer cache isolation. Keep the starter execution record's Quickstart/Angular
 adoption gates explicit, publish through the existing canonical skills PR, and do
 not sync an unmerged candidate over installed guidance as if it were released.
+
+
+When proving adoption in a host, derive `ResourceTenantContextResolver` from the
+authenticated selected membership, including current revocation/version checks;
+headers may corroborate that identity, never replace it. Prove tenant isolation
+separately at schema/hash/304 and at every published entity read, write, delete and
+filter/includeIds path. A tenant-aware definition provider alone does not scope
+repository queries. Cross-tenant requests must not reveal row existence or mutate
+server-owned custom values. A test-only adapter is integration evidence, not a
+production rollout of tenancy to every resource.
