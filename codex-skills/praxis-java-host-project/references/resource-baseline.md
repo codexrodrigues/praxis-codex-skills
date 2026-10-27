@@ -1327,6 +1327,7 @@ For each resource, decide explicitly which Praxis metadata features are in scope
 
 ## DTO Rules
 
+- **Enterprise Functional Depth (Never Mutilate Domain Entities):** "Do not mechanically expose the JPA entity" means organizing fields into semantic `@UISchema(group = ...)` sections, marking secondary detail fields with `tableHidden = true` (so the main table stays scannable while forms and detail views remain complete), protecting workflow-owned state columns (`readOnly = true` in `ResponseDTO`, excluded from generic `UpdateDTO`), and adding `@DomainGovernance`. **Never strip a 20- to 55-column enterprise entity down to an 8-field skeletal DTO or a 3-field `FilterDTO`.** A Praxis resource must deliver functional, analytical, filtering, and business-rule depth **superior to the legacy system**.
 - Response DTOs describe the public resource state.
 - Create DTOs should exclude server-owned identifiers, commonly with `@JsonIgnoreProperties({"id"})`.
 - Update DTOs should express editable fields for an existing resource.
