@@ -19,7 +19,12 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/src/public-api.ts` when resource runtime models, services, components, tokens, or helpers are exported or public consumption changes
 - `projects/praxis-core/src/lib/services/generic-crud.service.ts`
 - `projects/praxis-core/src/lib/schema/schema-metadata-client.ts` and its specs
-- `projects/praxis-core/src/lib/schema/schema-request-key.ts` (internal representation key)
+- `projects/praxis-core/src/lib/schema/schema-request-key.ts`, `schema-request-context.ts` and `schema-fetch.ts` (internal representation/transport paths)
+- `projects/praxis-core/src/lib/schema/schema-header-context.spec.ts`
+- `projects/praxis-core/src/lib/models/field-scalar-items.model.ts` and `helpers/scalar-array-value.ts` with specs
+- `projects/praxis-core/src/lib/services/scalar-array-schema-runtime.spec.ts`
+- `projects/praxis-core/src/lib/models/form/schema-field-lifecycle.spec.ts`
+- `projects/praxis-core/src/lib/services/resource-discovery.schema-lifecycle.spec.ts`
 - `projects/praxis-core/src/lib/services/schema-normalization-kernel.ts`
 - `projects/praxis-core/src/lib/helpers/field-definition-mapper.ts` and its spec
 - `projects/praxis-core/src/lib/services/dynamic-form.service.ts` and its spec
@@ -201,19 +206,28 @@ Keep parent restrictions monotonic when expanding: `disabled: true`, `readOnly: 
 scalar parent defaults/validators to leaves. Keep `formHidden` server-owned during
 sync. Inherit absent child `fieldAccess`; accept equivalent authority sets, but
 reject different parent/child policies and require the backend's effective leaf
-policy rather than approximating AND with an OR-list. A normalizer error alone
-does not prove end-to-end fail-closed behavior: saved-config catches/fallbacks can
-retain earlier metadata, so inspect those consumers before claiming authorization.
+policy rather than approximating AND with an OR-list. Prove that normalization
+failure blocks saved-config initialization too, rather than recovering old
+metadata as ready.
 
-Do not certify every backend-valid custom key as an Angular control. Own-key
-payload helpers do not resolve FormGroup limitations with `constructor`,
-`toString` or `hasOwnProperty`; align the canonical backend key policy and
-consumers rather than adding screen aliases or private Angular API workarounds.
-Field read-only is also not submit omission: the custom-field backend rejects
-read-only property presence while request publication can still expose it.
-`x-ui.submitPolicy` is not materialized by the current FieldDefinition/normalizer
-contract. Record that backend/runtime adoption blocker; do not claim adding a
-local policy or omitting every hidden field resolves it canonically.
+Use the canonical Metadata key policy for custom-field admission; own-key payload
+helpers do not relax reserved control names or authorize screen aliases/private
+Angular workarounds. Existing stored definitions need explicit backend migration.
+Read-only is not generic omission: the command request projection excludes
+read-only custom fields, while response/filter projections may retain them for
+their operation. Use the exact operation schema, never merge response fields into
+a command or invent a local `x-ui.submitPolicy` mapping.
+
+Preserve scalar `items` through FieldDefinition/FieldMetadata using
+`FieldScalarItemsSchema`, separate from object `array.itemSchema.fields`.
+`normalizeScalarArrayValue` is the shared public projection for declared
+string/integer/number/boolean tokens, temporal formats and enum after conversion.
+Reject the entire result on invalid/null items, malformed enum, nonfinite numbers
+or unsafe integers; distinguish absent/null container and empty array from null
+items. Do not infer types by labels/value shape or claim arbitrary JSON Schema
+items/object-array editor support. `items` and `enumValues` remain server-owned,
+including identity-only sync diagnostics; direct consumers must validate and
+project through the same helper.
 
 Keep `customField`, `customFieldKey` and `customFieldScope` server-owned through
 form/filter reconciliation and `syncWithServerMetadata`, using the existing
@@ -236,6 +250,13 @@ leave the input unchanged. Synchronization diagnostics must report container
 removal even when all children were already saved; repeating the migrated config
 must report no further removal. Do not infer trusted children from saved configuration or introduce a host migration adapter.
 
+Treat a successful empty schema as authoritative in automatic reconciliation,
+manual metadata sync and filters. Retained nonlocal orphans become hidden,
+disabled and omitted; explicit local fields retain their policy. On reappearance,
+current server required/type/items/enum and operational semantics win over stale
+saved constraints. Prove these entrypoints through real FormGroup and payload
+consumers; hiding alone or container migration does not establish omission.
+
 Do not flatten wire values into literal dotted JSON keys or add host transforms.
 Use `praxis-form-submit-payload-pipeline` for nested submit paths, date hydration
 and filter value restoration; the JSON remains
@@ -250,43 +271,45 @@ Do not route user intent, action selection, surface opening, tab selection, look
 Keep public structural identity separate from representation custody.
 `buildSchemaId`, metadata `schemaId` and `getLastSchemaInfo()` retain their semantic
 identity; equal IDs do not prove equal tenant-specific schema bodies or hashes.
-The shared internal `buildSchemaRequestKey` binds schema cache entries and
-`SchemaMetadataClient` in-flight ownership to
-`[schemaId, resolved request URL, declared tenant ?? null, declared locale ?? null]`.
-Use it for `GenericCrudService.getSchema`, `getFilteredSchema` and direct-schema
-fallbacks, including ETag/304 revalidation and status-0 cache recovery. Never fall
-back to an old neutral-ID cache entry. `getFilterSchema` observable replay must
-also include the endpoint key and full representation tuple; capture the context
-when creating the observable, before delayed subscription or a context switch.
+The internal representation tuple binds semantic ID, resolved actual URL and
+captured tenant/locale. Snapshot outgoing headers before cache awaits or delayed
+subscriptions: SchemaMetadataClient includes its existing global hook; GenericCrud
+and Discovery include API entry headers and confirmed enterprise context.
+Additional captured headers, including Authorization/context version, select a
+bounded page-lifetime opaque partition. Raw credentials/fingerprints stay in RAM,
+never persistent keys/metadata; this does not redact arbitrary schema bodies.
+Retry304 uses the same immutable snapshot. Hook/provider failure or conflicting
+tenant aliases fails before request. Keep these helpers internal and preserve the
+existing public fetch wrapper/exports and `buildSchemaId`.
 
-The compiled `DynamicFormService` L1 key uses the shared structured tuple too;
-do not reintroduce tenant/locale delimiter concatenation. GenericCrud detects
-API/configured-endpoint/declared-tenant/locale changes, invalidates derived
-identity/capability metadata, hints and filter replay, and checks an internal
-epoch before late schema callbacks update current state. Getters also validate
-the declared context; returning to an earlier context needs a read/revalidation,
-not replay of its former observable. The isolated representation cache may remain
-for its own ETag revalidation. Remove derived resource fields absent from the new
-schema instead of retaining the previous context's values.
+GenericCrud, Discovery and Form block a known enterprise snapshot that is not
+ready. A standalone SchemaMetadataClient does not discover a DI context service;
+it snapshots the hook/declared parameters. Cookie/interceptor identity changes
+invisible to capture require a confirmed version header or complete cache/session
+scope invalidation by the host. Recreating one client over the same persistent
+adapter is insufficient. Never describe tenant partitioning as authorization.
 
-This epoch covers configured scope only. Per-call `endpointKey`/`parentPath`
-overrides can run under the same epoch and compete for singleton derived metadata
-or hints even with separate representation cache keys. The getters do not accept
-per-call context. Record shared concurrent multi-endpoint/multi-parent adoption
-as an unresolved Core contract blocker; do not infer its safety from cache tests.
+Deduplicate only pending schema reads; release ownership before next/error/complete
+and on final cancellation so reentrant reads start fresh and old finalize cannot
+remove a replacement. Use refCount cancellation. Completed filter/Discovery
+observables must not become permanent authorized schema caches. Fresh Form cycles
+revalidate HTTP and normalize the obtained/revalidated body; compiled L1 is not a
+readiness shortcut. Reuse a matching cached body only after304, never as status0,
+401/403 or invalid-schema fallback. Never substitute response/catalog summaries
+for empty/denied request structure. Known unavailable equivalent lanes retain
+only their documented404/405/501 fallback; preserve typed failures.
 
-Hosts must declare representation context: `GetSchemaParams.tenant`/`locale` for
-`SchemaMetadataClient`, and the configured tenant plus browser locale for
-`GenericCrudService`. Preserve that captured context through asynchronous cache
-reads and retries. Implicit global header hooks, interceptors, cookies or principal
-changes do not add a cache dimension; this tuple does not certify their isolation.
-Extra global headers must not override explicitly declared headers through
-case differences. That precedence does not partition an implicit authentication
-principal. Do not change public `buildSchemaId` or export the internal key to hide
-that limit. Status-0 cache recovery and saved-config reconciliation warnings also
-do not prove schema freshness; the existing ready/error surface does not expose
-all degraded states. Keep that UX limitation explicit, without inventing a local
-freshness or authorization signal.
+GenericCrud fences late callbacks and clears derived metadata/identity/hints when
+configured API/endpoint or captured context changes; getters check context too.
+Per-call endpoint/parent overrides keep their own results/cache, but publish
+singleton derived metadata only for the configured resource scope. `schemaUrl()`
+continues to describe that scope; getters are not a per-call results map. Remove
+resource fields absent from the new schema rather than retaining old values.
+
+Prove denied/invalid saved-schema initialization fails closed; distinguish access,
+context-required, invalid metadata and transport feedback. Loading/error/known
+nonready blocks submit. Retry is not cross-context autosave; context change
+invalidates old seeds and responses rather than restoring another tenant's draft.
 
 - `SchemaMetadataClient` owns the schema-read deadline. Angular consumers inject `SCHEMA_METADATA_CLIENT_OPTIONS`; direct clients pass constructor options. `requestTimeoutMs` defaults to 30000; finite nonnegative values are required and 0 explicitly disables the deadline. Do not invent per-widget timeout settings for this policy.
 - Propagate `GetSchemaParams.signal` and preserve shared-request isolation: cancelling one subscriber must not cancel others; cancelling the final subscriber aborts the transport. Timeout must release in-flight state even if transport ignores abort, and late responses must not start cache writes.
@@ -340,12 +363,16 @@ npm run test:core -- --include=projects/praxis-core/src/lib/schema/schema-metada
 Prove separate tenant/locale/resolved-URL entries, same-tuple client deduplication,
 independent cancellation, per-context ETags/304s, ignored neutral legacy entries
 and captured context across pending reads. Cover all three GenericCrud schema
-lanes, status-0 recovery without cross-tenant reuse, pending 304 races, filter
-replay isolation, delayed subscription, delimiter-safe L1 keys and stale derived
-state fencing/removal across context changes. Include `dynamic-form.service.spec.ts`
+lanes, status-0 rejection, pending304 races, completed-read revalidation and
+reentrant cleanup, delayed subscription, delimiter-safe L1 keys, per-call override
+custody and stale derived state fencing/removal across context changes. Include `dynamic-form.service.spec.ts`
 for L1 and `fetch-with-etag.util.spec.ts` for case-insensitive declared headers.
-Keep these controlled transport proofs
-separate from real authenticated host adoption and implicit credential isolation.
+Include schema-header-context and resource-discovery.schema-lifecycle specs for
+hook/API/confirmed context snapshots, provider failure, alias conflict, no raw
+secrets in persisted keys, same/different auth dedupe and known nonready. Prove
+scalar helper/runtime constraints and empty/orphan/reappearance lifecycle specs.
+Keep controlled transport proofs separate from real authenticated host adoption
+and invisible credential isolation.
 
 - CRUD runtime, option sources, and selected-value rehydration:
 

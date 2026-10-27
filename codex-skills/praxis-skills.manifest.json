@@ -854,8 +854,8 @@
                                             "praxis-core-i18n-resource-copy",
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "BAAF11AC007193FE7DD86E2E21E24CFF2AFE07D996F83BE46BF0995D82AA9897",
-                       "treeSha256":  "20F5F45AA5F352083B7BD2D318785B63FA79F30548C7EA32BAB1B968911CF777"
+                       "skillMdSha256":  "1B52B4261EFF721770AD7E509E110576C1F393C643D48B9806F028384FC94478",
+                       "treeSha256":  "1701D45BE639CDBC5B7A99587A9D7DD4DD5A55DB6AF881D754B2BB00D05F87F1"
                    },
                    {
                        "name":  "praxis-metadata-schema-contracts",
@@ -1523,8 +1523,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "A3D4AFEAB8029D86D1577E0A9897338C6DD369816DE3BE88DADDAADD18619877",
-                       "treeSha256":  "FA6BACCEF16C2B3D18A78E0C8E76A7A5979EF11DDB6199E41A52F8A328745650"
+                       "skillMdSha256":  "CCC08397849A8754121E7D797113C1220A36C5CFB4BCA0C528E003AD409BD454",
+                       "treeSha256":  "FDE623E8FC8FC402D575F0BF8BA286A14F7092C9D6BDC04046742C0B3184C157"
                    },
                    {
                        "name":  "praxis-form-actions-hooks-runtime",
@@ -2095,8 +2095,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "EF1B57CC92C80992185B4389969604793CDBBD95419F7DA1EA3A214A6B5C7E91",
-                       "treeSha256":  "7E6990276ED1D398F2A924D0CE01ECA328FE4F94256B64D7BE491BB35F11A32B"
+                       "skillMdSha256":  "A9F2EBF0C957BCF3D9F453D20C77C341169C4A5DE024FE2DFBFC4C1CC1A4B961",
+                       "treeSha256":  "B4046A042CD99C59BB817B8AD39E28F5A8E7738DD3E142E395A5FE2272A390B0"
                    },
                    {
                        "name":  "praxis-table-rule-ai-validation",
