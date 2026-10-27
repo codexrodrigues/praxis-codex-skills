@@ -394,3 +394,39 @@ Prepare a fresh candidate only for publication or explicit reconciliation. `with
 For one capability or action response, capture an ephemeral `BulkLifecycleDocumentFence` while the installed-photograph scope is active, then release cache/preparation locks before response assembly. The fence carries the cache epoch, transport revision, owner thread, and remaining composition deadline; its short reads validate before and after use. It is validity evidence for that response, not source authority, readiness itself, or permission to mutate. Provider recapture/composition and admitted database reads still execute under the short read section; custom code or a transaction already started is not forcibly interrupted. Do not describe this as a hard duration bound or SLA.
 
 The lifecycle consumer must close its per-response fence and private response frame on every exit. Revalidate provider and durable generation/fingerprint/revision at each scoped readiness query and once after response assembly. Do not reuse a response frame, fence, or its approved projection across requests; the installed photograph is reusable only through a new guarded `withPublishedBulkOpenApiPublication` scope. Do not remove transactional admission checks. Test invalidation and strict refresh, failed invalidation guards, transport ABA, deadline exhaustion, another thread, cleanup after exceptions, and a subsequent independent request.
+
+
+## Tenant custom-field structural projection (Metadata #303)
+
+For `@CustomFields` work, inspect `customfields/CustomFieldDescriptor`,
+`CustomFieldSchemaEnricher`, `ResourceTenantContextResolver`, and the adoption
+spec `docs/spec/custom-fields-and-resource-facts.md` in the metadata starter.
+The annotation marks a named `Map<String,Object> customFields` container on
+entities and DTOs/records. Never flatten extension keys with root JsonAnySetter.
+`CustomFieldDefinitionProvider` supplies definitions scoped by canonical resource,
+tenant and request/response schema role; it does not persist authored rules.
+
+Capture one definition snapshot for projection and cache fingerprinting. Publish
+properties, required keys, validation bounds, options and governance beneath the
+container, with `customFieldsContainer`, `customField`, `customFieldKey` and
+`customFieldScope` markers. Empty definitions must not leave a rendered empty
+control or a dangling root required entry. Preserve ordinary schemas and existing
+schemaId strings when no extension context exists. Tenant is carried by request
+context, not invented schema URL query parameters; hash-cache entries must bind
+tenant and the exact definition fingerprint. A cached hash from a different
+tenant or earlier definition must never authorize 304.
+
+The default tenant adapter validates X-Tenant/X-Tenant-ID; authenticated hosts
+replace the SPI rather than trusting header identity as authorization. Its result,
+including absence, is authoritative. Both 200 and 304 vary on both tenant headers;
+tenant-scoped responses must be private because a host may use authenticated
+context without either header. Providers must enforce their own trusted tenant
+scope; metadata selection alone does not enforce row tenancy.
+
+Use `RequestHeaderResourceTenantContextResolverTest`, custom-field schema tests,
+`CustomFieldsResourceE2ETest`, and the existing ApiDocs/schema-reference regression.
+Run database-dependent proof only on an assigned remote Neon branch with verified
+TLS and ordinary runtime privileges. H2JsonbFunctions can be unit tested as a JSON
+parser without opening a local database. Update x-ui-field.schema.json and its
+conformance example when the published markers change. This guidance accompanies
+Metadata issue #303; confirm its PR is integrated before claiming released support.
