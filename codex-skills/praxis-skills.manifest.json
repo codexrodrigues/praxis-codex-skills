@@ -67,8 +67,8 @@
                                             "praxis-metadata-domain-option-sources",
                                             "praxis-resource-entity-lookup-backend"
                                         ],
-                       "skillMdSha256":  "8CF0E5090F88D03296274CB5A0C90504CB810C94C4D68030AC59A5C55D39F03F",
-                       "treeSha256":  "ED2C197CD67C29783C1541743B1ECE8D7E1E46F91B61608644AD365BC24E6559"
+                       "skillMdSha256":  "4484C735760034303D40899DD8C0B11D153FFBD570E2B9EFF5E10FCE81D71415",
+                       "treeSha256":  "69C4FD4C5A52EDD113BB939A8223778C2F3A4C128537D67615D2EE33B7AB24F3"
                    },
                    {
                        "name":  "praxis-java-filter-query-authoring",
@@ -227,8 +227,8 @@
                                             "praxis-api-quickstart-cockpit-http-validation",
                                             "praxis-java-contract-conformance"
                                         ],
-                       "skillMdSha256":  "13B88FE8D8DD907DC78620262D17F4CB14EDF74C6493A54D95239709F8B2BA28",
-                       "treeSha256":  "73B902E62C9AB90F4E2D2B29EF420F6DCD254F8B5E72F2E791A954C119738B6C"
+                       "skillMdSha256":  "B1099570DE9299178A8C2B7A4EFB1D78A564F5FE57D2B193B1D3E79CD19DFFED",
+                       "treeSha256":  "B66E9CFE32FA18CF6211C647F4CB4B88BDC81E6A4C1754E7154CE2EA2D9AF344"
                    },
                    {
                        "name":  "praxis-java-http-corpus-publication",
@@ -1126,8 +1126,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-ui-product-design"
                                         ],
-                       "skillMdSha256":  "8AFBA2967416E5A89ECC35AA226B38D7AE87653DAD8A3C154FEE7E1E7BDE33BA",
-                       "treeSha256":  "03DE1A25D3A4049090451E80CAA72D94001BD25240D5F1AF8CCAC64AD47D36AF"
+                       "skillMdSha256":  "6529AFFA424B4E74FAA77F1BC13461650D395A21225313EB7EE4536F8F3D030C",
+                       "treeSha256":  "31A724950E1A63586EBD0D1AB144519796A67A2C80E4C6F052DA51D866E22CB9"
                    },
                    {
                        "name":  "praxis-dynamic-fields-editorial",
@@ -1579,8 +1579,8 @@
                                             "praxis-dynamic-fields-editorial",
                                             "praxis-authoring-editors"
                                         ],
-                       "skillMdSha256":  "7C3C285A592854B91915153096470F790BA33B20EBEC54E3DF957B2E5D2AF7E9",
-                       "treeSha256":  "5FFB503E029F9DB2FFB68B39B094B12B8074378874A58A49BDC573FFB0C12E6F"
+                       "skillMdSha256":  "6E8F019CDF7B33273DEF45E198FF8B04A9EC84CE8947ECF71F3797DB8D665B55",
+                       "treeSha256":  "E6EDF45FDBD5A0C91BCA29D68DAD86CC0875E43C2680904B6A87FA032B417903"
                    },
                    {
                        "name":  "praxis-landing-public-docs-contracts",
@@ -2405,8 +2405,8 @@
                        "dependencies":  [
                                             "praxis-core-runtime-contracts"
                                         ],
-                       "skillMdSha256":  "E52C838F577E0761A588D68974F3287984497D5A9CFEDC2691807A8DA3C483B6",
-                       "treeSha256":  "6868CA1FDBA65CF8D6A09422264228582477184E34D33668D7BCFECA89DC35AC"
+                       "skillMdSha256":  "FFDA343C980B7656CBCD64D429A62E013D5BB8B98ED9713AA981235D4DAAFD8B",
+                       "treeSha256":  "B76119CB98F4BA6FBAAEDDE7141D42240192545A20B4052AF15B26254A70AF92"
                    },
                    {
                        "name":  "praxis-config-runtime-persistence",
@@ -2461,8 +2461,8 @@
                        "dependencies":  [
                                             "praxis-rules-engine-runtime"
                                         ],
-                       "skillMdSha256":  "E3C1D061E93413EC7EBE13AAD5A3CF513918D5384C20F83DF935B2ED36D010DD",
-                       "treeSha256":  "B972BABC0D6312DF54AF184FB4D8117C1C7098D711007E63D0921B085B6B9D22"
+                       "skillMdSha256":  "9D2B07CD0AE7DD98939D2D943F28B95A2F1CCDA4F622C6A012208E8E82767A19",
+                       "treeSha256":  "A87A3EE843CC66BDFC7F496B5D48BCC7FC143468BC8F6A5E4EEED6FA8C2636A8"
                    },
                    {
                        "name":  "praxis-api-quickstart-operational-proof",
