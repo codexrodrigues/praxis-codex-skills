@@ -430,3 +430,28 @@ TLS and ordinary runtime privileges. H2JsonbFunctions can be unit tested as a JS
 parser without opening a local database. Update x-ui-field.schema.json and its
 conformance example when the published markers change. This guidance accompanies
 Metadata issue #303; confirm its PR is integrated before claiming released support.
+
+
+For the #303 review corrections, derive filter projection from the MVC request
+body implementing `GenericFilterDTO`, including inherited generic bindings through
+`CanonicalOperationResolver.resolveRequestBodyType`; never infer a filter role from
+route suffixes or DTO names. The provider still receives normalized `request`.
+Publish IN as an array of scalar operands and IS_NULL as boolean, with nullable
+no-op operands; remove write required/bounds/default/readonly from search criteria.
+Do not carry stored-value options into an IS_NULL boolean control. Cross-check
+published filter payloads against the actual Criteria/HTTP execution, including
+empty IN, null, false and non-filterable keys.
+
+When dynamic writable children are required, also require the root customFields
+container; preserve static container requirements on active write/response schemas.
+Readonly required children apply to response, not input. Normalize schemaType
+before provider lookup, schema identity and hash so REQUEST/request are equivalent.
+Use `CustomFieldSchemaProjectionTest` and tenant/controller regressions to validate
+complete payloads against the generated JSON Schema, not only metadata fragments.
+
+Keep enum membership canonical: enumValues is supported on STRING/ENUM; ENUM
+requires a nonempty finite list. Options/optionSource are presentation and lookup
+contracts, not substitute validation authority. Reject invalid definitions at
+construction and prove both accepted and rejected values agree between schema and
+write validator. Dynamic selections without a finite enum remain STRING with
+host-owned domain validation. Update the spec/conformance examples alongside tests.

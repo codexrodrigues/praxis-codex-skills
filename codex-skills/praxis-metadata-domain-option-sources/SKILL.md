@@ -156,3 +156,36 @@ Use CollectionExportValueResolver.reflective() for public dotted bean/record/Map
 traversal only after the host has approved export columns; it does not replace
 field access enforcement. Metadata #303 is a PR-level capability until integrated;
 confirm the exact artifact before teaching host adoption as released behavior.
+
+
+For #303 updates, preserve server-owned custom fields across replacement mappers.
+The canonical base validates once and captures readonly keys from that same tenant
+snapshot; `validateCustomFields(dto, "request")` returns those keys. Overrides
+must retain the superclass result. After beforeUpdate, snapshot readonly values
+with `CustomFieldSupport.snapshotReadOnlyValues`; after mapping, restore values
+and absence with `restoreReadOnlyValues` before persistence. This preserves domain
+hook decisions without accepting readonly request assignments. Custom/versioned
+writers must reproduce this sequence in their transaction in addition to version
+preconditions; validate alone does not protect the final entity. Use JSON-compatible
+values and a writable field/setter/container; arbitrary mutable scalar POJOs are
+not deep-cloned. Prove replacement/null/immutable maps, nested values, legitimate
+hook changes, absent readonly keys and failure before save when restoration fails.
+
+Test fact discovery with real Spring JDK proxies and lazy bean definitions without
+executing constructors/fact computations. Keep declarations visible on concrete
+types, interfaces or factory metadata; a lazy factory declared only as an interface
+cannot expose hidden implementation annotations without execution. Fail explicitly
+on unresolved ambiguous factory overloads instead of cataloging unselected methods.
+Fingerprint valid Java Time defaults deterministically as ISO values. Preserve
+confidence, reason (aiUsage.reason), policies and ownership exactly in governance;
+do not replace a declared confidence such as 0.4 with 1.0 or drop partial
+metadata because optional fields are absent. An omitted confidence keeps the
+historical default 1.0; it is not a measured quality guarantee, so hosts should
+declare confidence explicitly. Root reason overrides nested reason only when declared. Cover
+both custom fields and facts with catalog regressions, including partial/empty
+metadata and stable hashes for equivalent temporal representations.
+
+These corrections update existing guidance; they do not certify Angular rendering
+or consumer cache isolation. Keep the starter execution record's Quickstart/Angular
+adoption gates explicit, publish through the existing canonical skills PR, and do
+not sync an unmerged candidate over installed guidance as if it were released.
