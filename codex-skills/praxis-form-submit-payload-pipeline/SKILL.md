@@ -23,7 +23,7 @@ Inspect these files before editing:
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-submit-payload.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-date-arrays.ts`
 - `projects/praxis-dynamic-form/src/lib/utils/normalize-date-arrays.spec.ts`
-- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.ts`
+- `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.ts` and `praxis-dynamic-form.schema-loading.spec.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.json-api.md`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.ts`
 - `projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.metadata.spec.ts`
@@ -34,6 +34,8 @@ Inspect these files before editing:
 Inspect these `@praxisui/core` files before changing field submit or lookup payload contracts:
 
 - `projects/praxis-core/src/lib/models/component-metadata.interface.ts`
+- `projects/praxis-core/src/lib/models/field-scalar-items.model.ts` and `helpers/scalar-array-value.ts`
+- `projects/praxis-core/src/lib/models/form/schema-field-lifecycle.spec.ts`
 - `projects/praxis-core/src/lib/models/material-field-metadata.interface.ts`
 - `projects/praxis-core/src/lib/models/option-source.model.ts`
 - `projects/praxis-core/src/lib/models/option-source.model.spec.ts`
@@ -56,7 +58,7 @@ The canonical order is:
 1. Normalize legacy date tuples only in fields declared temporal by existing metadata, recursing through collection item schemas.
 2. Normalize local datetime strings only on those temporal fields, adding the local ISO offset when missing. Preserve ordinary/unknown strings verbatim, including spaces and date-like text, and keep non-temporal/unknown numeric tuples as arrays.
 3. Filter fields according to metadata.
-4. Serialize entity lookup values through the shared core helper.
+4. Project scalar arrays through the shared Core normalizer and serialize entity lookup values through the shared Core helper.
 5. Recurse into array item schemas.
 
 Respect these semantics:
@@ -66,11 +68,13 @@ Respect these semantics:
 - Do not manufacture a missing nested value/container or replace a null/scalar container during submit. Copy changed record ancestors so filtering and normalization do not mutate API data or the raw form value. Preserve the flat-field branch: one initial record draft plus direct writes/deletes, without copying the whole root for every field. Array items remain governed by their item schema, not generic record-path traversal.
 - Temporal hydration/submit normalization shares `normalizeTemporalFieldValues` with field metadata and item schemas, using one private draft rather than root copies per transformed field. `DateInput` follows the existing date-only serialization. Do not infer temporal meaning from the numeric/string shape alone; `[2026, 10, 27]` can be data in a non-temporal field.
 - Preserve the same flat draft/accumulator branch in date hydration, filter restoration and computed contexts, not only submit. Copy-on-write helpers are for dotted paths; a private temporal draft can update its admitted own leaf directly.
-- The internal `nested-field-path` helper also supports date hydration and filter metadata rebuilds. Nested date controls must receive the same coercion as top-level date controls. Filter restoration must retain existing nested values, including disabled controls, skip only names absent from the final delivered metadata and respect explicit defaults as reset intent. A server-removed filter field can remain as a hidden orphan in that metadata. Keep the helper internal; this path does not require a new public export or host adapter.
-- The record-path helper rejects `__proto__` and empty segments and never follows inherited values. Own `constructor` and `prototype` properties are legitimate data keys in flat and nested payload/helper records; do not blanket-ban them or infer Angular FormGroup support for every backend-valid key from these utility tests. Writing a path creates own record properties rather than traversing inherited objects. Do not traverse arrays or non-record values as if they were ordinary object containers.
+- The internal `nested-field-path` helper also supports date hydration and filter metadata rebuilds. Nested date controls must receive the same coercion as top-level date controls. Filter restoration must retain existing nested values, including disabled controls, skip only names absent from the final delivered metadata and respect explicit defaults as reset intent. A server-removed field may remain as disabled/omit metadata for continuity; raw restoration must not make it applicable or required. Hidden/local legitimate fields keep their own semantics. Keep the helper internal; this path does not require a new public export or host adapter.
+- The record-path helper rejects `__proto__` and empty segments and never follows inherited values. Own `constructor` and `prototype` properties are legitimate data keys in flat and nested payload/helper records; do not blanket-ban them in generic utility records or relax the canonical backend reserved-name policy for controls from these utility tests. Writing a path creates own record properties rather than traversing inherited objects. Do not traverse arrays or non-record values as if they were ordinary object containers.
 - A same-context metadata rebuild must capture and restore nested dirty/touched leaf paths through groups and FormArray items without touching unrelated controls. Do not generalize this to autosave across resets, retry, record or tenant switches; explicit filter defaults retain reset intent.
-- Dynamic removal is not certified by container migration. `serverDefs=[]` can skip saved-config reconciliation; manual `syncWithServerMetadata` can retain orphans without omit; filter reconciliation can retain `filterHidden` orphans with required validation and raw values submitted by `getRawValue()`. The automatic form reconciler's orphan policy does not prove these other entrypoints. Record this corporate lifecycle blocker and prove all three lanes before promising server-removed values cannot be restored/submitted; do not hide it with a host property strip.
-- Read-only/disabled is not an omission policy. The current custom-field backend rejects read-only property presence, but request schema publication may expose it without omission; `x-ui.submitPolicy` is not mapped through FieldDefinition/normalization. This is a canonical backend/runtime contract blocker, not something solved by a host transform or a blanket hidden-field omission rule.
+- Successful empty definitions are authoritative, including saved configuration and manual sync. Use Core's shared reconciliation policy for all lanes: nonlocal orphans hidden/disabled/omit, explicit local fields preserved, current server constraints restored on reappearance. Prove empty-last-field, required-null orphan and returning optional field through reconciliation/FormGroup/submit and Filter, not just container migration; no host property strips or blanket hidden omission.
+- Read-only/disabled is not generic omission. The canonical backend command request excludes read-only custom fields; response/filter may retain them for their operation. Use that exact request instead of merging response or adding an unsupported x-ui.submitPolicy mapping. Inspect backend schema guidance for reserved keys and request publication; utility own-key support is not field admission.
+- Scalar arrays use FieldMetadata.items and the public Core normalizeScalarArrayValue, separately from object-array itemSchema. Keep validators, prepareSubmitPayload and all query consumers aligned on typed tokens/formats/enum. Reject invalid/null items without partial conversion; optional null container and [] remain distinct, required still applies. Do not hand-roll per-control parsing or claim safe integer support beyond JavaScript's range.
+- New schema-loading cycles revalidate HTTP and normalize the body; compiled L1, saved metadata or status0 cache cannot establish readiness. Loading/error/known unconfirmed enterprise context blocks submit; denied/invalid schema never falls back to response/catalog or old config. Captured confirmed tenant/locale/version governs the scope; context switch cancels stale generations and invalidates old seeds, not cross-tenant autosave. A scalar projection error in payloadPreviewChange emits formData:null/isValid:false with raw data intact; consumers must not apply it.
 - `source: "local"` and `transient: true` are omitted by default.
 - `submitPolicy: "include" | "omit" | "includeWhenDirty"` overrides the default omission policy.
 - Legacy `"never"` may be defensively normalized to `"omit"`, but the public contract remains `"omit"`.
@@ -126,6 +130,10 @@ composition of custom-field collections with dotted/bracket item dirty paths.
 Also prove metadata-aware temporal conversion, numeric/unknown arrays and ordinary
 strings preserved verbatim, DateInput date-only values, and nested dirty/touched
 restoration without changing unrelated controls.
+Also prove scalar items/enum parity in real controls and prepared payload,
+invalid preview emits null without throwing, successful empty schema is
+authoritative and reconciles normally while denied schema fails closed, and
+context transitions/fresh cycles revalidate rather than using L1.
 The saved-container integration must prove normalization → each of the three
 reconciliation paths → `DynamicFormService` controls → prepared nested payload,
 including number/date values and source immutability:
