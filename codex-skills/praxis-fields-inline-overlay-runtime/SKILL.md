@@ -57,7 +57,8 @@ Inspect:
 - `src/lib/directives/dynamic-field-loader.metadata-refresh.spec.ts`
 - `src/lib/directives/dynamic-field-loader.select-rebind.spec.ts`
 - `src/lib/directives/dynamic-field-loader.skip-snapshot.spec.ts`
-- `projects/praxis-core/src/lib/utils/inline-filter-controls.util.ts`
+- `projects/praxis-core/src/lib/utils/inline-filter-controls.util.ts` and its spec
+- `projects/praxis-table/src/lib/components/praxis-filter/praxis-filter.component.ts` and its promotion specs
 - `projects/praxis-core/src/lib/tokens/layer-scale.token.ts`
 - `projects/praxis-core/src/lib/tokens/layer-scale.token.spec.ts`
 - `projects/praxis-metadata-editor/src/lib/ai/praxis-metadata-editor-authoring-manifest.ts`
@@ -77,6 +78,22 @@ Dynamic Fields owns:
 - overlay action labels, aria labels, and shared inline copy through dynamic-fields i18n catalogs.
 
 `praxis-filter` owns when generic controls are promoted to inline variants in filter toolbars. Backend metadata/range normalizers own the final HTTP payload shape.
+
+## Numeric Range Versus Period Identity
+
+`inlineYearRange` and `inlineMonthRange` are numeric wrappers of
+`InlineRangeSliderComponent`: they accept numeric `{ start, end }` values or
+numeric tuples and commit the numeric range shape. They are distinct canonical
+control IDs, not aliases for `inlinePeriodRange` with injected granularity.
+`inlinePeriodRange` owns its separate `[string, string]` period-value projection
+and explicit granularity; date ranges also keep their own value contract.
+
+Table's shared inline resolution/promotion preserves those IDs: generic year/month
+range controls in range mode become the matching numeric wrapper when inline-range
+promotion is enabled. Promotion
+must not replace them with period strings, fabricate granularity or change the
+backend DTO. Prove aliases, registry identity and Table metadata promotion against
+the existing components before updating fixtures or documenting a value shape.
 
 ## Inline Overlay Rules
 
@@ -164,7 +181,7 @@ Use focused gates:
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-searchable-select-panel-ux.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-layout-overflow.playwright.spec.ts`
   - `projects/praxis-dynamic-fields/test-dev/e2e/inline-visual-states-design.playwright.spec.ts`
-- Table/filter payload validation when promotion or submitted filter DTO changes.
+- Table/filter payload validation when promotion or submitted filter DTO changes. For year/month/period distinctions, pair inline-filter-controls.util.spec.ts, the year/month/period component specs and PraxisFilter promotion specs. Assert canonical IDs, preserved metadata and numeric-versus-period values; do not repair stale fixtures by changing runtime/DTO semantics.
 - `npm run build:praxis-dynamic-fields` for public API, metadata, token, i18n, or exported contract changes.
 
 State which overlay behavior, visual contrast, registry, docs/catalog, and payload checks were run.

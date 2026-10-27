@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-form-submit-payload-pipeline/
-- Descricao atual: Use when Codex must inspect, change, or test @praxisui/dynamic-form or praxis-dynamic-form package submit payload normalization, prepareSubmitPayload, normalizeSubmitPayload, normalizeDateArrays, local/transient fields, submitPolicy, entity lookup payloadMode, dirty-field filtering, nested array item schemas, or submit validation.
+- Descricao atual: Use when Codex must inspect, change, or test @praxisui/dynamic-form or praxis-dynamic-form package submit payload normalization, prepareSubmitPayload, normalizeSubmitPayload, normalizeDateArrays, local/transient fields, submitPolicy, entity lookup payloadMode, dirty-field filtering, dotted custom-field paths, nested date hydration/filter restoration, nested array item schemas, or submit validation.
 
 ## Classificacao inicial
 
