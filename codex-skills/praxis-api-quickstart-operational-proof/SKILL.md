@@ -1113,6 +1113,12 @@ store. Never substitute synthetic views or privileged application credentials to
 make a downstream test pass. Preserve assignment guards, ordinary runtime grants
 and per-class cleanup; migration of an old fixture removes its historical
 provenance exception instead of refreshing unrelated frozen hashes.
+If a later migration requires admitted operational identity, use the shared
+package-private `OperationalDatasourceMigrator.configuration` and a fixture-only
+administrative callback at that migration boundary. Supply the fixture's
+explicit admitted binding, reject a conflicting existing binding, and keep the migration's
+fail-closed check intact. Do not copy the Flyway builder, seed production identity
+implicitly, or catch an expected migration failure as the normal setup flow.
 
 For custom fields prove authenticated A/B schema isolation, conditional 304 and
 revocation, header spoofing, nested JSONB writes, required/type rejection, readonly
@@ -1121,7 +1127,11 @@ filter/includeIds as well as entity read/update/delete. Verify the committed row
 after rejected writes. Check WRITE readonly exclusion separately from response
 and filter visibility. Prove the actual declared scalar/array operand shape at the
 HTTP boundary; frontend fixtures alone do not establish host persistence. Retain
-source/dependency hashes, assigned branch and cleanup receipt. Focal candidate
+source/dependency hashes, assigned branch and cleanup receipt. For fact adoption,
+add an explicit metadata-only `ResourceFactCatalogProvider` and exercise
+`/schemas/domain` under A/B/A session context, header spoofing and revocation.
+Check fact/source/binding paths and declared governance (including confidence and
+AI-use reason/policy) without invoking a computation or business rule. Focal candidate
 proof is not a released-artifact, deployment or full-suite approval.
 
 ## Maven And Bootstrap Discipline
