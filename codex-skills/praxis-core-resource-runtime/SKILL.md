@@ -197,6 +197,24 @@ and `customField: true`; retain the published `customFieldKey` and
 `tenant`. `mapFieldDefinitionToMetadata` must carry that identity into
 `FieldMetadata`. Identity does not grant permission or replace backend validation.
 
+Keep parent restrictions monotonic when expanding: `disabled: true`, `readOnly: true` and `formHidden: true` remain restrictive on children. Do not distribute
+scalar parent defaults/validators to leaves. Keep `formHidden` server-owned during
+sync. Inherit absent child `fieldAccess`; accept equivalent authority sets, but
+reject different parent/child policies and require the backend's effective leaf
+policy rather than approximating AND with an OR-list. A normalizer error alone
+does not prove end-to-end fail-closed behavior: saved-config catches/fallbacks can
+retain earlier metadata, so inspect those consumers before claiming authorization.
+
+Do not certify every backend-valid custom key as an Angular control. Own-key
+payload helpers do not resolve FormGroup limitations with `constructor`,
+`toString` or `hasOwnProperty`; align the canonical backend key policy and
+consumers rather than adding screen aliases or private Angular API workarounds.
+Field read-only is also not submit omission: the custom-field backend rejects
+read-only property presence while request publication can still expose it.
+`x-ui.submitPolicy` is not materialized by the current FieldDefinition/normalizer
+contract. Record that backend/runtime adoption blocker; do not claim adding a
+local policy or omitting every hidden field resolves it canonically.
+
 Keep `customField`, `customFieldKey` and `customFieldScope` server-owned through
 form/filter reconciliation and `syncWithServerMetadata`, using the existing
 `applyServerOwnedFieldSemantics` path. Refresh current identities and clear stale
@@ -205,13 +223,14 @@ must not override schema identity. Include changes/removals of all three identit
 keys in `syncResult.modifiedFields` and `hasChanges`, even when no visual metadata
 changed, so callers can persist the corrected configuration.
 
-When a saved schema-backed raw container is absent from the current schema but
+When a saved raw container is absent from the current schema but
 that schema publishes its direct children with `customField: true`, materialize its
 metadata and layout references as those current children before reconciliation.
 Use the internal `materializeCustomFieldsLayout` path across all three entrypoints.
-Preserve explicit local containers, ancestors still declared by the current
-schema, more distant ancestors, and ordinary dotted fields without custom-field
-identity. Migrate both legacy `fields` and mixed `items` layouts, retain rich content and already placed
+A colliding saved container, even `source: "local"`, yields to the current server
+shape; do not carry its omit policy into the children. Preserve noncolliding local
+fields, ancestors still declared by the current schema, more distant ancestors,
+and ordinary dotted fields without custom-field identity. Migrate both legacy `fields` and mixed `items` layouts, retain rich content and already placed
 children, avoid duplicate references/item IDs, tolerate missing rows/columns and
 leave the input unchanged. Synchronization diagnostics must report container
 removal even when all children were already saved; repeating the migrated config
@@ -240,12 +259,34 @@ back to an old neutral-ID cache entry. `getFilterSchema` observable replay must
 also include the endpoint key and full representation tuple; capture the context
 when creating the observable, before delayed subscription or a context switch.
 
+The compiled `DynamicFormService` L1 key uses the shared structured tuple too;
+do not reintroduce tenant/locale delimiter concatenation. GenericCrud detects
+API/configured-endpoint/declared-tenant/locale changes, invalidates derived
+identity/capability metadata, hints and filter replay, and checks an internal
+epoch before late schema callbacks update current state. Getters also validate
+the declared context; returning to an earlier context needs a read/revalidation,
+not replay of its former observable. The isolated representation cache may remain
+for its own ETag revalidation. Remove derived resource fields absent from the new
+schema instead of retaining the previous context's values.
+
+This epoch covers configured scope only. Per-call `endpointKey`/`parentPath`
+overrides can run under the same epoch and compete for singleton derived metadata
+or hints even with separate representation cache keys. The getters do not accept
+per-call context. Record shared concurrent multi-endpoint/multi-parent adoption
+as an unresolved Core contract blocker; do not infer its safety from cache tests.
+
 Hosts must declare representation context: `GetSchemaParams.tenant`/`locale` for
 `SchemaMetadataClient`, and the configured tenant plus browser locale for
 `GenericCrudService`. Preserve that captured context through asynchronous cache
 reads and retries. Implicit global header hooks, interceptors, cookies or principal
 changes do not add a cache dimension; this tuple does not certify their isolation.
-Do not change public `buildSchemaId` or export the internal key to hide that limit.
+Extra global headers must not override explicitly declared headers through
+case differences. That precedence does not partition an implicit authentication
+principal. Do not change public `buildSchemaId` or export the internal key to hide
+that limit. Status-0 cache recovery and saved-config reconciliation warnings also
+do not prove schema freshness; the existing ready/error surface does not expose
+all degraded states. Keep that UX limitation explicit, without inventing a local
+freshness or authorization signal.
 
 - `SchemaMetadataClient` owns the schema-read deadline. Angular consumers inject `SCHEMA_METADATA_CLIENT_OPTIONS`; direct clients pass constructor options. `requestTimeoutMs` defaults to 30000; finite nonnegative values are required and 0 explicitly disables the deadline. Do not invent per-widget timeout settings for this policy.
 - Propagate `GetSchemaParams.signal` and preserve shared-request isolation: cancelling one subscriber must not cancel others; cancelling the final subscriber aborts the transport. Timeout must release in-flight state even if transport ignores abort, and late responses must not start cache writes.
@@ -284,7 +325,8 @@ npm run test:core -- --include=projects/praxis-core/src/lib/models/form/custom-f
 ```
 
 Prove schema identity refresh/removal, raw-container metadata/layout migration,
-direct-child-only replacement, local/current/distant ancestor preservation, mixed
+direct-child-only replacement including a colliding local parent, noncolliding
+local/current/distant ancestor preservation, parent restriction/fieldAccess cases, mixed
 content, unique item IDs, incomplete layouts, child placement without duplication,
 identity-only change/removal diagnostics, sync container-removal diagnostics,
 idempotence and source immutability.
@@ -299,7 +341,10 @@ Prove separate tenant/locale/resolved-URL entries, same-tuple client deduplicati
 independent cancellation, per-context ETags/304s, ignored neutral legacy entries
 and captured context across pending reads. Cover all three GenericCrud schema
 lanes, status-0 recovery without cross-tenant reuse, pending 304 races, filter
-replay isolation and delayed subscription. Keep these controlled transport proofs
+replay isolation, delayed subscription, delimiter-safe L1 keys and stale derived
+state fencing/removal across context changes. Include `dynamic-form.service.spec.ts`
+for L1 and `fetch-with-etag.util.spec.ts` for case-insensitive declared headers.
+Keep these controlled transport proofs
 separate from real authenticated host adoption and implicit credential isolation.
 
 - CRUD runtime, option sources, and selected-value rehydration:

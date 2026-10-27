@@ -854,8 +854,8 @@
                                             "praxis-core-i18n-resource-copy",
                                             "praxis-core-providers-bootstrap"
                                         ],
-                       "skillMdSha256":  "770F455FA4C9489B171B175887DF93A24B57CD3F11BA6B19991AA5AB8221C44A",
-                       "treeSha256":  "99A356911A39AD2C5168FF519392A1A85A393D2768DD4CA209A03231C6D10418"
+                       "skillMdSha256":  "BAAF11AC007193FE7DD86E2E21E24CFF2AFE07D996F83BE46BF0995D82AA9897",
+                       "treeSha256":  "20F5F45AA5F352083B7BD2D318785B63FA79F30548C7EA32BAB1B968911CF777"
                    },
                    {
                        "name":  "praxis-metadata-schema-contracts",
@@ -1523,8 +1523,8 @@
                        "compatibility":  ">=0.0.0",
                        "dependencies":  [
                                         ],
-                       "skillMdSha256":  "7BB55E74691A629EA9E16C5115687BE75639523A10BE59AB361FB2C2A067C9E2",
-                       "treeSha256":  "D6A083657545C6346B81C629785D161D0BE318307265E01861F1B74DAF46DDB1"
+                       "skillMdSha256":  "A3D4AFEAB8029D86D1577E0A9897338C6DD369816DE3BE88DADDAADD18619877",
+                       "treeSha256":  "FA6BACCEF16C2B3D18A78E0C8E76A7A5979EF11DDB6199E41A52F8A328745650"
                    },
                    {
                        "name":  "praxis-form-actions-hooks-runtime",
