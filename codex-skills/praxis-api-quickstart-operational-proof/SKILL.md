@@ -2279,14 +2279,24 @@ whose `RETURNING` supplies deadline/clock; its pre-execute monotonic anchor cons
 transport, decode and close without a tail clock read or deadline renewal. Fixture
 checkpoint counts are instrumentation of that exact test, not a public count contract
 or SLA. A per-execute floor includes real
-time already spent; do not add that delay blindly or instrument the product. Before
-the unchanged independent Config policy pool reserve, require a remainder strictly
-above 2.1 seconds, then continue through real commit and independent domain/receipt
-readback plus replay without a second effect. Synthetic host cost and JDBC counts are
-not wire RTT, a Render SLA or complete host evidence. Preserve five-second/one-second
-bounds; do not accept a candidate from reaching admission or a passing mock alone.
-The public Metadata `8.0.0-rc.164` SDK gate passed this physical Neon profile, including
-the pre-policy reserve, commit/readback/replay and the four ordered-unit markers.
+time already spent; do not add that delay blindly or instrument the product. Read
+the exact versioned test constants and release marker before interpreting its reserve.
+The revised synthetic SDK profile requires more than 1500 ms at execute 28:
+eleven remaining executes at a 100 ms floor plus a nominal 400 ms allowance for
+other costs. This explicitly replaces the earlier >2100 ms synthetic requirement;
+it does not change the five-second product deadline or the independent Config
+policy-pool reserve, and does not certify that the real host has that reserve.
+Count commit, checkout, decoding and instrumentation against the original clock;
+never subtract them or restart the deadline. Require real completion, independent
+domain/receipt readback and replay without a second effect. Reaching admission is
+not acceptance. Preserve all expiry, rollback and revoked-authority negative cases.
+A changed tolerance needs explicit rationale, independent review, matching marker,
+inventory/tests and fresh remote evidence; retain failed runs under their original
+criteria. Nominal arithmetic alone does not establish runtime completion.
+Synthetic host cost and JDBC counts are not wire RTT, a Render SLA or complete host
+evidence. Preserve five-second/one-second product bounds. Historically, public
+Metadata `8.0.0-rc.164` passed the earlier >2100 ms profile; that result does not
+certify a changed profile, source or consumer.
 Require separate exact-artifact HTTP and deployed Render proof before claiming adoption.
 
 ## Bound BASIC Proposal Preparation and Capture Separately
