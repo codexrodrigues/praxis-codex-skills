@@ -313,8 +313,13 @@ Selecting an organization reference must not synthesize a canvas for an existing
 flow page, freeze omitted canvas defaults, or persist a resolved theme/context
 shell as an explicit page override. Compare the authored document before/after,
 including omitted fields; only an explicit base-grid edit may introduce its canvas.
-Prove theme changes and clear/reopen inheritance after Apply. In Widget Settings,
-Undo stages an inverse preview that still requires Apply; do not confuse it with
+Prove theme changes and clear/reopen inheritance after Apply. When `GlobalConfig.pages.defaults`
+(`layoutPreset`, `themePreset`, `shellPreset`, `columns`, `gap`, `paddingInline`, `autoRows`)
+is configured, `PageConfigEditorComponent` and `DynamicPageConfigEditorComponent` must
+surface those inherited corporate defaults with the localized `(global)` indicator in
+summary chips, `PagePresetComparisonComponent`, and the `paddingInline` placeholder
+(`floatLabel="always"`), while keeping the omitted properties `undefined` in `getSettingsValue()`.
+In Widget Settings, Undo stages an inverse preview that still requires Apply; do not confuse it with
 discarding the current draft or persisting the page.
 
 

@@ -61,7 +61,7 @@ Default split:
 | Need | Use |
 | --- | --- |
 | Chart drill-down over one aggregate dataset | `@ApiResource` + `AbstractReadOnlyResourceController` |
-| Ranking, composition, distribution, trend | resource `/stats/*` |
+| Ranking, composition, distribution, trend, or 2D heatmap (`dimensions[]`) | resource `/stats/*` |
 | Filtered table behind a chart | resource `/filter` |
 | Chart filter options | resource option sources |
 | Dashboard first fold with multiple cards | custom `/api/dashboard/summary` |
@@ -100,6 +100,7 @@ POST /<resource>/filter/cursor
 POST /<resource>/stats/group-by
 POST /<resource>/stats/timeseries
 POST /<resource>/stats/distribution
+POST /<resource>/stats/comparison
 POST /<resource>/options/filter
 GET  /<resource>/options/by-ids
 POST /<resource>/option-sources/{sourceKey}/options/filter
@@ -136,11 +137,22 @@ public StatsSupportMode getTimeSeriesStatsSupportMode() {
 }
 
 @Override
+public StatsSupportMode getDistributionStatsSupportMode() {
+    return StatsSupportMode.AUTO;
+}
+
+@Override
+public StatsSupportMode getComparisonStatsSupportMode() {
+    return StatsSupportMode.AUTO;
+}
+
+@Override
 public StatsFieldRegistry getStatsFieldRegistry() {
     return StatsFieldRegistry.builder()
             .temporalTimeSeriesField("competencia", "competencia")
             .categoricalGroupByBucket("situacao", "situacao")
             .categoricalGroupByBucket("setor", "setor")
+            .numericDistributionField("valor", "valor")
             .numericMeasureField("quantidade", "quantidade")
             .numericMeasureField("valor", "valor")
             .build();
@@ -149,8 +161,8 @@ public StatsFieldRegistry getStatsFieldRegistry() {
 
 Only register fields that are valid for the operation:
 
-- dimensions: status, category, organization unit, month, rubrica group, frequency type.
-- measures: amount, count, days, hours, percentage, average, min/max when meaningful.
+- dimensions: status, category, organization unit, month, rubrica group, frequency type, or temporal fields with `StatsDimensionExtraction` (`HOUR_OF_DAY`, `DAY_OF_WEEK`, `MONTH_OF_YEAR`, etc.).
+- measures: amount, count, days, hours, percentage, average, `AVG_PER_CYCLE_OCCURRENCE`, min/max when meaningful.
 - never register technical IDs, document numbers, codes, `ROWID`, legacy locator fields, phone numbers, postal codes, or fiscal IDs as numeric measures.
 - treat legacy numeric codes as text/categorical dimensions unless users do arithmetic with them.
 
@@ -195,7 +207,7 @@ Use `@UiAnalytics` and `@AnalyticsProjection` when the UI should discover chart 
 
 Model:
 
-- `GROUP_BY` for ranking/composition by dimension.
+- `GROUP_BY` for ranking/composition/2D cross-tab by dimension.
 - `TIMESERIES` for trend lines and monthly evolution.
 - `DISTRIBUTION` for histograms/terms distributions.
 - `RANKING`, `TREND`, `COMPOSITION`, `COMPARISON`, or `DISTRIBUTION` as chart intent.
@@ -218,7 +230,7 @@ When an Angular dashboard needs an actual chart document, keep the boundary expl
 
 If a projection can be materialized by `AnalyticsChartConfigAdapterService`, prefer that path before adding custom dashboard payloads. If the catalog publishes `widget.chart`, the Angular side should use the `@praxisui/charts` backend payload/schema mapper path rather than local ECharts options.
 
-In `praxis-metadata-starter` `8.0.0-rc.24`, the first runtime resolution of grouped OpenAPI for `/schemas/filtered` response schemas can be slow while the group document is initialized and cached. Use a smoke timeout of at least 60 seconds for the first analytics schema pass, then rely on cached calls for faster repeat checks.
+In `praxis-metadata-starter` `8.x` (`8.0.0-rc.24+`), the first runtime resolution of grouped OpenAPI for `/schemas/filtered` response schemas can take extra time while the group document is initialized and cached. Use a smoke timeout of at least 60 seconds for the first analytics schema pass, then rely on cached calls for faster repeat checks.
 
 ## Filters And Option Sources
 
@@ -274,7 +286,7 @@ stats or turn SQL/provider internals into public dashboard contract.
 
 For legacy-backed hosts:
 
-- Resolve user, organization, permissions, tenant, and database context server-side.
+- Resolve user, organization, permissions, tenant, and database context server-side (`resolveResourceFilterAccessScope()`).
 - Do not accept company/user/profile/permission context in dashboard filter bodies unless the host has an explicit trusted admin use case.
 - Do not query high-volume transactional legacy tables during login or dashboard first load.
 - Use aggregate tables, views, materializations, or validated cockpit sources.
@@ -299,38 +311,16 @@ Minimum validation for a dashboard resource:
 - no leaked private fields in schema, response, option metadata, or errors;
 - aggregate parity check against the legacy/source dataset for at least one period.
 
-Schema smokes can run against an isolated H2/test datasource when they only assert OpenAPI,
+Schema smokes can run against an isolated test context when they only assert OpenAPI,
 `/schemas/filtered`, catalog links, `x-ui.analytics`, and option-source metadata. Content smokes
 that expect non-empty buckets, points, or option lists require seeded fixture data or the approved
-published/local reference database; do not treat an empty H2 dataset failure as proof that the
-dashboard contract is broken without checking data setup.
+published/isolated Neon reference database.
 
 When validation is partial, report exactly which endpoints were executed and which remain planned.
 
-## Iteration During Implementation
-
-Update this skill during real endpoint implementation when you discover a reusable rule, failure mode, validation checklist item, or starter-version behavior that will matter for future dashboard work.
-
-Do update the skill for:
-
-- confirmed starter behavior from OpenAPI, tests, `javap`, source, or runtime smoke;
-- a better boundary rule between aggregate resource and custom dashboard endpoint;
-- a recurring security or metadata leakage issue;
-- a reliable `StatsFieldRegistry`, `@UiAnalytics`, option-source, or capability pattern;
-- a validation command or smoke pattern worth repeating.
-
-Do not update the skill for:
-
-- one-off consumer or domain business decisions that belong in host-specific docs;
-- endpoint names that are still speculative;
-- unverified assumptions about starter behavior;
-- implementation details that only make sense in one service class.
-
-When updating, keep `SKILL.md` concise and move version-specific observations to `references/`.
-
 ## Reference
 
-Read `references/praxis-metadata-starter-8-rc24.md` when you need confirmed classes, methods, or endpoint families observed in `praxis-metadata-starter` `8.0.0-rc.24`.
+Read `references/praxis-metadata-starter-8-rc24.md` when you need baseline classes, methods, or endpoint families introduced in `praxis-metadata-starter` `8.0.0-rc.24+`.
 
 Read `references/quickstart-dashboard-patterns.md` when you need concrete reference-host patterns from `praxis-api-quickstart`, especially payroll analytics, `@UiAnalytics`, multi-metric stats, option-source dependencies, and smoke test shapes.
 

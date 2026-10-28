@@ -25,7 +25,13 @@ operation belongs in the canonical starter/service owner, not in a table compone
 ## Author The Resource Operation
 
 1. Register analytics through `StatsFieldRegistry` and the resource's
-   `StatsSupportMode`. Publish only fields whose domain meaning, aggregation,
+   `StatsSupportMode`. Remember that `AbstractBaseQueryResourceService` defaults
+   `getStatsFieldRegistry()` to `StatsFieldRegistry.empty()` and defaults
+   `getGroupByStatsSupportMode()`, `getTimeSeriesStatsSupportMode()`,
+   `getDistributionStatsSupportMode()`, and `getComparisonStatsSupportMode()` to
+   `StatsSupportMode.DISABLED` — override **both** `getStatsFieldRegistry()` and
+   each enabled `get*StatsSupportMode()` returning `StatsSupportMode.AUTO` (plus
+   `getDatasetVersion()`). Publish only fields whose domain meaning, aggregation,
    visibility, filters, and precision are verified. Do not let a chart choose
    database columns by string or derive metrics in Angular.
 2. Keep stats requests tied to the resource query contract. Apply the same

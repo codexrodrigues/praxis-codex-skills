@@ -48,10 +48,15 @@ Use this reference before finalizing a new Praxis Java host scaffold.
 
 ## Optional Runtime Features
 
-- Stats are exposed only when `praxis.stats.enabled: true` is configured in `application.yml` and the service declares support modes plus a valid `StatsFieldRegistry`.
-- Cursor pagination (`POST /{resource}/filter/cursor`) is exposed only when the service overrides `filterEntitiesByCursor` (which throws `UnsupportedOperationException` in `AbstractBaseQueryResourceService` by default).
-- Collection export is exposed only when the service declares support, capability metadata, field allowlist, server-side row limits, and a real export executor.
-- Governed `RESOURCE_ENTITY`, `LIGHT_LOOKUP`, and other option-source work follows `praxis-resource-entity-lookup-backend` when it goes beyond simple id/label options.
+- Stats are exposed only when `praxis.stats.enabled: true` is configured in `application.yml` and the service declares support modes plus a valid `StatsFieldRegistry`, paired with `@UiAnalytics` / `@AnalyticsProjection` on the controller.
+- Cursor pagination (`POST /{resource}/filter/cursor`) is exposed only when the service overrides `filterEntitiesByCursor` (which throws `UnsupportedOperationException` in `AbstractBaseQueryResourceService` by default) and the entity declares a deterministic `@DefaultSortColumn`.
+- Collection export is exposed only when the service declares support, capability metadata, field allowlist, server-side row limits, all 3 formats (`CSV`, `JSON`, `EXCEL`), 5 scopes (`AUTO`, `SELECTED`, `FILTERED`, `CURRENT_PAGE`, `ALL`), `CollectionExportFieldPresentation`, and a real export executor.
+- Governed `RESOURCE_ENTITY`, `LIGHT_LOOKUP`, and other option-source work follows `praxis-resource-entity-lookup-backend` and populates a rich `EntityLookupDescriptor` (`LookupSelectionPolicy`, `LookupDetailDescriptor`, `LookupDisplayDescriptor`, `LookupFilteringDescriptor`, and cross-field `dependsOn`/`dependencyFilterMap` — never leaving them `null`).
+- Mutable enterprise resources wire Governed Bulking (`@BulkEditable` on `UpdateDTO`, `@BulkResourceOperations` on the controller, and `@BulkOperation` for `UNIFORM_UPDATE`, `PER_ITEM_UPDATE`, and `DOMAIN_COMMAND` collection `@WorkflowAction`s).
+- Progress, quota, occupancy, and comparison columns on `ResponseDTO` declare `@MicroVisualization` + `@Threshold` validated by `PraxisExpressionStaticValidator`.
+- Interactive form calculations and auto-fills are published via `ReactiveDeterminationDefinitionProvider` (`POST /{resource}/reactive-determinations/evaluate`).
+- The bundled Praxis Metadata Cockpit (`/praxis/cockpit/**`) is documented and permitted in dev/inspection security profiles alongside `/v3/api-docs/**` and `/swagger-ui/**`.
+- Every host test suite includes a JUnit completeness gate running `SemanticMetadataReviewer`, `PraxisExpressionStaticValidator`, and `OptionSourcePublicationInventory` (bundled in `praxis-metadata-starter`), plus `python scripts/workspace/audit-java-resource-completeness.py <host> --strict` when inside the monorepo.
 - In PostgreSQL with `spring.jpa.hibernate.ddl-auto=validate`, fixed-length `CHAR(n)` (`bpchar`) columns mapped to `String` include `@JdbcTypeCode(SqlTypes.CHAR)`.
 - When `@CustomFields` is used, both the JPA Entity JSONB field and the DTO/FilterDTO `customFields` maps carry `@CustomFields(resourceKey = ...)` so JSONB filtering in `GenericSpecificationsBuilder` resolves the entity container.
 

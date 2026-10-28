@@ -47,6 +47,7 @@ Hosts and docs consume these contracts. Do not create host-local accordions, par
 - Prefer metadata `content` and `widgets` inside panels. Use host projection only when the host intentionally owns the nested component lifecycle.
 - Forward nested widget events through `widgetEvent` instead of app-specific event relays.
 - Keep action buttons as local component actions unless a canonical global action or composition link contract is explicitly introduced by the owning platform surface.
+- When `panels[].quickView` (`ResourceQuickViewBinding`) is configured on a panel header, render it strictly as an explicit button (`triggerMode: 'explicit-button'`, `data-testid="expansion-panel-quick-view-action"`) with click and keyboard propagation stopped (`$event.stopPropagation()`) so inspecting the referenced entity never toggles the `MatExpansionPanel`, and suppress the button when the target ID is absent from `[context]` / panel form values.
 
 ## Authoring Rules
 

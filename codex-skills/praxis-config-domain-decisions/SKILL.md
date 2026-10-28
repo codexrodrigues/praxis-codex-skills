@@ -144,10 +144,7 @@ create another head store to compensate for an incomplete reader.
   distinct and mandatory under their governance. Preserve exact persisted numeric
   semantics in these producers and the reader; a canonical hash does not repair a
   payload narrowed to double.
-- Legacy missing effect is conservative BLOCK only when its source/projection is
-  verifiable. Unverifiable old hashes require a governed replacement definition
-  with distinct identity at the same target; never rewrite history or add a
-  permissive fallback. Other projection families retain their existing digests.
+- Missing `effect` in operational policy slots is rejected fail-closed (`400 Bad Request` / `MISSING_OPERATIONAL_POLICY_EFFECT`); never infer an implicit `BLOCK` or permissive fallback. Unverifiable hashes require a governed replacement definition with distinct identity at the same target; never rewrite history. `/definitions/{id}/facts` (`praxis.domain-rule-fact-catalog.v1`) supports `number-array`/`array<number>` and returns `facts: []` for non-fact UI rule families (`visual_guidance`, `form_rule`, `color_palette`) or unhydrated drafts, while governed condition authoring requires a complete `factCatalog`.
 - Keep publish/status transitions/promotion under the Config PostgreSQL transaction
   scope mutex, acquired before loading lifecycle inputs. Require READ COMMITTED and
   a clean Config persistence context on entry; reject external pending entity

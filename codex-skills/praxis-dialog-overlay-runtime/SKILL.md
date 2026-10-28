@@ -41,9 +41,7 @@ Inspect:
 - Use `alertdialog` for destructive/blocking confirmations.
 - Keep preset merge order canonical: type preset, variant preset, local config.
 - Use `PraxisLayerScaleStyleService`/core overlay layering before patching individual hosts for z-index issues.
-
-Pair focus lifecycle, keyboard containment, accessible names, and overlay
-announcements with `praxis-angular-accessibility-governance`.
+- For governed Quick View overlays (`QuickViewDialogPresenterService`, `PraxisQuickViewOverlayComponent`, `providePraxisQuickViewDialogPresenter()`), `@praxisui/dialog` implements `PRAXIS_QUICK_VIEW_PRESENTER` with a single active CDK overlay per viewport, supporting both `element` and `virtual-rect` (`QuickViewRuntimeAnchor`) origins, frameless identity header (`PraxisResourceIdentityComponent`, hiding header metadata chips when `summaryItems` or `customBodyRenderer` are present to avoid the "Russian Doll" duplication effect) + compact summary/custom body (rendering `[data-testid="quick-view-masked-indicator"]` and suppressing copy buttons when `item.masked` is true) + non-destructive action/surface footer, pointer-enter/leave hover handoff, responsive bottom-sheet fallback on coarse pointers / narrow viewports (`<= 640px`), `Escape`/backdrop close, and focus restoration (without stealing focus on programmatic hover leave).
 
 ## Validation
 

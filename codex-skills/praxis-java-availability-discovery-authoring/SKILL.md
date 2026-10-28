@@ -40,16 +40,25 @@ metadata until an actual operation and its canonical schema exist.
    method enters an explicit conflict-validation zone and requires a documented
    reason plus validation of `praxis.metadata.validation.*` behavior.
 4. Define availability from a shared `ResourceStateSnapshot` and contextual
-   availability resolvers/evaluators. Resolve state once per resource request and
-   reuse it across action, surface, capability, and HATEOAS decisions. Do not
-   add repeated N+1 loads or duplicate state predicates in controllers and Angular.
+   availability resolvers/evaluators. `DefaultCapabilityService` opens a
+   `ResourceStateSnapshotScope` per item capability projection so surface,
+   action, and capability resolvers share a single
+   `ResourceStateSnapshotProvider.resolve(resourceKey, resourceId)` lookup.
+   Whenever a controller declares `allowedStates` on `@WorkflowAction` or
+   `@UiSurface`, register that `@ApiResource(resourceKey = ...)` in the host's
+   `ResourceStateSnapshotProvider` (e.g. `QuickstartResourceStateSnapshotProvider`)
+   and cover it with an architectural test so item `/capabilities` never degrades
+   to `SNAPSHOT_UNAVAILABLE`. Do not add repeated N+1 loads or duplicate state
+   predicates in controllers and Angular.
 5. Preserve the distinction between absent catalog entry and unavailable
    capability. Catalogs report definitions; `GET /{resource}/capabilities` and
    `GET /{resource}/{id}/capabilities` publish aggregate collection/item snapshots.
    They do not redefine request payloads, schemas, or business rules.
 6. Add related-resource surfaces only when child binding and child operations are
-   backed by canonical child capabilities. Add stats/export only when actual
-   `StatsFieldRegistry` / `StatsSupportMode` or collection export support exists.
+   backed by canonical child capabilities (`SurfaceCatalogService` memoizes child
+   capability lookups per normalized `childResourcePath` within each catalog pass).
+   Add stats/export only when actual `StatsFieldRegistry` / `StatsSupportMode` or
+   collection export support exists.
 7. Keep `RestApiResponse._links` aligned with available operations. Do not replace
    HATEOAS with host-local link fields or force the UI to rebuild URLs from labels.
 
@@ -71,7 +80,7 @@ with effective legacy Java method IDs. `resolveByOperationId` rejects duplicate 
 its legacy single-handler fallback is not a strict binding. Require one path and
 method; reject an address shared by another mapping even with a different ID or
 media type. Reject hidden or unrepresentable conditional routing, and do not silently
-normalize a different registered path. Check the candidate's tests for these limits.
+normalize a different registered path.
 
 For a governed bulk business action, keep the confirmation as a real
 `@WorkflowAction` and bind it with `@BulkOperation` on that same handler. The
@@ -80,62 +89,33 @@ the shared lifecycle handlers, while `@BulkOperation` binds the business
 confirmation/evaluation pair. The method annotation names the bulk mode, the
 distinct evaluation `operationId`, and the collection atomicity. Both confirmation
 and evaluation must be explicit POST operations in the same `@ApiResource` controller,
-with request bodies and globally
-unique operation IDs; the declared atomicity must agree with the workflow action.
-An action annotation without the class-level lifecycle declaration is orphaned:
-the binding diagnostic must reserve its IDs and strict operation resolution must
-fail closed. Do not treat evaluation or confirmation as a bodyless lifecycle operation.
+with request bodies and globally unique operation IDs; the declared atomicity must
+agree with the workflow action. An action annotation without the class-level
+lifecycle declaration is orphaned: the binding diagnostic must reserve its IDs and
+strict operation resolution must fail closed. Do not treat evaluation or
+confirmation as a bodyless lifecycle operation.
 
 The binding proves identity between real MVC handlers; it does not prove complete
 OpenAPI schema content, evaluation-provider wiring, authorization, descriptor
 fingerprint, durable lifecycle control, readiness, or execution. A missing or
-ambiguous pair must fail closed as a whole. Do not infer bulk support from the
-annotation alone and do not publish `READY` until the compositor has independently
-validated all required schemas, provider/infrastructure dependencies, and durable
-control state.
-
-For the current structural composition step, the five lifecycle operations must
-also prove absence of OpenAPI `requestBody` in the captured group snapshot with
-`snapshot.requireNoRequestBody(operation)`. Use the strict batch resolver to bind
-the full operation set without refetching that captured group. This structural
-proof still does not determine action availability or authorize execution.
-
-Run `BulkOperationContractTest`, `BulkResourceOperationBindingsTest`, and
-`OpenApiCanonicalOperationResolverTest`; also run
-`CanonicalResourceOperationBindingTest` when present and
-`ReactiveDeterminationMetadataCompilerTest` for the existing lookup consumer.
-A generated schema reference alone does not prove schema content, evaluation versus
-confirmation role, provider wiring, authorization or execution. The structural bulk
-binding is only an input to the later concrete compositor, which must validate these
-and fail closed when dependencies are missing. Do not advertise bulk support from
-the binding or resolver alone.
+ambiguous pair must fail closed as a whole. For the structural composition step,
+the five lifecycle operations must also prove absence of OpenAPI `requestBody` in
+the captured group snapshot with `snapshot.requireNoRequestBody(operation)`.
 
 ## Bind The Actual MVC Request DTO
 
 Where available, use `requireResourceRequestBody(resourceKey, operationId, method,
 mapper.getTypeFactory())` and read `docs/spec/CANONICAL-OPERATION-BINDING.md` first.
 It shares the strict MVC entry with operation resolution and returns operation plus
-JavaType from the actual required @RequestBody, resolving controller/interface generics.
-Do not pass an independently guessed DTO or perform another handler lookup in the host.
+`JavaType` from the actual required `@RequestBody`, resolving controller/interface
+generics. Do not pass an independently guessed DTO or perform another handler lookup
+in the host.
 
 Only the documented concrete DTO subset is supported. Reject optional/multiple bodies,
 transport wrappers, scalar/container roots, raw/unbound/wildcard types, non-static member
-classes and unresolved generic ancestors. Preserve nested arguments rather than reducing
-them to Object. Custom resolvers implement the same guarantee; default fails explicitly.
-
-Pass the returned operation to `documents.requireRequestSchema` and the returned bodyType
-to BulkEditableFields with the same configured mapper and trusted protected wire names.
-This proves the declared MVC type, not custom converter/deserializer or SpringDoc parity.
-The bulk evaluation wrapper is not the unit update DTO. Require explicit update IDs in
-the adopting host; do not weaken the binding when old overrides only declare a summary.
-
-MVC binding needs initialized mappings but performs no schema fetch. Read schemas only
-when the document source is ready. Optional asynchronous warmup is not an admission gate:
-the future executable registry must reject admission until schema/providers/infrastructure
-are validated and define invalidation/revalidation separately.
-
-Prove CanonicalRequestBodyBindingTest, the existing operation resolver tests and
-CanonicalRequestSchemaHttpIntegrationTest, plus exact-candidate host HTTP regression.
+classes and unresolved generic ancestors. Pass the returned operation to
+`documents.requireRequestSchema` and the returned `bodyType` to `BulkEditableFields`
+with the same configured mapper and trusted protected wire names.
 
 ## Preserve The Platform Boundary
 

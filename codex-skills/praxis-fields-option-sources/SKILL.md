@@ -119,6 +119,10 @@ adding Angular fallbacks:
 
 Use `entityLookup` / `inlineEntityLookup` for corporate entity selection when the backend publishes `RESOURCE_ENTITY` semantics, rich display fields, selection state, dependency requirements, create/detail affordances, or lookup filtering/sorting.
 
+- For **Resource Quick View** on reference and lookup fields (`@ResourceReference`, `x-ui.resourceReference`, `optionSource.detail.resourceKey`, or explicit `quickView`), resolve the binding via `resolveFieldQuickViewBinding(field)` in `@praxisui/core` (which protects against `optionSource.valuePropertyPath: 'id'` colliding with the parent entity's own `'id'`).
+- In **`view` / `presentation` mode**, `FieldShellComponent` binds `[praxisQuickView]` (`hover-and-click`) on `.praxis-presentation__value` when a single reference ID is present.
+- In **`edit` / `create` mode**, `MaterialAsyncSelectComponent` (`data-testid="async-select-quick-view-action"`) and `InlineEntityLookupComponent` (`data-testid="entity-lookup-quick-view-action"`, `data-testid="entity-lookup-dialog-quick-view-action"`) must strictly use `trigger: 'explicit-button'` (`openImmediate`) and never hover on editable inputs, lazy-resolving `ResourceQuickViewService` via `Injector` so shell topbar mounts do not eagerly instantiate `GlobalActionService`.
+
 Pair with `praxis-fields-selection-lookup-controls` when the task also touches select, chips, tree,
 list, inline selection overlays, option identity UI, or AI control-family guidance. Keep this skill
 as the owner for backend option-source semantics, cascades, by-ids reload, and selected reload
