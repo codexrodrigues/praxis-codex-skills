@@ -63,6 +63,17 @@ A new public SDK release remains a separate authorized official workflow gate.
 Before creating a release tag, inspect Metadata `RELEASING.md` and run the official
 `tools/release/neon_gate.py` inventory preflight for every official selection on the
 clean reviewed source, with the full resolved base SHA and its current POM version.
+Use `--release --require-clean --base <HEAD-SHA> --version <current-POM-version>`
+with each `--print-selection` (`no_db`, `managed-owner`, `optional-policies`,
+`resource-contracts`). Non-release inventory validation does not check historical
+impact/reuse closures and is not a substitute. After the official tag exists,
+validate its exact derivation and repeat against the assigned pre-tag base.
+Logical closure hashes may normalize only the root POM project-version text;
+parent/dependency/plugin/property/profile/source changes remain significant.
+Inspect the versioned normalization policy and reject ambiguous POMs or references
+that let the project version affect other build/dependency inputs. A migration of
+that hash algorithm needs a causal old/new map and preserved historical raw ZIPs.
+Never normalize the published POM/JAR hashes, version checks or build receipts.
 A passing focal test does not update test-source hashes or broad impact/reuse
 closures. Review affected dispositions against the actual production/dependency
 diff before refreshing hashes; preserve original historical receipts and limits.
