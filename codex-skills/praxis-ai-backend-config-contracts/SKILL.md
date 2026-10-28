@@ -53,6 +53,8 @@ When backend contract behavior is in scope, load the relevant config-starter ski
 - Resolve AI context base URL in this order: explicit `AI_BACKEND_ENDPOINTS.aiContextBaseUrl`, derived `API_URL.default.baseUrl + praxis/config/ai-context`, fallback `/api/praxis/config/ai-context`.
 - Do not hardcode external provider URLs in `@praxisui/ai`. Provider catalog, model listing, status, test calls, suggestions, patches, stream start/connect/cancel, observation feedback, and authoring manifest operations go through the Praxis Config boundary.
 - `POST /api/praxis/config/ai/transcriptions` is the canonical short-audio transcription boundary. Send multipart `audio` plus optional `language` through the resolved AI base URL, preserve credentials and tenant/user/environment headers, and accept only the safe transcription response. Do not derive a provider endpoint, key, model, or fallback in Angular.
+- `GET /api/praxis/config/ai/transcriptions/capabilities` returns only `{ available: boolean }` with `Cache-Control: no-store`. Use `AiBackendApiService.getAudioTranscriptionCapabilities()` with the same resolved AI base URL, scoped headers and credentials before requesting microphone access. Accept only explicit `true`; do not infer availability from chat status, catalog provider names, browser recording support or frontend credentials.
+- Availability reports local provider support and effective credential configuration; it makes no provider call and does not certify key validity, connectivity, quota or extra permissions. Backend operational failures yield `false` without configuration details; principal rejection remains HTTP 403. A missing or failing endpoint must not trigger browser-speech or direct-provider fallback.
 - A transcription response is editable user-input material, not an assistant result. It must not start a turn, resolve intent, auto-submit, mutate history, authorize preview/apply, or become trusted grounding merely because Config returned provider/model metadata.
 - Preserve generated contract version and schema hash headers for patch/orchestrator contracts.
 - Treat `praxis-config-starter/docs/ai/contracts/praxis-ai-api-contract-v1.1.openapi.yaml` as the canonical AI HTTP/SSE contract source. Do not hand-edit `ai-contract.generated.ts` or Java contract constants; update the OpenAPI source, run `node tools/contracts/generate-ai-contract-bindings.js` from `praxis-config-starter`, and commit the generated Java/TypeScript outputs together.
@@ -114,6 +116,7 @@ Use focused checks:
 - backend endpoint behavior: focused `praxis-config-starter` tests when backend contracts change
 
 For governed transcription, prove scoped multipart encoding, `withCredentials`,
+scoped capability discovery, fail-closed readiness before microphone permission,
 safe response handling, no automatic turn submission, capture cancellation and
 track cleanup. Run the Config controller test and the provider management/
 provider adapter tests applicable to the selected implementation; if the latter

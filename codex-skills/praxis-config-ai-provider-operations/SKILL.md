@@ -26,7 +26,7 @@ Inspect:
 - `AgentsApiFunctionBridgeProbe` and
   `scripts/workspace/agents-sdk-function-comparison.py` with their offline tests
   when comparing the Java client and official Python SDK
-- `AiAudioTranscriptionController`, `AiAudioTranscriptionRequest`, `AiAudioTranscriptionResponse`, `AiProvider.supportsAudioTranscription/transcribeAudio`, provider management selection/configuration, and provider adapter implementation
+- `AiAudioTranscriptionController`, `AiAudioTranscriptionRequest`, `AiAudioTranscriptionResponse`, `AiAudioTranscriptionCapabilitiesResponse`, `AiProvider.supportsAudioTranscription/isAudioTranscriptionAvailable/transcribeAudio`, provider management selection/configuration, and provider adapter implementation
 - `docs/ai/openai-cost-attribution-and-live-gates.md`
 - provider pricing schema/snapshot and provider telemetry evidence docs
 - focused management, router, failure, metrics, telemetry, pricing, streaming,
@@ -49,6 +49,9 @@ deployment variables, and the exact live-gate workflow or script.
   multipart payload, chooses the configured transcription provider/model, checks
   provider capability, and returns transcript text for later user review. It
   must not initiate authoring, semantic routing, preview, apply, or persistence.
+- `GET /api/praxis/config/ai/transcriptions/capabilities` exposes only `{ available: boolean }`, with the same canonical principal and shared provider/configuration resolver as `POST /api/praxis/config/ai/transcriptions`. The dedicated `praxis.ai.transcription.provider` / `praxis.ai.transcription.model` selection governs audio; chat status cannot establish transcription availability. Reuse a stored key only when it matches the configured transcription provider, then preserve the selected adapter's normal environment-key fallback.
+- Keep implementation support (`supportsAudioTranscription`) separate from local readiness (`isAudioTranscriptionAvailable`, default `false`). The adapter readiness check must use the same effective credential resolution as execution without constructing a client or calling the provider. Return `false` for absent/unsupported/unconfigured providers or operational failures, without exposing provider, model, key or failure details. Principal denial remains HTTP 403; responses use `Cache-Control: no-store`.
+- `available=true` proves local configuration readiness only, not credential validity, connectivity, quota or extra authorization. Do not perform a paid transcription to answer discovery, and do not teach frontend provider/key heuristics as a substitute for this contract.
 - Keep raw audio bytes, transcript text, file names, tenant/user identifiers,
   provider bodies, and credentials out of ordinary telemetry and errors. When
   operational evidence is required, retain only bounded safe metadata such as
@@ -250,6 +253,8 @@ and provider adapter tests for audio transcription, Quickstart security tests fo
 rate limiting, and a real-provider probe only when credentials, model listing,
 or external integration genuinely requires it. Real paid calls require explicit
 scope, stopping conditions, cost expectation, and sanitized output.
+
+For audio readiness, use `AiAudioTranscriptionControllerTest`, `AiProviderManagementServiceTest` and `SpringAiOpenAiServiceTest` to prove principal scope/403, shared POST/GET selection, dedicated audio versus chat configuration, matching stored credentials versus environment fallback, missing key/support/provider, sanitized `false` failures and no provider invocation during discovery.
 
 Prove healthy probe/routing, transcription capability rejection and scoped
 bounded success without turn creation, classified provider failure with bounded fallback,
