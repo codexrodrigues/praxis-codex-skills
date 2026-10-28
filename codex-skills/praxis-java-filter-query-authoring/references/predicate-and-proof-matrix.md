@@ -6,6 +6,7 @@
 | --- | --- | --- | --- |
 | Is this exact state, owner, or identifier? | `EQUAL` / `NOT_EQUAL` | Scalar | Entity field or relation path |
 | Does text contain a business term? | `LIKE`, `NOT_LIKE`, `STARTS_WITH`, `ENDS_WITH` | Text | Search scope and sensitive-field exclusion |
+| Does a single search term match across multiple attributes or related entities (e.g., name, social name, parent/dependent name, tax ID)? | `LIKE` with `relations = {"fullName", "socialName", "motherName", "dependents.fullName", "taxId"}` | Text | Disjunction (`OR`) across root and joined paths (`DISTINCT` enabled automatically on nested joins) |
 | Is it one of these governed values? | `IN` / `NOT_IN` | List | Alias-to-relation mapping and option-source alignment |
 | Is a value within a measurable period or amount? | `BETWEEN`, `BETWEEN_EXCLUSIVE`, `NOT_BETWEEN`, `OUTSIDE_RANGE` | Ordered two-value list | Boundaries, type, time zone, normalization |
 | Did it occur on a date or relative window? | `ON_DATE`, `IN_LAST_DAYS`, `IN_NEXT_DAYS` | Date or integer days | Clock, zone, inclusivity, audit meaning |

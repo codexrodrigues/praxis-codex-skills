@@ -102,17 +102,11 @@ Rules:
 - `crossFilter` carries mapped canonical filters, target/action evidence, and its source selection. Route it to `queryContext` through a typed composition transform.
 - `drillDown` needs an observable runtime event/action path; a mapped boolean without an output or dispatch is not implemented drill-down.
 - `open-detail` should resolve a governed surface/action; `navigate` a governed route/action; `update-context` a state/context endpoint. The chart must not execute arbitrary strings.
+- `quickView`: When `ChartConfig.quickView`, `ChartSeries.quickView`, or `PraxisXUiChartMetricContract.quickView` (`ResourceQuickViewBinding`) is configured on a point/bucket that carries a real record identity (`recordOpen.sourceIdentityField`), `PraxisChartComponent` opens the governed `ResourceQuickViewService` anchored to the canvas point's `virtual-rect` (`anchorRect` in viewport coordinates from `onPointHover`/`onPointLeave`) while suppressing the competing ECharts visual tooltip (`aria.enabled` preserved) and exposing a keyboard/touch `[praxisQuickView]` chip in `showAccessibleData()`, without hijacking `pointClick`, `selectionChange`, `crossFilter`, or `drillDown`.
 - Mappings use canonical source and target field identities. Missing source values, stale targets, denied actions, and incompatible port schemas fail closed with diagnostics.
 - For nested charts, preserve `nestedPath` and let the composition runtime deduplicate legacy widget-event bridges.
 
 The AI manifest, editor, canonical mapper, component outputs, component metadata, Page Builder port catalog, runtime dispatch, and docs must agree. Validator names or authored event objects do not prove execution by themselves.
-
-Selection identity is semantic: series/dimension/category/point keys, not pixel
-position or delayed DOM event identity. Re-selecting the same semantic point
-toggles it once; deduplicate delayed click fallbacks and prevent feedback loops
-when the resulting filter rematerializes the chart. Expose keyboard interaction,
-localized accessible state, and an equivalent table/summary path; pair with
-`praxis-angular-accessibility-governance`.
 
 ## Loop And Consistency Safety
 

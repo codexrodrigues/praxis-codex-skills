@@ -1059,26 +1059,26 @@ public class PayrollViewController extends AbstractReadOnlyResourceController<
 
 ### 9. Composite Primary Key Variant (`@EmbeddedId` + `CompositeResourceId`)
 
-When a resource has an **immutable** composite business key (e.g., `VinculoId(Long numfunc, Integer numvinc)` or `DependenteId(Long numfunc, Integer numdep)`), declare an `@Embeddable` record implementing `CompositeResourceId` and use it directly as `ID` across entity, repository, DTO, mapper, service, and controller:
+When a resource has an **immutable** composite business key (e.g., `EmployeeAssignmentId(Long employeeId, Integer assignmentNumber)` or `OrderItemId(Long orderId, Integer lineNumber)`), declare an `@Embeddable` record implementing `CompositeResourceId` and use it directly as `ID` across entity, repository, DTO, mapper, service, and controller:
 
 ```java
 @Embeddable
-public record VinculoId(
-        @Column(name = "numfunc", nullable = false) Long numfunc,
-        @Column(name = "numvinc", nullable = false) Integer numvinc
+public record EmployeeAssignmentId(
+        @Column(name = "employee_id", nullable = false) Long employeeId,
+        @Column(name = "assignment_number", nullable = false) Integer assignmentNumber
 ) implements CompositeResourceId {
 }
 ```
 
 Key corporate modeling and UX rules for composite primary keys:
-- **Wire & OpenAPI:** `praxis-metadata-starter` automatically serializes/deserializes `VinculoId` as a canonical wire string (`"1001:1"`) in `@PathVariable`, `ids`, `includeIds`, `OptionDTO<VinculoId>`, `RESOURCE_ENTITY` option sources, tabular exports (CSV/Excel/JSON), and `/schemas/filtered` (`type: "string"`, `format: "composite-id"`, `x-ui.compositeIdComponents: ["numfunc", "numvinc"]`, `x-ui.compositeIdSeparator: ":"`).
-- **Sorting & Criteria:** Sorting by `sort=id,desc` or `@DefaultSortColumn` on `@EmbeddedId` automatically expands to component orders (`id.numfunc DESC, id.numvinc DESC`), and `@Filterable(relation = "id.numfunc")` / `@Filterable(relation = "vinculo.id")` navigate via `.get(...)` without invalid `LEFT JOIN`s.
+- **Wire & OpenAPI:** `praxis-metadata-starter` automatically serializes/deserializes `EmployeeAssignmentId` as a canonical wire string (`"1001:1"`) in `@PathVariable`, `ids`, `includeIds`, `OptionDTO<EmployeeAssignmentId>`, `RESOURCE_ENTITY` option sources, tabular exports (CSV/Excel/JSON), and `/schemas/filtered` (`type: "string"`, `format: "composite-id"`, `x-ui.compositeIdComponents: ["employeeId", "assignmentNumber"]`, `x-ui.compositeIdSeparator: ":"`).
+- **Sorting & Criteria:** Sorting by `sort=id,desc` or `@DefaultSortColumn` on `@EmbeddedId` automatically expands to component orders (`id.employeeId DESC, id.assignmentNumber DESC`), and `@Filterable(relation = "id.employeeId")` / `@Filterable(relation = "assignment.id")` navigate via `.get(...)` without invalid `LEFT JOIN`s.
 - **Value Objects (`@Embedded`) vs. Composite Keys (`@EmbeddedId`):** Ordinary `@Embeddable` classes used with `@Embedded` (value objects) do **not** implement `CompositeResourceId` and remain structured JSON objects in DTOs/OpenAPI while still navigating via `.get(part)` in JPA Criteria.
 - **DTO & UX Contract:**
-  - `ResponseDTO`: expose `VinculoId id` (`format: "composite-id"`, `formHidden = true`, `readOnly = true`) **and** individual business columns (`Long numfunc`, `Integer numvinc`) for human-readable table columns.
-  - `CreateDTO`: expose separate editable business fields (`@NotNull Long numfunc`, `@NotNull Integer numvinc`) and construct `new VinculoId(dto.getNumfunc(), dto.getNumvinc())` in `ResourceMapper.newEntity(dto)`.
+  - `ResponseDTO`: expose `EmployeeAssignmentId id` (`format: "composite-id"`, `formHidden = true`, `readOnly = true`) **and** individual business columns (`Long employeeId`, `Integer assignmentNumber`) for human-readable table columns.
+  - `CreateDTO`: expose separate editable business fields (`@NotNull Long employeeId`, `@NotNull Integer assignmentNumber`) and construct `new EmployeeAssignmentId(dto.getEmployeeId(), dto.getAssignmentNumber())` in `ResourceMapper.newEntity(dto)`.
   - `UpdateDTO`: omit primary key components (or mark them `readOnly = true`) and **never** mutate `entity.setId(...)` in `applyUpdate`.
-  - If the legacy table's natural key includes **mutable** attributes edited in `PUT /{id}` (e.g., `FREQUENCIAS` where `dtini` and `codfreq` are editable), use an immutable surrogate PK (`Long id` / `pontlei`) + `UNIQUE` constraint on the natural columns.
+  - If a table's natural key includes **mutable** attributes edited in `PUT /{id}` (e.g., `TimesheetEntry` where `entryDate` and `activityCode` are editable), use an immutable surrogate PK (`Long id`) + `UNIQUE` constraint on the natural columns.
 
 ### 10. Optimistic Concurrency Variant (`@Version` + `VersionedCreateUpdateResourceService`)
 
@@ -1190,7 +1190,7 @@ private Long positionId;
 private String positionName;
 ```
 
-When a foreign key uses `FieldControlType.ENTITY_LOOKUP` (or cross-field `dependsOn` / composite keys like `VinculoId`), register an `OptionSourceDescriptor` bean in an `@Configuration` class (`OptionSourceRegistry.Builder.add` takes `(Class<?> resourceClass, OptionSourceDescriptor descriptor)`):
+When a foreign key uses `FieldControlType.ENTITY_LOOKUP` (or cross-field `dependsOn` / composite keys like `EmployeeAssignmentId`), register a rich `OptionSourceDescriptor` with a complete `EntityLookupDescriptor` in an `@Configuration` class (`OptionSourceRegistry.Builder.add` takes `(Class<?> resourceClass, OptionSourceDescriptor descriptor)`). **Never pass `null` for `EntityLookupDescriptor` sub-contracts (`selectionPolicy`, `detail`, `display`, `filtering`)**:
 
 ```java
 @Configuration
@@ -1198,18 +1198,62 @@ public class HrOptionSourcesConfig {
 
     @Bean
     public OptionSourceRegistry hrOptionSourceRegistry() {
+        EntityLookupDescriptor positionLookup = new EntityLookupDescriptor(
+            "human-resources.positions",
+            "id",
+            "name",
+            "code",
+            List.of("careerTrack", "minimumEducation"),
+            "status",
+            new LookupSelectionPolicy(
+                "selectable",
+                "status",
+                List.of("ACTIVE"),
+                List.of("ARCHIVED", "INACTIVE"),
+                true, // allowRetainInvalidExistingValue: historical records rehydrate via by-ids
+                "Position unavailable for new assignments ({{status}}).",
+                "Select an active position in the current organization chart."
+            ),
+            new LookupDetailDescriptor(
+                "surface",
+                "detail",
+                "position-summary",
+                ApiPaths.HumanResources.POSITIONS + "/{id}/position-summary",
+                "drawer",
+                "human-resources.positions"
+            ),
+            new LookupDisplayDescriptor(
+                "directory",
+                List.of(
+                    new LookupDisplayFieldDescriptor("code", "Code", "text", "badge", "neutral"),
+                    new LookupDisplayFieldDescriptor("status", "Status", "chip", "verified", "info")
+                ),
+                List.of("careerTrack"),
+                List.of("status"),
+                Map.of("ACTIVE", "Active", "ARCHIVED", "Archived")
+            ),
+            new LookupFilteringDescriptor(
+                List.of(new LookupSortOption("name,asc", "Name (A-Z)")),
+                "name,asc",
+                "Search by position code or title...",
+                List.of()
+            ),
+            LookupCapabilities.defaults()
+        );
+
         return OptionSourceRegistry.builder()
-            .add(Vinculo.class, new OptionSourceDescriptor(
-                "vinculoLookup",
+            .add(Employee.class, new OptionSourceDescriptor(
+                "positionLookup",
                 OptionSourceType.RESOURCE_ENTITY,
-                ApiPaths.HumanResources.VINCULOS,
-                "vinculo",
-                "vinculo",
-                "matricula",
+                ApiPaths.HumanResources.POSITIONS,
+                "position",
+                "position",
+                "name",
                 "id",
-                List.of("empresaId"),
-                Map.of("empresaId", "empresaId"), // dependent filter mapping
-                OptionSourcePolicy.defaults()
+                List.of("companyId"),
+                Map.of("companyId", "companyId"), // cross-field dependent filter mapping
+                OptionSourcePolicy.defaults(),
+                positionLookup
             ))
             .build();
     }
@@ -1217,23 +1261,23 @@ public class HrOptionSourcesConfig {
 ```
 
 #### B. `@Embedded` Value Objects (Without `CompositeResourceId`) and PostgreSQL `CHAR(n)` Columns
-When multiple tables share reusable column groups (such as audit metadata, legal act snapshots, or address blocks), model them as `@Embeddable` classes annotated with `@Embedded` on the entity. Because they are **not** primary keys, they **must not** implement `CompositeResourceId`:
+When multiple tables share reusable column groups (such as audit metadata, contract reference snapshots, or address blocks), model them as `@Embeddable` classes annotated with `@Embedded` on the entity. Because they are **not** primary keys, they **must not** implement `CompositeResourceId`:
 
 ```java
 @Embeddable
-public class SnapshotAtoLegal {
-    @Column(name = "numero_ato", length = 40)
-    private String numeroAto;
+public class ContractReferenceSnapshot {
+    @Column(name = "reference_number", length = 40)
+    private String referenceNumber;
 
-    @Column(name = "tipo_ato", length = 30)
-    private String tipoAto;
+    @Column(name = "reference_type", length = 30)
+    private String referenceType;
 
-    @Column(name = "data_publicacao_ato")
-    private LocalDate dataPublicacaoAto;
+    @Column(name = "published_date")
+    private LocalDate publishedDate;
     // getters/setters...
 }
 ```
-In JPA Criteria (`@Filterable(relation = "atoLegal.numeroAto")`), `praxis-metadata-starter` automatically navigates `@Embedded` paths via `.get("atoLegal").get("numeroAto")` without generating invalid SQL joins.
+In JPA Criteria (`@Filterable(relation = "contractReference.referenceNumber")`), `praxis-metadata-starter` automatically navigates `@Embedded` paths via `.get("contractReference").get("referenceNumber")` without generating invalid SQL joins.
 
 > **PostgreSQL `CHAR(n)` (`bpchar`) with `ddl-auto=validate`:** When mapping fixed-length `character(1)` or `character(2)` columns (e.g., `sexo`, `uf`, `cargo_funcao`, `flag_acesso`) to `String` under `spring.jpa.hibernate.ddl-auto=validate`, always annotate the field with `@JdbcTypeCode(SqlTypes.CHAR)` in addition to `@Column(name = "...", length = n, columnDefinition = "character(n)")`. Without `@JdbcTypeCode(SqlTypes.CHAR)`, Hibernate 6 expects `VARCHAR` and fails schema validation at startup.
 
@@ -1252,11 +1296,11 @@ private Map<String, Object> customFields = new LinkedHashMap<>();
 
 2. **`ResponseDTO`, `CreateDTO`, `UpdateDTO`, and `FilterDTO` (`@CustomFields`):**
 ```java
-@Schema(description = "Atributos dinâmicos específicos do órgão/tenant governados pelo catálogo de campos customizados.")
+@Schema(description = "Atributos dinâmicos específicos da organização/tenant governados pelo catálogo de campos customizados.")
 @CustomFields(resourceKey = "human-resources.employees")
 private Map<String, Object> customFields = new LinkedHashMap<>();
 ```
-*(Keep `customFields` as an explicit nested map on the wire — `{"fullName": "Ana", "customFields": {"numero_calcado": 42}}`; never add `@JsonAnyGetter`/`@JsonAnySetter` to the root DTO).*
+*(Keep `customFields` as an explicit nested map on the wire — `{"fullName": "Ana", "customFields": {"cost_center_override": "CC-42"}}`; never add `@JsonAnyGetter`/`@JsonAnySetter` to the root DTO).*
 
 3. **Host `CustomFieldDefinitionProvider` Bean:**
 Register a `@Component` implementing `CustomFieldDefinitionProvider` (and optionally `ResourceTenantContextResolver` when overriding the default `X-Tenant` / `X-Tenant-ID` header resolution) that queries your `custom_field_definitions` catalog table and returns `List<CustomFieldDescriptor>`:
@@ -1280,14 +1324,14 @@ The starter automatically:
 - resolves `"customFields.<key>"` dot-paths during tabular collection export (`CollectionExportValueResolver.reflective()`).
 
 #### B. Declarative Domain Facts (`@ResourceFact` & `ResourceFactCatalogProvider`)
-To publish business facts and derived domain indicators (e.g., `tempoServicoDias`, `elegivelAbonoPermanencia`, `possuiFeriasVencidas`) into `/schemas/domain` for AI/RAG discovery and rule authoring without hardcoding rules in the starter:
+To publish business facts and derived domain indicators (e.g., `tenureDays`, `eligibleForPromotion`, `hasOverdueDeliverables`) into `/schemas/domain` for AI/RAG discovery and rule authoring without hardcoding rules in the starter:
 
 ```java
 @ResourceFact(
-    key = "tempoServicoDias",
+    key = "tenureDays",
     resourceKey = "human-resources.employees",
-    label = "Tempo de Serviço em Dias",
-    description = "Quantidade total de dias de efetivo exercício apurada a partir da data de admissão até a data de referência.",
+    label = "Tenure in Days",
+    description = "Total number of active employment days calculated from the hire date to the reference date.",
     dataType = "integer",
     unit = "days",
     deterministic = true,
@@ -1296,11 +1340,71 @@ To publish business facts and derived domain indicators (e.g., `tempoServicoDias
 @ApiResource(
     value = ApiPaths.HumanResources.EMPLOYEES,
     resourceKey = "human-resources.employees",
-    title = "Colaboradores"
+    title = "Employees"
 )
 public class EmployeeController extends AbstractResourceController<...> { ... }
 ```
 For dynamic or database-catalogued facts, register a `@Component` implementing `ResourceFactCatalogProvider`.
+
+### 13. `@MicroVisualization`, `@UiAnalytics`, Governed Bulking (`@BulkEditable` / `@BulkOperation`), Rich `CollectionExport` & Native JUnit Completeness Gate
+
+#### A. In-Cell `@MicroVisualization` + `@Threshold` (Validated by `PraxisExpressionStaticValidator`)
+Annotate progress, occupancy, quota, delta, or distribution columns on `ResponseDTO` with `@MicroVisualization`:
+```java
+@MicroVisualization(
+    kind = MicroVisualizationKind.BULLET,
+    valueExpr = "allocatedUnits",
+    targetExpr = "plannedUnits",
+    totalExpr = "plannedUnits",
+    valueSuffix = " units",
+    thresholds = {
+        @Threshold(min = 0, max = 85, tone = "positive", label = "Within Capacity"),
+        @Threshold(min = 85, max = 100, tone = "warning", label = "Near Limit"),
+        @Threshold(min = 100, max = 999, tone = "critical", label = "Over Capacity")
+    }
+)
+```
+
+#### B. `@UiAnalytics` + `@AnalyticsProjection` on Controller Methods
+Pair `StatsFieldRegistry` in the `Service` with `@UiAnalytics` on the controller so `@praxisui/charts` and `@praxisui/table` discover ready-to-render analytical projections and drill-down drawers:
+```java
+@UiAnalytics(projections = {
+    @AnalyticsProjection(
+        id = "headcount-by-department",
+        title = "Headcount by Department",
+        intent = AnalyticsIntent.COMPOSITION,
+        sourceOperation = AnalyticsSourceOperation.GROUP_BY,
+        primaryDimension = @AnalyticsDimensionBinding(field = "departmentId", labelField = "departmentName"),
+        primaryMetrics = {
+            @AnalyticsMetricBinding(field = "id", aggregation = "COUNT", label = "Employees")
+        },
+        preferredFamilies = {AnalyticsChartFamily.BAR, AnalyticsChartFamily.DONUT},
+        drillDown = true,
+        crossFilter = true,
+        recordOpen = @AnalyticsRecordOpen(
+            enabled = true,
+            target = @AnalyticsSurfaceTarget(resourceKey = "human-resources.employees", surfaceId = "profile-overview", presentation = "drawer")
+        )
+    )
+})
+```
+
+#### C. Governed Bulk Operations (`@BulkEditable`, `@BulkResourceOperations`, `@BulkOperation`)
+1. On `UpdateDTO`, annotate bulk-eligible fields with `@BulkEditable(modes = {BulkMode.UNIFORM_UPDATE, BulkMode.PER_ITEM_UPDATE}, allowClear = ...)` (if `allowClear = true`, also declare `@Schema(nullable = true)`).
+2. On the Controller class, declare `@BulkResourceOperations(protectedUpdateFields = {...})`.
+3. Expose confirmation endpoints annotated with `@BulkOperation(mode = BulkMode.UNIFORM_UPDATE | BulkMode.PER_ITEM_UPDATE, evaluationOperationId = "...")` and collection commands with `@WorkflowAction(scope = ActionScope.COLLECTION)` + `@BulkOperation(mode = BulkMode.DOMAIN_COMMAND, evaluationOperationId = "...")`.
+
+#### D. Rich `CollectionExport` (`CSV`, `JSON`, `EXCEL` + `CollectionExportFieldPresentation`)
+Advertise `CollectionExportFormat.CSV`, `CollectionExportFormat.JSON`, and `CollectionExportFormat.EXCEL` across all 5 scopes (`AUTO`, `SELECTED`, `FILTERED`, `CURRENT_PAGE`, `ALL`), using `CollectionExportFieldPresentation` for currency (`"BRL"`, `"pt-BR"`), date (`"dd/MM/yyyy"`), and boolean (`"Ativo"` / `"Inativo"`) formatting, while excluding fields with `@DomainGovernance(exportable = false)`.
+
+#### E. Native JUnit Completeness Gate (`SemanticMetadataReviewer` + `PraxisExpressionStaticValidator` + `OptionSourcePublicationInventory`)
+Every Praxis Java host must include a JUnit test running the 3 validators bundled inside `praxis-metadata-starter` (`SemanticMetadataReviewer`, `PraxisExpressionStaticValidator`, and `OptionSourcePublicationInventory`) alongside `META-INF/praxis/AI-RESOURCE-BLUEPRINT.md`.
+
+#### F. Reactive Determinations (`ReactiveDeterminationDefinitionProvider` + `@Operation(operationId = ...)` + Non-Persisting `POST` Capability Endpoint)
+To provide real-time form calculations, cross-entity lookup projections, chained derivations (`A -> B -> C`), and draft policy/capacity previews in `@praxisui/dynamic-form`:
+1. Declare all output/preview fields on `CreateDTO` and `UpdateDTO` (using `@UISchema(readOnly = true)` for calculated previews).
+2. Override `create` (`@PostMapping`) and `update` (`@PutMapping("/{id}")`) on the controller with explicit, unique `@Operation(operationId = "create...", ...)` and `@Operation(operationId = "update...", ...)`, and expose a non-persisting `@PostMapping` capability endpoint (without `{id}` path variables) annotated with `@Operation(operationId = "determine...", ...)`.
+3. Register a `@Bean ReactiveDeterminationDefinitionProvider` returning `ReactiveDeterminationDefinition` instances with `ReactiveDeterminationScope(schemaOperationId, ReactiveDeterminationFormMode.CREATE | EDIT)`, `ReactiveDeterminationTriggerMode.ON_CHANGE`, valid JSON Pointers starting with `"/"` (`sourcePaths` must be a subset of `inputs`; `inputs` and `outputs` must exist in the DTO schemas and never overlap), and `ReactiveDeterminationProvenance(ReactiveDeterminationProvenanceKind.HOST | PLATFORM, sourceId, version)`.
 
 ## Praxis Metadata Feature Coverage
 
@@ -1310,7 +1414,7 @@ For each resource, decide explicitly which Praxis metadata features are in scope
 | --- | --- |
 | OpenAPI and `x-ui` | Add deliberate `@Schema`, `@UISchema`, `@Filterable`, `@ApiResource`, and `@ApiGroup`. |
 | `/schemas/filtered` | Ensure request/response DTOs are discoverable from the generated OpenAPI operation. |
-| `/filter` | Implement a `GenericFilterDTO` with valid `@Filterable` operations and verify pageable SQL against the target database. |
+| `/filter` | Implement a `GenericFilterDTO` with valid `@Filterable` operations (including multi-field OR `relations = {...}`) and verify pageable SQL against the target database. |
 | `/options/filter` and `/options/by-ids` | Ensure the entity has a stable id and option label, commonly with `@OptionLabel`; use `praxis-resource-entity-lookup-backend` for governed cross-resource lookups. |
 | `/filter/cursor` | The controller exposes `POST /{resource}/filter/cursor`, but `AbstractBaseQueryResourceService.filterEntitiesByCursor` throws `UnsupportedOperationException` by default; override `filterEntitiesByCursor` in the service (or host base service) with deterministic keyset pagination when cursor pagination is in scope. |
 | `/locate` | Override `locate` in the service when the UI needs position restoration. |
@@ -1323,6 +1427,7 @@ For each resource, decide explicitly which Praxis metadata features are in scope
 | Optimistic concurrency (`ETag` / `If-Match`) | Configure `praxis.resource-version.etag.secret`, add `@Version` on the entity, and implement `VersionedCreateUpdateResourceService` (`getEntityResourceVersion` + 3-arg `update`). |
 | Tenant JSONB extensibility (`@CustomFields`) | Map `custom_fields` JSONB with `@JdbcTypeCode(SqlTypes.JSON)`, annotate `Map<String, Object> customFields` with `@CustomFields(resourceKey = ...)` on DTOs/FilterDTO, and register a `CustomFieldDefinitionProvider` bean. |
 | Domain Facts (`@ResourceFact`) | Annotate controllers/services with `@ResourceFact` or register `ResourceFactCatalogProvider` to publish domain indicators in `/schemas/domain`. |
+| Reactive Determinations (`x-ui.reactiveDeterminations`) | Declare output/preview fields on `CreateDTO`/`UpdateDTO`, annotate `create`/`update` and the non-persisting `POST` determination endpoint with explicit `@Operation(operationId = ...)`, and register `ReactiveDeterminationDefinitionProvider`. |
 | `/api/praxis/config/**` | Out of scope unless `praxis-config-starter` is intentionally included and wired. |
 
 ## DTO Rules

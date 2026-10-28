@@ -63,6 +63,108 @@ Inspect the affected owner and direct consumers:
   Stepper pass the correct operation/form context; they do not duplicate the
   determination engine.
 
+## Implementing Reactive Determinations in a New Java/Spring Boot Host (Step-by-Step)
+
+When building or evolving a Spring Boot host that uses `praxis-metadata-starter`, implement Reactive Determinations with the following exact contract so `ReactiveDeterminationMetadataCompiler` compiles `x-ui.reactiveDeterminations` into `GET /schemas/filtered` without failing closed:
+
+### 1. Declare Output/Preview Fields on `CreateDTO` and `UpdateDTO`
+- `ReactiveDeterminationMetadataCompiler` verifies that **every** `input.fieldPath` and `output.fieldPath` exists in the form operation's request body schema (`CreateDTO` for `CREATE`, `UpdateDTO` for `EDIT`).
+- If a reactive determination populates a read-only preview or calculated field (e.g., `netSalary`, `availableVacanciesPreview`, `expectedEndDate`), declare that field on both `CreateDTO` and `UpdateDTO` (annotated with `@UISchema(readOnly = true, ...)` when the user should not edit it manually).
+
+### 2. Declare Explicit `@Operation(operationId = ...)` on Form Operations and the Capability Endpoint
+Because `AbstractResourceController` inherits `create` and `update`, SpringDoc generates unstable default `operationId`s (`create_1`, `create_2`) across multiple controllers unless overridden. Always override `create` and `update` with explicit `operationId`s and expose a non-persisting `POST` determination endpoint (without path variables):
+
+```java
+@PostMapping
+@Operation(
+    operationId = "createEmployee",
+    summary = "Create employee record",
+    description = "Creates an employee record after validating position capacity and compensation."
+)
+@Override
+public ResponseEntity<RestApiResponse<EmployeeResponseDTO>> create(@Valid @RequestBody CreateEmployeeDTO dto) {
+    return super.create(dto);
+}
+
+@PutMapping("/{id}")
+@Operation(
+    operationId = "updateEmployee",
+    summary = "Update employee record",
+    description = "Updates an existing employee record and revalidates compensation and assignment."
+)
+@Override
+public ResponseEntity<RestApiResponse<EmployeeResponseDTO>> update(
+        @PathVariable Long id,
+        @Valid @RequestBody UpdateEmployeeDTO dto) {
+    return super.update(id, dto);
+}
+
+@PostMapping("/determinations/position-compensation-preview")
+@Operation(
+    operationId = "determineEmployeePositionCompensationPreview",
+    summary = "Determine position floor, work schedule, and available vacancies",
+    description = "Non-persisting reactive determination that projects position parameters and vacancy balance while editing the employee form."
+)
+public ResponseEntity<PositionCompensationPreviewResponse> determinePositionCompensationPreview(
+        @Valid @RequestBody PositionCompensationPreviewRequest request) {
+    return ResponseEntity.ok(service.determinePositionCompensationPreview(request));
+}
+```
+
+### 3. Register `@Bean ReactiveDeterminationDefinitionProvider`
+Bind the form operation `operationId`s (`ReactiveDeterminationScope`) to the determination capability `operationId` using valid JSON Pointers starting with `"/"`:
+
+```java
+@Configuration(proxyBeanMethods = false)
+public class EmployeeReactiveDeterminationConfig {
+
+    @Bean
+    ReactiveDeterminationDefinitionProvider employeePositionCompensationDeterminationProvider() {
+        return () -> List.of(
+            new ReactiveDeterminationDefinition(
+                "human-resources.employees.position-compensation-preview",
+                List.of(
+                    new ReactiveDeterminationScope("createEmployee", ReactiveDeterminationFormMode.CREATE),
+                    new ReactiveDeterminationScope("updateEmployee", ReactiveDeterminationFormMode.EDIT)
+                ),
+                "determineEmployeePositionCompensationPreview",
+                ReactiveDeterminationTriggerMode.ON_CHANGE,
+                List.of("/positionId", "/departmentId"),
+                List.of(
+                    new ReactiveDeterminationInputBinding("/positionId", "/positionId"),
+                    new ReactiveDeterminationInputBinding("/departmentId", "/departmentId")
+                ),
+                List.of(
+                    new ReactiveDeterminationOutputBinding("/baseSalaryFloor", "/baseSalaryFloor"),
+                    new ReactiveDeterminationOutputBinding("/defaultWeeklyHours", "/weeklyHours"),
+                    new ReactiveDeterminationOutputBinding("/availableVacanciesPreview", "/availableVacanciesPreview")
+                ),
+                new ReactiveDeterminationProvenance(
+                    ReactiveDeterminationProvenanceKind.HOST,
+                    "hr-host-service",
+                    "1"
+                )
+            )
+        );
+    }
+}
+```
+
+### 4. Five Strict Compiler Invariants (`ReactiveDeterminationMetadataCompiler`)
+1. **Valid JSON Pointers (`/`):** Every `sourcePath`, `input.fieldPath`, `input.requestPath`, `output.responsePath`, and `output.fieldPath` must start with `"/"` (e.g., `"/positionId"`).
+2. **`sourcePaths` Subset of `inputs`:** Every path in `sourcePaths` must also appear as an `input.fieldPath` in `inputs`. (In `EDIT` mode, you may pass additional context inputs such as `new ReactiveDeterminationInputBinding("/id", "/employeeId")` in `inputs` without listing `"/id"` in `sourcePaths`).
+3. **Schema Property Existence:** Every `input.fieldPath` and `output.fieldPath` must resolve in the `CreateDTO`/`UpdateDTO` OpenAPI schema, every `input.requestPath` must resolve in the determination `Request` DTO schema, and every `output.responsePath` must resolve in the determination `200 OK` `Response` DTO schema.
+4. **Non-Overlapping Inputs and Outputs:** `input.fieldPath` and `output.fieldPath` must never be identical or parent/child of each other within the same definition (prevents infinite trigger loops).
+5. **Form Mode HTTP Method Match:** `ReactiveDeterminationFormMode.CREATE` requires a `POST` form operation; `ReactiveDeterminationFormMode.EDIT` requires a `PUT` or `PATCH` form operation; and the determination capability operation (`definition.operationId()`) must be a `POST` operation without `{...}` path parameters.
+
+### 5. Deep Domain Discovery for Reactive Determinations ("Além do Óbvio" — 4 Families)
+Do not leave enterprise forms passive until submit. Audit `CreateDTO`, `UpdateDTO`, and entity relationships to discover Reactive Determinations across four families:
+1. **Cross-Entity Lookup & Directory Projection:** When the user selects a foreign key or code (`"/postalCode"`, `"/positionId"`, `"/departmentId"`, `"/contractPlanId"`), auto-populate address fields, salary floor, standard work schedule, cost center, or responsible manager.
+2. **Multi-Field Deterministic Calculations:** When gross amount, deductions, rate, or start date + duration change (`"/grossSalary"`, `"/baseDeductions"`, `"/startDate"`, `"/probationDays"`), compute net amount, total deductions, or expected end/review date in real time.
+3. **Chained Reactive Determinations (`A -> B -> C`):** When Determination 1 writes an output field (e.g., `"/netSalary"`), a second `ReactiveDeterminationDefinition` that lists `"/netSalary"` in its `sourcePaths` and `inputs` is automatically triggered by `@praxisui/dynamic-form` to compute downstream fields (e.g., `"/expectedPaymentDate"` or approval tier).
+4. **Draft Policy, Quota & Eligibility Preview:** While the user fills out an assignment or movement form, evaluate vacancy balance, qualification compatibility, or schedule conflict and populate read-only preview fields (`"/availableVacanciesPreview"`, `"/eligibilityDiagnosticPreview"`) before submit.
+
+
 ## Chained governed calculations
 
 For an engine contract that supports direct dependency outputs (1.5 G1), compose

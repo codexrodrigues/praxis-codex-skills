@@ -22,6 +22,19 @@
 | Option-source review | `praxis-resource-entity-lookup-backend` decision when payload/actions need governed options |  |  |
 | Mutation approval | named screen/resource/marker/operations/cleanup/exclusions approved before mutating probes or API smokes |  |  |
 
+If `Legacy bridge` is `new shared adapter`, add
+`shared-legacy-adapter-evidence.md` before marking Phase 5 ready. Include at
+least two structured route rows:
+
+| Route id | Phase 4/5 approval | Procedure/package | Operation discriminator | Typed internal payload | OUT/error semantics | Same-connection HADES/FLAG_PACK | Transaction, side effects and cleanup |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |  |
+|  |  |  |  |  |  |  |  |
+
+State explicitly whether the routes prove the same semantic protocol.
+Repeated `ErgonLegacyExecutor` calls, direct-table CRUD and one procedure
+candidate do not authorize a shared DB-backed command/procedure adapter.
+
 ## Legacy Evidence
 
 | Evidence | Location | Confidence | Notes |

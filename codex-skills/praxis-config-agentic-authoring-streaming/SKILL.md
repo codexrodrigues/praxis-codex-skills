@@ -16,10 +16,14 @@ Inspect `praxis-config-starter/AGENTS.md`, then the boundary being changed:
 
 - public surface: `AgenticAuthoringController`, `AiPatchStreamController`,
   `docs/ai/agentic-authoring-streaming.md`, `docs/ai/contracts/**`;
-- turn lifecycle: `AgenticAuthoringTurnStreamService`, `AgenticAuthoringTurnEngine`,
+- turn lifecycle: `AgenticAuthoringTurnStreamService`, `AgenticAuthoringStreamCapacityStore`,
+  `InMemoryAgenticAuthoringStreamCapacityStore`, `AgenticAuthoringStreamProgressMessageCatalog`,
+  `AgenticAuthoringTurnStreamRequestNormalizer`, `AgenticAuthoringTurnEngine`,
   `AiTurnEventService`, `AiTurnEvent`, `AiTurnEventRepository`, `AiThreadService`, `AiTurnService`,
-  `AiStreamAccessTokenService`, and `AiTurnEventEnvelope`;
+  `AiStreamAccessTokenService`, `AiProviderRouter`, `AiProviderRateLimitStore`,
+  `InMemoryAiProviderRateLimitStore`, and `AiTurnEventEnvelope`;
 - semantic resolution: `AgenticAuthoringIntentResolverService`,
+  `AgenticAuthoringSemanticOrientationReconciler`,
   `AgenticAuthoringLlmIntentResolverService`, candidate eligibility/provenance, semantic decision,
   route classification, conversation continuation, and materialization policy;
 - tools and evidence: `AgenticAuthoringLlmPreIntentToolPlanningService`,
@@ -58,41 +62,21 @@ Keep consult and edit distinct:
 - consult returns grounded `assistantContent`/message and no executable patch;
 - clarification returns structured questions or quick replies and no apply authorization;
 - preview returns a governed materialization plus diagnostics and `canApply` only after all gates;
+  for `approval-workbench` (`resource-action-workbench` / `workflow-action-workbench`), bind the
+  detail `praxis-dynamic-form` to a verified `workflow_action` from `/schemas/actions` (`scope=ITEM`
+  preferred) and fail closed to `resource-master-detail` with
+  `verificationGap=missing-verified-workflow-action` when no verified workflow action exists;
+- when `DomainKnowledgeBindingService` returns only `ui_surface` or `workflow_action` rows for a
+  resource without `api_resource`/`api_operation` read/filter bindings, supplement canonical read and
+  filter operations (`all`, `list`, `byId`, `cursor`, `filter`) from `/capabilities` +
+  `/schemas/filtered` in `AgenticAuthoringOperationalBindingVerificationService`;
 - apply revalidates the semantic decision against the compiled materialization, persists through the
   canonical config service, and respects scope, tenant/user/environment, ETag, and sanitization;
+  `AgenticAuthoringPersistedUiCompositionSourceResolver` reconciles `mode=create` to `mode=update`
+  when the persisted row is blank or soft-deleted (`tags.deleted=true`) and permits recomposition from
+  a blank canvas (`isBlankCanvas`) when `baseEtag` matches the persisted ETag;
 - shared-rule/domain-decision intent hands off to `praxis-config-domain-decisions`; it must not be
   flattened into component configuration.
-
-## Managed Planning Handoff
-
-When qualifying an external managed planning session, inventory the existing turn,
-intent, manifest compilation, preview, terminal event and apply flow first. Keep the
-transport adaptation internal to the server composition; do not pass an authoritative
-plan through client-editable `contextHints` or introduce an alternate apply endpoint.
-
-Inspect `AgenticAuthoringManagedTurnPlanner`, the engine completion path,
-`resolveProvidedIntent`, `compileProvidedPlan`, and `previewProvidedComponentEditPlan`
-when these experimental seams are present in the target checkout. Supplied intent
-still requires canonical grounding and policy. Unresolved intent must fail closed;
-do not invoke a second model or recover primary intent with lexical fallback.
-The supplied plan may select only declared operations, never substitute application
-config, schema, principal or target evidence. Preserve the existing validator and
-materialization path, and audit its assumptions independently.
-
-Hold the session lease until the terminal append is known. Only `canApply=true` plus
-an appended result permits advancing the managed draft/session; timeout, cancel,
-failed append or veto must abort that pending state. A remote cleanup/reuse failure
-after persistence must not rewrite an already authoritative terminal event.
-Consumers must retain the outer terminal veto even when a nested component plan
-compiles locally, while preserving safe informational and clarification messages.
-
-Prove the internal handoff with providers that fail if called again, then prove
-start/result/review/apply/read through the real host with isolated persistence.
-Test foreign principal, modified patch and stale ETag with unchanged stored data.
-Do not count a fabricated approved event, mocked engine/compiler, intercepted UI
-PUT, or direct preview injection as full HTTP/governance proof. If H2 cannot execute
-canonical PostgreSQL queries, use the repository's isolated PostgreSQL fixture rather
-than masking the incompatibility by mocking the contract owner.
 
 ## Semantic Intent Rules
 
@@ -133,34 +117,6 @@ primary intent by itself.
 - Keep tool traces and evidence bundles sanitized: no API keys, raw rows, secrets, unrestricted
   payloads, internal prompts, or unbounded provider output.
 
-## Parent-Child Related-Resource Authoring
-
-Treat a parent-child page as a semantic archetype, not as a table plus an AI-invented foreign-key
-filter. The LLM-authored visualization decision must select the exact governed surface identity
-(`targetSurfaceId`) after resource scope is resolved. Before compilation, retrieve the current
-principal's `/schemas/surfaces` catalog and verify that the exact surface:
-
-- belongs to the selected parent resource and path;
-- is an item-scoped collection `VIEW` or `READ_PROJECTION`;
-- has explicit availability, accepting `resource-context-required` only before parent selection;
-- publishes a complete and internally consistent `relatedResource` contract, including parent key,
-  parent path variable, child key/path, child parent field, selection field, and canonical child
-  operations;
-- contains safe API paths whose placeholders can be resolved by the declared parent binding.
-
-Persist the composition binding from parent selection to the related-resource outlet; do not author
-the child foreign key as an independent user value. Preserve the parent-scoped surface path for
-contextual reads and the canonical child resource path for commands. Missing, ambiguous, mismatched,
-unsafe, or unavailable evidence must make preview and semantic materialization invalid. Do not infer
-the surface from labels, resource names, prompt words, or endpoint shape, and do not compile a
-fallback mutation against the contextual read URL.
-
-Provider selection, connection probes, retry/fallback classification, paid-call
-budgets, token/cost telemetry, and provider-status endpoints belong to
-`praxis-config-ai-provider-operations`. This skill consumes their bounded
-outcomes but must not duplicate provider routing or cost policy inside the turn
-engine.
-
 ## Stream Contract
 
 The canonical authoring family is:
@@ -191,17 +147,6 @@ Preserve these invariants:
 - `status`, `thought.step`, tool progress, and `intent.resolved` are non-terminal and replay-safe.
 - Only persisted `result`, `error`, or `cancelled` events terminate the turn. Heartbeats are transient
   liveness signals and cannot advance the persisted cursor.
-- A local terminal reservation is neither a durable event nor delivered SSE. Inspect
-  `AgenticAuthoringTurnStreamService.appendAndEmit` and the watchdog/timeout/replay completion paths:
-  persist the terminal, remember the committed envelope/cursor, send it to active emitters, then
-  complete the stream. Progress or terminal checks must not close emitters while that sequence is
-  pending. Reuse the owner's existing append/completion synchronization; do not introduce an ad hoc
-  delivery flag or prescribe one locking protocol for every owner.
-- If terminal persistence fails, release the local reservation and propagate the original failure;
-  do not retry silently, report completion, or advance the replay cursor. Add a deterministic test
-  that holds terminal append with a latch while invoking the real watchdog callback, then verifies
-  no early completion and ordered terminal send before completion. Cover failed append separately;
-  extending timeouts or relying on scheduling sleeps does not prove the ordering.
 - `heartbeat` is out-of-band keep-alive: it may use `seq=-1` and no `eventId`, derives `phase` and
   user-facing `summary` from the latest known event, and must not be counted as execution evidence.
 - Long-running progress is persisted as `status` from the backend processing watchdog only when the
@@ -214,7 +159,18 @@ Preserve these invariants:
   must enforce the same scope on connect, probe, cancel, and replay.
 - Timeout/cancel wins races against late preview or result; no event may append after a terminal event.
 - Start reservation and event sequence allocation must remain safe across instances, not only inside
-  one JVM.
+  one JVM. Route active-turn capacity and finished-stream retention through
+  `AgenticAuthoringStreamCapacityStore` (`InMemoryAgenticAuthoringStreamCapacityStore` by default,
+  or `JdbcAgenticAuthoringStreamCapacityStore` via `praxis.ai.authoring.stream-capacity.store=jdbc`
+  with automatic lease TTL expiration `praxis.ai.authoring.stream-capacity.lease-ttl-seconds=300`,
+  active lease renewal `renewLease(streamId)` on non-terminal event appends and SSE heartbeats,
+  post-insert quota verification with automatic rollback on cross-node races, selective per-node
+  stream release during `@PreDestroy shutdown()` so rolling deployments never wipe sibling node
+  leases, and canonical Flyway DDL in `V71__create_ai_cluster_coordination_tables.sql`)
+  and provider HTTP 429 cooldown windows through `AiProviderRateLimitStore`
+  (`InMemoryAiProviderRateLimitStore` by default in `AiProviderRouter`, or
+  `JdbcAiProviderRateLimitStore` via `praxis.ai.rate-limit.store=jdbc` with `DuplicateKeyException`
+  upsert resilience and `configNamedParameterJdbcTemplate` preference in multi-datasource hosts).
 - Bound active streams globally and per tenant/user, executor queues, emitter lifetime, replay polling,
   heartbeat tasks, processing timeout, payload size, and event retention.
 - Error/timeout payloads expose stable public codes and safe user-facing text, not stack traces,
@@ -331,9 +287,7 @@ Use the smallest local gate that proves the boundary:
 - semantic intent, pre-intent planning, tools, candidates, and decision policy:
   `mvn "-Dtest=AgenticAuthoringIntentResolverServiceTest,AgenticAuthoringLlmIntentResolverServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest,AgenticAuthoringToolRegistryTest,AgenticAuthoringToolLoopExecutorTest,AgenticAuthoringCandidateProvenancePolicyTest,AgenticAuthoringSemanticDecisionPolicyTest" test`
 - turn engine, runtime grounding, preview/repair/apply, and stream lifecycle:
-  `mvn "-Dtest=AgenticAuthoringTurnEngineTest,AgenticAuthoringTurnStreamServiceTest,AgenticAuthoringRuntimeComponentGroundingServiceTest,AgenticAuthoringPreviewServiceTest,AgenticAuthoringApplyServiceTest,AiTurnEventServiceTest" test`
-- parent-child composition authoring and fail-closed surface verification:
-  `mvn "-Dtest=AgenticAuthoringGenericUiCompositionPlanProviderTest,AgenticAuthoringLlmIntentResolverServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest,AgenticAuthoringSemanticMaterializationPolicyTest,AgenticAuthoringPreviewServiceTest" test`
+  `mvn "-Dtest=AgenticAuthoringTurnEngineTest,AgenticAuthoringTurnStreamServiceTest,InMemoryAgenticAuthoringStreamCapacityStoreTest,AiProviderRouterTest,AgenticAuthoringRuntimeComponentGroundingServiceTest,AgenticAuthoringPreviewServiceTest,AgenticAuthoringApplyServiceTest,AiTurnEventServiceTest" test`
 - HTTP/SSE/security and legacy compatibility:
   `mvn "-Dtest=AgenticAuthoringControllerTest,AgenticAuthoringTurnStreamHttpSseIntegrationTest,AgenticAuthoringTurnStreamSecurityChainIntegrationTest,AgenticAuthoringTurnStreamSignedTokenIntegrationTest,AiStreamAccessTokenServiceTest,AiPatchStreamControllerTest,AiProviderStreamingFallbackAndCancelIntegrationTest,AiOrchestratorControllerTest,AiOrchestratorService*Test" test`
 - persisted HTTP/SSE and security-chain integration, when the owner context is healthy:
@@ -365,8 +319,6 @@ smokes, `praxisui-http-examples`, Page Builder recipes/E2E, public landing examp
 configuration. State explicitly when each family is unaffected.
 
 ## Companion Skills
-
-- `praxis-config-ai-provider-operations`: provider probes, routing, failure classification, telemetry, cost, and live-gate policy.
 
 - `praxis-ai-semantic-intent`: shared semantic-routing rules and frontend red flags.
 - `praxis-config-ai-registry-manifests`: executable component operations, validators, and compilers.

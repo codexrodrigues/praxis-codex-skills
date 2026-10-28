@@ -27,14 +27,6 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/dto/ApiSearchResult.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringApiMetadataCandidateCatalog.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringResourceDiscoveryService.java`
-- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringOperationalBindingVerificationService.java`
-- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringIntentResolverService.java`
-- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringEvidenceBundle.java`
-- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringTurnStreamService.java`
-- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringTurnEngine.java`
-- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringGenericUiCompositionPlanProvider.java`
-- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringUiCompositionPlanCompiler.java`
-- `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringDomainBindingService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringProjectKnowledgeService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/AgenticAuthoringRuntimeComponentGroundingService.java`
 - `src/main/java/org/praxisplatform/config/ai/authoring/VectorRankedProjectKnowledgeCandidateRetriever.java`
@@ -47,9 +39,6 @@ Inspect the owner before editing:
 - `src/main/java/org/praxisplatform/config/rag/**`
 - `src/main/resources/db/migration/V4__create_api_metadata.sql`, `V28__scope_api_metadata_identity.sql`, `V8__create_api_metadata_embedding_index.sql`, and vector-store migrations.
 - `praxis-ui-angular/projects/praxis-ai/src/lib/core/services/ai-backend-api.service.ts`
-- `praxis-ui-angular/projects/praxis-table/src/lib/praxis-table.ts`
-- `praxis-ui-angular/projects/praxis-dynamic-form/src/lib/praxis-dynamic-form.ts`
-- `praxis-ui-angular/projects/praxis-core/src/lib/composition/transform-runtime.service.ts`
 - focused API metadata, context, RAG, project knowledge, and resource discovery tests.
 
 ## Canonical Boundary
@@ -91,65 +80,13 @@ Semantic retrieval is candidate grounding, not primary intent resolution. `Agent
 
 Scoped semantic retrieval must not retry without tenant/environment scope. `AgenticAuthoringApiMetadataCandidateCatalog` may fall back to scoped structured metadata when semantic retrieval returns no candidates, but it must not issue an unscoped vector query to recover scoped results.
 
-Broad candidate scans must use repository projections containing only the fields needed to rank or identify candidates, such as path, method, tags, summary, description, and operation id. Do not hydrate embeddings, raw endpoint JSON, schemas, or parameters for every row; hydrate exact heavy evidence only after a candidate is selected. Apply the same rule to Domain Catalog context: reuse one scoped context result for candidates of the same canonical resource within one enhancement/turn instead of repeating the same remote query per operation.
-
 ## Context And Schema
 
 - `GET /api/praxis/config/ai-context/{componentId}` resolves current state through `ui_user_config` user-to-tenant fallback. `POST` uses transient caller state and does not persist it.
 - Both paths compose the system component definition, optional template, component state, mode, resource path, and `AiSchemaContext`. Default mode is `edit`; `requireSchema` defaults true only for `create`.
 - `/ai-context` does not fetch or populate the schema itself. `schemaContext` is a pointer. Executable authoring resolves the actual structure just in time through `SchemaRetrievalService` and canonical `/schemas/filtered?path=...&operation=...&schemaType=...`.
-- Preserve exact operational verification evidence for the remainder of the same turn. When pre-intent verification already resolved schemas, principal capabilities, actions, or related-resource surfaces, carry compact typed projections forward instead of repeating the same remote probes after intent resolution.
-- A parent-child semantic decision needs the canonical related-resource candidates before the LLM chooses `targetSurfaceId`. Project related surfaces from `/schemas/surfaces` with their exact runtime id, resource/scope, semantic title/description/tags, availability, and related-resource contract. The LLM selects among those governed candidates; the preview must still verify the selected surface and block missing, ambiguous, unavailable, or incomplete contracts.
 - Schema retrieval returns typed failures for invalid context, missing base URL, access denial, not found, invalid payload, and transport/unavailable states. Do not replace a failed canonical schema request with `/schemas/catalog`, `api_metadata`, or an inferred local schema.
 - The Angular `AiBackendApiService` derives the AI-context base URL from `API_URL.default` unless an explicit gateway override exists. Hosts must supply governed identity headers; demo/local header defaults are not corporate authorization.
-
-## Preserve Operational Binding Identity
-
-Carry each verified operation/surface identity, API path and method, schema role/URL,
-submit URL/method, scope, source release and evidence bundle through candidate and
-LLM-context projections. Create, detail, edit and list can share a `resourcePath`
-without being interchangeable. Do not deduplicate distinct operational bindings by
-resource path or normalize a verified write binding into a default read/filter route.
-A consumer read projection must follow semantic operation selection and preserve the
-original verified binding; it must not manufacture `/filter/cursor` authority.
-Resource ranking and ambiguity checks must compare distinct canonical resources, not
-sibling operations of the same resource; do not collapse operations to recover ranking.
-
-Correlate preserved bindings exactly with the existing backend-owned
-`verifiedDomainOperations` v2 envelope, its principal-capability verification,
-availability, scope/release, schema and submit tuple, and evidence refs. Inspect the
-stream/engine boundary that strips client-supplied verification and rebuilds the
-envelope from operational tools. Candidate hint markers, copied evidence labels or
-a client-forged envelope are not proof; do not add a DTO trust flag to bypass this
-correlation.
-
-Documentary API Catalog evidence can supplement grounding without replacing verified
-operation fields or erasing their proof. Keep documentary and operational provenance
-separate: neither a matching resource path nor a newer documentary release transfers
-schema, capability or action verification across operations, principals or releases.
-Retain the existing tenant/environment, release and evidence checks and fail closed
-for unresolved intent, mismatched focus or ambiguous operational bindings. Do not
-restore materialization by weakening the guard that correctly rejected missing proof.
-
-For the `resource-master-detail` blueprint, semantic selection of a resource does
-not identify its item HTTP operation. Materialize the detail's exact `schemaUrl`
-from the unique verified item GET/response operation for that same canonical resource
-in the current backend-owned v2 envelope, retaining principal scope and release
-provenance. Do not invent a root GET or append `/{id}` to manufacture a binding;
-documentary selection, copied markers and forged envelopes cannot supply it.
-Missing or ambiguous item operations must fail closed for this blueprint. Preserve
-the master configuration, context and semantic selection state; physical composition
-links must materialize the receiving runtime's canonical read contract.
-
-For remote-backed Form detail, derive `resourceId` from Table selection's
-metadata-derived `payload.resourceIdentity.key.value`, separately from the selected
-DTO snapshot (`payload.selectedRows.0`). Do not infer `row.id` or substitute a late
-`initialValue` for the remote entity read. Preserve explicit `fallbackValue: null`
-through plan compilation and propagate selection clearing even when the event still
-contains a stale `row`; truthiness conditions must not suppress that clear. Retain
-the verified item schema, allow the Form to cancel obsolete reads and reject stale
-responses, and keep its remote hydration guard intact. `initialValue` remains the
-appropriate snapshot input for local snapshot/create semantics.
 
 ## Project Knowledge And Corpus
 
@@ -166,6 +103,8 @@ appropriate snapshot input for local snapshot/create semantics.
 - Publish and filter Domain Catalog RAG documents with the same normalized release token from `RagDocumentIdentity.resolveReleaseId`. Also preserve tenant, environment, service key, resource key, item type, context key, node type, and canonical item identity. A raw release key on one side and a normalized token on the other creates false empty retrieval and unreconciled status.
 - Pre-intent planning must receive governed Domain Catalog context on the first authoring turn when the caller did not provide a Domain Catalog preference. Add a copied internal `enabled=true` hint only for this asymmetry; preserve an explicit `enabled=false` or caller-provided scope.
 - Retrieve semantically from the scoped latest release first, then use the existing scoped lexical query only as a fallback when semantic retrieval produces no canonical item. Lexical matching does not decide primary intent.
+- In `DomainCatalogPromptContextService.buildResourceIdentityContext`, over-fetch `concept` rows (`RESOURCE_IDENTITY_FETCH_LIMIT`) and deduplicate by `resourceKey` before applying `MAX_LIMIT` so alphabetical concept density never truncates distinct domain resources (e.g. `operations.missoes`) from `DOMAIN_RESOURCE_IDENTITY_CATALOG`.
+- In `AgenticAuthoringApiMetadataCandidateCatalog`, evaluate `primaryBusinessEntityAlignmentScore` after `semanticRoleFit` when `resourceNeed == GENERIC_OPERATIONAL`, preserving `PROFILE` and `ANALYTICS` projections while breaking ties in favor of the parent `primaryBusinessEntity` in parent-child and operational requests.
 - Do not treat successful ingestion, a populated Domain 360 response, or vector availability alone as proof of grounding. An operational gate must wait for `expectedDocumentCount == publishedDocumentCount > 0` and audit that every provider pre-intent call contains the governed context.
 
 ## Consultative Answers
@@ -206,8 +145,6 @@ Use focused local gates:
 
 - ingestion/context: `mvn "-Dtest=ApiMetadataIngestionServiceTest,ApiMetadataControllerTest,AiContextControllerTest,ContextRetrievalServiceTest,SchemaRetrievalServiceTest" test`
 - resource/project knowledge/runtime grounding: `mvn "-Dtest=AgenticAuthoringApiMetadataCandidateCatalogTest,AgenticAuthoringResourceDiscoveryServiceTest,AgenticAuthoringProjectKnowledgeServiceTest,VectorRankedProjectKnowledgeCandidateRetrieverTest,AgenticAuthoringRuntimeComponentGroundingServiceTest" test`
-- operational binding projections: `mvn "-Dtest=AgenticAuthoringOperationalBindingVerificationServiceTest,AgenticAuthoringResourceFocusReconciliationTest" test`; exercise the public resolver with governed semantic LLM resolution, four distinct create/detail/edit/list bindings, documentary refinement from another release and unchanged per-operation evidence. Retain unresolved-intent, focus, principal-scope, ambiguous-release and absent/forged verification-envelope negatives. These focused tests do not certify a paid provider journey, live apply or downstream persistence.
-- master-detail materialization: `mvn "-Dtest=AgenticAuthoringGenericUiCompositionPlanProviderTest,AgenticAuthoringUiCompositionPlanCompilerTest,AgenticAuthoringDomainBindingServiceTest" test`; prove the exact item schema survives provider and compiler, with missing/ambiguous/untrusted operations and tenant/environment/release negatives. In the real consumer, assert the persisted detail schema tuple and GET 200 from an admitted official origin without redirects, alongside the functional scenario assertions and critical-network guard. Functional checks alone cannot certify a schema route that returns 404. Also prove typed null fallback survives compilation, metadata-derived keys work without an `id` property, and deselection/cancellation/stale-response negatives hold. The real selection must issue entity GET 200 for that exact identity and hydrate the matching Form content; a schema GET or populated DTO alone does not prove this read.
 - RAG/vector changes: `mvn "-Dtest=RagVectorStoreServiceTest,RagVectorStoreConfigurationTest,RagProjectKnowledgeMetadataTest,RagProjectKnowledgeDerivedIndexServiceTest" test`
 - Domain Catalog prompt/RAG grounding: `mvn "-Dtest=DomainCatalogIngestionServiceTest,DomainCatalogPromptContextServiceTest,RagVectorStoreServiceTest,AgenticAuthoringLlmPreIntentToolPlanningServiceTest" test`
 - Angular AI-context consumer: `npm run test:praxis-ai:backend-api`

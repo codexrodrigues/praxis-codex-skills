@@ -81,7 +81,9 @@
    source, schema, or UPDATE binding fails the composition closed. Do not
    promise per-operation error isolation for a malformed declaration.
    For candidate operational UPDATE composition, require a singleton profile
-   with `SYNC` execution, `EXPLICIT` selection, and `PER_ITEM` outcomes.
+   with `SYNC` execution and `PER_ITEM` outcomes (`BulkMode.UNIFORM_UPDATE`
+   supports `EXPLICIT` or `QUERY` selection preserving the full `FilterDTO`,
+   whereas `BulkMode.PER_ITEM_UPDATE` requires `EXPLICIT` selection).
    Keep `parametersPointer` on domain commands only; UPDATE supplies none.
    The provider still supplies `identitySchemaPointer` for the appropriate
    explicit target or per-item ID path. Check `capabilities.operations` for `bulk-update` or

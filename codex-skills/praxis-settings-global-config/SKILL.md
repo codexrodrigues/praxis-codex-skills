@@ -52,24 +52,26 @@ When remote persistence is touched, also inspect:
 - `GlobalConfigService.ready()` loads the active storage key before consumers rely on effective config.
 - The storage key is `praxis:global-config` or `praxis:global-config:{tenant}` when a tenant is set or resolved.
 - `setTenant()` changes the active key and invalidates the loaded config/cache state.
-- Effective config is built from configured provider values plus the stored config overlay. Runtime getters such as `getCrud()`, `getDynamicFields()`, `getTable()`, `getDialog()`, and `get(path)` read that merged effective snapshot.
+- Effective config is built from configured provider values plus the stored config overlay. Runtime getters such as `getCrud()`, `getDynamicFields()`, `getTable()`, `getPages()`, `getDialog()`, and `get(path)` read that merged effective snapshot.
+- `GlobalConfig.pages.defaults` (`layoutPreset`, `themePreset`, `shellPreset`, `columns`, `gap`, `paddingInline`, `autoRows`) defines corporate defaults for `<praxis-dynamic-page>` and Page Builder editors when the corresponding `WidgetPageDefinition` properties are omitted.
 - `saveGlobalConfig(partial)` deep-merges the partial over the current effective config, persists the merged config through `ASYNC_CONFIG_STORAGE`, updates the in-memory snapshot, and emits config changes.
 - `clearGlobalConfig()` clears the active storage key, reloads effective config from provider/server defaults, resets the stored snapshot, and emits config changes.
 - `hasStoredConfig()` is meaningful only after the service is ready because it reflects the loaded storage snapshot.
 - `GlobalConfigAdminService` must use public `GlobalConfigService` getters and save/clear APIs; do not reach into cache internals or duplicate merge logic.
 - `GlobalConfigEditorComponent.getSettingsValue()` returns only changed fields by comparing `currentValues` with `initialValues`.
 - Changed form fields are nested by `dataAttributes.globalPath`; generated safe names are an implementation detail and must not become persisted contract.
-- `onSave()` validates compact table appearance values before save, toggles busy state, delegates to `GlobalConfigAdminService.save(partial)`, updates the baseline after success, and returns `undefined` on blocked/failed saves.
+- `onSave()` validates compact table appearance and dynamic page CSS length values (`pages.defaults.gap`, `pages.defaults.paddingInline`) before save, toggles busy state, delegates to `GlobalConfigAdminService.save(partial)`, updates the baseline after success, and returns `undefined` on blocked/failed saves.
 - `clearStoredConfig()` delegates to `GlobalConfigAdminService.clearStoredConfig()`, reloads effective config, resets forms from the fresh snapshot, and refreshes the stored/source indicator.
 
 ## Rules
 
 - Preserve tenant/global storage semantics; do not store global config in a host-local singleton when the configured storage contract exists.
-- Save partial config intentionally. Do not overwrite unrelated global config branches when editing CRUD, dynamic-fields, table, cache, dialog, or AI settings.
+- Save partial config intentionally. Do not overwrite unrelated global config branches when editing CRUD, dynamic-fields, table, dynamic-pages, cache, dialog, or AI settings.
 - `clearStoredConfig()` must return to server/provider defaults and refresh effective config.
 - Every editable dynamic form field must declare `dataAttributes.globalPath`. Add a new editable path only when a runtime consumer reads that path from `GlobalConfigService` or the same change adds that canonical runtime consumption.
 - Keep `buildGlobalConfigFormConfig` field names as safe names derived from global paths; do not persist or document safe names as public config paths.
-- Compact table appearance fields must normalize whitespace and reject invalid CSS length values before persistence.
+- Compact table appearance fields and dynamic page CSS length fields (`pages.defaults.gap`, `pages.defaults.paddingInline`) must normalize whitespace and reject invalid CSS length values before persistence.
+- `GlobalConfigEditorComponent.buildSectionConfig` must strip inner section `title` values and propagate `this.formConfig.actions` so each accordion section renders frameless without duplicating the accordion header or recreating hidden form action chrome.
 - AI provider/model settings must use the AI provider catalog and backend test/model APIs where available; do not persist only opaque display strings.
 - AI model requests should include `apiKey` only when the user typed a new key. Stored keys are server-side state and must not be exposed back into the editor as raw values.
 - Preserve `apiKeyLast4`, `hasStoredApiKey`, and safe status labels as UI state only. They are not the persisted secret.
@@ -77,7 +79,7 @@ When remote persistence is touched, also inspect:
 - Keep dynamic form fields and validation aligned with runtime config consumers.
 - Put authoring chrome text in Settings Panel i18n catalogs; avoid hardcoded visible strings.
 - Open the editor through `openGlobalConfigEditor(settingsPanelService, options)` / `SettingsPanelService.open`; do not create a separate drawer or dialog host for global config.
-- `GLOBAL_CONFIG_DYNAMIC_FORM_COMPONENT` intentionally keeps `settings-panel` from depending directly on `dynamic-form`. Preserve this injection-token bridge when evolving form rendering.
+- `GLOBAL_CONFIG_DYNAMIC_FORM_COMPONENT` intentionally keeps `settings-panel` from depending directly on `dynamic-form`. Preserve this injection-token bridge and its `ComponentMetadataRegistry.get('praxis-dynamic-form')?.componentType` fallback so hosts that register Dynamic Form in the component registry do not need manual provider boilerplate.
 
 ## Remote Persistence Rules
 
