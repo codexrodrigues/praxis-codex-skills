@@ -38,16 +38,28 @@ downstream proof here.
 Read [proof-slice-matrix.md](references/proof-slice-matrix.md) when selecting
 the smallest representative resource and required evidence.
 
-For each ephemeral Neon proof, follow the workspace AGENTS branch lifecycle:
-bind project/branch IDs, owner and run ID; set and read back native `expires_at`
-before SQL/host startup, normally within 48 hours and the assigned lease. A local
-assignment expiry does not delete the Neon branch. Use an explicitly designated
-durable baseline with an independent leaf per run: Neon rejects TTL on parents,
+Before provisioning, distinguish no-database checks, still-valid evidence,
+reattestation of the current exclusive campaign and a necessary new physical
+branch. A new source/phase/retry/release does not by itself require a new branch.
+Follow the workspace AGENTS branch lifecycle: bind project/branch IDs, exclusive
+owner, purpose, baseline and fixed custody deadline; each attempt still needs its
+own current source/dependencies and gate-valid assignment. Sequential reuse needs
+closed prior connections, reconciled effects, proven fixture cleanup and required
+initial state, fresh control-plane/PG/TLS/privilege observation. Never share across
+concurrent workers or replace a required virgin clone with logical cleanup.
+Set and read back native `expires_at` before SQL/host startup, normally within
+48 hours for the campaign including transitions/cleanup; execution leases must fit
+that fixed authorized custody. No rolling extension per retry. A local assignment
+expiry does not delete the Neon branch. Use a designated durable baseline and an
+independent leaf per concurrent campaign: Neon rejects TTL on parents,
 default/protected branches and children of expiring parents. Do not remove TTL or
-reuse a shared database to bypass this. After success, failure or cancellation,
-close owned hosts/connections and perform authorized branch cleanup with readback;
+reuse a shared database to bypass this. After campaign completion, definitive
+failure or cancellation, close owned hosts/connections and perform authorized
+physical branch cleanup with readback; uncertain outcomes block serial reuse;
 keep native TTL as the failure backstop. Preserve referenced fixtures, backups
-and other workers' reservations; report exceptions by ID. See the official
+and other workers' reservations; exceptions need IDs, current need, owner and
+review deadline. Historical pins or a prior hold do not establish perpetual need.
+See the official
 [expiration restrictions](https://neon.com/docs/guides/branch-expiration).
 
 ## Focal Proof And The Integral Neon Gate
