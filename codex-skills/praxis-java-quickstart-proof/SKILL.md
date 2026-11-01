@@ -41,6 +41,14 @@ the smallest representative resource and required evidence.
 Before provisioning, distinguish no-database checks, still-valid evidence,
 reattestation of the current exclusive campaign and a necessary new physical
 branch. A new source/phase/retry/release does not by itself require a new branch.
+Campaign means one bounded active test/suite execution: create just in time and
+physically delete immediately after its last use, including failure/cancellation,
+not per test method and not retained across idle sessions or pending PRs. Keep
+sanitized receipts, not old branches for later restoration. The provisioner owns
+control-plane closure, including failure before runner materialization; fixture
+cleanup and `always()` do not certify branch deletion. Native TTL is only a
+cleanup-failure backstop; uncertain deletion needs reconciliation and no false
+success. Respect tool confirmation and scope; never delete parent/production.
 Follow the workspace AGENTS branch lifecycle: bind project/branch IDs, exclusive
 owner, purpose, baseline and fixed custody deadline; each attempt still needs its
 own current source/dependencies and gate-valid assignment. Sequential reuse needs
