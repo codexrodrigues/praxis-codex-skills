@@ -67,6 +67,23 @@ version, run/repository/source identity and a bounded lease. A self-asserted JSO
 receipt alone is not a control-plane observation. Never copy a historical branch,
 endpoint, role or private artifact path from an earlier campaign.
 
+This does not mean a new physical branch for every source revision, phase or
+retry. Within the same explicitly owned, time-bounded exclusive campaign, a
+sequential attempt may be reissued a fresh assignment only after prior processes
+and connections are closed, effects/intents and OID journals reconciled, owned
+resources cleaned, required initial state (including migrations/global roles and
+privileges) proved, and control-plane/PG/TLS identity observed again. Keep separate
+run/attempt/source/dependency evidence and each materializer's lease bounds; never
+rewrite an old assignment or old proof. The execution lease must fit the campaign's
+fixed authorized native TTL, including transitions and cleanup, normally at most
+48 hours without rolling extensions. This is an admission obligation, not a claim
+that the existing assignment validator enforces native `expires_at` automatically.
+Missing custody/baseline/cleanup proof blocks reuse. Use a new independent leaf for
+concurrent workers/campaigns, a required virgin physical clone, changed security
+boundary, unreconciled contamination or expired custody. A logical fixture reset
+does not satisfy a test explicitly requiring a virgin clone. Do not provision for
+no-database checks or repeat valid evidence without a relevant change.
+
 Inspect the materializer and helper for their exact required inputs. Current
 materialization consumes the private `QUICKSTART_NEON_ASSIGNMENT` and binds
 `PRAXIS_QUICKSTART_NEON_ASSIGNMENT_FILE`,
