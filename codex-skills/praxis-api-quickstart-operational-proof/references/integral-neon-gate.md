@@ -84,6 +84,17 @@ boundary, unreconciled contamination or expired custody. A logical fixture reset
 does not satisfy a test explicitly requiring a virgin clone. Do not provision for
 no-database checks or repeat valid evidence without a relevant change.
 
+Here a campaign is one bounded active execution/suite, not retention between days,
+PRs or future sessions. Provision just in time and physically delete after the
+last use on success, failure or cancellation; a future proof uses a new properly
+assigned baseline, not restoration of an old test branch. Internal phases need
+not create a branch per method. The trusted operator/provisioner must finally
+close the exact child by ID and attest branch/endpoint absence, even if runner
+materialization fails. Keep this receipt distinct from internal fixture cleanup.
+Do not inject a global Neon token into Maven; `always()` cannot cover runner loss.
+Native TTL is only a fallback for failed cleanup, with external reconciliation
+of uncertain deletions and required tool confirmations, never ordinary retention.
+
 Inspect the materializer and helper for their exact required inputs. Current
 materialization consumes the private `QUICKSTART_NEON_ASSIGNMENT` and binds
 `PRAXIS_QUICKSTART_NEON_ASSIGNMENT_FILE`,
