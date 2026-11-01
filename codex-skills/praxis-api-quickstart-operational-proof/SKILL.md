@@ -9,6 +9,18 @@ Use this skill for the Quickstart's role as the operational reference host. It p
 
 ## Ephemeral Neon branch lifecycle
 
+Create test infrastructure just in time for a bounded execution/suite; delete the
+physical branch and confirm branch/endpoint absence immediately after its last
+use, on success, failure or cancellation. A campaign is active execution, not an
+idle reservation across days, PRs or future attempts. Internal sequential phases
+may share its exclusive assignment; do not provision per test method/assertion.
+Keep sanitized evidence instead of retaining or restoring old test branches.
+The trusted provisioner/orchestrator owns control-plane closure even if runner
+materialization never starts. Runner fixture cleanup, `always()` and expiring
+leases do not prove physical deletion. Native TTL is a failure backstop, not the
+normal retention period; reconcile uncertain deletes without claiming success.
+Do not place a global control-plane token in Maven to bridge this ownership gap.
+
 Before provisioning, classify no-database checks, valid prior evidence, serial
 reattestation of the current exclusive campaign, or a necessary new physical leaf.
 New source/phase/retry/release alone does not require another branch; preserve the
