@@ -32,6 +32,7 @@ Before editing code or guidance, inspect:
 - `projects/praxis-core/src/lib/services/collection-export.service.ts`
 - `projects/praxis-core/src/lib/services/enterprise-runtime-context.service.ts`
 - focused provider/token/service specs and direct consumer imports
+- For icon-family behavior, also inspect `components/icon/praxis-icon.directive.ts`, `components/icon-button/praxis-icon-button.component.ts` and their focused specs in the exact installed or candidate version.
 
 ## Canonical Boundary
 
@@ -51,6 +52,14 @@ Vertical packages may register their package metadata or package defaults throug
 - If a capability is absent at runtime, fail closed to a missing-provider diagnostic and identify the canonical provider to install. Do not synthesize registry entries, local tokens, prompt-only catalogs, selector switches, or ad hoc fallback defaults to hide an uninstalled provider.
 - Before adding a new token or provider, classify the gap as `ja-suportado-so-ux`, `ja-suportado-mal-nomeado-ou-mal-materializado`, `suportado-parcialmente`, or `lacuna-real-de-contrato`.
 - For real public contract gaps, map direct consumers and derived docs before editing.
+
+## Icon family and bootstrap
+
+`providePraxisIconDefaults()` registers Material font aliases and selects Symbols Outlined by default; its existing `defaultFontSetClass` option selects another configured default. The host must load the corresponding font resources. Inspect the actual provider initialization and the rendered `mat-icon` family before changing styles or prefixes; a provider import alone does not prove initialization or font availability.
+
+For versions where `PraxisIconButtonComponent` implements registry-default inheritance, unprefixed button icons follow the configured Symbols family (outlined, rounded or sharp); without a configured Symbols default they retain classic Material Icons. Explicit `mi:`, `ms:`/`mso:`, `msr:` and `mss:` prefixes override the default. Do not generalize this rule to the standalone `PraxisIconDirective`, whose own unprefixed fallback is Symbols Outlined. Check the exact package version and component source first: older IconButton implementations force classic icons for unprefixed names. Do not mask a mismatch with global font-class overrides or rewrite explicit prefixes in consumers.
+
+For an icon-family change, run the focused provider and IconButton specs. Prove the unprefixed fallback without the provider, provider defaults and configured rounded/sharp variants, explicit prefixes, and absence of competing family classes. Preserve auxiliary `defaultFontSetClass` entries such as tenant styling and `mat-ligature-font` while resolving the family. Check the actual font resource and a direct consumer's rendered icon. Distinguish a source candidate from a released package when reporting adoption.
 
 ## Lazy host catalog and injector custody
 
