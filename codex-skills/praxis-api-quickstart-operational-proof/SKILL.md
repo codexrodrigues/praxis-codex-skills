@@ -9,18 +9,32 @@ Use this skill for the Quickstart's role as the operational reference host. It p
 
 ## Ephemeral Neon branch lifecycle
 
-Follow the workspace AGENTS lifecycle before every database-backed proof: one
-assigned remote leaf per owner/run, native `expires_at` set and read back before
-SQL/startup, normally within 48 hours and the assigned lease. Local lease expiry
-and internal fixture cleanup do not delete the physical branch. Use an assigned
+Before provisioning, classify no-database checks, valid prior evidence, serial
+reattestation of the current exclusive campaign, or a necessary new physical leaf.
+New source/phase/retry/release alone does not require another branch; preserve the
+official evidence and release gates. Bind purpose, baseline, owner, project/branch
+IDs and a fixed custody deadline. Every attempt needs its own current source/tree,
+dependencies and gate-valid assignment. Serial reuse requires prior connections
+closed, effects/intents reconciled, owned fixture cleanup and required initial
+state proved, fresh control-plane/PG/TLS/privilege observation and no other worker.
+Concurrent campaigns, a required virgin clone, security/tenant boundary changes,
+unreconciled state or expired/lost custody require a new branch. Do not relabel old
+evidence or substitute logical cleanup for a mandated virgin physical baseline.
+Follow the workspace AGENTS lifecycle: native `expires_at` set and read back before
+SQL/startup, normally within 48 hours for the campaign including transitions and
+cleanup. Execution leases must fit fixed authorized custody; no rolling renewal.
+Local lease expiry and internal fixture cleanup do not delete the physical branch.
+Use an assigned
 durable baseline: Neon forbids TTL on default/protected/parent branches and
-children of expiring parents. Never remove TTL or reuse another run's database
+children of expiring parents. Never remove TTL or reuse another campaign's database
 to bypass this restriction. Close owned processes/connections and perform
-authorized physical cleanup after success, failure or cancellation, verifying
-absence of branch/endpoints. Preserve sanitized evidence and native TTL as a
+authorized physical cleanup after campaign completion, definitive failure or
+cancellation, verifying absence of branch/endpoints. Preserve sanitized evidence and native TTL as a
 backstop. Do not expire referenced fixtures, backups or active reservations based
-only on name/age/inactivity; record exceptions by ID. A periodic audit must not
-renew expiry on every run. See [Neon expiration](https://neon.com/docs/guides/branch-expiration).
+only on name/age/inactivity; exceptions need ID, current need, owner and review
+deadline. Pins, parenthood or historical retention do not prove perpetual need.
+A periodic audit must not renew expiry on every run.
+See [Neon expiration](https://neon.com/docs/guides/branch-expiration).
 
 ## Governed cold-node recovery on Render
 
