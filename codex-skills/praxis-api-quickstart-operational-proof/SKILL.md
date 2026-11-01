@@ -7,6 +7,21 @@ description: "Use when Codex must implement, audit, or diagnose Praxis API Quick
 
 Use this skill for the Quickstart's role as the operational reference host. It proves that canonical Praxis contracts survive Maven packaging, Spring Boot auto-configuration, security policy, real persistence, and HTTP consumption. It must be a thin, explicit integration point, never a parallel implementation of metadata, configuration, AI, or business-decision semantics.
 
+## Ephemeral Neon branch lifecycle
+
+Follow the workspace AGENTS lifecycle before every database-backed proof: one
+assigned remote leaf per owner/run, native `expires_at` set and read back before
+SQL/startup, normally within 48 hours and the assigned lease. Local lease expiry
+and internal fixture cleanup do not delete the physical branch. Use an assigned
+durable baseline: Neon forbids TTL on default/protected/parent branches and
+children of expiring parents. Never remove TTL or reuse another run's database
+to bypass this restriction. Close owned processes/connections and perform
+authorized physical cleanup after success, failure or cancellation, verifying
+absence of branch/endpoints. Preserve sanitized evidence and native TTL as a
+backstop. Do not expire referenced fixtures, backups or active reservations based
+only on name/age/inactivity; record exceptions by ID. A periodic audit must not
+renew expiry on every run. See [Neon expiration](https://neon.com/docs/guides/branch-expiration).
+
 ## Governed cold-node recovery on Render
 
 Inspect `LocalPublicationRecovery`, `LocalPublicationRecoveryClient`,
