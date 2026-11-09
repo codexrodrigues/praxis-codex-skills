@@ -138,6 +138,11 @@ Only `lacuna-real-de-contrato` may justify a new platform contract. Do not add a
      value. Also test missing ID, context/dependency change during load, and teardown during load.
      Reconciliation must not emit a user selection event, refresh the route repeatedly, or create
      an effect cycle that writes the same value/metadata back into the component.
+   - For Ergon showcases and executive catalogs (`ergon-resource-catalog.ts` / `analytical-drawer-schemas.catalog.ts`), enforce these fine-detail invariants on every creation or edit, however small:
+     - **KPI Band Parity:** Every catalog resource (both transactional CRUDs and read-only `Radar*` analytical resources) must declare a `kpiBand` (`CrudKpiBandConfig`) backed by `/stats/group-by` and real `*FilterDTO` predicates in `filterCriteria`. On `card-summary` micro-visualizations, set `compactValue: false` on `bullet` (so it does not duplicate the primary KPI value) and `size: 'sm'` on `radial`.
+     - **Inline Filter DTO Alignment:** Every field in `inlineFilterFields` must exist by the exact same name in the backend `*FilterDTO` (never reference response-only fields or hidden tenant keys like `empCodigo`), and keep `showAddButton: true` so `"Gerenciar campos"` remains available.
+     - **Read-Only Remote CRUD Mode:** Remote read-only resources (`AbstractReadOnlyResourceController` / `readOnlyResource = true`) must use `interactionMode: 'interactive'` with `actions: [{ action: 'view', ... }]` and `table.behavior.selection.enabled: false`. Never use `interactionMode: 'inspect-only'` on remote resources without local `metadata.data`, as `inspect-only` suppresses `<praxis-table>` when no local array is bound.
+     - **Safe Expressions in Micro-Visualizations & 360° Drawers:** In `additions` micro-visualizations (`valueExpr`, `targetExpr`, `totalExpr`), use canonical row property paths (`= row.<field>`) without unsupported JS operators (`??`). In `PraxisAnalyticalDrawerSchema` (`titleExpr`, `subtitleExpr`, `valueExpr`), always use `coalesce(row.fieldA, row.fieldB, '-')` for fallbacks—never `||`, which `SafeExpressionEvaluator` evaluates as boolean `true`/`false`.
 
 6. Verify end to end.
    - Run backend tests affected by DTO/schema/API changes.
