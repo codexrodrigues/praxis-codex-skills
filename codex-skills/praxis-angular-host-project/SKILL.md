@@ -135,9 +135,10 @@ When an Angular host integrates corporate `SESSION` + `X-XSRF-TOKEN` transport (
    - First adoption path: table, dynamic form, CRUD, and list against the same resource.
    - Expansion path only after the core path works: manual form, tabs, stepper, expansion, charts, editorial forms, page builder, AI shell.
 6. Validate with the narrowest useful gates:
+   - When developing inside the monorepo alongside local `@praxisui/*` changes, synchronize compiled library artifacts from `dist/*` into the host's `node_modules/@praxisui/*` (`npm run praxis:local-libs:sync` or official sync script) before running host builds or browser QA so runtime behavior matches source changes.
    - Build and smoke/unit tests for the host.
    - Network or browser validation for remote schema/data flows when feasible.
-   - Screenshot QA when the request includes visual/product quality.
+   - Screenshot QA when the request includes visual/product quality, verifying fine-detail craftsmanship: no double shell/page padding, no `border-left` corner warping on rounded KPI cards, no chevron/`×` collision on compact filters, real `.pfx-micro-viz` bar rendering in cells/cards, `coalesce(...)` (never boolean `||`) in 360° analytical drawers, and `interactionMode: 'interactive'` on remote read-only CRUD resources.
 
 ## Source-Free Package Discovery
 

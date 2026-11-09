@@ -275,6 +275,16 @@ Avoid:
 
 - property dumps, arbitrary equal-column grids, generic text selects for visual options, clipped overlays, stranded compact controls, and card grids as the default editor layout
 
+## Executive Showcase & Fine-Detail Craftsmanship Rules
+
+Whenever creating or modifying any component, resource page, KPI band, compact filter, micro-visualization, or 360° analytical drawer in a Praxis showcase or host — no matter how small the change — enforce these fine-detail geometry and runtime rules:
+
+- **KPI Band & Card Accent Geometry (No "Crescent Moon" Border Defect):** Never apply a thick `border-left: 4px solid` directly to a card with `border-radius: 12px+`. Render the semantic accent bar as an inset vertical strip via `::before` (`left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0`). Every card in a KPI band must render a consistent `34×34px` icon badge, support all semantic `[data-tone]` variants (`primary`, `accent`, `info`, `success`, `warning`, `danger`, `neutral`, `ready`, `destructive`), and toggle its filter off (`aria-pressed="false"`) when clicked a second time.
+- **Micro-Visualizations in Cards vs. Table Cells:** On `surface: 'card-summary'` where the primary KPI number is already displayed in the card header, configure `bullet` micro-visualizations with `compactValue: false` (showing only `Meta: X%` without duplicating the primary metric) and `radial` micro-visualizations with `size: 'sm'` (`38px`). On `surface: 'table-cell'`, verify in the DOM that `.pfx-micro-bullet__actual` or `.pfx-micro-radial` renders the visual graphic rather than falling back to plain text due to invalid `valueExpr`/`targetExpr` paths or unsupported JS operators (`??`).
+- **Compact Filter Bar Icon Hygiene:** In compact inline filter selects (`pdx-FilterSelect`), render the `expand_more` chevron only in the resting state (`:not(.is-active):not(.pdx-has-quick-clear)`). Hide the chevron whenever a value is selected so it never collides with the quick-clear (`×`) button.
+- **Analytical 360° Drawer Safe Expressions:** In `SafeExpressionEvaluator`, `||` is a boolean operator (`true`/`false`). Any `titleExpr`, `subtitleExpr`, or `valueExpr` fallback in `PraxisAnalyticalDrawerSchema` must use `coalesce(row.fieldA, row.fieldB, '-')`, never `||`.
+- **Frameless Child Surfaces (No Double Padding):** When `<praxis-resource-page>` or a workbench is hosted inside `.praxis-shell__content`, keep the child host `padding: 0` so outer shell padding is never duplicated and vertical rhythm (`16px` gap between KPI band, filter bar, and table) remains uniform across all routes.
+
 ## Must-Fail Checks
 
 A Praxis UI change is incomplete if any of these are true:
@@ -294,6 +304,7 @@ A Praxis UI change is incomplete if any of these are true:
 - styling bypasses Material/Praxis tokens and would require host CSS patching to theme
 - new internal lib/editor copy is hardcoded instead of using the applicable Praxis i18n path
 - CSS custom properties or tokens are introduced as public theming surface without public-contract governance
+- a rounded card uses a direct thick `border-left` that warps corners, a compact filter chevron collides with the quick-clear (`×`) button, a KPI card duplicates its primary metric inside a `card-summary` bullet, or a 360° drawer displays `"true"` from an unguarded `||` expression
 
 Load `references/praxis-visual-rubric.md` for the full rubric.
 
