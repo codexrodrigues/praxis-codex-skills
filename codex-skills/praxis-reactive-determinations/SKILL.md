@@ -157,11 +157,31 @@ public class EmployeeReactiveDeterminationConfig {
 4. **Non-Overlapping Inputs and Outputs:** `input.fieldPath` and `output.fieldPath` must never be identical or parent/child of each other within the same definition (prevents infinite trigger loops).
 5. **Form Mode HTTP Method Match:** `ReactiveDeterminationFormMode.CREATE` requires a `POST` form operation; `ReactiveDeterminationFormMode.EDIT` requires a `PUT` or `PATCH` form operation; and the determination capability operation (`definition.operationId()`) must be a `POST` operation without `{...}` path parameters.
 
+For each form operation, the Metadata compiler adds a dependency from the
+writer to the reader when an output `fieldPath` and a reader's input
+`fieldPath` are equal or stand in a parent/child relationship. All bound inputs
+participate in this graph. Use `sourcePaths` to select which direct form edits
+trigger a change-mode determination. For example, a determination can read
+`/departmentId` written by another determination and use direct edits to
+`/positionId` as its trigger. Dynamic Form can also propagate a committed
+upstream output through a bound input outside `sourcePaths` when the downstream
+determination meets its runtime readiness conditions.
+
+The request schema lists definitions in topological order, with ties between
+currently ready definitions broken by ascending `id`. Verify that a writer
+whose id sorts after its reader is still published first. Include a reader
+whose dependent input is outside `sourcePaths` and a parent/child path overlap.
+Verify fail-closed rejection of cycles through non-trigger inputs and retain
+coverage for overlapping writers and invalid trigger subsets. Check the
+consumed Metadata version before relying on this compiler behavior. For an
+automatic downstream run, also prove the consumer's trigger and output
+application behavior with a focused runtime test.
+
 ### 5. Deep Domain Discovery for Reactive Determinations ("Além do Óbvio" — 4 Families)
 Do not leave enterprise forms passive until submit. Audit `CreateDTO`, `UpdateDTO`, and entity relationships to discover Reactive Determinations across four families:
 1. **Cross-Entity Lookup & Directory Projection:** When the user selects a foreign key or code (`"/postalCode"`, `"/positionId"`, `"/departmentId"`, `"/contractPlanId"`), auto-populate address fields, salary floor, standard work schedule, cost center, or responsible manager.
 2. **Multi-Field Deterministic Calculations:** When gross amount, deductions, rate, or start date + duration change (`"/grossSalary"`, `"/baseDeductions"`, `"/startDate"`, `"/probationDays"`), compute net amount, total deductions, or expected end/review date in real time.
-3. **Chained Reactive Determinations (`A -> B -> C`):** When Determination 1 writes an output field (e.g., `"/netSalary"`), a second `ReactiveDeterminationDefinition` that lists `"/netSalary"` in its `sourcePaths` and `inputs` is automatically triggered by `@praxisui/dynamic-form` to compute downstream fields (e.g., `"/expectedPaymentDate"` or approval tier).
+3. **Chained Reactive Determinations (`A -> B -> C`):** When the first determination writes `"/netSalary"`, bind it as an input to the next determination to compute `"/expectedPaymentDate"`. Include `"/netSalary"` in the next determination's `sourcePaths` when direct form edits to that control should trigger execution.
 4. **Draft Policy, Quota & Eligibility Preview:** While the user fills out an assignment or movement form, evaluate vacancy balance, qualification compatibility, or schedule conflict and populate read-only preview fields (`"/availableVacanciesPreview"`, `"/eligibilityDiagnosticPreview"`) before submit.
 
 
