@@ -187,6 +187,31 @@ For control-plane changes, prove publication with unchanged/absent head, initial
 
 Use only canonical status endpoints. Definition transitions allow review paths including `deprecated -> active`, but `rejected` and `retired` are terminal. Materializations may recover from `failed`, `superseded`, or `reverted` only through `draft` or `pending_review`; they cannot jump directly back to `applied`.
 
+### Rules Studio composition endpoint ownership
+
+- Inspect `GovernedRulesStudioAutoConfiguration`,
+  `GovernedRulesStudioCompositionController`, and the
+  `GovernedRulesStudioCompositionEndpointOwner` SPI introduced in Config
+  `78d1a3f`. Verify that the host's resolved Config artifact contains the SPI.
+- Hosts using Config's generic composition register their governed rule families
+  as `GovernedRuleFamilyDescriptor` beans. When a host already serves the same
+  candidate, approval, and publication routes, declare the SPI on its actual
+  controller. Config backs off its own controller, including when the host
+  scans Config components. Preserve both the Rules Studio and Policy Studio
+  route prefixes, scoped principal resolution, role checks, candidate digests,
+  and snapshot publication preconditions.
+- Backoff removes the generic controller's rollout probe mapping as well.
+  Check whether the host has a registered family and uses that probe before
+  adopting the marker. An empty `GovernedRuleFamilyRegistry` cannot serve the
+  generic family probe. Quickstart retains its existing preload transport
+  through the Config snapshots rollout probe endpoint.
+- Prove ownership with a focused MVC context using the real host controller and
+  Config auto-configuration. If the host scans Config components, include that
+  scan in the test. Mock persistence, assert exactly one POST mapping for
+  candidate, approval, and publication under each prefix, and verify that
+  removing the marker reproduces the ambiguous mapping. Use an authenticated
+  host proof for roles, scope, and rollout behavior when those flows change.
+
 ## Agentic Handoff
 
 - Shared-rule turns must be resolved semantically by `AgenticAuthoringLlmIntentResolverService` or governed evidence, then converted by `AgenticAuthoringIntentResolverService` into a route that carries `shared-rule-authoring-required`.
