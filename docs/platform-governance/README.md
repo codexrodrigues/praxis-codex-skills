@@ -5,7 +5,6 @@ Fonte versionada das diretrizes operacionais de coordenação, delegação, mode
 - [Política operacional e matriz de revisão](agentes-e-modelos.md)
 - [Template AGENTS.md do workspace](WORKSPACE-AGENTS.md)
 - [Ciclo de vida Neon](ciclo-de-vida-neon.md), leitura obrigatória ao planejar ou operar validações com banco e branches.
-- [Node/Angular entre WSL e Windows](node-wsl-windows.md), leitura obrigatória para comandos Node/Angular em projetos sob `/mnt/*`.
 
 O `AGENTS.md` local de cada repositório continua aplicável. O coordenador deve fornecer os caminhos/revisões desta fonte ao delegar, particularmente em checkouts isolados. A presença de um link não prova carregamento; não alterar configurações globais para instalar estas regras.
 
@@ -13,4 +12,4 @@ Manutenção: editar a fonte aqui, revisar e integrar por PR; depois atualizar s
 
 Impacto em skills nesta migração: `existente-adequada` para `praxis-skill-authoring-governance`. O processo canônico de criação/validação/publicação continua sendo o da skill; este conjunto registra obrigações de coordenação no AGENTS e não justifica criar outra skill genérica. Nenhum SKILL.md/manifesto mudou.
 
-Ao materializar o template, copiar também os dois procedimentos para `docs/engineering/` e ajustar seus links no AGENTS. Conferir paridade do conteúdo e tamanho UTF-8 do AGENTS abaixo de 32.768 bytes. O limite de descoberta é cumulativo com outras instruções carregadas, portanto verificar a cadeia efetiva ao adotar em outro projeto.
+Ao materializar o template, copiar também o procedimento Neon para `docs/engineering/` e ajustar seu link no AGENTS. Conferir paridade do conteúdo e tamanho UTF-8 do AGENTS abaixo de 32.768 bytes. O limite de descoberta é cumulativo com outras instruções carregadas, portanto verificar a cadeia efetiva ao adotar em outro projeto.
