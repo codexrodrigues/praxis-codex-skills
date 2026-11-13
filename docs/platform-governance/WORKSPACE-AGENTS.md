@@ -210,10 +210,6 @@ Integrações Locais e Origens Fixas
 - O agente não deve inventar portas, bridges locais, origins ou rotas ad hoc.
 - Quando uma validação depender de integração local já normatizada pelo repositório, usar os valores oficiais daquela superfície.
 
-Execução Node/Angular entre WSL e Windows
-- Antes de executar comandos Node/Angular em projetos acessados pelo WSL em `/mnt/*`, ler e aplicar integralmente [Execução Node entre WSL e Windows](node-wsl-windows.md). O documento contém as verificações do ambiente dono de `node_modules`, os comandos apropriados e o tratamento de instalações mistas.
-- Fornecer o caminho resolvido e exigir a leitura ao delegar esse trabalho. Se o documento estiver indisponível, registrar a pendência antes de executar comandos sensíveis à plataforma.
-
 Encerramento Obrigatório de Shells Interativos
 - Ao final da sessão, encerrar janelas ou processos interativos de `cmd.exe` e `powershell` abertos especificamente para a tarefa atual quando eles não forem mais necessários.
 - Não deixar consoles auxiliares abertos apenas por conveniência depois que a validação ou inspeção terminar.
