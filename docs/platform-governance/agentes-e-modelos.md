@@ -1,6 +1,6 @@
 # Agentes e modelos no Praxis
 
-Guia operacional de toda a plataforma, vinculado às [diretrizes do workspace](WORKSPACE-AGENTS.md). Consolidado em 13/09/2026 a partir da pesquisa e revisão do planejamento de edição em lote. Escopo `docs-apenas`: registra a política de execução e não altera modelos do aplicativo, contratos de produto ou permissões de publicação.
+Guia operacional de toda a plataforma, aplicado junto às instruções do workspace. Consolidado em 13/09/2026 a partir da pesquisa e revisão do planejamento de edição em lote. Escopo `docs-apenas`: registra a política de execução e não altera modelos do aplicativo, contratos de produto ou permissões de publicação.
 
 O `AGENTS.md` estabelece as obrigações; este guia concentra fundamentação, matriz inicial e exemplos. Planos de funcionalidades registram somente sua aplicação específica. Coordenadores e trabalhadores devem consultar também as instruções locais dos arquivos que vão ler ou editar. Ao retomar em outro checkout, confirmar que este guia e as instruções estão presentes; registros locais não se propagam automaticamente entre repositórios ou máquinas.
 
@@ -185,7 +185,7 @@ A descoberta de instruções começa na raiz do projeto, normalmente a raiz Git;
 
 Ao delegar ou passar contexto, incluir caminhos acessíveis para a política e o registro de execução, e pedir sua leitura; um link no documento não significa que seu conteúdo foi carregado. Para sessões iniciadas de forma independente, conferir as instruções efetivamente disponíveis e fornecer essa referência no contexto inicial. Se o checkout isolado não contiver os arquivos, transportar o conteúdo necessário com sua origem e data, sem presumir um caminho relativo válido.
 
-Este guia e o template de instruções do workspace são versionados em `praxis-codex-skills/docs/platform-governance`. Sua integração não instala automaticamente instruções em outros checkouts. O coordenador deve fornecer a fonte e a revisão aos agentes; a materialização no workspace continua explícita. Não criar cópias divergentes nem mudar configurações globais como efeito implícito de uma revisão documental.
+Este guia é versionado em `praxis-codex-skills/docs/platform-governance`. Sua integração não instala automaticamente instruções em outros checkouts. O coordenador deve fornecer a fonte e a revisão aos agentes; a materialização no workspace continua explícita. Não criar cópias divergentes nem mudar configurações globais como efeito implícito de uma revisão documental.
 
 ## Manutenção e origem da política
 
