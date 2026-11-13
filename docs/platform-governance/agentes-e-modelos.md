@@ -16,31 +16,33 @@ Registrar modelo/esforço solicitados e, quando expostos pelo retorno ou estado 
 
 ## Fundamento e limites
 
-A orientação oficial prioriza atingir a qualidade requerida e depois comparar modelos menores em custo/latência. Para o Praxis, aplicar isso por classe de tarefa, usando os critérios de aceite e retrabalho observado. Não adotar percentuais genéricos de acerto para autorizar falhas de integridade. [Model selection](https://developers.openai.com/api/docs/guides/model-selection).
+A orientação oficial recomenda definir critérios de aceite, comparar configurações em tarefas representativas e manter a configuração mais leve que atenda à qualidade exigida. Para o Praxis, aplicar isso por classe de tarefa, usando os critérios de aceite e retrabalho observado. Não adotar percentuais genéricos de acerto para autorizar falhas de integridade. [Model selection](https://developers.openai.com/api/docs/guides/model-selection).
 
-O Codex permite escolher modelo e esforço por subagente; a documentação distingue trabalho estreito para Luna e exploração para Terra. Também alerta que subagentes consomem mais tokens que execuções comparáveis com um agente. Paralelismo não garante economia. [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents).
+Quando a ferramenta expõe essa configuração, escolher modelo e esforço por subagente conforme a capacidade necessária ao pacote. A documentação também alerta que subagentes consomem mais tokens que execuções comparáveis com um agente. Paralelismo não garante economia. [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents).
 
-Astra é apresentado como o modelo mais capaz; a orientação relata casos em que menos tokens de saída reduzem custo por tarefa apesar do preço unitário maior. Portanto não assumir que o modelo menor sempre seja mais econômico no problema completo. [Model guidance](https://developers.openai.com/api/docs/guides/latest-model).
+O custo relevante inclui execução, contexto, revisão e retrabalho até o aceite. Conferir as opções disponíveis na sessão e os dados de consumo aplicáveis ao produto utilizado. Quando o custo relativo não estiver disponível, registrar essa incerteza e usar adequação e retrabalho observados para orientar a escolha.
 
-As atribuições abaixo são hipóteses operacionais para o Praxis, não benchmarks nem uma prescrição oficial por fase. Disponibilidade de um modelo não demonstra adequação à tarefa. Os identificadores foram expostos pelo mecanismo de agentes em 13/09/2026; conferir modelo e esforço aceitos antes de cada nova sessão. Não projetar preços da API como cobrança do plano Codex nem prometer percentual de economia.
+As atribuições abaixo são hipóteses operacionais. Para uma classe sem histórico, selecionar a opção econômica cuja capacidade documentada seja compatível com risco e critério de aceite, avaliar o primeiro lote e ajustar a escolha conforme omissões e correções. Tarefas críticas exigem análise suficiente para definir as garantias antes da execução delegada.
 
 ## Matriz inicial de escolha
 
+As faixas de esforço são indicações relativas à tarefa. Começar pela configuração recomendada para o modelo escolhido e ajustar entre os níveis que ele suporta. Comparar configurações em poucos lotes representativos quando houver dúvida relevante, mantendo entradas e critérios de aceite comparáveis. Ao avaliar esforço, manter modelo e entradas fixos. Registrar as limitações da comparação.
+
 | Trabalho | Modelo inicial | Esforço | Responsabilidade e revisão |
 |---|---|---|---|
-| Coordenação, fronteiras canônicas, escopo e aceite | Modelo efetivamente selecionado no aplicativo; preferência do usuário por `gpt-6-astra` quando disponível | Alto nas decisões difíceis | Decide tarefas, integra evidências e aprova mudanças críticas; valida diretamente as fontes das decisões canônicas |
-| Inventário de arquivos, testes existentes, referências e links | `gpt-5.6-luna` | low/medium | Tarefa estreita, evidência com caminho/linha; não declara garantias arquiteturais |
-| Documentação derivada de contrato já aprovado, fixtures repetitivas | `gpt-5.6-luna` | medium | Usa fonte exata; dúvida semântica volta ao coordenador |
-| Rastreamento de fluxo, patch delimitado, testes com critério já definido | `gpt-5.6-terra` | medium/high | Padrão inicial para implementação delegada de complexidade moderada; calibrar com resultado real |
-| Implementação complexa, diagnóstico de integração ou refatoração transversal | `gpt-5.6-sol` | high | Só quando o pacote pede profundidade maior; revisão do coordenador |
-| Autorização, tenant, transações, idempotência, recuperação e revisão crítica de contrato | Coordenador capaz, com preferência por Astra; Sol/Astra em subagente apenas com subproblema independente justificado | high; xhigh/max quando necessário | Não delegar decisão final ao modelo econômico; testes críticos são derivados de invariantes, não apenas da implementação |
+| Coordenação, fronteiras canônicas, escopo e aceite | Modelo efetivamente selecionado no aplicativo; capacidade adequada às decisões críticas | Alto nas decisões difíceis | Decide tarefas, integra evidências e aprova mudanças críticas; valida diretamente as fontes das decisões canônicas |
+| Inventário de arquivos, testes existentes, referências e links | Opção econômica adequada a trabalho delimitado | Proporcional à extração e verificação | Tarefa estreita, evidência com caminho/linha; não declara garantias arquiteturais |
+| Documentação derivada de contrato já aprovado, fixtures repetitivas | Opção econômica adequada a trabalho delimitado | Proporcional à transformação | Usa fonte exata; dúvida semântica volta ao coordenador |
+| Rastreamento de fluxo, patch delimitado, testes com critério já definido | Capacidade de investigação e implementação com decisões intermediárias | Maior quando houver decisões intermediárias | Padrão inicial para implementação delegada de complexidade moderada; calibrar com resultado real |
+| Implementação complexa, diagnóstico de integração ou refatoração transversal | Capacidade de raciocínio compatível com dependências transversais | Alto quando exigido pelas dependências | Só quando o pacote pede profundidade maior; revisão do coordenador |
+| Autorização, tenant, transações, idempotência, recuperação e revisão crítica de contrato | Coordenador capaz; subagente com capacidade crítica demonstrada e subproblema independente justificado | Profundidade exigida pelas garantias | Não delegar decisão final ao modelo econômico; testes críticos são derivados de invariantes, não apenas da implementação |
 | Executar comando conhecido, extrair resultado, validar JSON/links | Ferramenta/script diretamente, sem novo agente por padrão | — | Agente só agrega valor se houver interpretação ou investigação independente |
 
 Não confundir modelo mais capaz com esforço máximo permanente. Ajustar profundidade à tarefa, preservando a escolha de um coordenador capaz solicitada pelo usuário. O coordenador não pode afirmar que mudou seu próprio modelo sem confirmação do mecanismo do aplicativo. A escolha de modelos dos subagentes é explícita na chamada de criação quando o mecanismo a admite.
 
 O risco prevalece sobre o tamanho e o tipo de arquivo: uma alteração de uma linha em autorização ou um teste que define a semântica pública não é trabalho simples. Planos de fase não substituem essa classificação por pacote. Um teste rotineiro de serialização pode ser delegado; definir quais interleavings demonstram segurança transacional exige raciocínio especializado antes de delegar sua implementação.
 
-Se o modelo escolhido não estiver disponível, reavaliar o pacote com as opções reais e registrar a substituição; não escalar silenciosamente todos os agentes para o mais caro. Não mudar configurações globais para aplicar esta política. Não afirmar que o principal é Astra apenas porque o plano assim recomenda.
+Se o modelo escolhido não estiver disponível, reavaliar o pacote com as opções reais e registrar a substituição; não escalar silenciosamente todos os agentes para o mais caro. Não mudar configurações globais para aplicar esta política. Registrar a identidade do principal apenas quando observável.
 
 ## Delegação enxuta e sem conflitos
 
@@ -55,7 +57,7 @@ Se o modelo escolhido não estiver disponível, reavaliar o pacote com as opçõ
 9. Antes de aceitar evidências, verificar que os arquivos/dependências usados não mudaram desde a execução. Um contrato alterado invalida tarefas derivadas dependentes: atualizar o contexto e repetir apenas as provas afetadas. Resultados de agentes não são automaticamente integrados ou publicados.
 10. Agente que concluiu o pacote não começa outro por iniciativa própria. Reusar contexto apenas em continuação relacionada; liberar a atividade quando não houver trabalho. A política não concede autorização de publicação, deploy ou alterações fora do escopo recebido.
 
-Na descoberta de uma funcionalidade, o inventário delegado localiza fontes, mas não encerra a classificação de lacuna. O coordenador inspeciona diretamente os contratos e caminhos que fundamentam cada decisão de ADR/escopo. Na validação e no aceite, um revisor diferente do implementador — podendo ser o coordenador — avalia fonte, testes e evidência bruta das garantias críticas. Consolidar resultados com Luna não satisfaz essa revisão. Leitura independente do banco é propriedade do teste transacional; não significa obrigatoriamente criar outro agente ou executar a mesma suite duas vezes. Reexecutar quando a evidência não for reproduzível, houver mudança relevante ou existir risco concreto não coberto.
+Na descoberta de uma funcionalidade, o inventário delegado localiza fontes, mas não encerra a classificação de lacuna. O coordenador inspeciona diretamente os contratos e caminhos que fundamentam cada decisão de ADR/escopo. Na validação e no aceite, um revisor diferente do implementador — podendo ser o coordenador — avalia fonte, testes e evidência bruta das garantias críticas. A revisão exige inspeção independente das fontes e das garantias críticas, além da consolidação dos resultados. Leitura independente do banco é propriedade do teste transacional; não significa obrigatoriamente criar outro agente ou executar a mesma suite duas vezes. Reexecutar quando a evidência não for reproduzível, houver mudança relevante ou existir risco concreto não coberto.
 
 ## Revisão abrangente obrigatória de implementação
 
@@ -65,7 +67,7 @@ O coordenador atribui revisor e critério de aceite ao preparar o incremento. To
 
 Por padrão, o revisor inspeciona e relata achados sem editar. Se receber atribuição para corrigir, passa a ser autor dos trechos alterados: outro revisor verifica essas correções e seus efeitos no fluxo. A mudança de papel deve ficar registrada; não é necessário um novo agente quando outro participante independente já puder realizar essa revisão. Rever um parecer não exige revisar recursivamente o próprio ato de revisão; a nova verificação incide sobre mudanças materiais no código/contrato/guidance e suas provas.
 
-Escolher o modelo do revisor pelo risco da decisão que precisa verificar, não pelo preço do implementador. A matriz geral continua valendo: revisão delimitada pode começar em Terra; contratos críticos, integridade, segurança, concorrência e fronteiras transversais pedem coordenador capaz ou Sol/Astra com escopo independente justificado. Luna pode localizar fontes e consolidar documentação, mas essa extração não substitui o juízo de suficiência das garantias críticas. Não há dispensa de revisão por o autor usar um modelo mais capaz.
+Escolher modelo e esforço do revisor pela complexidade, ambiguidade e risco da decisão examinada. Revisão delimitada pode usar uma opção econômica com qualidade suficiente demonstrada. Contratos críticos, integridade, segurança, concorrência e fronteiras transversais exigem capacidade de análise correspondente e escopo independente. Conferir fontes e suficiência das provas. A capacidade do autor preserva a obrigação de revisão independente.
 
 | Dimensão | O revisor confronta | Evidência ou resultado esperado |
 |---|---|---|
@@ -113,7 +115,7 @@ Escalar imediatamente ao coordenador se surgir regra de negócio ambígua, autor
 
 Nos primeiros pacotes de cada classe, registrar no artefato de trabalho já existente: tarefa, modelo/esforço, contexto entregue, conclusão aceita ou devolvida, correções necessárias, tempo e consumo quando a ferramenta o expuser. Não criar uma plataforma de telemetria para isso. Consumo global da conta, misturado com outras tarefas, não permite atribuir economia a um agente. Sem medição atribuível, relatar qualidade, retrabalho e tempo, sem calcular economia de tokens ou dinheiro.
 
-Quando houver dados comparáveis, considerar custo total até aceite, incluindo principal, trabalhadores e retrabalho. O inventário executado por Luna não valida Luna para código ou testes. Calibrar por classe com pacotes reais e critérios fixados previamente, sem duplicar sistematicamente toda tarefa em modelos distintos. Se uma abordagem se repetir sem evidência nova ou o contexto estiver inadequado, interromper e redistribuir; não usar um número arbitrário de retries como substituto de diagnóstico. Qualidade continua sendo o requisito para manter o modelo econômico.
+Quando houver dados comparáveis, considerar custo total até aceite, incluindo principal, trabalhadores e retrabalho. O aceite de um modelo em inventário sustenta sua adequação apenas àquela classe de trabalho. Calibrar por classe com pacotes reais e critérios fixados previamente, sem duplicar sistematicamente toda tarefa em modelos distintos. Se uma abordagem se repetir sem evidência nova ou o contexto estiver inadequado, interromper e redistribuir; não usar um número arbitrário de retries como substituto de diagnóstico. Qualidade continua sendo o requisito para manter o modelo econômico.
 
 Este procedimento não exige construir um roteador LLM, SDK de agentes, fine-tuning ou sistema de avaliação separado. É coordenação de trabalho no Codex. A governança semântica do produto Praxis permanece inalterada.
 
@@ -143,10 +145,10 @@ Não criar subagentes nem ampliar o escopo sem nova instrução.
 
 | Pacote concreto | Escolha inicial e motivo | Limite de responsabilidade |
 |---|---|---|
-| Localizar anotações e testes de uma capability existente | Luna/medium: extração delimitada de evidências | Entrega caminhos e lacunas de informação; coordenador classifica aderência |
-| Atualizar exemplos após aprovação de um contrato | Luna/medium: transformação documental com fonte exata | Não inventar semântica; validar links e payloads no escopo |
-| Implementar uma validação Java isolada com invariantes aprovadas | Terra/high: patch delimitado que exige raciocínio e testes | Escalar se descobrir nova regra de domínio ou impacto público não previsto |
-| Diagnosticar concorrência entre execução, retry e recuperação | Sol/high, ou Astra para incerteza crítica: interações que exigem análise profunda | Coordenador fixa garantias e revisa interleavings e evidências |
+| Localizar anotações e testes de uma capability existente | Opção econômica com esforço ajustado ao modelo, para extração delimitada de evidências | Entrega caminhos e lacunas de informação; coordenador classifica aderência |
+| Atualizar exemplos após aprovação de um contrato | Opção econômica com esforço ajustado ao modelo, para transformação documental com fonte exata | Não inventar semântica; validar links e payloads no escopo |
+| Implementar uma validação Java isolada com invariantes aprovadas | Capacidade de investigação com esforço proporcional às decisões, para patch delimitado que exige raciocínio e testes | Escalar se descobrir nova regra de domínio ou impacto público não previsto |
+| Diagnosticar concorrência entre execução, retry e recuperação | Capacidade de raciocínio profundo, com esforço alto e aumento conforme a incerteza, para interações que exigem análise profunda | Coordenador fixa garantias e revisa interleavings e evidências |
 | Alterar uma linha que afeta autorização por tenant | Coordenador capaz; revisor independente com profundidade adequada ao risco | Tamanho pequeno não reduz risco nem exigências de teste/revisão |
 | Executar um verificador conhecido de manifesto | Ferramenta diretamente | Sem agente adicional, salvo investigação independente necessária |
 
@@ -187,6 +189,10 @@ Este guia e o template de instruções do workspace são versionados em `praxis-
 
 ## Manutenção e origem da política
 
-A escolha nominal dos modelos é uma referência datada, mantida neste guia para evitar tabelas divergentes em planos e instruções. Atualizar com disponibilidade real e qualidade observada por classe, preservando o critério de aceite. As fontes oficiais fundamentam os princípios; a matriz e o procedimento são decisões operacionais do Praxis, não recomendações oficiais para sua arquitetura específica.
+A política define capacidades e critérios de aceite, sem fixar nomes, famílias ou versões de modelos. Os registros de execução preservam os identificadores efetivamente solicitados e confirmados para rastreabilidade. Ajustar a seleção às opções reais e aos resultados de cada classe. As fontes oficiais fundamentam os princípios; a matriz e o procedimento são decisões operacionais do Praxis.
 
-A primeira aplicação foi um inventário somente de leitura por Luna/medium e uma revisão da política por Terra/high. Isso não constitui benchmark de implementação, prova de economia ou execução de uma fase de backend. A aplicação por funcionalidade permanece no respectivo plano de execução, sem duplicar esta política.
+A aplicação inicial envolveu inventário somente de leitura e revisão independente da política. Esse histórico tem alcance próprio. A avaliação de implementação permanece vinculada aos pacotes efetivamente executados.
+
+## Referências para manutenção das instruções
+
+Manter regras acionáveis e concisas no AGENTS, com procedimentos e exemplos neste guia. Explicitar resultado, contexto, limites de escrita e retorno esperado na delegação. Conferir descoberta e tamanho das instruções ao materializá-las em outro projeto. As referências orientam a manutenção; as decisões de governança locais permanecem explícitas. [Instruções de projeto](https://learn.chatgpt.com/docs/agent-configuration/agents-md) · [Subagentes](https://learn.chatgpt.com/docs/agent-configuration/subagents) · [Seleção de modelos](https://developers.openai.com/api/docs/guides/model-selection).
