@@ -1,0 +1,23 @@
+# Execução Node/Angular entre WSL e Windows
+- Em projetos Angular/Node acessados via WSL em caminhos `/mnt/*`, o agente deve verificar antes se o `node_modules` ativo foi instalado em ambiente Windows quando houver risco de binários nativos.
+- O objetivo é evitar mistura de artefatos Linux/WSL e Windows no mesmo `node_modules`, especialmente em toolchains com binários nativos como `esbuild`, `playwright`, `chromium`, `node-gyp` e similares.
+- Regra prática:
+  - Se o `node_modules` tiver sido instalado em Windows, o agente deve preferir `cmd.exe /c` para comandos sensíveis de Node/Angular.
+  - Se o `node_modules` tiver sido instalado no próprio WSL/Linux, o agente pode usar bash normalmente.
+  - Não assumir; verificar quando houver dúvida razoável.
+- Heurísticas de detecção aceitáveis:
+  - presença de pacotes nativos Windows em `node_modules` como `@esbuild/win32-*`, `@rollup/rollup-win32-*`, bins `.cmd` predominantes ou falhas compatíveis com plataforma cruzada;
+  - erro explícito indicando pacote/binário Windows sendo executado no Linux/WSL;
+  - contexto do usuário mostrando `npm install` e uso normal do projeto pelo `cmd`/PowerShell no Windows.
+- Comandos que devem preferir `cmd.exe /c` quando o `node_modules` for Windows:
+  - `npm install`, `npm ci`, `npm update`, `npm rebuild`
+  - `npx ...`
+  - `ng build`, `ng serve`, `ng test`, `ng e2e`
+  - comandos `node` que dependam da toolchain local do projeto
+  - Playwright, Vite, Webpack, Angular CLI, Jest, Karma e similares
+- Comandos de inspeção continuam preferencialmente no bash/WSL:
+  - `rg`, `sed`, `cat`, `ls`, `find`, `git status`, `git diff` e equivalentes
+- Regra de segurança:
+  - não misturar `npm install` em WSL/Linux com `node_modules` previamente instalado em Windows, nem o inverso, salvo quando a intenção for recriar completamente as dependências naquele ambiente
+  - se a sessão encontrar esse estado misto, registrar isso explicitamente na resposta e preferir operar no ambiente dono do `node_modules`
+
