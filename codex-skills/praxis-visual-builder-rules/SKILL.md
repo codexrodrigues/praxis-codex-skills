@@ -94,6 +94,14 @@ Every operation must validate graph integrity and JSON Logic round-trip where re
 
 When Visual Builder is embedded in Page Builder, Dynamic Form, Table, or another component editor, keep Visual Builder as the owner of graph/JSON Logic semantics and the host as owner of placement, persistence, and child editor lifecycle. Do not serialize host-specific labels, widget keys, or CSS selectors into rule conditions unless the canonical target schema defines them.
 
+## Contextual Business Rules Decision Inspector (`providePraxisDecisionInspector`)
+
+`@praxisui/visual-builder` and `@praxisui/core` own the native Level-1 in-app **Contextual Business Rules Decision Inspector** (`projects/praxis-visual-builder/src/lib/providers/decision-inspector.providers.ts`, `PraxisDecisionInspectorSurfaceComponent`, `PraxisRuleDecisionDagComponent`, and `projects/praxis-core/src/lib/models/decision-inspector.model.ts`):
+
+- Bootstrap in the Angular host via `providePraxisDecisionInspector({ rulesStudioUrl })` — never build bespoke per-host rule-inspection pages or custom DAG components.
+- Renders the 5 canonical `DecisionStage`s (`PROTECTED_GUARD`, `DOMAIN_DECISION`, `POST_DECISION`, `TRANSFORMATION_INTENT`, `EFFECT_INTENT`) framelessly inside `SURFACE_DRAWER_BRIDGE` when triggered from `<praxis-resource-page>`'s contextual *"Regras de Negócio"* action, `<praxis-dynamic-form>` `X-Ray` `422`/`409` violation diagnostics (`PraxisRuleViolationDiagnostic`), or cockpit shortcuts.
+- Hands off 4-eyes Maker-Checker authoring and snapshot publication to the external `praxis-rules-studio` workstation via `buildRulesStudioDeepLink` (enforcing fail-closed `http:`/`https:` scheme validation).
+
 ## Validation
 
 Use focused local gates:

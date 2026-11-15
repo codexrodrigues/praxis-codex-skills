@@ -111,8 +111,46 @@ public ResponseEntity<PositionCompensationPreviewResponse> determinePositionComp
 }
 ```
 
-### 3. Register `@Bean ReactiveDeterminationDefinitionProvider`
-Bind the form operation `operationId`s (`ReactiveDeterminationScope`) to the determination capability `operationId` using valid JSON Pointers starting with `"/"`:
+### 3. Declare `@ReactiveDetermination` Directly on the Controller Handler (`PLAT-EVO-16` — Zero-Boilerplate Default) or Register `ReactiveDeterminationDefinitionProvider`
+Prefer the declarative annotation contract (`@ReactiveDetermination`, `@DeterminationInput`, `@DeterminationOutput`, `@DeterminationScope` in `org.praxisplatform.uischema.annotation`, `PLAT-EVO-16`), which `AnnotationDrivenReactiveDeterminationDefinitionProvider` discovers automatically at boot (`OpenApiUiSchemaAutoConfiguration`) — eliminating dedicated `*DeterminationConfig` classes in the host (and exposing `AnnotationDrivenReactiveDeterminationDefinitionProvider.fromControllerClasses(Controller.class)` for fast Spring-free unit tests):
+
+```java
+@PostMapping("/determinations/position-compensation-preview")
+@Operation(
+    operationId = "determineEmployeePositionCompensationPreview",
+    summary = "Determine position floor, work schedule, and available vacancies"
+)
+@ReactiveDetermination(
+    id = "human-resources.employees.position-compensation-preview",
+    createOperationId = "createEmployee",
+    updateOperationId = "updateEmployee",
+    triggerMode = ReactiveDeterminationTriggerMode.ON_CHANGE,
+    inputs = {
+        @DeterminationInput("/positionId"),
+        @DeterminationInput("/departmentId"),
+        @DeterminationInput(field = "/id", request = "/employeeId", triggerSource = false)
+    },
+    outputs = {
+        @DeterminationOutput("/baseSalaryFloor"),
+        @DeterminationOutput(response = "/defaultWeeklyHours", field = "/weeklyHours"),
+        @DeterminationOutput("/availableVacanciesPreview")
+    },
+    provenanceKind = ReactiveDeterminationProvenanceKind.HOST,
+    provenanceSource = "hr-host-service",
+    provenanceVersion = "1"
+)
+public ResponseEntity<PositionCompensationPreviewResponse> determinePositionCompensationPreview(
+        @Valid @RequestBody PositionCompensationPreviewRequest request) {
+    return ResponseEntity.ok(service.determinePositionCompensationPreview(request));
+}
+```
+
+Enforce strict pointer and domain-integrity invariants on every `@ReactiveDetermination` (`@DeterminationInput` / `@DeterminationOutput` / `@DeterminationScope`) and programmatic `ReactiveDeterminationInputBinding` / `OutputBinding`:
+- **Pointer Normalization, `@DeterminationOutput` Shorthand vs. Programmatic Bindings:** `@DeterminationInput`, `@DeterminationOutput`, and `@ReactiveDetermination.sourceFields` accept either bare property names (`"positionId"`) or leading-slash RFC 6901 JSON Pointers (`"/positionId"`), normalized automatically by `AnnotationDrivenReactiveDeterminationDefinitionProvider` (rejecting blank strings, bare `"/"`, trailing `"/"`, or combining `value` with `field`/`request`/`response`). Always use the single-argument shorthand `@DeterminationOutput("baseSalaryFloor")` (or `"/baseSalaryFloor"`) whenever response and field names match; reserve `response = "...", field = "..."` strictly for distinct target names (`SemanticMetadataReviewer` flags redundant equal pairs with `reactive-determination-output-redundant-explicit-pair`). Programmatic `ReactiveDeterminationInputBinding` and `ReactiveDeterminationOutputBinding` require explicit leading `"/"`. When scoping non-standard operations (such as `@ResourceIntent` `PATCH` forms), declare `@DeterminationScope(schemaOperationId = "patchEmployeeAllocation", formMode = ReactiveDeterminationFormMode.EDIT)` (the attribute is `schemaOperationId`, never `operationId`).
+- **1:1 Sign & Domain-Meaning Fidelity:** Every `@DeterminationInput(field = ..., request = ...)` must preserve exact arithmetic sign and domain semantics between the form DTO field and the determination request property. Never map a deduction, discount, or retention form field onto an addition, allowance, or credit request property (or vice versa), which silently inverts net preview formulas while still compiling cleanly.
+- **Accrual/Effective Date vs. Processing Competence Separation (`PLAT-EVO-18`):** Whenever a determination previews multi-epoch progressive brackets, statutory caps, or temporal rates via `EffectiveDatedBracketTable`, bind both the accrual/reference date (`asOfAccrualDate` / `accrualCompetence`) and the processing/payment competence distinctly when present, resolving the epoch by the accrual date of the legal fact first before falling back to the processing competence.
+
+Use a programmatic `@Bean ReactiveDeterminationDefinitionProvider` when provenance must be resolved dynamically at runtime from an active governed snapshot (`GovernedRuleFamilyRegistry`, `PLAT-EVO-05`) or when binding custom non-CRUD `ReactiveDeterminationScope` combinations:
 
 ```java
 @Configuration(proxyBeanMethods = false)
@@ -183,6 +221,11 @@ Do not leave enterprise forms passive until submit. Audit `CreateDTO`, `UpdateDT
 2. **Multi-Field Deterministic Calculations:** When gross amount, deductions, rate, or start date + duration change (`"/grossSalary"`, `"/baseDeductions"`, `"/startDate"`, `"/probationDays"`), compute net amount, total deductions, or expected end/review date in real time.
 3. **Chained Reactive Determinations (`A -> B -> C`):** When the first determination writes `"/netSalary"`, bind it as an input to the next determination to compute `"/expectedPaymentDate"`. Include `"/netSalary"` in the next determination's `sourcePaths` when direct form edits to that control should trigger execution.
 4. **Draft Policy, Quota & Eligibility Preview:** While the user fills out an assignment or movement form, evaluate vacancy balance, qualification compatibility, or schedule conflict and populate read-only preview fields (`"/availableVacanciesPreview"`, `"/eligibilityDiagnosticPreview"`) before submit.
+
+### 6. Transactional Isolation, Tenant FK Guards, Parametric Engines & Provenance (`PLAT-EVO-05`, `08`, `12`, `16`, `18`)
+1. **Mandatory `REPEATABLE_READ` Read-Only Transaction & Cross-Tenant FK Guard:** Execute non-persisting preview methods under `@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)` so multi-entity reads see a consistent snapshot without writing state. **Critically**, every foreign key loaded via `EntityManager.find(...)` or repository inside a preview method **must verify existence (`404`) and tenant/shared-catalog membership (`403`)** against the authenticated principal's scope before projecting any related values — never allow a reactive-determination preview to act as a cross-tenant oracle!
+2. **Reuse Canonical Parametric & Multi-Epoch Calculators:** When a reactive determination computes effective-dated interstice/suspension projections or progressive tax/contribution/constitutional-cap/pro-rata previews, delegate to `EffectiveDatedIntervalCalculator` (`PLAT-EVO-08`), `ProgressiveBracketAndCapCalculator` (`PLAT-EVO-12`), and `EffectiveDatedBracketTable` (`PLAT-EVO-18`) in `praxis-rules-engine` so form preview math is 100% identical to persisted service/rule execution across any reference date.
+3. **Governed Provenance & Runtime Diagnostics (`PLAT-EVO-05`, `16`):** Prefer `@ReactiveDetermination` on the controller handler (`PLAT-EVO-16`) for static/host provenance, or resolve `ReactiveDeterminationProvenance` (`GOVERNED_RULE_SNAPSHOT` vs. `HOST`) dynamically via `GovernedRuleFamilyDescriptor` / `GovernedRuleFamilyRegistry` (`praxis-config-starter`, `PLAT-EVO-05`) rather than hardcoding static snapshot versions when a governed rule snapshot is active. On the Angular side, `@praxisui/dynamic-form` (`ReactiveDeterminationRuntimeService`) tracks per-field execution state and provenance metadata in runtime diagnostics without duplicating determination logic in the host.
 
 
 ## Chained governed calculations
@@ -272,6 +315,21 @@ Quickstart pilot docs, HTTP manifest/LLM surface, and public examples whenever
 the mirrored contract changes.
 
 ## Companion Skills
+
+For domain-catalog publication, use Metadata `ReactiveDeterminationCatalogSource`
+with the existing compiler and `FilteredSchemaProjection`; never reinterpret the
+raw registry in a second compiler. Inspect `docs/guides/DOMAIN-CATALOG-ONTOLOGY.md`
+and `OntologyG2PublicationTest`. Identity includes service, resource, schema operation,
+form mode and determination ID. Preserve the compiled structure intact in node
+metadata and the `api_operation` and `form_config` binding targets, including exact
+schema URLs. Resolve by operation/resource identity, not URL-prefix discovery.
+Prove equality against the real `/schemas/filtered` controller for each form scope.
+Keep contextual inputs distinct from trigger sourcePaths, preserve ON_INIT, and do
+not infer an individual input-to-output causal graph. The resource and outputs are
+governed by the determination; its dependencies target input fields. Include native
+compiler rejection of invalid writers, cycles, modes and pointers, plus ancestor
+governance and coherent cache-snapshot regressions. Publishing metadata is not proof
+of determination execution, governed snapshot activation or UI runtime adoption.
 
 - `praxis-config-domain-decisions` and `praxis-rules-engine-runtime`: governed rule/snapshot lifecycle.
 - `praxis-metadata-schema-contracts`: operation-specific schema and `x-ui` publication.

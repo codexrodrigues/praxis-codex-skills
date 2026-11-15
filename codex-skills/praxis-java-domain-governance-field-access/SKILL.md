@@ -26,7 +26,21 @@ before proposing a parallel host-specific metadata model.
 ## Author The Governed Contract
 
 1. Use `@Schema` for verified business meaning and `@DomainGovernance` for
-   classification, purpose, visibility, governance evidence, and AI implications.
+   classification, purpose, visibility, export eligibility, governance
+   evidence, and AI implications using only its 9 real canonical attributes:
+   `preset` (`DomainGovernancePreset`), `kind` (`DomainGovernanceKind`),
+   `classification` (`DomainClassification`), `dataCategory` (`DomainDataCategory`),
+   `complianceTags`, `exportable` (`boolean`, default `true`),
+   `aiUsage = @AiUsagePolicy(visibility = AiVisibilityMode..., trainingUse = AiTrainingUseMode..., ruleAuthoring = AiControlledUseMode..., reasoningUse = AiControlledUseMode...)`,
+   `reason`, and `confidence` (never invent non-existent attributes on `@DomainGovernance` like `owner`, `steward`, `retentionPolicy`, `sensitive`,
+   `lgpdPurpose`, or `maskingPattern`). `@DomainGovernance` also supports
+   `@Target(ElementType.TYPE)`, allowing class/interface-level baseline governance
+   that merges monotonically (`DomainLineageResolver.mergeRestrictive`) with field-level
+   declarations.
+   - **Selective Financial Governance — Active Public Transparency vs. Private Deductions (`PLAT-EVO-13`):** `DomainGovernancePreset` includes `PUBLIC_TRANSPARENCY_REMUNERATION` (`DomainClassification.PUBLIC`, `DomainDataCategory.FINANCIAL`, `exportable = true`, `AiVisibilityMode.ALLOW`, `complianceTags = {"LAI", "LGPD_ART_23", "PUBLIC_TRANSPARENCY_REMUNERATION"}`) alongside `CONFIDENTIAL_FINANCIAL` (`CONFIDENTIAL`, `exportable = false`, `AiVisibilityMode.MASK`). In public-sector payroll and career DTOs, never blanket-mark an entire financial DTO as `CONFIDENTIAL_FINANCIAL` (`exportable = false`) when statutory gross pay, career table values, and constitutional cap abatements are subject to active public transparency (`ACTIVE_PUBLIC_TRANSPARENCY_LAI`), nor blanket-expose private third-party/personal deductions: combine `PUBLIC_TRANSPARENCY_REMUNERATION` on public remuneration columns with `CONFIDENTIAL_FINANCIAL` on alimony, payroll consignments, union dues, private health copayments, and bank-account coordinates in the same DTO so collection export (`allExportableFields()`), AI grounding, and `praxis-authz-*` masking enforce selective column-level compliance automatically.
+   - **Deterministic Lineage (`@DomainLineage`):** When a DTO or read projection maps an Entity or canonical attribute, annotate the property with `@DomainLineage(attributeId = "...", sourceClass = ..., sourcePaths = {...}, sourceResourceKey = "...", transformation = DomainLineageTransformation.DIRECT | MASKED | AGGREGATED | DERIVED)` while keeping `@DomainGovernance` on the DTO property. `SemanticMetadataReviewer` flags `lineage-governance-weakened` if the DTO weakens the source's classification/AI/export restrictions, and `review(dtoClass, optionSources, statsRegistry)` enforces the `P50` gate (`restricted-field-in-analytics-or-option-source`) when a `RESTRICTED`/`CREDENTIAL`/`SENSITIVE_PERSONAL` field is exposed in `StatsFieldRegistry` or `OptionSourceDescriptor`.
+   - **LGPD Treatment Purpose (`LegalTreatmentPurpose`):** On `@UiSurface` and `@WorkflowAction`, declare `legalPurpose = LegalTreatmentPurpose.*` (`UNSPECIFIED`, `HUMAN_RESOURCES_ADMINISTRATION`, `PAYROLL_AND_TAX_COMPLIANCE`, `OFFICIAL_HEALTH_EXPERTISE`, `SOCIAL_SECURITY_AND_BENEFITS`, `ACTIVE_PUBLIC_TRANSPARENCY_LAI`, `EXTERNAL_AUDIT_CONTROL`, `EMPLOYEE_SELF_SERVICE`, `STATUTORY_LEGAL_OBLIGATION`) and `legalBasisRef = "..."` when a surface or command operates under a specific legal basis (validated by `legal-basis-without-legal-purpose` and `legal-purpose-without-legal-basis-ref`).
+   - **Praxis Decision Platform (`praxis-authz-*` vs. `praxis-rules-engine`) Architectural Boundary:** In `praxis-metadata-starter`, `@DomainGovernance`, `@DomainLineage`, `LegalTreatmentPurpose`, and `@UISchema(visibleForAuthorities = {...}, editableForAuthorities = {...}, fieldAccessReason = "...")` are **declarative semantic contracts** published in `/schemas/filtered` (`x-domain-governance`, `x-domain-governance.lineage`, `x-ui.fieldAccess`) and `/schemas/domain` (`?strict=true`) for AI assistants, export allowlists, and `praxis-authz-starter` / `praxis-authz-enforcement-core` / `praxis-authz-opa` (`decisionKind = AUTHORIZATION`, `ruleType = "authorization_policy"`). Do not build ad-hoc Jackson payload redaction or field-level write-blocking filters inside the metadata starter or host DTOs.
    Do not use a generic label or database column as domain explanation.
 2. Set AI usage deliberately. Secrets, credentials, raw private notes, health,
    payroll, disciplinary, security, and high-risk personal data are excluded or
@@ -65,6 +79,7 @@ when they publish the changed governance claim.
 
 ## Companion Skills
 
+- `praxis-authz-decision-platform`: runtime authorization (`ACCESS`), `DataScopePlan` (`DATA_SCOPE`), `FIELD_USE`/`FIELD_WRITE`, detached DTO masking (`MASK`), and obligation barriers across `praxis-authz-*`.
 - `praxis-dto-annotations`: semantic descriptions, UI metadata, and DTO roles.
 - `praxis-java-stats-export-authoring`: analytics/export field eligibility.
 - `praxis-java-option-source-provider-authoring`: lookup search/display exposure.

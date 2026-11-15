@@ -28,7 +28,7 @@ Determine whether you are operating in **Platform Source Mode** or **Consumer Ho
 
 ## Canonical Boundary
 
-`@UiSurface` describes semantic UI surfaces over real operations. `@WorkflowAction` describes explicit business commands. Do not combine them on the same method without reviewing validation mode and conflict semantics.
+`@UiSurface` describes semantic UI surfaces over real operations. `@WorkflowAction` describes explicit business commands. Both annotations support `legalPurpose = LegalTreatmentPurpose.*` and `legalBasisRef = "..."` (projected in `/schemas/surfaces`, `/schemas/actions`, and `/schemas/domain`, and validated by `SemanticMetadataReviewer.reviewResourceFacts` via `legal-basis-without-legal-purpose` and `legal-purpose-without-legal-basis-ref`), while `@ResourceFact` publishes `authority`, `evaluationPhase`, `missingValuePolicy`, `scope`, and `clientOverridable = false`. Do not combine `@UiSurface` and `@WorkflowAction` on the same method without reviewing validation mode and conflict semantics.
 
 `GET /{resource}/capabilities` and `GET /{resource}/{id}/capabilities` aggregate canonical operations, surfaces, actions, export, stats, and availability; they are snapshots, not a second source of schema truth.
 

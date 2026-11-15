@@ -15,7 +15,7 @@ Treat RuleSet identity, slots, bindings, closed aggregation policies, determinis
 
 In the platform monorepo, the accepted Angular evidence currently points to the Java runtime as the external `praxis-rules-engine` repository. If that repository is not present locally, do not infer Java behavior from Angular code or create a host-local backend evaluator. Record the missing repository as a validation blocker for Java parity and keep Angular/core, corpus, and domain-rule materialization changes honest about their actual proof boundary.
 
-For business-rule, policy, eligibility, compliance, validation, or shared migration decisions, treat `/api/praxis/config/domain-rules/**` as the governed authoring/publication source and treat `form_config`, `option_source`, `backend_validation`, `workflow_action`, `approval_policy`, table effects, and other runtime targets as materializations. `formRules`, `formRulesState`, component edit plans, visual guidance, table config, and host callbacks may consume or preview a projection, but they must not become the primary owner of the decision.
+For business-rule, eligibility, compliance, validation, or shared migration decisions (`decisionKind = BUSINESS`), treat `/api/praxis/config/domain-rules/**` as the governed authoring/publication source and treat `form_config`, `option_source`, `backend_validation`, `workflow_action`, `approval_policy`, table effects, and other runtime targets as materializations. `formRules`, `formRulesState`, component edit plans, visual guidance, table config, and host callbacks may consume or preview a projection, but they must not become the primary owner of the decision. Keep `praxis-rules-engine` strictly scoped to `decisionKind = BUSINESS` (deterministic JSON Logic / Java domain executors); security, RBAC/ABAC/ReBAC, field masking, and LGPD access enforcement belong to `decisionKind = AUTHORIZATION` (`ruleType = "authorization_policy"`, `targetLayer = "policy_engine"`, `targetArtifactType = "opa-policy"`, executed by `praxis-authz-starter` / `praxis-authz-enforcement-core` / `praxis-authz-opa`).
 
 ## Required source audit
 
@@ -79,13 +79,13 @@ Do not accept "works in the Angular preview" as proof of rule-platform parity. P
 2. Map the engine, Config Starter, Quickstart, public documentation, goldens, and Maven coordinate impact before editing.
 3. Keep public records immutable and defensively copy mutable JSON values.
 4. Add positive and negative tests for identity, compatibility, composition, DAG ordering, missing/null, decision precedence, effect gating, limits, and thread safety.
-5. Run the complete engine gate, including Javadocs, then consume only an officially published Maven coordinate in downstream repositories.
+5. During implementation, run the affected contract/planner/snapshot tests and direct-consumer checks first. Run the complete engine gate, including Javadocs, on the consolidated candidate before accepting a RuleSet contract/planning change. Downstream release proof must then consume an officially published Maven coordinate; source-candidate integration remains a separate development proof.
 
 For snapshot work, prove the full ownership chain: the engine compiles the runtime-neutral candidate, Config Starter persists and advances the governed head transactionally, and a host compiles with its executable registry before an atomic last-known-good swap. A v1 → v2 → v1 rollback must preserve v1's content hash while issuing a new head ETag and activation revision.
 
 Do not use `mvn install`, file repositories, or local version overrides as downstream release proof. While the public beta line is active, compatible additive work stays on the next beta unless release governance establishes a breaking change.
 
-When migrating Ergon or another host, use the engine skill to remove cognitive load from migrators by routing questions to the canonical layer: missing facts or algorithms belong to the host/domain contract, shared decisions belong to `domain-rules`, deterministic expression semantics belong to the JSON Logic dialect/engine, and UI behavior belongs to materialized target adapters. Avoid screen-local rule transforms that make one migrated screen pass while leaving the platform unable to explain, simulate, publish, or replay the decision.
+When migrating a legacy enterprise system or building another domain host, use the engine skill to remove cognitive load by routing questions to the canonical layer: missing facts or algorithms belong to the host/domain contract, shared decisions belong to `domain-rules`, deterministic expression semantics belong to the JSON Logic dialect/engine, and UI behavior belongs to materialized target adapters. Avoid screen-local rule transforms that make one migrated screen pass while leaving the platform unable to explain, simulate, publish, or replay the decision.
 
 When a host projects a RuleSet as Reactive Determinations, keep the engine
 runtime-neutral. Form modes, triggers, field bindings, metadata projection, and
@@ -93,11 +93,70 @@ Angular cancellation/application belong to the determination handoff described
 by `praxis-reactive-determinations`; do not add form-specific execution to the
 engine.
 
-## Governed scalar parameterization (engine contract 1.6)
+## Ontological Fact Graph (5 Canonical Roots), Parametric Calculators & 1:1 Rule Lineage
+
+When a host uses `praxis-rules-engine` for domain or migrated business rules (`decisionKind = BUSINESS`), enforce the **SAP BDC Ontology & SHACL-Style JSON Logic** architecture:
+
+1. **Five Canonical Ontological Fact Roots (`PraxisFactTreeBuilder` & `RuleFactCatalogLoader`):**
+   - Never pack multi-entity variables into a flat scalar bag (`facts.*`). Every fact provider (`*Facts.java`) must build its tree using `PraxisFactTreeBuilder` (using typed mutators across `draft`, `current`, `<concept>`, `neighborhood`, and `context`, and loading declarative JSON/YAML fact definitions via `RuleFactCatalogLoader` enriched by `DtoMetadataFactCatalogEnricher`):
+     - `draft` (`PraxisFactTreeBuilder.ROOT_DRAFT` / `putDraft`): candidate mutation state (`NEW` in database triggers/packages), captured **after** server-side hydration (`hydrate*`);
+     - `current` (`PraxisFactTreeBuilder.ROOT_CURRENT` / `putCurrent`): persisted prior state on `UPDATE`/`DELETE` (`OLD` in prior state, or `null` on `CREATE`) so immutability (`draft.field == current.field`) and state transitions are evaluated inside JSON Logic;
+     - `<concept>` (`putConcept("vacancy", ...)` / `putConcept("role", ...)` / `putConcept("position", ...)` / `putConcept("unit", ...)`): 1-hop related domain entity nodes resolved via foreign keys. **Never pass stubbed `false`/`null` values** (e.g., `unitExtinct = false`) for 1-hop concept attributes that a `DecisionBinding` guards — always load the real related entity so governed rules cannot be silently bypassed;
+     - `neighborhood` (`PraxisFactTreeBuilder.ROOT_NEIGHBORHOOD` / `putNeighborhood`): N-hop aggregate facts or sibling collections within the same scope/tenant (e.g., `hasDateRangeOverlap` count, active holder count, occupied slots);
+     - `context` (`PraxisFactTreeBuilder.ROOT_CONTEXT` / `putContext`): execution metadata, tenant (`tenantId`), operation, and frozen clock.
+2. **Strict Boundary Between 1-Hop Edge Traversal (`*FactSource`) and Business Constraints (`*RuleSet`):**
+   - **No business predicates in 1-hop SQL `WHERE` clauses:** 1-hop `<concept>` queries in `*FactSource` must filter **only by edge/identity keys** (`tenant_id`, `id`, composite business keys). Never filter status, effective-date coverage (`start_date <= :start AND end_date >= :end`), or business flags inside SQL to return a pre-baked `COUNT(*)` or boolean flag to the engine;
+   - **Primitive Projection + JSON Logic Evaluation:** project the raw attributes of the related node (`concept.type`, `concept.status`, `concept.startDate`, `concept.endDate`) and express the full constraint in the JSON Logic AST of `*RuleSet.java` so the rule remains 100% transparent in `/api/praxis/config/domain-rules/**` and `Rules Studio`;
+   - **N-Hop `neighborhood` Queries:** SQL aggregations (`COUNT`) are valid **exclusively** under `neighborhood.*` to quantify sibling collisions in a collection (e.g., `neighborhood.overlappingAssignments`, `neighborhood.activeHoldersInVacancy`).
+3. **Automatic AST Introspection (`extractReferencedRoots` / `extractReferencedFactPaths`):**
+   - Never hardcode `List.of("facts")` in `RuleSetDefinition.availableRoots` or `DecisionBinding.requiredFactPaths`. Use `PraxisFactTreeBuilder.extractReferencedRoots(expression)` and `PraxisFactTreeBuilder.extractReferencedFactPaths(expression)` (including inside `RuleParameterTemplate` builders), which inspect the JSON Logic AST while respecting iterator-local variable scopes (`map`, `filter`, `all`, `some`, `none`, `reduce`).
+4. **Canonical Pure-Java Parametric Calculators & Multi-Epoch Selectors (`PLAT-EVO-08`, `PLAT-EVO-12`, `PLAT-EVO-18`):**
+   - **Temporal Interstice, Suspension & Reset Math (`org.praxisplatform.rules.parametric.EffectiveDatedIntervalCalculator`, `PLAT-EVO-08`):** Do not hand-code date loops in services or previews for progression interstices, probation, or seniority counting. Delegate to `EffectiveDatedIntervalCalculator` (`InterruptionEffect.SUSPEND` with union-of-overlapping intervals so concurrent leaves never double-penalize, `InterruptionEffect.INTERRUPT_AND_RESTART` resetting on `interruptionEnd + 1` while ignoring leaves starting after `cutoffDate`, `InterruptionEffect.IGNORE`, capped `BonusAddition`, `O(K)` causal projection across active open-ended leaves, and structured `TrailStep` explainability).
+   - **Progressive Tax/Contribution Brackets, Cap Abatement & Pro-Rata Math (`org.praxisplatform.rules.parametric.ProgressiveBracketAndCapCalculator`, `PLAT-EVO-12`):** Do not hand-code progressive tax loops, constitutional cap abatement, consignable margin, or pro-rata formulas in host services. Delegate to `ProgressiveBracketAndCapCalculator` (`BracketMode.MARGINAL_SLICES` with optional `ceilingBaseCap`, `BracketMode.TABLE_RATE_MINUS_DEDUCTION`, `calculateCapAbatement` preserving exempt indemnizatory parcels, `reconcileNetAndMargin`, `calculateProRata`, `HALF_UP` rounding, and structured `FinancialTrailStep` audit trails).
+   - **Multi-Epoch Temporal Parametric Tables & Matrix/Tri-State Selectors (`org.praxisplatform.rules.parametric.EffectiveDatedBracketTable`, `EffectiveDatedMatrixMatcher<T>`, `TriStateOverrideResolver`, `PLAT-EVO-18`):** Never hardcode single-year tax/contribution brackets or ceiling constants in rule executors or services when retroactive/historical calculation is possible. Register multi-epoch schedules via `EffectiveDatedBracketTable.of(tableKey, description, epochs)` over chronological `BracketScheduleEpoch` windows (`epochId`, `validFrom`, `validTo`, `BracketMode mode`, `ceilingAmount`, `perDependentDeduction`, `brackets`, `ruleCode`, `legalBasis`, `publicationRef` — rejecting overlapping epochs fail-closed at registration) and evaluate via `findEpochAsOf(asOfDate)`, `requireEpochAsOf(asOfDate)`, `resolveCeilingAsOf(asOfDate)`, `calculateProgressiveAsOf(...)` (`TemporalProgressiveResult`), and `calculateCapAbatementAsOf(...)` (`TemporalCapAbatementResult`). On retroactive or multi-period settlements where an item's accrual/reference date differs from the current batch/payment run date, always resolve `EffectiveDatedBracketTable` by the **accrual/reference date of the legal fact** before falling back to the processing run date, and keep addition versus deduction inputs sign-explicit in `ProgressiveBracketAndCapCalculator`. For multi-dimensional parametric rule matching and hierarchical overrides, use `EffectiveDatedMatrixMatcher<T>` (`Criterion<T>`, rejecting ambiguous specificity ties fail-closed) and `TriStateOverrideResolver` (`TriState.PERMITIR | VEDAR | HERDAR`, `parse`, `resolve`, `resolveNumber` preserving explicit `0`/`false`).
+5. **1:1 KEEP_SEPARATE Error Lineage & Zero Split-Brain:**
+   - Every distinct domain error code must map `1:1` to an individual entry in `*RuleErrorCatalog.java` -> an atomic `DecisionBinding` in `*RuleSet.java` -> an individual `@Test` in `*Test.java`. Never merge multiple error codes into one catalog entry or binding;
+   - When an entity or operation is governed by a `*RuleSet`, `PraxisRulesEngine` is the **sole authority** for business rules (`422`). Host `*Invariants` classes must contain **only** structural HTTP guards (`403` tenant isolation, `404` FK existence, `409` `If-Match`/concurrency, and transactional locks) and must never duplicate or short-circuit `RuleSet` rules;
+   - Server-side hydration (`hydrate*`) and structural `404`/`403` tenant FK guards must run **before** `RuleEngine` evaluation, and fields hydrated by the server must not carry blocking `@NotNull`/`@NotBlank` bean-validation annotations on `CreateDTO`/`UpdateDTO`.
+
+## Mandatory product controls (source engine contract 1.7)
+
+`DecisionSlot.requiredControlDependencies` is an immutable product declaration of
+guard binding keys. Every enabled binding in that slot must include these keys in
+`dependsOn`, including REPLACE_EXACT and PARAMETERIZE. The compiler rejects missing,
+disabled, non-PRODUCT or non-PROTECTED_GUARD/FORBIDDEN controls and applies the normal
+DAG bounds and cycle checks. Host admission must compare product slots and protected
+bindings exactly; the neutral compiler cannot authenticate product authorship.
+
+Require exactly one enabled binding in every SINGLE slot, including slots absent
+from the enabled-binding index. Removing or disabling the only business decision
+must fail cardinality validation even when its protected controls remain intact.
+Empty optional extension points must declare their appropriate MULTIPLE contract.
+Host previews must reject a missing selected decision as a technical plan failure;
+returning without evaluation is not evidence that the decision is inapplicable.
+
+Keep applicability outside a replaceable business predicate. An inapplicable guard
+returns NOT_APPLICABLE; unavailable evidence remains inconclusive. Customer-extension/business error
+messages remain independent decisions and must still deny when product execution is
+dispensed. Technical guards have their own identities, never invented legacy errors.
+
+Use `PraxisRulePlanCompiler.compilePreview` to validate the complete source and
+compile the selected transitive dependency closure. Never strip dependsOn in a host
+preview. Preserve source parameterization, control declarations, error descriptors,
+digests and compatibility through Config manifests and snapshots. Historical content
+stays immutable; new execution requires current-contract compilation and admission.
+This source guidance does not claim a published coordinate or integrated acceptance.
+
+## Governed scalar parameterization (introduced in engine contract 1.6)
 
 Inspect `RuleParameterTemplate`, `RuleParameterDefinition`, `RuleParameterization`,
 `RuleParameterResolver`, planner and snapshot compiler together. A PARAMETERIZABLE
 slot must publish a product template; it is not permission for arbitrary JSON Logic.
+Use the actual contracts: `OverridePolicy.PARAMETERIZABLE` admits
+`CompositionPolicy.PARAMETERIZE` with `RuleParameterTemplate`;
+`OverridePolicy.REPLACEABLE` admits `CompositionPolicy.REPLACE_EXACT`, subject to
+all remaining planner/admission checks. `PARAMETRIC_TEMPLATE` is not an enum value
+or a replacement composition policy.
 A CUSTOMER/PARAMETERIZE source binding carries only exact template identity and
 values, with executor/negative outcome/required facts absent. The compiled plan
 materializes these from the template; serialized snapshots retain source bindings
@@ -177,7 +236,21 @@ and orders dependencies and does not supply this data channel.
 
 ## Gates
 
-Use Java 21 and Maven 3.9+:
+Define completion criteria and select tests from the changed semantic contract,
+including negative, determinism and compatibility cases and direct consumers.
+Use incremental focused runs while editing. After a failure, diagnose and rerun
+the affected cases/dependents before broadening. A test/fixture change can have
+shared impact; inspect it rather than assuming all test-only edits are isolated.
+
+The complete engine gate remains mandatory for contract/planning changes and
+where required by release governance. Run it on the consolidated candidate and
+repeat only after relevant evidence invalidation, a demonstrated coverage gap or
+an explicit gate requirement. Do not repeat Config/host-wide suites merely because
+the engine's gate ran. Keep cross-runtime corpus and consumer gates below when
+their contracts change. Source/dependency identity must remain valid; no concurrent
+builds in one target or replacement of artifacts while a consumer uses them.
+
+For the complete gate, use Java 21 and Maven 3.9+:
 
 ```powershell
 $env:JAVA_HOME='<JDK-21>'
@@ -186,5 +259,9 @@ mvn clean verify
 ```
 
 When TypeScript semantics/models/RFC/corpus change, run focused service and conformance specs, `npm run build:praxis-core`, and a direct consumer build/test when an exported shape changes. Prove the packaged Java corpus is identical to the Angular corpus. Never treat a timeout as success.
+
+Report command, reason for scope, duration, result and candidate identity. Stop
+when the scoped change and all required gates/derived artifacts are complete;
+a time limit with proof outstanding is a partial checkpoint, not acceptance.
 
 Do not publish, tag or add CI until repository ownership and the official release channel are confirmed.

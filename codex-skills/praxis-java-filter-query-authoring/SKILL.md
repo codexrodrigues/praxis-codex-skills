@@ -1,6 +1,6 @@
 ---
 name: praxis-java-filter-query-authoring
-description: Use when implementing, auditing, or migrating Praxis Java resource filters and queries: dedicated GenericFilterDTO contracts, @Filterable predicates and relations, ranges, relative periods, pageable sorting, server-side ResourceFilterAccessScope, includeIds hydration, filtered schemas, option-source dependencies, and focused HTTP proof in a Spring host or praxis-metadata-starter.
+description: "Use when implementing, auditing, or migrating Praxis Java resource filters and queries: dedicated GenericFilterDTO contracts, @Filterable predicates and relations, ranges, relative periods, pageable sorting, server-side ResourceFilterAccessScope, includeIds hydration, filtered schemas, option-source dependencies, and focused HTTP proof in a Spring host or praxis-metadata-starter."
 ---
 
 # Praxis Java Filter Query Authoring
@@ -8,6 +8,41 @@ description: Use when implementing, auditing, or migrating Praxis Java resource 
 Treat a filter as a public query contract that expresses a business question.
 Do not treat it as a form-shaped request object, a reduced create DTO, or a
 collection of controller-specific query parameters.
+
+## Reusable API paths in annotations
+
+Before wiring remote options, create or extend the host-owned `final ApiPaths`
+(private constructor, `public static final String` compile-time constants).
+Compose resource bases, stable source keys and named filter endpoint constants
+once. Reuse them in controllers, `OptionSourceDescriptor`, DTOs, FilterDTOs,
+command DTOs, surfaces and links. Do not concatenate option-source paths in each
+DTO, put deployment origins in annotations, use a constants interface, call
+methods to initialize annotation values, or introduce a DTO `optionSource` field.
+Static/enum options need no remote endpoint. Keep governed lookup semantics in
+`OptionSourceRegistry` and consume the published runtime endpoints in Angular.
+Validate annotation endpoints against descriptor runtime endpoints and controller
+mappings; keep independent literal contract fixtures to catch accidental route
+changes. Recompile consumers when constants change. For the complete decision,
+see `praxis-metadata-starter/docs/guides/API-PATHS-E-OPTION-SOURCES.md` when available;
+the rules above also apply outside the monorepo.
+
+Keep constant-holder classes independent of inheritance. DTO inheritance itself
+is not a reason to waive or fail endpoint proof: pass the exact declaring type
+and the selected dependency sources (directory or sources.jar) to the auditor.
+It traverses known superclasses/interfaces and proves imported references when
+no inherited member can shadow them; annotation/method uses are not declarations.
+Do not whitelist marker interfaces or host names. Missing/ambiguous/cyclic source
+graphs, possible inherited-member collisions and unsupported syntax stay unproved;
+never fall through to imports or outer scopes on a failed binding. A file-only
+caller cannot infer the owner of an annotation in a multi-type source file.
+Record the source-universe fingerprint and retain compiler regressions for both
+valid inheritance and shadowing. Static proof does not replace the host Java gate.
+When changing lookup examples, compile the exact documentation snippets against
+the selected starter artifact and verify descriptor semantics, not only skill
+syntax or manifest hashes. In the canonical skills repository, run
+`python scripts/check-java-lookup-example.py --java-home <JDK> --classpath <starter.jar>`
+for the host baseline; record the artifact version/hash and the integration limits.
+
 
 ## Start With Query Meaning
 
@@ -67,6 +102,16 @@ specification helper.
    `.restricted(specification)` from authenticated server context. The base
    service composes this boundary with the functional filter and reapplies it
    when loading missing `includeIds`.
+9. Declare at least two operational quick filters per `@ApiResource`
+   (`quick-filter-count-insufficient` otherwise) using typed criteria via
+   `@QuickFilter(..., criteria = { @FilterCriterion(field = "...", values = {...} | bool = {...} | number = {...} | decimal = {...}) })`
+   or programmatically on the controller by overriding
+   `AbstractResourceQueryController#defineQuickFilters()` returning
+   `List<QuickFilterDescriptor<FD>>` (`QuickFilterDescriptor.<FD>builder(id, label).where(f -> ...)` or `.criterion(field, value)`).
+   Every criterion field must match a `@Filterable` property on the bound
+   `FilterDTO`, keep `label <= 36` chars without a trailing period, use a
+   lowercase `snake_case` Material Icons `icon`, and avoid deprecated raw JSON
+   `@QuickFilter(filter = "...")`.
 
 Read [predicate-and-proof-matrix.md](references/predicate-and-proof-matrix.md)
 when selecting operations, modeling aliases/ranges/relative periods, or choosing

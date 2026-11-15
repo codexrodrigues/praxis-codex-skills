@@ -25,6 +25,12 @@ is only human-readable contract text; it is never a routing mechanism.
 - Treat option-source sort separately: it must match a validated published sort
   key before provider resolution.
 
+## Quick Filter Alignment (`@QuickFilter` And `defineQuickFilters()`)
+
+- Prefer `@QuickFilter(..., criteria = { @FilterCriterion(field = "...", values = {...} | bool = {...} | number = {...} | decimal = {...}) })` or `AbstractResourceQueryController#defineQuickFilters()` returning `List<QuickFilterDescriptor<FD>>` (`QuickFilterDescriptor.<FD>builder(id, label).where(f -> ...)` / `.criterion(field, value)`).
+- Never author new resources with `@QuickFilter(filter = "...")` (`@Deprecated`); maintain at least 2 quick filters per `@ApiResource`.
+- Every referenced criterion `field` must exist as a `@Filterable` field on the resource's `FilterDTO` with compatible value/enum/boolean/numeric coercion, `label <= 36` chars without a trailing period, and a lowercase `snake_case` Material Icons `icon`.
+
 ## Minimum Proof
 
 | Change | Minimum proof |
@@ -32,6 +38,7 @@ is only human-readable contract text; it is never a routing mechanism.
 | New scalar/list/relation predicate | Known fixture match and non-match, plus alias/relation assertion |
 | Range or relative period | Normalizer test and lower/upper or clock-boundary integration proof |
 | Pagination or sort | Page contents/order, default sort, and accepted alias assertion |
+| Quick filters (`@QuickFilter` / `defineQuickFilters()`) | Resolved quick-filter payload + `SemanticMetadataReviewer` check against `FilterDTO` |
 | Lookup-backed filter | Filter and by-ids reload with dependencies when published |
 | Public schema/HTTP contract | Filtered schema evidence and host/quickstart HTTP integration proof |
 

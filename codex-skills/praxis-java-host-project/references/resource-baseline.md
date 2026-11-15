@@ -24,12 +24,20 @@ Do not guess type parameter positions; the generic order differs across Reposito
 import org.praxisplatform.uischema.annotation.ApiGroup;
 import org.praxisplatform.uischema.annotation.ApiResource;
 import org.praxisplatform.uischema.annotation.OptionLabel;
+import org.praxisplatform.uischema.annotation.FilterCriterion;
 import org.praxisplatform.uischema.annotation.QuickFilter;
+import org.praxisplatform.uischema.annotation.QuickFilterTone;
+import org.praxisplatform.uischema.annotation.ReactiveDetermination;
+import org.praxisplatform.uischema.annotation.DeterminationOutput;
+import org.praxisplatform.uischema.annotation.BulkEditable;
 import org.praxisplatform.uischema.annotation.ResourceIdentity;
 import org.praxisplatform.uischema.annotation.ResourceIntent;
 import org.praxisplatform.uischema.annotation.ResourceReference;
+import org.praxisplatform.uischema.annotation.UiOption;
 import org.praxisplatform.uischema.annotation.UiSurface;
 import org.praxisplatform.uischema.annotation.WorkflowAction;
+import org.praxisplatform.uischema.bulk.BulkResourceOperations;
+import org.praxisplatform.uischema.schema.QuickFilterDescriptor;
 
 // Composite Keys, Custom Fields & Domain Facts
 import org.praxisplatform.uischema.id.CompositeResourceId;
@@ -111,7 +119,7 @@ When scaffolding a brand-new Praxis Spring Boot host project, always emit a comp
 
     <properties>
         <java.version>21</java.version>
-        <praxis.core.version>8.0.0-rc.179</praxis.core.version>
+        <praxis.core.version>8.0.0-rc.192-SNAPSHOT</praxis.core.version>
         <lombok.version>1.18.32</lombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
@@ -315,8 +323,13 @@ public final class ApiPaths {
     private ApiPaths() {}
 
     public static final class HumanResources {
-        public static final String EMPLOYEES = "/api/human-resources/employees";
-        public static final String DEPARTMENTS = "/api/human-resources/departments";
+        private static final String BASE = "/api/human-resources";
+        public static final String EMPLOYEES = BASE + "/employees";
+        public static final String DEPARTMENTS = BASE + "/departments";
+        public static final String POSITIONS = BASE + "/positions";
+        public static final String POSITION_SOURCE = "positionLookup";
+        public static final String POSITION_OPTIONS = POSITIONS
+                + "/option-sources/" + POSITION_SOURCE + "/options/filter";
 
         private HumanResources() {}
     }
@@ -946,9 +959,14 @@ import com.example.hr.employee.dto.filter.EmployeeFilterDTO;
 import com.example.hr.employee.service.EmployeeService;
 import org.praxisplatform.uischema.annotation.ApiGroup;
 import org.praxisplatform.uischema.annotation.ApiResource;
+import org.praxisplatform.uischema.annotation.FilterCriterion;
 import org.praxisplatform.uischema.annotation.QuickFilter;
+import org.praxisplatform.uischema.annotation.QuickFilterTone;
 import org.praxisplatform.uischema.annotation.ResourceIdentity;
 import org.praxisplatform.uischema.controller.base.AbstractResourceController;
+import org.praxisplatform.uischema.schema.QuickFilterDescriptor;
+
+import java.util.List;
 
 @ApiResource(
     value = ApiPaths.HumanResources.EMPLOYEES,
@@ -965,8 +983,12 @@ import org.praxisplatform.uischema.controller.base.AbstractResourceController;
         displayLabelField = "fullName"
     ),
     quickFilters = {
-        @QuickFilter(id = "active", label = "Ativos", filter = "active=true", icon = "check_circle"),
-        @QuickFilter(id = "inactive", label = "Inativos", filter = "active=false", icon = "remove_circle_outline")
+        @QuickFilter(id = "active", label = "Ativos", icon = "check_circle", tone = QuickFilterTone.SUCCESS,
+            description = "Funcionários com vínculo ativo.",
+            criteria = @FilterCriterion(field = "active", bool = true)),
+        @QuickFilter(id = "inactive", label = "Inativos", icon = "remove_circle_outline", tone = QuickFilterTone.NEUTRAL,
+            description = "Funcionários desligados ou com vínculo encerrado.",
+            criteria = @FilterCriterion(field = "active", bool = false))
     }
 )
 @ApiGroup(
@@ -998,6 +1020,18 @@ public class EmployeeController extends AbstractResourceController<
     protected Long getResponseId(EmployeeResponseDTO dto) {
         return dto.getId();
     }
+
+    // Optional type-safe programmatic quick filters complementing @ApiResource(quickFilters = ...):
+    // @Override
+    // protected List<QuickFilterDescriptor<EmployeeFilterDTO>> defineQuickFilters() {
+    //     return List.of(
+    //         QuickFilterDescriptor.<EmployeeFilterDTO>builder("recent", "Admissões Recentes")
+    //             .icon("event_upcoming")
+    //             .tone(QuickFilterTone.INFO)
+    //             .where(filter -> filter.setHiredLastDays(30))
+    //             .build()
+    //     );
+    // }
 }
 ```
 
@@ -1153,7 +1187,7 @@ public class EmployeeService extends AbstractBaseResourceService<
 ### 11. Governed Relationships (`@ManyToOne` / `@JoinColumns`, `@ResourceReference` & `OptionSourceRegistry`) and `@Embedded` Value Objects
 
 #### A. Foreign Keys + Display Pairing in DTOs & `OptionSourceRegistry`
-Never expose a raw foreign key in a table without its human-readable display field, and never expose a `SELECT` / `ENTITY_LOOKUP` control without a real options endpoint or governed `OptionSourceDescriptor`:
+Never expose a raw foreign key in a table without its human-readable display field, and never expose a remote entity `SELECT` / `ENTITY_LOOKUP` without a real options endpoint and governed `OptionSourceDescriptor`. Static/enum selects need no remote endpoint:
 
 ```java
 // 1. In ResponseDTO: pair the FK ID (hidden in table, visible in form) with the resolved label (visible in table, hidden in form)
@@ -1167,7 +1201,7 @@ Never expose a raw foreign key in a table without its human-readable display fie
     tableHidden = true,
     valueField = "id",
     displayField = "label",
-    endpoint = ApiPaths.HumanResources.POSITIONS
+    endpoint = ApiPaths.HumanResources.POSITION_OPTIONS
 )
 private Long positionId;
 
@@ -1200,13 +1234,15 @@ public class HrOptionSourcesConfig {
     public OptionSourceRegistry hrOptionSourceRegistry() {
         EntityLookupDescriptor positionLookup = new EntityLookupDescriptor(
             "human-resources.positions",
-            "id",
-            "name",
             "code",
             List.of("careerTrack", "minimumEducation"),
             "status",
+            null, // no separate disabled flag
+            null, // reason comes from the selection policy
+            List.of("code", "name"),
+            Map.of("companyId", "companyId"),
             new LookupSelectionPolicy(
-                "selectable",
+                null, // eligibility is determined from status
                 "status",
                 List.of("ACTIVE"),
                 List.of("ARCHIVED", "INACTIVE"),
@@ -1214,40 +1250,36 @@ public class HrOptionSourcesConfig {
                 "Position unavailable for new assignments ({{status}}).",
                 "Select an active position in the current organization chart."
             ),
+            new LookupCapabilities(true, true, true, false, false, true, true, false, false, false),
             new LookupDetailDescriptor(
-                "surface",
-                "detail",
-                "position-summary",
-                ApiPaths.HumanResources.POSITIONS + "/{id}/position-summary",
-                "drawer",
-                "human-resources.positions"
+                null, null, "drawer", "surface", "detail", "drawer", null,
+                "view", "human-resources.positions", "position-summary"
             ),
             new LookupDisplayDescriptor(
-                "directory",
+                "directory", "form", "comfortable", "inline", "list", "name",
                 List.of(
-                    new LookupDisplayFieldDescriptor("code", "Code", "text", "badge", "neutral"),
-                    new LookupDisplayFieldDescriptor("status", "Status", "chip", "verified", "info")
+                    new LookupDisplayFieldDescriptor("code", "code", "Code", "badge", "text", "neutral", null),
+                    new LookupDisplayFieldDescriptor("status", "status", "Status", "verified", "chip", "info", null)
                 ),
-                List.of("careerTrack"),
-                List.of("status"),
-                Map.of("ACTIVE", "Active", "ARCHIVED", "Archived")
+                List.of("careerTrack", "minimumEducation"), List.of(), null,
+                false, true, true, true, false, true,
+                Map.of("ACTIVE", "Active", "ARCHIVED", "Archived", "INACTIVE", "Inactive"), 0
             ),
             new LookupFilteringDescriptor(
-                List.of(new LookupSortOption("name,asc", "Name (A-Z)")),
-                "name,asc",
-                "Search by position code or title...",
+                List.of(), Map.of(),
+                List.of(new LookupSortOption("name-asc", "name", "asc", "Name (A-Z)")),
+                "name-asc", List.of(), "Search by position code or title...",
                 List.of()
-            ),
-            LookupCapabilities.defaults()
+            )
         );
 
         return OptionSourceRegistry.builder()
-            .add(Employee.class, new OptionSourceDescriptor(
-                "positionLookup",
+            .add(Position.class, new OptionSourceDescriptor(
+                ApiPaths.HumanResources.POSITION_SOURCE,
                 OptionSourceType.RESOURCE_ENTITY,
                 ApiPaths.HumanResources.POSITIONS,
-                "position",
-                "position",
+                null, // root resource lookup: no owning filter-field binding
+                null,
                 "name",
                 "id",
                 List.of("companyId"),
@@ -1259,6 +1291,25 @@ public class HrOptionSourcesConfig {
     }
 }
 ```
+
+This lookup is an integration excerpt: the target `Position` resource must expose
+`id`, `name`, `code`, `careerTrack`, `minimumEducation`, `status` and `companyId`,
+accept the `companyId` filter and publish item surfaces `detail` and
+`position-summary`. Confirm that its provider implements the declared search
+fields; metadata alone does not prove search execution or authorization.
+
+When editing this example, run the canonical repository gate:
+
+```text
+python scripts/check-java-lookup-example.py --java-home <JDK> --classpath <starter.jar>
+```
+
+It compiles the exact fenced `ApiPaths` and `HrOptionSourcesConfig` snippets and
+checks the descriptor runtime endpoint, independent literal baseline, field
+bindings, dependencies, sort key and detail contract against the real artifact.
+Only framework annotations and `Position` are fixtures; this is not a Spring/JPA
+or HTTP integration test. Record artifact version and SHA-256; validating a
+private candidate does not establish compatibility with a published dependency.
 
 #### B. `@Embedded` Value Objects (Without `CompositeResourceId`) and PostgreSQL `CHAR(n)` Columns
 When multiple tables share reusable column groups (such as audit metadata, contract reference snapshots, or address blocks), model them as `@Embeddable` classes annotated with `@Embedded` on the entity. Because they are **not** primary keys, they **must not** implement `CompositeResourceId`:
@@ -1329,13 +1380,18 @@ To publish business facts and derived domain indicators (e.g., `tenureDays`, `el
 ```java
 @ResourceFact(
     key = "tenureDays",
-    resourceKey = "human-resources.employees",
     label = "Tenure in Days",
     description = "Total number of active employment days calculated from the hire date to the reference date.",
     dataType = "integer",
     unit = "days",
+    icon = "schedule",
+    tone = "info",
     deterministic = true,
-    sourceKind = "computed"
+    sourceKind = "computed",
+    authority = "server_computed",
+    evaluationPhase = "post_read",
+    missingValuePolicy = "fail_closed",
+    scope = "item"
 )
 @ApiResource(
     value = ApiPaths.HumanResources.EMPLOYEES,
@@ -1344,6 +1400,7 @@ To publish business facts and derived domain indicators (e.g., `tenureDays`, `el
 )
 public class EmployeeController extends AbstractResourceController<...> { ... }
 ```
+Notice that `resourceKey` is omitted on `@ResourceFact` above because it inherits `@ApiResource.resourceKey()` automatically when declared on the controller or its `<R>` `ResponseDTO` (omitting duplicate `resourceKey` avoids `resource-fact-resource-key-mismatch`). Validate the string attributes against the canonical `ResourceFact*` wire enums (`dataType`, `sourceKind`, `authority`, `evaluationPhase`, `missingValuePolicy`, `scope`), keep `label <= 36` chars without a trailing period, use a lowercase `snake_case` `icon` and valid semantic `tone`, and align `key` with an existing DTO property when `sourceKind` is `"dto_field"` or `"entity_field"`.
 For dynamic or database-catalogued facts, register a `@Component` implementing `ResourceFactCatalogProvider`.
 
 ### 13. `@MicroVisualization`, `@UiAnalytics`, Governed Bulking (`@BulkEditable` / `@BulkOperation`), Rich `CollectionExport` & Native JUnit Completeness Gate
@@ -1391,7 +1448,7 @@ Pair `StatsFieldRegistry` in the `Service` with `@UiAnalytics` on the controller
 
 #### C. Governed Bulk Operations (`@BulkEditable`, `@BulkResourceOperations`, `@BulkOperation`)
 1. On `UpdateDTO`, annotate bulk-eligible fields with `@BulkEditable(modes = {BulkMode.UNIFORM_UPDATE, BulkMode.PER_ITEM_UPDATE}, allowClear = ...)` (if `allowClear = true`, also declare `@Schema(nullable = true)`).
-2. On the Controller class, declare `@BulkResourceOperations(protectedUpdateFields = {...})`.
+2. On the Controller class, declare `@BulkResourceOperations(protectedUpdateFields = {...})`, keeping `protectedUpdateFields` strictly disjoint from any `@BulkEditable` property (`bulk-protected-field-conflicts-with-bulk-editable`).
 3. Expose confirmation endpoints annotated with `@BulkOperation(mode = BulkMode.UNIFORM_UPDATE | BulkMode.PER_ITEM_UPDATE, evaluationOperationId = "...")` and collection commands with `@WorkflowAction(scope = ActionScope.COLLECTION)` + `@BulkOperation(mode = BulkMode.DOMAIN_COMMAND, evaluationOperationId = "...")`.
 
 #### D. Rich `CollectionExport` (`CSV`, `JSON`, `EXCEL` + `CollectionExportFieldPresentation`)
@@ -1400,11 +1457,11 @@ Advertise `CollectionExportFormat.CSV`, `CollectionExportFormat.JSON`, and `Coll
 #### E. Native JUnit Completeness Gate (`SemanticMetadataReviewer` + `PraxisExpressionStaticValidator` + `OptionSourcePublicationInventory`)
 Every Praxis Java host must include a JUnit test running the 3 validators bundled inside `praxis-metadata-starter` (`SemanticMetadataReviewer`, `PraxisExpressionStaticValidator`, and `OptionSourcePublicationInventory`) alongside `META-INF/praxis/AI-RESOURCE-BLUEPRINT.md`.
 
-#### F. Reactive Determinations (`ReactiveDeterminationDefinitionProvider` + `@Operation(operationId = ...)` + Non-Persisting `POST` Capability Endpoint)
+#### F. Reactive Determinations (`@ReactiveDetermination`, `ReactiveDeterminationDefinitionProvider` & Non-Persisting `POST` Endpoint)
 To provide real-time form calculations, cross-entity lookup projections, chained derivations (`A -> B -> C`), and draft policy/capacity previews in `@praxisui/dynamic-form`:
 1. Declare all output/preview fields on `CreateDTO` and `UpdateDTO` (using `@UISchema(readOnly = true)` for calculated previews).
 2. Override `create` (`@PostMapping`) and `update` (`@PutMapping("/{id}")`) on the controller with explicit, unique `@Operation(operationId = "create...", ...)` and `@Operation(operationId = "update...", ...)`, and expose a non-persisting `@PostMapping` capability endpoint (without `{id}` path variables) annotated with `@Operation(operationId = "determine...", ...)`.
-3. Register a `@Bean ReactiveDeterminationDefinitionProvider` returning `ReactiveDeterminationDefinition` instances with `ReactiveDeterminationScope(schemaOperationId, ReactiveDeterminationFormMode.CREATE | EDIT)`, `ReactiveDeterminationTriggerMode.ON_CHANGE`, valid JSON Pointers starting with `"/"` (`sourcePaths` must be a subset of `inputs`; `inputs` and `outputs` must exist in the DTO schemas and never overlap), and `ReactiveDeterminationProvenance(ReactiveDeterminationProvenanceKind.HOST | PLATFORM, sourceId, version)`.
+3. Prefer `@ReactiveDetermination` with `@DeterminationInput` and `@DeterminationOutput` directly on the controller `POST` method (`AnnotationDrivenReactiveDeterminationDefinitionProvider`), using the shorthand `@DeterminationOutput("fieldName")` whenever the response property name equals the target form field name and reserving explicit `response = "...", field = "..."` strictly for mismatched names (otherwise `SemanticMetadataReviewer` flags `reactive-determination-output-redundant-explicit-pair`). Alternatively, register a `@Bean ReactiveDeterminationDefinitionProvider` returning `ReactiveDeterminationDefinition` instances with `ReactiveDeterminationScope(schemaOperationId, ReactiveDeterminationFormMode.CREATE | EDIT)`, `ReactiveDeterminationTriggerMode.ON_CHANGE`, valid JSON Pointers starting with `"/"` (`sourcePaths` subset of `inputs`; `inputs` and `outputs` present in DTO schemas and non-overlapping), and `ReactiveDeterminationProvenance(ReactiveDeterminationProvenanceKind.HOST | PLATFORM, sourceId, version)`.
 
 ## Praxis Metadata Feature Coverage
 
@@ -1495,7 +1552,7 @@ For read-only resources, use the read-only controller baseline and do not publis
 - `@Schema.description` is domain documentation for each DTO/property. `@UISchema.label` is UI text and must not be used as a source for generated `@Schema` descriptions.
 - For `@ResourceIntent`, `@UiSurface`, and `@WorkflowAction`, keep `id`, `title`, `intent`, `tags`, `scope`, and descriptions stable and aligned with the real method, DTO, service behavior, allowed states, and authorities.
 - Preserve stable `operationId` when exposed, use OpenAPI tags as real domain grouping, and keep `@ExampleObject` or examples aligned with validation and actual use cases. These values are indexed by catalog/RAG surfaces and should not be filler.
-- For fields with privacy, compliance, AI usage, security, finance, identity, or policy relevance, add deliberate `@DomainGovernance`, `AiUsagePolicy`, or `AiUsageMode` metadata and verify it in `x-domain-governance` and `/schemas/domain`.
+- For fields with privacy, compliance, AI usage, security, finance, identity, or policy relevance, add deliberate `@DomainGovernance` (`preset = DomainGovernancePreset.*`, `exportable`, `reason`, `aiUsage = @AiUsagePolicy(visibility = AiVisibilityMode..., trainingUse = AiTrainingUseMode..., ruleAuthoring = AiControlledUseMode..., reasoningUse = AiControlledUseMode...)`) and `@DomainLineage` (on projected attributes) metadata, and verify it in `x-domain-governance` (`x-domain-governance.lineage`) and `/schemas/domain?strict=true`. (Never use a non-existent `AiUsageMode` enum or put `owner`/`steward`/`retentionPolicy` on `@DomainGovernance`).
 - Avoid negative descriptions that introduce unrelated domain terms and pollute semantic search. Do not promise fields, workflow effects, permissions, or integrations not implemented by the endpoint.
 
 ## Tests

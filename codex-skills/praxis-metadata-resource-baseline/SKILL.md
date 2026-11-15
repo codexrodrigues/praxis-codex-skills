@@ -1,6 +1,6 @@
 ---
 name: praxis-metadata-resource-baseline
-description: Use when working on praxis-metadata-starter resource-oriented backend patterns (either inside the starter or in a consuming Java host): AbstractResourceController, AbstractReadOnlyResourceController, AbstractCollectionCommandResourceController, AbstractResourceQueryController, AbstractBaseResourceService, AbstractReadOnlyResourceService, ResourceMapper, RestApiResponse, HATEOAS links, filters, stats, export, or canonical resource CRUD hierarchy.
+description: "Use when working on praxis-metadata-starter resource-oriented backend patterns (either inside the starter or in a consuming Java host): AbstractResourceController, AbstractReadOnlyResourceController, AbstractCollectionCommandResourceController, AbstractResourceQueryController, AbstractBaseResourceService, AbstractReadOnlyResourceService, ResourceMapper, RestApiResponse, HATEOAS links, filters, stats, export, or canonical resource CRUD hierarchy."
 ---
 
 # Praxis Metadata Resource Baseline
@@ -65,6 +65,27 @@ RestApiResponse<T> with HATEOAS _links and metadata headers
 - All resource stats endpoints (`groupByStats`, `timeSeriesStats`, `distributionStats`, `comparisonStats`) in `AbstractBaseQueryResourceService` must resolve their base specification via `resolveResourceFilterQuery(request.filter(), Pageable.unpaged()).effectiveSpecification()` so row-level access scope (`resolveResourceFilterAccessScope()`) is enforced identically to `filter()`.
 - Multidimensional `group-by` (`dimensions[]` with `StatsDimensionExtraction`, finite-domain `fillGaps`, and `AVG_PER_CYCLE_OCCURRENCE`) belongs to the canonical `POST /{resource}/stats/group-by` contract (`GroupByStatsRequest` / `GroupByStatsResponse`); do not create bespoke heatmap or cross-tab endpoints per resource.
 - Treat legacy classes as migration surfaces unless the local AGENTS says otherwise.
+
+## Optional Duplicate Draft
+
+Use neutral `AbstractDuplicateDraftResourceController<R, ID, F, C, U, D>` and
+`DuplicateDraftResourceService<R, ID, F, C, U, D>` with
+`DuplicateDraftResourceCommandService<ID, D>`, on JPA or delegated services.
+Do not prescribe removed public `LegacyBacked*` bases. The item POST prepares
+an explicit create-compatible DTO without writes, source mutation, identity
+reservation or create side effects. Backend policy clears identity/version and
+unique/protected values deliberately. A partial response may admit null while
+CREATE remains required. Confirmed create is a separate POST with fresh guards.
+
+Require service opt-in plus real POST mapping for structural support and
+affirmative create COLLECTION, view ITEM and duplicate-draft ITEM decisions for
+availability/links/execution. Preserve fail-closed composition, including missing
+infrastructure/null/error cases. The base's existing `@WorkflowAction` supplies
+discovery; it does not make the draft persistent. Immediate transactional `1:N`
+cloning is a distinct business action. Inspect the starter's adoption,
+structural-support and availability guides plus focused tests before asserting
+host acceptance. Local static approval, integrated backend proof, Angular/browser
+proof and registry publication are separate gates.
 
 ## No Keyword Routing
 

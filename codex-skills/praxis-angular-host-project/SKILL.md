@@ -37,7 +37,7 @@ When the environment does not expose skill discovery:
 2. Use the family manifest plus the companion-skill list below as the canonical routing table.
 3. Prefer routing by surface/runtime owner rather than by remembering a static list from migration documentation.
 
-For Ergon/Archon migrations, the orchestration skill still owns phase gating, but once UI/platform work is in scope the agent should discover and load the relevant `praxis-*` specializations even if the migration roadmap did not cite them by name.
+For legacy-system migrations, the orchestration skill still owns phase gating, but once UI/platform work is in scope the agent should discover and load the relevant `praxis-*` specializations even if the migration roadmap did not cite them by name.
 
 ## Canonical Sources
 
@@ -59,8 +59,8 @@ When scaffolding a brand-new Angular host or wiring its first resource, the host
 2. **Schema-Driven Form Layout Presets by Default**:
    - For create/edit command forms: `layoutPolicy: { source: 'schema', intent: 'command', preset: 'groupedCommand' }`.
    - For read-only detail/master-detail forms: `layoutPolicy: { source: 'schema', intent: 'detail', preset: 'compactPresentation' }`.
-3. **Drawer/Modal CRUD Without Custom Shells**: Use `<praxis-crud [resourcePath]="'domain/resource'">` or `CrudLauncherService` (`openMode: 'drawer'` or `'modal'`) so create/edit/view/delete, HATEOAS `_links` availability, capabilities, and collection export work out-of-the-box without host-owned dialog/drawer boilerplate.
-4. **Core 4-Surface Showcase for New Hosts**: When demonstrating Praxis in a new host, wire `praxis-crud` (or the 4-surface set: `praxis-table`, `praxis-dynamic-form`, `praxis-crud`, `praxis-list`) against the same canonical `resourcePath` so the developer immediately sees filters, pagination, sorting, formatted columns, grouped forms, and CRUD actions working together from a single backend contract.
+3. **Drawer/Modal CRUD, Backend `@CalculationMemory` (`PLAT-EVO-20`) & Contextual Decision Inspector Without Custom Shells**: Use `<praxis-crud [resourcePath]="'domain/resource'">` or `CrudLauncherService` (`openMode: 'drawer'` or `'modal'`) so create/edit/view/delete, HATEOAS `_links` availability, capabilities, and collection export work out-of-the-box without host-owned dialog/drawer boilerplate. Register `providePraxisDecisionInspector({ rulesStudioUrl })` (`@praxisui/visual-builder`) so `<praxis-resource-page>` and `<praxis-dynamic-form>` `X-Ray` `422`/`409` alerts open the frameless 5-stage rule DAG inspector natively, give each distinct catalog route with 360° inspection its own domain-accurate `PraxisAnalyticalDrawerSchema` (never borrowing an unrelated entity's `drawerConfig`), and let `<praxis-analytical-drawer>` hydrate root `x-ui.calculationMemory` from backend `@CalculationMemory` DTOs (`hydrateRemoteCalculationMemory: true` works identically on both DI-registered drawer schemas and direct `[drawerConfig]` inputs, injecting into `tabs[0].calculationMemory` when `tabs` exist).
+4. **Core 4-Surface Showcase & 12-Pillar Host Completeness Blueprint**: When demonstrating Praxis in a new host, wire `praxis-crud` (or the 4-surface set: `praxis-table`, `praxis-dynamic-form`, `praxis-crud`, `praxis-list`) against the same canonical `resourcePath`. For multi-resource enterprise hosts, follow **`praxis-ui-angular/docs/AI-ANGULAR-HOST-BLUEPRINT.md`** (12 Canonical Pillars across 4 Vertical Waves) and run `python scripts/workspace/audit-angular-host-completeness.py <host-dir> --strict --expected-routes <N>` (keeping `<N>` dynamically aligned with the current catalog route count) when available in the monorepo.
 
 ## Semantic Runtime Boundary
 

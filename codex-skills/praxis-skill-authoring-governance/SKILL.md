@@ -78,20 +78,40 @@ taxonomy in `references/`; add a script only for deterministic repeated work.
 5. Reject a skill that repeats broad architecture without changing a concrete
    future decision, hides uncertainty as fact, duplicates a neighboring skill,
    or substitutes instructions for a missing platform contract.
+6. Make validation guidance select evidence by changed behavior, dependency and
+   direct consumer, with explicit delivery/completion criteria. Distinguish focal
+   iteration from a required consolidated broad gate. A rerun needs relevant
+   evidence invalidation, a demonstrated coverage gap or a gate requirement;
+   a test-only change can still affect shared fixtures/harnesses. Keep required
+   security, concurrency, SQL/HTTP/E2E, resource-completeness and release gates.
+   Reject unconditional clean/build-all/test-all loops and arbitrary test-count
+   ceilings. Require command, duration, result and candidate identity; a time
+   limit with required work pending is a partial checkpoint, not completion.
 
 ## Publish Canonically
 
-The versioned source is this repository's `codex-skills/`; `$CODEX_HOME/skills`
-is an installed projection. Never edit an installed copy as the authoritative
-fix.
+The versioned source is `<canonical-repo>/codex-skills/`, in the dedicated
+`praxis-codex-skills` Git checkout (`D:/Developer/praxis-codex-skills` in this
+environment). Resolve and verify that repository explicitly; a host workspace's
+`codex-skills/` and `$CODEX_HOME/skills` are projections. Use the canonical
+repository's scripts with explicit working directory or `-RepoRoot`/`--repo-root`;
+never infer the owner from the caller's current directory or use workspace helpers
+as the family authority. Never edit an installed copy as the authoritative fix.
 
 1. Place the new skill in exactly one family manifest. Keep only real explicit
    dependencies; do not use the manifest as a broad related-skills catalog.
 2. Update `skillMdSha256` and `treeSha256` with the canonical audit flow.
-3. Run the skill-creator validator when available, then run the repository
-   structure validation and both family audits. Update generated issue drafts
-   when the repository's generator requires it.
-4. Sync the smallest family only after the source and manifest audit are clean.
+3. Run the skill-creator validator for changed skills when available, then run
+   structure validation for those skills and both family audits as required by
+   repository governance. Update generated issue drafts when the generator
+   requires it. Guidance-only edits do not require Java/Angular/runtime suites;
+   executable examples or tooling changes require their affected checks. After
+   success, do not repeat unchanged gates merely to prepare the final report.
+4. Sync only the affected skills after the source and manifest audit are clean.
+   Derive a selected manifest from canonical entries and pass its path to the
+   canonical sync script with explicit repository and destination roots. Do not
+   force an entire family to overwrite unrelated local changes. Separate local
+   validated source, remote integration/publication and installed candidate state.
    Re-audit the installed target. Investigate an existing destination drift
    instead of overwriting it casually.
    For a selective installation, traverse the selected entries' manifest

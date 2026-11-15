@@ -5,6 +5,32 @@ description: Use when Codex must work on praxis-metadata-starter structural sche
 
 # Praxis Metadata Schema Contracts
 
+## Domain catalog identities and nested projections
+
+For `/schemas/domain` changes, read Metadata
+`docs/guides/DOMAIN-CATALOG-ONTOLOGY.md`, `domain/DomainRuleSetDescriptor`,
+`domain/SemanticDomainCatalogService` and their tests before editing a consumer.
+Every descriptor factory requires explicit root-to-role/service/context/resource
+bindings. Empty maps are valid only when no concept is required; do not restore an
+overload that silently omits bindings. Compile all descriptor consumers together.
+Check target identities against the actual host resource annotations and configured
+service identity, not pluralized root names. Self-reference, two roles of one target,
+external owners and logical concepts without local CRUD must remain distinguishable.
+
+Preserve the v0.2 envelope: roles live in node metadata and bindings in binding
+targets, never `edge.metadata`. Reference nodes cannot replace definitions or
+manufacture local capabilities. Config still owns federated authority and repair.
+Nested fields must preserve all relevant `allOf` branches, array response fields,
+and restrictive ancestor governance. Keep complete materialization under the
+canonical schema cache read lock. Validate typed edge endpoints in addition to JSON
+Schema; do not synthesize concepts for missing field/operation endpoints.
+
+Use `DomainRuleSetDescriptorTest`, `DomainCatalogIdentityTest`,
+`OntologyG2PublicationTest` and `SemanticDomainCatalogServiceTest`. The cross-repo
+gate supplies `ontology.g2.catalog-schema` with Config's canonical v0.2 schema path.
+Local producer proof does not establish provider migration, Config replay/redaction,
+Studio adoption, Neon rollout or activation. Keep those gates explicit.
+
 Use this skill for the canonical structural schema surface of `praxis-metadata-starter`. This starter publishes backend semantic grounding for Praxis runtimes and AI authoring; it is not merely a JSON-schema generator for Angular components.
 
 ## Source Audit
@@ -344,9 +370,11 @@ Require evidence tied to the exact candidate tree for paired global/operation ro
 - If `x-ui` shape changes, review `docs/spec/*.schema.json`, examples, conformance docs, Angular consumers, and quickstart downstream tests.
 
 Reactive Determinations are operation-specific `x-ui` operation metadata,
-compiled from the canonical definition registry. Preserve stable identity,
+compiled from the canonical definition registry (and `@ReactiveDetermination` controller annotations via `AnnotationDrivenReactiveDeterminationDefinitionProvider`, `PLAT-EVO-16`). Preserve stable identity,
 form/trigger modes, typed input/output bindings, and provenance. Do not
 republish removed Form Effect annotations or a second form-owned schema.
+
+Declarative Calculation Memory (`@CalculationMemory` + `@CalculationTrail`, `PLAT-EVO-20`) is component-schema-derived `x-ui.calculationMemory` metadata resolved by `CalculationMemoryMetadataResolver` / `ApiResourceIdentityResolver.resolveCalculationMemory` and projected onto `/schemas/filtered` **only** when `schemaType=response` (never on `schemaType=request`, mirroring the scoping symmetry of `x-ui.reactiveDeterminations`), participating in `ETag` and `X-Schema-Hash` fingerprinting and statically validated against DTO fields by `PraxisExpressionStaticValidator.validateDtoClasses(dtoClasses, true)`.
 
 ## No Keyword Routing
 

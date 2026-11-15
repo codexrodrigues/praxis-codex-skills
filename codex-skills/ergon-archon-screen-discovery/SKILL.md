@@ -136,6 +136,10 @@ Before handing off to any API implementation skill, require an exit gate. The pa
 
 Legacy documentation under `docs-legado` is primary evidence for business meaning, historical model context, related flows, and parity scenarios, but it is not implementation proof by itself. Promote a doc fact into API readiness only after it is tied to browser/runtime, XML/debug, local source, Oracle metadata, or an explicit accepted deferral.
 
+When reading `docs-legado` `.tab`, `.pkb`, `.pks`, `.fnc`, and `.vw` files in PowerShell, always pass `-Encoding latin1` (ISO-8859-1) so PT-BR diacritics in column comments and `INSERE_ERRO`/`TRATA_ERRO` messages are preserved without mojibake. During discovery, also explicitly record:
+- **Legal-Basis & Functional-Combination Lineage:** distinguish `PONTLEI` (normative/statutory foundation group -> `GrupoFundamentacao` / `ReferenciaDocumentoLegal`) from `PONTPUBL` (concrete publication/administrative act -> `DocumentoLegal`), and flag `(emp_codigo, regimejur, tipovinc, categoria)` columns that map to the normalized Quadridomínio (`CombinacaoFuncional`).
+- **Calculation Trails & Multi-Epoch Rate Schedules:** whenever legacy views or packages (`ModuloC`, progression, leave, payroll, quotas) compute derived totals, caps, or progressive brackets, record the exact stage inputs, accrual vs. processing competence dates, and historical rate tables so downstream slices wire `@CalculationMemory` (`PLAT-EVO-20`), `EffectiveDatedBracketTable` (`PLAT-EVO-18`), and 1:1 `@ReactiveDetermination` (`PLAT-EVO-16`) without opaque host glue.
+
 ## Legacy System Access
 
 Default demo entry point:

@@ -1,6 +1,6 @@
 ---
 name: praxis-form-schema-runtime-modes
-description: Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view/presentation/dossier modes, volatile governed-page execution, standalone config persistence, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation.
+description: "Use when Codex must work on @praxisui/dynamic-form or praxis-dynamic-form package schema-driven runtime inputs, resourcePath, schemaUrl, readUrl, submitUrl, submitMethod, create/edit/view/presentation/dossier modes, volatile governed-page execution, standalone config persistence, initialValue hydration, selection-driven entity loading, stale detail values, local error/retry feedback and focus, metadata hot updates, layoutPolicy mode effects, or runtime contract reconciliation."
 ---
 
 # Praxis Form Schema Runtime Modes
@@ -192,6 +192,29 @@ claim screen-reader certification from DOM assertions alone.
 No new editor control, manifest operation or public API is required for this
 internal feedback materialization. Reassess derived artifacts only when the
 actual public surface changes, and record the decision.
+
+## Authoritative Create Seed
+
+Inspect `getNormalizedInitialValue` and `restoreFormRuntimeState`, the launcher
+seed clone, and focused entity-selection/component seed specs. In create, an
+explicit object `initialValue`, including `{}`, is authoritative: preserve
+false/null and suppress schema/config defaults on omitted fields. A compatible
+metadata rebuild preserves edited controls without adding defaults to newly
+introduced omitted fields. Absent/null input is no object seed and retains
+ordinary create defaults. Do not turn all create forms into default-free forms.
+
+Backend duplicate policy chooses fields and clears identity/version/protected
+values; Form does not infer that policy from a source row or annotations. Render
+the CREATE request schema and keep POST creation separate from non-mutating
+preparation/cancel. Submit normalization can omit an untouched optional null;
+initial-value preservation is not byte-for-byte request serialization.
+
+Route transport belongs to CRUD's public `createCrudFormRoute` and private
+single-use handoff via opaque `NavigationExtras.info`, scoped to navigation,
+resource, formId, URL and context. Form receives its normal input; no cross-lib
+global `Symbol.for` slot, URL/history/storage seed or new authoring flag is valid.
+Back/reload without a fresh handoff stays unavailable. Use
+`praxis-crud-runtime-openmodes` for lifecycle, adapters and custom route-reuse limits.
 
 ## Mode And Presentation Rules
 

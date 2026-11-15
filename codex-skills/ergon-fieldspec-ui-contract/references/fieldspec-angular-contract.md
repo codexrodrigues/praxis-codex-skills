@@ -16,7 +16,8 @@ Backend:
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/controller/base/AbstractReadOnlyResourceController.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/controller/base/AbstractResourceQueryController.java`
 - `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/service/base/BaseResourceQueryService.java`
-- `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/util/DuplicateDraftUtils.java`
+- `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/controller/base/AbstractDuplicateDraftResourceController.java`
+- `praxis-metadata-starter/src/main/java/org/praxisplatform/uischema/service/base/DuplicateDraftResourceCommandService.java`
 
 Angular:
 
@@ -181,20 +182,21 @@ Do not implement interval filters as naive `dtini BETWEEN :inicio AND :termino` 
 
 ## Duplicate Contract
 
-FieldSpec supports duplicate draft through:
+Praxis prepares duplicate drafts through:
 
 - `POST /<resource>/{id}/duplicate-draft`;
-- `DuplicateDraftResourceService`;
-- `DuplicateDraftUtils`;
-- `@UISchema(copyOnDuplicate = false)`;
-- `@UISchema(unique = true)`.
+- `AbstractDuplicateDraftResourceController<R, ID, F, C, U, D>`;
+- `DuplicateDraftResourceService<R, ID, F, C, U, D>` and `DuplicateDraftResourceCommandService<ID, D>`;
+- explicit backend copy/clear policy and a create-compatible DTO;
+- structural opt-in + published POST mapping and affirmative create/view/duplicate-draft contextual availability.
 
 Rules:
 
-- IDs are not copied.
-- Unique fields are not copied.
-- Fields marked `copyOnDuplicate = false` are reset.
-- Persisting the duplicate is a separate `POST`; the draft endpoint must not mutate.
+- Do not copy source identity/version or protected unique values. Review each field against domain evidence; there is no `DuplicateDraftUtils` or `@UISchema(copyOnDuplicate)` contract.
+- A partial draft response can permit null while the CREATE request remains required. False is not missing. Revalidate permissions, scope, references and invariants on final CREATE.
+- Persisting is a separate CREATE `POST` after review. Preparation/cancellation must not write, reserve identity or mutate the source. The base's discovery `@WorkflowAction` annotation does not change that boundary; transactional immediate `1:N` cloning is a distinct action.
+- CRUD consumes the returned DTO with CREATE request schema and independent `initialValue`; source identity is visual `contextIdentity`, not the new identity. An explicit object seed, including `{}`, suppresses omitted defaults on mount/rebuild; absent/null seed keeps ordinary create defaults. Normal submit can omit untouched optional null.
+- Seeded route create requires `createCrudFormRoute` in the host, with private single-use CRUD handoff via opaque `NavigationExtras.info`. No global slot, URL/history/storage payload or frontend copy policy. Do not cache the helper destination in custom route reuse; back/reload without fresh handoff stays unavailable. Keep real HTTP/DB evidence distinct from local mock/browser proof.
 
 ## Legacy SQL Warning
 

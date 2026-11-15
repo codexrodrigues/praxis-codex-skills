@@ -145,15 +145,16 @@ Governance text must state the real reason:
 
 ```java
 @DomainGovernance(
+    preset = DomainGovernancePreset.LGPD_PERSONAL_ID,
     kind = DomainGovernanceKind.PRIVACY,
     classification = DomainClassification.CONFIDENTIAL,
     dataCategory = DomainDataCategory.PERSONAL,
     complianceTags = {"LGPD"},
     aiUsage = @AiUsagePolicy(
-        visibility = AiUsageMode.MASK,
-        trainingUse = AiUsageMode.DENY,
-        ruleAuthoring = AiUsageMode.REVIEW_REQUIRED,
-        reasoningUse = AiUsageMode.REVIEW_REQUIRED
+        visibility = AiVisibilityMode.MASK,
+        trainingUse = AiTrainingUseMode.DENY,
+        ruleAuthoring = AiControlledUseMode.REVIEW_REQUIRED,
+        reasoningUse = AiControlledUseMode.REVIEW_REQUIRED
     ),
     reason = "Documento pessoal usado para identificação fiscal do colaborador."
 )

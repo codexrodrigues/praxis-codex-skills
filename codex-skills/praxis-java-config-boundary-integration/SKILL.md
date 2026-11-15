@@ -1,6 +1,6 @@
 ---
 name: praxis-java-config-boundary-integration
-description: Use when implementing, auditing, or migrating a Java/Praxis integration between metadata-driven resources and praxis-config-starter: governed decision materializations, /api/praxis/config/**, ui_user_config, ai_registry, api_metadata, host security, Origin and ETag boundaries, and Quickstart/Angular proof.
+description: "Use when implementing, auditing, or migrating a Java/Praxis integration between metadata-driven resources and praxis-config-starter: governed decision materializations, /api/praxis/config/**, ui_user_config, ai_registry, api_metadata, host security, Origin and ETag boundaries, and Quickstart/Angular proof."
 ---
 
 # Praxis Java Config Boundary Integration
@@ -171,6 +171,12 @@ failure; it must not make the resource invent a local decision.
 
 Prove each owner separately, then prove their seam:
 
+Before the first build, identify the resolved metadata/config/contracts/engine
+artifacts and the delivery/acceptance criteria. For a changed public signature or
+snapshot identity, exercise the neutral contract and direct consumer early, before
+any broad regression. Include fixture/workflow files needed by tests in isolated
+checkouts; do not replace artifacts or share build outputs while consumers run.
+
 1. Run the focused metadata/resource tests and verify `/schemas/filtered`,
    actions, surfaces, and capabilities still describe the resource.
 2. Run the focused config-starter tests for the affected persistence, decision,
@@ -188,6 +194,15 @@ Use the smallest focused suites first. For a shared public contract, also review
 Quickstart security/config proof, Angular core config consumers, public docs,
 and HTTP corpus artifacts. State clearly which runtime proof was executed and
 which one remains unavailable.
+
+Reuse evidence only while its source, dependencies, configuration and environment
+remain applicable. After fixes, rerun affected cases and dependents; reserve a
+necessary broad gate for the consolidated candidate and justify any repetition.
+Avoid repeated clean/install cycles without changed inputs or a gate/consumer
+requirement. Shared fixture changes require impact analysis too. Keep the HTTP,
+database, concurrency, negative and release gates demanded by the seam; a green
+unit count cannot replace them. Record durations and stop when the agreed delivery
+and required proofs are complete, or report a partial checkpoint at a time limit.
 
 ## Companion Skills
 

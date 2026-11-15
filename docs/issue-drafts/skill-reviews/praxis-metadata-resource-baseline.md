@@ -10,7 +10,7 @@ O objetivo e que qualquer agente que use esta skill consiga implementar com exce
 
 - Familia: praxis
 - Caminho: codex-skills/praxis-metadata-resource-baseline/
-- Descricao atual: Use when Codex must implement, audit, or migrate praxis-metadata-starter resource-oriented backend patterns: AbstractResourceController, AbstractReadOnlyResourceController, AbstractResourceQueryController, AbstractBaseResourceService, AbstractReadOnlyResourceService, ResourceMapper, RestApiResponse, HATEOAS links, filters, stats, export, or canonical resource CRUD hierarchy.
+- Descricao atual: Use when working on praxis-metadata-starter resource-oriented backend patterns (either inside the starter or in a consuming Java host): AbstractResourceController, AbstractReadOnlyResourceController, AbstractCollectionCommandResourceController, AbstractResourceQueryController, AbstractBaseResourceService, AbstractReadOnlyResourceService, ResourceMapper, RestApiResponse, HATEOAS links, filters, stats, export, or canonical resource CRUD hierarchy.
 
 ## Classificacao inicial
 

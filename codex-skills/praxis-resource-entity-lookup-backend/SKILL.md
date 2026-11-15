@@ -1,6 +1,6 @@
 ---
 name: praxis-resource-entity-lookup-backend
-description: Use when implementing or reviewing governed Praxis backend RESOURCE_ENTITY option sources, x-ui.optionSource contracts, OptionSourceRegistry/OptionSourceDescriptor wiring, entityLookup DTO endpoints, filter/by-ids lookup APIs, selection policies, dependencies, display metadata, or schema validation in praxis-metadata-starter or praxis-api-quickstart.
+description: "Use when implementing or reviewing governed Praxis backend RESOURCE_ENTITY option sources, x-ui.optionSource contracts, OptionSourceRegistry/OptionSourceDescriptor wiring, entityLookup DTO endpoints, filter/by-ids lookup APIs, selection policies, dependencies, display metadata, or schema validation in praxis-metadata-starter or praxis-api-quickstart."
 ---
 
 # Praxis RESOURCE_ENTITY Backend
@@ -11,6 +11,41 @@ Use this skill for backend/starter work that publishes a business entity as a go
 This skill is not a general Angular Entity Lookup guide. If the task touches runtime/editorial
 discovery in `@praxisui/dynamic-fields`, also use `praxis-dynamic-fields-editorial`.
 If the task asks for the minimum setup to render a component, use `praxis-component-minimums`.
+
+## Reusable API paths in annotations
+
+Before wiring remote options, create or extend the host-owned `final ApiPaths`
+(private constructor, `public static final String` compile-time constants).
+Compose resource bases, stable source keys and named filter endpoint constants
+once. Reuse them in controllers, `OptionSourceDescriptor`, DTOs, FilterDTOs,
+command DTOs, surfaces and links. Do not concatenate option-source paths in each
+DTO, put deployment origins in annotations, use a constants interface, call
+methods to initialize annotation values, or introduce a DTO `optionSource` field.
+Static/enum options need no remote endpoint. Keep governed lookup semantics in
+`OptionSourceRegistry` and consume the published runtime endpoints in Angular.
+Validate annotation endpoints against descriptor runtime endpoints and controller
+mappings; keep independent literal contract fixtures to catch accidental route
+changes. Recompile consumers when constants change. For the complete decision,
+see `praxis-metadata-starter/docs/guides/API-PATHS-E-OPTION-SOURCES.md` when available;
+the rules above also apply outside the monorepo.
+
+Keep constant-holder classes independent of inheritance. DTO inheritance itself
+is not a reason to waive or fail endpoint proof: pass the exact declaring type
+and the selected dependency sources (directory or sources.jar) to the auditor.
+It traverses known superclasses/interfaces and proves imported references when
+no inherited member can shadow them; annotation/method uses are not declarations.
+Do not whitelist marker interfaces or host names. Missing/ambiguous/cyclic source
+graphs, possible inherited-member collisions and unsupported syntax stay unproved;
+never fall through to imports or outer scopes on a failed binding. A file-only
+caller cannot infer the owner of an annotation in a multi-type source file.
+Record the source-universe fingerprint and retain compiler regressions for both
+valid inheritance and shadowing. Static proof does not replace the host Java gate.
+When changing lookup examples, compile the exact documentation snippets against
+the selected starter artifact and verify descriptor semantics, not only skill
+syntax or manifest hashes. In the canonical skills repository, run
+`python scripts/check-java-lookup-example.py --java-home <JDK> --classpath <starter.jar>`
+for the host baseline; record the artifact version/hash and the integration limits.
+
 
 ## Canonical Boundary
 
@@ -180,8 +215,8 @@ Generic options endpoints remain useful, but governed entity lookup requires a n
 1. Identify the resource owner and source service.
 2. Define a stable `sourceKey`, such as `employee`, `mission`, `threat`, `base`, `team`,
    `vehicle`, or `equipment`.
-3. Add or extend the resource service with `OptionSourceRegistry` and `OptionSourceDescriptor`.
-4. Register the descriptor in the host-level registry, such as quickstart `OptionSourceConfig`.
+3. Add or extend the resource service with `OptionSourceRegistry` and `OptionSourceDescriptor`, preferring slice-scoped `OptionSourceRegistryContributor` beans over monolithic central registries and building `EntityLookupDescriptor` via **`EntityLookupDescriptor.directoryBuilderFromDto(entityKey, ResponseDTO.class)`** (`PLAT-EVO-09`, passing the 2 arguments `String entityKey, Class<?> responseDtoClass` and binding `sourceKey` and `resourcePath` on the enclosing `OptionSourceDescriptor`). `directoryBuilderFromDto` introspects `@ResourceIdentity` and `@UISchema` (across POJO classes, inherited `*Dados` superclasses, Java `record`s, and getters via `LookupDisplayFieldDescriptor.fromDtoField`), synthesizes `LookupDisplayDescriptor`, `LookupDetailDescriptor`, `LookupCapabilities`, and `LookupFilteringDescriptor`, and **automatically prioritizes visible `UISchemaPreset.ENTERPRISE_CODE` fields over surrogate `id`** in `codePropertyPath` and `searchPropertyPaths` (eliminating ~40 lines of boilerplate per lookup; customize with `.status(...)`, `.statusLabels(...)`, `.selectionPolicy(...)`, `.dependencies(...)`, or `.detailSurface(...)` as needed). Pair lookup display fields on `ResponseDTO` with `ScopedBatchReferenceHydrator` (`resolveScopedTitlesByIds` / `hydrateScopedResourceReferences`) so read hydration executes in 1 tenant-scoped batch query per target entity.
+4. Register the descriptor in the host-level registry or slice `OptionSourceRegistryContributor` bean.
 5. Prove the named endpoints before changing consumers:
    - `POST /{resource}/option-sources/{sourceKey}/options/filter?page=0&size=25`
    - `GET /{resource}/option-sources/{sourceKey}/options/by-ids?ids=1&ids=2`
@@ -223,6 +258,11 @@ Governed metadata:
 - `detail`: route, href, or surface metadata when detail navigation is supported.
 - `display`: preset, usage, density, selected layout, result layout, rich fields and badges.
 - `filtering`: advanced filters/sort options when the backend owns operators and serialization.
+  Declare `searchStrategies` explicitly using supported strategies (`"code"`, `"text"`, and
+  `"normalized-document"` for punctuation-insensitive matching on tax IDs/CPF/CNPJ/registration
+  codes), and ensure every field in `availableFilters` maps 1:1 to a real `@Filterable` field on
+  the source's bound `FilterDTO` (enforced fail-closed by `JpaOptionSourceProvider` and
+  `SemanticMetadataReviewer.reviewOptionSourceRegistry`).
 - `runtimeContract`: canonical filter/by-ids endpoints and public policies for selected reload and
   invalid sort handling. Leave it implicit only when the canonical `resourcePath + sourceKey`
   endpoints are correct.
@@ -243,13 +283,13 @@ Prefer:
 @UISchema(
     label = "...",
     controlType = FieldControlType.ENTITY_LOOKUP,
-    endpoint = ApiPaths.Domain.RESOURCE + "/option-sources/<sourceKey>/options/filter",
+    endpoint = ApiPaths.Domain.RESOURCE_LOOKUP_OPTIONS,
     valueField = "id",
     displayField = "label"
 )
 ```
 
-When `ApiPaths` already centralizes path constants, add named constants for option-source endpoints
+Create or extend host-owned `ApiPaths` with named constants for option-source endpoints
 instead of spreading literals across DTOs.
 
 Do not add a DTO-level `optionSource` attribute only because it is absent from the annotation.
@@ -379,6 +419,7 @@ If the task updates official Angular examples, recipes, registry, or editor disc
 - Forgetting `/option-sources/{sourceKey}/options/by-ids`.
 - Copying procurement status policy into an unrelated domain.
 - Exposing sensitive fields in `searchPropertyPaths` or descriptions.
+- Declaring unbacked field names in `filtering.availableFilters` or unsupported `searchStrategies` (keep `availableFilters` strictly aligned 1:1 to real `@Filterable` fields on the bound `FilterDTO` and use supported `searchStrategies` such as `"code"`, `"text"`, or `"normalized-document"`).
 - Publishing `dependsOn`/`dependencyFilterMap` without passing and enforcing the effective filter
   payload in host-specific or external providers.
 - Marking a dependent option source as reusable after only `filter` passes, without proving

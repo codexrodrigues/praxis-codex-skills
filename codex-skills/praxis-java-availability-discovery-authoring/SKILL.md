@@ -1,6 +1,6 @@
 ---
 name: praxis-java-availability-discovery-authoring
-description: Use when implementing, auditing, or migrating Praxis Java actions, surfaces, capabilities, or contextual availability: @WorkflowAction, @UiSurface, ResourceStateSnapshot, availability context/evaluators, collection versus item operations, related-resource discovery, stats/export capability, HATEOAS, cockpit catalogs, and Angular materialization proof.
+description: "Use when implementing, auditing, or migrating Praxis Java actions, surfaces, capabilities, or contextual availability: @WorkflowAction, @UiSurface, ResourceStateSnapshot, availability context/evaluators, collection versus item operations, related-resource discovery, stats/export capability, HATEOAS, cockpit catalogs, and Angular materialization proof."
 ---
 
 # Praxis Java Availability Discovery Authoring
@@ -38,18 +38,24 @@ metadata until an actual operation and its canonical schema exist.
    drawer, tab, or button.
 3. Keep `@UiSurface` and `@WorkflowAction` separate. Combining them on one
    method enters an explicit conflict-validation zone and requires a documented
-   reason plus validation of `praxis.metadata.validation.*` behavior.
-4. Define availability from a shared `ResourceStateSnapshot` and contextual
-   availability resolvers/evaluators. `DefaultCapabilityService` opens a
+   reason plus validation of `praxis.metadata.validation.*` behavior. When a
+   surface or workflow action processes personal/regulated data under a legal
+   mandate, declare `legalPurpose = LegalTreatmentPurpose.*` (`UNSPECIFIED`, `HUMAN_RESOURCES_ADMINISTRATION`, `PAYROLL_AND_TAX_COMPLIANCE`, `OFFICIAL_HEALTH_EXPERTISE`, `SOCIAL_SECURITY_AND_BENEFITS`, `ACTIVE_PUBLIC_TRANSPARENCY_LAI`, `EXTERNAL_AUDIT_CONTROL`, `EMPLOYEE_SELF_SERVICE`, `STATUTORY_LEGAL_OBLIGATION`) and
+   `legalBasisRef = "..."` so `/schemas/surfaces`, `/schemas/actions`,
+   `/schemas/domain`, and `praxis-authz-*` receive the canonical LGPD treatment
+   purpose (audited by `SemanticMetadataReviewer.reviewResourceFacts`).
+4. Define availability from a shared `ResourceStateSnapshot` and declarative
+   metadata keys (`PLAT-EVO-01`). `DefaultCapabilityService` opens a
    `ResourceStateSnapshotScope` per item capability projection so surface,
    action, and capability resolvers share a single
    `ResourceStateSnapshotProvider.resolve(resourceKey, resourceId)` lookup.
-   Whenever a controller declares `allowedStates` on `@WorkflowAction` or
-   `@UiSurface`, register that `@ApiResource(resourceKey = ...)` in the host's
-   `ResourceStateSnapshotProvider` (e.g. `QuickstartResourceStateSnapshotProvider`)
-   and cover it with an architectural test so item `/capabilities` never degrades
-   to `SNAPSHOT_UNAVAILABLE`. Do not add repeated N+1 loads or duplicate state
-   predicates in controllers and Angular.
+   In `AbstractResourceQueryController`, `resolveContextualResourceStateSnapshot`
+   automatically delegates to `DefaultResourceAvailabilityService`, which:
+   - evaluates declarative item metadata populated in `service.toResourceStateSnapshot(entity)` without requiring per-resource `*ContextualAvailabilityConfig` boilerplate classes: `action.<id>.allowed` (`Boolean`), `action.<id>.reason`, `action.<id>.legalBasis`, `action.<id>.legalPurpose`, `action.<id>.customTitle`, `action.<id>.blockedByRule`, `surface.<id>.*`, `operation.<id>.*` (`edit`, `delete`, `duplicate-draft`), `resource.legalBasis`, and `resource.legalPurpose`;
+   - applies deterministic legal-metadata precedence (`action.<id>.legalBasis` -> `@WorkflowAction.legalBasisRef` -> `resource.legalBasis`, and analogously for `legalPurpose`);
+   - merges `ContextualResourceActionService.buildSnapshot(id)` only when external cross-service facts are genuinely required (do not duplicate custom snapshot-merging overrides in controllers/services);
+   - fails closed with `SNAPSHOT_UNAVAILABLE` whenever `allowedStates` is declared on `@WorkflowAction` or `@UiSurface` and the resolved snapshot lacks a valid state. Cover `allowedStates` controllers with an architectural test so item `/capabilities` never degrades to `SNAPSHOT_UNAVAILABLE`. Do not add repeated N+1 loads or duplicate state predicates in controllers and Angular.
+   - **Zero-Boilerplate PAP Decision-Point Discovery (`PLAT-EVO-07`):** `ResourceDecisionPointCatalogService` (`praxis-metadata-starter`, `deriveForController(controllerClass)` and `deriveForResource(controllerClass, responseDtoClass, createDtoClass, updateDtoClass)`, backed by `DtoMetadataFactCatalogEnricher`) introspects `@ApiResource`, MVC handlers, `@WorkflowAction`, `@UiSurface`, `@BulkOperation`, `@DomainGovernance`, and `@DomainLineage` to publish `ResourceDecisionPointDescriptor` entries (`DecisionPointKind`: `RESOURCE_QUERY`, `RESOURCE_CREATE`, `RESOURCE_UPDATE`, `RESOURCE_DELETE`, `COLLECTION_EXPORT`, `AI_TOOL_EXECUTION`, `WORKFLOW_ACTION`, `SURFACE_AVAILABILITY`, `BULK_OPERATION`, `FIELD_PROJECTION`, `FIELD_WRITE`) for PAP/Rules Studio governance without manual per-resource registration.
 5. Preserve the distinction between absent catalog entry and unavailable
    capability. Catalogs report definitions; `GET /{resource}/capabilities` and
    `GET /{resource}/{id}/capabilities` publish aggregate collection/item snapshots.
@@ -64,6 +70,25 @@ metadata until an actual operation and its canonical schema exist.
 
 Read [discovery-decision-matrix.md](references/discovery-decision-matrix.md)
 when selecting discovery type, scope, availability evidence, or focused proof.
+
+## Duplicate Draft Composition
+
+Inspect `ResourceOperationAvailabilityEvaluator`,
+`AbstractDuplicateDraftResourceController`, structural resolver and action catalog
+with their focused tests. `duplicate-draft` requires service opt-in and published
+POST mapping, then affirmative create COLLECTION, view of source ITEM and its own
+ITEM availability/action restrictions. Keep collection create free of source ID/state.
+Null/error/missing composition does not grant duplication; NoOp structural support
+does not infer permission from a path. Guard, contextual actions, snapshots and
+HATEOAS must agree; documentary catalogs lacking an ID cannot execute the item.
+
+Preserve the base's real `@WorkflowAction(id="duplicate-draft")` for discovery;
+the operation is non-persistent preparation despite that annotation. Backend host
+policy still authorizes object/scope/field/state, returns a partial create-compatible
+DTO and revalidates at the final create POST. A deep transactional clone is a distinct
+action. Do not move copy policy into Angular, infer availability from UI labels,
+or treat `supported=true`/local mocks as integrated acceptance. Use the starter's
+`DUPLICATE-DRAFT-ADOPTION.md` and availability/structural notes as the owning guides.
 
 ## Bind An Explicit Operation Safely
 

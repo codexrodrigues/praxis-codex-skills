@@ -165,6 +165,8 @@ Only register fields that are valid for the operation:
 - measures: amount, count, days, hours, percentage, average, `AVG_PER_CYCLE_OCCURRENCE`, min/max when meaningful.
 - never register technical IDs, document numbers, codes, `ROWID`, legacy locator fields, phone numbers, postal codes, or fiscal IDs as numeric measures.
 - treat legacy numeric codes as text/categorical dimensions unless users do arithmetic with them.
+- **JPA `@Entity` Path & Unique Key Invariant:** `StatsFieldRegistry` executes JPA Criteria queries directly against the `@Entity` root (`root.get(...)`). Every `propertyPath` and `labelPropertyPath` passed to `groupByBucket`, `labeledGroupByBucket`, `timeSeriesField`, `numericMeasureField`, or `distinctCountField` must exist on the JPA `@Entity` (or nested `@ManyToOne`/`@Embedded` path) — never pass DTO-only properties populated in `ResourceMapper` or `@Transient` fields, and never register duplicate bucket or measure keys in the same builder.
+- **Explainable Calculation Trails on Analytical Read Projections (`@CalculationMemory`, `PLAT-EVO-20`):** When an analytical read-only resource or KPI radar exposes derived financial, statutory, quota, or compliance calculations, annotate its `ResponseDTO` with `@CalculationMemory(trails = {@CalculationTrail(...)})` (keeping `baseExpr`, `additionExpr`, and `deductionExpr` non-redundant so no stage repeats the same expression) and validate expressions statically via `PraxisExpressionStaticValidator.validateDtoClasses(dtoClasses, true)`.
 
 Use native requests:
 

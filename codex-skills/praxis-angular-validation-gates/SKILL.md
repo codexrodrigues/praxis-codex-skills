@@ -1,6 +1,6 @@
 ---
 name: praxis-angular-validation-gates
-description: Use when selecting, running, auditing, or reporting local validation for Praxis Angular changes in praxis-ui-angular: lib/public API builds and consumers, focused specs, authoring round trips, AI registry artifacts, i18n/docs/playgrounds, Playwright and local E2E lanes, package/release preflight, Node environment ownership, derived artifacts, or the decision to use GitHub Actions.
+description: "Use when selecting, running, auditing, or reporting local validation for Praxis Angular changes in praxis-ui-angular: lib/public API builds and consumers, focused specs, authoring round trips, AI registry artifacts, i18n/docs/playgrounds, Playwright and local E2E lanes, package/release preflight, Node environment ownership, derived artifacts, or the decision to use GitHub Actions."
 ---
 
 # Praxis Angular Validation Gates
@@ -22,6 +22,20 @@ Before choosing a gate:
 ## Evidence Selection
 
 Start with the narrowest applicable row. Add a row only when the changed contract crosses that boundary.
+
+Before execution, state the deliverable, acceptance criteria, affected consumers
+and mandatory rows. During iteration run the affected specs first; use the actual
+script/profile selection rather than assuming a command named smoke is small.
+Diagnose failures before expanding. After a fix, rerun affected specs/dependents,
+including shared harness/configuration impact, not the whole workspace by default.
+
+Reserve a necessary broad suite/build for the consolidated candidate. Repeat it
+only after relevant evidence invalidation, a demonstrated coverage gap or a gate
+requirement. Reuse current lib/package outputs; run canonical `build:libs` when
+package synchronization is actually required, not after unrelated docs/test edits.
+Do not build concurrently into shared dist/node_modules or disrupt shared watchers.
+These choices retain every applicable public-API, browser/accessibility, consumer,
+registry, live integration and release gate in the matrix.
 
 | Changed surface | Minimum local evidence |
 | --- | --- |
@@ -83,7 +97,7 @@ Read `tools/local-e2e/README.md` first. Respect its required backend, database, 
 
 Review public docs, examples, recipes, playgrounds, landing claims, generated package assets, and i18n whenever a published surface changes. State why each reviewed artifact is unchanged when it was intentionally not updated.
 
-For release preparation, read `RELEASE.md`, `build-libs.yml`, and `publish-from-tag.yml`. The documented preflight includes package/audit/link/build/peer/docs/registry/tarball checks. Local `release:preflight:npm`, packing, or dry-runs are evidence only. Do not run local `npm publish` or present it as the official release route.
+For release preparation, read `RELEASE.md`, `build-libs.yml`, and `publish-from-tag.yml`. The current preparation workflow accepts only `main` with `create_tag=true` and the required `RELEASE_PAT`; `master` is rejected. Preserve all official release preflight and publication gates; do not dispatch a release workflow for guidance-only edits. The documented preflight includes package/audit/link/build/peer/docs/registry/tarball checks. Local `release:preflight:npm`, packing, or dry-runs are evidence only. Do not run local `npm publish` or present it as the official release route.
 
 GitHub Actions is for the final release/tag, publication, or hosted-only smoke. During development, prefer local focused tests, builds, local E2E, and package checks; do not spend remote runs to discover failures reproducible locally.
 
@@ -120,10 +134,15 @@ Never describe a skipped browser, consumer, registry, docs, release, or live E2E
 Report:
 
 - classification, canonical owner, and changed contract;
-- commands executed with result and why they prove the scope;
+- commands executed with duration, result, candidate/source/dependency identity and why the selection or repetition proves the scope;
 - direct consumers, derived artifacts, and visual/live lanes reviewed or updated;
 - gates intentionally skipped and why;
 - remaining risks and whether a hosted/release gate is still required.
+
+End when the scoped delivery, required gates and derived artifacts are complete.
+Do not add unrelated lanes to fill a time budget. A time limit or unavailable
+mandatory gate requires a partial checkpoint with the remaining proof identified;
+it does not make a focused pass equivalent to release or integration acceptance.
 
 ## Companion Skills
 

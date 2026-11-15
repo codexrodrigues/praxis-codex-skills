@@ -1,9 +1,44 @@
 ---
 name: praxis-java-host-project
-description: Create or evolve Java/Spring Boot backend host projects for the Praxis platform using published Maven starter dependencies by default. Use when Codex must scaffold a new Praxis Java microservice, choose Praxis starter versions, wire praxis-metadata-starter or praxis-config-starter, create resource-oriented controllers/services/DTOs, adapt reference host patterns when available, or validate a host publishes canonical Praxis metadata surfaces such as /schemas/filtered, /schemas/domain, ApiResource, x-ui, actions, capabilities, export, and /api/praxis/config/**.
+description: "Create or evolve Java/Spring Boot backend host projects for the Praxis platform using published Maven starter dependencies by default. Use when Codex must scaffold a new Praxis Java microservice, choose Praxis starter versions, wire praxis-metadata-starter or praxis-config-starter, create resource-oriented controllers/services/DTOs, adapt reference host patterns when available, or validate a host publishes canonical Praxis metadata surfaces such as /schemas/filtered, /schemas/domain, ApiResource, x-ui, actions, capabilities, export, and /api/praxis/config/**."
 ---
 
 # Praxis Java Host Project
+
+## Reusable API paths in annotations
+
+Before wiring remote options, create or extend the host-owned `final ApiPaths`
+(private constructor, `public static final String` compile-time constants).
+Compose resource bases, stable source keys and named filter endpoint constants
+once. Reuse them in controllers, `OptionSourceDescriptor`, DTOs, FilterDTOs,
+command DTOs, surfaces and links. Do not concatenate option-source paths in each
+DTO, put deployment origins in annotations, use a constants interface, call
+methods to initialize annotation values, or introduce a DTO `optionSource` field.
+Static/enum options need no remote endpoint. Keep governed lookup semantics in
+`OptionSourceRegistry` and consume the published runtime endpoints in Angular.
+Validate annotation endpoints against descriptor runtime endpoints and controller
+mappings; keep independent literal contract fixtures to catch accidental route
+changes. Recompile consumers when constants change. For the complete decision,
+see `praxis-metadata-starter/docs/guides/API-PATHS-E-OPTION-SOURCES.md` when available;
+the rules above also apply outside the monorepo.
+
+Keep constant-holder classes independent of inheritance. DTO inheritance itself
+is not a reason to waive or fail endpoint proof: pass the exact declaring type
+and the selected dependency sources (directory or sources.jar) to the auditor.
+It traverses known superclasses/interfaces and proves imported references when
+no inherited member can shadow them; annotation/method uses are not declarations.
+Do not whitelist marker interfaces or host names. Missing/ambiguous/cyclic source
+graphs, possible inherited-member collisions and unsupported syntax stay unproved;
+never fall through to imports or outer scopes on a failed binding. A file-only
+caller cannot infer the owner of an annotation in a multi-type source file.
+Record the source-universe fingerprint and retain compiler regressions for both
+valid inheritance and shadowing. Static proof does not replace the host Java gate.
+When changing lookup examples, compile the exact documentation snippets against
+the selected starter artifact and verify descriptor semantics, not only skill
+syntax or manifest hashes. In the canonical skills repository, run
+`python scripts/check-java-lookup-example.py --java-home <JDK> --classpath <starter.jar>`
+for the host baseline; record the artifact version/hash and the integration limits.
+
 
 ## Overview
 
@@ -46,7 +81,7 @@ For `arquitetural`, `contrato-publico`, or `transversal`, map impact before patc
 5. Collect or infer the minimum resource contract before generating files: base package, module, entity/projection name, ID type, `resourcePath`, stable `resourceKey`, OpenAPI group, mutability/read-only mode, real fields, relationships, filter needs, option/lookup needs, and whether surfaces/actions/export/stats are in scope.
 6. Generate resource files in dependency order using the exact generic signatures and templates in [resource-baseline.md](references/resource-baseline.md) (including Section 0 for complete `pom.xml`/`application.yml` bootstrap with `-parameters`, MapStruct/Lombok annotation processors, `springdoc.writer-with-order-by-keys: true`, and `praxis.resource-version.etag.secret`). For a new application prefer `ApiPaths`, entity/projection, repository, DTOs, mapper, service, controller. For an existing application adding a resource, prefer DTOs, repository, mapper, service, controller, and only then surfaces, intents, actions, export, or analytics.
 7. Use the canonical resource-oriented baseline and deliver the **Full-Power Praxis Value Pack** on the first shot so the resource compiles immediately and showcases the platform without back-and-forth:
-   - `@ApiResource(value=..., resourceKey=..., title=..., description=..., icon=..., visualTone=..., identity=@ResourceIdentity(...), quickFilters={@QuickFilter(...)})` (note: `@ApiResource` is already meta-annotated with `@RestController` and `@RequestMapping`);
+   - `@ApiResource(value=..., resourceKey=..., title=..., description=..., icon=..., visualTone=..., identity=@ResourceIdentity(...), quickFilters={@QuickFilter(..., criteria={@FilterCriterion(...)})})` with at least 2 typed quick filters (using `@FilterCriterion(field, values/bool/number/decimal)` or overriding `AbstractResourceQueryController#defineQuickFilters()` with `QuickFilterDescriptor`; never use deprecated `@QuickFilter(filter = "...")`); note `@ApiResource` is already meta-annotated with `@RestController` and `@RequestMapping`;
    - `@ApiGroup(...)` with semantic/visual metadata when grouping is meaningful;
    - Entity with `@OptionLabel` on the canonical human label getter/field (enabling `/options/filter` and `/options/by-ids` automatically) and `@DefaultSortColumn`;
    - `BaseCrudRepository<E, ID>`;
@@ -54,9 +89,9 @@ For `arquitetural`, `contrato-publico`, or `transversal`, map impact before patc
    - `AbstractBaseResourceService<E, ResponseDTO, ID, FilterDTO, CreateDTO, UpdateDTO>` (note: `ID` is 3rd) overriding `getResourceMapper()`, `getDatasetVersion()`, `getStatsFieldRegistry()`, and `StatsSupportMode.AUTO` (`getGroupByStatsSupportMode()`, `getTimeSeriesStatsSupportMode()`, `getDistributionStatsSupportMode()`, `getComparisonStatsSupportMode()`) so `/stats/*` works out of the box;
    - `AbstractResourceController<ResponseDTO, ID, FilterDTO, CreateDTO, UpdateDTO>` (note: 5 type params, no `E`, `ID` is 2nd) overriding `getService()` and `getResponseId(ResponseDTO dto)`;
    - `AbstractReadOnlyResourceController<ResponseDTO, ID, FilterDTO>` and `AbstractReadOnlyResourceService<E, ResponseDTO, ID, FilterDTO>` for read-only views/projections;
-   - mutable resources: separate `ResponseDTO`, `CreateDTO` (`@JsonIgnoreProperties({"id"})`), `UpdateDTO` (`@JsonIgnoreProperties({"id"})`), and `FilterDTO implements GenericFilterDTO` with rich domain `@Schema(description=...)`, `@UISchema` (`preset`, `controlType`, `numericFormat`, `group`, `order`, `icon`, `quickViewVisible`, `helpText`), `@DomainGovernance`/`@AiUsagePolicy`, and a multi-operator `@Filterable` matrix (`LIKE`, `EQUAL`, `IN`, `BETWEEN`, `IN_LAST_DAYS`);
+   - mutable resources: separate `ResponseDTO`, `CreateDTO` (`@JsonIgnoreProperties({"id"})`), `UpdateDTO` (`@JsonIgnoreProperties({"id"})`), and `FilterDTO implements GenericFilterDTO` with rich domain `@Schema(description=...)`, `@UISchema` (`preset`, `controlType`, `numericFormat`, `group`, `order`, lowercase `snake_case` `icon`, `quickViewVisible`, `helpText`, plus `optionItems = {@UiOption(...)}` from `org.praxisplatform.uischema.annotation.UiOption` or `optionEnum = ...` for closed choices instead of deprecated string `options`), `@DomainGovernance(preset = DomainGovernancePreset.*, exportable = ..., reason = ..., aiUsage = @AiUsagePolicy(...))` + `@DomainLineage` (on projected attributes, keeping `@DomainGovernance` on the DTO), and a multi-operator `@Filterable` matrix (`LIKE`, `EQUAL`, `IN`, `BETWEEN`, `IN_LAST_DAYS`);
    - read-only resources: `ResponseDTO` and `FilterDTO` only;
-   - **Composite PKs (`@EmbeddedId`), Optimistic Concurrency (`@Version`), Governed Relationships (`@ResourceReference` / `OptionSourceRegistry` + Rich `EntityLookupDescriptor`), `@Embedded` Value Objects, JSONB `@CustomFields`, `@ResourceFact`, `@MicroVisualization`, `@UiAnalytics`, Governed Bulking (`@BulkEditable` / `@BulkResourceOperations` / `@BulkOperation`), Rich `CollectionExport` (`CSV`/`JSON`/`EXCEL` + `CollectionExportFieldPresentation`), `ReactiveDeterminationDefinitionProvider`, and Native JUnit Completeness Gate (`SemanticMetadataReviewer` + `PraxisExpressionStaticValidator` + `OptionSourcePublicationInventory`):** follow Sections 9, 10, 11, 12, and 13 of [resource-baseline.md](references/resource-baseline.md) and the 20-Pillar / 3-Phase Blueprint (`META-INF/praxis/AI-RESOURCE-BLUEPRINT.md` bundled in `praxis-metadata-starter` or `GUIA-00-BLUEPRINT-COMPLETO-RECURSO-PRAXIS.md`). Never attempt a multi-resource showcase in a single shallow pass; execute in 3 deep vertical phases (Phase 1: Data/DTOs/`@UISchema`/`@MicroVisualization`/Quick View 360°/Rich Lookups/`FilterDTO`; Phase 2: `@UiSurface`/`@ResourceIntent`/`@WorkflowAction`/Bulking/`@ResourceFact`/`@UiAnalytics`/`CollectionExport`; Phase 3: Domain Invariants/`ReactiveDetermination`/`praxis-rules-engine`/`/praxis/cockpit`/N+1 & Completeness Gates).
+   - **Composite PKs (`@EmbeddedId`), Optimistic Concurrency (`@Version`), Governed Relationships (`@ResourceReference` / `OptionSourceRegistry` + Rich `EntityLookupDescriptor`), `@Embedded` Value Objects, JSONB `@CustomFields`, `@ResourceFact` (inheriting `resourceKey` from `@ApiResource` when omitted on controller or `<R>` `ResponseDTO`, validated `ResourceFactDataType`/`SourceKind`/`Authority`/`EvaluationPhase`/`MissingValuePolicy`/`Scope` wire values, `label <= 36` chars without trailing period), `@MicroVisualization`, `@UiAnalytics`, `LegalTreatmentPurpose` (`legalPurpose` + `legalBasisRef` on `@UiSurface`/`@WorkflowAction`), Governed Bulking (`@BulkEditable` / `@BulkResourceOperations` with `protectedUpdateFields` strictly disjoint from `@BulkEditable` / `@BulkOperation`), Rich `CollectionExport` (`CSV`/`JSON`/`EXCEL` + `CollectionExportFieldPresentation`), `@ReactiveDetermination` / `ReactiveDeterminationDefinitionProvider` (`@DeterminationOutput("fieldName")` shorthand when response key matches form field), Praxis Decision Platform Boundary (`decisionKind = BUSINESS` in `praxis-rules-engine` vs. `decisionKind = AUTHORIZATION` in `praxis-authz-*`), and Native JUnit Completeness Gate (`SemanticMetadataReviewer` + `PraxisExpressionStaticValidator` + `OptionSourcePublicationInventory`):** follow Sections 9, 10, 11, 12, and 13 of [resource-baseline.md](references/resource-baseline.md) and the 20-Pillar / 3-Phase Blueprint (`META-INF/praxis/AI-RESOURCE-BLUEPRINT.md` bundled in `praxis-metadata-starter` or `GUIA-00-BLUEPRINT-COMPLETO-RECURSO-PRAXIS.md`). Never attempt a multi-resource showcase in a single shallow pass; execute in 3 deep vertical phases (Phase 1: Data/DTOs/`@UISchema`/`@MicroVisualization`/Quick View 360°/Rich Lookups/`FilterDTO`; Phase 2: `@UiSurface`/`@ResourceIntent`/`@WorkflowAction`/Bulking/`@ResourceFact`/`@UiAnalytics`/`CollectionExport`; Phase 3: Domain Invariants/`ReactiveDetermination`/`praxis-rules-engine`/`/praxis/cockpit`/N+1 & Completeness Gates).
 8. Treat `AbstractCrudController`, `AbstractReadOnlyController`, `BaseCrudService`, and similar pre-resource-oriented classes as migration surfaces only. Do not use them as the default for new resources when the resolved starter exposes the resource-oriented baseline.
 9. Include `praxis-config-starter` only when the host must expose `/api/praxis/config/**` or AI authoring/config-store surfaces and can provide the required config-store datasource, migrations/tables, and host adapters. Do not include it for a metadata/filter-only service. Before adding it, confirm the target host meets the starter's release prerequisites such as compatible Spring Boot baseline, supported config database/store, Flyway/baseline strategy, AI/RAG secrets when enabled, stream/auth policy, and required host adapters.
 10. Keep starter semantics in the starters. Do not patch a new host to redefine `x-ui`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/domain`, actions, capabilities, export, config headers, ETag, or AI contracts.
@@ -210,9 +245,35 @@ Do not act as a mechanical `1 table = 1 obvious CRUD` generator. Analyze the bus
 2. **Exhaustive Bulking Discovery Across All 3 Modes:** Audit 100% of mutable attributes instead of picking 2–3 obvious fields: enable `BulkMode.UNIFORM_UPDATE` on all collective standardization fields (unit, cost center, shift, regime/plan, payment/bank, manager, flags); enable `BulkMode.PER_ITEM_UPDATE` broadly on inline batch-grid revision fields (phones, emails, addresses, bank accounts, individual amounts/limits, external codes, per-item dates); and analyze entity relationships and lifecycle to create collective `BulkMode.DOMAIN_COMMAND` `@WorkflowAction(scope = ActionScope.COLLECTION)` operations (batch relocation across units, batch approval/homologation, batch suspension/reactivation, parametric revision).
 3. **New Cross-Entity Endpoints & Subdomain Intents:** Create dedicated read-only analytical/consolidated endpoints (`AbstractReadOnlyResourceController`) when entity relationships answer cross-table operational questions (vacancy/occupancy matrices, expiring-items radar, compliance audits), expose all `1:N` child collections as 360° surfaces (`@UiSurface` + `relatedChildResourceKey`), and decompose broad entities into persona-oriented `@ResourceIntent` (`PATCH` + `SurfaceKind.PARTIAL_FORM`) endpoints.
 
-For sensitive fields or fields that should guide AI/RAG behavior, use `@DomainGovernance`, `AiUsagePolicy`, and `AiUsageMode` deliberately. Validate that governance appears in `x-domain-governance` on `/schemas/filtered` and is reflected in `/schemas/domain` when the host publishes the domain catalog.
+For sensitive fields or fields that should guide AI/RAG behavior, use `@DomainGovernance` (`preset = DomainGovernancePreset.*`, `exportable`, `reason`, and `aiUsage = @AiUsagePolicy(visibility = AiVisibilityMode.*, trainingUse = AiTrainingUseMode.*, ruleAuthoring = AiControlledUseMode.*, reasoningUse = AiControlledUseMode.*)` — never use a non-existent `AiUsageMode` enum) and `@DomainLineage` deliberately. Validate that governance appears in `x-domain-governance` (`x-domain-governance.lineage`) on `/schemas/filtered` and is reflected in `/schemas/domain?strict=true` when the host publishes the domain catalog.
 
 ## Validation
+
+Before commands, define the deliverable, affected behaviors/contracts, direct
+consumers, mandatory gates and completion criteria. Check resolved starter
+versions/signatures and retain source/dependency identity. Start with the changed
+contract and its direct consumer before a broad host regression.
+
+During iteration, prefer explicit affected test classes and incremental builds.
+`-Dtest` selects execution, not all test-source compilation. Diagnose compilation,
+test failures and packaging separately. Use `clean` or repeated installation only
+for a demonstrated stale artifact/configuration problem, a consumer requirement or
+an official gate. Never build into the same target or replace a Maven coordinate
+while another process consumes it. Use the current checkout when inputs and outputs
+can be identified and protected. Isolate only for concurrent work, artifact
+contamination, reproducibility or an explicit gate; include every input read by
+the selected proof without copying/rebuilding the whole workspace by default.
+
+Run a required broad gate on the consolidated candidate; repeat it only after
+relevant evidence invalidation, a demonstrated coverage gap or a gate requirement.
+Rerun changed cases/dependents first, including shared-fixture impact. Keep SQL,
+HTTP, concurrency, resource-completeness and release gates required by the change.
+Database coverage follows changed behavior and dependencies, including Java-only
+authorization, tenant, snapshot and lifecycle changes; SQL/Flyway edits are not
+a prerequisite. Use the assigned database environment; unavailable proof stays pending.
+Stop when the deliverable and required gates pass with derived artifacts handled;
+a time limit produces a partial checkpoint if required proof remains open. Report
+command, selection reason, duration, result and candidate identity.
 
 Prefer focused validation:
 
@@ -220,7 +281,7 @@ Prefer focused validation:
 - Published dependency proof for external hosts: resolve starter artifacts with Maven metadata or `mvn dependency:get`, preferably using a temporary local Maven repository when the task must prove no monorepo dependency.
 - Metadata/public contract proof: add or run a focused `@SpringBootTest`/MockMvc or TestRestTemplate test for `/v3/api-docs`, `/schemas/filtered`, `/schemas/catalog`, `/schemas/surfaces`, `/schemas/actions`, `/schemas/domain` when available, resource filter, options, actions, and capabilities.
 - Config starter proof: assign isolated remote Neon API/Config resources explicitly, verify project/child/endpoint/PostgreSQL identity and client TLS before connecting, and prove the real owner/runtime/control-plane privileges and memberships required by the flow. Keep credentials private, bound fixture writes and cleanup to the assignment, preserve inherited data, and test `/api/praxis/config/**` with the host's required headers/origin. A privileged fixture is not proof of the ordinary runtime path; do not disable migrations merely to imitate an old local fixture.
-- Dependency/version change: confirm Maven resolution and run at least the host's test phase.
+- Dependency/version change: confirm Maven resolution and run the host's test phase with affected contract/consumer tests selected explicitly; broaden when impact cannot be bounded or the owning gate requires it.
 - For a full resource proof, execute the endpoints the UI/runtime will rely on: `/filter`, `/filter/cursor`, `/locate`, `/options/filter`, `/options/by-ids`, option-source endpoints when registered, `/schemas/filtered`, `/schemas/catalog`, `/schemas/surfaces?resource=...`, `/schemas/actions?resource=...`, `/schemas/domain` when available, collection and item `/capabilities`, collection and item `/actions`, item `/surfaces`, configured `/stats/*`, and `/export` when collection export is supported.
 
 Do not copy historical H2, embedded PostgreSQL or Testcontainers fixtures from
@@ -233,6 +294,12 @@ the broad release gate. Unit and focal passes remain evidence only for their
 stated scope. Follow the owning repository's actual private and sanitized-public
 release gates, retaining source/dependency identity, raw reports and cleanup.
 
+For phase/increment acceptance, define resources and obligations before execution.
+Keep the full completeness scorecard and raw exit status; the workspace auditor
+has no phase selector. Apply the classification in `praxis-java-contract-conformance`:
+current-phase failures, regressions and required cross-cutting dependencies block
+the phase; future-only obligations remain assigned and pending. Final resource/host
+acceptance still requires the full auditor and every mandatory gate to pass.
 When validation is partial, state exactly what ran and what remains unvalidated.
 
 ## References

@@ -29,14 +29,15 @@ Read `references/selection-matrix-and-forward-tests.md` before classifying.
 
 ## Selection Rules
 
-- Choose `JSON_LOGIC` only for a pure, deterministic expression whose facts,
+- Choose `JSON_LOGIC` (`decisionKind = BUSINESS`, `praxis-rules-engine`, `DecisionBinding`) only for a pure, deterministic business rule expression whose facts,
   null semantics, operators, limits and outcomes are fully representable in
   the published common subset.
-- Choose `JAVA_TYPED` for protected guards, typed algorithms, complex
+- Choose `JAVA_TYPED` (`decisionKind = BUSINESS`) for protected guards, typed algorithms, complex
   calculations or product-owned implementations that remain deterministic and
   effect-free at the decision boundary.
 - Choose `FACT_PROVIDER_PLUS_DECISION` when Java must obtain or normalize typed
   facts but the resulting decision remains pure and separately representable.
+- Distinguish **`decisionKind = AUTHORIZATION`** (`praxis-authz-*` / `OPA`, `RuntimeEnforcementBinding`) whenever the legacy PL/SQL or HADES logic governs actor/principal permission, organizational/sectoral row scope (`empCodigo`, `FLAG_ACESSO`, Cedente vs. Cessionário, `SIS_DEPTO` -> `DataScopePlan`), field-level read/write authority, or LGPD post-read masking (`FieldMaskingPlan`); never encode security/ABAC/data-scope rules as `JSON_LOGIC` business `RuleSet`s.
 - Choose host orchestration/effect ownership for queries, persistence,
   integration, audit or other effects. Never hide them inside a free rule.
 - Choose `KEEP_DB_BACKED` when semantics, precedence, dependencies, effects,

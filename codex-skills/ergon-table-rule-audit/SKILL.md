@@ -70,6 +70,21 @@ Do not treat object existence, `.tab` flags, source snippets, or a dependency gr
 11. Use source DML target candidates to expand side-effect tables. Audit or explicitly discard each pending, audit, publication, association, generated-detail, or package-written table that matters to the operation. Include tables reached transitively by triggers/packages, not only direct foreign-key children.
 12. Produce a compact report with a table: order, layer, rule, product/client, active, migration decision, evidence, and dependency risk.
 
+## Company-scoped option defaults
+
+Before migrating an option-based default, trace PACK_HADES.GET_HAD_OPCAO_ITEM and
+GET_OPCAO_NUMBER. A present company row replaces the general VALOR even with NULL;
+only afterwards apply VALOR_DEFAULT. Missing row, unknown lookup, known NULL and
+zero are different states. Preserve values, presence, source references/revisions
+and invalid resolved configuration instead of inventing a fallback.
+
+Resolve the authorized executing company separately from the union of affected
+OLD/NEW companies. Map destination to source company explicitly and capture the
+mapping revision; never assume equal codes or equate EMPRESA with the customer
+boundary. Hydrate INSERT once, evaluate the same candidate in every affected
+policy, and do not reapply INSERT defaults on UPDATE. Keep native-product
+declarations separate from audited installed HADES evidence and importer coverage.
+
 ## Oracle Access
 
 Use the same database access rules as `ergon-archon-screen-discovery`.

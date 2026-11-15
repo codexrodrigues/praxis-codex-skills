@@ -55,7 +55,9 @@ Inspect the owner before editing:
 
 ## Canonical Boundary
 
-`/api/praxis/config/domain-rules/**` owns intake, definitions, status transitions, simulations, publications, materializations, timelines, explainability, `decisionDiagnostics`, immutable snapshot persistence, active RuleSet heads and rollback.
+`/api/praxis/config/domain-rules/**` owns intake, definitions, status transitions, simulations, publications, materializations, timelines, explainability, `decisionDiagnostics`, immutable snapshot persistence, active RuleSet heads and rollback across the **Praxis Decision Platform**, maintaining an orthogonal boundary between:
+- **`decisionKind = BUSINESS`** (`selection_eligibility`, `backend_validation`, `workflow_action_policy`, `approval_policy` in JSON Logic): compiled and evaluated deterministically by `praxis-rules-engine` (managed under *Business Rules* in `praxis-rules-studio`).
+- **`decisionKind = AUTHORIZATION`** (`ruleType = "authorization_policy"`, schema `praxis.authorization-policy/v1`, `targetLayer = "policy_engine"`, `targetArtifactType = "opa-policy"`, `targetArtifactKey = "unit:<policyId>:<majorVersion>"`): compiled into signed Rego/masking units and releases (`OpaPolicyUnitManifest`, `OpaRuntimeCompositionManifest`, `OpaRuntimeRelease`) for execution in `praxis-authz-starter` / `praxis-authz-enforcement-core` / `praxis-authz-opa` (managed under *Access & Masking Policies* in `praxis-rules-studio`). Never evaluate authorization/masking policies in `praxis-rules-engine` or create a parallel control plane outside `/api/praxis/config/domain-rules/**`.
 
 `/api/praxis/config/domain-knowledge/change-sets/**` owns governed knowledge patch creation, validation, review, apply, timeline, evidence lifecycle, and derived Project Knowledge indexing.
 
@@ -237,7 +239,7 @@ Use only canonical status endpoints. Definition transitions allow review paths i
 - Prefer an active persisted federation release; use catalog projection fallback only as declared by the query response. Preserve `sourceMode`, release keys, policy report, evidence refs, and redaction decisions.
 - The existing `policy_reference` option-source prediction contains residual text matching after semantic scope resolution. Do not extend it or use it as primary intent routing; require an explicit canonical `ruleType`/target contract for new behavior.
 
-## Reactive Determination Handoff
+## Reactive Determination Handoff, Host Rule-Family Descriptors & Governed Multi-Widget Pages (`PLAT-EVO-04`, `05`, `11`)
 
 When a governed rule materializes as a Reactive Determination, keep Config as
 the decision/snapshot owner and publish a typed
@@ -247,6 +249,9 @@ compiles the public operation projection; Angular executes only that projection.
 Do not emit legacy Form Effect payloads or make the form infer determination
 selection from field names. Pair with `praxis-reactive-determinations` for the
 complete snapshot-to-runtime proof.
+
+- **Zero-Boilerplate Host Onboarding & Dynamic Rule-Family Descriptors (`PLAT-EVO-04`, `PLAT-EVO-05`):** Hosts consuming governed snapshots should rely on `GovernedRulesStudioAutoConfiguration`, `ProductBaselineGenesisInitializer` (`initializeScope(tenantId, environment)`), `TenantScopeResolver`, and `MetadataDomainRuleSetCatalogBridgeSupport` (see `praxis-config-starter/docs/domain-rules/zero-boilerplate-host-onboarding-and-decision-inspector.md`), use `org.praxisplatform.config.runtime.GovernedHostRuleBundleRuntime<O>` for snapshot caching, product-baseline admission, and transactional `CommitFence` (`beforeCommit`), and register `GovernedRuleFamilyDescriptor` beans (`GovernedRuleFamilyDescriptor.ofSingleRuleSet(...)` for single-operation rule sets or typed multi-operation descriptors) in `GovernedRuleFamilyRegistry` instead of hardcoding `switch (slot.key())` or static provenance strings per slice.
+- **Full-Stack Symmetry for Governed UI-Layout Multi-Widget Pages (`PLAT-EVO-11`):** Governed page publication (`page-publication.schema.json`, `UiLayoutDeclarativeWidgetRevisionReproduction`, `UiLayoutPageChildCaptures`, and `PageCatalogLifecycleBridge` in `praxis-config-starter`) and the Angular closed page codecs (`page-authoring-document.codec.ts` in `@praxisui/core` and `governed-page-workflow.controller.ts` in `@praxisui/page-builder`) admit **8 certified declarative widgets**: `praxis-dynamic-form`, `praxis-table`, `praxis-chart`, `praxis-list`, `praxis-rich-content`, `praxis-tabs`, `praxis-stepper`, and `praxis-expansion`. Never add or alter a governed widget kind on only one side of the client/server publication boundary; always keep schema validation, `widgetRevisionKey` reproduction, child-config capture, and Angular codecs strictly symmetrical.
 
 ## Decision Rules
 
@@ -320,6 +325,33 @@ Update public OpenAPI, HTTP corpus, Core models and Studio together. Source-cand
 Maven proof remains distinct from published-coordinate adoption.
 
 ## Validation
+
+Define the delivery criterion and map each changed contract to focused proof and
+direct consumers before running commands. Inspect actual Maven profiles: the
+Config `ci-smoke-unit` profile is a broad unit/smoke regression, not a focused
+snapshot or domain-rule test. Run it on a consolidated candidate when required
+by impact or the owning gate, not after every local edit.
+
+For snapshot/head/operation changes, check the resolved Engine/Contracts/Config
+versions and signatures first. Prove the neutral scope/publication contract and
+direct host consumer early, then the affected snapshot, rollout, host-status,
+controller and migration-inventory tests. Keep real migration/history, tenant,
+precondition, concurrency and HTTP/OpenAPI proof when those contracts change;
+mocked service tests and a broad green count do not close those gates.
+
+After a correction, rerun the failing case and affected dependents first. Repeat
+a broad pass only for relevant source/dependency/configuration changes that
+invalidate it, a demonstrated coverage gap or an explicit gate requirement.
+Prefer incremental `test` during edits; clean/install/package only when needed
+by stale artifacts, changed build inputs, a consumer or the official gate. Do not
+replace a candidate artifact while a consumer is using it. `-Dtest` does not
+restrict all test-source compilation. Preserve concurrent changes and reconcile
+them at explicit points rather than continually changing the tested candidate.
+
+Finish when the scoped deliverable, required gates and derived artifacts are
+complete. A deadline is a ceiling, not a target; retain a partial checkpoint for
+any required proof still open. Report command, selection/broadening reason,
+duration, result and candidate identity; overlapping campaigns are not new coverage.
 
 Use focused local gates:
 

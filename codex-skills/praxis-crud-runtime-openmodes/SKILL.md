@@ -1,6 +1,6 @@
 ---
 name: praxis-crud-runtime-openmodes
-description: Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, bulk execution cancellation and terminal states, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation.
+description: "Use when implementing or auditing `@praxisui/crud` runtime orchestration, including `PraxisCrudComponent`, `CrudMetadata`, `crudContext` stability, `CrudLauncherService`, route/modal/drawer open modes, `DynamicFormDialogHostComponent`, drawer adapter token, table/form handoff, bulk execution cancellation and terminal states, capabilities/HATEOAS action launching, schemaUrl/submitUrl binding, and CRUD consumer validation."
 ---
 
 # Praxis CRUD Runtime Open Modes
@@ -66,6 +66,53 @@ Do not rebuild CRUD drawers, modals, or table/form launchers in apps when the mi
   with `effects: []`. The host still evaluates policy and must not treat a
   matching profile as authorization.
 
+## Duplicate Draft And Seeded Create
+
+Inspect `tryHandleCanonicalDuplicateDraftAction`, the launcher input mapping,
+`crud-form-route.ts`, `crud-route-form-handoff.service.ts`, the routed host and
+their Router specs before documenting this flow. Follow the row's published
+`duplicate-draft` link and canonical create availability/link. Recheck live links,
+identity and runtime denials after the POST. Missing link, denial, invalid draft
+or preparation failure must stop with localized feedback, without generic workflow
+fallback or an empty create form. Reuse the existing opening guard and invalidate
+late work on destruction/context changes.
+
+The backend owns the field allowlist, clearing and defaults. CRUD clones the DTO
+and launches CREATE with request schema and POST submit, not the source identity
+or an update target. Source identity belongs in `contextIdentity`; new-record
+`resourceIdentity` stays unset. Use localized copy title/guidance/submit and return
+overlay focus to a surviving origin control. Cancel/discard sends no create.
+Form's explicit object `initialValue`, including `{}`, suppresses omitted defaults
+even in rebuild, preserving false/null and compatible edits. No object seed keeps
+ordinary create defaults; the submit pipeline can still omit untouched optional null.
+
+For seeded route create, hosts must adopt public `createCrudFormRoute({ path,
+formId, resourcePath })` from `@praxisui/crud`. Generic edit/view routes remain
+host-owned and read their entity. The private CRUD handoff stores payload in
+memory and sends only an opaque `NavigationExtras.info` marker; claim requires
+one matching navigation/final URL/formId/resource/context. Never use a shared
+`Symbol.for` slot, URL/history/storage payload, or a new Form/Core seed API.
+Back/reload/direct access without a new handoff is unavailable. Do not cache or
+detach this destination with custom route reuse. Normal source teardown after
+successful guards allows transfer; destination owns lifetime/context after claim.
+Redirect, rejection, cancellation and context invalidation release pending data.
+Preserve explicit `enableCustomization=false` and true in the private payload;
+absence alone selects the host's global fallback, outside DTO/authoring state.
+
+`AbortSignal` on launcher/dialog/adapter is optional and cooperative. External
+adapters must honor it; an obsolete pending `surfaceRuntime.push` can only be
+closed once its ref resolves. Do not promise universal cancellation. Each Form
+owns its local mutable `GenericCrudService` and `FormContextService`; preserving
+the ancestor injector does not reuse that client. Copy chrome localization does
+not prove full Form i18n: generated “Informações” in the layout service remains
+an owner-specific runtime follow-up, while domain labels remain host data.
+
+Validate changed behavior with the duplicate component/launcher/Router/customization
+and Form seed/rebuild specs, plus the focused three-mode browser fixture when
+runtime changes. For prose-only reconciliation, inspect those sources/evidence
+and run doc/skill gates without repeating full Java/Angular suites. Keep local,
+mock/browser, real backend integration and published-consumer evidence separate.
+
 ## Row Selection And Analytical Drawers
 
 Inspect `PraxisCrudComponent`'s derived table configuration and Table's
@@ -89,6 +136,16 @@ Prove plan/page parity, selection updating the dossier without an analytical
 drawer, and explicit view/edit actions still opening their intended surfaces.
 Use the actually adopted SDK: a newer source checkout does not prove that an
 older public package implements the same opening policy.
+
+For remote read-only analytical or inquiry resources wired through `<praxis-crud>`
+or `<praxis-resource-page>` with `resourcePath`, keep `interactionMode: 'interactive'`
+with `selection.enabled: false` (and `openOnRowClick` / `360°` drawer enabled as
+needed). Never set `interactionMode: 'inspect-only'` on a remote-backed table
+without static `dataSource.data`, because `'inspect-only'` suppresses remote HTTP
+execution fail-closed. When the host bootstraps `providePraxisDecisionInspector({ rulesStudioUrl })`
+from `@praxisui/visual-builder`, `<praxis-resource-page>` also exposes the native
+contextual business-rules inspector inside `SURFACE_DRAWER_BRIDGE` without host-local
+glue components.
 
 ## Resource Page Context Lifecycle
 

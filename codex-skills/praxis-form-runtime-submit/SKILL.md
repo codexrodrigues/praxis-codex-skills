@@ -1,6 +1,6 @@
 ---
 name: praxis-form-runtime-submit
-description: Use when Codex must inspect, change, or scaffold @praxisui/dynamic-form or praxis-dynamic-form package runtime behavior: FormConfig, schema-driven field metadata, resourcePath/schemaUrl/readUrl/submitUrl, create/edit/view modes, local versus backend metadata-driven forms, submit payload normalization, local/transient fields, entity lookup payloads, hooks, form actions, and runtime validation.
+description: "Use when Codex must inspect, change, or scaffold @praxisui/dynamic-form or praxis-dynamic-form package runtime behavior: FormConfig, schema-driven field metadata, resourcePath/schemaUrl/readUrl/submitUrl, create/edit/view modes, local versus backend metadata-driven forms, submit payload normalization, local/transient fields, entity lookup payloads, hooks, form actions, and runtime validation."
 ---
 
 # Praxis Form Runtime Submit
@@ -63,6 +63,19 @@ Separate the target mode before designing a fix:
 - Authored/customizable: runtime config is editable and may be persisted through Settings Panel/config storage.
 
 Do not create DTO/backend fields for local-only or transient UX state already supported by Angular runtime. Use `source: "local"`, `transient: true`, or `submitPolicy` where the field is intentionally local.
+
+## Create Draft Boundary
+
+For duplicate preparation, pair with `praxis-form-schema-runtime-modes` and
+`praxis-crud-runtime-openmodes`. The backend owns copy/clear policy. An explicit
+object create `initialValue` (even `{}`) suppresses omitted schema/config defaults
+in first mount and rebuild, retaining false/null and compatible edits. Ordinary
+create without an object seed keeps defaults. Use CREATE request metadata and a
+POST target; source identity/version is not a new-record update identity.
+Preparation and cancellation do not persist. Preserve the normal payload pipeline,
+including omission of untouched optional null, without reconstructing copy policy
+or adding a private `fromDuplicate` marker. Seeded route handoff remains private
+CRUD runtime behind `createCrudFormRoute`, never a global Form/Core slot.
 
 ## Submit Contract
 

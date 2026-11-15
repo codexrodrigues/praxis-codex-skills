@@ -1,6 +1,6 @@
 ---
 name: ergon-fieldspec-ui-contract
-description: Validate and design Praxis metadata DTO, FilterDTO, option, OpenAPI x-ui, and Angular dynamic-field control contracts for Ergon/Archon migrations. Use when mapping @UISchema, @Filterable, schemas, filters, selects/options, date ranges, duplicate drafts, command DTOs, or when checking whether @praxisui Angular can render fields generated from Java annotations.
+description: "Validate and design Praxis metadata DTO, FilterDTO, option, OpenAPI x-ui, and Angular dynamic-field control contracts for Ergon/Archon migrations. Use when mapping @UISchema, @Filterable, schemas, filters, selects/options, date ranges, duplicate drafts, command DTOs, or when checking whether @praxisui Angular can render fields generated from Java annotations."
 ---
 
 # Ergon FieldSpec UI Contract
@@ -58,7 +58,7 @@ Run this skill:
    - resource `filter` endpoints follow their resource response contract, while generic options endpoints follow the current Praxis options contract consumed by `GenericCrudService`: bare `Page<OptionDTO>` for `POST /options/filter` and bare `List<OptionDTO>` for `GET /options/by-ids`;
    - option-source endpoints follow the same no-envelope options convention: bare `Page<OptionDTO<Object>>` for `POST /option-sources/{sourceKey}/options/filter` and bare `List<OptionDTO<Object>>` for `GET /option-sources/{sourceKey}/options/by-ids` or its contextual POST variant;
    - dependent option sources prove selected-value reload separately from filtering: `GET .../by-ids` is enough only when the public ID is self-contained, otherwise `POST .../by-ids` must carry the required public filter/dependency context through the current backend and Angular path;
-   - command DTOs hide derived/internal fields and use `copyOnDuplicate` deliberately.
+   - command DTOs hide derived/internal fields; duplicate drafts use an explicit backend allowlist/clearing policy and a partial create-compatible DTO, without an invented `copyOnDuplicate` annotation. Preserve mandatory CREATE validation and publish real draft nullability.
    - when the API is implemented, execute the running endpoints that provide this contract and record payload/response evidence, not only generated OpenAPI.
 5. Validate the Angular contract:
    - `FieldMetadata` accepts the metadata;
@@ -129,7 +129,7 @@ A handoff can be `Ready`, `Ready with accepted residual`, `Blocked`, or `Deferre
 | Incluir/excluir valores | Alias FilterDTO with `IN`/`NOT_IN`, `relation` pointing to the persistent field, business label such as "Mostrar status" or "Ocultar status", and tooltip explaining inclusion/exclusion. |
 | Novo/Editar | Command DTO or write DTO when read DTO has derived/internal fields; validation and schema request tests. |
 | Apagar | Delete endpoint only after write audit; no accidental inherited delete if operation is blocked. |
-| Duplicar | `duplicate-draft`, `DuplicateDraftResourceService`, `DuplicateDraftUtils`, deliberate `copyOnDuplicate` and `unique` annotations. |
+| Duplicar | Neutral `AbstractDuplicateDraftResourceController` + `DuplicateDraftResourceService`/`DuplicateDraftResourceCommandService`, backend field/state/scope policy, non-mutating DTO preparation and affirmative create/view/duplicate-draft availability; separate CREATE POST. No `DuplicateDraftUtils`/`copyOnDuplicate` contract. |
 | Cancelar | Frontend no-op/reset; no backend mutation endpoint. |
 | Documentos legais/Publicacoes/Pendencias | Related resource contract unless evidence proves they belong to the same resource. |
 

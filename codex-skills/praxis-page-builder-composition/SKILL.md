@@ -132,7 +132,7 @@ value different from the host seed and assert there is no load-to-save echo.
 
 Keep automatic generic persistence disabled for `authoringDocument` and agentic
 previews. Governed apply owns revision/provenance; enabling a generic autosave must
-not bypass it. Use focused Core and builder persistence specs plus real host UI
+not bypass it. For governed page publication (`praxis.page.publication.v1`, `PLAT-EVO-11`), `@praxisui/core` (`page-authoring-document.codec.ts`), `@praxisui/page-builder` (`governed-page-workflow.controller.ts`), and `praxis-config-starter` (`page-publication.schema.json`, `UiLayoutDeclarativeWidgetRevisionReproduction`, `UiLayoutPageChildCaptures`, `PageCatalogLifecycleBridge`) symmetrically admit all **8 certified declarative widgets**: `praxis-dynamic-form`, `praxis-table`, `praxis-chart`, `praxis-list`, `praxis-rich-content`, `praxis-tabs`, `praxis-stepper`, and `praxis-expansion` — enabling governed executive workspaces with tabs, steppers, accordions, rich-content dossiers, charts, lists, tables, and forms without bespoke Angular wrapper components. Never add a governed widget type on only one side of the client/server codec boundary. Use focused Core and builder persistence specs plus real host UI
 save/reopen/reset and identity-switch proof. Mocked HTTP browser tests do not prove
 remote database behavior; database-dependent proof requires an isolated Neon branch.
 

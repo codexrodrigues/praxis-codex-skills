@@ -68,8 +68,16 @@ For date ranges and relative dates:
 
 ## Options And Direct Selects
 
-For ordinary remote options, use canonical resource paths centralized in `ApiPaths` or equivalent.
-Do not scatter literal URLs in DTOs.
+Choose between static/closed options and remote option sources according to cardinality and ownership:
+
+- **Static / closed options (`@UiOption` or `optionEnum`, no HTTP endpoint required):**
+  - Use `@UISchema(controlType = FieldControlType.SELECT, optionItems = { @UiOption(value = "A", label = "Ativo", icon = "check_circle", tone = QuickFilterTone.SUCCESS), ... })` (`org.praxisplatform.uischema.annotation.UiOption`) or `@UISchema(controlType = FieldControlType.SELECT, optionEnum = StatusEnum.class)`.
+  - `@UiOption` supports `value`, `label`, `icon` (lowercase `snake_case` Material Icons ligature), `tone` (`QuickFilterTone`), `description`, and `disabled`.
+  - Keep `optionItems` and `optionEnum` mutually exclusive (`uischema-options-source-conflict`), ensure non-blank unique `value`s (`uischema-option-value-blank`, `uischema-option-duplicate-value`), keep every `label` concise (`<= 36` chars, no trailing period: `uischema-option-label-looks-like-sentence`), and ensure `optionEnum` targets a non-empty Java `enum` (`uischema-option-enum-invalid`).
+  - Do **not** use stringified `@UISchema(options = "...")` (`"A:Ativo,..."` or raw JSON), which is `@Deprecated(since = "2.1.0")`.
+- **Remote options (`endpoint` / `OptionSourceDescriptor`):**
+  - Use named endpoint constants centralized in host-owned `ApiPaths` (final class, private constructor, compile-time String constants). Compose the resource path and source key once there; use the same constants in the registry and controllers.
+  - Do not scatter literal URLs in DTOs.
 
 ```java
 @UISchema(
@@ -80,7 +88,7 @@ Do not scatter literal URLs in DTOs.
     displayField = "label",
     tableHidden = true,
     helpText = "Cargo ocupado atualmente.",
-    icon = "mi:work"
+    icon = "work"
 )
 private Integer cargoId;
 ```

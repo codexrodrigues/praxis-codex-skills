@@ -1,11 +1,46 @@
 ---
 name: praxis-metadata-domain-option-sources
-description: Use when Codex must work on praxis-metadata-starter semantic domain and option-source contracts: @DomainGovernance, /schemas/domain, semantic metadata reviewer, @UISchema presets, fieldAccess, OptionSourceDescriptor, RESOURCE_ENTITY, filter/by-ids endpoints, selectedReloadPolicy, invalidSortPolicy, entity lookup metadata, or x-ui optionSource publication.
+description: "Use when Codex must work on praxis-metadata-starter semantic domain and option-source contracts: @DomainGovernance, /schemas/domain, semantic metadata reviewer, @UISchema presets, fieldAccess, OptionSourceDescriptor, RESOURCE_ENTITY, filter/by-ids endpoints, selectedReloadPolicy, invalidSortPolicy, entity lookup metadata, or x-ui optionSource publication."
 ---
 
 # Praxis Metadata Domain Option Sources
 
 Use this skill for semantic domain grounding and governed option sources in `praxis-metadata-starter`. These contracts let AI and runtimes understand resource vocabulary, data governance, field access, and remote lookup semantics before authoring decisions.
+
+## Reusable API paths in annotations
+
+Before wiring remote options, create or extend the host-owned `final ApiPaths`
+(private constructor, `public static final String` compile-time constants).
+Compose resource bases, stable source keys and named filter endpoint constants
+once. Reuse them in controllers, `OptionSourceDescriptor`, DTOs, FilterDTOs,
+command DTOs, surfaces and links. Do not concatenate option-source paths in each
+DTO, put deployment origins in annotations, use a constants interface, call
+methods to initialize annotation values, or introduce a DTO `optionSource` field.
+Static/enum options need no remote endpoint. Keep governed lookup semantics in
+`OptionSourceRegistry` and consume the published runtime endpoints in Angular.
+Validate annotation endpoints against descriptor runtime endpoints and controller
+mappings; keep independent literal contract fixtures to catch accidental route
+changes. Recompile consumers when constants change. For the complete decision,
+see `praxis-metadata-starter/docs/guides/API-PATHS-E-OPTION-SOURCES.md` when available;
+the rules above also apply outside the monorepo.
+
+Keep constant-holder classes independent of inheritance. DTO inheritance itself
+is not a reason to waive or fail endpoint proof: pass the exact declaring type
+and the selected dependency sources (directory or sources.jar) to the auditor.
+It traverses known superclasses/interfaces and proves imported references when
+no inherited member can shadow them; annotation/method uses are not declarations.
+Do not whitelist marker interfaces or host names. Missing/ambiguous/cyclic source
+graphs, possible inherited-member collisions and unsupported syntax stay unproved;
+never fall through to imports or outer scopes on a failed binding. A file-only
+caller cannot infer the owner of an annotation in a multi-type source file.
+Record the source-universe fingerprint and retain compiler regressions for both
+valid inheritance and shadowing. Static proof does not replace the host Java gate.
+When changing lookup examples, compile the exact documentation snippets against
+the selected starter artifact and verify descriptor semantics, not only skill
+syntax or manifest hashes. In the canonical skills repository, run
+`python scripts/check-java-lookup-example.py --java-home <JDK> --classpath <starter.jar>`
+for the host baseline; record the artifact version/hash and the integration limits.
+
 
 ## Source Audit
 
@@ -25,7 +60,7 @@ Inspect the owner before editing:
 
 ## Canonical Boundary
 
-`@DomainGovernance` materializes `x-domain-governance` in OpenAPI and republishes governance in `/schemas/domain`. It is the preferred explicit declaration for privacy, security, compliance, data category, AI usage policy, reason, and confidence.
+`@DomainGovernance` materializes `x-domain-governance` in OpenAPI and republishes governance in `/schemas/domain` (with `GET /schemas/domain?strict=true` failing closed when any property lacks explicit `@DomainGovernance`). It supports `@Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE})` with monotonic restrictive inheritance, and is the preferred explicit declaration for privacy, security, compliance, data category (`preset`, `kind`, `classification`, `dataCategory`, `complianceTags`), `exportable`, AI usage policy (`valueEnforcementScope = "runtime_payload_only"`, `catalogMetadataDiscoverable = true`), `reason`, and `confidence`. `@DomainLineage` links DTO/projection properties to their canonical entity/source attributes (published in `x-domain-governance.lineage` and in `/schemas/domain` as `same_as`, `materializes`, `depends_on`, `sharedRepresentations`), while `SemanticMetadataReviewer.review(dtoClass, optionSources, statsRegistry)` enforces `lineage-governance-weakened` and the `P50` gate (`restricted-field-in-analytics-or-option-source`).
 
 `@UISchema` presets and field access metadata publish presentation and access hints, but they do not replace domain descriptions, security enforcement, or governance declarations.
 
@@ -139,8 +174,20 @@ parallel type/sourceType wire aliases to satisfy informal issue terminology.
 `ResourceFactCatalogProvider` supplies descriptors, not evaluations. The default
 annotation provider discovers bean types/methods without constructing beans or
 calling domain computations; hosts can replace it for tenant-dependent historical
-facts. Reuse DomainGovernance for annotation governance and preserve descriptor
-parameters, determinism, units and source kind. Do not introduce a dependency on
+facts. `@ResourceFact` (`org.praxisplatform.uischema.fact.ResourceFact`) automatically
+inherits `resourceKey` from an enclosing `@ApiResource` controller (or its `<R>`
+`ResponseDTO`), so omitting redundant `resourceKey` prevents `resource-fact-resource-key-mismatch`.
+`SemanticMetadataReviewer` validates the string vocabulary attributes (`dataType`,
+`sourceKind`, `authority`, `evaluationPhase`, `missingValuePolicy`, `scope`) against
+`ResourceFactDataType`, `ResourceFactSourceKind`, `ResourceFactAuthority`,
+`ResourceFactEvaluationPhase`, `ResourceFactMissingValuePolicy`, and `ResourceFactScope`
+(checking known DTO properties when `sourceKind` is `"dto_field"` or `"entity_field"`),
+plus short `label` (`<= 36` chars, no trailing period), lowercase `snake_case` `icon`, and
+valid semantic `tone`. Static/closed select options belong on `@UISchema(optionItems = {@UiOption(...)})`
+(`org.praxisplatform.uischema.annotation.UiOption`) or `@UISchema(optionEnum = ...)` (never
+deprecated `options = "..."`), whereas remote/entity catalogs belong in `OptionSourceRegistry` /
+`EntityLookupDescriptor`. Reuse `DomainGovernance` for annotation governance and preserve
+descriptor parameters, determinism, units and source kind. Do not introduce a dependency on
 config-starter or rules-engine, or execute business logic in catalog discovery.
 Preserve findByResourceKey/findByGroup signatures. Catalog cache identity must
 include tenant and a canonical snapshot fingerprint so provider changes cannot

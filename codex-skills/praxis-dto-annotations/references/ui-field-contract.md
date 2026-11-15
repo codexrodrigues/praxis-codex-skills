@@ -101,9 +101,11 @@ Common mappings:
 | phone | `PHONE` |
 | CPF/CNPJ | `CPF_CNPJ_INPUT` plus mask |
 | boolean | `CHECKBOX` or deliberate `TOGGLE` |
-| enum small | `RADIO` or `SELECT` |
-| enum/common select | `SELECT` |
-| list of enum values | `MULTI_SELECT` or `INLINE_MULTISELECT` in dense filters |
+| enum small | `RADIO` or `SELECT` with `optionEnum = ...` or `optionItems = {@UiOption(...)}` |
+| enum/common select | `SELECT` with `optionEnum = ...` or `optionItems = {@UiOption(...)}` |
+| list of enum values | `MULTI_SELECT` or `INLINE_MULTISELECT` in dense filters with `optionEnum` / `optionItems` |
+
+For closed/static choices, prefer `@UISchema(..., optionItems = {@UiOption(value = "...", label = "...", icon = "...", tone = QuickFilterTone.*)})` (`org.praxisplatform.uischema.annotation.UiOption`) or `@UISchema(..., optionEnum = MyEnum.class)`. Do not use stringified `@UISchema(options = "...")`, which is `@Deprecated(since = "2.1.0")`, and never combine `optionItems`, `optionEnum`, and `options` on the same property (`uischema-options-source-conflict`). Keep option `label <= 36` chars without a trailing period and `icon` in lowercase `snake_case`.
 | date | `DATE_PICKER` |
 | date-time | `DATE_TIME_PICKER` |
 | date/date-time range filter | `DATE_RANGE` or `DATE_TIME_RANGE` |
@@ -200,7 +202,7 @@ Common semantic roles:
 | Operational code, sequence, protocol, enrollment, item code | Usually `String` | `type = FieldDataType.TEXT`, `INPUT`, optional mask/pattern | No decimal/currency formatting or numeric stats measures even when stored as number. |
 | CPF, CNPJ/CGC, CEP, phone, email, URL | `String` | Specific control plus mask/pattern where supported | Preserve leading zeroes and punctuation policy. |
 | Person, organization, place, role, cost center lookup | ID plus resolved display field or entity lookup | `SELECT`, `ENTITY_LOOKUP`, option source metadata | Validate rehydration and labels, not only the ID field. |
-| Status, category, phase, type | Enum/string with controlled values | `SELECT`, `RADIO`, chip/badge only when supported | Do not present raw technical codes unless they are user vocabulary. |
+| Status, category, phase, type | Enum/string with controlled values | `SELECT`, `RADIO` with `optionEnum = ...` or `optionItems = {@UiOption(...)}` | Never use deprecated `options = "..."`; keep `label <= 36` chars without period and `icon` in lowercase `snake_case`. |
 | Quantity, count, age, workload, score | Numeric | `FieldDataType.NUMBER`, integer/decimal constraints | Choose integer/decimal from business rule, not database column. |
 | Money, balance, salary, price, tax amount | Numeric decimal | `CURRENCY_INPUT`, `NumericFormat.CURRENCY`, min/scale | Document currency and rounding/scale when relevant. |
 | Percentage, rate, index, factor | Numeric decimal | `NumericFormat.PERCENT` or number plus clear help text | State whether `0.15` or `15` means 15%. |
