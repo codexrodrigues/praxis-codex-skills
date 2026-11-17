@@ -1,6 +1,6 @@
 # Quickstart dashboard analytics patterns
 
-Use this reference when designing dashboard resources by analogy with `D:\Developer\praxis-plataform\praxis-api-quickstart`.
+Use this reference when designing dashboard resources by analogy with `praxis-api-quickstart`.
 
 ## Source Files Studied
 

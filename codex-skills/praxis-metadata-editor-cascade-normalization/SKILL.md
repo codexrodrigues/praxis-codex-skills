@@ -31,7 +31,7 @@ Treat `CascadeRulesService.dehydratePatch()` and `clearPatch()` as the executabl
 cascade patches. If an AI adapter or assistant materializer constructs cascade seed patches directly,
 audit it as a partial bridge and prove it preserves the same enum values, null-removal semantics, and
 root-level runtime paths before using it as migration guidance. Do not copy a simplified adapter patch
-into a host or Ergon screen as the canonical cascade implementation.
+into a host or migrated screen as the canonical cascade implementation.
 
 ## Required Source Audit
 

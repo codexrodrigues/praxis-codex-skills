@@ -35,10 +35,10 @@
         "praxis-angular-public-api-governance",
         "praxis-angular-validation-gates"
       ],
-      "skillMdSha256": "0DFA5315C3F0678848A5DE1BBE705957BBB9E5FBF943D36B08BAC415B839B9B9",
-      "treeSha256": "6BA619FC024C95ADD42602EB9DB5EC5D8D69A0B841F47F8BBB54B8788D6E7040",
-      "sha256": "0529883f14fd0822243f892b3a4bed088274164eb509020eb203ba32f9100031",
-      "bytes": 6272
+      "skillMdSha256": "5CE9E4BFA05A481843812D08813E2C1D460EDF57A69E732C0ADC716B71A35FE8",
+      "treeSha256": "845D78F9503828FFCCBA128D924C3BE9549A4A0AC1CD82E3E06285181DF36803",
+      "sha256": "5ce9e4bfa05a481843812d08813e2c1d460edf57a69e732c0adc716b71a35fe8",
+      "bytes": 8131
     },
     {
       "name": "praxis-skill-authoring-governance",
@@ -53,10 +53,10 @@
         "praxis-java-host-project",
         "praxis-dto-annotations"
       ],
-      "skillMdSha256": "E5EEA237C289429839DFAE71A170EC2EA00C7DEE541BBF638A59D5D89923024E",
-      "treeSha256": "42A7255D2881CE7633AE24C8099A65CA771A0C7CE0EAD2F9AB7E19CED858D669",
-      "sha256": "e5eea237c289429839dfae71a170ec2ea00c7dee541bbf638a59d5d89923024e",
-      "bytes": 8784
+      "skillMdSha256": "FE37C2BA2E4A710A38755130C5CDDB29A54847B3CCE92C684A3E9169513881BA",
+      "treeSha256": "E2269341D5765E9E42057DF56ECA8ACE0107CF61926D1E6B9A06FB1D9EAA3F73",
+      "sha256": "fe37c2ba2e4a710a38755130c5cddb29a54847b3cce92c684a3e9169513881ba",
+      "bytes": 8794
     },
     {
       "name": "praxis-java-resource-authoring",
@@ -95,8 +95,8 @@
       ],
       "skillMdSha256": "7A6240DBD0A47E88496DDFCD03979D39EBEAA1720F86F8DF8129B87C38362781",
       "treeSha256": "9F693FC42B6943A0D2711B06BB8672DC8AF9D5096E563C27505CFEC14AB69208",
-      "sha256": "d98e5e9f88615eab2956e243f2c52587fd4b1cbc056c473106ce89be8401473f",
-      "bytes": 15155
+      "sha256": "7a6240dbd0a47e88496ddfcd03979d39ebeaa1720f86f8df8129b87c38362781",
+      "bytes": 15739
     },
     {
       "name": "praxis-java-option-source-provider-authoring",
@@ -130,8 +130,8 @@
       ],
       "skillMdSha256": "CC7DE2C8C0FDEDC6E12DA5AC66CED544376C1A090DC11D63BD79AC58E724BEFC",
       "treeSha256": "E6A808C0FE54F1EBDC38E8AC09D91081E8F9A73D39B9D6650040E495846861C5",
-      "sha256": "abc950ebccb1f35a8cb42fca3047e4fdf679fd4bb8ca00a3139a656c49a84699",
-      "bytes": 12320
+      "sha256": "cc7de2c8c0fdedc6e12da5ac66ced544376c1a090dc11d63bd79ac58e724befc",
+      "bytes": 13545
     },
     {
       "name": "praxis-java-contract-conformance",
@@ -150,8 +150,8 @@
       ],
       "skillMdSha256": "60B429426A6E2E86A7A5A7E8698B0F7632B900F4CA73A903C0D128F26AB16BB3",
       "treeSha256": "92D8B46029F6019DA85A81E8DB47DFF891EE3DC82D24C2EB5DB12D9A54584BC1",
-      "sha256": "31ba3731a7701cd7670db124f270c108d5cee17091f6188b0dccf6cfff6c1f17",
-      "bytes": 13255
+      "sha256": "60b429426a6e2e86a7a5a7e8698b0f7632b900f4ca73a903c0d128f26ab16bb3",
+      "bytes": 15549
     },
     {
       "name": "praxis-java-command-concurrency-authoring",
@@ -222,8 +222,8 @@
       ],
       "skillMdSha256": "7B9B6422AC8F3AE3F6FEF7693D45C8309F23BBB2DE4A24D274058C6092024CE1",
       "treeSha256": "08EC5ABE256D5B043BAF5599E24ACB4CCA7D6E4E6F9E575C3C4C5B1E5F8D96EE",
-      "sha256": "5b8c655d510d8f6cd4e6413cc3a00eb1f6bf08608e8f9fa67a9a5fa2b6897c6c",
-      "bytes": 7879
+      "sha256": "7b9b6422ac8f3ae3f6fef7693d45c8309f23bbb2de4a24d274058c6092024ce1",
+      "bytes": 9074
     },
     {
       "name": "praxis-java-autoconfiguration-starter-maintenance",
@@ -310,10 +310,10 @@
         "praxis-ai-turn-orchestration-transport",
         "praxis-ai-backend-config-contracts"
       ],
-      "skillMdSha256": "EB3CEFFC7C22A22B2FC9D8972A523AB65386FC77A29B6C6606A7AF3B2E0CE1B6",
-      "treeSha256": "7C2175E363D0B0315C8C1073C3B881F1DF39030AC98538AC3C5FA15175B79FB6",
-      "sha256": "eb3ceffc7c22a22b2fc9d8972a523ab65386fc77a29b6c6606a7af3b2e0ce1b6",
-      "bytes": 7434
+      "skillMdSha256": "8DC9BC15DF1D730330DCC26014E2C60459A102128C7AE3C27A3CFED0DCD202FA",
+      "treeSha256": "3BEDBCAF92DAE08A413BC723A86A7B0248A2BC5706B6094B99F1C4F909C6C351",
+      "sha256": "8dc9bc15df1d730330dcc26014e2c60459a102128c7ae3c27a3cfed0dcd202fa",
+      "bytes": 8716
     },
     {
       "name": "praxis-ai-shell-session-context",
@@ -329,8 +329,8 @@
       ],
       "skillMdSha256": "473EBD533FB81878ED120DEAAB5C231BCD316DB5F8679BC86C7D06554987D495",
       "treeSha256": "CF31DADDD4E4CEAF695C1ED26518C868EAB4060EE73A2EE02FE909D128F3C9FB",
-      "sha256": "0c25b13e92f59003baa10acdb74e09db7ba3536c1713c8edce07ce3f8fffd523",
-      "bytes": 12191
+      "sha256": "473ebd533fb81878ed120deaab5c231bcd316db5f8679bc86c7d06554987d495",
+      "bytes": 12093
     },
     {
       "name": "praxis-ai-composer-attachments-quick-replies",
@@ -611,10 +611,10 @@
         "praxis-editorial-forms-data-collection-adapters",
         "praxis-editorial-forms-agentic-authoring"
       ],
-      "skillMdSha256": "5F34E311F2032B318980ED0569E588DA3422D5A1B3FFAAB225922F9348BA77FD",
-      "treeSha256": "5B94DBC42BDB76E1F03C6A9B09AC87FD8D2F243CDDD647C22B30ED730187918B",
-      "sha256": "df1fbd44a76110cc68b27ec1ccbf00d9474e9f881cd4ee4f6a75b31fb34c5b29",
-      "bytes": 49586
+      "skillMdSha256": "68F22D068F7CD678256DB2A2EAFCB45F0EC3DE13DA2CCE2BC791329D3A189952",
+      "treeSha256": "741E3F15D6A54A1966E03756E8909E84D48EC301838BDE2442CCD5F11BDD8ED8",
+      "sha256": "68f22d068f7cd678256db2a2eafcb45f0ec3de13da2cce2bc791329d3a189952",
+      "bytes": 52371
     },
     {
       "name": "praxis-angular-i18n-governance",
@@ -812,10 +812,10 @@
         "praxis-charts-ai-handler-contracts",
         "praxis-angular-agents-governance"
       ],
-      "skillMdSha256": "3809B48BE4AE3D7E73ED1A98648EC19C5CF044C0ECC414734397357F7D700112",
-      "treeSha256": "4F6160C4AB23028A6FC64DE532564DD749CD49C010D2017ACCC7DCA517202BCD",
-      "sha256": "3809b48be4ae3d7e73ed1a98648ec19c5cf044c0ecc414734397357f7d700112",
-      "bytes": 18753
+      "skillMdSha256": "38FC08F1428C82086301131252FFB0AC0DB305380D36154B7E0CE9B348B0714B",
+      "treeSha256": "4F7AA03AF7E283AAE453C54F24B3A2A0475F2B55DCC013D288A65174AB8E6980",
+      "sha256": "38fc08f1428c82086301131252ffb0ac0db305380d36154b7e0ce9b348b0714b",
+      "bytes": 20567
     },
     {
       "name": "praxis-component-minimums",
@@ -833,8 +833,8 @@
       ],
       "skillMdSha256": "CBC758CAF9A2064130D91CFEFD49C853C2D6A5E3AF39C9025F8356A05A0710BC",
       "treeSha256": "C6A29EAC3D55786D04B5F90B751C6DC7B56C16FA72980C605BFEE0511AF26FD6",
-      "sha256": "91dde505c2699847ec5df3fb305659f06ec40b4c3a4821c70e123fd07bcd6a58",
-      "bytes": 12983
+      "sha256": "cbc758caf9a2064130d91cfefd49c853c2d6a5e3af39c9025f8356a05a0710bc",
+      "bytes": 12781
     },
     {
       "name": "praxis-core-composition-runtime",
@@ -913,10 +913,10 @@
       "status": "active",
       "compatibility": "0.x",
       "dependencies": [],
-      "skillMdSha256": "EF794F5DBC132A4613679F0CDE9A2598081F6C36D63FA9C6AD35526DA8DB6E3E",
-      "treeSha256": "86820598C56F33E52313611F7F71E193391A76A83F3C2DDA1FE00546E1B09303",
-      "sha256": "ef794f5dbc132a4613679f0cde9a2598081f6c36d63fa9c6ad35526da8db6e3e",
-      "bytes": 11237
+      "skillMdSha256": "B4320A30B271980A549E46213B081AA42AC9632A75697DCB41BB5D2C92A8EFE8",
+      "treeSha256": "B0396FCCC89AC8AECF2705D8E6040634C9766ED76969EE23CDA669256B37C40D",
+      "sha256": "b4320a30b271980a549e46213b081aa42ac9632a75697dcb41bb5d2c92a8efe8",
+      "bytes": 13710
     },
     {
       "name": "praxis-core-resource-runtime",
@@ -932,10 +932,10 @@
         "praxis-core-i18n-resource-copy",
         "praxis-core-providers-bootstrap"
       ],
-      "skillMdSha256": "1B52B4261EFF721770AD7E509E110576C1F393C643D48B9806F028384FC94478",
-      "treeSha256": "1701D45BE639CDBC5B7A99587A9D7DD4DD5A55DB6AF881D754B2BB00D05F87F1",
-      "sha256": "1b52b4261eff721770ad7e509e110576c1f393c643d48b9806f028384fc94478",
-      "bytes": 34898
+      "skillMdSha256": "7ADFF6E60AEFC12A544202A28F74442DEE7F4035D549E830F3CAC7AC40739C64",
+      "treeSha256": "6F313993498C385E9540CBDF2AE911C94BF88BF3F9C2659E128A5427EC43E0CA",
+      "sha256": "7adff6e60aefc12a544202a28f74442dee7f4035d549e830f3cac7ac40739c64",
+      "bytes": 36192
     },
     {
       "name": "praxis-metadata-schema-contracts",
@@ -982,8 +982,8 @@
       "dependencies": [],
       "skillMdSha256": "FE842E32D921890C70970ABB7B1199F098FC006FC5B5FEB3E5C5E98167A1E3F9",
       "treeSha256": "EC44C916B3B8DD11395C6586285DE61267C0009503344599F359C8F3934B0C5D",
-      "sha256": "4f49a3b894f27e2abb13797a8ec075179aa51ad6ca507bfe6cc039ddeaf636f6",
-      "bytes": 17964
+      "sha256": "fe842e32d921890c70970abb7b1199f098fc006fc5b5feb3e5c5e98167a1e3f9",
+      "bytes": 18823
     },
     {
       "name": "praxis-core-runtime-contracts",
@@ -1000,10 +1000,10 @@
         "praxis-core-global-actions-metadata",
         "praxis-core-widget-observations"
       ],
-      "skillMdSha256": "A179F90E763A97C2E53152BD548BB64E1A66739A5E36FD2E6577F1E26C168E3F",
-      "treeSha256": "D1482251DD8FDCAE8061D13CCF3CD421E2B543EA3D5342C0E6DD44F7558087E8",
-      "sha256": "a179f90e763a97c2e53152bd548bb64e1a66739a5e36fd2e6577f1e26c168e3f",
-      "bytes": 19380
+      "skillMdSha256": "28A42E2FD897699EBBF66900FAAD4CADFD5B2D53B55758B9ABD6127A8F3B05FB",
+      "treeSha256": "6160FE6CD43B392317687BB35A9739805985C0717BE33B184CC3AC57CDC93AA1",
+      "sha256": "28a42e2fd897699ebbf66900faad4cadfd5b2d53b55758b9abd6127a8f3b05fb",
+      "bytes": 21000
     },
     {
       "name": "praxis-core-widget-observations",
@@ -1032,8 +1032,8 @@
       ],
       "skillMdSha256": "D78411475FC22D98FC1E81672C0FF7B3DDB9A595A2AC8ACF15B12777A5FBD167",
       "treeSha256": "CB72A2B4BFF67DC4AD5576AC34B95EC3B8F961F9DB1887C3905ADAD5CCEAE2CE",
-      "sha256": "a2482452957d423df238d8fac0470ce0af9604944df12b29910061f1c7139b43",
-      "bytes": 5548
+      "sha256": "d78411475fc22d98fc1e81672c0ff7b3ddb9a595a2ac8acf15b12777a5fbd167",
+      "bytes": 5459
     },
     {
       "name": "praxis-cron-builder-form-field",
@@ -1047,8 +1047,8 @@
       ],
       "skillMdSha256": "6579D809662B882882F24E3AE01D73B7E8273B6E34FD1E05C7BC8C3190C78D61",
       "treeSha256": "603B4A483817170F91A6F79E7D583B941056CB98770FFE9ACA89A5FA6EE6740A",
-      "sha256": "fe61c83c13d7008b905bc45472f6db28ae0ab27d0dcead8da427e52137b97941",
-      "bytes": 4849
+      "sha256": "6579d809662b882882f24e3ae01d73b7e8273b6e34fd1e05c7bc8c3190c78d61",
+      "bytes": 4780
     },
     {
       "name": "praxis-cron-builder-runtime",
@@ -1059,8 +1059,8 @@
       "dependencies": [],
       "skillMdSha256": "F0626C567EA71F546D90576AA14504C9BEDABF2ADA04B8B70842CF91A89D8450",
       "treeSha256": "EF2E0C7AFDE7F2EC277322934BCAA730BDE51F2DE8D6284A4BD51342913CE362",
-      "sha256": "73bc039ce64fb8a4f08d4ea1f09112b243f689a3928272a75b9fc8479f81766c",
-      "bytes": 5326
+      "sha256": "f0626c567ea71f546d90576aa14504c9bedabf2ada04b8b70842cf91a89d8450",
+      "bytes": 5254
     },
     {
       "name": "praxis-cron-schedule-authoring",
@@ -1073,8 +1073,8 @@
       ],
       "skillMdSha256": "74B33D3BF01A7B63DF8488DE0EE6E2D495D4380405D35F6137FD3366A7C34CA2",
       "treeSha256": "0F81BD6952665EAEFF90DBA27A4D62391BDE6485A7ECB0017EC49DB290E1A163",
-      "sha256": "baaf983be78e6a123c8696d406271f837beba6ab57744814c5f4d16f38edafd2",
-      "bytes": 5140
+      "sha256": "74b33d3bf01a7b63df8488de0ee6e2d495d4380405d35f6137fd3366a7c34ca2",
+      "bytes": 5057
     },
     {
       "name": "praxis-crud-ai-authoring",
@@ -1111,10 +1111,10 @@
         "praxis-crud-drawer-adapter-contract",
         "praxis-crud-dialog-form-host-lifecycle"
       ],
-      "skillMdSha256": "1B69073C0150D75D241AF632176508C0ED1DC43DE9A1CE7CDD735A428BD8AFE8",
-      "treeSha256": "B7D4B1BC3101D83EC982F3CD882CFD21501C81B3B8489BEECCDF572462B068D1",
-      "sha256": "9dbc229c1f85f0097d034d0dee32084fcd0c924ef1e7ef57a3db9b77eeb649bb",
-      "bytes": 15400
+      "skillMdSha256": "0CADFC24B108182DE6EF8E2B33683438A8D22C1AD8EAA5D6269BF661D4D4D9B5",
+      "treeSha256": "F6232769C01B02A2B3BCF9D51EB3606B7A8575E72652BA4F03A251BDB480C1AA",
+      "sha256": "0cadfc24b108182de6ef8e2b33683438a8d22c1ad8eaa5d6269bf661d4d4d9b5",
+      "bytes": 17093
     },
     {
       "name": "praxis-crud-drawer-adapter-contract",
@@ -1129,8 +1129,8 @@
       ],
       "skillMdSha256": "8EBEA2DE9D625E790189C63337858740835D6B5D253231EC69CEF4862D099C02",
       "treeSha256": "DBD255909AFC2A3C0EBF9FBE2A28C2CDDA446A85502EC33427D73773F8010AF5",
-      "sha256": "24594b9b77a8bb93c84533382977fe393bd5c735e3ab80f22efa827b2bed1550",
-      "bytes": 4441
+      "sha256": "8ebea2de9d625e790189c63337858740835d6b5d253231ec69cef4862d099c02",
+      "bytes": 4375
     },
     {
       "name": "praxis-crud-dialog-form-host-lifecycle",
@@ -1171,9 +1171,9 @@
         "praxis-charts-ai-handler-contracts"
       ],
       "skillMdSha256": "9AC070239378B6910361A109FF955C7144062C58D7B948EC2DABFB5A95CFBA58",
-      "treeSha256": "15CB41D17FACF4056BDDCE63C72E6090F5C622385035D12EC48E206754716557",
-      "sha256": "e2aa1144fad1368bd0722a19303be7a3522d03da7fd765634ddb6935bb692a54",
-      "bytes": 17552
+      "treeSha256": "5AF0464508A90D220C13D2AD12392B9B9ED44760C9E2ED0432E06D2B00CC1D62",
+      "sha256": "9ac070239378b6910361a109ff955c7144062c58d7b948ec2dabfb5a95cfba58",
+      "bytes": 18648
     },
     {
       "name": "praxis-dialog-global-actions-ai",
@@ -1222,8 +1222,8 @@
       ],
       "skillMdSha256": "656BAE75267B03118D0453CB1E8A239621AC1A69130C75F830822E38FB4A937B",
       "treeSha256": "9B422654F46120BB3104A597C0EE0E1B76CD0926919EB50D1A41BD8C3F606C79",
-      "sha256": "232df895a0dc0e695ad034d538a771f149ed45661ad6f6f555bd9269ca1e7c1d",
-      "bytes": 4213
+      "sha256": "656bae75267b03118d0453cb1e8a239621ac1a69130c75f830822e38fb4a937b",
+      "bytes": 4158
     },
     {
       "name": "praxis-dto-annotations",
@@ -1238,10 +1238,10 @@
         "praxis-ui-product-design",
         "praxis-java-contract-conformance"
       ],
-      "skillMdSha256": "23DE24B2D8600E20AAEEB710C9755F66E99B7112B27F762405E272314316FFFE",
-      "treeSha256": "38A0B13939108AA2232F2610D711545A5727CE1D87EDA39C03FDF562D4465E94",
-      "sha256": "23de24b2d8600e20aaeeb710c9755f66e99b7112b27f762405e272314316fffe",
-      "bytes": 51801
+      "skillMdSha256": "7698C5E5D50F09F1E2426EA84D2E5FC80EA054D845E7133083AEB22DCA039A8B",
+      "treeSha256": "E7AC7CE2AFB6F11EBAAC391511C99638F9F8CCF9E0A43A5D2B93EAE9CC29F046",
+      "sha256": "7698c5e5d50f09f1e2426ea84d2e5fc80ea054d845e7133083aeb22dca039a8b",
+      "bytes": 51804
     },
     {
       "name": "praxis-dynamic-fields-editorial",
@@ -1289,8 +1289,8 @@
       ],
       "skillMdSha256": "7DA9E5B0B646A94EA498334E1676FB9B908066244B2908E26B9D32B8C8C86A94",
       "treeSha256": "F5E8038F95C85AF7971B795A314075B92B848B79D196EF45E82C5A1440F0B84D",
-      "sha256": "97687c54c44d877ff3db73e352bfb8f7392a1d1c186d270d932d98e5b9599869",
-      "bytes": 5795
+      "sha256": "7da9e5b0b646a94ea498334e1676fb9b908066244b2908e26b9d32b8c8c86a94",
+      "bytes": 5711
     },
     {
       "name": "praxis-editorial-forms-agentic-authoring",
@@ -1305,8 +1305,8 @@
       ],
       "skillMdSha256": "C220968902D1FDBE1DB730E023AC7C1C08F7854F3806616881E2DBB189E14253",
       "treeSha256": "7A8D6A5B1AC67C3F4021102F1062368F2EA8CBD70D1CA22A19BBDAC593AF8B23",
-      "sha256": "119f393d30964715c35b9e721dd48af5774fbea8224efd849bcd1694879bacac",
-      "bytes": 5467
+      "sha256": "c220968902d1fdbe1db730e023ac7c1c08f7854f3806616881e2dbb189e14253",
+      "bytes": 5387
     },
     {
       "name": "praxis-editorial-forms-data-collection-adapters",
@@ -1320,8 +1320,8 @@
       ],
       "skillMdSha256": "48A27BF076A50C68BF7BCBBA6B5341699E09C0CD79219E634A2B6651B4BDF457",
       "treeSha256": "4EFBFFE9231A19B150C160629AACD3E344B009C347ED507B3C7956D463481AC9",
-      "sha256": "a65e1f008491cafb90d7f2c4c749bf6172baa2312c5c070c8c3aa3aa8ee06be1",
-      "bytes": 5266
+      "sha256": "48a27bf076a50c68bf7bcbba6b5341699e09c0cd79219e634a2b6651b4bdf457",
+      "bytes": 5189
     },
     {
       "name": "praxis-editorial-forms-journey-snapshot-runtime",
@@ -1332,8 +1332,8 @@
       "dependencies": [],
       "skillMdSha256": "F112A771E158CCCF45C931EAE239C8D3713D3BE2A1B10C0AB1723DABBA7A26FC",
       "treeSha256": "8601FA8A28F65E6005A13321AD54A12598772D9B176E2E80B0683204FFDEB811",
-      "sha256": "756cfcae5a9fbc7959271bf0852c5c0dcffb492ce4854b9d358b08fbe95f8744",
-      "bytes": 4548
+      "sha256": "f112a771e158cccf45c931eae239c8d3713d3be2a1b10c0ab1723dabba7a26fc",
+      "bytes": 4484
     },
     {
       "name": "praxis-editorial-forms-presentation-diagnostics",
@@ -1346,8 +1346,8 @@
       ],
       "skillMdSha256": "2CC71E650A4E334AE006201D681155D1BFAEB472C99D81B84487227775570226",
       "treeSha256": "25E9236608D4DEAF7B6D66A97D683666B02CA0E18DA7FA329924E8A240AE18C8",
-      "sha256": "a344c1c30f24da16e48428893f5c1b579d1174a2f481566545f6d9b439830616",
-      "bytes": 5099
+      "sha256": "2cc71e650a4e334ae006201d681155d1bfaeb472c99d81b84487227775570226",
+      "bytes": 5024
     },
     {
       "name": "praxis-editorial-forms-runtime",
@@ -1369,8 +1369,8 @@
       ],
       "skillMdSha256": "612B30EA664455555F36523574C8F607A7FD22B94D1B5169F812EA874F76AA7E",
       "treeSha256": "CB3B60BFA255B24D690A3C675B428DEEC0374E2CD7B34B7D0D9A1ADBE0435E13",
-      "sha256": "fbd29b7bc456efda7da46acd2c34163d214cd6f0a4b0979596af84aaccf27014",
-      "bytes": 6236
+      "sha256": "612b30ea664455555f36523574c8f607a7fd22b94d1b5169f812ea874f76aa7e",
+      "bytes": 6141
     },
     {
       "name": "praxis-expansion-runtime-panels",
@@ -1384,8 +1384,8 @@
       ],
       "skillMdSha256": "4D3D40AB690C6FEB9033D493D2218DBA025697D325B3E2AAF94FAF08B920414F",
       "treeSha256": "1EB800D666D33809BA8A086A75BB188534531DBCD7D785188B0773BED0DD4CA7",
-      "sha256": "2ddcca52b2b06f2d6c63cd89a58d5539883969c321e63a483917bf16f0ae22ed",
-      "bytes": 6518
+      "sha256": "4d3d40ab690c6feb9033d493d2218dba025697d325b3e2aaf94faf08b920414f",
+      "bytes": 6439
     },
     {
       "name": "praxis-fields-ai-canvas-validation",
@@ -1471,10 +1471,10 @@
         "praxis-dynamic-fields-editorial",
         "praxis-fields-selection-lookup-controls"
       ],
-      "skillMdSha256": "0D46148DE0F5746A50C4D0D241DFF626BBAB8C31C12FC1554B63C8011DA69524",
-      "treeSha256": "39099785E752CC117A11F15E3A9D2C269E60A658066393836374AA2E7D58DD2A",
-      "sha256": "0d46148de0f5746a50c4d0d241dff626bbab8c31c12fc1554b63c8011da69524",
-      "bytes": 19795
+      "skillMdSha256": "21CFE77E6FA50EE7ECF841120871D3FC68D6CBC4DE6A5522B050DFEBC33C76EF",
+      "treeSha256": "AE979C1AB8C74615B816036187CC9818CF8A9A32C4841D707781778A1B63780C",
+      "sha256": "21cfe77e6fa50ee7ecf841120871d3fc68d6cbc4de6a5522b050dfebc33c76ef",
+      "bytes": 20378
     },
     {
       "name": "praxis-fields-runtime-loader",
@@ -1504,10 +1504,10 @@
       "dependencies": [
         "praxis-fields-inline-overlay-runtime"
       ],
-      "skillMdSha256": "30A6045FC8D2693242942188983EAD354F3DDAF87383B18E6B3854637F82FE27",
-      "treeSha256": "3654D2461C5ED8D9CF918119E3DC8CE8E1DE150CA3F83636E99E8344A0EB80DE",
-      "sha256": "30a6045fc8d2693242942188983ead354f3ddaf87383b18e6b3854637f82fe27",
-      "bytes": 24369
+      "skillMdSha256": "24B488A217CBFF8A1E44695F298167F2F7AB7454C3A66E8BA409CF68388FF76F",
+      "treeSha256": "A0402E3B7D0BEEB30716D1EE33FF25AA63E4AE6FB41D69CE1B7D2387C28CD941",
+      "sha256": "24b488a217cbff8a1e44695f298167f2f7ab7454c3a66e8ba409cf68388ff76f",
+      "bytes": 24392
     },
     {
       "name": "praxis-fields-text-number-time-controls",
@@ -1536,8 +1536,8 @@
       ],
       "skillMdSha256": "61BE0FAEF2D890E287F92BDCD366A118315FAC0B0E03DA373AC720CF664E82AC",
       "treeSha256": "A098D5343A2E8435337EBD864C765DAD0A245DB4D1238526B1713F9BD490623B",
-      "sha256": "dcd4756464f20b42b5b93901330427f850a3baf22d006066fd129d12f1e42866",
-      "bytes": 4420
+      "sha256": "61be0faef2d890e287f92bdcd366a118315fac0b0e03da373ac720cf664e82ac",
+      "bytes": 4346
     },
     {
       "name": "praxis-files-upload-backend-contract",
@@ -1548,8 +1548,8 @@
       "dependencies": [],
       "skillMdSha256": "159E8183542C0708AAED443BCF57EA8A46C2136196B15E325DA02790756F3003",
       "treeSha256": "D16A6349EB610E9D4878AEF6371D73D900CC7D66B6AB502D324085E99BE428E7",
-      "sha256": "d964c8716cf33a82c224c8f5b129fb69bb99a8e7d7a5d6d41e9b87679b64e630",
-      "bytes": 4572
+      "sha256": "159e8183542c0708aaed443bcf57ea8a46c2136196b15e325da02790756f3003",
+      "bytes": 4500
     },
     {
       "name": "praxis-files-upload-form-field",
@@ -1563,8 +1563,8 @@
       ],
       "skillMdSha256": "0B2EFB6C84710A615C61FB2511DAE26F4D5C487D0BD91E75404F9D19F070ADE4",
       "treeSha256": "84AB4634025AD490AE5962A20E5D4508230810737CED198294586594EA7E6F35",
-      "sha256": "b7a75826690207dd5c3dc271e07722aa814993644a923ac1fcd47b84c05c229b",
-      "bytes": 4397
+      "sha256": "0b2efb6c84710a615c61fb2511dae26f4d5c487d0bd91e75404f9d19f070ade4",
+      "bytes": 4328
     },
     {
       "name": "praxis-files-upload-runtime",
@@ -1577,8 +1577,8 @@
       ],
       "skillMdSha256": "1AB4E0868738191C344EFE302E9982930799252A648D0755DF4E0046556F85A7",
       "treeSha256": "6C8D3325B4C48E86E7B59D6E41FF9887ACBB58ECACE81F234846130BBFFF1171",
-      "sha256": "ed2adaac6580576f1e7ec14ead17588548b94ef62c4f9315799fbf2b8c44066a",
-      "bytes": 5736
+      "sha256": "1ab4e0868738191c344efe302e9982930799252a648d0755df4e0046556f85a7",
+      "bytes": 5658
     },
     {
       "name": "praxis-form-ai-rules-validation",
@@ -1598,10 +1598,10 @@
         "praxis-visual-builder-ai-validation",
         "praxis-manual-form-rules-agentic"
       ],
-      "skillMdSha256": "65FADF565233524DDAF022EF0399448AFA8B738B8A93754B3EE571E060B3911F",
-      "treeSha256": "85E7FCF27977486A72E4EB611347B9401C00A2739949148340F1575ECE0AE5EC",
-      "sha256": "65fadf565233524ddaf022ef0399448afa8b738b8a93754b3ee571e060b3911f",
-      "bytes": 17505
+      "skillMdSha256": "5659A323550F2686ACB35A402D715BA72BC35496A2A2321595A0038F97F6A497",
+      "treeSha256": "D995A5E609373CEF1DB6FAD76D2C1E559034ABCD979383548CD5385FAD497376",
+      "sha256": "5659a323550f2686acb35a402d715ba72bc35496a2a2321595a0038f97f6a497",
+      "bytes": 17509
     },
     {
       "name": "praxis-form-authoring-settings",
@@ -1619,10 +1619,10 @@
         "praxis-editorial-forms-presentation-diagnostics",
         "praxis-editorial-forms-data-collection-adapters"
       ],
-      "skillMdSha256": "53D974DE126E4EBA759A44E4D3048145D140100787CE613A14FEDA5CF58682E1",
-      "treeSha256": "F606CE90FD0110BE270D3B33CB664E4616BC3CA705D0D64AAB7B13A786B5B6A7",
-      "sha256": "53d974de126e4eba759a44e4d3048145d140100787ce613a14feda5cf58682e1",
-      "bytes": 18960
+      "skillMdSha256": "C78A8F5F1F5F5E3720810A7E0E59D075DCB463386E4B10BD0109FBC6F7AD7584",
+      "treeSha256": "E61C867C72B022866CBD532987AD32E70D8DDECBA7B3CE460C3E3D25C2682128",
+      "sha256": "c78a8f5f1f5f5e3720810a7e0e59d075dcb463386e4b10bd0109fbc6f7ad7584",
+      "bytes": 18976
     },
     {
       "name": "praxis-form-layout-canvas",
@@ -1636,10 +1636,10 @@
         "praxis-ui-product-design",
         "praxis-dynamic-fields-editorial"
       ],
-      "skillMdSha256": "753791654DAA446B52C71B870DB41D8450A0E6024678A49B623D546BA500713F",
-      "treeSha256": "398FDAB944950C1A70984030704D9B686187EB3AD31C6258156CBC3E90EF41B5",
-      "sha256": "753791654daa446b52c71b870db41d8450a0e6024678a49b623d546ba500713f",
-      "bytes": 22508
+      "skillMdSha256": "34050AB03D5D0DDD9E10917207E2B051C5AF8DF59EB7E6145BDE19565CF8C898",
+      "treeSha256": "3187B761F779108B4960255F4D7F539791DD5A194A8704FAC7310364F4DFF8AB",
+      "sha256": "34050ab03d5d0ddd9e10917207e2b051c5af8df59eb7e6145bde19565cf8c898",
+      "bytes": 22937
     },
     {
       "name": "praxis-form-runtime-submit",
@@ -1658,10 +1658,10 @@
         "praxis-cron-builder-form-field",
         "praxis-cron-schedule-authoring"
       ],
-      "skillMdSha256": "34685B1F928E387FA163098C6ED7D2CCBC88452E4204B13DE5A8A018EB3DB599",
-      "treeSha256": "34914CA45DC7C962F83C6C4F9FE00CA80C2129519B6C45339BE9AB62B2D98EC4",
-      "sha256": "34685b1f928e387fa163098c6ed7d2ccbc88452e4204b13de5a8a018eb3db599",
-      "bytes": 19623
+      "skillMdSha256": "5FE572F9AE5FFC1841698B6325F2DCFA2F9E56955F0FD4B032E0E3CC2CAA4E3A",
+      "treeSha256": "5CBA62D07D9146F270CB7629B4ED1C1B24058D916EAC2291A4161E08F6D82584",
+      "sha256": "5fe572f9ae5ffc1841698b6325f2dcfa2f9e56955f0fd4b032e0e3cc2caa4e3a",
+      "bytes": 20525
     },
     {
       "name": "praxis-form-schema-runtime-modes",
@@ -1670,10 +1670,10 @@
       "status": "active",
       "compatibility": ">=0.0.0",
       "dependencies": [],
-      "skillMdSha256": "FA79B66C48A39E5F03A5FD75DC67B79009DB53EF53A0A5857F9D099C46438856",
-      "treeSha256": "E48166BE2E541191C2C372A0C99162B658694B841DE0A6C1E126BEC2CF2E2F0C",
-      "sha256": "fa79b66c48a39e5f03a5fd75dc67b79009db53ef53a0a5857f9d099c46438856",
-      "bytes": 26236
+      "skillMdSha256": "A64F8B8058EFC53BA4C5E159DE1535124B28804B6EE13FEB4F79A185AD638FC5",
+      "treeSha256": "123D608399CD113FCC5ADBBF1658DB6263A675649A182C2C9017B0BE9DEEBD06",
+      "sha256": "a64f8b8058efc53ba4c5e159de1535124b28804b6ee13feb4f79a185ad638fc5",
+      "bytes": 26240
     },
     {
       "name": "praxis-form-submit-payload-pipeline",
@@ -1682,10 +1682,10 @@
       "status": "active",
       "compatibility": ">=0.0.0",
       "dependencies": [],
-      "skillMdSha256": "CCC08397849A8754121E7D797113C1220A36C5CFB4BCA0C528E003AD409BD454",
-      "treeSha256": "FDE623E8FC8FC402D575F0BF8BA286A14F7092C9D6BDC04046742C0B3184C157",
-      "sha256": "ccc08397849a8754121e7d797113c1220a36c5cfb4bca0c528e003ad409bd454",
-      "bytes": 21359
+      "skillMdSha256": "8984BEA1EF1299CA9292B4E471667D9C43AA11D866B5E460518084FDA5565EFC",
+      "treeSha256": "8776A82CA245A2B3C67F4D3EEDB45642D86DBA5CF93F93088A697A0348C14971",
+      "sha256": "8984bea1ef1299ca9292b4e471667d9c43aa11d866b5e460518084fda5565efc",
+      "bytes": 21361
     },
     {
       "name": "praxis-form-actions-hooks-runtime",
@@ -1694,10 +1694,10 @@
       "status": "active",
       "compatibility": ">=0.0.0",
       "dependencies": [],
-      "skillMdSha256": "30EE797454D69854E75311C9B185F9EA998E6385DFF682BA20D536D008A21A44",
-      "treeSha256": "B754104EC4A48977906890ACE584567E7C83B4A9E7BC92F42A0BC49D1789D4A0",
-      "sha256": "30ee797454d69854e75311c9b185f9ea998e6385dff682ba20d536d008a21a44",
-      "bytes": 14818
+      "skillMdSha256": "4DF2B2D4086AE5F93DD8C18F7FAAF4F52B2E60EBD4446C9C1ABC1B1D7C8CE656",
+      "treeSha256": "8A2ED8DDAED03F628131A21737A7F46309EE361E2B1083471F46762D8244780B",
+      "sha256": "4df2b2d4086ae5f93dd8c18f7faaf4f52b2e60ebd4446c9c1abc1b1d7c8ce656",
+      "bytes": 14822
     },
     {
       "name": "praxis-form-editor-document-roundtrip",
@@ -1706,10 +1706,10 @@
       "status": "active",
       "compatibility": ">=0.0.0",
       "dependencies": [],
-      "skillMdSha256": "6672054D21F073023F9D778948EE1EDC6507DC265F7B01EEB696F24FB1EE18B9",
-      "treeSha256": "41F98AA4941BC68DDBBC069A1B476E920F660830337A02681331274BAFD06709",
-      "sha256": "6672054d21f073023f9d778948ee1edc6507dc265f7b01eeb696f24fb1ee18b9",
-      "bytes": 22937
+      "skillMdSha256": "787FE9F94DBE4A33359E5E71300B6B411BBC9BF89992608824BB66F15B760757",
+      "treeSha256": "493F3A0E94B5E2A537761C12AF7B8698BEE9C8C0214568B078A01507482C889C",
+      "sha256": "787fe9f94dbe4a33359e5e71300b6b411bbc9bf89992608824bb66f15b760757",
+      "bytes": 22941
     },
     {
       "name": "praxis-java-host-project",
@@ -1833,8 +1833,8 @@
       ],
       "skillMdSha256": "98C46717CCEB7EBD530951C8D0400A845364905EB7ABB5AE7AB984957ABD5F76",
       "treeSha256": "91B886A027601E196A94CD74C6DF1C404F19F48AA532A3A00623E694242E4CC1",
-      "sha256": "a2b6ff8f6c4cb4601028a5977d040f43e9d2228032948e8b200aa0e59b4dbeb1",
-      "bytes": 3545
+      "sha256": "98c46717cceb7ebd530951c8d0400a845364905eb7abb5ae7ab984957abd5f76",
+      "bytes": 3475
     },
     {
       "name": "praxis-list-runtime-data",
@@ -1847,10 +1847,10 @@
         "praxis-core-resource-runtime",
         "praxis-angular-validation-gates"
       ],
-      "skillMdSha256": "A96341BEDCE58E8D5B56C3A9B012C38F55826967C268BCB00ADDA247CB5D4D40",
-      "treeSha256": "CAACE283EAF33A71CF27D5C2D40F4DA48439AD36BA51014712702230C56C1437",
-      "sha256": "4f9859b25e1e8e2b841236314ae6c26ed7445fb072d49db8c18a9c87eef6a50e",
-      "bytes": 8195
+      "skillMdSha256": "A7A99DD54EDF48C1DE9577C0A85C41B48871EA7716938AD5296AE263345CCD50",
+      "treeSha256": "F80ECCE3B6DB608B068A9141724182099411D6C3094C94929C4077AFADAF45F3",
+      "sha256": "a7a99dd54edf48c1de9577c0a85c41b48871ea7716938ad5296ae263345ccd50",
+      "bytes": 9507
     },
     {
       "name": "praxis-manual-form-ai-authoring",
@@ -1979,10 +1979,10 @@
         "praxis-core-runtime-contracts",
         "praxis-core-resource-runtime"
       ],
-      "skillMdSha256": "D916D2556499B4C9F19B5B01B79FE7EA420301E2A6008A2AEBAF037360DF2242",
-      "treeSha256": "0D99E493067AD5790AD8F7626F56C976E66B0F768C43C4A3C1AF8B7D7D6043DE",
-      "sha256": "d916d2556499b4c9f19b5b01b79fe7ea420301e2a6008a2aebaf037360df2242",
-      "bytes": 11453
+      "skillMdSha256": "8A77B09D31B3EBE6CA9449C89C9090A51B6998923BE4B8AE015DADF287F0490B",
+      "treeSha256": "B6EA654CC31300D5DA86E7C23137B40523B16541243947154AE5E937755F629D",
+      "sha256": "8a77b09d31b3ebe6ca9449c89c9090a51b6998923be4b8ae015dadf287f0490b",
+      "bytes": 11456
     },
     {
       "name": "praxis-metadata-editor-consumer-bridges",
@@ -2017,8 +2017,8 @@
       ],
       "skillMdSha256": "8EBCA215B0CE93542D8634DE726D5BA5926E2A5B561188428FDB840A44E15C51",
       "treeSha256": "5EED25C192F7C32963193347EC5C29163B28AA9D13F45B9A5944DA5C55CC1F4F",
-      "sha256": "2cf73ffd6692ee6a5c295214d7dcd1231d1be141cb3c693d799d6689916c720d",
-      "bytes": 8729
+      "sha256": "8ebca215b0ce93542d8634de726d5ba5926e2a5b561188428fdb840a44e15c51",
+      "bytes": 8607
     },
     {
       "name": "praxis-navigation-containers-ai-validation",
@@ -2036,8 +2036,8 @@
       ],
       "skillMdSha256": "94B51FE5660293EB9A14FD3E54877FACC7E058AA1B6394636D83C17D6698C310",
       "treeSha256": "BC38E6690516F1F24BCCB9CB0CD56541E6C98FDEF811AFF564D95FBB9FECE342",
-      "sha256": "b46555228450994f3560ef5f7ff2dc639aac763f48c6238385d99e1023b2004e",
-      "bytes": 6388
+      "sha256": "94b51fe5660293eb9a14fd3e54877facc7e058aa1b6394636d83c17d6698c310",
+      "bytes": 6304
     },
     {
       "name": "praxis-page-builder-ai-agentic",
@@ -2054,8 +2054,8 @@
       ],
       "skillMdSha256": "C66D6E473AC81A0CD2DB4A4C85F28EF0F37B2AE0221E787690D3037469FFDA38",
       "treeSha256": "ADCF4337E65A9B10797E29D0445D497BEAFD7EDFE97ED12F6CF3CC2ADE27B6A6",
-      "sha256": "e0183eb3f4595621a2a195aa4925ae60d31e3ea68ec34d65d50e93ba6c26307d",
-      "bytes": 9811
+      "sha256": "c66d6e473ac81a0cd2db4a4c85f28ef0f37b2ae0221e787690d3037469ffda38",
+      "bytes": 9713
     },
     {
       "name": "praxis-page-builder-authoring",
@@ -2066,10 +2066,10 @@
       "dependencies": [
         "praxis-page-builder-composition"
       ],
-      "skillMdSha256": "BF0391EE9236E19D86461FD72F1E06F3BBDB20393DECF372A9E35D9B3DA834B2",
-      "treeSha256": "B9FDB1A13436AF48A5445F569247F191D5A74857F0CD9A673CD425C6E2163A67",
-      "sha256": "bf0391ee9236e19d86461fd72f1e06f3bbdb20393decf372a9e35d9b3da834b2",
-      "bytes": 25562
+      "skillMdSha256": "E7FC212643D7B68E207B1A2B76F2ECAB4B33F30FF13A5A25B8D2E0F87248FD63",
+      "treeSha256": "0BEFA4587549775117C1C111D66F5A69A8694F8ECB9D1461AA0E0529658648A5",
+      "sha256": "e7fc212643d7b68e207b1a2b76f2ecab4b33f30ff13a5a25b8d2e0f87248fd63",
+      "bytes": 27519
     },
     {
       "name": "praxis-page-builder-composition",
@@ -2085,10 +2085,10 @@
         "praxis-rich-content-integration-adapters",
         "praxis-navigation-container-composition-events"
       ],
-      "skillMdSha256": "A1F7F226438536CF850314DE4FA8BD7F84D89E4D3FA09AD3774C50A4645B1EBC",
-      "treeSha256": "035B66F040728B078E7685419BEE64C509B236FFB674463DFC5D413389427A0E",
-      "sha256": "e67cdddd9a50660eec67e038c7ed9666431762ad69636d217661a6d3adeddc87",
-      "bytes": 12465
+      "skillMdSha256": "313397015B77A5EE547297AC16DB84B7D628CDBE9350FB82F4A3E99EF79D9087",
+      "treeSha256": "44ED4268CB861DBFF305634C8216CEE57FA891EC9EFCA44063E4F55CC8F79B0B",
+      "sha256": "313397015b77a5ee547297ac16db84b7d628cdbe9350fb82f4a3e99ef79d9087",
+      "bytes": 14597
     },
     {
       "name": "praxis-resource-entity-lookup-backend",
@@ -2102,8 +2102,8 @@
       ],
       "skillMdSha256": "CD6C9C44121900EC483450AAC9093477CB0286BD79542F3B8895A380D1C941BA",
       "treeSha256": "BA395607157B2F820751D87E992BB59E44FD7B42BD665938F3DFB6B0B39D9F0A",
-      "sha256": "ca2012c9a58a8681b5577746e53479aa15ec5b1e0623385fbaae6a3bcbdf229a",
-      "bytes": 26200
+      "sha256": "cd6c9c44121900ec483450aac9093477cb0286bd79542f3b8895a380d1c941ba",
+      "bytes": 25763
     },
     {
       "name": "praxis-rich-content-ai-security-validation",
@@ -2151,8 +2151,8 @@
       ],
       "skillMdSha256": "24D4766F0FA5C2658A37B3178B22EEF8374BAE17BBD0D9341388FF1C35A84D97",
       "treeSha256": "33C1469DEF5FB5FE5F5F6FD35847E18A828951BE76D85B3B5931E7DCDEAFD633",
-      "sha256": "f5f7998313c2a56bc0045b722e35657ce3003deb08dda639423f69dff802b658",
-      "bytes": 3657
+      "sha256": "24d4766f0fa5c2658a37b3178b22eef8374bae17bbd0d9341388ff1c35a84d97",
+      "bytes": 3606
     },
     {
       "name": "praxis-rich-content-runtime",
@@ -2163,10 +2163,10 @@
       "dependencies": [
         "praxis-angular-agents-governance"
       ],
-      "skillMdSha256": "003C9954F7E9D2186119FB0DDB7CF01E64C565E6F47D33A1E311837F03ADA49A",
-      "treeSha256": "DF1364141AAADC545AD2FA0096CFE86B28350269C352A14A17914C032534D980",
-      "sha256": "be5cb6e34187030af1c5e7dfbd965f5e24c15d66aa298bba331a49af09dadf31",
-      "bytes": 6787
+      "skillMdSha256": "A0B1549063DFF5600836BAD15096C665E5C6FFC9E7E60918AF6695055A9B7779",
+      "treeSha256": "5A8D977D3500F5F30F437A1B4979C247E7F18ADD30E00EE3882BDC055369FF3C",
+      "sha256": "a0b1549063dff5600836bad15096c665e5c6ffc9e7e60918af6695055a9b7779",
+      "bytes": 7243
     },
     {
       "name": "praxis-rich-crud-screen-authoring",
@@ -2184,8 +2184,8 @@
       ],
       "skillMdSha256": "4F40C7DDF565615801FEF8595CC9B086C1115A6134C16E79D686EDA5809D07D1",
       "treeSha256": "09E28CB056B9C40D8CFC29B031049BA7FD8D52C5F9873961796D28AEC113DFC8",
-      "sha256": "1399ca9afd3b86c9036595b4334a193132118eb098197a894507e9ff3cedbefc",
-      "bytes": 8579
+      "sha256": "4f40c7ddf565615801fef8595cc9b086c1115a6134c16e79d686eda5809d07d1",
+      "bytes": 8423
     },
     {
       "name": "praxis-settings-ai-i18n-validation",
@@ -2201,8 +2201,8 @@
       ],
       "skillMdSha256": "56F6545BA8189AC1A9A501C43AB7C12856D1E4826E1841784E255A760AD0C0F6",
       "treeSha256": "A550F808D55D3ECB4C32611A77BA1AED845F9E73AFCFCB90C8880D9BB428E6CA",
-      "sha256": "234e644372c9123b49f818f82ee0f83d8038ce6c7ef2598b631675268a1cee77",
-      "bytes": 3297
+      "sha256": "56f6545ba8189ac1a9a501c43ab7c12856d1e4826e1841784e255a760ad0c0f6",
+      "bytes": 3245
     },
     {
       "name": "praxis-settings-global-config",
@@ -2218,8 +2218,8 @@
       ],
       "skillMdSha256": "F7057DE9424E4D0A32F683C51A317DE5E8373CDA61CD9B73A7FE79EE95F7E691",
       "treeSha256": "FA20EFB906D21C671D6D0EC420219C730909B1042C957790B309E3B0B41B7598",
-      "sha256": "3a17bc7619578c8c89dea2769ae6b8d9f8ee062258d90c23125d1fa2d97468a1",
-      "bytes": 10985
+      "sha256": "f7057de9424e4d0a32f683c51a317de5e8373cda61cd9b73a7fe79ee95f7e691",
+      "bytes": 10883
     },
     {
       "name": "praxis-settings-panel-shell",
@@ -2232,10 +2232,10 @@
         "praxis-core-runtime-contracts",
         "praxis-ui-product-design"
       ],
-      "skillMdSha256": "01ADE192C0D344E727174EBF017BA7F08CD84E6D7597B791FA7C0DE596340EF7",
-      "treeSha256": "A3C78AC18B4ADD0E4D067F2C2790B14EAF28F9923A0128AFCE880B9F2ABC1CAE",
-      "sha256": "01ade192c0d344e727174ebf017ba7f08cd84e6d7597b791fa7c0de596340ef7",
-      "bytes": 15115
+      "skillMdSha256": "D1C561A41F7069DF5E85D9F9DD769DC3A8C11B7E128CB477B468C7557D8B5DF6",
+      "treeSha256": "3AB6BC1EA9E740E34C5C113585AC3485D60F83119DD30B71175BF4D81CDEC24E",
+      "sha256": "d1c561a41f7069df5e85d9f9dd769dc3a8c11b7e128cb477b468c7557d8b5df6",
+      "bytes": 15120
     },
     {
       "name": "praxis-settings-roundtrip-authoring",
@@ -2326,10 +2326,10 @@
         "praxis-dynamic-fields-editorial",
         "praxis-resource-entity-lookup-backend"
       ],
-      "skillMdSha256": "A9F2EBF0C957BCF3D9F453D20C77C341169C4A5DE024FE2DFBFC4C1CC1A4B961",
-      "treeSha256": "B4046A042CD99C59BB817B8AD39E28F5A8E7738DD3E142E395A5FE2272A390B0",
-      "sha256": "a9f2ebf0c957bcf3d9f453d20c77c341169c4a5de024fe2dfbfc4c1cc1a4b961",
-      "bytes": 11867
+      "skillMdSha256": "9CEC13E5DE47970F3A30C877E477BC1D7A282D23F2F55AAEA3066FEB79DF8247",
+      "treeSha256": "9D8D06001D29A4DDFE32B0AFE9ACB2C94F1FBE11F0D23028190D32780CA8C7A3",
+      "sha256": "9cec13e5de47970f3a30c877e477bc1d7a282d23f2f55aaea3066feb79df8247",
+      "bytes": 12535
     },
     {
       "name": "praxis-table-rule-ai-validation",
@@ -2402,10 +2402,10 @@
         "praxis-core-resource-runtime",
         "praxis-ui-product-design"
       ],
-      "skillMdSha256": "0D46A9936E6AAF320894B45AC9A8E6B60C5A0BCA7D4825C29460BE7AA7E0A396",
-      "treeSha256": "1621D7C6FAAE4C9EC8A0A33F3444391983E40F6771149B5E5EF54EC3C06A46BD",
-      "sha256": "7668ee2c827fad0b3e6c3b9a0c2e2fafa3d010954be5f72d8574f5ed8e3281e1",
-      "bytes": 12411
+      "skillMdSha256": "BB082E9A1599C3FF78D19B530C4B8CA78620FE73BC003F0144C111AE748E9D30",
+      "treeSha256": "2C5667ACD88D9D92B50500BB6B1843289A9848BB77E839E47ABF833DE43D1471",
+      "sha256": "bb082e9a1599c3ff78d19b530c4b8ca78620fe73bc003f0144c111ae748e9d30",
+      "bytes": 15383
     },
     {
       "name": "praxis-tabs-runtime-authoring",
@@ -2419,8 +2419,8 @@
       ],
       "skillMdSha256": "5B46222285A7D4CF71429D9C77947838B0C26DCF65E31C5E3386537B2215A6B9",
       "treeSha256": "1D158944AC20C04B6FCA92B98C4896C78F660006F018A869EA1A08E2576A0EE5",
-      "sha256": "922bbde0ef99e583e5d576618b5d7a9583b94ec21ca3708b5e467cae852f0da9",
-      "bytes": 5861
+      "sha256": "5b46222285a7d4cf71429d9c77947838b0c26dcf65e31c5e3386537b2215a6b9",
+      "bytes": 5783
     },
     {
       "name": "praxis-ui-product-design",
@@ -2437,8 +2437,8 @@
       ],
       "skillMdSha256": "65EF6C883595E7071EFD6D51CE5D5C3600C8F7DFCB13E6AD66DDE48713FE6B8F",
       "treeSha256": "F63B7A82BB14C15251E807AC2F4BB56B56E00FAA163C892270505B616FC628D3",
-      "sha256": "f5ee23d9100596cf06ac0d4944b8ad01972af35e6411987815492f7972d63cf8",
-      "bytes": 25180
+      "sha256": "65ef6c883595e7071efd6d51ce5d5c3600c8f7dfcb13e6ad66dde48713fe6b8f",
+      "bytes": 25888
     },
     {
       "name": "praxis-visual-builder-ai-validation",
@@ -2453,8 +2453,8 @@
       ],
       "skillMdSha256": "1395940BD5839179811DE37CCE8AF22558118D9FB2B4F30FB5A61CE513088FB6",
       "treeSha256": "48C0FA6A5E7C2FFB29DF0AF80D8D9F9043D771304D13D5AA3CB839A649D73620",
-      "sha256": "8133767b79534656686abf5550e5b9a70f0e029318c19ec5b237ea4651b376d9",
-      "bytes": 6680
+      "sha256": "1395940bd5839179811de37cce8af22558118d9fb2b4f30fb5a61ce513088fb6",
+      "bytes": 6596
     },
     {
       "name": "praxis-visual-builder-graph-runtime",
@@ -2501,10 +2501,10 @@
         "praxis-visual-builder-schemas-templates",
         "praxis-visual-builder-ai-validation"
       ],
-      "skillMdSha256": "158C57AC38FBD03693566DB6A60DDA632AB3CBFDB3DF200B95C523C7DE8B8131",
-      "treeSha256": "169A11E5E834002F24B11029FA235BECDB7DC6723DCE7B162E04B79F56FF7DAA",
-      "sha256": "2895db13b5761e41b815888ffe31cca984bf331b431c473102044e33d0cb6061",
-      "bytes": 9262
+      "skillMdSha256": "1E397EABA31090ED537DC309F3182F7CBDDB5FD8989139EBE8639B54C6ACAD84",
+      "treeSha256": "494984EA6EEC6E034B216632CA53173AE507F194988CDCE9BFE91275BA2FAD09",
+      "sha256": "1e397eaba31090ed537dc309f3182f7cbddb5fd8989139ebe8639b54c6acad84",
+      "bytes": 10485
     },
     {
       "name": "praxis-visual-builder-schemas-templates",
@@ -2518,8 +2518,8 @@
       ],
       "skillMdSha256": "9CCA07FCF2581293F40985704207DF8399B94D8F63CFF5B21A5183F49407B508",
       "treeSha256": "C5E56E76BB0C22D70BF9C4092C5CCB7C38E5A76FCE9503D787BF8C7BFF90E99B",
-      "sha256": "8ef51ab62f4f285a69b730bbbc06bdab2c0ca9235bdf9080db7abc12179ebb12",
-      "bytes": 6698
+      "sha256": "9cca07fcf2581293f40985704207df8399b94d8f63cff5b21a5183f49407b508",
+      "bytes": 6615
     },
     {
       "name": "praxis-charts-echarts-engine-boundary",
@@ -2547,8 +2547,8 @@
       ],
       "skillMdSha256": "A02CF9F4E54FA0D2A37A0D183F6DB57AE76F3633476B289C9386E6BBD16B0053",
       "treeSha256": "D2461784B0F5CC4ED460789B332A0C5701247C267B213FFFF50C3A52D72C555D",
-      "sha256": "0110fa2bb6f4b21fee8a101343d35984d9310dc0443ec5fbac2f303cd62a7e8f",
-      "bytes": 15258
+      "sha256": "a02cf9f4e54fa0d2a37a0d183f6db57ae76f3633476b289c9386e6bbd16b0053",
+      "bytes": 15109
     },
     {
       "name": "praxis-charts-authoring-catalogs",
@@ -2597,8 +2597,8 @@
       "dependencies": [],
       "skillMdSha256": "3F1FA55C5D3C2CFD307380181B04FAF610E2F932E1CA1A4DA946DA8802FB46FD",
       "treeSha256": "6D999351EEF27BB154A145CAF44811FE2473E8E044A0785489C3BA9EFF82FCCA",
-      "sha256": "56db304923fc9efde3e813e636c9de6d3cce57aa9d2581ec05cfbac840f8bca0",
-      "bytes": 5097
+      "sha256": "3f1fa55c5d3c2cfd307380181b04faf610e2f932e1ca1a4da946da8802fb46fd",
+      "bytes": 5033
     },
     {
       "name": "praxis-stepper-wizard-orchestration",
@@ -2611,8 +2611,8 @@
       ],
       "skillMdSha256": "3D5689846106002166B4F92FB59BAC4BE638752005761F25783C9225EF5A0F73",
       "treeSha256": "C40084A94A279C6B0C423EBFE8BF69CDF28E4CCB0961440ED9DC16241B6940C5",
-      "sha256": "323309caa95b8f1bfb802e693a8201ad462dafccadc59d907214e57259332c65",
-      "bytes": 4789
+      "sha256": "3d5689846106002166b4f92fb59bac4be638752005761f25783c9225ef5a0f73",
+      "bytes": 4722
     },
     {
       "name": "praxis-navigation-agentic-registry",
@@ -2626,8 +2626,8 @@
       ],
       "skillMdSha256": "916236570B8D48F1809266005EF832DCE68F19193F6E6877546F9167C0BA376C",
       "treeSha256": "B1477A353DE16509064C7D9E46BB354EED38B23384C828D021989E561B60EB8C",
-      "sha256": "75e351f608088097e8ff6d278fb39e02e08fa6c0b1c139f70cc7c3f2b31e9409",
-      "bytes": 4878
+      "sha256": "916236570b8d48f1809266005ef832dce68f19193f6e6877546f9167c0ba376c",
+      "bytes": 4811
     },
     {
       "name": "praxis-angular-agents-governance",
@@ -2638,10 +2638,10 @@
       "dependencies": [
         "praxis-skill-authoring-governance"
       ],
-      "skillMdSha256": "3D65245F462F4A685AA91081186CDDA5DC3AA90918885936725302DB0F951BC8",
-      "treeSha256": "A83408BD930E51BE197440B174FE503FA4E080364D701651ACC38ECD972D7883",
-      "sha256": "3d65245f462f4a685aa91081186cdda5dc3aa90918885936725302db0f951bc8",
-      "bytes": 10410
+      "skillMdSha256": "2F704E7E279106D242897586B00C03F52198DC522D74D4943A48E218615AEAF6",
+      "treeSha256": "0D9E4F49B08AB2B5A6692381FDC96FE0417905F373AD93D96BE14A8D5020D58A",
+      "sha256": "2f704e7e279106d242897586b00c03f52198dc522d74d4943a48e218615aeaf6",
+      "bytes": 10401
     },
     {
       "name": "praxis-core-surface-materialization",
@@ -2721,8 +2721,8 @@
       "dependencies": [],
       "skillMdSha256": "8224C2CEAB08AAB91A2ACE3CC887D9790B1076D13F623E8EC439B271EB72280C",
       "treeSha256": "4932E758ADD23DA631EA7847A3D8300AC208E82F303485AB577C0A8873195BAE",
-      "sha256": "96e30b2b4136068a218a9ee539b0254426c310bb10443bd1fa3629ec323fbab4",
-      "bytes": 19090
+      "sha256": "8224c2ceab08aab91a2ace3cc887d9790b1076d13f623e8ec439b271eb72280c",
+      "bytes": 18928
     },
     {
       "name": "praxis-config-agentic-authoring-streaming",
@@ -2745,12 +2745,12 @@
       "dependencies": [
         "praxis-rules-engine-runtime"
       ],
-      "skillMdSha256": "6E121E442CE2A78B07C032D7F5F3F58897BAE973A7E2E6D273B69F31A6082686",
-      "treeSha256": "0AD85546073EEACF76D5192C7BB578DC9AF974A6DFACD9C9831C4E8E28F4EBFA",
-      "sha256": "6e121e442ce2a78b07c032d7f5f3f58897bae973a7e2e6d273b69f31a6082686",
+      "skillMdSha256": "62530FDAD184D758E3D7D35873F0212D7AA2C449E09D1D18C04A3E43CDD39906",
+      "treeSha256": "A23BB19E3805279A13929BAF48F68CABAB07496C96D6F0855ECE48F7AFF2F03E",
+      "sha256": "62530fdad184d758e3d7d35873f0212d7aa2c449e09d1d18c04a3e43cdd39906",
       "skillMdHash": "6E121E442CE2A78B07C032D7F5F3F58897BAE973A7E2E6D273B69F31A6082686",
       "treeHash": "0AD85546073EEACF76D5192C7BB578DC9AF974A6DFACD9C9831C4E8E28F4EBFA",
-      "bytes": 41214
+      "bytes": 41216
     },
     {
       "name": "praxis-api-quickstart-operational-proof",
@@ -2775,10 +2775,10 @@
         "praxis-http-examples-llm-smoke",
         "praxis-java-autoconfiguration-starter-maintenance"
       ],
-      "skillMdSha256": "DA45E5CB38C486D47DFBB770A812851D1E6D60E61CDC390DBA84E196875E3808",
-      "treeSha256": "37ECEEFF9854D8F31998ED55B3BB12E5CC2C37B0E4144E32AB5D559206E014F6",
-      "sha256": "da45e5cb38c486d47dfbb770a812851d1e6d60e61cdc390dba84e196875e3808",
-      "bytes": 207196
+      "skillMdSha256": "63639CA016B425D873C2A2BEE18437AE04C8A62D057FA81E4C130E4BACBF4B85",
+      "treeSha256": "372CCB5B94CA70BCAEEBD35FE3E0674300C0612C916463E6352AD66A58488F89",
+      "sha256": "63639ca016b425d873c2a2bee18437ae04c8a62d057fa81e4c130e4bacbf4b85",
+      "bytes": 207200
     },
     {
       "name": "praxis-api-quickstart-security-config",
@@ -2814,10 +2814,10 @@
         "praxis-config-domain-decisions",
         "praxis-rules-engine-runtime"
       ],
-      "skillMdSha256": "F0541D9250AFD167BFBCCB0F7E7EDC6D4BF7225DBB3B98148CC03E1C292F3B94",
-      "treeSha256": "95EE7301C26F0564B97434578AE35C70F3621BB78412487AC4BAB9025A25AF4E",
-      "sha256": "f0541d9250afd167bfbccb0f7e7edc6d4bf7225dbb3b98148cc03e1c292f3b94",
-      "bytes": 34535
+      "skillMdSha256": "29C4655532193F166CE671A25CEC4CFB9476A293486E669020EF05531A5003CB",
+      "treeSha256": "C65E2381BC6B8D7731669AD0ACAA904FD44B3F616457508FAC6CDD71B4C87E33",
+      "sha256": "29c4655532193f166ce671a25cec4cfb9476a293486e669020ef05531a5003cb",
+      "bytes": 34560
     },
     {
       "name": "praxis-api-quickstart-cockpit-http-validation",
@@ -2840,10 +2840,10 @@
         "praxis-landing-registries-sitemap-playgrounds",
         "praxis-angular-docs-playgrounds"
       ],
-      "skillMdSha256": "E02E1492649FA2793BB796C598E3E59CF1169C59F15F2F7F33981C91AC928C2D",
-      "treeSha256": "989C11325EA0C98F1F91D38E64EE6F45560DB313D48F2483A326C5E67EA7C854",
-      "sha256": "e02e1492649fa2793bb796c598e3e59cf1169c59f15f2f7f33981c91ac928c2d",
-      "bytes": 14525
+      "skillMdSha256": "4807E4437F6E99C70568435403FA7A523FC96EC6E32624755612E29A4595033E",
+      "treeSha256": "9300B74AA8149B1868CBE359B0BB23A393D11B97BE778C1BDD501411E2742A4F",
+      "sha256": "4807e4437f6e99c70568435403fa7a523fc96ec6e32624755612e29a4595033e",
+      "bytes": 14537
     },
     {
       "name": "praxis-http-examples-corpus-manifest",
@@ -2864,10 +2864,10 @@
       "status": "active",
       "compatibility": ">=0.0.0",
       "dependencies": [],
-      "skillMdSha256": "554E6A4D102835E8F90BE849C62CA1ABD1E3BFA7DAE3C03BED8E348DA1DC8E44",
-      "treeSha256": "45ABBF78C68039C0C5B007F5F62AF3ABBC081B78C103D80F2F4F40C2566FCAFC",
-      "sha256": "554e6a4d102835e8f90be849c62ca1abd1e3bfa7dae3c03bed8e348da1dc8e44",
-      "bytes": 7534
+      "skillMdSha256": "D97CA615817BA237FE95A8159F0AF88E9EFA8BC10A1BDAEF0FB87AB2840D1BCF",
+      "treeSha256": "933BFEB6059F1DA15B7F665AD1745B03A5B4CDEA5904ED0C74914DCA049C1595",
+      "sha256": "d97ca615817ba237fe95a8159f0af88e9efa8bc10a1bdaef0fb87ab2840d1bcf",
+      "bytes": 7549
     },
     {
       "name": "praxis-http-examples-llm-smoke",
@@ -2939,8 +2939,8 @@
       ],
       "skillMdSha256": "D9FBD9D7106F0FD2F79488CF974EC8B33C76CCEBA6855166E10549B6E9731DEC",
       "treeSha256": "6C055D6DB557ED25FE39DB87868288DC164236A4658D51825B7AF4B0399F0B90",
-      "sha256": "3f8a142dc4ab6cb3296316fbac12ba78335d53b6124fa72fd768eea060b6a3aa",
-      "bytes": 4728
+      "sha256": "d9fbd9d7106f0fd2f79488cf974ec8b33c76cceba6855166e10549b6e9731dec",
+      "bytes": 4652
     },
     {
       "name": "praxis-table-renderer-state-diagnostics",
@@ -3062,12 +3062,12 @@
         "praxis-config-domain-decisions",
         "praxis-rules-engine-runtime"
       ],
-      "skillMdSha256": "40C543BEA0C73D916F9D45E7DCFC42B7B37637F7A8DDEDB70867650C2E64E7B5",
-      "treeSha256": "D41B9D9B188993E3FF8000971A79E26E9145F3138241662FCA4FDE7412778071",
+      "skillMdSha256": "F511089FD3756E4B7327736071C4414FA81CAA1C26456FC74894EAF7E20E8634",
+      "treeSha256": "55F39DD693CA85D443EACDAE3854A39338067A8E4EBE2A68BB28354A33A078A8",
       "skillMdHash": "40C543BEA0C73D916F9D45E7DCFC42B7B37637F7A8DDEDB70867650C2E64E7B5",
       "treeHash": "D41B9D9B188993E3FF8000971A79E26E9145F3138241662FCA4FDE7412778071",
-      "sha256": "40c543bea0c73d916f9d45e7dcfc42b7b37637f7a8ddedb70867650c2e64e7b5",
-      "bytes": 18733
+      "sha256": "f511089fd3756e4b7327736071c4414fa81caa1c26456fc74894eaf7e20e8634",
+      "bytes": 18736
     }
   ]
 }

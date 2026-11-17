@@ -118,7 +118,7 @@ or optional UI projection, not primary rule authoring.
 - `Apply` is preview without closing the panel; `Save` is the final persisted value through
   `saved$`. A host that subscribes only to `applied$`, only to `saved$`, or persists a partial value
   outside the canonical editor document is incomplete.
-- Do not move `Apply`/`Save` gating, confirmation, replacement, or overlay lifecycle into an Ergon
+- Do not move `Apply`/`Save` gating, confirmation, replacement, or overlay lifecycle into a legacy enterprise
   host or component-specific wrapper when the structural behavior belongs to
   `@praxisui/settings-panel`.
 
@@ -129,7 +129,7 @@ a compatibility boundary for hosts, not as a second source of truth. When the do
 binding or context snapshot block, follow the canonical replace-all semantics instead of preserving
 stale host inputs silently.
 
-For Ergon migration work, if a screen needs an authoring drawer only to tweak runtime URLs,
+For enterprise migration work, if a screen needs an authoring drawer only to tweak runtime URLs,
 operation URLs, submit method, resolved metadata, or drawer appearance, classify that as a diagnostic
 or host-integration concern first. Promote it to Dynamic Form or Settings Panel authoring only when an
 existing `FormConfig`, `bindings`, `contextSnapshot`, metadata bridge, or Settings Panel provider

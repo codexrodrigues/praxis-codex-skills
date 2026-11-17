@@ -57,9 +57,19 @@ When local `praxis-ui-angular` source is available, inspect the focused files be
 
 Read `projects/praxis-charts/AGENTS.md` before editing chart runtime or authoring-adjacent code. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
 
-## Runtime Rules
+## Runtime Rules (`@praxisui/charts@10.0.0-rc.49`)
 
 Use `<praxis-chart [chartDocument]="...">` for governed chart documents. Use `[config]` only when a canonical owner has already materialized `PraxisChartConfig`, such as a trusted adapter or a static local demo. Prefer `chartDocument` in dashboards, AI-authored widgets, page-builder widgets, and backend-provided catalog entries.
+
+### Turnkey Visualizers & Widget Registration (`10.0.0-rc.49`)
+
+Before building custom dashboard cards, KPI wrappers, ladder timelines, or waterfall tables in host code, register `providePraxisChartsWidgets()` (alongside `providePraxisCharts()`) and consume the turnkey `@praxisui/charts` components:
+
+- **`<praxis-analytics-presentation>`**: Auto-hydrates `/schemas/filtered` (`x-ui.analytics`) and `/capabilities` (`stats.supported`) from `[resourcePath]` (with `[filterOperation]` and `[schemaType]`, defaulting to `'post'` / `'response'`), and normalizes cross-filters through `[coerceCrossFilters]="true"` + `cross-filter-coercion.util.ts` (`coerceCrossFilterValue`, `coerceCrossFilterPayload`, `mergeCrossFiltersIntoQueryContext`).
+- **`<praxis-analytics-cockpit>`**: Turnkey multi-projection cockpit supporting `[resourcePath]`, `[analytics]`, `[config]`, `[queryContext]`, `[availableFamilies]` (`['chart', 'analytic-table', 'kpi']`), `[surfaceVariant]`, and emitting `queryContextChange`, `crossFilterApplied`, `recordOpen`, and `drillDown`.
+- **`<praxis-progression-ladder>`**: Schema-driven (`[resourcePath]` + `[queryContext]` reading root `x-ui.progression`) or document-driven career/step progression visualizer with 4 variants (`staircase`, `pillars`, `matrix-2d`, `ribbon-compact`), `stepSelect`, `bridgeAction`, and `variantChange`.
+- **`<praxis-calculation-waterfall>`**: Turnkey explainable `@CalculationMemory` waterfall visualizer accepting `[calculationMemory]`, `[title]`, and `[currencyCode]` (`'BRL'`) and emitting `stepSelect` and `trailChange`.
+- **`<praxis-quota-gauge>`**: Radial or linear threshold gauge accepting `[document]` (or `[value]`, `[max]`, `[min]`, `[unit]`, `[thresholds]`, `[variant]="'radial' | 'linear'"`) and emitting `quotaClick`.
 
 For remote analytics data:
 

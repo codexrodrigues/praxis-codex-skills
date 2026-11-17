@@ -94,7 +94,7 @@ In core, check these concrete files when `surface.open` payloads or global actio
   Form feature. Dynamic Form may host or configure it, but contract changes belong in core first.
 - Action rule overrides may affect action UI state, but they must not bypass submit validation, `formIsValid`, invalid-submit hints, or the submit payload pipeline.
 - Hook stages are declared lifecycle extension points. If a workflow needs business orchestration, prefer governed actions/domain rules over hidden host callbacks.
-- In Ergon-style migrations, legal write commands, payment/approval gates, status transitions, and
+- In enterprise migration flows, legal write commands, payment/approval gates, status transitions, and
   auditable side effects should be classified before implementation: UI-only affordances can remain
   Dynamic Form actions, but reusable or regulated command policy belongs to `domain-rules` and a
   materialized runtime target. Dynamic Form should consume the resulting action availability,

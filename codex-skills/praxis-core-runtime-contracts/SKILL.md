@@ -29,11 +29,14 @@ Before changing a core-facing skill or implementation, inspect the real source f
 
 Do not rely on memory of the package. The core public API changes often and is the upstream owner for many runtime behaviors that vertical libs consume.
 
-## Canonical Owner Decision
+## Canonical Owner Decision (`@praxisui/core@10.0.0-rc.49`)
 
 Put the fix in `@praxisui/core` when the concern is shared across libraries or affects one of these contracts:
 
-- `GenericCrudService`, schema metadata clients, resource discovery, config storage, global config, and common CRUD/data access helpers
+- `GenericCrudService`, schema metadata clients, resource discovery, multi-scope `ApiConfigStorage` (`ConfigStorageScope = 'user' | 'tenant'`, `writeScope`, `setWriteScope`, `toggleWriteScope`, `deletePersonalOverrideAndReloadTenantBaseline`, separate `readEtag`/`writeEtag`, `saveError$`), global config, and common CRUD/data access helpers
+- `PraxisAppShellComponent` (`<praxis-app-shell>` with `primaryNavigationPaths`, `showActiveGroupSubTabs`, `subTabsPinned`, `showDomainBreadcrumb`, `breadcrumbs`, `domainLauncherLabel`/`domainLauncherIcon`, `pinnedPaths`/`recentPaths`, `commandPaletteTrigger`, and catalog search/pin drawer)
+- Wave 2 enterprise session, theme, realm, ambient scope, and invalidation contracts: `PraxisThemeService` (`providePraxisTheme`, `PRAXIS_WORKSPACE_THEME_IDS`), `PraxisSessionTransportService` (`providePraxisSessionTransport`, `praxisSessionCredentialsInterceptor`, `createFetchHeadersFactory`), `providePraxisTenantRealm` (`PRAXIS_TENANT_REALM`, `X-Tenant-Realm`), `PraxisWorkspaceQueryContextService` (`PRAXIS_CONTEXT_DIMENSIONS`), `PraxisContextFilterProjectorService` (`x-ui.contextBinding`), and `PraxisCacheInvalidatorService`
+- Schema UI & 360° metadata contracts (`field-definition.model.ts` & `form-layout-materializer.ts`): `PraxisSchemaRootUiMetadata` (`formLayout`, `progression`, `timeline`, `schedule`, `hierarchy`, `calculationMemory`, `contextBinding`, `resourceState`), `FieldDefinition` properties (`colSpan`, `conditionalReadOnly`, `draftCleared`, `contextBinding`, `resourceState`, `quickViewVisible`, `quickViewOrder`, `resourceReference`, `quickView`, `microVisualization`, `tableOrder`, `pinned`), and `stripDraftClearedValues` / `materializeFormLayoutFromMetadata`
 - global actions, global surfaces, action refs, action UI schema, action catalogs, and shared action providers
 - tokens such as `API_URL`, `PAX_FETCH_HEADERS`, global config, loading, overlay decisions, export, external editors, field selectors, or surface/drawer bridges
 - common models: table config, field metadata, option sources, resource discovery, domain catalog, domain knowledge/rules, query context, analytics presentation, loading state, collection export, surface actions, runtime observations

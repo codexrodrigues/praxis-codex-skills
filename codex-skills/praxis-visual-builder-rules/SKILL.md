@@ -100,7 +100,7 @@ When Visual Builder is embedded in Page Builder, Dynamic Form, Table, or another
 
 - Bootstrap in the Angular host via `providePraxisDecisionInspector({ rulesStudioUrl })` — never build bespoke per-host rule-inspection pages or custom DAG components.
 - Renders the 5 canonical `DecisionStage`s (`PROTECTED_GUARD`, `DOMAIN_DECISION`, `POST_DECISION`, `TRANSFORMATION_INTENT`, `EFFECT_INTENT`) framelessly inside `SURFACE_DRAWER_BRIDGE` when triggered from `<praxis-resource-page>`'s contextual *"Regras de Negócio"* action, `<praxis-dynamic-form>` `X-Ray` `422`/`409` violation diagnostics (`PraxisRuleViolationDiagnostic`), or cockpit shortcuts.
-- Hands off 4-eyes Maker-Checker authoring and snapshot publication to the external `praxis-rules-studio` workstation via `buildRulesStudioDeepLink` (enforcing fail-closed `http:`/`https:` scheme validation).
+- Hands off 4-eyes Maker-Checker authoring and snapshot publication to the external `praxis-policy-studio` workstation via `buildRulesStudioDeepLink` (enforcing fail-closed `http:`/`https:` scheme validation).
 
 ## Validation
 

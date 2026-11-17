@@ -153,18 +153,18 @@ For row actions that open backend surfaces:
 - For materialized surfaces, check `PraxisSurfaceHostComponent` outputs such as `rowClick`, `selectionChange`, and `widgetEvent` before adding host event bridges.
 - For related resources, prefer published `surface.relatedResource` plus `RelatedResourceSurfaceResolverService` or `PraxisRelatedResourceOutletComponent`. Do not duplicate the parent-child relationship in local filters unless the product intentionally overrides the canonical query context.
 
-## Expansion Path
+## Expansion Path (`@praxisui/*@10.0.0-rc.49` Turnkey Surfaces & Visualizers)
 
-Add after the core path works:
+Add after the core path works (always choosing turnkey Praxis components over custom host wrappers):
 
+- `@praxisui/crud` turnkey pages: `<praxis-resource-page>` (auto-header, scope bar, KPI band with `{ enabled: true, source: 'schema' }`, and ambient `PraxisWorkspaceQueryContextService` / `[lockedFilterFields]` projection) and `<praxis-dossier-page>` (360° entity dossier hero, LGPD reveal toggle, sibling switcher, and related child CRUD tabs).
+- `@praxisui/charts`: `providePraxisChartsWidgets()` with `<praxis-analytics-presentation>` (`resourcePath` auto-hydration), `<praxis-analytics-cockpit>`, `<praxis-progression-ladder>`, `<praxis-calculation-waterfall>`, and `<praxis-quota-gauge>`.
+- `@praxisui/list`: `providePraxisListWidgets()` with `<praxis-organogram>` (`resourcePath` + `queryContext` schema-driven hierarchy), `<praxis-lifecycle-timeline>`, and `<praxis-roster-matrix>`.
+- `@praxisui/page-builder` turnkey workspace surfaces: `<praxis-enterprise-workspace-shell>`, `<praxis-operational-scope-ribbon>`, `<praxis-workspace-auth-gate>`, `<praxis-command-palette>`, `<praxis-realm-portal>`, `<praxis-domain-hub-page>`, `<praxis-workspace-studio-page>`, `<praxis-personal-laboratory-page>`, `<praxis-governed-pages-console>`, and `<praxis-published-page-host>`.
+- `@praxisui/ai`: `<praxis-workspace-assistant>` and `WorkspaceAssistantOrchestratorService`.
 - `@praxisui/manual-form`: hand-authored layout using Praxis fields.
-- `@praxisui/tabs`: grouped composition and lazy views.
-- `@praxisui/stepper`: multi-step flows.
-- `@praxisui/expansion`: grouped panels and rich reading surfaces.
-- `@praxisui/charts`: analytics surfaces and embedded visualizations.
-- `@praxisui/editorial-forms`: guided narrative/editorial blocks.
-- `@praxisui/settings-panel` and `@praxisui/metadata-editor`: authoring and configuration.
-- `@praxisui/page-builder` and `@praxisui/ai`: governed composition and assistant workflows.
+- `@praxisui/tabs`, `@praxisui/stepper`, `@praxisui/expansion`: grouped composition, wizards, and lazy views.
+- `@praxisui/editorial-forms`, `@praxisui/settings-panel`, and `@praxisui/metadata-editor`: guided narrative flows and configuration editors.
 
 Load companion skills for dynamic-fields/editorial/authoring tasks before changing config editors, control catalogs, or Settings Panel behavior.
 

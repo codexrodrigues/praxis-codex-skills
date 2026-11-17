@@ -164,7 +164,7 @@ When `replaceContext` is active, absence is intentional: absent `bindings.mode`,
 
 AI-generated edit plans must target the canonical document/apply-plan surface. Do not let AI output ad hoc config patches, prompt-only field moves, or local editor state when the existing capability can express the change.
 
-For Ergon-style migrations, distinguish authored local form configuration from reusable platform
+For enterprise migration flows, distinguish authored local form configuration from reusable platform
 decisions before applying/saving: local layout polish can round-trip through the document, but legal
 guidance, shared validation, command availability, approval policy, option-source policy, and other
 governed decisions should remain in `domain-rules` or metadata-backed contracts and project into the

@@ -69,4 +69,4 @@ Stop the recommendation when native capability inventory is absent; owner is unk
 - `praxis-authoring-editors`, `praxis-angular-public-api-governance`, `praxis-angular-validation-gates`, and `praxis-angular-docs-playgrounds`: implementation gates when a capability is approved.
 - Functional component, metadata, config, or backend skills: source owner implementation.
 
-For this skill itself, forward-test the three cases with only their evidence, run the focused skill validator, verify manifest hashes/dependencies/cycles, sync the Praxis family, and audit it. The skill remains independent of Ergon, Archon, HADES, private databases, and migration workspaces.
+For this skill itself, forward-test the three cases with only their evidence, run the focused skill validator, verify manifest hashes/dependencies/cycles, sync the Praxis family, and audit it. The skill remains independent of legacy enterprise hosts, rule engines, private databases, and migration workspaces.

@@ -40,7 +40,17 @@ Inspect:
 - `src/lib/ui/assistant-dock/**`
 - relevant specs for backend API, assistant shell, session host, history, validator, and turn client
 
-## Runtime Rules
+## Runtime Rules (`@praxisui/ai@10.0.0-rc.49`)
+
+### Turnkey Workspace Copilot (`<praxis-workspace-assistant>`)
+
+Instead of hand-coding custom workspace AI drawers, route-action dispatchers, or SSE proposal UIs in hosts, mount `<praxis-workspace-assistant>` (`PraxisWorkspaceAssistantComponent`) paired with `WorkspaceAssistantOrchestratorService` (`PRAXIS_WORKSPACE_ASSISTANT_ROUTER`, `PRAXIS_WORKSPACE_ASSISTANT_OPTIONS`, and `normalizeSafeWorkspaceRoute()`):
+
+- Inputs: `showDock` (`true`), `title`, `subtitle`, `placeholder`, `mode`, `draggable`, `resizable`, `dockTestId`, `shellTestIdPrefix`, `routeContext` (`WorkspaceAssistantRouteContext`), `componentId`, `componentType`, `assistantOptions`.
+- Outputs: `openChange`, `blockActionDispatched`, `blockActionRaw`, `openSurface`, `applyFilter`, `runAction`, `navigateRequested`.
+- Operational agent stream & blocks: `OperationalAgentTurnClientService` streams `/api/praxis/config/ai/agent/turn/stream/start` (and executes proposal lifecycle `/proposals/{id}/confirm`, `/complete-form`, `/reject` with `If-Match` / `Idempotency-Key` + stream `/cancel`), while `<praxis-assistant-operational-block-list>` renders all 8 governed operational block kinds (`assistant-operational.models.ts`).
+
+### Core Assistant Transport, History & State Invariants
 
 - Do not call external providers directly from the Angular lib when the canonical Praxis Config backend contract exists.
 - Preserve `currentState`, `dataProfile`, `schemaFields`, `runtimeState`, `contextHints`, `runtimeComponentObservations`, pending clarification, preview, diagnostics, and apply payload shapes.

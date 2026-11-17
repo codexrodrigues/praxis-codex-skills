@@ -34,9 +34,21 @@ Before editing code or guidance, inspect:
 - focused provider/token/service specs and direct consumer imports
 - For icon-family behavior, also inspect `components/icon/praxis-icon.directive.ts`, `components/icon-button/praxis-icon-button.component.ts` and their focused specs in the exact installed or candidate version.
 
-## Canonical Boundary
+## Canonical Boundary (`@praxisui/core@10.0.0-rc.49`)
 
-`@praxisui/core` owns shared Angular tokens, provider factories, registries, bootstrap services, global config, API URL contracts, loading renderer/orchestrator contracts, collection export providers, icon providers, field selector registry defaults, component metadata registry, and enterprise runtime context.
+`@praxisui/core` owns shared Angular tokens, provider factories, registries, bootstrap services, global config, API URL contracts, loading renderer/orchestrator contracts, collection export providers, icon providers, field selector registry defaults, component metadata registry, enterprise runtime context, and Wave 2 session/realm/theme/scope infrastructure.
+
+### Turnkey Enterprise Bootstrap Providers (`10.0.0-rc.49`)
+
+Before building custom auth/CSRF wrappers, realm URL parsers, theme toggle stores, or cache-clearers in a host:
+
+- **Tenant Realm & Base Href**: `providePraxisTenantRealm(options?)` registers `PRAXIS_TENANT_REALM` (`X-Tenant-Realm` header via `buildPraxisTenantRealmHeaders`), resolves path/portal slugs via `resolvePraxisTenantRealmFromLocation`, binds Angular `APP_BASE_HREF` (`bindAppBaseHref: true` by default), and scopes browser keys/channels via `scopeKeyByTenantRealm`.
+- **Corporate Session & CSRF Transport**: `providePraxisSessionTransport(options?)` + `withInterceptors([praxisSessionCredentialsInterceptor])` registers `PraxisSessionTransportService` (cookie SESSION + in-memory `X-XSRF-TOKEN`, cross-tab coordination via `navigator.locks` + realm-scoped `BroadcastChannel`, visibility revalidation, and `createFetchHeadersFactory()` for `PAX_FETCH_HEADERS` preserving `X-Tenant-Realm`, `X-Tenant-ID`, `X-Organization-ID`, `X-User-ID`, `X-Env`, `X-Praxis-Context-Version`, and `Accept-Language`).
+- **Workspace Theme & Surface Tokens**: `providePraxisTheme(options?)` registers `PraxisThemeService` and `PRAXIS_THEME_OPTIONS` managing the 7 built-in `PRAXIS_WORKSPACE_THEME_IDS` (`'classic'`, `'light-tech'`, `'dark-tech'`, `'brasa'`, `'aura'`, `'azul-cosmos'`, `'insignia'`), `data-theme`, `colorScheme`, and realm-scoped persistence.
+- **Ambient Workspace Context, Filter Projection & Cache Custody**:
+  - `PraxisWorkspaceQueryContextService` holds multi-dimensional workspace scope (`PRAXIS_CONTEXT_DIMENSIONS`: `'organization' | 'company_group' | 'unit' | 'person' | 'bond' | 'contract'`), automatically syncs with `EnterpriseRuntimeContextService`, and clears stale caches via `PraxisCacheInvalidatorService` (or `registerHandler(...)`, preserving `'pax.api.origin'`).
+  - `PraxisContextFilterProjectorService` evaluates schema `x-ui.contextBinding` (`projectFieldDefaults`, `projectFilterCriteria`, `projectQueryContext`, `isFieldLockedByContext`) so resource pages/tables/forms project structural filters cleanly.
+  - `ApiConfigStorage` (`CONFIG_STORAGE` / `ASYNC_CONFIG_STORAGE`) supports multi-scope reads/writes (`ConfigStorageScope = 'user' | 'tenant'`, `writeScope`, `setWriteScope`, `toggleWriteScope`, `saveError$`, separate `readEtag`/`writeEtag`, and `deletePersonalOverrideAndReloadTenantBaseline`).
 
 Vertical packages may register their package metadata or package defaults through core providers, but they should not redefine core token shapes or expose transitively owned core contracts as local public APIs.
 

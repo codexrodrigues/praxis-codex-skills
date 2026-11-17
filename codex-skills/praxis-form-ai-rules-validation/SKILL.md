@@ -125,7 +125,7 @@ business-rule prompt falls back to `componentEditPlan`, `formRulesState`, or
 `rule.visualBlockGuidance.add`. If it only creates another local component route for a shared
 decision, it is probably the wrong platform cut.
 
-For Ergon-style migrations, treat a request such as "make CPF required when regime is X",
+For enterprise migration flows, treat a request such as "make CPF required when regime is X",
 "block payment when status is Y", "show LGPD guidance for sensitive fields", or "validate a legal
 command before submit" as a classification problem first: component-only presentation may stay in
 Dynamic Form, but reusable policy, legal command, eligibility, validation, or compliance belongs to

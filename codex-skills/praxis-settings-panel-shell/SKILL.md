@@ -107,7 +107,7 @@ Runtime drawer bridge:
   resolved surface state into component config from this bridge. If a host needs an authored
   connection to a runtime drawer, model that in the owning action/composition authoring contract,
   not as Settings Panel shell state.
-- In Ergon migrations, a drawer that only needs to show detail, emit a selected row, update title, or
+- In enterprise migrations, a drawer that only needs to show detail, emit a selected row, update title, or
   close with a result should stay on `SURFACE_DRAWER_BRIDGE`. Promote it to Settings Panel authoring
   only when the user is editing a stable config document through an editor that owns
   `SettingsValueProvider`.

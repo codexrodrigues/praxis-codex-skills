@@ -227,7 +227,7 @@ Back/reload without a fresh handoff stays unavailable. Use
 - Command forms must use request schema metadata. Rendering create/edit from response/detail schema is a contract defect, because derived/read-only fields can become editable.
 - Detail/read-only summaries should use response schema metadata and may request presentation through `layoutPolicy.intent="detail"` or `preset="compactPresentation"` while keeping `presentationModeGlobal=false` available for traditional readonly controls.
 - `layoutPolicy.persistence="transient"` prevents generated schema layout from being persisted as authored local sections. Prefer this for schema-driven command/detail materialization unless the user explicitly detaches/authorizes a layout.
-- In Ergon-style migrations, choose the schema mode from the operation contract first: detail/view
+- In enterprise migration flows, choose the schema mode from the operation contract first: detail/view
   uses response schema and read URL; create/edit commands use request schema plus the explicit
   submit URL/method. If a command form needs local field filtering, label correction, option mapping,
   or disabled/read-only fixes, treat that as metadata/request-schema debt before adding Dynamic Form

@@ -41,7 +41,7 @@ Config examples derive from `praxis-config-starter` hosted by quickstart: `/api/
 - When a contract changes, update request file, payload, manifest, LLM surface, and source-of-truth links together.
 - For option-source examples, separate LLM-safe operational evidence from canonical runtime proof. An HTTP example may demonstrate a published lookup route, mapped dependency payload, by-ids rehydration, or governed materialization readback, but it must point back to the canonical metadata/config owner and quickstart focused tests for descriptor semantics, selection policy, invalid-value handling, ordering guarantees, and provider SPI behavior.
 - Do not promote an option-source example into `llmOperational` only because it succeeds once against the published backend. It must be read-only or auth-light, have stable headers, use a deterministic payload, avoid ordinary production scopes, and explain whether it is discovery/reachability, runtime lookup proof, or governed materialization evidence.
-- For `dependencyFilterMap`, examples should show the backend filter payload accepted by the endpoint and link it to the schema-published mapping. Do not teach Angular, Ergon, or LLM consumers to invent local field translations when the backend descriptor is the source of truth.
+- For `dependencyFilterMap`, examples should show the backend filter payload accepted by the endpoint and link it to the schema-published mapping. Do not teach Angular, enterprise migration, or LLM consumers to invent local field translations when the backend descriptor is the source of truth.
 
 Reactive Determination examples pair the operation-specific filtered schema with
 success and business-rejection execution payloads, preserve provenance without

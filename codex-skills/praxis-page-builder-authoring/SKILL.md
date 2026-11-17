@@ -145,6 +145,14 @@ When an Angular host adopts governed corporate page authoring and publication:
   from an admitted native seed + governed revision with `legacyImportedFrom`) instead
   of falling back silently at runtime.
 
+## Turnkey Workspace Surfaces, Studio & Laboratory Pages (`@praxisui/page-builder@10.0.0-rc.49`)
+
+On `@praxisui/page-builder@10.0.0-rc.49`, do not build bespoke workspace frames, studio wrappers, personal lab routes, or governed-page admin tables in hosts when these exported surfaces fit:
+
+- **Workspace Shell, Navigation & Scope**: `<praxis-enterprise-workspace-shell>` (navigation, sub-tabs, domain breadcrumbs, scope ribbon, command palette, theme/customization toggles, built-in assistant trigger, sign-out), `<praxis-operational-scope-ribbon>` (`dimensions` bound to `PraxisWorkspaceQueryContextService`), `<praxis-command-palette>` (`items`, `enableGlobalShortcut` `Ctrl+K`, `remoteSearch`), `<praxis-workspace-auth-gate>` (`realmInfo`, `demoPersonas`, `authenticated`), and `<praxis-realm-portal>` (`realms`, `discoverFromRuntime`, `realmSelected`).
+- **Domain Hubs, Studio, Personal Lab & Governed Consoles**: `<praxis-domain-hub-page>` (domain KPI metrics & catalog resources), `<praxis-workspace-studio-page>` (presets + agentic studio + governance toolbar + `promoteToGoverned`), `<praxis-personal-laboratory-page>` (`savedPages` + `saveAsAdapter` + `saveContextKey` personal authoring workbench), `<praxis-governed-pages-console>` (draft/review/publish governance console), and `<praxis-published-page-host>` (published route reader with `copyRequested`).
+- **Scaffolding, Sanitization & Full Widget Certification**: Use `ResourceWidgetScaffolderService` to synthesize `table-only`, `table-and-form`, or `executive-cockpit` `WidgetPageDefinition` drafts from `resourcePath` metadata, `sanitizeWidgetPageDefinition()` to lock governed pages (`lockForGovernance`, stripping transient inputs/state), `providePraxisAllWidgetMetadata(extraWidgets?)` to register the widget catalog, and `DEFAULT_GOVERNED_PAGE_CHILD_VALIDATORS` / `DEFAULT_GOVERNED_PAGE_PREVIEW_ADAPTERS` (30 certified child widgets including the Wave 2 chart and list visualizers).
+
 ## AI Target Context And Operation Ownership
 
 Before validating a targeted AI edit, inspect `DynamicPageBuilderComponent`'s

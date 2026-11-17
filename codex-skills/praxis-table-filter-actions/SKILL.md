@@ -39,6 +39,8 @@ For backend grounding, inspect `praxis-metadata-starter` filter DTO and resource
 ## Filter Contract Rules
 
 - `PraxisFilter` emits filter payload snapshots; the host sends them to the canonical backend endpoint.
+- On `@praxisui/table@10.0.0-rc.49`, bind `[lockedFilterFields]` on `PraxisFilterComponent`, `PraxisTable`, and `PraxisTableToolbar` for structural scope keys (tenant, organization, workspace dimension, or master-detail parent ID): `isLockedFilterField()` keeps locked criteria active in emitted filter payloads while excluding them from `countActiveUnlockedFilters()`, preserving them across `onClear()`, and hiding their removable cross-filter chips via `getActiveCrossFilters()`.
+- Discovered backend action metadata automatically enriches toolbar/row actions with `icon`, `tone`, `modifiedFields`, and `disallowedStateReason` without host-local action decorators.
 - The final HTTP payload must remain mappable to backend `GenericFilterDTO`.
 - Ranges, aliases, and entity lookup collection payloads must respect the documented normalizers and `payloadMode`.
 - Inline aliases and UI metadata can help materialize controls, but they must not create arbitrary HTTP contracts.

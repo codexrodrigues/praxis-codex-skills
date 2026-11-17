@@ -13,7 +13,7 @@ Use this file when creating or reviewing Angular host bootstrap for Praxis UI.
 - Include peer-required Angular packages even when the app does not import them directly. Published Praxis UI trains may pull packages such as `@angular/platform-browser-dynamic` through secondary peer closure.
 - If the host uses `provideZoneChangeDetection`, install `zone.js` and add it to build polyfills. New Angular CLI scaffolds may not include `zone.js` automatically.
 
-The quickstart reference observed in the platform uses Angular 21 and `@praxisui/*` `9.0.0-beta.0`. Re-check current packages when building a real host because the package train is temporally unstable.
+The quickstart reference observed in the platform uses Angular 21 and `@praxisui/*` `10.0.0-rc.49`. Re-check current packages when building a real host because the package train evolves continuously.
 
 ## New Host Commands
 
@@ -88,13 +88,15 @@ Register for remote runtime:
 - `provideGlobalConfigSeed(...)` and `provideGlobalConfigReady()` only for local/static quickstart-style config, not for remote config bootstrap.
 - `providePraxisLogging(...)` for enterprise/production hosts when the app needs platform diagnostics.
 
-Metadata registry providers are a separate concern from basic data runtime and can add significant bundle weight. Register them at route or feature scope when the host uses authoring, page builder, AI registry/catalog, widget discovery, or component catalogs:
+Metadata and widget registry providers are a separate concern from basic data runtime and can add significant bundle weight. Register them at app or route scope when the host uses authoring, page builder, AI registry/catalog, turnkey visualizers, or widget discovery:
 
 - `providePraxisDynamicFormMetadata()`
 - `providePraxisTableMetadata()`
 - `providePraxisCrudMetadata()`
-- `providePraxisListMetadata()`
-- corresponding providers for charts, editorial forms, files upload, dialog, page builder, and other routed runtimes when used
+- `providePraxisListWidgets()` (registers `praxis-list`, `praxis-organogram`, `praxis-lifecycle-timeline`, `praxis-roster-matrix`; or `providePraxisListMetadata()` for list only)
+- `providePraxisChartsWidgets()` (registers `praxis-chart`, `praxis-analytics-presentation`, `praxis-analytics-cockpit`, `praxis-progression-ladder`, `praxis-calculation-waterfall`, `praxis-quota-gauge`, `praxis-micro-visualization`)
+- `providePraxisAllWidgetMetadata(extraWidgets)` from `@praxisui/page-builder` to register core/upstream widgets plus host extra widgets together
+- For enterprise workspace apps: `providePraxisTheme()`, `providePraxisTenantRealm()`, `providePraxisSessionTransport()`, and `withInterceptors([praxisSessionCredentialsInterceptor])` alongside `PAX_FETCH_HEADERS` (`PraxisSessionTransportService.createFetchHeadersFactory()`).
 
 Styles for Material/Praxis components should include the base Angular Material theme before the CDK overlay CSS and Praxis theme bridge. `@praxisui/core/theme-bridge.css` maps Praxis/Material tokens for host theming, but it does not replace Angular Material's component CSS. Missing the Material theme can make `mat-form-field` inputs render with native-looking geometry, cramped values, or broken overlay/panel spacing.
 

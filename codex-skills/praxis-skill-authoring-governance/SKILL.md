@@ -91,7 +91,7 @@ taxonomy in `references/`; add a script only for deterministic repeated work.
 ## Publish Canonically
 
 The versioned source is `<canonical-repo>/codex-skills/`, in the dedicated
-`praxis-codex-skills` Git checkout (`D:/Developer/praxis-codex-skills` in this
+`praxis-codex-skills` Git checkout (the `praxis-codex-skills` workspace checkout in this
 environment). Resolve and verify that repository explicitly; a host workspace's
 `codex-skills/` and `$CODEX_HOME/skills` are projections. Use the canonical
 repository's scripts with explicit working directory or `-RepoRoot`/`--repo-root`;
