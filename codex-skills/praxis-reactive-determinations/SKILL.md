@@ -112,16 +112,31 @@ public ResponseEntity<PositionCompensationPreviewResponse> determinePositionComp
 ```
 
 ### 3. Declare `@ReactiveDetermination` Directly on the Controller Handler (`PLAT-EVO-16` — Zero-Boilerplate Default) or Register `ReactiveDeterminationDefinitionProvider`
-Prefer the declarative annotation contract (`@ReactiveDetermination`, `@DeterminationInput`, `@DeterminationOutput`, `@DeterminationScope` in `org.praxisplatform.uischema.annotation`, `PLAT-EVO-16`), which `AnnotationDrivenReactiveDeterminationDefinitionProvider` discovers automatically at boot (`OpenApiUiSchemaAutoConfiguration`) — eliminating dedicated `*DeterminationConfig` classes in the host (and exposing `AnnotationDrivenReactiveDeterminationDefinitionProvider.fromControllerClasses(Controller.class)` for fast Spring-free unit tests):
+Prefer the declarative annotation contract (`@ReactiveDetermination`, `@DeterminationInput`, `@DeterminationOutput`, `@DeterminationScope` in `org.praxisplatform.uischema.annotation`, `PLAT-EVO-16`), which `AnnotationDrivenReactiveDeterminationDefinitionProvider` discovers automatically at boot (`OpenApiUiSchemaAutoConfiguration`) — eliminating dedicated `*DeterminationConfig` classes in the host (and exposing `AnnotationDrivenReactiveDeterminationDefinitionProvider.fromControllerClasses(Controller.class)` for fast Spring-free unit tests).
+
+**Zero-Boilerplate Auto-Inference (Wave 1, `praxis-metadata-starter:8.0.0-rc.193`):** When request/response property names match the form DTO 1:1 and the controller exposes standard `@PostMapping` (root subpath) / `@PutMapping("/{id}")` operations, `@ReactiveDetermination(id = "...")` can omit `inputs`, `outputs`, `createOperationId`, `updateOperationId`, and `scopes`:
+- **Auto-inferred `inputs`:** When `inputs` is empty, `AnnotationDrivenReactiveDeterminationDefinitionProvider` inspects the `@RequestBody` DTO class (records and POJO superclasses, excluding `@JsonIgnore` and `static` members) and binds each property as `/<prop> -> /<prop>` (`triggerSource = true`, populating `sourcePaths` unless overridden).
+- **Auto-inferred `outputs`:** When `outputs` is empty, it unwraps `ResponseEntity<T>` and `RestApiResponse<T>` on the handler return type and binds every response DTO property as `/<prop> -> /<prop>`.
+- **Auto-inferred `scopes`:** When `createOperationId`, `updateOperationId`, and `scopes` are omitted, it resolves the controller's canonical `@PostMapping` (root) and `@PutMapping("/{id}")` handlers automatically (ignoring methods annotated with `@ReactiveDetermination`, `@WorkflowAction`, or `@UiSurface`), reading their `@Operation.operationId` (or falling back to method name).
 
 ```java
+// Minimal zero-boilerplate declaration (auto-infers create/edit scopes, inputs from @RequestBody, outputs from ResponseEntity<...>):
 @PostMapping("/determinations/position-compensation-preview")
 @Operation(
     operationId = "determineEmployeePositionCompensationPreview",
     summary = "Determine position floor, work schedule, and available vacancies"
 )
+@ReactiveDetermination(id = "human-resources.employees.position-compensation-preview")
+public ResponseEntity<PositionCompensationPreviewResponse> determinePositionCompensationPreview(
+        @Valid @RequestBody PositionCompensationPreviewRequest request) {
+    return ResponseEntity.ok(service.determinePositionCompensationPreview(request));
+}
+
+// Explicit mapping when field names differ, contextual non-trigger inputs exist, or partial forms are targeted:
+@PostMapping("/determinations/salary-simulation")
+@Operation(operationId = "simulateEmployeeSalary")
 @ReactiveDetermination(
-    id = "human-resources.employees.position-compensation-preview",
+    id = "human-resources.employees.salary-simulation",
     createOperationId = "createEmployee",
     updateOperationId = "updateEmployee",
     triggerMode = ReactiveDeterminationTriggerMode.ON_CHANGE,
@@ -139,14 +154,14 @@ Prefer the declarative annotation contract (`@ReactiveDetermination`, `@Determin
     provenanceSource = "hr-host-service",
     provenanceVersion = "1"
 )
-public ResponseEntity<PositionCompensationPreviewResponse> determinePositionCompensationPreview(
+public ResponseEntity<PositionCompensationPreviewResponse> simulateSalary(
         @Valid @RequestBody PositionCompensationPreviewRequest request) {
     return ResponseEntity.ok(service.determinePositionCompensationPreview(request));
 }
 ```
 
 Enforce strict pointer and domain-integrity invariants on every `@ReactiveDetermination` (`@DeterminationInput` / `@DeterminationOutput` / `@DeterminationScope`) and programmatic `ReactiveDeterminationInputBinding` / `OutputBinding`:
-- **Pointer Normalization, `@DeterminationOutput` Shorthand vs. Programmatic Bindings:** `@DeterminationInput`, `@DeterminationOutput`, and `@ReactiveDetermination.sourceFields` accept either bare property names (`"positionId"`) or leading-slash RFC 6901 JSON Pointers (`"/positionId"`), normalized automatically by `AnnotationDrivenReactiveDeterminationDefinitionProvider` (rejecting blank strings, bare `"/"`, trailing `"/"`, or combining `value` with `field`/`request`/`response`). Always use the single-argument shorthand `@DeterminationOutput("baseSalaryFloor")` (or `"/baseSalaryFloor"`) whenever response and field names match; reserve `response = "...", field = "..."` strictly for distinct target names (`SemanticMetadataReviewer` flags redundant equal pairs with `reactive-determination-output-redundant-explicit-pair`). Programmatic `ReactiveDeterminationInputBinding` and `ReactiveDeterminationOutputBinding` require explicit leading `"/"`. When scoping non-standard operations (such as `@ResourceIntent` `PATCH` forms), declare `@DeterminationScope(schemaOperationId = "patchEmployeeAllocation", formMode = ReactiveDeterminationFormMode.EDIT)` (the attribute is `schemaOperationId`, never `operationId`).
+- **Pointer Normalization, `@DeterminationOutput` Shorthand vs. Programmatic Bindings:** `@DeterminationInput`, `@DeterminationOutput`, and `@ReactiveDetermination.sourceFields` accept either bare property names (`"positionId"`) or leading-slash RFC 6901 JSON Pointers (`"/positionId"`), normalized automatically by `AnnotationDrivenReactiveDeterminationDefinitionProvider` (rejecting blank strings, bare `"/"`, trailing `"/"`, or combining `value` with `field`/`request`/`response`). Only declare explicit `@DeterminationInput` / `@DeterminationOutput` when overriding auto-inference (renaming fields, marking `triggerSource = false`, or subsetting properties); when using `@DeterminationOutput` explicitly, always use the single-argument shorthand `@DeterminationOutput("baseSalaryFloor")` whenever response and field names match, reserving `response = "...", field = "..."` strictly for distinct target names (`SemanticMetadataReviewer` flags redundant equal pairs with `reactive-determination-output-redundant-explicit-pair`). Programmatic `ReactiveDeterminationInputBinding` and `ReactiveDeterminationOutputBinding` require explicit leading `"/"` (with `ReactiveDeterminationDefinition.forResource(id, createOperationId, updateOperationId, determinationOperationId)` as the fluent builder alias). When scoping non-standard operations (such as `@ResourceIntent` `PATCH` forms), declare `@DeterminationScope(schemaOperationId = "patchEmployeeAllocation", formMode = ReactiveDeterminationFormMode.EDIT)` (the attribute is `schemaOperationId`, never `operationId`).
 - **1:1 Sign & Domain-Meaning Fidelity:** Every `@DeterminationInput(field = ..., request = ...)` must preserve exact arithmetic sign and domain semantics between the form DTO field and the determination request property. Never map a deduction, discount, or retention form field onto an addition, allowance, or credit request property (or vice versa), which silently inverts net preview formulas while still compiling cleanly.
 - **Accrual/Effective Date vs. Processing Competence Separation (`PLAT-EVO-18`):** Whenever a determination previews multi-epoch progressive brackets, statutory caps, or temporal rates via `EffectiveDatedBracketTable`, bind both the accrual/reference date (`asOfAccrualDate` / `accrualCompetence`) and the processing/payment competence distinctly when present, resolving the epoch by the accrual date of the legal fact first before falling back to the processing competence.
 

@@ -8,7 +8,7 @@ Do not guess type parameter positions; the generic order differs across Reposito
 
 | Contract | Package | Exact Generic Parameter Order | Critical Method Signatures |
 | --- | --- | --- | --- |
-| `BaseCrudRepository` | `org.praxisplatform.uischema.repository.base` | `<E, ID>` (2 params) | Inherited Spring Data JPA + specification methods |
+| `BaseResourceRepository` | `org.praxisplatform.uischema.repository.base` | `<E, ID>` (2 params) | Canonical resource repository (compatibility supertype: `BaseCrudRepository<E, ID>`) |
 | `ResourceMapper` | `org.praxisplatform.uischema.mapper.base` | `<E, ResponseDTO, CreateDTO, UpdateDTO, ID>` (**5 params — `E` 1st, `ID` 5th**) | `ResponseDTO toResponse(E entity)`<br>`E newEntity(CreateDTO dto)`<br>`void applyUpdate(E entity, UpdateDTO dto)` (**`entity` is 1st!** Never overwrite `id`)<br>`ID extractId(E entity)` |
 | `AbstractBaseResourceService` | `org.praxisplatform.uischema.service.base` | `<E, ResponseDTO, ID, FilterDTO, CreateDTO, UpdateDTO>` (**6 params — `E` 1st, `ID` 3rd**) | `super(repository, Entity.class)`<br>`protected ResourceMapper<E, ResponseDTO, CreateDTO, UpdateDTO, ID> getResourceMapper()` |
 | `AbstractResourceController` | `org.praxisplatform.uischema.controller.base` | `<ResponseDTO, ID, FilterDTO, CreateDTO, UpdateDTO>` (**5 params — NO `E`, `ID` 2nd**) | `protected BaseResourceService<ResponseDTO, ID, FilterDTO, CreateDTO, UpdateDTO> getService()`<br>`protected ID getResponseId(ResponseDTO dto)` |
@@ -72,7 +72,7 @@ import org.praxisplatform.uischema.filter.annotation.Filterable;
 import org.praxisplatform.uischema.filter.dto.GenericFilterDTO;
 
 // Base Hierarchy, Concurrency & Option Sources
-import org.praxisplatform.uischema.repository.base.BaseCrudRepository;
+import org.praxisplatform.uischema.repository.base.BaseResourceRepository;
 import org.praxisplatform.uischema.mapper.base.ResourceMapper;
 import org.praxisplatform.uischema.mapper.config.CorporateMapperConfig;
 import org.praxisplatform.uischema.service.base.AbstractBaseResourceService;
@@ -119,7 +119,7 @@ When scaffolding a brand-new Praxis Spring Boot host project, always emit a comp
 
     <properties>
         <java.version>21</java.version>
-        <praxis.core.version>8.0.0-rc.192-SNAPSHOT</praxis.core.version>
+        <praxis.core.version>8.0.0-rc.193</praxis.core.version>
         <lombok.version>1.18.32</lombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
@@ -282,7 +282,7 @@ public class HrPraxisApplication {
 - Annotate controllers with `@ApiResource(value = ApiPaths..., resourceKey = "...")`, enriched with `title`, `description`, `icon`, `visualTone`, `identity = @ResourceIdentity(...)`, and `quickFilters = {@QuickFilter(...)}`.
 - Use stable `resourceKey` values such as `human-resources.employees` or `administracao-pessoal.colaboradores`; they are public identity, not local labels.
 - Use `@ApiGroup` when the group becomes part of public OpenAPI discovery.
-- Use `BaseCrudRepository<E, ID>` for CRUD and query resources.
+- Use `BaseResourceRepository<E, ID>` (compatibility supertype: `BaseCrudRepository<E, ID>`) for CRUD and query resources.
 - Use `AbstractBaseResourceService<E, ResponseDTO, ID, FilterDTO, CreateDTO, UpdateDTO>` or a thin host-local subclass.
 - Use `AbstractReadOnlyResourceService<E, ResponseDTO, ID, FilterDTO>` and `AbstractReadOnlyResourceController<ResponseDTO, ID, FilterDTO>` for database views, analytics projections, read models, and resources that must not publish create/update/delete.
 - Use `ResourceMapper<E, ResponseDTO, CreateDTO, UpdateDTO, ID>` as the service boundary. A concrete mapper may implement the interface directly, or a thin host-local base service may adapt MapStruct methods/functions to a `ResourceMapper`.
@@ -305,7 +305,7 @@ Before generating code, obtain or infer:
 Safe generation order for a new application is:
 1. `ApiPaths`
 2. Entity/projection (with `@OptionLabel` and `@DefaultSortColumn`)
-3. `BaseCrudRepository`
+3. `BaseResourceRepository`
 4. DTOs (`ResponseDTO`, `CreateDTO`, `UpdateDTO`, `FilterDTO`)
 5. `ResourceMapper`
 6. `Service` (with `StatsFieldRegistry` and `getDatasetVersion()`)
@@ -402,9 +402,9 @@ public class Employee {
 package com.example.hr.employee.repository;
 
 import com.example.hr.employee.entity.Employee;
-import org.praxisplatform.uischema.repository.base.BaseCrudRepository;
+import org.praxisplatform.uischema.repository.base.BaseResourceRepository;
 
-public interface EmployeeRepository extends BaseCrudRepository<Employee, Long> {
+public interface EmployeeRepository extends BaseResourceRepository<Employee, Long> {
 }
 ```
 
@@ -1532,7 +1532,7 @@ For read-only resources, use the read-only controller baseline and do not publis
 ## Service Rules
 
 - Implement resource services as Praxis services first, not as generic Spring services. The normal shape is a concrete class extending `AbstractBaseResourceService<E, ResponseDTO, ID, FilterDTO, CreateDTO, UpdateDTO>` or a thin host-local abstraction that still delegates to the Praxis base service.
-- Keep the controller thin and let the base service handle standard list/detail/create/update/delete/filter/options behavior through `BaseCrudRepository`, `ResourceMapper`, and the typed DTO set.
+- Keep the controller thin and let the base service handle standard list/detail/create/update/delete/filter/options behavior through `BaseResourceRepository`, `ResourceMapper`, and the typed DTO set.
 - Do not reimplement ordinary CRUD, pageable filter, options id/label, schema metadata, or capability behavior in the service when the base resource service already provides it.
 - Keep domain update semantics explicit in `applyUpdate`; do not blindly replace persistent entities.
 - Keep mapper semantics at the `ResourceMapper` boundary. Avoid hand-mapping DTOs throughout service methods except for small, explicit domain exceptions.

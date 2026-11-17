@@ -105,7 +105,7 @@ Common mappings:
 | enum/common select | `SELECT` with `optionEnum = ...` or `optionItems = {@UiOption(...)}` |
 | list of enum values | `MULTI_SELECT` or `INLINE_MULTISELECT` in dense filters with `optionEnum` / `optionItems` |
 
-For closed/static choices, prefer `@UISchema(..., optionItems = {@UiOption(value = "...", label = "...", icon = "...", tone = QuickFilterTone.*)})` (`org.praxisplatform.uischema.annotation.UiOption`) or `@UISchema(..., optionEnum = MyEnum.class)`. Do not use stringified `@UISchema(options = "...")`, which is `@Deprecated(since = "2.1.0")`, and never combine `optionItems`, `optionEnum`, and `options` on the same property (`uischema-options-source-conflict`). Keep option `label <= 36` chars without a trailing period and `icon` in lowercase `snake_case`.
+For closed/static choices, prefer `@UISchema(..., optionItems = {@UiOption(value = "...", label = "...", icon = "...", tone = QuickFilterTone.*)})` (`org.praxisplatform.uischema.annotation.UiOption`) or `@UISchema(..., optionEnum = MyEnum.class)`. When `MyEnum` implements `PraxisUiOptionEnum` (`org.praxisplatform.uischema.option.PraxisUiOptionEnum`), `OpenApiUiUtils` emits rich `{value, label, icon, tone}` option entries automatically, `ResourceExportSupport` propagates `valueLabels` into `CollectionExportFieldPresentation`, and `EntityLookupDescriptor.directoryBuilderFromDto(...)` auto-derives lookup status metadata and `LookupSelectionPolicy` from `selectableInLookup()`. Do not use stringified `@UISchema(options = "...")`, which is `@Deprecated(since = "2.1.0")`, and never combine `optionItems`, `optionEnum`, and `options` on the same property (`uischema-options-source-conflict`). Keep option `label <= 36` chars without a trailing period and `icon` in lowercase `snake_case`.
 | date | `DATE_PICKER` |
 | date-time | `DATE_TIME_PICKER` |
 | date/date-time range filter | `DATE_RANGE` or `DATE_TIME_RANGE` |
@@ -131,11 +131,17 @@ Canonical presets currently include:
 - `ENTERPRISE_NAME`
 - `ENTERPRISE_STATUS`
 - `DATE_RANGE`
+- `LOCAL_DATE`
+- `LOCAL_DATE_TIME`
+- `INTEGER_COUNTER`
 - `MONETARY_AMOUNT`
 - `BOOLEAN_FLAG`
+- `ENTITY_LOOKUP`
 - `LEGAL_DOCUMENT_REFERENCE`
 - `TENANT_LABEL`
 - `AUDIT_TIMESTAMP`
+
+Explicit `@UISchema` attributes always take precedence over preset defaults (including `NumericFormat`, `controlType`, `type`, and `width`). When `numericFormat` is left at its default `NumericFormat.AUTO`, OpenAPI omits implicit `x-ui.numericFormat` unless explicitly specified or supplied by a preset (e.g. `INTEGER_COUNTER` supplies `NumericFormat.INTEGER`).
 
 Presets reduce visual boilerplate; they do not author domain meaning. A field with a preset still
 needs an explicit `@Schema.description` that explains the business role, and may still need
@@ -161,12 +167,17 @@ private String code;
 Use layout metadata only when it expresses a reusable platform UX decision:
 
 - `width`: reserve for predictable form/grid proportions; avoid one-off pixel tuning.
+- `colSpan`: declarative 12-column form/grid span (`1..12`, `0` = automatic -> `x-ui.colSpan`, validated by `SemanticMetadataReviewer` via `uischema-colspan-invalid`).
+- `conditionalReadOnly`: declarative JSON Logic expression controlling conditional editability (`x-ui.conditionalReadOnly`, validated by `SemanticMetadataReviewer` via `uischema-conditional-readonly-invalid`).
+- `@TableView(columns = {...}, pinnedStart = {...}, pinnedEnd = {...})` (`@Target(TYPE)`): declares ordered visible table columns (`x-ui.tableOrder`), sticky start/end columns (`x-ui.pinned`), and automatically sets `x-ui.tableHidden = true` on unlisted fields (reviewed via `tableview-column-unknown` and `tableview-pinned-conflict`).
+- `@UiFormLayout(mode = LayoutMode.FLAT | TABS | ACCORDION | STEPPER, sections = {@UiSection(id = ..., title = ..., subtitle = ..., icon = ..., order = ..., groups = {...})})` (`@Target(TYPE)`): emits `x-ui.formLayout` organizing `@UISchema(group = ...)` blocks into declarative visual sections (reviewed via `form-layout-section-duplicate-id` and `form-layout-section-icon-invalid`).
 - `displayOrientation`: use for compact filter groups, radio/toggle rows, and related controls when
   the runtime supports the value.
 - `valuePresentation`: prefer for read-only scalar values where display semantics matter, such as
   currency, percentage, date, datetime, time, or compact numbers.
 - `numericFormat`, `numericStep`, `numericMin`, and `numericMax`: align numeric input and display
-  with Bean Validation and domain constraints.
+  with Bean Validation and domain constraints (`NumericFormat.AUTO` is the annotation default).
+- `CollectionExportFieldPresentation`: `ResourceExportSupport` derives export formatting (`semanticType`, `format`, `currency`, `locale`, `timeZone`, `trueLabel`, `falseLabel`, `nullDisplay`, and `Map<String, String> valueLabels` from `@UiOption`/`PraxisUiOptionEnum`) so `AbstractTabularCollectionExportEngine` honors `CollectionExportRequest.applyFormatting()`.
 
 Corporate defaults:
 

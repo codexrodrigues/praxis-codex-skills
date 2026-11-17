@@ -508,3 +508,26 @@ Do not silently drop a provider key accepted by the backend in the UI, or claim
 that generic own-property traversal makes those names usable by Angular FormGroup.
 Re-run projection/spec conformance and the consumer control/submit regression after
 changing this boundary.
+
+## Wave 1 Schema, Filter, Governance & Multitenancy Contracts (`8.0.0-rc.193`)
+
+- **Declarative DTO Layout, Table Projection & Field Ergonomics (`x-ui`):**
+  - `NumericFormat.AUTO` is the `@UISchema` default (omitting implicit `x-ui.numericFormat` unless explicitly specified or supplied by a preset such as `UISchemaPreset.INTEGER_COUNTER`). New presets in `UISchemaPreset`: `LOCAL_DATE`, `LOCAL_DATE_TIME`, `INTEGER_COUNTER`, `ENTITY_LOOKUP`. Explicit `@UISchema` attributes override preset defaults.
+  - `@UISchema(conditionalReadOnly = "...", colSpan = ...)` publishes `x-ui.conditionalReadOnly` and `x-ui.colSpan` (`1..12`, `0` = automatic).
+  - `@TableView(columns = {...}, pinnedStart = {...}, pinnedEnd = {...})` (`@Target(TYPE)`) emits `x-ui.tableOrder`, `x-ui.pinned` (`"start"`/`"end"`), and automatically marks unlisted properties `x-ui.tableHidden = true`.
+  - `@UiFormLayout(mode = LayoutMode.*, sections = {@UiSection(...)})` (`@Target(TYPE)`) emits `x-ui.formLayout` over `@UISchema(group = ...)`.
+  - `PraxisUiOptionEnum` auto-populates rich `{value, label, icon, tone}` `options` via `OpenApiUiUtils` and lookup status/selection policies via `EntityLookupDescriptor.directoryBuilderFromDto(...)`.
+  - `@ContextScopeBinding` (`ScopeDimension`) emits `x-ui.contextBinding`; `@DraftCleared` emits `x-ui.draftCleared` (clearing non-primitive fields in `duplicate-draft`); `@ResourceState` emits `x-ui.resourceState` (enforced on create/`PUT` in `AbstractBaseResourceService`); `@ResourceProgression`, `@ResourceTimeline`, and `@ResourceSchedule` emit `x-ui.progression`, `x-ui.timeline`, and `x-ui.schedule`.
+  - `@UiAnalytics` supports `@Target({ElementType.METHOD, ElementType.TYPE})`; `@BulkEditable` and `@DefaultSortColumn` support `@Target({ElementType.FIELD, ElementType.METHOD, ElementType.RECORD_COMPONENT})`.
+  - `@WorkflowAction` exposes `icon`, `tone` (`QuickFilterTone`), `modifiedFields`, and `disallowedStateReason` in `ActionDefinition` / `ActionCatalogItem`.
+- **Filter Metadata Inheritance & Timezone:**
+  - `@Filterable(primarySearch = true)` emits `x-ui.primarySearch` for unified broad-search inputs.
+  - `FilterFieldMetadataInheritanceSupport` (registered through `CustomOpenApiResolver.registerFilterResponsePair(...)`, `OpenApiUiSchemaAutoConfiguration#filterSchemaInheritanceOpenApiCustomizer`, and `ApiDocsController`) inherits missing `icon`, `endpoint`, `valueField`, `displayField`, and `options` metadata from `ResponseDTO` onto `FilterDTO` by matching property name or `relation`.
+  - `praxis.filter.time-zone` (default `${praxis.filter.relative-period.zone-id:UTC}`) binds the configured `ZoneId` into both `RelativePeriodPayloadNormalizer` and `GenericSpecificationsBuilder`.
+  - `PraxisMetadataRequestMatchers.readOnlyPostPatterns(...)` supplies `PathPatternParser`-safe read-only POST route patterns (`/filter`, `/filter/cursor`, `/locate`, `/options/filter`, `/options/by-ids`, `/stats/**`, `/export`, `/reactive-determinations/evaluate`) for Spring Security CSRF exclusions.
+- **Bulk Startup, Composite Codecs, Export Formatting & Governance SPIs:**
+  - `BulkOperationLifecycle.ensureReadyOnStartup(BulkOperationControlIdentity)` converges `UNCOMPOSED`/`SUSPENDED` operations to `READY`, reconciles matching published graphs, and suspends+republishes drifted operations on rolling upgrades.
+  - `BulkSnapshotStorageCodec` / `BulkIdentityCodecs.composite(...)` resolve `composite:<SimpleOrClassName>` snapshot codec IDs via `CompositeIdSupport.findRegisteredCompositeIdType(...)`.
+  - `CollectionExportFieldPresentation` carries `valueLabels` derived from `@UiOption`/`PraxisUiOptionEnum`, applied when `CollectionExportRequest.applyFormatting() == Boolean.TRUE`; `praxis.export.include-table-hidden-by-default` (`true` by default) controls whether `tableHidden` fields enter `ResourceExportSupport.allExportableFields(...)`.
+  - `ResourceGovernanceInterceptor` (`AccessMode`, `MutationContext`, `MutationKind`) and `ResourceOperationAvailabilityRule` (`CompositeResourceOperationAvailabilityEvaluator`) provide ordered cross-cutting row-scope, entity-access, response decoration, mutation interception, and availability composition without boilerplate service overrides.
+  - `org.praxisplatform.uischema.multitenancy` provides opt-in primitives: `TenantRealmContext`, `TenantRealmRoutingDataSource`, `TenantRequestValidationInterceptor`, `MultiOrganizationAccessScopeResolver`, `RealmScopedCsrfTokenRepository`, and `RealmScopedSecurityContextRepository`.
