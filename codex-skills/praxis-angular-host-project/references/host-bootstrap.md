@@ -13,7 +13,7 @@ Use this file when creating or reviewing Angular host bootstrap for Praxis UI.
 - Include peer-required Angular packages even when the app does not import them directly. Published Praxis UI trains may pull packages such as `@angular/platform-browser-dynamic` through secondary peer closure.
 - If the host uses `provideZoneChangeDetection`, install `zone.js` and add it to build polyfills. New Angular CLI scaffolds may not include `zone.js` automatically.
 
-The quickstart reference observed in the platform uses Angular 21 and `@praxisui/*` `10.0.0-rc.49`. Re-check current packages when building a real host because the package train evolves continuously.
+The quickstart reference observed in the platform uses Angular 21 and `@praxisui/*` `10.0.0-rc.50`. Re-check current packages when building a real host because the package train evolves continuously.
 
 ## New Host Commands
 

@@ -509,7 +509,7 @@ that generic own-property traversal makes those names usable by Angular FormGrou
 Re-run projection/spec conformance and the consumer control/submit regression after
 changing this boundary.
 
-## Wave 1 Schema, Filter, Governance & Multitenancy Contracts (`8.0.0-rc.193`)
+## Wave 1 Schema, Filter, Governance & Multitenancy Contracts (`8.0.0-rc.195`)
 
 - **Declarative DTO Layout, Table Projection & Field Ergonomics (`x-ui`):**
   - `NumericFormat.AUTO` is the `@UISchema` default (omitting implicit `x-ui.numericFormat` unless explicitly specified or supplied by a preset such as `UISchemaPreset.INTEGER_COUNTER`). New presets in `UISchemaPreset`: `LOCAL_DATE`, `LOCAL_DATE_TIME`, `INTEGER_COUNTER`, `ENTITY_LOOKUP`. Explicit `@UISchema` attributes override preset defaults.

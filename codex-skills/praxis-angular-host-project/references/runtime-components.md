@@ -153,7 +153,7 @@ For row actions that open backend surfaces:
 - For materialized surfaces, check `PraxisSurfaceHostComponent` outputs such as `rowClick`, `selectionChange`, and `widgetEvent` before adding host event bridges.
 - For related resources, prefer published `surface.relatedResource` plus `RelatedResourceSurfaceResolverService` or `PraxisRelatedResourceOutletComponent`. Do not duplicate the parent-child relationship in local filters unless the product intentionally overrides the canonical query context.
 
-## Expansion Path (`@praxisui/*@10.0.0-rc.49` Turnkey Surfaces & Visualizers)
+## Expansion Path (`@praxisui/*@10.0.0-rc.50` Turnkey Surfaces & Visualizers)
 
 Add after the core path works (always choosing turnkey Praxis components over custom host wrappers):
 

@@ -29,7 +29,7 @@ Before changing a core-facing skill or implementation, inspect the real source f
 
 Do not rely on memory of the package. The core public API changes often and is the upstream owner for many runtime behaviors that vertical libs consume.
 
-## Canonical Owner Decision (`@praxisui/core@10.0.0-rc.49`)
+## Canonical Owner Decision (`@praxisui/core@10.0.0-rc.50`)
 
 Put the fix in `@praxisui/core` when the concern is shared across libraries or affects one of these contracts:
 

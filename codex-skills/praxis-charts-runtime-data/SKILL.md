@@ -57,11 +57,11 @@ When local `praxis-ui-angular` source is available, inspect the focused files be
 
 Read `projects/praxis-charts/AGENTS.md` before editing chart runtime or authoring-adjacent code. Use `praxis-angular-agents-governance` if the local AGENTS file is missing, stale, or contradicts this skill.
 
-## Runtime Rules (`@praxisui/charts@10.0.0-rc.49`)
+## Runtime Rules (`@praxisui/charts@10.0.0-rc.50`)
 
 Use `<praxis-chart [chartDocument]="...">` for governed chart documents. Use `[config]` only when a canonical owner has already materialized `PraxisChartConfig`, such as a trusted adapter or a static local demo. Prefer `chartDocument` in dashboards, AI-authored widgets, page-builder widgets, and backend-provided catalog entries.
 
-### Turnkey Visualizers & Widget Registration (`10.0.0-rc.49`)
+### Turnkey Visualizers & Widget Registration (`10.0.0-rc.50`)
 
 Before building custom dashboard cards, KPI wrappers, ladder timelines, or waterfall tables in host code, register `providePraxisChartsWidgets()` (alongside `providePraxisCharts()`) and consume the turnkey `@praxisui/charts` components:
 

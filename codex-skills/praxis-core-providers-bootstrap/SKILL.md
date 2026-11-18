@@ -34,11 +34,11 @@ Before editing code or guidance, inspect:
 - focused provider/token/service specs and direct consumer imports
 - For icon-family behavior, also inspect `components/icon/praxis-icon.directive.ts`, `components/icon-button/praxis-icon-button.component.ts` and their focused specs in the exact installed or candidate version.
 
-## Canonical Boundary (`@praxisui/core@10.0.0-rc.49`)
+## Canonical Boundary (`@praxisui/core@10.0.0-rc.50`)
 
 `@praxisui/core` owns shared Angular tokens, provider factories, registries, bootstrap services, global config, API URL contracts, loading renderer/orchestrator contracts, collection export providers, icon providers, field selector registry defaults, component metadata registry, enterprise runtime context, and Wave 2 session/realm/theme/scope infrastructure.
 
-### Turnkey Enterprise Bootstrap Providers (`10.0.0-rc.49`)
+### Turnkey Enterprise Bootstrap Providers (`10.0.0-rc.50`)
 
 Before building custom auth/CSRF wrappers, realm URL parsers, theme toggle stores, or cache-clearers in a host:
 

@@ -90,7 +90,7 @@ Use the canonical payload pipeline:
 
 Do not patch around submit gaps in hosts. If backend submission fails, first inspect whether field metadata, option source, submit policy, DTO schema, or metadata starter contract is wrong.
 
-### Wave 2 Schema-Driven Form Lifecycle (`@praxisui/dynamic-form@10.0.0-rc.49`)
+### Wave 2 Schema-Driven Form Lifecycle (`@praxisui/dynamic-form@10.0.0-rc.50`)
 
 - **Conditional Read-Only (`x-ui.conditionalReadOnly`)**: `PraxisDynamicForm` evaluates `conditionalReadOnly` predicates reactively (`evaluateFieldConditionalReadOnly`) against dependency control changes without writing bespoke `FormRulesService` scripts in hosts.
 - **Draft-Cleared Create Seeds (`x-ui.draftCleared`)**: `getNormalizedInitialValue()` automatically invokes `stripDraftClearedValues(normalized, fieldMetadata)` when `mode === 'create'` (clearing sensitive/unique fields flagged by the backend on duplicate-draft seeds), while preserving them intact when `mode === 'edit'`.

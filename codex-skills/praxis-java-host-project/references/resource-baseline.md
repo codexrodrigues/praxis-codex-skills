@@ -119,7 +119,7 @@ When scaffolding a brand-new Praxis Spring Boot host project, always emit a comp
 
     <properties>
         <java.version>21</java.version>
-        <praxis.core.version>8.0.0-rc.193</praxis.core.version>
+        <praxis.core.version>8.0.0-rc.195</praxis.core.version>
         <lombok.version>1.18.32</lombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>

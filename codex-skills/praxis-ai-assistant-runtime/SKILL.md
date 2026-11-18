@@ -40,11 +40,11 @@ Inspect:
 - `src/lib/ui/assistant-dock/**`
 - relevant specs for backend API, assistant shell, session host, history, validator, and turn client
 
-## Runtime Rules (`@praxisui/ai@10.0.0-rc.49`)
+## Runtime Rules (`@praxisui/ai@10.0.0-rc.50`)
 
 ### Turnkey Workspace Copilot (`<praxis-workspace-assistant>`)
 
-Instead of hand-coding custom workspace AI drawers, route-action dispatchers, or SSE proposal UIs in hosts, mount `<praxis-workspace-assistant>` (`PraxisWorkspaceAssistantComponent`) paired with `WorkspaceAssistantOrchestratorService` (`PRAXIS_WORKSPACE_ASSISTANT_ROUTER`, `PRAXIS_WORKSPACE_ASSISTANT_OPTIONS`, and `normalizeSafeWorkspaceRoute()`):
+Instead of hand-coding custom workspace AI drawers, route-action dispatchers, or SSE proposal UIs in hosts, mount `<praxis-workspace-assistant>` (`PraxisWorkspaceAssistantComponent`) paired with `WorkspaceAssistantOrchestratorService` (`PRAXIS_WORKSPACE_ASSISTANT_ROUTER`, `PRAXIS_WORKSPACE_ASSISTANT_OPTIONS`, `registerFallbackRouter`, and `normalizeSafeWorkspaceRoute()`, where `PraxisWorkspaceAssistantComponent` and `configureOptions` run signal writes inside `untracked()` so `[assistantOptions]` bindings never recurse or clobber host navigation handlers):
 
 - Inputs: `showDock` (`true`), `title`, `subtitle`, `placeholder`, `mode`, `draggable`, `resizable`, `dockTestId`, `shellTestIdPrefix`, `routeContext` (`WorkspaceAssistantRouteContext`), `componentId`, `componentType`, `assistantOptions`.
 - Outputs: `openChange`, `blockActionDispatched`, `blockActionRaw`, `openSurface`, `applyFilter`, `runAction`, `navigateRequested`.
