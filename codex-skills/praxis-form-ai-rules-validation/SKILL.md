@@ -85,6 +85,7 @@ changing manifest, adapter, recipe, registry, or public docs involving `componen
   adapter may compile a returned `componentEditPlan` only after the resolver has selected a
   component-authoring operation; it must not decide primary business intent from words in the form.
 - `field.local.add` is for local form-only fields. Do not create backend DTO fields for local/transient UI needs.
+- For stepper layout and session draft authoring, use the declared manifest operations `layout.mode.set` (supporting `mode: 'stepper'`, `hideSectionHeaderInStepper`, `stepperInReadMode`, `stepperReviewStep`, and `steps: FormLayoutStepItem[]`), `section.update` (supporting `optional: boolean`), and `behavior.draftPersistence.set` (supporting `draftPersistence: boolean`). These stepper/draft operations belong to the full Dynamic Form manifest and must remain excluded from `PRAXIS_FILTER_FORM_AUTHORING_MANIFEST`.
 - Never write `formRulesState` directly; write `formRules` and let internals derive builder state.
 - Use Json Logic only; do not generate JavaScript handlers or arbitrary functions.
 - Do not assume every visual-builder node or value type is form-rule-ready. Context-variable and

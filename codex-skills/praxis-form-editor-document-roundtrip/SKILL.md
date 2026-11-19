@@ -106,7 +106,12 @@ Nested layout policy is still canonical authoring data when it was explicitly au
 particular, preserve `groupedCommand.partialRowStrategy` through document normalization, editor
 apply plans, JSON serialization, save, and reopen. Do not flatten it into generated column spans or
 drop it because the generated schema sections are transient; the policy is authored while those
-sections are derived.
+sections are derived. Likewise, preserve `config.layout.mode` (`'vertical' | 'tabs' | 'accordion' | 'stepper'`),
+`config.layout.steps` (`FormLayoutStepItem[]` including `optional`), `config.sections[].optional`,
+`config.layout.hideSectionHeaderInStepper`, `config.layout.stepperInReadMode`,
+`config.layout.stepperReviewStep`, and `config.behavior.draftPersistence` across document round-trip,
+while keeping `activeStepIndex` and `sessionStorage` draft entries (`praxis-session-draft:<tenant>:<resource>:<formId>:create`)
+transient and never serialized into `DynamicFormAuthoringDocument`.
 
 Filter form and dynamic form widget editors must follow the same document semantics. Do not create a separate filter-form authoring document unless the shared contract cannot represent a proven gap.
 

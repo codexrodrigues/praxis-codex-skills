@@ -85,6 +85,15 @@ private String cargoNome;
 For hidden technical fields, prefer `hidden = true` only when the field must not appear anywhere.
 Use `tableHidden` or `formHidden` when the field belongs to one surface but not the other.
 
+### Multi-Section Form Layout (`@FormLayout`)
+
+When a command DTO (`CreateDTO`, `UpdateDTO`, or `@WorkflowAction` request DTO) or a unit `ResponseDTO` organizes fields into 2 or more semantic `group`s, annotate the DTO class (or controller endpoint method) with `@FormLayout` to publish `x-ui.formLayout` in `/schemas/filtered`:
+
+- **Modes (`FormLayoutMode`)**: `FLAT` (`"flat"`), `VERTICAL` (`"vertical"`), `TABS` (`"tabs"`), `ACCORDION` (`"accordion"`), `STEPPER` (`"stepper"`), or `AUTO` (`FormLayoutMetadataResolver` automatically resolves `"stepper"` when `steps.length >= 2`, `effectiveGroupCount >= 4`, or `effectiveGroupCount >= 3` with `>= 12` fields — enabling `stepperReviewStep = true` and `draftPersistence = true` when `effectiveGroupCount >= 4` or `steps.length >= 3` —, `"tabs"` when `effectiveGroupCount >= 2` with `>= 6` fields or `sections.length >= 2`, or `"flat"`).
+- **Sections & Macro-Steps**: Use `sections = {@FormLayoutSection(id = "...", title = "...", subtitle = "...", icon = "...", order = 1, optional = UiBoolean.TRUE, groups = {"..."})}` to map `@UISchema(group = ...)` values into sections, and optionally `steps = {@FormLayoutStep(id = "...", label = "...", description = "...", icon = "...", sectionIds = {"..."}, optional = UiBoolean.TRUE)}` to group multiple sections into a single stepper chapter.
+- **Enterprise Flags**: `stepperReviewStep = UiBoolean.TRUE` (appends the automatic final review/diff step `__praxis_stepper_review__`), `draftPersistence = UiBoolean.TRUE` (enables multi-tenant `sessionStorage` draft persistence in `create` mode), `stepperInReadMode = FormLayoutStepperReadMode.PRESENTATION` (`PRESENTATION`, `ALL`, `NONE`), `hideSectionHeaderInStepper`, `hideSectionHeaderInTabs`, `tabsAppearance`, `defaultTabId`, and `accordionMulti`.
+- **Boundary**: Endpoints for filters (`GenericFilterDTO`, `/filter*`, `/by-ids`), collection listings, `/stats/*`, `/options/*`, and `/export` automatically suppress `x-ui.formLayout`. Validate statically with `PraxisExpressionStaticValidator.validateDtoClasses(dtoClasses, true)`.
+
 ## Control Selection
 
 Prefer explicit `controlType` when UX matters. Leave `AUTO` only when the starter heuristic is

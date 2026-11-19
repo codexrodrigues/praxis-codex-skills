@@ -48,6 +48,7 @@ Do not rebuild CRUD drawers, modals, or table/form launchers in apps when the mi
 - Drawer mode uses `CRUD_DRAWER_ADAPTER` when provided; otherwise it falls back to the package dialog host with drawer presentation.
 - Host adapters must import from `@praxisui/crud/drawer-adapter`; the adapter seam must not become a second CRUD runtime.
 - Save/delete results must propagate back to `PraxisCrudComponent` so outputs and table refresh stay component-owned.
+- When hosted forms run in stepper mode (`layout.mode = 'stepper'`), `CrudLauncherService` (`onStepTelemetry`), `DynamicFormDialogHostComponent`, `CrudDrawerAdapter`, and `CrudRouteFormHandoffService` forward metadata-only step transitions (`FormStepTelemetryEvent`) to `@Output() formStepTelemetry` (`CrudFormStepTelemetryEvent`) on `PraxisCrudComponent`.
 - `form.submitUrl` and `form.submitMethod` must appear together.
 - `actions[].params` maps row/context values into route/query/input and is not persistence.
 - When an action lacks an explicit open binding, prefer discovered CRUD surfaces/actions from capabilities, HATEOAS links, `/schemas/surfaces`, and `/schemas/actions` before falling back to legacy launcher behavior. If an explicit route/modal/drawer binding exists, preserve it and do not refetch discovery just to override the host contract.
@@ -207,6 +208,14 @@ dialog, reloading its parent, or losing confirmation responses. Audit the parent
 owner and existing replay protocol before adding a store or endpoint. Keep those
 gates and real backend commit/replay evidence explicit; do not describe UI mocks
 as operational acceptance.
+
+## Custom Field Studio Orchestration
+
+When `metadata.customFieldsStudio?.enabled` is set, `@praxisui/crud` owns launching `PraxisCustomFieldStudioDialogComponent` (`openCustomFieldsStudio`) from `<praxis-resource-page>` target-resource triggers or catalog `create`/`edit` actions. Enforcement rules:
+
+- Guard both `openCustomFieldsStudio` and `<praxis-resource-page>` triggers (`canOpenCustomFieldsStudio`) against `interactionMode === 'inspect-only'` (also rejected by `assertCrudMetadata` and the `public-local-inspect-only` metadata profile) and against `metadata.customFieldsStudio.requiredAuthority` via `EnterpriseRuntimeContextService`.
+- After a confirmed `POST`/`PUT` Studio save (with `If-Match` ETag when editing, and blocking submit until remote hydration/ETag loading completes), invalidate `DynamicFormService` + `PraxisCacheInvalidatorService`, reload the active schema, call `table.reloadSchema()` (refreshing columns and `<praxis-filter>`), and refresh the table. Also invalidate `DynamicFormService` + `PraxisCacheInvalidatorService` when catalog `delete`, bulk, discovered-surface, or modal/drawer actions mutate definitions.
+- Keep `@praxisui/crud` completely decoupled from `@praxisui/ai` and host domains: localize UI strings through `@praxisui/core` `PraxisI18nService`, supply host catalog hints/examples via `officialCatalogHint` and `aiPromptExamples`, and execute optional natural-language field drafting over HTTP via `studioConfig.aiDraftEndpoint` into `hydrateFromRecord` for human review before saving.
 
 ## Child Boundaries
 

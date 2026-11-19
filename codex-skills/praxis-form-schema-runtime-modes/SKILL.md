@@ -232,7 +232,15 @@ Back/reload without a fresh handoff stays unavailable. Use
   submit URL/method. If a command form needs local field filtering, label correction, option mapping,
   or disabled/read-only fixes, treat that as metadata/request-schema debt before adding Dynamic Form
   aliases or local `sections`.
-- External `config` or metadata updates must rebuild or reconcile the runtime without erasing canonical schema-backed metadata.
+- External `config` or metadata updates must rebuild or reconcile the runtime without erasing canonical schema-backed metadata. `@praxisui/core`'s `reconcileFormConfig` packs multi-column custom-field widths (`25%`, `33%`, `50%`, `66%`, `100%`) into grid rows and synchronizes `layout.tabs` and `layout.steps` alongside `sections`.
+- **Schema-Driven `x-ui.formLayout` (`@FormLayout`) & Backend `FormLayoutMode.AUTO`**:
+  - `form-layout-materializer.ts` consumes root `x-ui.formLayout` published by `praxis-metadata-starter` (`@FormLayout`, `@FormLayoutSection`, `@FormLayoutStep`, including `FormLayoutMode.AUTO` heuristics) as a 4th-tier transient layout fallback (`[layoutMode]` > `[formLayout]` > `config.layout` > `x-ui.formLayout` > `'vertical'`).
+  - Materializes `mode` (`flat`/`vertical`, `tabs`, `accordion`, `stepper`), `sections[]` (with `optional`), `steps[]` (grouping `sectionIds` with `optional`), `stepperInReadMode`, `stepperReviewStep`, and `draftPersistence` without polluting persisted authored `FormConfig.sections` when `layoutPolicy.persistence === 'transient'`.
+- **Session Draft Persistence (`behavior.draftPersistence` / `layout.draftPersistence` / `x-ui.formLayout.draftPersistence`)**:
+  - In `mode='create'`, automatically saves and restores form drafts and the active step index (`activeStepIndex`) in `sessionStorage` under the multi-tenant key `praxis-session-draft:<tenant>:<resource>:<formId>:create` (omitting `password` and `transient` fields).
+  - Surfaces an accessible restoration banner (`role="status"`, `aria-live="polite"`) with a `"Descartar rascunho"` action (`discardRestoredSessionDraft()`), governed exit confirmation (`"Sair e manter rascunho"` / `"Leave and keep draft"`), and synchronous `flushSessionDraft()` invoked by `canLeaveForm()` and `DynamicFormDialogHostComponent` on dirty modal/drawer close so keystrokes inside the 250ms debounce window are never lost.
+- **Structured Step Telemetry (`@Output() stepTelemetry`)**:
+  - Emits `FormStepTelemetryEvent` (`fromStepIndex`, `toStepIndex`, `stepId`, `totalSteps`, `reason`: `'next' | 'previous' | 'header' | 'review-edit' | 'validation-recovery' | 'http-422-recovery' | 'draft-restored'`) on every step transition without including field values or PII.
 
 Do not create `FormConfig.sections` or `sections: []` merely to make a schema-driven form initialize. If generated layout is weak, classify the gap and fix metadata/runtime materialization.
 

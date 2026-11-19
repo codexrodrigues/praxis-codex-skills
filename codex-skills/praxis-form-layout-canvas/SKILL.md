@@ -126,6 +126,21 @@ versions materialized by resource-action discovery must survive; do not expose t
 as editable fields or restore them with a host submit hook. Verify metadata retention,
 layout omission and the actual request payload, including hidden context fields.
 
+### Native Stepper Layout (`layout.mode = 'stepper'`), Macro-Steps (`layout.steps`), Optional Steps, Final Review Step (`stepperReviewStep`) & Print
+
+- **Single-`FormGroup` Native Stepper (`config.layout.mode = 'stepper'`)**: Projects visible form sections (or explicit multi-section macro-steps via `config.layout.steps: FormLayoutStepItem[]`) into a guided step header (`role="tablist"`) and step panel (`role="tabpanel"`) over the single root `FormGroup`. Never instantiate separate `<praxis-dynamic-form>` components per step for a single transactional aggregate.
+- **4-Tier Layout Mode Precedence**: `[layoutMode]` > `[formLayout]` > `config.layout` > schema `x-ui.formLayout` (`@FormLayout`) > `'vertical'`. When fewer than 2 visible steps remain, `'stepper'` automatically degrades to `'vertical'` without rendering a redundant progress header.
+- **Multi-Section Macro-Steps (`layout.steps`) & Optional Steps (`optional`)**:
+  - `layout.steps` (`{ id, label, description?, icon?, sectionIds: string[], optional?: boolean }[]`) groups multiple `sectionIds` into a single step chapter while preserving internal section headers whenever a step contains `> 1` visible sections (even when `hideSectionHeaderInStepper` is `true`). Unreferenced visible sections are appended at the end.
+  - Step optionality resolves from `layout.steps[].optional ?? section.optional`. Optional steps display an accessible `Opcional`/`Optional` pill, allow skipping empty optional fields, unlock future step buttons immediately once all preceding mandatory steps are valid and satisfied, and block advancing if any control inside the optional step is actively invalid (even if untouched).
+  - In `LayoutEditorComponent`, maintain the **Agrupamento de etapas (`layout.steps`)** editor and prune orphaned `sectionIds` when a section is deleted.
+- **Automatic Final Review Step (`layout.stepperReviewStep = true` / `@FormLayout(stepperReviewStep = UiBoolean.TRUE)`)**:
+  - Appends a synthetic final step (`__praxis_stepper_review__`) in `create`/`edit` mode when `>= 2` steps are visible.
+  - Displays per-chapter quantitative required-field completion badges (`X/Y obrigatórios`, via `requiredSatisfiedCount`/`requiredTotalCount`), a `"Mostrar apenas alterados"` toggle (`aria-pressed`), modified field badges (`Alterado`, suppressing false-positive `dirty` when an edited value returns to its initial baseline), `<del>previous</del> → current` diff in `edit` mode, item-by-item collection diffs (`+ Novo`, `~ Alterado`, `- Removido` in 3 passes: immutable technical key, display name key, or `1 -> 1` positional fallback for single-item unkeyed collections), chapter-level `"Editar etapa"` and field-level `"Editar campo"` (`editStepperReviewField(stepIndex, fieldName)`) direct focus jump-back, and `'••••••••'` masking for `password` controls.
+- **Read/Presentation Policy (`stepperInReadMode`) & `@media print`**:
+  - `stepperInReadMode` (`'presentation'` default, `'all'`, or `'none'`) keeps non-linear chapter navigation (`role="tablist"`, navigation-only footer without submit) in `presentation`/`dossier` modes by default and degrades blocked `view` mode to `'vertical'` unless `'all'` is configured.
+  - Under `@media print`, inactive steps, tabs, and collapsed `accordion`/`collapsible` sections (kept mounted in the DOM via `[hidden]` in presentation/dossier mode) automatically expand with `data-print-section-title` fallback (`section.title || layout.steps[].label || layout.tabs[].label`), while hiding interactive stepper/tab headers, review steps, and draft banners.
+
 ## Inventory Before New Contract
 
 - `ja-suportado-so-ux`: `items[]`, layout policy, visual block, or schema metadata already supports the need, but the canvas/editor does not expose the workflow clearly.

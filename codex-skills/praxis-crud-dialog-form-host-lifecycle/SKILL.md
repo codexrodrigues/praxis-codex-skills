@@ -43,6 +43,9 @@ Use `praxis-form-runtime-submit` for dynamic-form submit contracts, `praxis-tabl
 - Do not refresh the table merely because a drawer/modal opened, a duplicate draft was fetched, or a close event happened. Refresh only after the semantic mutation result (`save` or `delete`) is received.
 - Canonical delete is not a form open mode. It uses confirmation plus resolved HTTP delete/action contract.
 - Preserve back/return behavior for route mode and cancel/close behavior for modal/drawer mode.
+- In read-only modes (`view`, `presentation`, `dossier`), closing or cancelling `DynamicFormDialogHostComponent` must never display the `"Descartar alterações?"` confirmation dialog even if child controls or reactive hydrations mark `form.dirty`.
+- In `mode='create'` when session draft persistence is active (`behavior.draftPersistence`, `layout.draftPersistence`, or `x-ui.formLayout.draftPersistence`), closing a dirty modal or drawer displays the governed `"Sair e manter rascunho"` (`"Leave and keep draft"`) confirmation and calls `dynamicFormRef.flushSessionDraft()` synchronously before closing the overlay so debounced keystrokes and `activeStepIndex` are persisted in `sessionStorage`.
+- Forward `@Output() stepTelemetry` (`FormStepTelemetryEvent`) from `DynamicFormDialogHostComponent`, `CrudLauncherService`, `CrudDrawerAdapter`, and `CrudRouteFormHandoffService` (`CrudRouteFormComponent`) to `@Output() formStepTelemetry` (`CrudFormStepTelemetryEvent`) on `PraxisCrudComponent`, preserving metadata-only telemetry (no business payloads or PII).
 - Maximize/remember-state behavior is dialog-host chrome only; it must not mutate form config or CRUD metadata.
 
 Pass the exact operation/form mode and Reactive Determination metadata into the

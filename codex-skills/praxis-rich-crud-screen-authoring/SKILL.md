@@ -95,7 +95,7 @@ If the user asks for those, use or create a separate composed-screen/master-deta
 
 When the CRUD screen depends on richer table behavior inside `PraxisCrudComponent`, use `praxis-table-runtime-data` for table runtime/data-mode/export concerns, `praxis-table-filter-actions` for filters and row/toolbar/bulk actions, and `praxis-table-authoring-settings` for table editor or Settings Panel parity.
 
-When CRUD opens or embeds richer Dynamic Form behavior, use `praxis-form-runtime-submit` for schema/submit/runtime contracts, `praxis-form-authoring-settings` for form editor round-trip, and `praxis-form-layout-canvas` for schema-driven form layout or visual blocks.
+When CRUD opens or embeds richer Dynamic Form behavior, use `praxis-form-runtime-submit` for schema/submit/runtime contracts, `praxis-form-authoring-settings` for form editor round-trip, and `praxis-form-layout-canvas` for schema-driven form layout (`layout.mode = 'stepper' | 'tabs' | 'accordion' | 'vertical'`, `layout.steps`, `stepperReviewStep`, `stepperInReadMode`, `draftPersistence`) or visual blocks. Note that `<praxis-crud>` forwards metadata-only step transitions from modal, drawer, and route forms via `@Output() formStepTelemetry` (`CrudFormStepTelemetryEvent`), suppresses `"Descartar alterações?"` on read-only (`view`/`presentation`/`dossier`) modal/drawer close, and flushes `sessionStorage` drafts synchronously (`flushSessionDraft()`) when closing a dirty `create` modal/drawer with `"Sair e manter rascunho"`.
 
 ## CRUD Experience Selection
 
@@ -134,6 +134,10 @@ Keep the screen usable and direct. A CRUD skill should accelerate development, s
 8. Run the smallest reliable validation for the changed scope.
 
 For `praxis-ui-angular`, prefer focused builds or tests for the affected app feature or `@praxisui/crud` lib. For public API or cross-lib changes, also validate a direct consumer. Do not use GitHub Actions as the normal development validation path.
+
+## Custom Fields Extensibility
+
+When authoring or maintaining a `<praxis-crud>` screen backed by a backend `@CustomFields` resource, expose `customFieldsStudio` metadata on the resource descriptor (in `target-resource` mode on domain screens or `catalog` mode on the catalog resource) rather than building bespoke field-builder forms, side-by-side manual forms, or custom storage pages.
 
 ## Route Lab Convention
 

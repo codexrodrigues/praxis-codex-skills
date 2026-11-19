@@ -363,6 +363,10 @@ Use these alongside this skill when the task scope requires them (in external pr
 - `praxis-resource-entity-lookup-backend`: backend `RESOURCE_ENTITY` option-source contracts consumed by Angular controls.
 - `praxis-java-host-project`: create or fix the backend host that publishes the metadata/config surfaces consumed by this Angular host.
 
+## Custom Field Studio Wiring
+
+Hosts that enable dynamic custom fields on extensible resources should stay thin: supply `customFieldsStudio` on `CrudMetadata` (`enabled`, `mode: 'catalog' | 'target-resource'`, `definitionsResourcePath`, optional `targetsCatalogEndpoint`, `previewDeterminationEndpoint`, `aiDraftEndpoint`, `optionTablesResourcePath`, `scopeDimensionField`, `requiredAuthority`, `officialCatalogHint`, and `aiPromptExamples`) and let `@praxisui/crud`'s `PraxisCustomFieldStudioDialogComponent` own the authoring experience. Keep payload keys wire-exact to the backend `Create`/`Update` DTO contract (for example `validacao*`, `governancaSensibilidade`, `governancaVisibilidadeIa`, non-null `validationRules`/`governancePolicy`, `customOptions: []`, and excluding `active` when activation uses dedicated workflow actions), never use `inspect-only` with `customFieldsStudio`, and bind `requiredAuthority` on both host metadata and backend endpoints. For runtime synchronization, rely on `@praxisui/core`'s `LocalStorageCacheAdapter.clear()`, `GenericCrudService.clearRuntimeCaches()`, and `reconcileFormConfig` (which packs adjacent partial-width `customFields.<key>` rows and synchronizes `layout.tabs` alongside `sections`) together with `PraxisTable.reloadSchema()`.
+
 ## What To Avoid
 
 - Do not assume access to local `praxis-ui-angular` source or `dist`.

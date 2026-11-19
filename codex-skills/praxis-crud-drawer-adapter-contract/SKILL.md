@@ -36,8 +36,8 @@ Use `praxis-crud-runtime-openmodes` when the change touches general open-mode pr
 
 - Import host adapters from `@praxisui/crud/drawer-adapter`, not the root `@praxisui/crud` barrel.
 - Keep root public API and secondary entrypoint intentional. If the secondary entrypoint starts exporting heavy services/components, treat it as an architectural regression.
-- `CrudDrawerOpenConfig` must carry the resolved action, metadata, mapped inputs, `onClose`, and `onResult`.
-- `CrudDrawerResult` is semantic: `save`, `delete`, or `close`, with optional data. The host adapter should propagate these results so `PraxisCrudComponent` can emit `afterSave`, `afterDelete`, `afterClose`, and refresh.
+- `CrudDrawerOpenConfig` must carry the resolved action, metadata, mapped inputs, `onClose`, `onResult`, and optional `onStepTelemetry`.
+- `CrudDrawerResult` is semantic: `save`, `delete`, or `close`, with optional data. The host adapter should propagate these results so `PraxisCrudComponent` can emit `afterSave`, `afterDelete`, `afterClose`, and refresh, and forward `(stepTelemetry)` from the hosted `<praxis-dynamic-form>` to `config.onStepTelemetry?.($event)` when present so `@Output() formStepTelemetry` fires consistently.
 - Do not make the adapter responsible for schema discovery, submit URL inference, CRUD operation resolution, permissions, or persistence.
 - Do not copy the default drawer implementation into hosts just to get basic drawer behavior; use `defaults.openMode = 'drawer'` and the built-in fallback.
 - If a host drawer is required, prove parity with the default runtime for close, save, delete, dirty/back policy, focus, and responsive sizing.

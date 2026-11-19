@@ -39,7 +39,7 @@ If public docs, registry, playgrounds, or examples mention stepper or wizard flo
 - Settings Panel config editor, AI assistant integration, and `PRAXIS_STEPPER_AUTHORING_MANIFEST`
 - `PraxisWizardFormComponent` as the higher-level wizard adapter that maps `WizardFormConfig` into `StepperMetadata`
 
-Hosts consume these contracts. Do not move linear validation, form step mapping, wizard normalization, or canonical `resourcePath` handling into app-local steppers when the lib owns the workflow semantics.
+Hosts consume these contracts. Do not move linear validation, form step mapping, wizard normalization, or canonical `resourcePath` handling into app-local steppers when the lib owns the workflow semantics. Conversely, when a journey edits or creates a **single transactional aggregate** (one `resourcePath`, shared `FormGroup`/`FormArray`, cross-step reactive determinations, `ETag`/`If-Match`, automatic review diff step `stepperReviewStep`, `sessionStorage` draft persistence `draftPersistence`, and a single final `POST`/`PUT`/`PATCH` with `422` cross-step recovery), prefer `<praxis-dynamic-form>` with `FormConfig.layout.mode = 'stepper'` (or backend `@FormLayout(mode = FormLayoutMode.STEPPER)` / `FormLayoutMode.AUTO`) over composing multiple `<praxis-dynamic-form>` instances inside `@praxisui/stepper`.
 
 ## Runtime Rules
 

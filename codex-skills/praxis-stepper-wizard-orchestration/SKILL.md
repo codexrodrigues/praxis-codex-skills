@@ -34,6 +34,8 @@ Inspect:
 
 `StepperMetadata` is the runtime workflow document. `WizardFormConfig` is a higher-level adapter contract that compiles through `buildStepperConfig` into `StepperMetadata` and form config. Do not make hosts reverse-engineer generated stepper config or encode workflow rules in local button labels, command strings, or route guards when stepper/wizard contracts own them.
 
+When the workflow is a **single-aggregate transactional form** (same `resourcePath`, one shared root `FormGroup` and `FormArray` hierarchy, cross-step reactive determinations, `ETag`/`If-Match` concurrency custody, automatic final review diff step `stepperReviewStep`, session draft persistence `draftPersistence`, and a single final `POST`/`PUT`/`PATCH` with automatic `422` field jump-back), use `@praxisui/dynamic-form`'s native stepper layout (`FormConfig.layout.mode = 'stepper'` or backend `@FormLayout(mode = FormLayoutMode.STEPPER)` / `FormLayoutMode.AUTO`) instead of splitting a single transactional aggregate across multiple `<praxis-dynamic-form>` instances inside `@praxisui/stepper`. Reserve `@praxisui/stepper` (`PraxisStepper` / `PraxisWizardFormComponent`) for multi-aggregate workflows, custom widget composition (`files-upload`, `list`, `rich-content`), or per-step `serverValidate` orchestration.
+
 ## Orchestration Rules
 
 - `steps[].form.resourcePath` must remain a canonical resource path such as `domain/resource`; no `/api`, `/filter`, `/{id}`, operation URL, or query string.

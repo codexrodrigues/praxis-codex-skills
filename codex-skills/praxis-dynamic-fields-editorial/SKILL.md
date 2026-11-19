@@ -94,7 +94,7 @@ editor must mark the source as partial and point back to the backend/platform wa
 
 ## Canonical Boundaries
 
-- `ComponentRegistryService` owns runtime component resolution by `controlType`.
+- `ComponentRegistryService` owns runtime component resolution by `controlType`. Canonical boolean toggle identity is `TOGGLE` (normalize legacy `SWITCH` aliases in adapters/studios); temporal time input uses `TIME_PICKER`.
 - `ComponentMetadataRegistry` owns editorial discovery metadata.
 - `src/lib/editorial/**` owns canonical package editorial descriptors.
 - `@praxisui/core` owns `FieldControlType`, `OptionSourceMetadata`,
