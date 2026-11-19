@@ -88,11 +88,14 @@ specification helper.
    relative-period payload forms. Keep time zone, clock, closed/open bounds, and
    invalid payload behavior covered by tests; do not normalize dates in a
    browser-only helper or silently reinterpret a legacy value.
-6. Mark primary filter fields that belong inline in toolbar/scope bars with
-   `@Filterable(inline = true)` (`praxis-metadata-starter:8.0.0-rc.197+`, emitted
-   as `x-ui.inlineFilter = true` on `/schemas/filtered` request schemas) so
-   `@praxisui/table` and `@praxisui/crud` promote them automatically without
-   repeating `inlineFilterFields` lists in Angular hosts.
+6. **Curate default inline filters (`@Filterable(inline = true)`) and multi-select (`IN` + `multiple = true`) deliberately — never leave 0 `inline = true` fields:**
+   - When no `FilterDTO` field sets `@Filterable(inline = true)`, `@praxisui/table` falls back to `pickDefaultStandaloneFilterMetas`, which mechanically picks the first 3 `ENTITY_LOOKUP`/`SELECT` fields by declaration order instead of the most useful business filters.
+   - Curate **2 to 4** high-signal fields with `@Filterable(inline = true)` per `FilterDTO` (published as `x-ui.inlineFilter = true`) in business priority order:
+     1. **Broad search** (`primarySearch = true`, `inline = true`, `FieldControlType.SEARCH_INPUT`) when the resource has `buscaAmpla` / `searchTerm`;
+     2. **Primary operational status/diagnostic** (e.g., `situacoes`, `statusIn`, `situacaoComandoSetor`) as `MULTI_SELECT` / `IN` with `optionEnum` or `optionItems` (never free-text `INPUT` for closed domains);
+     3. **Primary domain classification or organizational dimension** (e.g., `tiposSetor`, `categorias`, `lotacaoIds`) — avoid spending a default inline slot on `empCodigo` when the host header already scopes the organization, or use `empCodigos` (`IN` + `multiple = true`) when consolidated cross-org filtering is needed;
+     4. **Primary temporal/validity filter** (e.g., `dataReferencia`, `competencia`, `periodoBetween`) when the resource is effective-dated or periodic.
+   - **Default categorical and lookup filters to multi-select (`FilterOperation.IN` + `List<...>` + `@UISchema(multiple = true)`):** operators routinely compare or consolidate multiple statuses, types, orgs, positions, or functions at once. Keep scalar `EQUAL` only for single-identity lookups or backwards-compatible programmatic callers; expose `List<...>` + `FilterOperation.IN` + `@UISchema(multiple = true)` (`MULTI_SELECT` for static/enum options, `ENTITY_LOOKUP` / `ASYNC_SELECT` with `multiple = true` for remote options) for user-facing filtering.
 7. Build pagination through the resource query controller and `PageableBuilder`.
    Preserve the resource default sort when the request omits sorting. Test each
    public sort alias against the target property and relation. An option-source
