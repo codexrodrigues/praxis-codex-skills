@@ -509,19 +509,21 @@ that generic own-property traversal makes those names usable by Angular FormGrou
 Re-run projection/spec conformance and the consumer control/submit regression after
 changing this boundary.
 
-## Wave 1 Schema, Filter, Governance & Multitenancy Contracts (`8.0.0-rc.195`)
+## Wave 1–1.5 Schema, Filter, Governance & Multitenancy Contracts (`8.0.0-rc.197`)
 
 - **Declarative DTO Layout, Table Projection & Field Ergonomics (`x-ui`):**
   - `NumericFormat.AUTO` is the `@UISchema` default (omitting implicit `x-ui.numericFormat` unless explicitly specified or supplied by a preset such as `UISchemaPreset.INTEGER_COUNTER`). New presets in `UISchemaPreset`: `LOCAL_DATE`, `LOCAL_DATE_TIME`, `INTEGER_COUNTER`, `ENTITY_LOOKUP`. Explicit `@UISchema` attributes override preset defaults.
   - `@UISchema(conditionalReadOnly = "...", colSpan = ...)` publishes `x-ui.conditionalReadOnly` and `x-ui.colSpan` (`1..12`, `0` = automatic).
   - `@TableView(columns = {...}, pinnedStart = {...}, pinnedEnd = {...})` (`@Target(TYPE)`) emits `x-ui.tableOrder`, `x-ui.pinned` (`"start"`/`"end"`), and automatically marks unlisted properties `x-ui.tableHidden = true`.
   - `@UiFormLayout(mode = LayoutMode.*, sections = {@UiSection(...)})` (`@Target(TYPE)`) emits `x-ui.formLayout` over `@UISchema(group = ...)`.
+  - **Single-Source `@ResourceIdentity` (`8.0.0-rc.197+`):** Declare `@ResourceIdentity` on the resource's `ResponseDTO` (`SemanticMetadataReviewer` enforces `dtoIdentity` on `ResponseDTO` and only requires `@ApiResource(identity = ...)` when no `ResponseDTO` identity exists; if both are declared they must stay equal; `AnnotationDrivenSurfaceDefinitionRegistry.relatedSchemaIdField` falls back to `ResponseDTO` `@ResourceIdentity.keyField()`).
+  - **Unified 10-Token `QuickFilterTone` & `@ResourceReference(detailPresentation)` (`8.0.0-rc.197+`):** `QuickFilterTone` and schema `tone` extensions accept all 10 semantic tokens (`neutral`, `primary`, `secondary`, `info`, `success`, `warning`, `danger`, `critical`, `positive`, `negative`); `@ResourceReference.detailPresentation` supports `"drawer"` or `"modal"` (`resource-reference-detail-presentation-invalid`).
   - `PraxisUiOptionEnum` auto-populates rich `{value, label, icon, tone}` `options` via `OpenApiUiUtils` and lookup status/selection policies via `EntityLookupDescriptor.directoryBuilderFromDto(...)`.
   - `@ContextScopeBinding` (`ScopeDimension`) emits `x-ui.contextBinding`; `@DraftCleared` emits `x-ui.draftCleared` (clearing non-primitive fields in `duplicate-draft`); `@ResourceState` emits `x-ui.resourceState` (enforced on create/`PUT` in `AbstractBaseResourceService`); `@ResourceProgression`, `@ResourceTimeline`, and `@ResourceSchedule` emit `x-ui.progression`, `x-ui.timeline`, and `x-ui.schedule`.
   - `@UiAnalytics` supports `@Target({ElementType.METHOD, ElementType.TYPE})`; `@BulkEditable` and `@DefaultSortColumn` support `@Target({ElementType.FIELD, ElementType.METHOD, ElementType.RECORD_COMPONENT})`.
   - `@WorkflowAction` exposes `icon`, `tone` (`QuickFilterTone`), `modifiedFields`, and `disallowedStateReason` in `ActionDefinition` / `ActionCatalogItem`.
 - **Filter Metadata Inheritance & Timezone:**
-  - `@Filterable(primarySearch = true)` emits `x-ui.primarySearch` for unified broad-search inputs.
+  - `@Filterable(primarySearch = true)` emits `x-ui.primarySearch` for unified broad-search inputs, and `@Filterable(inline = true)` (`8.0.0-rc.197+`) emits `x-ui.inlineFilter = true` for automatic inline filter promotion in `@praxisui/table` / `@praxisui/crud`.
   - `FilterFieldMetadataInheritanceSupport` (registered through `CustomOpenApiResolver.registerFilterResponsePair(...)`, `OpenApiUiSchemaAutoConfiguration#filterSchemaInheritanceOpenApiCustomizer`, and `ApiDocsController`) inherits missing `icon`, `endpoint`, `valueField`, `displayField`, and `options` metadata from `ResponseDTO` onto `FilterDTO` by matching property name or `relation`.
   - `praxis.filter.time-zone` (default `${praxis.filter.relative-period.zone-id:UTC}`) binds the configured `ZoneId` into both `RelativePeriodPayloadNormalizer` and `GenericSpecificationsBuilder`.
   - `PraxisMetadataRequestMatchers.readOnlyPostPatterns(...)` supplies `PathPatternParser`-safe read-only POST route patterns (`/filter`, `/filter/cursor`, `/locate`, `/options/filter`, `/options/by-ids`, `/stats/**`, `/export`, `/reactive-determinations/evaluate`) for Spring Security CSRF exclusions.

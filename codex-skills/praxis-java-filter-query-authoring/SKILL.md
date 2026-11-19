@@ -88,30 +88,35 @@ specification helper.
    relative-period payload forms. Keep time zone, clock, closed/open bounds, and
    invalid payload behavior covered by tests; do not normalize dates in a
    browser-only helper or silently reinterpret a legacy value.
-6. Build pagination through the resource query controller and `PageableBuilder`.
+6. Mark primary filter fields that belong inline in toolbar/scope bars with
+   `@Filterable(inline = true)` (`praxis-metadata-starter:8.0.0-rc.197+`, emitted
+   as `x-ui.inlineFilter = true` on `/schemas/filtered` request schemas) so
+   `@praxisui/table` and `@praxisui/crud` promote them automatically without
+   repeating `inlineFilterFields` lists in Angular hosts.
+7. Build pagination through the resource query controller and `PageableBuilder`.
    Preserve the resource default sort when the request omits sorting. Test each
    public sort alias against the target property and relation. An option-source
    request is a stricter contract: use its published sort key and
    `OptionSourceRequestValidator`; never pass unvalidated sort to a provider.
-7. Connect relationship filters to their governed option source only when value,
+8. Connect relationship filters to their governed option source only when value,
    display, dependency, filter and by-ids reload contracts all exist. A filter
    DTO does not replace an option source descriptor.
-8. For row-level authorization on `POST /{resource}/filter`, override
+9. For row-level authorization on `POST /{resource}/filter`, override
    `resolveResourceFilterAccessScope()` in the resource service and return an
    explicit `ResourceFilterAccessScope.unrestricted()`, `.denied()`, or
    `.restricted(specification)` from authenticated server context. The base
    service composes this boundary with the functional filter and reapplies it
    when loading missing `includeIds`.
-9. Declare at least two operational quick filters per `@ApiResource`
-   (`quick-filter-count-insufficient` otherwise) using typed criteria via
-   `@QuickFilter(..., criteria = { @FilterCriterion(field = "...", values = {...} | bool = {...} | number = {...} | decimal = {...}) })`
-   or programmatically on the controller by overriding
-   `AbstractResourceQueryController#defineQuickFilters()` returning
-   `List<QuickFilterDescriptor<FD>>` (`QuickFilterDescriptor.<FD>builder(id, label).where(f -> ...)` or `.criterion(field, value)`).
-   Every criterion field must match a `@Filterable` property on the bound
-   `FilterDTO`, keep `label <= 36` chars without a trailing period, use a
-   lowercase `snake_case` Material Icons `icon`, and avoid deprecated raw JSON
-   `@QuickFilter(filter = "...")`.
+10. Declare at least two operational quick filters per `@ApiResource`
+    (`quick-filter-count-insufficient` otherwise) using typed criteria via
+    `@QuickFilter(..., criteria = { @FilterCriterion(field = "...", values = {...} | bool = {...} | number = {...} | decimal = {...}) })`
+    or programmatically on the controller by overriding
+    `AbstractResourceQueryController#defineQuickFilters()` returning
+    `List<QuickFilterDescriptor<FD>>` (`QuickFilterDescriptor.<FD>builder(id, label).where(f -> ...)` or `.criterion(field, value)`).
+    Every criterion field must match a `@Filterable` property on the bound
+    `FilterDTO`, keep `label <= 36` chars without a trailing period, use a
+    lowercase `snake_case` Material Icons `icon`, and avoid deprecated raw JSON
+    `@QuickFilter(filter = "...")`.
 
 Read [predicate-and-proof-matrix.md](references/predicate-and-proof-matrix.md)
 when selecting operations, modeling aliases/ranges/relative periods, or choosing
