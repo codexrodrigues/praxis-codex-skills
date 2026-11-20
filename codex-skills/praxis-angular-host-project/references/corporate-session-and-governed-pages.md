@@ -14,6 +14,12 @@ Scope credentials/CSRF to the exact configured origin and canonical route bounda
 
 Proxy `/auth` without spoofing an allowed `Origin`, weakening TLS, or rewriting cookie security. The backend must allow the real origin. Test session restore, raw CSRF, logout uncertainty, response races, exact-origin rejection, and blocked redirects. Browser responses controlled by tests prove consumer behavior, not real `SESSION`, cross-site cookies, CORS, or deployed-backend readiness. Record those limits and reuse unchanged backend evidence instead of requiring another Neon campaign for UI work.
 
+### Split-Origin Static SPA Transport Normalization (`web.app` -> `onrender.com`)
+When an Angular SPA is deployed to a separate static hosting origin (`web.app`, Vercel, Cloudflare Pages) behind a remote backend origin (`PRAXIS_API_ORIGIN`), host interceptors (`praxisFetchHeadersInterceptor`) must rewrite root-relative platform paths matching `/^\/(?:api|schemas|auth|v3\/api-docs)(?:\/|$|\?)/` to `${PRAXIS_API_ORIGIN}${req.url}` **before** checking `target.origin === expected.origin` to attach `withCredentials: true`, CSRF tokens, and confirmed context headers. Otherwise direct `HttpClient` calls (`http.post('/api/...')`, `http.get('/schemas/...')`, `http.post('/auth/...')`) leak to the SPA hosting origin and receive `200 text/html` (`index.html`), breaking JSON parsing. Always test all three route families (`/api/...`, `/schemas/...`, `/auth/...`) against a dynamic `PRAXIS_API_ORIGIN` override in Karma/Jasmine specs.
+
+### Multi-Org (`'ALL'` / `'GROUP:*'`) Reactive Watcher Safety & Self-Hydrating Interceptor Snapshots
+Reactive `effect()` watchers that clear child operational/attendance scope when the workspace organization changes must record the active workspace scope code (`'ALL'`, `'GROUP:*'`, or concrete org code) — never the selected child record's concrete `empCodigo` — as `lastObservedOrgao` when pinning a record; otherwise pinning a record with `empCodigo = 1` while the workspace is in `'ALL'` immediately triggers a false org-change wipe. Furthermore, module-level snapshot getters read by functional `HttpInterceptorFn`s must self-hydrate synchronously from scoped `localStorage` envelopes if the in-memory variable is `null` (for example on first route activation or before service construction).
+
 ---
 
 ## 2. Corporate Page Authoring Context & Lifecycle Fencing
