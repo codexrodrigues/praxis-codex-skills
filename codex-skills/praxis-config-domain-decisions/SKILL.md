@@ -77,6 +77,36 @@ Keep these owners and lifecycles distinct:
 
 ## Domain Rule Workflow
 
+For an AUTHORIZATION draft, check that the Config storage includes Flyway V78
+and that the host admits the existing definition author/reader roles. Send
+`ruleType=authorization_policy` and the original
+`AuthorizationPolicyDefinition` in `definition` to
+`POST /api/praxis/config/domain-rules/definitions` or
+`POST /api/praxis/config/domain-rules/intake`. Intake defaults `ruleKey` to
+`policyId`. Verify JSON parity
+by rereading the same ID and prove tenant/environment isolation with another
+authenticated scope. Run the migration and HTTP proof on an isolated Neon
+branch. The Config simulation validates structure and predicts explicit
+`policy_engine/opa-policy` targets. Use the Authz catalog, compiler, corpus and
+runtime receipt for policy behavior. Once approval and the configured evidence
+gates are satisfied, generic publication returns `requires_opa_publication`.
+Keep authorization definitions outside BUSINESS RuleSet composition.
+With V79 and Authz Starter release support, publish approved ACCESS via
+`POST /api/praxis/config/domain-rules/authorization/releases` with the stored
+`definitionId`. The host verifies the independent approval hash and persists
+the verified forward and restoration artifacts. When upgrading a persistent
+host, validate the exact Config artifact against an isolated Neon branch
+cloned from the deployed schema. Apply Flyway with the schema owner and boot
+the packaged host with the runtime identity before promotion. Use
+`/{releaseId}/activate`
+or `/{releaseId}/rollback` with the authorized operator session. A pending
+transition may be retried by ID, and a pending activation may be reversed
+through the same release. Confirm `observedHead` against the actual OPA
+runtime and compare the target decision before, during, and after activation.
+Verify that the Config definition retains its approval and the release ledger
+records both observations. Read the PAP catalog and runtime guidance in
+`praxis-authz-decision-platform`.
+
 1. Resolve tenant, environment, `resourceKey`, `ruleType`, context, evidence, and semantic owner through governed metadata/catalog/tooling before intake.
 2. `POST /domain-rules/intake` persists a `draft` definition and returns grounding plus `decisionDiagnostics`. Do not treat the prompt or assistant text copied into the definition as durable Domain Knowledge evidence.
 3. `POST /domain-rules/simulations` may use a persisted definition or an ad hoc request. The current simulation detects approved/active overlapping coverage, predicts target materializations, derives required approvals and publication readiness; it does **not** execute the rule condition against business records or prove business outcomes.

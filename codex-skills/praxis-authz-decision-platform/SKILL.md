@@ -12,7 +12,7 @@ Use this skill whenever work touches **`decisionKind = AUTHORIZATION`** across `
 Never conflate deterministic business rules with authorization/data-protection policies:
 
 - **`decisionKind = BUSINESS` (`praxis-rules-engine`):** Owns domain invariants, eligibility, calculations, and 5-state business outcomes (`RULE_TRUE`, `RULE_FALSE`, `NOT_APPLICABLE`, `INDETERMINATE`, `ERROR`) in JSON Logic (`RuleSet`). Governed in `praxis-policy-studio` under the **Business Rules Lens**.
-- **`decisionKind = AUTHORIZATION` (`praxis-authz-*` + OPA/Rego v1):** Owns access control (`ACCESS`), row-level query scoping (`DATA_SCOPE`), field read/inference restrictions (`FIELD_USE` across `VALUE | FILTER | SORT | GROUP | AGGREGATE | JOIN`), field mutation authorization (`FIELD_WRITE` over `WriteIntent`), detached DTO masking (`MASK`), and conditional obligations (`OBLIGATION` across `BEFORE_EXECUTION | BEFORE_COMMIT_OUTBOX | BEFORE_DISCLOSURE`). Governed in `praxis-policy-studio` under the **Access & Data Protection Lens** using `DomainRuleDefinition` (`ruleType = "authorization_policy"`, schema `praxis.authorization-policy/v1`).
+- **`decisionKind = AUTHORIZATION` (`praxis-authz-*` + OPA/Rego v1):** Owns access control (`ACCESS`), row-level query scoping (`DATA_SCOPE`), field read/inference restrictions (`FIELD_USE` across `VALUE | FILTER | SORT | GROUP | AGGREGATE | JOIN`), field mutation authorization (`FIELD_WRITE` over `WriteIntent`), detached DTO masking (`MASK`), and conditional obligations (`OBLIGATION` across `BEFORE_EXECUTION | BEFORE_COMMIT_OUTBOX | BEFORE_DISCLOSURE`). The Config envelope is `DomainRuleDefinition` (`ruleType = "authorization_policy"`, schema `praxis.authorization-policy/v1`). The Studio ACCESS draft review consumes a candidate prepared by the host. Use the governed PAP catalog route to select admitted descriptors and facts in the ACCESS authoring flow.
 
 ## 2. Source Audit Before Editing
 
@@ -63,6 +63,39 @@ Inspect the canonical owners and contracts before changing code or authoring pol
   - `org.praxisplatform.authz.host.metadata.*` (`AbstractAuthzGovernedResourceService`, `AbstractAuthzGovernedReadOnlyResourceService`, `AuthzResourceGovernanceSpec`, `AuthzResourceGovernanceInterceptor`, `AuthzResourceOperationAvailabilityRule`, `MultiOrganizationHardScopeResolver`, `MetadataDtoGovernanceIntrospector`, `AuthzHostPolicyBootstrapBuilder`, `AuthzHostReadinessReviewer` [`AUTHZ-HOST-001..014`], `PraxisAuthzExceptionHandler` using `"fieldUseCategory"` in `CustomProblemDetail` instead of the reserved `"category"` extension key)
 
 Read [contracts-and-gates-matrix.md](references/contracts-and-gates-matrix.md) for the `CC01–CC12` contract summary, the 15-step enforcement pipeline order, and the 8 acyclic digest domains.
+
+For a Config-backed authorization policy, confirm V78 and follow the scoped
+draft persistence workflow in `praxis-config-domain-decisions`. Use structural
+simulation for schema checks and target preview. Follow the registered host
+catalog and governance coordinator to validate descriptors, fact contracts and
+the verification corpus. For the Config-backed ACCESS release path, use
+`GET /api/praxis/config/domain-rules/authorization/catalog` with the Config
+reader role, the configured PAP authority, and service delegation from
+`PapCatalogServiceScopeResolver`. Read the point key, descriptor digest, and
+facts by evaluation mode. The catalog reports contract metadata. Check both
+PAP admission and the host registry when selecting an EXACT/TARGET policy target.
+
+The release path binds the scoped Config approval to the prepared sources,
+compiles the full serving composition, and verifies an independent ACCESS
+corpus for activation and restoration. Include `ALLOW` and a refusal
+(`DENY` or `NOT_APPLICABLE`) in each revision for every affected point. Pair
+the same input and write intent across revisions to prove that its gate
+changes between allow and refusal, and assert the candidate policy's reason
+on activation. In JSON, describe the expected gate using
+`expectedGateOutcome`. The case derives `isPositiveCase()` from this field;
+omit the calculated `positiveCase` property from the input. Read the persisted
+`observedHead` after OPA HTTP confirmation of all eight coordinates. HTTP
+202 indicates a pending transition. Retain the release ID for retries or
+reversal. Prove the previous gate behavior and policy set after rollback
+under a new activation revision. For an HTTP runtime proof, confirm the
+selected transport bean, load the actual assembled tar.gz in OPA and verify the
+result envelope and revision across TARGET and SEARCH calls. A backend unit
+test can prove enforcement behavior in isolation. A command proof also requires
+the authenticated host operation and a separate read of the committed state.
+When one governed service calls another, bind the active SEARCH frame to its
+owning service and projection. Test nested read and mutation checks with two
+projections that use the same field path and distinct attribute IDs. Verify
+that each service uses its own predicate and restores the enclosing frame.
 
 ## 3. Non-Negotiable Platform Invariants
 
