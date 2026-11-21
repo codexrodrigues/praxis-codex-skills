@@ -4,6 +4,7 @@ Fonte versionada das diretrizes operacionais de coordenação, delegação, mode
 
 - [Política operacional e matriz de revisão](agentes-e-modelos.md)
 - [Ciclo de vida Neon](ciclo-de-vida-neon.md), leitura obrigatória ao planejar ou operar validações com banco e branches.
+- [AGENTS.md raiz do workspace (espelho canônico)](workspace-root-AGENTS.md), template versionado para restauração da governança no monorepo.
 
 O `AGENTS.md` local de cada repositório continua aplicável. O coordenador deve fornecer os caminhos/revisões desta fonte ao delegar, particularmente em checkouts isolados. A presença de um link não prova carregamento; não alterar configurações globais para instalar estas regras.
 

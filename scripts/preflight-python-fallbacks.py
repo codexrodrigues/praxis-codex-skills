@@ -21,6 +21,12 @@ PYTHON_FILES = [
     "scripts/validate-praxis-skills.py",
     "scripts/audit-agents-governance.py",
     "scripts/preflight-python-fallbacks.py",
+    "scripts/workspace/audit-java-resource-completeness.py",
+    "scripts/workspace/java_resource_audit.py",
+    "scripts/workspace/test_audit_java_resource_completeness.py",
+    "scripts/workspace/audit-public-repo-purity.py",
+    "scripts/workspace/audit-angular-host-completeness.py",
+    "scripts/workspace/test_workspace_auditors.py",
     "tests/test_audit_agents_governance.py",
     "tests/test_python_skill_scripts.py",
 ]
@@ -74,6 +80,8 @@ def assert_audit_clean(family: str, report: dict) -> None:
 def main() -> int:
     try:
         run([sys.executable, "-m", "unittest", "discover", "-s", "tests"])
+        run([sys.executable, "scripts/workspace/test_audit_java_resource_completeness.py"])
+        run([sys.executable, "scripts/workspace/test_workspace_auditors.py"])
         run([sys.executable, "-m", "py_compile", *PYTHON_FILES])
         run(
             [
@@ -88,6 +96,7 @@ def main() -> int:
         run([sys.executable, "scripts/generate-skill-review-issue-drafts.py", "--check"])
         run([sys.executable, "scripts/validate-issue-drafts.py"])
         run([sys.executable, "scripts/audit-agents-governance.py", ".", "--root-agents"])
+        run([sys.executable, "scripts/workspace/audit-public-repo-purity.py", "--repo", "."])
         with tempfile.TemporaryDirectory() as temporary_skills_root:
             for family in FAMILIES:
                 run(

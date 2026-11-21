@@ -11,7 +11,7 @@ The goal is not to create one skill per file, export, or component. The goal is 
 Source audited:
 
 ```text
-/Users/rodrigo/Dev/pessoal/praxis-plataform/praxis-ui-angular
+<WORKSPACE_ROOT>/praxis-ui-angular
 ```
 
 Angular is only one of the three main Praxis platform fronts:

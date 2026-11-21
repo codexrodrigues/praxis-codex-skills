@@ -11,13 +11,13 @@ The question is not whether every Angular export has its own skill. The question
 Source audited:
 
 ```text
-/Users/rodrigo/Dev/pessoal/praxis-plataform/praxis-ui-angular
+<WORKSPACE_ROOT>/praxis-ui-angular
 ```
 
 Skill source audited:
 
 ```text
-/Users/rodrigo/Dev/pessoal/praxis-codex-skills/codex-skills
+<REPO_ROOT>/codex-skills
 ```
 
 This audit covers `praxis-ui-angular` only. It does not claim exhaustive coverage for `praxis-config-starter`, `praxis-metadata-starter`, `praxis-api-quickstart`, `praxisui-http-examples`, or `praxis-ui-landing-page`, although the current skill repository already includes important coverage for those projects.
