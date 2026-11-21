@@ -19,7 +19,9 @@ PYTHON_FILES = [
     "scripts/sync-praxis-skills.py",
     "scripts/validate-issue-drafts.py",
     "scripts/validate-praxis-skills.py",
+    "scripts/audit-agents-governance.py",
     "scripts/preflight-python-fallbacks.py",
+    "tests/test_audit_agents_governance.py",
     "tests/test_python_skill_scripts.py",
 ]
 FAMILIES = ["praxis", "ergon-migration"]
@@ -85,6 +87,7 @@ def main() -> int:
         )
         run([sys.executable, "scripts/generate-skill-review-issue-drafts.py", "--check"])
         run([sys.executable, "scripts/validate-issue-drafts.py"])
+        run([sys.executable, "scripts/audit-agents-governance.py", ".", "--root-agents"])
         with tempfile.TemporaryDirectory() as temporary_skills_root:
             for family in FAMILIES:
                 run(

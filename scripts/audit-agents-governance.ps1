@@ -4,6 +4,7 @@ param(
     [switch]$RootAgents,
     [int]$MaxRootBytes = 16384,
     [int]$MaxLocalBytes = 18432,
+    [int]$MaxSkillsChars = 34000,
     [switch]$AllowPrivate,
     [switch]$NoNested,
     [switch]$Json
@@ -39,16 +40,16 @@ $resolved = (Resolve-Path -LiteralPath $Target).Path
 $ignoredDirs = @('.git', 'node_modules', 'dist', 'target', '.angular', '.m2repo')
 
 if (Test-Path -LiteralPath $resolved -PathType Leaf) {
-    $files = @($resolved)
+    [string[]]$files = @($resolved)
     $rootFile = if ($RootAgents) { $resolved } else { $null }
 }
 else {
     if ($NoNested) {
         $candidate = Join-Path $resolved 'AGENTS.md'
-        $files = if (Test-Path -LiteralPath $candidate -PathType Leaf) { @($candidate) } else { @() }
+        [string[]]$files = if (Test-Path -LiteralPath $candidate -PathType Leaf) { @($candidate) } else { @() }
     }
     else {
-        $files = @(Get-ChildItem -LiteralPath $resolved -Filter 'AGENTS.md' -Recurse -File | Where-Object {
+        [string[]]$files = @(Get-ChildItem -LiteralPath $resolved -Filter 'AGENTS.md' -Recurse -File | Where-Object {
             $parts = $_.FullName.Split([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)
             -not ($parts | Where-Object { $_ -in $ignoredDirs })
         } | Select-Object -ExpandProperty FullName | Sort-Object)
@@ -110,6 +111,53 @@ foreach ($file in $files) {
                     })
                 }
             }
+        }
+    }
+}
+
+if (Test-Path -LiteralPath $resolved -PathType Container) {
+    $skillsJsonPath = Join-Path $resolved '.agents\skills.json'
+    if (Test-Path -LiteralPath $skillsJsonPath -PathType Leaf) {
+        try {
+            $skillsCfg = Get-Content -LiteralPath $skillsJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json
+            $totalChars = 0
+            foreach ($entry in @($skillsCfg.entries)) {
+                if (-not $entry.path) { continue }
+                $dotCandidate = Join-Path (Join-Path $resolved '.agents') $entry.path
+                $baseDir = if (Test-Path -LiteralPath $dotCandidate -PathType Container) { $dotCandidate } else { Join-Path $resolved $entry.path }
+                if (-not (Test-Path -LiteralPath $baseDir -PathType Container)) { continue }
+
+                [string[]]$names = if ($null -ne $entry.include_only) {
+                    @($entry.include_only | ForEach-Object { [string]$_ })
+                } else {
+                    @(Get-ChildItem -LiteralPath $baseDir -Directory | Select-Object -ExpandProperty Name | Sort-Object)
+                }
+
+                foreach ($name in $names) {
+                    $skillMd = Join-Path (Join-Path $baseDir $name) 'SKILL.md'
+                    if (-not (Test-Path -LiteralPath $skillMd -PathType Leaf)) { continue }
+                    $rawText = Get-Content -LiteralPath $skillMd -Raw -Encoding UTF8
+                    if ($rawText -match '(?s)\A---\r?\n(.*?)\r?\n---') {
+                        $relSkill = $skillMd.Substring($resolved.Length).TrimStart('\', '/').Replace('\', '/')
+                        $totalChars += ("- $name ($relSkill): ".Length + $Matches[1].Length)
+                    }
+                }
+            }
+
+            if ($totalChars -gt $MaxSkillsChars) {
+                $findings.Add([PSCustomObject]@{
+                    file = $skillsJsonPath
+                    code = 'skills-budget-exceeded'
+                    detail = "$totalChars chars > limit $MaxSkillsChars chars"
+                })
+            }
+        }
+        catch {
+            $findings.Add([PSCustomObject]@{
+                file = $skillsJsonPath
+                code = 'invalid-skills-json'
+                detail = $_.Exception.Message
+            })
         }
     }
 }
