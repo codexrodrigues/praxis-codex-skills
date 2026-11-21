@@ -1,6 +1,6 @@
 ---
 name: praxis-authz-decision-platform
-description: Use when implementing, auditing, or consuming the Praxis Authorization Decision Platform (praxis-authz-contracts, praxis-authz-enforcement-core, praxis-authz-opa, praxis-authz-starter): DecisionPointDescriptor, FactContract, QueryableResourceProjection, DataScopePlan (praxis.data-scope/v1), RuntimeEnforcementBinding, AuthorizationPolicyDefinition (praxis.authorization-policy/v1), Rego v1 compilation, 8 acyclic digest domains, 3-step SEARCH same-instance revision guard, 15-step enforcement pipeline, detached DTO masking, obligation barriers, or startup compatibility handshakes.
+description: "Use when implementing, auditing, or consuming the Praxis Authorization Decision Platform (praxis-authz-contracts, praxis-authz-enforcement-core, praxis-authz-opa, praxis-authz-starter): DecisionPointDescriptor, FactContract, QueryableResourceProjection, DataScopePlan (praxis.data-scope/v1), RuntimeEnforcementBinding, AuthorizationPolicyDefinition (praxis.authorization-policy/v1), Rego v1 compilation, 8 acyclic digest domains, 3-step SEARCH same-instance revision guard, 15-step enforcement pipeline, detached DTO masking, obligation barriers, or startup compatibility handshakes."
 ---
 
 # Praxis Authorization Decision Platform
@@ -96,6 +96,38 @@ When one governed service calls another, bind the active SEARCH frame to its
 owning service and projection. Test nested read and mutation checks with two
 projections that use the same field path and distinct attribute IDs. Verify
 that each service uses its own predicate and restores the enclosing frame.
+
+### Inspect read impact on opted-in hosts
+
+Check the Authz Starter's Maven coordinates in the host's private SDK lock.
+Confirm that the JAR at those coordinates contains `PapEffectivePolicyController`
+and `ConfirmedReadInspection`. The private read-impact flow requires
+`praxis.authz.admin-endpoints.enabled=true`, `praxis.authz.access-release.enabled=true`
+and exactly one host `PapReadImpactProvider` for the registered SEARCH point.
+Use the scoped catalog reader and call
+`GET /api/praxis/config/domain-rules/authorization/read-impact?pointKey=...`.
+A 404 can indicate missing host coverage. A 503 can indicate a pending
+deployment, revision drift or an evaluation the starter cannot confirm.
+
+Read `impact.profiles` as host-defined scenarios. Keep the reader's identity,
+the scenario's initial organization selection and its authorized organizations
+distinct. For each organization, show the access to each surface as `ALLOW`,
+`DENY` or `CONDITIONAL`. Apply the host's hard scope, SEARCH admission and
+data-scope plan, and the surface's applicable TARGET checks. Cover list, detail,
+record sheet and export when the host exposes them. For each field and surface, use `VISIBLE`, `MASKED`, `HIDDEN` or `CONDITIONAL`. A missing row or
+session fact, or differing outcomes across accessible organizations, can make a
+field conditional. Column presentation and governed export eligibility are
+separate inputs. Keep field values and mask parameters out of the response.
+
+When implementing or changing the read-impact flow, validate the same scenarios
+at baseline, after confirmed activation and after confirmed rollback.
+Match the response's revision, activation revision and
+policy-set digest to the OPA head for each phase. Verify the intended change
+for the affected surface and a control that stays stable. Check that rollback
+restores the original outcomes and policy set under a new activation revision.
+Exercise a conditional case in a focused test when the live scenarios resolve
+every fact. The inspection uses the confirmed OPA HTTP transport and describes
+effects without executing the host operation or its obligations.
 
 ## 3. Non-Negotiable Platform Invariants
 
