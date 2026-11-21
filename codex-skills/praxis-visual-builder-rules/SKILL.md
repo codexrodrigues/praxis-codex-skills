@@ -96,11 +96,11 @@ When Visual Builder is embedded in Page Builder, Dynamic Form, Table, or another
 
 ## Contextual Business Rules Decision Inspector (`providePraxisDecisionInspector`)
 
-`@praxisui/visual-builder` and `@praxisui/core` own the native Level-1 in-app **Contextual Business Rules Decision Inspector** (`projects/praxis-visual-builder/src/lib/providers/decision-inspector.providers.ts`, `PraxisDecisionInspectorSurfaceComponent`, `PraxisRuleDecisionDagComponent`, and `projects/praxis-core/src/lib/models/decision-inspector.model.ts`):
+`@praxisui/visual-builder` and `@praxisui/core` own the native Level-1 in-app **Contextual Business Rules Decision Inspector** (`projects/praxis-visual-builder/src/lib/providers/decision-inspector.providers.ts`, `PraxisDecisionInspectorSurfaceComponent`, `PraxisRuleDecisionStagesComponent`, `PraxisRuleDecisionDagComponent`, and `projects/praxis-core/src/lib/models/decision-inspector.model.ts`):
 
 - Bootstrap in the Angular host via `providePraxisDecisionInspector({ rulesStudioUrl })` — never build bespoke per-host rule-inspection pages or custom DAG components.
-- Renders the 5 canonical `DecisionStage`s (`PROTECTED_GUARD`, `DOMAIN_DECISION`, `POST_DECISION`, `TRANSFORMATION_INTENT`, `EFFECT_INTENT`) framelessly inside `SURFACE_DRAWER_BRIDGE` when triggered from `<praxis-resource-page>`'s contextual *"Regras de Negócio"* action, `<praxis-dynamic-form>` `X-Ray` `422`/`409` violation diagnostics (`PraxisRuleViolationDiagnostic`), or cockpit shortcuts.
-- Hands off 4-eyes Maker-Checker authoring and snapshot publication to the external `praxis-policy-studio` workstation via `buildRulesStudioDeepLink` (enforcing fail-closed `http:`/`https:` scheme validation).
+- Opens by default in **Business View** (switchable to **Technical Mode** via `[data-testid="decision-inspector-view-mode-toggle"]`): hides raw technical identifiers (`slotKey`, `bindingKey`, `ruleSetKey`, `SINGLE_RESULT`), translates `FAIL_CLOSED` into *"Bloqueio preventivo ativo"*, humanizes compound `operationKey` badges (`prefix:verb`), renames the 5 canonical `DecisionStage`s to plain decision-flow stages (`01 · Pré-requisitos obrigatórios` through `05 · Consequências e registros`), collapses empty stages so populated columns keep full readable width, enforces WCAG AA badge contrast (`color-mix` on `--md-sys-color-on-surface`) across light and dark themes, renders the structured 7-section detail panel (*O que verifica*, *Quando se aplica*, *Por que existe*, *Amparo legal*, deduplicated `@UISchema` *Campos envolvidos*, *Mensagem ao operador*, and *Ação contextual para o Studio*) with graceful fallback for uncurated slots, and triggers framelessly inside `SURFACE_DRAWER_BRIDGE`.
+- Hands off 4-eyes Maker-Checker authoring and snapshot publication to the external `praxis-policy-studio` workstation via `buildRulesStudioDeepLink` (enforcing fail-closed `http:`/`https:` scheme validation via shared `isSafeLegalBasisUrl`).
 
 ## Validation
 

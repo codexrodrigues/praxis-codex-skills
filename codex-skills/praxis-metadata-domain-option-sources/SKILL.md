@@ -161,6 +161,14 @@ Review `docs/spec/x-ui-field.schema.json`, option-source examples, guides, quick
 - Use `praxis-core-domain-governance-runtime` when domain governance feeds config-starter semantic decision authoring or Angular runtime decision clients.
 
 
+## Didactic Rule Documentation in `/schemas/domain`
+
+Keep executable engine records (`DecisionSlot` and `DecisionBinding` in `praxis-rules-engine`) free of editorial prose so canonical SHA-256 plan digests remain stable. Anchor human-readable explanations in `praxis-metadata-starter`:
+
+- `RuleDocumentationDescriptor` (`title`, `summary`, `whenApplies`, `rationale`, `legalBasis`, `customizationGuidance` + `mergeWith`) and `RuleLegalBasisDescriptor` (`code`, `title`, `article`, `jurisdiction`, `summary`, `url`) model didactic rule, slot, and RuleSet documentation additively.
+- `DomainRuleSetDescriptor` exposes backward-compatible `slotDocumentation`, `ruleDocumentation`, and `ruleSetDocumentation` maps plus `.withDocumentation(...)` without changing core RuleSet identity.
+- `SemanticDomainCatalogService` projects those descriptors into `/schemas/domain` (`ruleSetDocumentation` on the `policy_hint` node metadata, `slots[]`, and `rules[]`), invalidates `ruleSetHashSummaries`, and resolves `targetFieldLabels`, `targetFieldLabel`, and `referencedFactPathLabels` across a 4-level label hierarchy (`response x-ui.label` > `response @Schema.title` > `request x-ui.label` > `request @Schema.title` > `labelFromKey` fallback).
+
 ## Tenant fields and declared facts (Metadata #303)
 
 Inspect `customfields/**`, `fact/**`, `SemanticDomainCatalogService` and
