@@ -66,6 +66,37 @@ For date ranges and relative dates:
 - `IN_LAST_DAYS`/`IN_NEXT_DAYS` fields usually use integer input with helper text.
 - `INLINE_RELATIVE_PERIOD` fields must publish explicit allowed options when the UX uses presets.
 
+For monetary ranges (`BETWEEN` + `PRICE_RANGE` / `INLINE_CURRENCY_RANGE`):
+
+- A single `List<BigDecimal>` field annotated with `@Filterable(operation = Filterable.FilterOperation.BETWEEN, relation = "...", inline = true)` handles closed intervals (`[min, max]`), lower-only (`[min]`/`[min, null]`), upper-only (`[null, max]`), and exact (`[v, v]`) bounds natively (`requireTwoBounds` is `false` for `BETWEEN` and `true` only for `BETWEEN_EXCLUSIVE`).
+- Enrich `@UISchema` with `numericMin`/`numericMax`/`numericStep`, a lowercase `snake_case` Material icon, and canonical `FieldConfigProperties` `extraProperties` validated by `x-ui-field.schema.json`:
+
+```java
+@Schema(description = "Faixa de orçamento permitido para filtrar contratos dentro dos limites financeiros.")
+@UISchema(
+    label = "Orçamento",
+    type = FieldDataType.NUMBER,
+    controlType = FieldControlType.INLINE_CURRENCY_RANGE,
+    numericFormat = NumericFormat.CURRENCY,
+    numericMin = "0",
+    numericMax = "100000",
+    numericStep = "100",
+    icon = "payments",
+    extraProperties = {
+        @ExtensionProperty(name = "currency", value = "BRL"),
+        @ExtensionProperty(name = "locale", value = "pt-BR"),
+        @ExtensionProperty(name = "inlinePanelTitle", value = "Orçamento do contrato"),
+        @ExtensionProperty(name = "inlinePanelIcon", value = "payments"),
+        @ExtensionProperty(name = "showAnchors", value = "auto"),
+        @ExtensionProperty(name = "operatorModes", value = "[\"between\",\"gte\",\"lte\",\"eq\"]"),
+        @ExtensionProperty(name = "sliderStep", value = "500"),
+        @ExtensionProperty(name = "quickPresets", value = "[{\"id\":\"upto-5k\",\"label\":\"Até R$ 5 mil\",\"maxPrice\":5000,\"mode\":\"lte\"}]")
+    }
+)
+@Filterable(operation = Filterable.FilterOperation.BETWEEN, relation = "budgetAmount", inline = true)
+private List<BigDecimal> budgetBetween;
+```
+
 ## Options And Direct Selects
 
 Choose between static/closed options and remote option sources according to cardinality and ownership:

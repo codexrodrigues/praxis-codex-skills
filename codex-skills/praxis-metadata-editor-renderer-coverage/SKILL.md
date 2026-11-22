@@ -66,6 +66,25 @@ Inspect before editing:
 - `ConfigRegistryService` and `EditorProperty[]` arrays are the visual coverage catalog for metadata
   editing. They should expose canonical paths with typed editor controls; advanced JSON textareas are
   acceptable only for genuinely structured/legacy escape hatches and should be documented as such.
+- Inline filter visual parity (Baseline + Onda 1 + Onda 2) requires:
+  1. Exposing panel chrome and slider/overlay properties (`inlinePanelTitle`, `inlinePanelSubtitle`,
+     `inlinePanelIcon`, `inlinePanelIconColor`, `showAnchors`, `sliderStep`, `shiftStep`,
+     `showInlineInputs`, `inputMinLabel`, `inputMaxLabel`, `inlineOverlay.applyMode`,
+     `inlineOverlay.actions.clear.*`) across the inline configs (`price-range`, `range-slider`,
+     `time-range`, `inline-distance-radius`, `rating`, `inline-score-priority`,
+     `inline-pipeline-status`, `inline-relative-period`, `inline-sentiment`,
+     `inline-color-label`, `date-range`).
+  2. Enforcing ordered cross-field color validation with
+     `gradientColorStopValidator({ label, compareWith })` across tone/progress gradient triads
+     (`*LowColor` / `*MidColor` / `*HighColor`).
+  3. Registering complex object/array JSON textarea fields in
+     `FieldMetadataEditorComponent.normalizeKnownTextareaPatchValues` (`quickPresets`, `marks`,
+     `semanticBands`, `inlineDistribution`, `scoreBands`, `distanceRings`, `pipelineOptions`,
+     `pipelineColors`, `statusColors`, `pipelineTexts`, `relativePeriodOptions`,
+     `relativePeriodPresets`, `relativePeriodTexts`, `sentimentOptions`, `sentimentPalette`,
+     `palette`, `sentimentTexts`, `colorLabelOptions`, `colorLabelPalette`, `colorLabelTexts`,
+     `governedPaletteRef`, `shortcuts`, `inlineQuickPresets`, `i18nShortcuts`) so parsed structures
+     round-trip cleanly instead of saving stringified JSON.
 - Renderer coverage proves that metadata can be authored and round-tripped visually; it does not prove
   that the owning dynamic-field, option-source provider, backend endpoint, entity lookup runtime,
   inline overlay, or AI authoring profile executes that behavior. When adding paths such as
@@ -89,7 +108,7 @@ Inspect before editing:
 
 ## Renderer And Form Factory
 
-`DynamicEditorRendererComponent` renders `EditorProperty[]` into grouped form rows through `DynamicFieldLoaderDirective`. `DynamicFormFactoryService` creates controls by dot path and attaches contextual validators. Do not bypass that path with local component-specific forms unless the editor property type itself is missing and needs to be added to the registry.
+`DynamicEditorRendererComponent` renders `EditorProperty[]` into grouped form rows through `DynamicFieldLoaderDirective`. `DynamicFormFactoryService` creates controls by dot path and attaches contextual validators. Never declare a flat property whose name collides with a dotted `FormGroup` prefix in the same config (for example, `inlineQuickPresets` when `inlineQuickPresets.enabled`, `.maxVisible`, and `.position` already exist — reuse the dedicated array field such as `shortcuts` instead). Do not bypass that path with local component-specific forms unless the editor property type itself is missing and needs to be added to the registry.
 
 When adding an editor property:
 

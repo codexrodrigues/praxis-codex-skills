@@ -119,7 +119,7 @@ For closed/static choices, prefer `@UISchema(..., optionItems = {@UiOption(value
 | date-time | `DATE_TIME_PICKER` |
 | date/date-time range filter | `DATE_RANGE` or `DATE_TIME_RANGE` |
 | money | `CURRENCY_INPUT` plus `numericFormat = NumericFormat.CURRENCY` |
-| numeric range money filter | `PRICE_RANGE` |
+| numeric range money filter | `PRICE_RANGE` (dual inputs in forms/advanced filter; auto-promoted to `inlineCurrencyRange` in compact inline bars) or `INLINE_CURRENCY_RANGE` (explicit compact monetary popover with operators, clickable anchors, presets, and histogram) |
 | avatar/display image | `AVATAR` |
 | governed business entity | `ENTITY_LOOKUP` or `INLINE_ENTITY_LOOKUP` plus option source |
 | compact embedded filter/edit | explicit `INLINE_*` variant |

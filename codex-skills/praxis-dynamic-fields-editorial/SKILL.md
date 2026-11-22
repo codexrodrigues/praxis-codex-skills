@@ -123,9 +123,12 @@ editor must mark the source as partial and point back to the backend/platform wa
   `capabilities`, navigation/audit metadata, and `detail.kind = surface` when a canonical backend
   surface exists.
 - Inline/editor-critical runtime properties must have visual metadata-editor coverage or an explicit
-  documented advanced JSON fallback. If a runtime property is added to an inline field, the matching
-  `projects/praxis-metadata-editor/src/lib/config/*.config.ts` coverage should be reviewed in the
-  same cycle.
+  documented advanced JSON fallback. If a runtime property is added to an inline field, propagate it
+  across the full 4-layer package chain in the same cycle:
+  1. **Core types & normalization (`@praxisui/core`):** declare typed metadata in `ComponentMetadata` / `MaterialFieldMetadata` / `FieldDefinition`, and preserve pass-through properties in `schema-normalization-kernel.ts` (`inlinePassThroughKeys`) and `field-definition-mapper.ts` (`simpleProps`).
+  2. **Runtime & styling (`@praxisui/dynamic-fields`):** bind header/interaction/draft guards (including `panelHasPendingChanges()`, `isInteractionBlocked()`, and JSON-string parsing where applicable) plus component-scoped `--pdx-inline-*` CSS custom properties with `prefers-reduced-motion: reduce`.
+  3. **Visual editor parity (`@praxisui/metadata-editor`):** expose visual controls in the matching `projects/praxis-metadata-editor/src/lib/config/*.config.ts`, use `gradientColorStopValidator` for ordered `Low`/`Mid`/`High` tone triads, and list complex object/array JSON textareas in `FieldMetadataEditorComponent.normalizeKnownTextareaPatchValues`.
+  4. **Component JSON API docs:** update the colocated `pdx-inline-*.json-api.md` (`editor_coverage_verified: true`, `JSON path index`, and `Styling API`) before running `generate:registry:ingestion` and `validate:published-doc-assets`.
 - Shared overlay infrastructure, layer tokens, and CDK stacking order belong to `@praxisui/core`. If an inline field renders but overlay clicks are blocked, verify the core layer scale before patching the field, filter host, or landing app.
 - Shared overlay color/contrast tokens also belong to `@praxisui/core`. If a dynamic field overlay opens with low contrast, first verify `@praxisui/core/theme-bridge.css` and the host `.cdk-overlay-container` mappings for `--pdx-overlay-surface` and `--pdx-overlay-on-surface`; only add a host override when the host intentionally uses an overlay surface that differs from the global Material theme.
 - Package-owned inline field and panel surface/contrast tokens belong to the inline components in `@praxisui/dynamic-fields` (`--pdx-inline-field-*` and `--pdx-inline-panel-*`). If host global `.mat-mdc-form-field`, `.mat-mdc-select-panel`, or Material option/select token styles break inline filters, fix or preserve these component tokens before adding host-only overrides.

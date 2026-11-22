@@ -17,6 +17,7 @@ Use this matrix when translating legacy XML fields into Praxis DTO and FilterDTO
 | Boolean flag | Yes | `TOGGLE` | For filters use inline toggle. Keep tri-state semantics explicit if null means all. |
 | Date | Yes | `DATE_PICKER` | Prefer date range for from/to pairs. |
 | Date interval | Yes | date range metadata | Preserve inclusive/exclusive semantics in service tests. |
+| Monetary / salary / value min-max pair | Yes | `PRICE_RANGE` or `INLINE_CURRENCY_RANGE` | Collapse legacy `min`/`max` pairs into one `List<BigDecimal>` `@Filterable(operation = BETWEEN, inline = true)` field with `numericFormat = CURRENCY`; exposes `between`/`gte`/`lte`/`eq`, clickable `showAnchors`, and `quickPresets` without separate inputs. |
 | Dependent LOV | Yes | `ASYNC_SELECT` or `ENTITY_LOOKUP` | Add `dependsOn` and `dependencyFilterMap`; validate disabled/loading behavior in UI. |
 
 ## Response DTO Controls

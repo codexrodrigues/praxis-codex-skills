@@ -172,4 +172,7 @@ Load companion skills for dynamic-fields/editorial/authoring tasks before changi
 
 The host owns theme, shell, navigation, branding, and layout. Praxis UI should remain host-themeable through Material/Praxis tokens and CSS custom properties.
 
+- Customize inline filter pills and connected CDK overlay panels (which render in `.cdk-overlay-container`) using component Styling API tokens such as `--pdx-inline-currency-range-*`, `--pdx-inline-chip-*`, and `--pdx-inline-overlay-*` on `:root` or global theme scopes in `styles.scss`; do not write `::ng-deep` selectors against internal `.mdc-*` or `.pdx-*` DOM.
+- When host branding needs per-screen panel titles, icons, clickable anchors (`showAnchors`), operator modes, or quick presets beyond backend `/schemas/filtered` defaults, configure `advancedFilters.settings.alwaysVisibleFieldMetadataOverrides` instead of replacing `PraxisFilter` with custom inputs.
+
 For visual/product quality work, use `praxis-ui-product-design` and validate desktop plus narrow viewport when feasible.
