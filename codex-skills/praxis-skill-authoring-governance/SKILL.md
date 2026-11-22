@@ -102,16 +102,24 @@ as the family authority. Never edit an installed copy as the authoritative fix.
    dependencies; do not use the manifest as a broad related-skills catalog.
 2. Update `skillMdSha256` and `treeSha256` with the canonical audit flow.
 3. Run the skill-creator validator for changed skills when available, then run
-   structure validation for those skills and both family audits as required by
-   repository governance. Update generated issue drafts when the generator
+   structure validation for those skills, both family audits, and the integrated
+   repository gate `python -B scripts/preflight-python-fallbacks.py` (covering
+   unit tests, `scripts/workspace/test_audit_java_resource_completeness.py`,
+   `scripts/workspace/test_workspace_auditors.py`, `audit-agents-governance.py`,
+   and `audit-public-repo-purity.py`) as required by repository governance.
+   Update generated issue drafts when `scripts/generate-skill-review-issue-drafts.py`
    requires it. Guidance-only edits do not require Java/Angular/runtime suites;
    executable examples or tooling changes require their affected checks. After
    success, do not repeat unchanged gates merely to prepare the final report.
 4. Sync only the affected skills after the source and manifest audit are clean.
    Derive a selected manifest from canonical entries and pass its path to the
-   canonical sync script with explicit repository and destination roots. Do not
-   force an entire family to overwrite unrelated local changes. Separate local
-   validated source, remote integration/publication and installed candidate state.
+   canonical sync script with explicit repository and destination roots, or for
+   full workspace provisioning run
+   `scripts/bootstrap-praxis-skills.ps1 -Family praxis -SkillsRoot <workspace>/codex-skills -WorkspaceRoot <workspace>`
+   to restore `scripts/workspace/*`, `.agents/skills.json`, and root `AGENTS.md`
+   from `docs/platform-governance/workspace-root-AGENTS.md`. Do not force an entire
+   family to overwrite unrelated local changes. Separate local validated source,
+   remote integration/publication and installed candidate state.
    Re-audit the installed target. Investigate an existing destination drift
    instead of overwriting it casually.
    For a selective installation, traverse the selected entries' manifest

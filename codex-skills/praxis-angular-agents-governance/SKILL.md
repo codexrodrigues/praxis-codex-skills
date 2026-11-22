@@ -104,6 +104,12 @@ Use the affected local `AGENTS.md` first, then select the narrowest command with
 - AI manifest, catalog, ingestion, generated AI docs, or backend sync: `praxis-ai-registry-ingestion` and `tools/ai-registry/AGENTS.md`.
 - assistant intent, quick replies, clarifications, turn transport, preview/apply enablement, or agentic repair UX: `praxis-ai-semantic-intent`, `praxis-ai-composer-attachments-quick-replies`, and the relevant transport/runtime skill before treating the issue as local Angular governance.
 
+For governance/purity/host checks backed by the versioned workspace auditors under `scripts/workspace/`, run the applicable gate:
+
+- `python -B scripts/workspace/audit-agents-governance.py <repo> [--root-agents]`
+- `python -B scripts/workspace/audit-public-repo-purity.py --repo <repo>` (before public commits/pushes)
+- `python -B scripts/workspace/audit-angular-host-completeness.py <host> --strict`
+
 For a skills-only change, use the dedicated `praxis-codex-skills` Git repository (`praxis-codex-skills` checkout), not the host workspace mirror. Follow `praxis-skill-authoring-governance`: update canonical skills and manifest hashes/dependencies, check affected generated drafts, run the owning structural/manifest audits, and sync only affected skills with explicit repository, selected manifest and destination roots. Inspect dependency closure and preserve unrelated local drift; never use whole-family `--force` as the default. State source validation, remote integration/publication and installation status separately. Guidance-only changes do not require Angular/runtime suites.
 
 Close with the resolved stack, classification, canonical owner, applied gates, derived-artifact decision, and any issue opened for a true governance or platform gap.
