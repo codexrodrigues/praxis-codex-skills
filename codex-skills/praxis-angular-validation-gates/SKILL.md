@@ -16,7 +16,7 @@ Before choosing a gate:
 3. Identify the canonical owner and risk: `public-api`, shared core models/tokens/services, configuration/editor round trip, AI manifest/registry, i18n, metadata/schema/action/capability consumption, docs/playgrounds, visual UX, package/release, or cross-repository config integration.
 4. Inspect the current root `package.json`, project package, local AGENTS, focused specs, and documented E2E lane. Do not invent scripts from memory.
 5. Verify `node_modules` ownership before Node/Angular commands. On a Windows-owned install (Windows native packages or `.cmd` bins), invoke npm/npx/ng through `cmd.exe /c`; on a Unix install use its owning shell. Do not mix installations across environments.
-6. Check whether a consumer may resolve stale `node_modules/@praxisui/*` rather than current `dist/*`. For cross-lib type/export failures, run the canonical `npm run build:libs` synchronization before changing a public contract.
+6. Check whether a consumer may resolve stale `node_modules/@praxisui/*` rather than current `dist/*`. Root `tsconfig.app.json`, root `tsconfig.spec.json`, library `projects/*/tsconfig.lib.json`, and project `tsconfig.spec.json` files resolve cross-library `@praxisui/*` imports through compiled packages in `dist/*` / `node_modules/@praxisui/*`. `build-libs.js` caches each library by Merkle DAG hash (`CACHE_VERSION = 3` with `fileDigests` `(mtimeMs, size) -> sha256` memoization, `--prod`/`--dev` mode, upstream `mtime`, and transitive dependent eviction) in `.angular/cache/praxis-build-libs-cache.json` and syncs built packages to `node_modules/@praxisui/*` (with `postinstall` and `test:libs` preflight running `node ./scripts/build-libs.js --sync-only`); for cross-lib type/export failures, run `node ./scripts/build-libs.js --sync-only` (when `dist/*` is already current), `npm run build:praxis-<lib>`, or `npm run build:libs` before changing a public contract.
 7. List derived artifacts that may need review: `public-api.ts`, manifests, registry/corpus, docs, recipes/playgrounds, i18n catalogs, screenshots, landing content, package assets, and consumer builds.
 
 ## Evidence Selection
@@ -31,8 +31,11 @@ including shared harness/configuration impact, not the whole workspace by defaul
 
 Reserve a necessary broad suite/build for the consolidated candidate. Repeat it
 only after relevant evidence invalidation, a demonstrated coverage gap or a gate
-requirement. Reuse current lib/package outputs; run canonical `build:libs` when
-package synchronization is actually required, not after unrelated docs/test edits.
+requirement. Reuse current lib/package outputs; `npm run build:praxis-<lib>`
+skips unchanged upstream dependencies via hash cache and syncs the built package
+to `node_modules/@praxisui/*`. Reserve `npm run build:libs` or
+`npm run build:libs:force` for multi-consumer package synchronization or full
+uncached rebuilds, not after unrelated docs/test edits.
 Do not build concurrently into shared dist/node_modules or disrupt shared watchers.
 These choices retain every applicable public-API, browser/accessibility, consumer,
 registry, live integration and release gate in the matrix.
@@ -41,7 +44,7 @@ registry, live integration and release gate in the matrix.
 | --- | --- |
 | one lib implementation, no public shape | focused `.spec.ts` then the owning lib build, such as `npm run build:praxis-table` |
 | shared core model/token/service/schema/runtime contract | focused core spec or `npm run test:core`, `npm run build:praxis-core`, and a real direct-consumer build/test |
-| public export or cross-lib contract | altered lib build, `public-api` audit with `praxis-angular-public-api-governance`, `npm run build:libs` if consumer packages need sync, and a direct consumer proof |
+| public export or cross-lib contract | altered lib build (`npm run build:praxis-<lib>`), `public-api` audit with `praxis-angular-public-api-governance`, `npm run build:libs` (or `npm run build:praxis-<consumer>`) if consumer packages need sync, and a direct consumer proof |
 | table/form/list behavior | owning build plus `npm run test:table`, `npm run test:form`, or focused `ng test <project> --watch=false --progress=false --include=<spec>` |
 | editable config, authoring editor, Settings Panel bridge | focused runtime/config/editor/round-trip specs; browser proof for open, edit, apply/save, reopen, and reset when visible/stateful |
 | AI component manifest, docs metadata, catalog tool | focused manifest/tool spec, `npm run generate:registry:ingestion`, then `npm run validate:catalog` and `npm run validate:authoring-contracts` when not already part of ingestion |
@@ -59,9 +62,9 @@ Do not count a mock-only spec as browser, persistence, authoring, or cross-proje
 
 Use exact current scripts from the workspace:
 
-- `npm run build:praxis-core`, `build:praxis-table`, `build:praxis-dynamic-form`, `build:praxis-settings-panel`, or `build:praxis-charts`: focused packagable library builds.
-- `npm run build:libs`: builds the package graph and synchronizes built packages into `node_modules/@praxisui/*`; use it before treating consumer compilation against stale local packages as a true regression.
-- `npm run test:core`, `test:table`, `test:form`, `test:settings-panel`: focused project suites. For a precise spec, use the workspace Angular CLI form with `--include=<spec>`.
+- `npm run build:praxis-<lib>` (available for all 22 libs, e.g. `build:praxis-core`, `build:praxis-table`, `build:praxis-dynamic-form`, `build:praxis-settings-panel`, `build:praxis-charts`): focal incremental packagable library builds. Unchanged upstream dependencies hit the Merkle DAG hash cache (`CACHE_VERSION = 3` `fileDigests` `(mtimeMs, size) -> sha256` memoization, `--prod`/`--dev` mode, and upstream `dist/*` mtime checks) in `.angular/cache/praxis-build-libs-cache.json` without recompiling, while changed libs compile, sanitize, evict stale downstream cache entries, and sync to `node_modules/@praxisui/*`. Add `--single` (`node ./scripts/build-libs.js --prod --only <lib> --single`) to compile only the target when upstream `dist/` packages already exist, `--parallel` / `--concurrency=<N>` for wave-based topological execution, or `--sync-only` (`postinstall` hook) to resync existing `dist/*` packages into `node_modules/@praxisui/*` without recompiling.
+- `npm run build:libs` / `npm run build:libs:force` / `npm run typecheck` / `npm run validate:build-isolation`: `build:libs` builds across the 22-lib package graph (incremental by default; `--force` bypasses the cache; supports `--parallel` / `--concurrency=<N>`) and synchronizes built packages into `node_modules/@praxisui/*`; `npm run typecheck` runs `tsc -p tsconfig.app.json --noEmit` against `node_modules/@praxisui/*`; `npm run validate:build-isolation` verifies the acyclic 22-lib DAG and `tsconfig*.json` isolation across workspace, libs, and specs (run as a fast-fail CI gate in `build-libs.yml` / `publish-from-tag.yml`; in `ci:verify`, `validate:build-isolation`, `build:libs`, `typecheck`, and `test:libs` run in order).
+- `npm run test:core`, `test:table`, `test:form`, `test:settings-panel`: focused project suites. Each project's `tsconfig.spec.json` and root `tsconfig.spec.json` consume external `@praxisui/*` packages from `node_modules/@praxisui/*`, so a targeted `ng test <project> --watch=false --progress=false --include=<spec>` compiles only the target under test. All 22 libs in `angular.json` standardize `tools/karma/karma.headless.conf.cjs` and required polyfills; `scripts/ci/run-test-libs.js` runs `--sync-only` preflight and supports `--only <libs>` or `--all` across all 22 libs.
 - `npm run generate:registry:ingestion`: extracts component docs, generates AI metadata/ingestion, validates catalog governance, and validates authoring contracts. Do not edit derived registry output as a shortcut.
 - `npm run docs:validate-frontmatter:changed`: validates changed documentation frontmatter; use the owning docs/playground guidance for broader public claims.
 - `npm run e2e:platform:list`: discover available deterministic platform lanes before choosing one. It is discovery only, not E2E proof.
