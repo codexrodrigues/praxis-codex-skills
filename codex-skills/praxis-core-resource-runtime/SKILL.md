@@ -18,6 +18,7 @@ Inspect the affected source before changing guidance or code:
 - `projects/praxis-core/AGENTS.md`
 - `projects/praxis-core/src/public-api.ts` when resource runtime models, services, components, tokens, or helpers are exported or public consumption changes
 - `projects/praxis-core/src/lib/services/generic-crud.service.ts`
+- `projects/praxis-core/src/lib/utils/resource-path.util.ts` and `projects/praxis-core/src/lib/utils/resource-path.util.spec.ts`
 - `projects/praxis-core/src/lib/schema/schema-metadata-client.ts` and its specs
 - `projects/praxis-core/src/lib/schema/schema-request-key.ts`, `schema-request-context.ts` and `schema-fetch.ts` (internal representation/transport paths)
 - `projects/praxis-core/src/lib/schema/schema-header-context.spec.ts`
@@ -91,6 +92,7 @@ Keep the Angular models aligned with the real backend payloads. `ResourceSchemaC
 
 - `resourcePath` is a base resource path, not an operation URL.
 - Do not add `/api`, `/filter`, `/{id}`, query strings, schema paths, or submit endpoints to `resourcePath` when `GenericCrudService` can resolve them.
+- Use `normalizePraxisResourcePath(raw, styleOrOptions?)`, `extractPraxisApiPathPrefix(baseUrl)`, and `resolvePraxisSchemasFilteredUrl(apiBaseUrl, resourcePath, options?)` from `@praxisui/core` whenever components or services normalize `resourcePath` inputs; pass `stripOperationalSuffix: false` for analytics or projection routes so trailing projection segments are not stripped, and keep portable configuration descriptors (such as `advancedFilters.schemaUrl` in `PraxisCrudComponent`) in their relative `'/schemas/filtered?path=...'` shape without embedding host origins or altering `{id}` templates.
 - Use operation-specific `schemaUrl`, `submitUrl`, and `submitMethod` only when a real action/surface/command contract requires them.
 - Treat capabilities and `_links` as availability gates for optional operations such as export, create, edit, delete, duplicate, workflow actions, and surface opens.
 - When `CrudOperationResolutionService` returns `source: "convention"`, keep

@@ -31,6 +31,7 @@ Before editing code or guidance, inspect:
 - `projects/praxis-core/src/lib/services/loading-orchestrator.service.ts`
 - `projects/praxis-core/src/lib/services/collection-export.service.ts`
 - `projects/praxis-core/src/lib/services/enterprise-runtime-context.service.ts`
+- `projects/praxis-core/src/lib/testing/testing-defaults.providers.ts` and `projects/praxis-core/src/lib/testing/testing-defaults.providers.spec.ts`
 - focused provider/token/service specs and direct consumer imports
 - For icon-family behavior, also inspect `components/icon/praxis-icon.directive.ts`, `components/icon-button/praxis-icon-button.component.ts` and their focused specs in the exact installed or candidate version.
 
@@ -49,6 +50,7 @@ Before building custom auth/CSRF wrappers, realm URL parsers, theme toggle store
   - `PraxisWorkspaceQueryContextService` holds multi-dimensional workspace scope (`PRAXIS_CONTEXT_DIMENSIONS`: `'organization' | 'company_group' | 'unit' | 'person' | 'bond' | 'contract'`), automatically syncs with `EnterpriseRuntimeContextService`, and clears stale caches via `PraxisCacheInvalidatorService` (or `registerHandler(...)`, preserving `'pax.api.origin'`).
   - `PraxisContextFilterProjectorService` evaluates schema `x-ui.contextBinding` (`projectFieldDefaults`, `projectFilterCriteria`, `projectQueryContext`, `isFieldLockedByContext`) so resource pages/tables/forms project structural filters cleanly.
   - `ApiConfigStorage` (`CONFIG_STORAGE` / `ASYNC_CONFIG_STORAGE`) supports multi-scope reads/writes (`ConfigStorageScope = 'user' | 'tenant'`, `writeScope`, `setWriteScope`, `toggleWriteScope`, `saveError$`, separate `readEtag`/`writeEtag`, and `deletePersonalOverrideAndReloadTenantBaseline`).
+- **TestBed Isolation & Testing Defaults**: spread `...providePraxisTestingDefaults(options?)` from `@praxisui/core` after `...appConfig.providers` (alongside `provideHttpClientTesting()`) to share one `InMemoryConfigStore` across `CONFIG_STORAGE` and `ASYNC_CONFIG_STORAGE`, substitute `InMemoryEnterpriseRuntimeContextService`, unconditionally override `PRAXIS_ENTERPRISE_RUNTIME_CONTEXT_OPTIONS` (`includeGlobalFetchHeaders: false`, `blocking: false`, `errorPolicy: 'ignore'`), neutralize bootstrap initializers (`PRAXIS_GLOBAL_CONFIG_BOOTSTRAP_*`, `PRAXIS_ENTERPRISE_RUNTIME_CONTEXT_READY`), suppress schema/session/theme/telemetry side effects, and optionally install `createPraxisTestingNoopHttpInterceptor()`. Do not write ad hoc per-spec `ASYNC_CONFIG_STORAGE` or `/api/praxis/runtime/context` `fetch` stubs when `providePraxisTestingDefaults()` covers the need.
 
 Vertical packages may register their package metadata or package defaults through core providers, but they should not redefine core token shapes or expose transitively owned core contracts as local public APIs.
 
@@ -104,10 +106,10 @@ stateful root service merely to make child tokens visible to it.
 
 Use the smallest reliable proof:
 
-- global config, config storage, and global config provider defaults:
+- global config, config storage, testing defaults, and global config provider defaults:
 
 ```sh
-npm run test:core -- --include=projects/praxis-core/src/lib/services/global-config.service.spec.ts --include=projects/praxis-core/src/lib/services/config-storage.service.spec.ts --include=projects/praxis-core/src/lib/tokens/global-config.providers.spec.ts
+npm run test:core -- --include=projects/praxis-core/src/lib/services/global-config.service.spec.ts --include=projects/praxis-core/src/lib/services/config-storage.service.spec.ts --include=projects/praxis-core/src/lib/tokens/global-config.providers.spec.ts --include=projects/praxis-core/src/lib/testing/testing-defaults.providers.spec.ts
 ```
 
 - loading providers/orchestrator/renderer and visual tokens:

@@ -182,6 +182,9 @@ Use these defaults unless the host already has stronger local governance:
 
 Do not prefix resource paths with `/api` when `API_URL` already points at `/api`. Avoid `resourcePath="/api/..."`, `resourcePath=".../filter"`, and duplicated `/api/api/...` paths. CRUD, schema, filter, option, item-id, submit, and capability endpoints are resolved by Praxis runtime services from the base resource and metadata.
 
+- Reuse `normalizePraxisResourcePath`, `extractPraxisApiPathPrefix`, and `resolvePraxisSchemasFilteredUrl` from `@praxisui/core` if host helpers must inspect or normalize resource addresses, instead of maintaining duplicate host-local `normalizedResourcePath` tables or string-trimming helpers.
+- In full-host or page `TestBed` specs that reuse `appConfig.providers`, spread `...providePraxisTestingDefaults()` from `@praxisui/core` after `...(appConfig.providers ?? [])` alongside `provideHttpClientTesting()` to isolate `CONFIG_STORAGE`/`ASYNC_CONFIG_STORAGE`, `EnterpriseRuntimeContextService`, caches, and bootstrap initializers without hitting `/api/praxis/runtime/context` (see `praxis-ui-quickstart/src/app/quickstart-12-pillars.spec.ts` as reference proof).
+
 ## Route Parity Diagnostics
 
 When table works but form, CRUD, or list fail for the same resource, check whether the table is relying on a local `TableConfig.meta.idField` while the other surfaces consume `/schemas/filtered` through `GenericCrudService` without an explicit `idField` query parameter. Query `/schemas/filtered?path=<base-resource>/filter&operation=post&schemaType=response` and `schemaType=request` exactly as the runtime does. If `x-ui.resource.idField` diverges from the resource DTO key, fix the canonical backend metadata owner, usually `praxis-metadata-starter`, or the host's published OpenAPI/schema metadata. Do not compensate by threading ad hoc `idField` params through Angular runtime calls or by adding frontend aliases.
