@@ -68,6 +68,7 @@ Use exact current scripts from the workspace:
 - `npm run generate:registry:ingestion`: extracts component docs, generates AI metadata/ingestion, validates catalog governance, and validates authoring contracts. Do not edit derived registry output as a shortcut.
 - `npm run docs:validate-frontmatter:changed`: validates changed documentation frontmatter; use the owning docs/playground guidance for broader public claims.
 - `npm run e2e:platform:list`: discover available deterministic platform lanes before choosing one. It is discovery only, not E2E proof.
+- `python scripts/workspace/audit-modern-web-readiness.py <host-dir> --strict [--run-legacy-scan]`: validates Baseline policy, `<meta name="color-scheme">` sync, unused `provideAnimations()`, standards-first scrollbars, font duplication, hosting CSP/cache headers, `100dvh` pairing, and `modern-web-guidance legacy-scan` filtered through the Angular rubric (`praxis-ui-angular/docs/MODERN-WEB-GUIDANCE-PLAYBOOK.md`; pass `--registry=https://registry.npmjs.org/` if root npm points to a private feed). Pair with Chrome DevTools for Agents to measure live CWV (`LCP < 2.5s`, `INP < 200ms`, `CLS < 0.1`) when performance/UX is in scope.
 
 For a new public component behavior, a manifest or registry check does not replace a lib build. For a public API change, a lib build does not replace a consumer proof. Keep these distinctions explicit.
 

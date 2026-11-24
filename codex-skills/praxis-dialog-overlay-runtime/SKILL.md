@@ -28,7 +28,7 @@ Inspect:
 
 ## Runtime Rules
 
-- Use `PraxisDialog.open`, `confirm`, `alert`, `prompt`, `openByRegistry`, `openTemplateById`, or tag mode; do not add ad hoc overlay shells in consumers.
+- Use `PraxisDialog.open`, `confirm`, `alert`, `prompt`, `openByRegistry`, `openTemplateById`, or tag mode; do not add ad hoc overlay shells in consumers. Any adoption of native web primitives (`<dialog>`, `popover`, CSS Anchor Positioning, `@starting-style`) with Baseline fallbacks belongs inside `@praxisui/dialog` rather than host-local overlays.
 - For metadata-driven surfaces, go through the global action/surface providers rather than opening ad hoc overlays from consumers.
 - Preserve lifecycle streams: `afterOpened`, `beforeClosed`, `afterClosed`, `backdropClick`, `keydownEvents`, `afterAllClosed`.
 - Treat the value passed to `close(...)` and emitted by `afterClosed()` as overlay lifecycle result.

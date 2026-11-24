@@ -135,6 +135,7 @@ When an Angular host integrates corporate `SESSION` + `X-XSRF-TOKEN` transport (
    - `resourcePath` values are relative when the API base already includes `/api`.
    - Register `PAX_FETCH_HEADERS` with tenant, locale, auth, and user/env headers when available.
    - Register Praxis runtime providers and the pipes required by table/form runtime.
+   - Declare Baseline target (`Baseline 2024` + `.browserslistrc`), sync `<meta name="color-scheme">` via `PraxisThemeService` and an external boot script (CSP-safe without `'unsafe-inline'`), omit unused `provideAnimations()`, avoid duplicating self-hosted `@font-face` families in Google Fonts `<link>` tags, keep `inlineCritical: false` under CSR multi-theme CSP (`Content-Security-Policy-Report-Only` -> `Content-Security-Policy`), configure `Cache-Control` for static fonts/images, and validate with `python scripts/workspace/audit-modern-web-readiness.py <host-dir> --strict`.
 5. Add the smallest useful route set:
    - First adoption path: table, dynamic form, CRUD, and list against the same resource.
    - Expansion path only after the core path works: manual form, tabs, stepper, expansion, charts, editorial forms, page builder, AI shell.

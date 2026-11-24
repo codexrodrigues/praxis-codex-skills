@@ -325,6 +325,14 @@ comparisons, read [widget-shell-material-review.md](references/widget-shell-mate
 Audit the Core catalog, resolved context, explicit appearance and the actual child component
 before proposing more presets. A thumbnail or passing name/ID test does not prove visual identity.
 
+## Modern Web Platform & Baseline Alignment
+
+Apply precedence **`Contratos Praxis > Angular MCP > Chrome Modern Web Guidance + Baseline`** (see `praxis-ui-angular/docs/MODERN-WEB-GUIDANCE-PLAYBOOK.md`).
+
+- Use `modern-web-guidance` (`search` / `retrieve`) when implementing modern CSS (`oklch()`, `color-mix()`, `@container`, `subgrid`, `image-set()`, `scrollbar-color`/`scrollbar-width` with `@supports not (scrollbar-color: auto)` for WebKit fallbacks, progressive `100dvh`, typography fallback metrics, and native `@starting-style` / `View Transitions` under `@supports`).
+- Respect the layer Baseline target (`Baseline Widely available` in `@praxisui/*`; `Baseline 2024` + progressive enhancement in hosts).
+- Never duplicate selectors (`.cls.cls`) or wrap partial theming in `@layer` while Angular Material remains unlayered; express visual overrides through canonical Material and Praxis CSS custom properties.
+
 ## References
 
 Load only what is needed, but follow these mandatory routing rules:

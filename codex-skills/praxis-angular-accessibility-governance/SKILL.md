@@ -36,7 +36,9 @@ when the shared owner is Core, Dialog, Settings Panel, or the component package.
 - Do not trap focus outside a modal contract or lose it during async
   materialization, table refresh, chart redraw, or component-mode switch.
 - Controls require semantic roles, relationships, states, and accessible names.
-  Icon-only controls need localized names; a tooltip is not the name.
+  Icon-only controls need localized names; a tooltip is not the name. Prefer native `<button type="button">` over clickable `<article role="button">` or `<div role="button">` wrappers when there are no nested interactive controls.
+- Guard `Enter` submit/confirm handlers attached to `<input>`, `<textarea>`, or `contenteditable` against IME composition (`if (event.isComposing || event.keyCode === 229) return;`), and align `:user-invalid` visual feedback with `aria-invalid` after interaction.
+- Respect OS text scale (`rem`-based typography/spacing) alongside high contrast, forced colors, and reduced motion.
 - Announce material state changes such as filter result changes, column
   resize/reorder, export completion, persistence failure, loading, validation,
   and terminal authoring outcomes without repeatedly announcing transient
