@@ -29,7 +29,7 @@ If public docs, registry, playgrounds, or examples mention tabs, also audit thos
 `@praxisui/tabs` owns:
 
 - `TabsMetadata`, `TabGroupMetadata`, `TabNavMetadata`, tab/link identity, content, widgets, appearance, and behavior semantics
-- group mode and nav mode behavior, including `group.renderBody=false` and `nav.renderBody=false` for host-owned external panels
+- `group` and `nav` mode behavior, including `group.renderBody=false` and `nav.renderBody=false` for host-owned external panels, plus `showOverflowIndex` (`'auto' | boolean`) searchable quick-jump switcher for high-cardinality tab sets (`>= 8` visible tabs/links) and cross-axis scrollbar lock (`overflow-y: hidden`) with `user-select: none` on tab headers
 - `tabsId`, `componentInstanceId`, and `configPersistenceStrategy` based persistence through `ASYNC_CONFIG_STORAGE`
 - controlled and uncontrolled `selectedIndex` behavior
 - lazy tab body loading and visible-index mapping for hidden or disabled items
@@ -44,7 +44,7 @@ Hosts and docs consume these contracts. Do not create host-local tab config alia
 - Choose `configPersistenceStrategy` deliberately. Use `input-first` for governed previews or nested widget materializations where input config must dominate stored customization.
 - Preserve `selectedIndex` semantics. External `selectedIndex` input updates the active tab without implying a user selection event; user selection emits `selectedIndexChange`.
 - Preserve stable `tabs[].id` and `nav.links[].id`. Authoring, event paths, removal, reordering, disabled state, visibility, and reselection should resolve by id before label or index.
-- Use `group.renderBody=false` or `nav.renderBody=false` only when the host intentionally owns the content panel. Otherwise let tabs render `content` and `widgets` internally.
+- Use `group.renderBody=false` or `nav.renderBody=false` only when the host intentionally owns the content panel. Otherwise let tabs render `content` and `widgets` internally. Never build a parallel custom host tab strip with native horizontal scrollbars when `<praxis-tabs>` (`appearance.variant: 'pill'`, `renderBody: false`, `showOverflowIndex: 'auto'`) can manage the external panel header natively.
 - Use `config.behavior.lazyLoad` for expensive tab bodies instead of ad hoc `*ngIf` wrappers in consumers.
 - Forward nested widget events through the component `widgetEvent` output instead of creating a host-only event bus.
 
