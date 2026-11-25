@@ -70,6 +70,17 @@ def mapped_input_fields(entity, dto_fields, classes):
 
 def command_fields(ctrl, entity, classes):
     methods = {name: java_methods(info.content) for name, info in classes.items()}
+    implementors = {}
+    for cls_name, cls_info in classes.items():
+        impl_match = re.search(
+            r'\b(?:class|record)\s+\w+[^{]*?\bimplements\s+([^{]+)',
+            masked_java(cls_info.content),
+            re.DOTALL,
+        )
+        if impl_match:
+            clean_impls = re.sub(r'<[^>]*>', '', impl_match.group(1))
+            for iface in re.findall(r'\b([A-Za-z_]\w*)', clean_impls):
+                implementors.setdefault(iface, []).append(cls_name)
     roots = [name for name, (header, _, _) in methods[ctrl.name].items()
              if re.search(r'@(?:\w+\.)*(?:WorkflowAction|ResourceIntent)\b', masked_java(header))
              and re.search(r'@(?:\w+\.)*(?:PostMapping|PatchMapping)\b', masked_java(header))]
@@ -92,8 +103,11 @@ def command_fields(ctrl, entity, classes):
         fields = {name: type_.split("<")[0].split(".")[-1] for type_, name, _ in info.fields}
         for receiver, called in re.findall(r'\b(\w+)\.(\w+)\s*\(', code):
             target = fields.get(receiver, receiver if receiver in classes else owner if receiver == "this" else "")
-            if target in classes:
+            if target in classes and methods.get(target):
                 visit(target, called)
+            elif target in implementors:
+                for impl_name in implementors[target]:
+                    visit(impl_name, called)
         for called in re.findall(r'(?<![.\w])([a-zA-Z_]\w*)\s*\(', masked_java(body)):
             visit(owner, called)
     for root in roots:
@@ -102,20 +116,26 @@ def command_fields(ctrl, entity, classes):
 
 
 def relationship_key_fields(entity_fields):
-    """Match scalar JPA columns to declared joins; never guess foreign keys by suffix."""
-    joins = {name for _, _, annotations in entity_fields
-             if re.search(r'@(?:\w+\.)*(?:ManyToOne|OneToOne)\b', annotations)
-             for name in re.findall(r'@(?:\w+\.)*JoinColumn\s*\([^)]*?\bname\s*=\s*"([^"]+)"', annotations)}
+    """Match scalar JPA columns to single-column declared joins; skip composite @JoinColumns."""
+    joins = set()
+    for _, _, annotations in entity_fields:
+        if re.search(r'@(?:\w+\.)*(?:ManyToOne|OneToOne)\b', annotations):
+            cols = re.findall(r'@(?:\w+\.)*JoinColumn\s*\([^)]*?\bname\s*=\s*"([^"]+)"', annotations)
+            if len(cols) == 1:
+                joins.add(cols[0])
     return {field for _, field, annotations in entity_fields
             if any(column in joins for column in re.findall(r'@(?:\w+\.)*Column\s*\([^)]*?\bname\s*=\s*"([^"]+)"', annotations))}
 
 
 def presentation_issues(type_, field, annotations, foreign_keys=()):
-    ui = re.search(r'@UISchema\s*\((.*?)\)', annotations, re.DOTALL)
-    if not ui:
+    mask = masked_java(annotations)
+    m = re.search(r'@(?:[\w.]+\.)?UISchema\s*\(', mask)
+    if not m:
         return [f"{field}: missing @UISchema"]
-    body = ui.group(1)
-    reference = "@ResourceReference" in annotations
+    start = mask.find("(", m.start())
+    end = end_delimiter(mask, start, "(", ")")
+    body = annotations[start + 1 : end] if end >= 0 else ""
+    reference = "@ResourceReference" in annotations or bool(re.search(r'@(?:[\w.]+\.)?ResourceReference\b', annotations))
     semantic = type_ in {"LocalDate", "LocalDateTime", "BigDecimal", "java.math.BigDecimal"} or field in foreign_keys or reference and "ENTITY_LOOKUP" in body
     issues = []
     if semantic:
@@ -181,9 +201,9 @@ def entity_lookup_descriptor_issues(classes):
                     boundary = index + 1
             args.append(cleaned[boundary:end].strip())
             # Optional paths/URLs in nested contracts are legitimate. Count only outer arguments,
-            # and require the four actual rich subcontracts (canonical 13-argument constructor).
+            # and require the four actual rich subcontracts (canonical 13- or 15-argument constructor).
             null_count = sum(arg == 'null' for arg in args)
-            missing = len(args) != 13 or any(args[i] == 'null' for i in (8, 10, 11, 12))
+            missing = len(args) not in (13, 15) or any(args[i] == 'null' for i in (8, 10, 11, 12))
             if missing:
                 issues.append(
                     f"{info.name}: skeletal EntityLookupDescriptor ({null_count} null arguments; populate LookupSelectionPolicy, LookupDetailDescriptor, LookupDisplayDescriptor, LookupFilteringDescriptor)"

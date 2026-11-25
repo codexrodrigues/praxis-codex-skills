@@ -36,6 +36,8 @@ from java_resource_audit import (
     micro_visualization_properties,
     reactive_determination_count,
     reactive_determination_issues,
+    masked_java,
+    end_delimiter,
 )
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -71,6 +73,7 @@ class JavaClassInfo:
     controller_type_args: List[str] = field(default_factory=list)
     service_type_args: List[str] = field(default_factory=list)
     fields: List[Tuple[str, str, str]] = field(default_factory=list)  # (type, name, annotations)
+    getters: List[Tuple[str, str, str]] = field(default_factory=list)  # (type, prop, annotations)
 
 
 def strip_comments(source: str) -> str:
@@ -79,20 +82,117 @@ def strip_comments(source: str) -> str:
     return source
 
 
-def extract_fields(source: str) -> List[Tuple[str, str, str]]:
-    """Extract fields with their preceding annotation block from a Java class body."""
+def extract_annotation_bodies(source: str, ann_name: str) -> List[str]:
+    mask = masked_java(source)
+    bodies: List[str] = []
+    pattern = re.compile(r"@(?:[\w.]+\.)?" + re.escape(ann_name) + r"\s*\(")
+    for match in pattern.finditer(mask):
+        start = mask.find("(", match.start())
+        end = end_delimiter(mask, start, "(", ")")
+        if end >= 0:
+            bodies.append(source[start + 1 : end])
+    return bodies
+
+
+def collect_string_constants(java_files: List[Path]) -> Dict[str, str]:
+    raw_consts: Dict[Tuple[str, str], str] = {}
+    for path in java_files:
+        try:
+            txt = strip_comments(path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        cls_m = re.search(r"\b(?:class|interface|enum|record)\s+(\w+)", txt)
+        if not cls_m:
+            continue
+        cls_name = cls_m.group(1)
+        for m in re.finditer(
+            r"\bpublic\s+static\s+final\s+String\s+(\w+)\s*=\s*([^;]+);",
+            txt,
+        ):
+            raw_consts[(cls_name, m.group(1))] = m.group(2).strip()
+
+    const_map: Dict[str, str] = {}
+    unique_unqualified: Dict[str, Optional[str]] = {}
+    for _ in range(6):
+        progressed = False
+        for (cls_name, key), expr in raw_consts.items():
+            full_key = f"{cls_name}.{key}"
+            if full_key in const_map:
+                continue
+            parts = [p.strip() for p in expr.split("+")]
+            resolved: List[str] = []
+            ok = True
+            for part in parts:
+                if len(part) >= 2 and part.startswith('"') and part.endswith('"'):
+                    resolved.append(part[1:-1])
+                elif f"{cls_name}.{part}" in const_map:
+                    resolved.append(const_map[f"{cls_name}.{part}"])
+                elif part in const_map:
+                    resolved.append(const_map[part])
+                elif part in unique_unqualified and unique_unqualified[part] is not None:
+                    resolved.append(unique_unqualified[part] or "")
+                else:
+                    ok = False
+                    break
+            if ok:
+                val = "".join(resolved)
+                const_map[full_key] = val
+                if key not in unique_unqualified:
+                    unique_unqualified[key] = val
+                elif unique_unqualified[key] != val:
+                    unique_unqualified[key] = None
+                progressed = True
+        if not progressed:
+            break
+    for k, v in unique_unqualified.items():
+        if v is not None and k not in const_map:
+            const_map[k] = v
+    return const_map
+
+
+def _resolve_string_constants(
+    source: str, cls_name: Optional[str], const_map: Optional[Dict[str, str]]
+) -> str:
+    if not const_map:
+        return source
+    attrs = "id|resourceKey|endpoint|value|path|operationId|evaluationOperationId|surfaceId|previewSurfaceId"
+    pattern = re.compile(
+        rf"\b({attrs})\s*=\s*([A-Za-z_][\w.]*(?:\.[A-Z0-9_]+)?)\b"
+    )
+
+    def _repl(m: re.Match) -> str:
+        attr, expr = m.group(1), m.group(2).strip()
+        val: Optional[str] = None
+        if "." in expr:
+            val = const_map.get(expr)
+            if val is None:
+                parts = expr.split(".")
+                if len(parts) >= 2:
+                    val = const_map.get(f"{parts[-2]}.{parts[-1]}")
+        else:
+            if cls_name:
+                val = const_map.get(f"{cls_name}.{expr}")
+            if val is None and expr.isupper():
+                val = const_map.get(expr)
+        return f'{attr} = "{val}"' if val is not None else m.group(0)
+
+    return pattern.sub(_repl, source)
+
+
+def _scan_class_members(source: str) -> Tuple[List[str], List[str]]:
+    """Extract top-level field statements and method/constructor headers from a Java class body."""
     cleaned = strip_comments(source)
     class_decl = re.search(r"\b(?:class|record)\s+\w+[^{]*\{", cleaned, re.DOTALL)
     if not class_decl:
-        return []
+        return [], []
 
     body = cleaned[class_decl.end() :]
-    results: List[Tuple[str, str, str]] = []
     brace_depth = 0
     paren_depth = 0
     current_token: List[str] = []
 
     top_statements: List[str] = []
+    top_headers: List[str] = []
     i = 0
     n = len(body)
     while i < n:
@@ -101,9 +201,13 @@ def extract_fields(source: str) -> List[Tuple[str, str, str]]:
             if brace_depth == 0:
                 current_token.append(ch)
         elif ch == "{":
+            if brace_depth == 0:
+                hdr = "".join(current_token).strip()
+                if hdr:
+                    top_headers.append(hdr)
             brace_depth += 1
             if brace_depth == 1:
-                current_token.append("{")
+                current_token = ["{"]
         elif ch == "}":
             if brace_depth == 0:
                 break
@@ -128,19 +232,66 @@ def extract_fields(source: str) -> List[Tuple[str, str, str]]:
             if brace_depth == 0:
                 current_token.append(ch)
         i += 1
+    return top_statements, top_headers
 
+
+def _strip_inline_type_annotations(decl_suffix: str) -> str:
+    return re.sub(r"@(?:[\w.]+\.)?\w+(?:\s*\([^)]*\))?\s*", "", decl_suffix)
+
+
+def extract_fields(source: str) -> List[Tuple[str, str, str]]:
+    """Extract fields with their preceding annotation block from a Java class body."""
+    top_statements, _ = _scan_class_members(source)
+    results: List[Tuple[str, str, str]] = []
+    vis_re = re.compile(
+        r"(?:^|\s)((?:private|protected|public)\s+(?!static\b)(?:final\s+|transient\s+)*)"
+    )
     field_re = re.compile(
-        r"(?:^|\s)(?:private|protected|public)\s+(?!static\b)(?:final\s+)?([\w<>?,\s\[\].]+?)\s+(\w+)\s*(?:=.*)?$",
+        r"(?:private|protected|public)\s+(?!static\b)(?:final\s+|transient\s+)*([\w<>?,\s\[\].]+?)\s+(\w+)\s*(?:=.*)?$",
         re.DOTALL,
     )
     for stmt in top_statements:
-        m = field_re.search(stmt)
+        vis_m = vis_re.search(stmt)
+        if not vis_m:
+            continue
+        annot_part = stmt[: vis_m.start()].strip()
+        prefix_len = vis_m.end() - vis_m.start()
+        decl_prefix = stmt[vis_m.start() : vis_m.end()]
+        raw_decl_tail = stmt[vis_m.start() + prefix_len :]
+        decl_head, eq_sep, decl_init = raw_decl_tail.partition("=")
+        decl_suffix = _strip_inline_type_annotations(decl_head) + (eq_sep + decl_init if eq_sep else "")
+        m = field_re.search(decl_prefix + decl_suffix)
         if m:
             f_type = m.group(1).strip()
             f_name = m.group(2).strip()
-            annot_part = stmt[: m.start()].strip()
             results.append((f_type, f_name, annot_part))
 
+    return results
+
+
+def extract_getters(source: str) -> List[Tuple[str, str, str]]:
+    """Extract annotated public bean getters with their preceding annotation block."""
+    _, top_headers = _scan_class_members(source)
+    results: List[Tuple[str, str, str]] = []
+    pub_re = re.compile(r"(?:^|\s)(public\s+(?!static\b))")
+    getter_sig_re = re.compile(
+        r"^([\w<>?,\s\[\].]+?)\s+(?:get([A-Z]\w*)|is([A-Z]\w*))\s*\(\s*\)(?:\s*throws\s+[\w.,\s]+)?$",
+        re.DOTALL,
+    )
+    for hdr in top_headers:
+        pub_m = pub_re.search(hdr)
+        if not pub_m:
+            continue
+        annot_part = hdr[: pub_m.start()].strip()
+        if not re.search(r"@(?:[\w.]+\.)?(?:UISchema|ResourceReference|Filterable)\b", annot_part):
+            continue
+        sig_clean = _strip_inline_type_annotations(hdr[pub_m.end() :]).strip()
+        gm = getter_sig_re.fullmatch(sig_clean)
+        if gm:
+            ret_type = gm.group(1).strip()
+            raw_prop = gm.group(2) or gm.group(3)
+            prop_name = raw_prop[0].lower() + raw_prop[1:]
+            results.append((ret_type, prop_name, annot_part))
     return results
 
 
@@ -165,20 +316,33 @@ def split_top_level_type_args(arg_str: str) -> List[str]:
     return args
 
 
-def parse_java_file(path: Path) -> Optional[JavaClassInfo]:
+def parse_java_file(
+    path: Path, const_map: Optional[Dict[str, str]] = None
+) -> Optional[JavaClassInfo]:
     try:
-        content = path.read_text(encoding="utf-8")
+        raw_content = path.read_text(encoding="utf-8")
     except Exception:
         return None
 
+    prelim = strip_comments(raw_content)
+    cls_name_m = re.search(r"\b(?:class|record)\s+(\w+)", prelim)
+    content = _resolve_string_constants(
+        raw_content, cls_name_m.group(1) if cls_name_m else None, const_map
+    )
+
     cleaned = strip_comments(content)
+    cleaned_header = cleaned
+    for _ in range(4):
+        cleaned_header = re.sub(
+            r"(\bextends\s+[\w.]+)\s*\.\s*([\w.]+)", r"\1.\2", cleaned_header
+        )
     class_match = re.search(
         r"\b(?:public\s+|abstract\s+|final\s+)*(?:class|record)\s+(\w+)(?:\s+extends\s+([\w.]+)(?:\s*<([^>{]+)>)?)",
-        cleaned,
+        cleaned_header,
         re.DOTALL,
     )
     if not class_match:
-        simple_match = re.search(r"\b(?:class|record)\s+(\w+)", cleaned)
+        simple_match = re.search(r"\b(?:class|record)\s+(\w+)", cleaned_header)
         if not simple_match:
             return None
         name = simple_match.group(1)
@@ -215,13 +379,14 @@ def parse_java_file(path: Path) -> Optional[JavaClassInfo]:
         if rk_match:
             info.resource_key = rk_match.group(1)
 
-    if info.is_controller and type_args_raw:
+    if (info.is_controller or info.resource_key) and type_args_raw:
         info.controller_type_args = split_top_level_type_args(type_args_raw)
 
     if info.is_service and type_args_raw:
         info.service_type_args = split_top_level_type_args(type_args_raw)
 
     info.fields = extract_fields(content)
+    info.getters = extract_getters(content)
     return info
 
 
@@ -240,6 +405,12 @@ def get_all_fields_with_inheritance(
     for c in reversed(chain):
         for f_type, f_name, f_annot in c.fields:
             merged[f_name] = (f_type, f_name, f_annot)
+        for g_type, g_name, g_annot in c.getters:
+            if g_name in merged:
+                old_type, _, old_annot = merged[g_name]
+                merged[g_name] = (old_type, g_name, (old_annot + "\n" + g_annot).strip())
+            elif re.search(r"@(?:[\w.]+\.)?(?:UISchema|ResourceReference)\b", g_annot):
+                merged[g_name] = (g_type, g_name, g_annot)
     return list(merged.values())
 
 
@@ -270,9 +441,11 @@ def main() -> int:
         print(f"ERROR: Could not find {src_main}", file=sys.stderr)
         return 2
 
+    java_files = sorted(src_main.rglob("*.java"))
+    const_map = collect_string_constants(java_files)
     classes: Dict[str, JavaClassInfo] = {}
-    for java_file in sorted(src_main.rglob("*.java")):
-        info = parse_java_file(java_file)
+    for java_file in java_files:
+        info = parse_java_file(java_file, const_map)
         if info:
             classes[info.name] = info
 
@@ -286,11 +459,11 @@ def main() -> int:
         print("ERROR: no supported resource controllers found; nothing was proven.",file=sys.stderr)
         return 2
 
-    resources = {c.resource_key: c for c in controllers if c.resource_key}
+    resources = {c.resource_key: c for c in classes.values() if c.resource_key and c.controller_type_args}
     read_surfaces = {}
     for key, controller in resources.items():
         read_surfaces[key] = set()
-        for annotation in re.findall(r"@(?:[\w.]+\.)?UiSurface\s*\(([^)]*)\)", strip_comments(controller.content), re.DOTALL):
+        for annotation in extract_annotation_bodies(strip_comments(controller.content), "UiSurface"):
             if re.search(r"SurfaceKind\.(?:VIEW|READ_PROJECTION)\b", annotation):
                 surface_id = re.search(r'id\s*=\s*"([^"]+)"', annotation)
                 if surface_id:
@@ -388,31 +561,34 @@ def main() -> int:
         for f_type, f_name, f_annot in resp_all_fields:
             if re.search(r"quickViewVisible\s*=\s*true", f_annot):
                 quick_view_cols += 1
-            if "@ResourceReference" in f_annot:
+            if re.search(r"@(?:[\w.]+\.)?ResourceReference\b", f_annot):
                 res_ref_count += 1
                 if re.search(r'previewSurfaceId\s*=\s*"[^"]+"', f_annot):
                     res_ref_preview_count += 1
-            lbl_match = re.search(r'@UISchema\s*\([^)]*label\s*=\s*"([^"]+)"', f_annot, re.DOTALL)
-            if lbl_match:
-                lbl = lbl_match.group(1).strip()
-                if len(lbl) > 36 or lbl.endswith("."):
-                    res_editorial_issues.append(
-                        f"{resp_dto_name}.{f_name}: label looks like a sentence/description ('{lbl}')"
-                    )
-            if f_type in {"LocalDate", "LocalDateTime"} and "@UISchema" in f_annot:
+            for ui_body in extract_annotation_bodies(f_annot, "UISchema"):
+                lbl_match = re.search(r'label\s*=\s*"([^"]+)"', ui_body)
+                if lbl_match:
+                    lbl = lbl_match.group(1).strip()
+                    if len(lbl) > 36 or lbl.endswith("."):
+                        res_editorial_issues.append(
+                            f"{resp_dto_name}.{f_name}: label looks like a sentence/description ('{lbl}')"
+                        )
+            simple_type = f_type if "<" in f_type else f_type.split(".")[-1]
+            if simple_type in {"LocalDate", "LocalDateTime"} and "@UISchema" in f_annot:
                 if "controlType" not in f_annot and "preset" not in f_annot:
                     res_editorial_issues.append(
                         f"{resp_dto_name}.{f_name} ({f_type}): @UISchema missing explicit controlType=DATE_PICKER"
                     )
 
         for f_type, f_name, f_annot in filter_all_fields:
-            lbl_match = re.search(r'@UISchema\s*\([^)]*label\s*=\s*"([^"]+)"', f_annot, re.DOTALL)
-            if lbl_match:
-                lbl = lbl_match.group(1).strip()
-                if len(lbl) > 36 or lbl.endswith("."):
-                    res_editorial_issues.append(
-                        f"{filter_dto_name}.{f_name}: label looks like a sentence/description ('{lbl}')"
-                    )
+            for ui_body in extract_annotation_bodies(f_annot, "UISchema"):
+                lbl_match = re.search(r'label\s*=\s*"([^"]+)"', ui_body)
+                if lbl_match:
+                    lbl = lbl_match.group(1).strip()
+                    if len(lbl) > 36 or lbl.endswith("."):
+                        res_editorial_issues.append(
+                            f"{filter_dto_name}.{f_name}: label looks like a sentence/description ('{lbl}')"
+                        )
 
         foreign_keys = relationship_key_fields(entity_all_fields)
         checked_ui = set()
@@ -425,7 +601,7 @@ def main() -> int:
         display_fields = relationship_display_fields(entity_name, entity_all_fields, classes)
         for display in display_fields:
             annotation = next((a for _, n, a in resp_all_fields if n == display), "")
-            if "@ResourceReference" not in annotation:
+            if not re.search(r"@(?:[\w.]+\.)?ResourceReference\b", annotation):
                 res_editorial_issues.append(f"{display}: mapped relationship display lacks @ResourceReference")
 
         related_class_names = {
@@ -444,14 +620,20 @@ def main() -> int:
         combined_sources = "\n".join(
             classes[n].content for n in related_class_names if n and n in classes
         )
-        identities = [re.search(r"@ResourceIdentity\s*\(([^)]*)\)", source, re.DOTALL)
+        identities = [extract_annotation_bodies(source, "ResourceIdentity")
                       for source in (ctrl.content, classes[resp_dto_name].content if resp_dto_name in classes else "")]
-        has_rich_identity = all(identity and
-            re.search(r'subtitleField\s*=\s*"[^"]+"', identity.group(1)) and
-            re.search(r'metadataFields\s*=\s*\{?\s*"[^"]+"', identity.group(1))
-            for identity in identities)
-        has_read_surface = bool(
-            re.search(r"@(?:[\w.]+\.)?UiSurface\s*\([^)]*SurfaceKind\.(?:VIEW|READ_PROJECTION)\b", combined_sources, re.DOTALL)
+        has_rich_identity = all(
+            identity_bodies
+            and any(
+                re.search(r'subtitleField\s*=\s*"[^"]+"', body)
+                and re.search(r'metadataFields\s*=\s*\{?\s*"[^"]+"', body)
+                for body in identity_bodies
+            )
+            for identity_bodies in identities
+        )
+        has_read_surface = any(
+            re.search(r"SurfaceKind\.(?:VIEW|READ_PROJECTION)\b", body)
+            for body in extract_annotation_bodies(combined_sources, "UiSurface")
         )
         quick_filter_count = len(re.findall(r"@(?:[\w.]+\.)?QuickFilter\b", combined_sources))
         ui_surface_count = len(re.findall(r"@(?:[\w.]+\.)?UiSurface\b", combined_sources))
@@ -508,7 +690,22 @@ def main() -> int:
             if field_name in identity_fields and re.search(r'quickViewVisible\s*=\s*true', annotations):
                 row_issues.append(f"Quick View repeats identity field: {field_name}")
 
-        if not 4 <= quick_view_cols <= 8:
+        all_identity_summary_fields = set(
+            re.findall(r'(?:keyField|titleField|subtitleField|avatarField)\s*=\s*"([^"]+)"', combined_sources)
+        )
+        for m in re.finditer(r'metadataFields\s*=\s*(?:\{([^}]*)\}|"([^"]+)")', combined_sources):
+            if m.group(1) is not None:
+                all_identity_summary_fields.update(re.findall(r'"([^"]+)"', m.group(1)))
+            elif m.group(2):
+                all_identity_summary_fields.add(m.group(2))
+        available_quick_view_candidates = {
+            name
+            for _, name, _ in resp_all_fields
+            if name not in all_identity_summary_fields and name not in AUDIT_EXCLUDED_ENTITY_FIELDS
+        }
+        min_quick_view = min(4, len(available_quick_view_candidates)) if available_quick_view_candidates else 4
+
+        if not min_quick_view <= quick_view_cols <= 8:
             row_issues.append(f"QuickView field count outside 4..8: {quick_view_cols}")
         if not has_rich_identity:
             row_issues.append("Shallow @ResourceIdentity (missing subtitleField/metadataFields)")
@@ -521,7 +718,10 @@ def main() -> int:
         title = re.search(r'titleField\s*=\s*"([^"]+)"', combined_sources)
         title_annotations = next((annotations for _, field_name, annotations in resp_all_fields
                                   if title and field_name == title.group(1)), "")
-        if not re.search(r'@ResourceReference\s*\([^)]*resourceKey\s*=\s*"' + re.escape(ctrl.resource_key or "") + r'"', title_annotations, re.DOTALL):
+        if not any(
+            re.search(r'resourceKey\s*=\s*"' + re.escape(ctrl.resource_key or "") + r'"', body)
+            for body in extract_annotation_bodies(title_annotations, "ResourceReference")
+        ):
             row_issues.append("Resource title lacks an explicit self reference")
         for target_entity in reference_targets:
             target_keys = {key for key, controller in resources.items()
@@ -529,11 +729,11 @@ def main() -> int:
                                   svc.service_type_args[1] == controller.controller_type_args[0]
                                   for svc in services)}
             if not any(key in annotations for _, _, annotations in resp_all_fields
-                       if "@ResourceReference" in annotations for key in target_keys):
+                       if re.search(r"@(?:[\w.]+\.)?ResourceReference\b", annotations) for key in target_keys):
                 row_issues.append(f"Missing published relationship reference: {target_entity}")
         # A reference must resolve to a real resource and its declared item read surface.
         for _, field_name, annotations in resp_all_fields:
-            for reference in re.findall(r"@ResourceReference\s*\(([^)]*)\)", annotations, re.DOTALL):
+            for reference in extract_annotation_bodies(annotations, "ResourceReference"):
                 values = dict(re.findall(r'(resourceKey|surfaceId|previewSurfaceId)\s*=\s*"([^"]+)"', reference))
                 target = values.get("resourceKey", "")
                 if target not in resources:
